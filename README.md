@@ -1,6 +1,12 @@
 # Albatros Skills
 
-Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Du sagst deiner KI im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich zu einem echten eigenen Server. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind: Du hebst ab, fliegst und landest.
+Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Du sagst deiner KI im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich zu einem echten eigenen Server. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind.
+
+Die drei Stufen jeder Mission:
+
+- **abheben:** Idee und Produkt
+- **fliegen:** Setup und live gehen
+- **landen:** der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen
 
 Dieses Repo enthält:
 
@@ -91,7 +97,7 @@ Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er 
 ---
 id: flugschule-02-ssh-schluessel     # <weg>-<nr>-<slug>, gleich wie der Dateiname
 weg: flugschule                      # flugschule | webseite | geschaeft
-stufe: abheben                       # abheben | fliegen | landen
+stufe: fliegen                       # abheben (Idee, Produkt) | fliegen (Setup, live) | landen (erster Fan)
 titel: Dein Hausschlüssel für den Server
 bild: Hausschlüssel und Schloss
 dauer: 20                            # Minuten
@@ -124,8 +130,12 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon ihres
 bun install
 bun run pruefen                       # Kopfdaten aller Skills und Missionen gegen das Schema
 claude plugin validate .              # Marktplatz und Plugin
-claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Write --model sonnet -j 4
+claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Write \
+  --model sonnet --judge-model sonnet --runs 3 --threshold 0.8 -j 4
 ```
+
+- Jeder Fall läuft dreimal. Ein Fall besteht, wenn sein Schnitt mindestens 0,8 ist: ein kleiner Ausrutscher in drei Läufen ist erlaubt, ein Fehler in jedem Lauf nicht. Der Judge ist Sonnet, weil Haiku bei deutschen Texten mit mehreren Kriterien zu stark schwankt.
+- Pro Fall prüft ein LLM-Grader die letzte Chat-Antwort (`kriterien.md` oder `antwort.md`). Schreibt der Skill eine Datei, prüft ein zweiter Grader ihren Inhalt (`focus: {source: file, path: …}`). `focus: files` zeigt nur Dateinamen und `focus: trace` nur Rohdaten, beide taugen nicht.
 
 - Der Fall `ssh-schluessel-lokal` (Tag `bash`) lässt die KI den Schlüssel wirklich mit `ssh-keygen` erzeugen. Er braucht `--allow-tools Bash` und eine Maschine, auf der Claude Code Bash in Evals erlaubt.
 - Die Evals rufen nie den echten MCP-Server. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/`.

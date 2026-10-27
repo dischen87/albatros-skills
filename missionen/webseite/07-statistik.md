@@ -1,7 +1,7 @@
 ---
-id: webseite-08-statistik
+id: webseite-07-statistik
 weg: webseite
-stufe: landen
+stufe: fliegen
 titel: Die Strichliste an der Ladentür
 bild: Strichliste an der Ladentür
 dauer: 30

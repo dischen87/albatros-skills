@@ -16,6 +16,8 @@ Wir bauen dein Schloss in die Tür deines Servers ein. Danach kommt nur hinein, 
 
 Erklär das Bild, bevor du einen Befehl ausführst. Die Wörter «privater» und «öffentlicher Schlüssel» nennst du erst danach, und dann immer zusammen mit dem Bild.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## Harte Regeln
 
 - Der private Schlüssel verlässt den Computer nie. Du liest ihn nicht, zeigst ihn nicht an, kopierst ihn nicht und lädst ihn nirgends hoch, auch nicht auf Wunsch. Wenn die Person ihn in den Chat kopieren will: freundlich stoppen und erklären, warum.
@@ -53,7 +55,7 @@ Windows: Der gleiche Befehl funktioniert in PowerShell, nur ohne `mkdir`/`chmod`
 cat ~/.ssh/albatros.pub
 ```
 
-Zeig der Person die Zeile und sag: «Das ist dein Schloss. Das darf jede Person sehen.» Gib genau diese Zeile an das Albatros-Werkzeug `schluessel_hinterlegen`.
+Zeig der Person die Zeile und sag: «Das ist dein Schloss. Das darf jede Person sehen.» Gib genau diese Zeile an das Albatros-Werkzeug `schluessel_hinterlegen`. Will die Person ihr Schloss hochladen, tust du das gleich, ohne nochmals zu fragen: Ein Schloss zu hinterlegen ist ungefährlich.
 
 Fehlt das Werkzeug (Albatros noch nicht verbunden): Folge zuerst Schritt 1 im Skill `start`. Alternativ kann die Person die Zeile im Cockpit auf albatros.build unter «Schlüssel» einfügen.
 
@@ -99,3 +101,7 @@ ssh -o StrictHostKeyChecking=accept-new {name}@aufwind.sh 'echo "Ich war hier" >
 - **Neuer Computer:** neuer Hausschlüssel auf dem neuen Computer, Schloss zusätzlich hochladen. Den alten Hausschlüssel nie per Mail oder Stick kopieren.
 - **Computer verloren oder gestohlen:** Das alte Schloss sofort im Cockpit entfernen. Das ist, als würdest du den Schliesszylinder auswechseln.
 - **`WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED`**: Der Ausweis des Servers ist anders als beim letzten Mal. Nicht einfach wegklicken. Fingerabdruck im Cockpit vergleichen. Erst wenn er stimmt, die alte Zeile mit `ssh-keygen -R aufwind.sh` entfernen.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Hausschlüssel und Schloss», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

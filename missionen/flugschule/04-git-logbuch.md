@@ -1,7 +1,7 @@
 ---
 id: flugschule-04-git-logbuch
 weg: flugschule
-stufe: abheben
+stufe: fliegen
 titel: Dein Logbuch mit Git
 bild: Das Logbuch an Bord, mit einer Kopie im Hafen
 dauer: 45

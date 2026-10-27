@@ -13,9 +13,12 @@ Das Fachwort dafür ist **Snapshot** (Schnappschuss).
 
 Wichtig: Alles, was nach dem Foto dazugekommen ist, ist danach weg. Darum ist das Logbuch auf GitHub so wertvoll (Skill `git-logbuch`): Dort liegt eine Kopie deiner Arbeit ausserhalb der Wohnung.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
-Du-Form, ruhig, kurze Sätze. Wenn etwas kaputt ist, zuerst beruhigen: «Das lässt sich reparieren.» Dann erst handeln.
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
+- Du-Form, ruhig, kurze Sätze. Wenn etwas kaputt ist, zuerst beruhigen: «Das lässt sich reparieren.» Dann erst handeln.
 
 ## Vor einem grossen Umbau: eigenes Foto
 
@@ -51,3 +54,7 @@ Diese Übung ist die Mission. Sie nimmt die Angst vor Fehlern.
 - Kein Ersatz für das Logbuch auf GitHub. Fotos liegen im gleichen Haus wie die Wohnung.
 - Kein Schutz für den eigenen Computer der Person. Dort gilt: Arbeit regelmässig pushen.
 - Kein Archiv für immer. Nach sieben Tagen ist ein Foto weg. Was länger bleiben soll, gehört ins Logbuch.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «das Foto der ganzen Wohnung», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

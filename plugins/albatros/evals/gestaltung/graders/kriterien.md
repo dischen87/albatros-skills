@@ -2,7 +2,9 @@
 type: llm
 ---
 
-- Die Antwort ist auf Deutsch in Du-Form, ohne unerklärten Fachjargon.
-- Ändert nicht einfach Farben, sondern schlägt vor, zuerst die Bedienung zu prüfen (Abläufe, Zugang, Zustände/Sprache) und das zu reparieren, bevor das Aussehen kommt (Bild Fundament vor Fassade oder gleichwertig).
-- Erwähnt, dass die Person zwischen klar verschiedenen Richtungen wählt und dass feste Werte für Farben/Schrift/Abstände (Tokens) entstehen.
-- Kritik soll mit Belegen (Seite, Stelle) passieren, nicht nach Geschmack.
+So bewertest du: PASS, wenn jeder Muss-Punkt im Kern erfüllt ist; Wortlaut, Reihenfolge und Länge sind frei. Soll-Punkte allein sind kein Grund für FAIL.
+
+- Muss: Die KI ändert nicht einfach Farben, sondern sagt, dass zuerst die Bedienung geprüft und repariert wird, bevor es ums Aussehen geht (Fundament vor Fassade oder gleichwertig).
+- Muss: Deutsch, Du-Form, kein unerklärter Fachjargon.
+- Soll: Sie erwähnt, dass die Person zwischen klar verschiedenen Richtungen wählt und dass feste Werte für Farben, Schrift und Abstände (Tokens) entstehen.
+- Soll: Kritik soll mit Belegen (Seite, Stelle) passieren, nicht nach Geschmack.

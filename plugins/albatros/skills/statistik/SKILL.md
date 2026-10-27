@@ -11,8 +11,11 @@ Eine Ladenbesitzerin macht an der Tür eine Strichliste. Sie zählt nur, was vor
 
 Genau so soll die Statistik deiner Webseite arbeiten: wenige, klar benannte Striche, gezählt im richtigen Moment, ohne mehr über die Besucher zu speichern als nötig. Ein Strich heisst in der Statistik **Ereignis**.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form, kein Fachjargon. «Ereignis» erst nach dem Bild der Strichliste.
 - Datenschutz ist kein Anhängsel. Jede Einstellung, die mehr über Menschen speichert, braucht einen Grund und einen Satz in der Datenschutzerklärung (Skill `recht-ch`).
 - Das PostHog-Konto legt die Person selbst im Browser an. Den Projekt-Schlüssel (beginnt mit `phc_`) darf sie dir geben, er ist für die Webseite gedacht und öffentlich. Persönliche API-Schlüssel (`phx_`) gehören nie in den Code.
@@ -87,4 +90,8 @@ In PostHog unter den Projekt-Einstellungen «Interne Nutzer und Testnutzer herau
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-08-statistik`. Die Prüfung schaut, ob `~/projekt/docs/statistik.md` existiert und die Seite den PostHog-Einbau enthält.
+`mission_pruefen` mit `webseite-07-statistik`. Die Prüfung schaut, ob `~/projekt/docs/statistik.md` existiert und die Seite den PostHog-Einbau enthält.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «die Strichliste an der Ladentür», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

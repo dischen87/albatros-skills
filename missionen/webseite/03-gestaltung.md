@@ -1,7 +1,7 @@
 ---
 id: webseite-03-gestaltung
 weg: webseite
-stufe: fliegen
+stufe: abheben
 titel: Erst das Fundament, dann die Fassade
 bild: Fundament reparieren, dann mit dem Farbfächer streichen
 dauer: 120

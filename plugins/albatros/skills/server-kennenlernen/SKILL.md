@@ -11,8 +11,11 @@ Dein Server ist eine Wohnung in einem grossen Haus. Sie hat eine eigene Tür (de
 
 Das Terminal ist die Gegensprechanlage: Du sagst einen kurzen Satz, die Wohnung antwortet.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form, kurze Sätze, kein Fachjargon. Jeder Befehl bekommt zuerst sein Bild.
 - Die Person tippt die Befehle dieses Rundgangs selbst (in Claude Code mit `!` davor, sonst in einem eigenen Terminal-Fenster nach `ssh {name}@aufwind.sh`). Du erklärst, was kommt, und liest danach mit ihr die Antwort.
 - Höchstens ein neuer Begriff pro Schritt.
@@ -54,3 +57,7 @@ Dann `mission_pruefen` mit `flugschule-03-server-kennenlernen`. Die Prüfung sch
 - **`No such file or directory`**: Du stehst im falschen Zimmer. `pwd` sagt, wo du bist.
 - **Die Person fühlt sich überfordert:** Nimm nur `pwd`, `ls`, `cd` und `exit`. Der Rest kann warten, bis er gebraucht wird.
 - **Etwas wurde gelöscht:** Skill `zurueck-auf-gestern`.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Rundgang durch die neue Wohnung», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

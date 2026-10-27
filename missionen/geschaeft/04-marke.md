@@ -1,7 +1,7 @@
 ---
 id: geschaeft-04-marke
 weg: geschaeft
-stufe: fliegen
+stufe: abheben
 titel: Wie heisst du, und woran erkennt man dich?
 bild: Ein Ladenschild, das man im Vorbeigehen liest, sich merkt und wiederfindet
 dauer: 60

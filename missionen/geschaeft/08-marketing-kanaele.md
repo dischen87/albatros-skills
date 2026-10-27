@@ -1,7 +1,7 @@
 ---
-id: geschaeft-07-marketing-kanaele
+id: geschaeft-08-marketing-kanaele
 weg: geschaeft
-stufe: fliegen
+stufe: landen
 titel: Durch welche Tür kommt deine Kundschaft?
 bild: Ein Laden mit vielen Türen, an jeder ein Zählwerk, an jedem Link ein Anhänger
 dauer: 60

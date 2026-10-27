@@ -9,9 +9,12 @@ description: 'Macht mit der Person ein ehrliches Haushaltsbuch für ihr Projekt:
 
 Wie ein Haushaltsbuch für eine Wohnung: Es gibt **Miete** (fixe Kosten jeden Monat), **Nebenkosten** (je nachdem, wie viel du brauchst) und **einmalige Anschaffungen**. Wer alles aufschreibt, erlebt keine Überraschung auf der Rechnung.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
-Du-Form, ehrlich, ohne Verkaufsdruck. Nenn nie Preise aus dem Gedächtnis als Tatsache. Aktuelle Albatros-Preise kommen aus `konto_status` oder von albatros.build/preise. Bei anderen Anbietern sagst du «etwa» und schickst die Person auf deren Preisseite.
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
+- Du-Form, ehrlich, ohne Verkaufsdruck. Nenn nie Preise aus dem Gedächtnis als Tatsache. Aktuelle Albatros-Preise kommen aus `konto_status` oder von albatros.build/preise. Bei anderen Anbietern sagst du «etwa» und schickst die Person auf deren Preisseite.
 
 ## Ablauf
 
@@ -48,3 +51,7 @@ Schreib die Tabelle mit der Person in `docs/kosten.md` in ihrem Projekt, mit Mon
 ### 5. Mission prüfen
 
 `mission_pruefen` mit `flugschule-08-kosten`. Die Prüfung schaut, ob `~/projekt/docs/kosten.md` auf dem Server liegt.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «das Haushaltsbuch», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

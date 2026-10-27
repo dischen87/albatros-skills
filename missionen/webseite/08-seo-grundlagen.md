@@ -1,7 +1,7 @@
 ---
-id: webseite-05-seo-grundlagen
+id: webseite-08-seo-grundlagen
 weg: webseite
-stufe: fliegen
+stufe: landen
 titel: Auf den Stadtplan kommen
 bild: Wegweiser und Stadtplan
 dauer: 45

@@ -1,7 +1,7 @@
 ---
-id: webseite-07-recht-ch
+id: webseite-06-recht-ch
 weg: webseite
-stufe: landen
+stufe: fliegen
 titel: Klingelschild und Hausordnung
 bild: Klingelschild und Hausordnung
 dauer: 45

@@ -1,7 +1,7 @@
 ---
 id: flugschule-03-server-kennenlernen
 weg: flugschule
-stufe: abheben
+stufe: fliegen
 titel: Rundgang durch deinen Server
 bild: Rundgang durch die neue Wohnung
 dauer: 30

@@ -1,7 +1,7 @@
 ---
-id: geschaeft-09-verkauf
+id: geschaeft-10-verkauf
 weg: geschaeft
-stufe: fliegen
+stufe: landen
 titel: Mails, die willkommen sind
 bild: Die gute Briefträgerin klingelt nur, wenn sie etwas für dich hat
 dauer: 90

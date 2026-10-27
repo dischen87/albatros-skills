@@ -1,5 +1,5 @@
 ---
-id: webseite-06-barrierefreiheit
+id: webseite-05-barrierefreiheit
 weg: webseite
 stufe: fliegen
 titel: Eine Rampe neben der Treppe

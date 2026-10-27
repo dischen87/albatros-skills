@@ -11,9 +11,12 @@ Ein CMS ist eine Pinnwand im Flur. Wer etwas mitteilen will, hängt einen Zettel
 
 Eine Pinnwand lohnt sich, wenn oft und von verschiedenen Leuten Zettel kommen: Veranstaltungen, News, Produkte, Menüs. Für eine Seite, die sich zweimal im Jahr ändert, ist sie ein Möbel, das nur Platz braucht.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
-Du-Form, kurz. Rate ehrlich ab, wenn es keine Pinnwand braucht. Jede zusätzliche Software ist etwas, das gepflegt, gesichert und aktualisiert werden will.
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
+- Du-Form, kurz. Rate ehrlich ab, wenn es keine Pinnwand braucht. Jede zusätzliche Software ist etwas, das gepflegt, gesichert und aktualisiert werden will.
 
 ## 1. Braucht es überhaupt ein CMS?
 
@@ -71,3 +74,7 @@ Solange dieses Fenster offen ist, öffnet sie im Browser `http://localhost:1337/
 ## Mission prüfen
 
 `mission_pruefen` mit `webseite-04-cms`. Die Prüfung schaut, ob der Container `cms` läuft. Hat sich die Person bewusst für Stufe A oder B entschieden, sag ihr, dass sie diese Mission überspringen darf. Das ist eine gute Entscheidung, keine Lücke.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «die Pinnwand im Flur», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

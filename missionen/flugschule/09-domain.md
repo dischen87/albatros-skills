@@ -1,7 +1,7 @@
 ---
 id: flugschule-09-domain
 weg: flugschule
-stufe: landen
+stufe: fliegen
 titel: Deine eigene Adresse
 bild: Adresse im Telefonbuch
 dauer: 45

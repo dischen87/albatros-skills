@@ -1,7 +1,7 @@
 ---
-id: geschaeft-08-bezahlte-werbung
+id: geschaeft-09-bezahlte-werbung
 weg: geschaeft
-stufe: fliegen
+stufe: landen
 titel: Werbung testen, ohne Geld zu verbrennen
 bild: Ein Flyer-Verteiler vor dem Laden, mit einem Couvert voll Geld, das einmal leer ist
 dauer: 60

@@ -9,9 +9,12 @@ description: 'Hilft einer Person ohne Vorwissen, Texte und Bilder für ihre Webs
 
 Die Webseite ist ein Schaufenster. Gestaltung ist das Licht und die Dekoration. Die Inhalte sind die Ware. Ein schönes Schaufenster mit leeren Regalen verkauft nichts. Darum kommen die Inhalte vor der Gestaltung.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
-Du-Form, kurz, konkret. Schreib Texte nie fertig über den Kopf der Person hinweg: Du machst Vorschläge, sie entscheidet und ändert. Am Ende muss jeder Text so klingen, wie sie spricht.
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
+- Du-Form, kurz, konkret. Schreib Texte nie fertig über den Kopf der Person hinweg: Du machst Vorschläge, sie entscheidet und ändert. Am Ende muss jeder Text so klingen, wie sie spricht.
 
 ## Ablauf
 
@@ -54,8 +57,12 @@ Die KI darf Entwürfe schreiben. Dann zusammen mit der Person:
 
 ### 6. Auf die Seite bringen
 
-Texte und Bilder ins Projekt, ins Logbuch (Skill `git-logbuch`), über das Fliessband (Skill `pipeline`) auf den Server. Dann zusammen auf dem Handy anschauen, nicht nur am Computer.
+Bitte die Person, jede Angabe im Text zu prüfen (Zeiten, Wege, Preise, Namen). Du kennst sie nur aus ihrer Beschreibung. Dann Texte und Bilder ins Projekt, ins Logbuch (Skill `git-logbuch`), über das Fliessband (Skill `pipeline`) auf den Server. Dann zusammen auf dem Handy anschauen, nicht nur am Computer.
 
 ## Mission prüfen
 
 `mission_pruefen` mit `webseite-02-inhalte`. Die Prüfung schaut, ob `~/projekt/docs/inhalte.md` existiert und die Seite unter `https://{name}.aufwind.sh` antwortet.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «die Ware im Schaufenster», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt. Bitte die Person ausdrücklich, den Text in ihre eigene Stimme zu bringen und jede Angabe darin zu prüfen (Zeiten, Wege, Preise), denn du kennst sie nur aus ihrer Beschreibung.

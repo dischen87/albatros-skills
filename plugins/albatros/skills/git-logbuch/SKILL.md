@@ -14,8 +14,11 @@ Auf jedem Schiff gibt es ein Logbuch. Jeder Eintrag sagt: wer, wann, was und war
 - **GitHub:** der Hafen. Dort liegt eine Kopie des Logbuchs. Fällt dein Computer ins Wasser, ist nichts verloren.
 - **Push:** die neuen Einträge in den Hafen schicken. **Pull:** die neusten Einträge aus dem Hafen holen.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form. Die Wörter Commit, Push und Pull erst nach dem Bild, dann immer zusammen mit ihm.
 - Das GitHub-Konto und die Anmeldung macht die Person selbst im Browser.
 - Du committest nie etwas, das die Person nicht kennt. Vor jedem Eintrag zeigst du, was hineinkommt.
@@ -96,3 +99,7 @@ Fehlt `~/.ssh/github` auf dem Server (ältere Einrichtung), macht ihn `ssh {name
 - **Fremde offene Änderungen in `git status`:** nicht anfassen, nicht mitnehmen. Nur die eigenen Dateien aufnehmen.
 - **Geheimnis im Logbuch gelandet:** Löschen reicht nicht, es bleibt in den alten Einträgen. Sofort Skill `sicherheit`: das Geheimnis beim Anbieter neu erzeugen.
 - **Zurück zu einem früheren Stand einer Datei:** `git log --oneline <datei>` zeigt die Einträge, `git restore --source <eintrag> <datei>` holt sie zurück. Danach ein neuer Eintrag.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «das Logbuch an Bord, mit einer Kopie im Hafen», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

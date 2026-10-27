@@ -1,7 +1,7 @@
 ---
 id: flugschule-02-ssh-schluessel
 weg: flugschule
-stufe: abheben
+stufe: fliegen
 titel: Dein Hausschlüssel für den Server
 bild: Hausschlüssel und Schloss
 dauer: 20

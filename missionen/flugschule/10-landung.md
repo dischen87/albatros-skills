@@ -1,7 +1,7 @@
 ---
 id: flugschule-10-landung
 weg: flugschule
-stufe: landen
+stufe: fliegen
 titel: Umzug ins eigene Haus
 bild: Umzug mit gepackten Kisten und neuer Adresse
 dauer: 120

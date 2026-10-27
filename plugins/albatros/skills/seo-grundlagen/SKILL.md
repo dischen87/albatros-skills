@@ -16,9 +16,12 @@ Eine Suchmaschine ist ein Stadtplan, den ein fleissiger Bote jeden Tag nachzeich
 
 Das Fachwort für all das ist **SEO** (Suchmaschinen-Optimierung). Am meisten zählt aber, dass die Seite die Frage der Suchenden gut beantwortet.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
-Du-Form. Keine Wunder versprechen: Gefunden werden braucht Wochen, nicht Stunden. Keine Tricks (versteckter Text, gekaufte Links), die schaden mehr, als sie nützen.
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
+- Du-Form. Keine Wunder versprechen: Gefunden werden braucht Wochen, nicht Stunden. Keine Tricks (versteckter Text, gekaufte Links), die schaden mehr, als sie nützen.
 
 ## Ablauf
 
@@ -66,4 +69,8 @@ Echte Links von passenden Orten: Verzeichnis des Quartiers oder Verbands, Partne
 
 ## Mission prüfen
 
-Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `webseite-05-seo-grundlagen`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/sitemap.xml` und `/robots.txt` antworten.
+Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `webseite-08-seo-grundlagen`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/sitemap.xml` und `/robots.txt` antworten.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Wegweiser und Stadtplan», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

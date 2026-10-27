@@ -11,9 +11,12 @@ Niemand baut ein Haus, ohne vorher einen Grundriss zu zeichnen. Der Grundriss ze
 
 Ein Grundriss auf einer Seite Papier reicht. Er spart später viele Umbauten.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
-Du-Form, kurze Fragen, eine Frage pro Nachricht. Nimm die Antworten wörtlich auf, die Person soll ihren Plan wiedererkennen. Kein Fachjargon: «Seiten» statt «Sitemap», «Menü» statt «Navigation».
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
+- Du-Form, kurze Fragen, eine Frage pro Nachricht. Nimm die Antworten wörtlich auf, die Person soll ihren Plan wiedererkennen. Kein Fachjargon: «Seiten» statt «Sitemap», «Menü» statt «Navigation».
 
 ## Ablauf: sieben Fragen
 
@@ -65,3 +68,7 @@ Lies den Plan der Person am Schluss vor und frag: «Stimmt das so?» Erst dann i
 ## Mission prüfen
 
 `mission_pruefen` mit `webseite-01-webseite-planen`. Die Prüfung schaut, ob `~/projekt/docs/plan.md` auf dem Server liegt.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «der Grundriss», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

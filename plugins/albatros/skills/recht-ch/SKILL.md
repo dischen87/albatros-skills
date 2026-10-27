@@ -11,8 +11,11 @@ description: 'Bringt eine kleine Schweizer Webseite rechtlich in Ordnung, erklä
 - **Datenschutzerklärung = Hausordnung für Besucher:** Was passiert mit dem, was Besucher dir geben oder hinterlassen (Name im Formular, Spuren in der Statistik)?
 - **Cookies = kleine Zettel, die du Besuchern in die Tasche steckst**, damit du sie wiedererkennst. Darüber musst du informieren.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form, einfach, aber präzise: Gesetz und Artikel nennen.
 - Immer dazusagen: «Das ist keine Rechtsberatung. Bei Unsicherheit, bei heiklen Daten (Gesundheit, Kinder) oder viel Umsatz lohnt sich eine Fachperson.»
 - Keine Vorlage aus dem Netz blind kopieren. Jeder Satz muss zur Seite passen. Eine Erklärung, die Dienste nennt, die es gar nicht gibt, oder echte vergisst, ist falsch.
@@ -70,4 +73,8 @@ Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar.
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-07-recht-ch`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/impressum` und `/datenschutz` antworten.
+`mission_pruefen` mit `webseite-06-recht-ch`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/impressum` und `/datenschutz` antworten.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Klingelschild und Hausordnung», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

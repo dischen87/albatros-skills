@@ -11,8 +11,11 @@ Bei Albatros wohnst du in einer Wohnung mit Hauswart: Er macht die Haustür zu, 
 
 Der Umzug ist kein Neubau. Dein Projekt ist schon in Kisten verpackt, die überall passen: das Logbuch (Git), die Bauanleitung (`Dockerfile`, `compose.yaml`) und das Fliessband (Workflow). Du packst den Rest dazu, ziehst um und meldest deine Adresse um.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form. Ehrlich über den Aufwand: Ein eigener Server spart oft Geld, kostet aber Zeit für Pflege.
 - Server mieten und bezahlen macht die Person selbst beim Anbieter.
 - Das alte Zuhause wird erst abgeschaltet, wenn das neue nachweislich läuft.
@@ -88,3 +91,7 @@ Eine Woche beobachten. Läuft alles, das Abo bei Albatros anpassen oder kündige
 - Docker-Ports umgehen die Firewall: interne Dienste nur an `127.0.0.1`.
 - Sicherungen eingerichtet, aber nie zurückgespielt: Eine Sicherung zählt erst, wenn die Probe geklappt hat.
 - Nach Updates automatisch neu starten: nur, wenn danach alles von selbst wieder hochkommt.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Umzug ins eigene Haus», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

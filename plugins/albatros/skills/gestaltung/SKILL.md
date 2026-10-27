@@ -11,14 +11,20 @@ Wer ein altes Haus herrichtet, streicht nicht zuerst die Fassade. Zuerst kommt d
 
 Für die Fassade gibt es dann einen **Farbfächer**: eine kleine Sammlung fester Farben, Schriften und Abstände. Alles im Haus wird nur damit gestrichen. Das Fachwort dafür ist **Tokens**.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- Wünscht sich die Person «schöner» oder «andere Farben», ist deine erste Antwort immer: das Bild vom Fundament vor der Fassade und der Weg in fünf Schritten. Wo die Seite liegt und wie du an sie kommst, fragst du erst danach.
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form, kurz. Jede Kritik braucht einen Beleg: welche Seite, welche Stelle, am besten ein Foto. «Wirkt unruhig» allein zählt nicht.
 - Geschmack entscheidet die Person. Du legst Richtungen vor und sagst ehrlich, was jede kann und was ihr Risiko ist.
 - Eigene Vorgaben der Person (Logo, Hausfarbe, Anrede, Pflichttexte) gehen jedem Gestaltungstipp vor.
 - Nichts wird veröffentlicht, bevor die Person die Fotos gesehen und Ja gesagt hat.
 
 ## Ablauf
+
+Siehst du die Seite noch nicht (kein Projekt im Ordner, keine Adresse), erklär zuerst den ganzen Weg in fünf kurzen Schritten: prüfen, Bedienung reparieren, drei klar verschiedene Richtungen wählen, Farbfächer festlegen, umbauen. Erst danach fragst du, wo die Seite liegt.
 
 ### 0. Rahmen (5 Minuten)
 
@@ -85,3 +91,7 @@ Jedes Foto selbst anschauen und mit dem Entwurf vergleichen. Erst dann der Perso
 ## Mission prüfen
 
 `mission_pruefen` mit `webseite-03-gestaltung`. Die Prüfung schaut, ob `~/projekt/docs/gestaltung/richtungen.md` einen Entscheid enthält und die Seite antwortet.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «erst das Fundament, dann die Fassade», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

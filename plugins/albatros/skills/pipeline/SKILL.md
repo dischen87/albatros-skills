@@ -16,8 +16,11 @@ In einer Fabrik trägt niemand jedes Teil einzeln zum Lastwagen. Es gibt ein Fli
 
 Bei dir startet das Band, sobald du einen Eintrag in den Hafen schickst (Skill `git-logbuch`). Das Fachwort ist **CI/CD**, das Band selbst heisst bei GitHub **Workflow**.
 
+**So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
 ## So sprichst du
 
+- **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form. Geh die Workflow-Datei mit der Person Station für Station durch, bevor sie läuft.
 - Das Fliessband bekommt einen **eigenen Schlüssel**, nie den Hausschlüssel der Person. So lässt er sich einzeln sperren.
 - Ist das Band rot: Ursache beheben, nie die Prüfung abschalten.
@@ -26,7 +29,7 @@ Bei dir startet das Band, sobald du einen Eintrag in den Hafen schickst (Skill `
 
 ### 1. Was schon da ist
 
-Bringt die Vorlage `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` mit, lies sie mit der Person und vergleiche mit dem Kern unten. Sonst lege die Dateien an. Der Webserver-Container heisst `webseite` und hört im Server auf Port 80. Albatros leitet `https://{name}.aufwind.sh` dorthin. Auf einem frischen Server belegt die Begrüssungsseite (Dienst `willkommen`) Port 80. Das Fliessband schaltet sie vor dem ersten Start ab. Startest du einmal von Hand, zuerst `sudo systemctl disable --now willkommen`.
+Den Namen des Servers holst du mit `konto_status`, nicht von der Person. Bringt die Vorlage `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` mit, lies sie mit der Person und vergleiche mit dem Kern unten. Sonst legst du die Dateien an, auch wenn der Ordner noch leer ist, und sagst danach, was noch fehlt (Repo auf GitHub, Schlüssel, Inhalt der Seite). Der Webserver-Container heisst `webseite` und hört im Server auf Port 80. Albatros leitet `https://{name}.aufwind.sh` dorthin. Auf einem frischen Server belegt die Begrüssungsseite (Dienst `willkommen`) Port 80. Das Fliessband schaltet sie vor dem ersten Start ab. Startest du einmal von Hand, zuerst `sudo systemctl disable --now willkommen`.
 
 `compose.yaml` (Kern):
 
@@ -154,3 +157,7 @@ Die Person baut absichtlich einen Fehler ein, der den Bau scheitern lässt (z. B
 - **`Host key verification failed`:** `DEPLOY_KNOWN_HOSTS` fehlt oder ist alt.
 - **Endkontrolle rot, Auslieferung grün:** Die Seite läuft im Server, aber nicht von aussen. Container-Port prüfen (`docker ps`), dann Skill `zurueck-auf-gestern`.
 - **Nie** die Prüfung entfernen, damit das Band grün wird.
+
+## Schlussnachricht
+
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «das Fliessband mit Qualitätskontrolle», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

@@ -1,7 +1,7 @@
 ---
-id: geschaeft-10-go-live-check
+id: geschaeft-06-go-live-check
 weg: geschaeft
-stufe: landen
+stufe: fliegen
 titel: Vor dem Start einmal ums Flugzeug
 bild: Die Vorflugkontrolle am echten Flugzeug, mit laufendem Flugschreiber
 dauer: 90

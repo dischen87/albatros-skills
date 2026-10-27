@@ -1,7 +1,7 @@
 ---
-id: geschaeft-06-sichtbar-in-ki-antworten
+id: geschaeft-07-sichtbar-in-ki-antworten
 weg: geschaeft
-stufe: fliegen
+stufe: landen
 titel: Kommst du in KI-Antworten vor?
 bild: Die Auskunft am Bahnhof nennt die Stelle mit dem genausten Aushang
 dauer: 60
