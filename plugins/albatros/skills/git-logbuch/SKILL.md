@@ -69,27 +69,21 @@ Noch ein zweiter Eintrag, damit es sitzt. Danach auf github.com zeigen: Beide Ei
 
 ### 4. Das Logbuch auf den Server holen
 
-Damit das Fliessband (Skill `pipeline`) später liefern kann, bekommt der Server eine eigene Kopie in `~/projekt`. Er braucht dafür einen eigenen Schlüssel für den Hafen. Bild: Der Server bekommt seinen eigenen Hausschlüssel, aber nur für das Lesezimmer im Hafen.
+Damit das Fliessband (Skill `pipeline`) später liefern kann, bekommt der Server eine eigene Kopie in `~/projekt`. Bild: Der Server hat seinen eigenen Hausschlüssel, aber nur für das Lesezimmer im Hafen. Albatros hat ihn beim Einrichten schon gemacht (`~/.ssh/github`). Du baust nur noch das passende Schloss bei GitHub ein:
 
 ```bash
-# Auf dem Server einen Schlüssel nur für GitHub machen, das Schloss abholen und beim Repo einbauen
-ssh {name}@aufwind.sh 'ssh-keygen -t ed25519 -f ~/.ssh/github -N "" -C "{name}-server"'
 ssh {name}@aufwind.sh 'cat ~/.ssh/github.pub' > server-schloss.pub
 gh repo deploy-key add server-schloss.pub --title "albatros-server"   # nur lesen, das ist der Standard
 rm server-schloss.pub
 ```
 
-Der Hausschlüssel des Servers bleibt auf dem Server. Zu GitHub geht nur das Schloss.
-
-Dann auf dem Server:
+Der Hausschlüssel des Servers bleibt auf dem Server. Zu GitHub geht nur das Schloss. Dann das Logbuch auf den Server holen:
 
 ```bash
-ssh {name}@aufwind.sh
-printf 'Host github.com\n  IdentityFile ~/.ssh/github\n  IdentitiesOnly yes\n' >> ~/.ssh/config
-git clone git@github.com:<benutzer>/<projektname>.git ~/projekt
+ssh {name}@aufwind.sh 'git clone git@github.com:<benutzer>/<projektname>.git ~/projekt'
 ```
 
-Beim ersten Kontakt fragt der Server nach dem Ausweis von GitHub. Die Fingerabdrücke stehen in der GitHub-Hilfe unter «GitHub's SSH key fingerprints».
+Fehlt `~/.ssh/github` auf dem Server (ältere Einrichtung), macht ihn `ssh {name}@aufwind.sh 'ssh-keygen -t ed25519 -f ~/.ssh/github -N ""'`, und in `~/.ssh/config` auf dem Server gehört ein Eintrag `Host github.com` mit `IdentityFile ~/.ssh/github`.
 
 ### 5. Mission prüfen
 

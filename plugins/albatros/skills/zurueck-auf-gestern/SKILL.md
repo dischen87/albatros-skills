@@ -21,11 +21,13 @@ Du-Form, ruhig, kurze Sätze. Wenn etwas kaputt ist, zuerst beruhigen: «Das lä
 
 Bevor du auf dem Server etwas Grosses machst (Pakete installieren, Konfiguration ändern, Datenbank umbauen), schlag ein Foto vor: Werkzeug `snapshot` mit einem sprechenden Namen, z. B. `vor-cms-installation`. Kosten keine Zeit, ersparen viel Ärger.
 
+Eigene Fotos: höchstens fünf, sie verfallen nach 30 Tagen. Namen, die mit `taeglich-` beginnen, sind für die nächtlichen Fotos reserviert.
+
 ## Zurückholen
 
 1. **Erst schauen, was kaputt ist.** Manchmal reicht weniger als ein ganzes Foto: Ein gestoppter Container startet mit `docker start webseite`, eine geänderte Datei im Projekt kommt mit `git restore <datei>` zurück.
 2. **Fotos anzeigen:** `snapshot` mit der Aktion «auflisten» (oder Cockpit, «Server», «Snapshots»). Mit der Person das richtige wählen: das letzte, auf dem noch alles ging.
-3. **Warnen, was verloren geht:** «Alles, was du nach <Zeitpunkt> auf dem Server geändert hast, ist danach weg. Was schon auf GitHub liegt, bleibt.» Hat die Person ungesicherte Arbeit auf dem Server, zuerst diese sichern (`git push` oder Datei auf den eigenen Computer kopieren mit `scp {name}@aufwind.sh:~/datei .`).
+3. **Warnen, was verloren geht:** «Alles, was du nach <Zeitpunkt> auf dem Server geändert hast, ist danach weg, auch alle Fotos, die neuer sind als dieses. Was schon auf GitHub liegt, bleibt.» Hat die Person ungesicherte Arbeit auf dem Server, zuerst diese sichern (`git push` oder Datei auf den eigenen Computer kopieren mit `scp {name}@aufwind.sh:~/datei .`).
 4. **Erst nach einem klaren Ja:** `zurueck` mit dem Namen des Fotos. Der Server startet neu, das dauert etwa eine Minute.
 5. **Prüfen:** Seite im Browser öffnen, `docker ps` auf dem Server.
 

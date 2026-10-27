@@ -26,7 +26,7 @@ Bei dir startet das Band, sobald du einen Eintrag in den Hafen schickst (Skill `
 
 ### 1. Was schon da ist
 
-Bringt die Vorlage `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` mit, lies sie mit der Person und vergleiche mit dem Kern unten. Sonst lege die Dateien an. Der Webserver-Container heisst `webseite` und hört im Server auf Port 80. Albatros leitet `https://{name}.aufwind.sh` dorthin.
+Bringt die Vorlage `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` mit, lies sie mit der Person und vergleiche mit dem Kern unten. Sonst lege die Dateien an. Der Webserver-Container heisst `webseite` und hört im Server auf Port 80. Albatros leitet `https://{name}.aufwind.sh` dorthin. Auf einem frischen Server belegt die Begrüssungsseite (Dienst `willkommen`) Port 80. Das Fliessband schaltet sie vor dem ersten Start ab. Startest du einmal von Hand, zuerst `sudo systemctl disable --now willkommen`.
 
 `compose.yaml` (Kern):
 
@@ -110,6 +110,7 @@ jobs:
           cd ~/projekt
           ALT=$(git rev-parse HEAD)
           git fetch -q origin main && git reset -q --hard "$SHA"
+          sudo systemctl disable --now willkommen 2>/dev/null || true   # Begrüssungsseite gibt Port 80 frei
           if docker compose up -d --build --wait --wait-timeout 120; then
             echo "läuft: $SHA"
           else
