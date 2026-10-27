@@ -22,7 +22,7 @@ Jede Nacht wird deine ganze Wohnung fotografiert. Geht etwas schief, holst du si
 
 - was ein Snapshot ist und wann du selbst einen machst
 - wie «Zurück auf gestern» funktioniert
-- was dabei verloren geht und warum das Logbuch auf GitHub trotzdem wichtig bleibt
+- was dabei verloren geht und warum das Logbuch im Hafen trotzdem wichtig bleibt
 
 ## So gehst du vor
 

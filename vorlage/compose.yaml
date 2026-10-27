@@ -1,0 +1,11 @@
+services:
+  webseite:
+    container_name: webseite
+    build: .
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    healthcheck:                         # «läuft» heisst noch nicht «funktioniert»
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 10s
+      retries: 6

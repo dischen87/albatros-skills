@@ -1,6 +1,6 @@
 # Albatros Skills
 
-Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Du sagst deiner KI im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich zu einem echten eigenen Server. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind.
+Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Du sagst deiner KI im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich zu einem echten eigenen Server. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind. Dein Logbuch (Git) liegt im Hafen von Albatros, `code.aufwind.sh`. Ein GitHub-Konto brauchst du erst, wenn du in ein eigenes Haus umziehst.
 
 Die drei Stufen jeder Mission:
 
@@ -12,7 +12,8 @@ Dieses Repo enthält:
 
 - das **Plugin `albatros`** für Claude Code (Skills und die Verbindung zu Albatros über MCP),
 - die **Skills** der Flugschule und des Wegs Webseite, im [Agent-Skills-Standard](https://agentskills.io) (`SKILL.md`), damit sie auch in Codex und Gemini CLI laufen,
-- die **Missionen** aller drei Wege als Markdown. Die Website macht daraus öffentliche Lernseiten, der Dienst flugschule prüft damit den Fortschritt.
+- die **Missionen** aller drei Wege als Markdown. Die Website macht daraus öffentliche Lernseiten, der Dienst flugschule prüft damit den Fortschritt,
+- die **Vorlage** für das Projekt-Repo der Lernenden (`vorlage/`): eine kleine Seite, `Dockerfile`, `compose.yaml` und das Fliessband.
 
 Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`. Der MCP-Dienst liefert sie mit dem Werkzeug `methode` an Mitglieder aus.
 
@@ -63,6 +64,7 @@ plugins/albatros/
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
 missionen/<weg>/<nr>-<slug>.md      32 Missionen: flugschule 10, webseite 8, geschaeft 14
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
+vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, Dockerfile, compose.yaml, Fliessband
 scripts/pruefen.ts                  prüft Skills und Missionen
 ```
 
@@ -117,12 +119,12 @@ Die Prüftypen passen zur Prüf-API von flotte (`POST /server/:id/pruefen`):
 | `http` | `url`, `status` (200), `enthaelt` | die Adresse so antwortet |
 | `datei` | `pfad` (`~/…`), `enthaelt` | die Datei in der Instanz existiert |
 | `git` | `pfad`, `min_commits` (1), `branch` (`main`) | der Ordner ein Repo mit so vielen Einträgen ist |
-| `workflow` | `datei` (`.github/workflows/…`) | der letzte Lauf im Repo der Person grün ist |
+| `workflow` | `datei` (`.github/workflows/…`) | der letzte Lauf im Repo der Person im Hafen (Forgejo) grün ist |
 | `docker` | `container` | der Container läuft |
 
 Platzhalter: `{name}` (Server der Person, z. B. `anna` → `https://anna.aufwind.sh`), `{domain}` (ihre eigene Domain).
 
-Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon ihres Repos, vom Fliessband aktualisiert), Arbeitsdokumente in `~/projekt/docs/`, Webserver-Container `webseite` auf Port 80.
+Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `git@aufwind.sh:{name}/projekt.git`, vom Fliessband aktualisiert), Arbeitsdokumente in `~/projekt/docs/`, Webserver-Container `webseite` auf Port 80. Das Fliessband ist ein Forgejo-Runner auf dem Server (`runs-on: albatros`), der als `pilot` direkt in `~/projekt` ausliefert. GitHub kommt erst beim Umzug (Skill `landung`) dazu.
 
 ## Prüfen
 
@@ -147,7 +149,7 @@ Die Methoden stammen aus der Arbeit bei Swiss Activities (Wiederverwendung freig
 | Quelle | Skill | Was übernommen wurde |
 |---|---|---|
 | DIISI-Skill «git-hygiene» | `git-logbuch` | Nur `main`, nur eigene Dateien einzeln aufnehmen, nie force-push; Ablauf status → add → diff --cached → commit → pull --rebase → push; Umgang mit fremden offenen Änderungen |
-| CI- und Deploy-Workflow eines Produktivprojekts | `pipeline`, `sicherheit` | Ausliefern nur nach grüner Prüfung auf `main`, `concurrency` ohne Abbruch, minimale `permissions`, Prüfschritt für fehlende Secrets, Secrets nur über `env:`, eigener Schlüssel und gepinnter Host-Key für das Fliessband, Prüfung von aussen mit Wiederholungen |
+| CI- und Deploy-Workflow eines Produktivprojekts | `pipeline`, `landung`, `sicherheit` | Ausliefern nur nach grüner Prüfung auf `main`, Prüfung von aussen mit Wiederholungen, Secrets nur über `env:` (`pipeline`); `concurrency` ohne Abbruch, minimale `permissions`, Prüfschritt für fehlende Secrets, eigener Schlüssel und gepinnter Host-Key für das Fliessband (`landung`, GitHub-Version nach dem Umzug) |
 | Server-Deploy-Skript desselben Projekts | `pipeline`, `zurueck-auf-gestern`, `sicherheit` | `set -euo pipefail`, `up --wait` mit Healthcheck, Rücksprung auf die letzte gute Version, `.env` nur für den Besitzer lesbar, Ports von Datenbanken nur an `127.0.0.1` |
 | Server-Einrichtungs- und Sicherungsskript | `landung`, `sicherheit` | Mehrfach ausführbare Einrichtung, SSH nur mit Schlüssel, ufw erst erlauben, dann einschalten, fail2ban, nur Sicherheitsupdates automatisch, Log-Grenzen, Sicherung mit Probe |
 | Infrastruktur-Workflow (Webserver neu laden) | `landung` | Erst validieren, laufende Konfiguration sichern, nach dem Neuladen von aussen prüfen, sonst zurück |

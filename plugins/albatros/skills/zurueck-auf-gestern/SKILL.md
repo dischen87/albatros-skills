@@ -11,7 +11,7 @@ Jede Nacht macht Albatros ein Foto deiner ganzen Wohnung: jedes Zimmer, jede Dat
 
 Das Fachwort dafür ist **Snapshot** (Schnappschuss).
 
-Wichtig: Alles, was nach dem Foto dazugekommen ist, ist danach weg. Darum ist das Logbuch auf GitHub so wertvoll (Skill `git-logbuch`): Dort liegt eine Kopie deiner Arbeit ausserhalb der Wohnung.
+Wichtig: Alles, was nach dem Foto dazugekommen ist, ist danach weg. Darum ist das Logbuch im Hafen so wertvoll (Skill `git-logbuch`): Dort liegt eine Kopie deiner Arbeit ausserhalb der Wohnung. Das Zurückholen der Wohnung lässt den Hafen in Ruhe.
 
 **So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
 
@@ -30,7 +30,7 @@ Eigene Fotos: höchstens fünf, sie verfallen nach 30 Tagen. Namen, die mit `tae
 
 1. **Erst schauen, was kaputt ist.** Manchmal reicht weniger als ein ganzes Foto: Ein gestoppter Container startet mit `docker start webseite`, eine geänderte Datei im Projekt kommt mit `git restore <datei>` zurück.
 2. **Fotos anzeigen:** `snapshot` mit der Aktion «auflisten» (oder Cockpit, «Server», «Snapshots»). Mit der Person das richtige wählen: das letzte, auf dem noch alles ging.
-3. **Warnen, was verloren geht:** «Alles, was du nach <Zeitpunkt> auf dem Server geändert hast, ist danach weg, auch alle Fotos, die neuer sind als dieses. Was schon auf GitHub liegt, bleibt.» Hat die Person ungesicherte Arbeit auf dem Server, zuerst diese sichern (`git push` oder Datei auf den eigenen Computer kopieren mit `scp {name}@aufwind.sh:~/datei .`).
+3. **Warnen, was verloren geht:** «Alles, was du nach <Zeitpunkt> auf dem Server geändert hast, ist danach weg, auch alle Fotos, die neuer sind als dieses. Was schon im Hafen liegt, bleibt.» Hat die Person ungesicherte Arbeit auf dem Server, zuerst diese sichern (`git push` oder Datei auf den eigenen Computer kopieren mit `scp {name}@aufwind.sh:~/datei .`).
 4. **Erst nach einem klaren Ja:** `zurueck` mit dem Namen des Fotos. Der Server startet neu, das dauert etwa eine Minute.
 5. **Prüfen:** Seite im Browser öffnen, `docker ps` auf dem Server.
 
@@ -51,7 +51,7 @@ Diese Übung ist die Mission. Sie nimmt die Angst vor Fehlern.
 
 ## Was Snapshots nicht sind
 
-- Kein Ersatz für das Logbuch auf GitHub. Fotos liegen im gleichen Haus wie die Wohnung.
+- Kein Ersatz für das Logbuch im Hafen und auf deinem Computer. Fotos liegen im gleichen Haus wie die Wohnung.
 - Kein Schutz für den eigenen Computer der Person. Dort gilt: Arbeit regelmässig pushen.
 - Kein Archiv für immer. Nach sieben Tagen ist ein Foto weg. Was länger bleiben soll, gehört ins Logbuch.
 

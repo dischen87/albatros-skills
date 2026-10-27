@@ -19,7 +19,7 @@ Ein System zur Inhaltspflege (CMS) ist eine Pinnwand im Flur: Wer etwas mitteile
 ## Was du lernst
 
 - wann sich ein CMS lohnt und wann nicht
-- drei Stufen: Texte im Projekt, Pinnwand über GitHub, eigenes CMS
+- drei Stufen: Texte im Projekt, Pinnwand über dein Logbuch, eigenes CMS
 - wie ein Programm wie Strapi in einem Container läuft
 - was ein Tunnel ist und warum der Admin-Bereich nicht öffentlich sein soll
 

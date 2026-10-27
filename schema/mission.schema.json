@@ -88,7 +88,7 @@
       }
     },
     "workflow": {
-      "description": "Der letzte Lauf dieses GitHub-Actions-Workflows im Repo der Person war erfolgreich.",
+      "description": "Der letzte Lauf dieses Workflows im Repo der Person war erfolgreich. Das Repo liegt im Hafen von Albatros (Forgejo, code.aufwind.sh), der Workflow im Ordner .github/workflows.",
       "type": "object",
       "additionalProperties": false,
       "required": ["typ", "datei"],

@@ -1,6 +1,6 @@
 ---
 name: sicherheit
-description: 'Macht mit einer Person ohne Vorwissen ihr Projekt sicher, mit dem Bild vom Haus mit Schlüsselbund, Tresor, Fenstern und Schlössern: Geheimnisse nie ins Logbuch (Git), sondern in .env auf dem Server und GitHub Secrets; versehentlich veröffentlichte Schlüssel sofort neu erzeugen; ein Schlüssel pro Zweck; nur nötige Türen offen; Updates. Nutze den Skill bei «Sicherheit», «Passwort im Code», «API-Schlüssel», «.env», «Secret», «ich habe einen Schlüssel auf GitHub hochgeladen», «ist meine Seite sicher», «gehackt», «Updates», «Firewall», und bevor ein neues Geheimnis ins Projekt kommt.'
+description: 'Macht mit einer Person ohne Vorwissen ihr Projekt sicher, mit dem Bild vom Haus mit Schlüsselbund, Tresor, Fenstern und Schlössern: Geheimnisse nie ins Logbuch (Git), sondern in .env auf dem Server (und, falls das Fliessband eines braucht, im Tresor des Hafens); versehentlich veröffentlichte Schlüssel sofort neu erzeugen; ein Schlüssel pro Zweck; nur nötige Türen offen; Updates. Nutze den Skill bei «Sicherheit», «Passwort im Code», «API-Schlüssel», «.env», «Secret», «ich habe einen Schlüssel auf GitHub hochgeladen», «ist meine Seite sicher», «gehackt», «Updates», «Firewall», und bevor ein neues Geheimnis ins Projekt kommt.'
 ---
 
 # Sicherheit: den Schlüssel nicht unter die Fussmatte
@@ -43,12 +43,12 @@ Findest du etwas: **Sofort beim Anbieter neu erzeugen** (rotieren) und das alte 
   ssh {name}@aufwind.sh 'cd ~/projekt && umask 077 && touch .env && chmod 600 .env'
   ```
   Werte trägt die Person selbst ein (`nano ~/projekt/.env`), damit sie nicht in deinem Verlauf landen.
-- **Für das Fliessband** liegen Geheimnisse in GitHub: `gh secret set NAME`. Das fragt den Wert verdeckt ab. Im Workflow nur über `env:` verwenden (Skill `pipeline`).
+- **Für das Fliessband:** Es läuft auf deinem Server, und deine Seite liest ihre Geheimnisse aus der `.env`. Braucht ein Schritt im Workflow doch eines, kommt es in den Tresor des Hafens (im Repo unter Einstellungen, Actions, Secrets) und im Workflow nur über `env:` in den Befehl (Skill `pipeline`).
 - **Im Dockerfile:** eine `.dockerignore` mit `.env`, `.git`, `node_modules`. Sonst wird die `.env` beim Bauen mit eingepackt.
 
 ### 3. Ein Schlüssel pro Zweck
 
-Der Hausschlüssel der Person, der Schlüssel des Fliessbands, der Lese-Schlüssel des Servers für GitHub: jeder einzeln. Geht einer verloren, wird nur dieses Schloss ausgewechselt (im Cockpit oder mit `schluessel_hinterlegen`).
+Der Hausschlüssel der Person (für Server und Hafen), der Lese-Schlüssel des Servers für den Hafen, später auf dem eigenen Server der Schlüssel des Fliessbands: jeder einzeln. Geht einer verloren, wird nur dieses Schloss ausgewechselt (im Cockpit oder mit `schluessel_hinterlegen`).
 
 ### 4. Türen und Fenster
 
@@ -70,7 +70,7 @@ Auf Albatros kümmert sich die Plattform um die Haustür (Firewall, Schutz gegen
 
 ### 6. Wenig Rechte
 
-- Workflows mit `permissions: contents: read`.
+- Workflows bekommen nur die Geheimnisse, die sie brauchen. Auf GitHub (nach dem Umzug, Skill `landung`) zusätzlich `permissions: contents: read`.
 - Programme im Container nicht als root laufen lassen, wenn die Vorlage das erlaubt (`USER` im Dockerfile).
 - Jede Person, die mitarbeitet, bekommt einen eigenen Zugang, keinen geteilten.
 

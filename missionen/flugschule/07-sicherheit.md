@@ -20,7 +20,7 @@ Ein Haus ist so sicher wie sein nachlässigster Moment: ein Schlüssel unter der
 ## Was du lernst
 
 - warum Geheimnisse nie ins Logbuch gehören, auch nicht für einen Moment
-- wo sie stattdessen liegen: in einer `.env` auf dem Server und in den Geheimnissen von GitHub
+- wo sie stattdessen liegen: in einer `.env` auf dem Server, die nie ins Logbuch kommt
 - welche Türen offen sein müssen und welche nicht
 - wie Updates deine Schlösser frisch halten
 

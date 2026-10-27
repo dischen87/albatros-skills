@@ -16,7 +16,7 @@ video: git-in-60-sekunden
 
 ## Worum es geht
 
-Auf jedem Schiff gibt es ein Logbuch: Wer hat wann was gemacht, und warum? Git ist dieses Logbuch für dein Projekt. Jeder Eintrag hält einen Stand fest, zu dem du zurückkannst. Eine Kopie liegt im Hafen, auf GitHub. Selbst wenn dein Computer ins Wasser fällt, ist nichts verloren.
+Auf jedem Schiff gibt es ein Logbuch: Wer hat wann was gemacht, und warum? Git ist dieses Logbuch für dein Projekt. Jeder Eintrag hält einen Stand fest, zu dem du zurückkannst. Eine Kopie liegt im Hafen, bei Albatros auf `code.aufwind.sh`. Selbst wenn dein Computer ins Wasser fällt, ist nichts verloren.
 
 ## Was du lernst
 
@@ -26,10 +26,10 @@ Auf jedem Schiff gibt es ein Logbuch: Wer hat wann was gemacht, und warum? Git i
 
 ## So gehst du vor
 
-1. Ein GitHub-Konto anlegen, falls du noch keines hast.
-2. Dein Projekt-Repo auf deinen Computer holen.
+1. Dich im Hafen umsehen: Dein Logbuch liegt schon dort, mit der Vorlage darin.
+2. Das Logbuch auf deinen Computer holen.
 3. Etwas ändern, eintragen, in den Hafen schicken. Zweimal.
-4. Das Logbuch auf deinen Server holen, in den Ordner `~/projekt`.
+4. Nachschauen, ob die Einträge auch auf deinem Server angekommen sind, im Ordner `~/projekt`.
 
 ## Geschafft, wenn
 

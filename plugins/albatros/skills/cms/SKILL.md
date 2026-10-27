@@ -31,7 +31,7 @@ Drei Stufen, immer die einfachste nehmen, die reicht:
 | Stufe | Was | Gut wenn |
 |---|---|---|
 | A: Texte im Projekt | Inhalte als Markdown-Dateien im Repo, die KI ändert sie | eine Person mit KI pflegt alles, selten Änderungen |
-| B: Pinnwand über GitHub | ein Bearbeitungsfenster im Browser (z. B. Decap CMS), das die Dateien im Repo ändert | andere sollen Texte ändern, aber keine Datenbank nötig |
+| B: Pinnwand über dein Logbuch | ein Bearbeitungsfenster im Browser (z. B. Decap CMS), das die Dateien im Repo ändert | andere sollen Texte ändern, aber keine Datenbank nötig |
 | C: eigenes CMS | ein Programm mit Datenbank auf dem Server, z. B. Strapi | viele Einträge, mehrere Rollen, Bilder-Verwaltung, später auch eine App |
 
 Ist A oder B die Antwort: Schreib das in `docs/plan.md` und hör hier auf. Das ist ein gutes Ergebnis.

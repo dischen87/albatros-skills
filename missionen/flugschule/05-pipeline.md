@@ -22,20 +22,20 @@ Statt jede Änderung von Hand auf den Server zu tragen, baust du ein Fliessband.
 
 ## Was du lernst
 
-- was ein Workflow auf GitHub ist und wann er startet
+- was ein Workflow ist und wann er startet
 - wie die Qualitätskontrolle Fehler abfängt, bevor sie jemand sieht
-- wie das Fliessband sicher auf deinen Server liefert, mit einem eigenen Schlüssel
+- wer am Fliessband arbeitet: ein Arbeiter (Runner), der auf deinem eigenen Server wohnt
 - was passiert, wenn etwas schiefgeht
 
 ## So gehst du vor
 
 1. Die Workflow-Datei in deinem Repo anschauen und verstehen, Schritt für Schritt.
-2. Dem Fliessband einen eigenen Schlüssel geben, als Geheimnis in GitHub.
+2. Den Arbeiter auf deinem Server kennenlernen: Er nimmt jede Änderung an, baut sie und liefert sie aus.
 3. Eine kleine Änderung pushen und zuschauen, wie das Fliessband läuft.
 4. Absichtlich einen Fehler pushen und sehen, wie die Kontrolle ihn stoppt.
 
 ## Geschafft, wenn
 
-- der letzte Lauf von `.github/workflows/deploy.yml` grün ist,
+- der letzte Lauf von `.github/workflows/deploy.yml` im Hafen grün ist,
 - auf deinem Server der Container `webseite` läuft
 - und `https://{name}.aufwind.sh` antwortet.

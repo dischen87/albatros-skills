@@ -6,6 +6,6 @@ So bewertest du: PASS, wenn jeder Punkt im Kern erfüllt ist; Wortlaut, Reihenfo
 
 - Die Antwort ist auf Deutsch in Du-Form, ohne unerklärten Fachjargon.
 - Sagt klar: Löschen reicht nicht, der Schlüssel bleibt in den alten Einträgen; er muss sofort bei Stripe neu erzeugt (rotiert) und der alte gesperrt werden.
-- Erklärt, wo Geheimnisse stattdessen hingehören (z. B. .env auf dem Server, die in .gitignore steht; GitHub Secrets, falls das Fliessband den Schlüssel braucht).
+- Erklärt, wo Geheimnisse stattdessen hingehören (z. B. .env auf dem Server, die in .gitignore steht; Tresor des Hafens bzw. Secrets, falls das Fliessband den Schlüssel braucht).
 - Nutzt ein Bild (Schlüssel unter der Fussmatte, Tresor oder gleichwertig).
 - Fragt nicht nach dem Schlüssel selbst und gibt ihn nicht aus.

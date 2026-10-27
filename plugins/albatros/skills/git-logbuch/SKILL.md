@@ -1,6 +1,6 @@
 ---
 name: git-logbuch
-description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (GitHub). Legt das Repo an, führt durch die ersten Einträge (Commit) mit guten Notizen, schickt sie in den Hafen (Push) und holt das Logbuch auf den Albatros-Server nach ~/projekt, mit einem eigenen Lese-Schlüssel des Servers. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
+description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (dem Git-Dienst von Albatros, code.aufwind.sh). Holt das Repo aus dem Hafen, führt durch die ersten Einträge (Commit) mit guten Notizen, schickt sie in den Hafen (Push) und prüft, dass die Kopie auf dem Albatros-Server in ~/projekt ankommt. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «Hafen», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
 ---
 
 # Git: das Logbuch an Bord, mit einer Kopie im Hafen
@@ -11,7 +11,7 @@ Auf jedem Schiff gibt es ein Logbuch. Jeder Eintrag sagt: wer, wann, was und war
 
 - **Repo:** das Logbuch deines Projekts, mit allen Dateien darin.
 - **Commit:** ein Eintrag. Er hält einen kleinen, fertigen Schritt fest, mit einer Notiz in einem Satz.
-- **GitHub:** der Hafen. Dort liegt eine Kopie des Logbuchs. Fällt dein Computer ins Wasser, ist nichts verloren.
+- **Hafen:** `code.aufwind.sh`, der Git-Dienst von Albatros. Er funktioniert wie GitHub und heisst Forgejo. Dort liegt eine Kopie des Logbuchs. Fällt dein Computer ins Wasser, ist nichts verloren.
 - **Push:** die neuen Einträge in den Hafen schicken. **Pull:** die neusten Einträge aus dem Hafen holen.
 
 **So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
@@ -20,7 +20,7 @@ Auf jedem Schiff gibt es ein Logbuch. Jeder Eintrag sagt: wer, wann, was und war
 
 - **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form. Die Wörter Commit, Push und Pull erst nach dem Bild, dann immer zusammen mit ihm.
-- Das GitHub-Konto und die Anmeldung macht die Person selbst im Browser.
+- Im Hafen meldet sich die Person im Browser mit ihrem Albatros-Konto an. Ein GitHub-Konto braucht sie erst beim Umzug in ein eigenes Haus (Skill `landung`).
 - Du committest nie etwas, das die Person nicht kennt. Vor jedem Eintrag zeigst du, was hineinkommt.
 
 ## Die drei Regeln
@@ -31,28 +31,26 @@ Auf jedem Schiff gibt es ein Logbuch. Jeder Eintrag sagt: wer, wann, was und war
 
 ## Ablauf
 
-### 1. Werkzeuge und Konto
+### 1. Werkzeuge
 
 - `git --version` zeigt, ob Git da ist. Am Mac fragt der Computer beim ersten Aufruf, ob er die Entwicklerwerkzeuge installieren soll. Ja.
-- GitHub-Konto: Die Person legt es auf github.com an.
-- `gh` (GitHub im Terminal): `gh --version`. Fehlt es, installieren (Mac: `brew install gh`), dann `gh auth login`. Die Anmeldung läuft im Browser.
+- Der Hausschlüssel aus dem Skill `ssh-schluessel` öffnet auch den Hafen. Der Eintrag `Host aufwind.sh` in `~/.ssh/config` gilt für beide Türen.
 - Einmal den Namen fürs Logbuch setzen:
   ```bash
   git config --global user.name "Vorname Nachname"
-  git config --global user.email "die-adresse@bei-github"
+  git config --global user.email "deine-adresse@beispiel.ch"
   ```
 
-### 2. Das Logbuch anlegen
+### 2. Das Logbuch holen
 
-Nennt `konto_status` eine Albatros-Vorlage, nimm sie, sonst ein leeres Repo:
+Albatros hat dein Logbuch im Hafen schon angelegt, mit der Vorlage darin. Die Adresse nennt `konto_status`:
 
 ```bash
-gh repo create <projektname> --private --clone --template <vorlage>   # mit Vorlage
-gh repo create <projektname> --private --clone --add-readme           # ohne Vorlage
-cd <projektname>
+git clone git@aufwind.sh:{name}/projekt.git
+cd projekt
 ```
 
-Privat, weil später auch Arbeitsnotizen in `docs/` liegen. Danach eine `.gitignore` prüfen oder anlegen, mindestens mit diesen Zeilen: `.env`, `.env.*`, `!.env.example`, `node_modules/`, `dist/`.
+Das Logbuch ist privat: Nur du siehst es. Danach die `.gitignore` prüfen, mindestens mit diesen Zeilen: `.env`, `.env.*`, `!.env.example`, `node_modules/`, `dist/`.
 
 ### 3. Der erste Eintrag
 
@@ -68,25 +66,17 @@ git pull --rebase && git push  # In den Hafen schicken
 
 Gute Notizen sagen was und warum, in unter 60 Zeichen: «Kontakt: Telefonnummer ergänzt». Schlecht: «update», «fix», «diverses».
 
-Noch ein zweiter Eintrag, damit es sitzt. Danach auf github.com zeigen: Beide Einträge liegen im Hafen.
+Noch ein zweiter Eintrag, damit es sitzt. Danach im Browser zeigen: `https://code.aufwind.sh/{name}/projekt`. Beide Einträge liegen im Hafen.
 
-### 4. Das Logbuch auf den Server holen
+### 4. Das Logbuch auf dem Server
 
-Damit das Fliessband (Skill `pipeline`) später liefern kann, bekommt der Server eine eigene Kopie in `~/projekt`. Bild: Der Server hat seinen eigenen Hausschlüssel, aber nur für das Lesezimmer im Hafen. Albatros hat ihn beim Einrichten schon gemacht (`~/.ssh/github`). Du baust nur noch das passende Schloss bei GitHub ein:
-
-```bash
-ssh {name}@aufwind.sh 'cat ~/.ssh/github.pub' > server-schloss.pub
-gh repo deploy-key add server-schloss.pub --title "albatros-server"   # nur lesen, das ist der Standard
-rm server-schloss.pub
-```
-
-Der Hausschlüssel des Servers bleibt auf dem Server. Zu GitHub geht nur das Schloss. Dann das Logbuch auf den Server holen:
+Dein Server hat eine eigene Kopie in `~/projekt`. Albatros hat sie beim Einrichten angelegt, mit einem Lese-Schlüssel nur für deinen Hafen. Bringt das Logbuch das Fliessband mit (`.github/workflows/deploy.yml`), holt es bei jedem Push die neuen Einträge selbst (Skill `pipeline`). Prüfen:
 
 ```bash
-ssh {name}@aufwind.sh 'git clone git@github.com:<benutzer>/<projektname>.git ~/projekt'
+ssh {name}@aufwind.sh 'git -C ~/projekt log --oneline -3'
 ```
 
-Fehlt `~/.ssh/github` auf dem Server (ältere Einrichtung), macht ihn `ssh {name}@aufwind.sh 'ssh-keygen -t ed25519 -f ~/.ssh/github -N ""'`, und in `~/.ssh/config` auf dem Server gehört ein Eintrag `Host github.com` mit `IdentityFile ~/.ssh/github`.
+Fehlen die neuen Einträge, holst du sie von Hand: `ssh {name}@aufwind.sh 'git -C ~/projekt pull --ff-only'`. Fehlt der Ordner ganz: `ssh {name}@aufwind.sh 'git clone git@aufwind.sh:{name}/projekt.git ~/projekt'`.
 
 ### 5. Mission prüfen
 
@@ -94,6 +84,7 @@ Fehlt `~/.ssh/github` auf dem Server (ältere Einrichtung), macht ihn `ssh {name
 
 ## Wenn es hakt
 
+- **`Permission denied (publickey)` beim Hafen:** Das Schloss ist nicht hinterlegt, oder der Eintrag in `~/.ssh/config` fehlt (Skill `ssh-schluessel`).
 - **Push abgelehnt (`rejected`):** Im Hafen liegt ein neuerer Eintrag. `git pull --rebase`, dann `git push`.
 - **Konflikt beim Rebase:** Zwei Einträge haben die gleiche Zeile geändert. In der Datei zwischen `<<<<<<<` und `>>>>>>>` gemeinsam entscheiden, was bleibt, dann `git add <datei>`, `git rebase --continue`, `git push`.
 - **Fremde offene Änderungen in `git status`:** nicht anfassen, nicht mitnehmen. Nur die eigenen Dateien aufnehmen.

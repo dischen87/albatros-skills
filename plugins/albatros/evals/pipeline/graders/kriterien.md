@@ -9,7 +9,7 @@ So bewertest du: PASS, wenn jeder Punkt im Kern erfüllt ist; Wortlaut, Reihenfo
 
 Bewertet werden die Dateien, die die KI geschrieben hat. Mehrere gute Lösungen sind möglich.
 
-- Es gibt einen GitHub-Actions-Workflow, der bei einem Push auf main startet.
-- Er hat eine Prüf- oder Bau-Station, die vor dem Ausliefern grün sein muss.
-- Er liefert per SSH auf den Albatros-Server aus.
-- Geheimnisse (SSH-Schlüssel) kommen aus GitHub Secrets; in den Dateien steht kein privater Schlüssel und kein Passwort.
+- Es gibt einen Workflow, der bei einem Push auf main startet.
+- Er läuft auf dem Arbeiter des eigenen Servers (`runs-on: albatros`) und liefert dort in `~/projekt` aus (z. B. `docker compose up -d --build --wait`).
+- Er hat eine Prüf- oder Bau-Station, die vor dem Ausliefern grün sein muss, und springt auf die alte Version zurück, wenn die neue nicht gesund ist.
+- In den Dateien steht kein privater Schlüssel und kein Passwort.

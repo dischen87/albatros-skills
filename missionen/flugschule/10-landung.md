@@ -19,6 +19,7 @@ Du kannst bei Albatros bleiben, solange du willst. Aber du sollst jederzeit ausz
 ## Was du lernst
 
 - was in die Umzugskisten gehört: Logbuch, Geheimnisse, Daten, Einstellungen
+- wie dein Logbuch zu GitHub umzieht und das Fliessband dort mit einem eigenen Schlüssel liefert
 - was du auf einem eigenen Server selbst übernimmst: Updates, Sicherungen, Überwachung
 - wie du die Adresse ohne Unterbruch umleitest
 
@@ -26,7 +27,7 @@ Du kannst bei Albatros bleiben, solange du willst. Aber du sollst jederzeit ausz
 
 1. Mit deiner KI eine Umzugsliste schreiben.
 2. Einen eigenen Server mieten und einrichten.
-3. Das Fliessband auf das neue Haus zeigen lassen.
+3. Das Logbuch in einen neuen Hafen mitnehmen (z. B. GitHub) und das Fliessband auf das neue Haus zeigen lassen.
 4. Daten mitnehmen, testen, dann die Adresse im Telefonbuch umstellen.
 
 ## Geschafft, wenn
