@@ -1,0 +1,15 @@
+{
+  "name": "albatros",
+  "owner": { "name": "Albatros Partner", "url": "https://albatros.build" },
+  "metadata": {
+    "description": "Albatros: Deine KI im Terminal führt dich von der Idee zur eigenen Webseite oder zum eigenen Geschäft, auf einem echten Server."
+  },
+  "plugins": [
+    {
+      "name": "albatros",
+      "source": "./plugins/albatros",
+      "description": "Flugschule und Weg Webseite: SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und alles für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+      "version": "0.1.0"
+    }
+  ]
+}

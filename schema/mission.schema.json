@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://albatros.build/schema/mission.schema.json",
+  "title": "Albatros-Mission (Kopfdaten)",
+  "description": "Kopfdaten einer Mission in missionen/<weg>/<nr>-<slug>.md. Die Website macht daraus Lernseiten, der Dienst flugschule prüft damit den Fortschritt über die Prüf-API von flotte (POST /server/:id/pruefen). Platzhalter in Texten: {name} = Name des Servers der Person (anna → anna.aufwind.sh), {domain} = ihre eigene Domain. Pfade auf dem Server beginnen mit ~/ (Heimordner des Benutzers pilot); das Projekt liegt in ~/projekt.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "weg", "stufe", "titel", "bild", "dauer", "pruefung", "skill"],
+  "properties": {
+    "id": {
+      "description": "<weg>-<nr>-<slug>, gleich wie der Dateiname.",
+      "type": "string",
+      "pattern": "^(flugschule|webseite|geschaeft)-[0-9]{2}-[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "weg": { "enum": ["flugschule", "webseite", "geschaeft"] },
+    "stufe": { "enum": ["abheben", "fliegen", "landen"] },
+    "titel": { "type": "string", "minLength": 3, "maxLength": 80 },
+    "bild": {
+      "description": "Das Bild (die Metapher), mit dem die Mission den neuen Begriff erklärt.",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "dauer": { "description": "Ungefähre Dauer in Minuten.", "type": "integer", "minimum": 5, "maximum": 240 },
+    "pruefung": {
+      "description": "Woran flugschule erkennt, dass die Mission erledigt ist. Alle Prüfungen müssen bestehen.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/http" },
+          { "$ref": "#/$defs/datei" },
+          { "$ref": "#/$defs/git" },
+          { "$ref": "#/$defs/workflow" },
+          { "$ref": "#/$defs/docker" }
+        ]
+      }
+    },
+    "skill": {
+      "description": "Name des Skills, der die Person durch die Mission führt. Beim Weg geschaeft ist es eine Methode, die der MCP-Dienst über das Werkzeug methode ausliefert.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "video": {
+      "description": "Kennung des Videos zur Mission (z. B. aus «Begriff in 60 Sekunden»), null wenn es keines gibt.",
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    }
+  },
+  "$defs": {
+    "serverpfad": { "type": "string", "pattern": "^~/[^\\s]+$" },
+    "http": {
+      "description": "Eine Adresse antwortet mit dem erwarteten Status (und enthält optional einen Text).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "url"],
+      "properties": {
+        "typ": { "const": "http" },
+        "url": { "type": "string", "pattern": "^https://" },
+        "status": { "type": "integer", "minimum": 100, "maximum": 599, "default": 200 },
+        "enthaelt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "datei": {
+      "description": "Eine Datei auf dem Server existiert (und enthält optional einen Text).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "pfad"],
+      "properties": {
+        "typ": { "const": "datei" },
+        "pfad": { "$ref": "#/$defs/serverpfad" },
+        "enthaelt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "git": {
+      "description": "Ein Ordner auf dem Server ist ein Git-Repo mit mindestens so vielen Einträgen im Logbuch.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "pfad"],
+      "properties": {
+        "typ": { "const": "git" },
+        "pfad": { "$ref": "#/$defs/serverpfad" },
+        "min_commits": { "type": "integer", "minimum": 1, "default": 1 },
+        "branch": { "type": "string", "default": "main" }
+      }
+    },
+    "workflow": {
+      "description": "Der letzte Lauf dieses GitHub-Actions-Workflows im Repo der Person war erfolgreich.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "datei"],
+      "properties": {
+        "typ": { "const": "workflow" },
+        "datei": { "type": "string", "pattern": "^\\.github/workflows/[A-Za-z0-9._-]+\\.ya?ml$" }
+      }
+    },
+    "docker": {
+      "description": "Ein Docker-Container mit diesem Namen läuft auf dem Server.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "container"],
+      "properties": {
+        "typ": { "const": "docker" },
+        "container": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$" }
+      }
+    }
+  }
+}

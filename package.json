@@ -1,0 +1,11 @@
+{
+  "name": "albatros-skills",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pruefen": "bun scripts/pruefen.ts"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0"
+  }
+}

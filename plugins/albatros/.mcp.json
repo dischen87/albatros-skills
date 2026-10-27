@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "albatros": {
+      "type": "http",
+      "url": "https://mcp.albatros.build"
+    }
+  }
+}

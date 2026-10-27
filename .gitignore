@@ -1,0 +1,3 @@
+node_modules/
+plugins/albatros/evals/results/
+.claude/settings.local.json
