@@ -71,9 +71,7 @@ Si l'outil `lage` manque, ou s'il répond « nicht angemeldet » (pas connec
 
 1. **La bibliothèque est ouverte.** Tous les skills sont lisibles librement. Montre tout le tableau ci-dessous avec les identifiants exactement comme ils sont écrits (entre backticks, pas traduits), pour que la personne puisse choisir elle-même. Avec l'identifiant, n'importe quelle IA trouve le skill.
 2. **L'aiguilleur a besoin de la connexion.** Le bon skill au bon moment, d'après son état réel, ça n'existe que si Albatros la connaît. La connexion, c'est comme la carte d'embarquement : une fenêtre s'ouvre dans le navigateur web, la personne s'y connecte ou s'inscrit. Le mot de passe, elle le tape seulement là.
-   - Claude Code : taper `/mcp`, choisir `albatros`, puis « Authenticate ».
-   - Codex : `codex mcp add albatros --url https://mcp.albatros.build`, puis `codex mcp login albatros`.
-   - Gemini CLI : `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, puis dans Gemini CLI `/mcp auth albatros`.
+   - C'est toi qui lances la connexion, la personne ne tape aucune commande. Comment faire dans Claude Code, Codex et Gemini CLI, c'est expliqué dans le skill `start`, étape 1 (`../start/SKILL.md`). Suis-le.
    - Ensuite, appeler `lage`. Toute nouvelle chez Albatros : skill `start`.
 3. Si la personne choisit un skill dans le tableau, lis-le (`../<identifiant>/SKILL.md`) et suis-le. Là aussi, les outils d'Albatros ont besoin de la connexion. Ce qui marche sans (planifier, écrire des textes, expliquer), tu le fais quand même.
 

@@ -30,10 +30,11 @@ Tout le monde a besoin d'un coup de pouce au départ. Toi, tu es l'instructrice 
 
 Appelle l'outil `konto_status` d'Albatros.
 
-- **L'outil manque ou répond « nicht angemeldet » (pas connecté) :** Albatros n'est pas encore relié à ton agent. Explique-le avec l'image « On va chercher ta carte d'embarquement » : une fenêtre s'ouvre dans le navigateur web, la personne s'y connecte ou s'inscrit. Le mot de passe, elle le tape seulement là.
-  - Claude Code : la personne tape `/mcp`, choisit `albatros`, puis « Authenticate ».
-  - Codex : `codex mcp add albatros --url https://mcp.albatros.build`, puis `codex mcp login albatros`.
-  - Gemini CLI : `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, puis dans Gemini CLI `/mcp auth albatros`.
+- **L'outil manque ou répond « nicht angemeldet » (pas connecté) :** Albatros n'est pas encore relié à toi. Explique-le avec l'image « On va chercher ta carte d'embarquement » : une fenêtre va s'ouvrir dans le navigateur web, et la personne s'y connecte, avec GitHub, Apple ou Google. Le reste, tu le fais toi-même, la personne ne tape aucune commande :
+  - **Claude Code :** appelle l'outil `authenticate` du serveur albatros (`mcp__plugin_albatros-fr_albatros__authenticate`). Donne le lien à la personne avec cette phrase : « Clique sur ce lien, ton navigateur web s'ouvre, et tu t'y connectes. » Ensuite, les outils apparaissent tout seuls. Si le navigateur web affiche une page d'erreur après la connexion, demande à la personne de t'envoyer l'adresse complète de la barre d'adresse et appelle avec elle `mcp__plugin_albatros-fr_albatros__complete_authentication`.
+  - **Codex :** exécute toi-même `codex mcp login albatros`, avec une autorisation hors du bac à sable et une limite de temps d'au moins cinq minutes. La commande ouvre le navigateur web et attend la connexion. Si le navigateur web ne s'ouvre pas, transmets le lien qui figure dans la sortie. Si `konto_status` manque encore après ça, demande à la personne de commencer une nouvelle conversation.
+  - **Gemini CLI :** exécute toi-même `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, si la connexion manque encore. Demande ensuite à la personne de redémarrer Gemini CLI. Au moment de la connexion, le navigateur web s'ouvre. S'il reste fermé, demande-lui de taper exactement `/mcp auth albatros`.
+  - **Si Albatros manque complètement** (aucune connexion nommée albatros n'est configurée) : va chercher le guide https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md et suis-le.
   - Ensuite, rappelle `konto_status`.
 - **Le service annonce une erreur ou n'est pas joignable :** dis honnêtement qu'Albatros ne répond pas pour le moment, et propose de réessayer plus tard ou d'aller voir sur albatros.build. N'invente rien, ne fais pas semblant d'avoir un serveur.
 
