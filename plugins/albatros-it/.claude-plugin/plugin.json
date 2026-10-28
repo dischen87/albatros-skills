@@ -1,7 +1,7 @@
 {
   "name": "albatros-it",
   "version": "0.1.0",
-  "description": "Il navigatore ti dice, secondo il tuo stato reale, quale skill tocca adesso (con accesso). In più la biblioteca aperta: scuola di volo e percorso sito web con chiave SSH, server, Git, nastro trasportatore, dominio, foto del server e tutto per il tuo primo sito web, in italiano e senza gergo tecnico.",
+  "description": "Il controllore di volo ti dice, secondo il tuo stato reale, quale skill tocca adesso (con accesso). In più la biblioteca aperta: scuola di volo e percorso sito web con chiave SSH, server, Git, nastro trasportatore, dominio, foto del server e tutto per il tuo primo sito web, in italiano e senza gergo tecnico.",
   "author": { "name": "Albatros Partner", "url": "https://albatros.build" },
   "homepage": "https://albatros.build",
   "repository": "https://github.com/dischen87/albatros-skills",

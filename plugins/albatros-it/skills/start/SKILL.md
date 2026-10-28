@@ -78,7 +78,7 @@ Ora segui lo skill `ssh-schluessel`. In breve: la chiave nasce sul computer dell
 
 Verifica la missione con `mission_pruefen` (identificativo `flugschule-01-start`). Festeggia in breve e senza esagerare. Poi proponi esattamente un prossimo passo.
 
-Da qui prende il comando lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros-it:lotse`): chiama lo strumento `lage`. Secondo lo stato reale dice quale skill tocca adesso, e il navigatore lo segue. Di' alla persona che d'ora in poi le basta chiedere «Come vado avanti?».
+Da qui prende il comando lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros-it:lotse`): chiama lo strumento `lage`. Secondo lo stato reale dice quale skill tocca adesso, e il controllore di volo lo segue. Di' alla persona che d'ora in poi le basta chiedere «Come vado avanti?».
 
 Se `lage` manca, vale quest'ordine:
 
