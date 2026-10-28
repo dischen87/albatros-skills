@@ -25,7 +25,7 @@ Frag nach und schreib mit:
 | Posten | Art | Typischer Rahmen | Woher der genaue Preis |
 |---|---|---|---|
 | Albatros-Abo | Miete | je nach Stufe | `konto_status` |
-| Eigene Domain (`.ch`) | Miete pro Jahr | etwa ein Kinobillett pro Jahr | Preisseite des Registrars |
+| Eigene Domain (`.ch`) | Miete pro Jahr | etwa ein Kinobillett pro Jahr | `domain_suchen` oder Preisseite des Registrars |
 | KI im Terminal (Claude, Codex, Gemini) | Miete | je nach Abo | Abo der Person |
 | E-Mail mit eigener Domain | Miete | klein | Anbieter |
 | Statistik (z. B. PostHog) | Nebenkosten | meist gratis bis zu einer Grenze | Preisseite |

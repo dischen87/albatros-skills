@@ -1,6 +1,6 @@
 ---
 name: landung
-description: 'Plant und begleitet den Umzug eines Projekts von Albatros auf einen eigenen Server, erklärt mit dem Bild vom Umzug ins eigene Haus: Umzugsliste, Server mieten und einrichten (SSH nur mit Schlüssel, Firewall, Updates, Caddy für HTTPS), Logbuch zu GitHub mitnehmen, Fliessband dort mit eigenem Schlüssel per SSH auf das neue Ziel umstellen, Daten und Geheimnisse mitnehmen, testen, Adresse im DNS umstellen, Sicherungen selbst übernehmen. Nutze den Skill bei «eigener Server», «umziehen», «weg von Albatros», «Hetzner», «VPS», «selber hosten», «Landung», «was brauche ich für einen eigenen Server».'
+description: 'Plant und begleitet den Umzug eines Projekts von Albatros auf einen eigenen Server, erklärt mit dem Bild vom Umzug ins eigene Haus: Umzugsliste, Server mieten und einrichten (SSH nur mit Schlüssel, Firewall, Updates, Caddy für HTTPS), Logbuch zu GitHub mitnehmen, Fliessband dort mit eigenem Schlüssel per SSH auf das neue Ziel umstellen, Daten und Geheimnisse mitnehmen, testen, Adresse im DNS umstellen oder eine bei Albatros gekaufte Domain mit dem Auth-Code aus domain_mitnehmen zu einem neuen Registrar umziehen, Sicherungen selbst übernehmen. Nutze den Skill bei «eigener Server», «umziehen», «weg von Albatros», «Hetzner», «VPS», «selber hosten», «Landung», «was brauche ich für einen eigenen Server».'
 ---
 
 # Landung: Umzug ins eigene Haus
@@ -39,6 +39,7 @@ Kurz mit der Person durchgehen (siehe Skill `kosten`): Braucht das Projekt mehr,
 - [ ] Geheimnisse: Liste der Namen aus `.env.example` (Werte nie hier!)
 - [ ] Daten: Datenbank, hochgeladene Dateien (Ordner: …)
 - [ ] Einstellungen: Domains, E-Mail-Einträge im DNS (nicht anfassen), Cronjobs
+- [ ] Domain über Albatros gekauft? Dann mit dem Auth-Code (`domain_mitnehmen`) zu einem neuen Registrar
 
 ## Was ich selbst übernehme
 - [ ] Updates (automatisch, nur Sicherheitsupdates)
@@ -134,14 +135,25 @@ Auf Albatros wohnt der Arbeiter des Fliessbands im Haus. Im eigenen Haus überni
 
 ### 6. Adresse umstellen
 
-1. Am Tag vorher im DNS die Gültigkeit (TTL) der Einträge auf 300 Sekunden senken. Dann geht das Umstellen schneller.
-2. Über die Adresse des neuen Servers testen, zum Beispiel mit `curl --resolve <domain>:443:<neue-ip> https://<domain>/`.
-3. A- und AAAA-Eintrag auf den neuen Server. Die Domain bei Albatros mit `domain_verbinden` entfernen, damit nichts doppelt läuft.
-4. Prüfen: `https://<domain>` antwortet, `www` leitet weiter, Schloss-Symbol ist da.
+Zuerst über die Adresse des neuen Servers testen, ohne das Telefonbuch zu ändern: `curl --resolve <domain>:443:<neue-ip> https://<domain>/`. Dann kommt es darauf an, wo die Adresse gemietet ist.
+
+**Über Albatros gekauft** (`konto_status` zeigt sie unter «Eigene Domains»): Das Telefonbuch dafür führt Albatros. Die Adresse zieht mit zu einem Registrar, den die Person wählt:
+
+1. Die Person legt beim neuen Registrar selbst ein Konto an.
+2. Erst mit ihrem Ja `domain_mitnehmen` aufrufen. Ab dann verlängert Albatros die Adresse nicht mehr. Bis zum Umzug zeigt sie weiter auf den Albatros-Server.
+3. Das Werkzeug gibt den **Auth-Code**, den Schlüssel für den Umzug der Adresse. Zeig ihn nur der Person, nie in einer Datei oder im Logbuch. Sie gibt ihn beim neuen Registrar ein und startet dort den Umzug (Transfer). Meist bezahlt sie dabei ein Jahr Verlängerung. Bei `.com` und `.net` geht ein Umzug in den ersten 60 Tagen nach dem Kauf oft noch nicht.
+4. Ist der Umzug durch, setzt sie beim neuen Registrar die Einträge: A und AAAA auf den neuen Server, `www` und die E-Mail-Einträge (MX), falls es welche gab.
+
+**Anderswo gemietet:**
+
+1. Am Tag vorher die Gültigkeit (TTL) der Einträge auf 300 Sekunden senken. Dann geht das Umstellen schneller.
+2. A- und AAAA-Eintrag auf den neuen Server. Bei Albatros musst du dafür nichts abmelden.
+
+Danach prüfen: `https://<domain>` antwortet, `www` leitet weiter, Schloss-Symbol ist da.
 
 ### 7. Erst dann ausziehen
 
-Eine Woche beobachten. Läuft alles, das Abo bei Albatros anpassen oder kündigen (Cockpit). Fotos (Snapshots) gibt es danach nicht mehr: Ab jetzt zählen die eigenen Sicherungen.
+Eine Woche beobachten. Läuft alles, das Abo bei Albatros anpassen oder kündigen (Cockpit). Eine Domain, die die Person über Albatros gekauft hat, zieht vorher um (Schritt 6), sonst läuft sie mit ihrem Abo ab. Fotos (Snapshots) gibt es danach nicht mehr: Ab jetzt zählen die eigenen Sicherungen.
 
 ### 8. Mission prüfen
 

@@ -19,15 +19,16 @@ Deine Seite ist schon unter `{name}.aufwind.sh` erreichbar. Mit einer eigenen Do
 ## Was du lernst
 
 - was eine Domain, ein Registrar und DNS sind
+- wem die Adresse gehört und welche Rechte du als Inhaberin oder Inhaber hast
 - welche Einträge ins Telefonbuch gehören und was sie bedeuten
 - wie du mit einem TXT-Eintrag beweist, dass die Adresse dir gehört
 - woher das Schloss-Symbol im Browser kommt
 
 ## So gehst du vor
 
-1. Eine Adresse aussuchen und bei einem Registrar mieten.
-2. Albatros sagen, welche Adresse es ist. Du bekommst die Einträge fürs Telefonbuch.
-3. Die Einträge beim Registrar setzen.
+1. Mit deiner KI Namen sammeln und bei Albatros nachschauen, was frei ist.
+2. Die Adresse kaufen: über Albatros, dann bist du selbst Inhaberin oder Inhaber und Albatros trägt alles ins Telefonbuch ein. Oder bei einem Registrar deiner Wahl.
+3. Hast du sie anderswo gekauft: Albatros sagen, welche Adresse es ist, und die Einträge beim Registrar setzen.
 4. Warten, bis das Telefonbuch nachgedruckt ist, und prüfen.
 
 ## Geschafft, wenn
