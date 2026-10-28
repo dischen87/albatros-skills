@@ -1,0 +1,10 @@
+{
+  "name": "albatros-en",
+  "version": "0.1.0",
+  "description": "The navigator tells you, based on where you really are, which skill is up now (sign-in needed). Plus the open library: flight school and website path with SSH key, server, Git, pipeline, domain, snapshots and everything for your first website, in English and without jargon.",
+  "author": { "name": "Albatros Partner", "url": "https://albatros.build" },
+  "homepage": "https://albatros.build",
+  "repository": "https://github.com/dischen87/albatros-skills",
+  "license": "MIT",
+  "keywords": ["albatros", "learning", "server", "ssh", "git", "website", "english"]
+}
