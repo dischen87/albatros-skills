@@ -14,7 +14,7 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 |---|---|---|---|---|
 | Albatros | Albatros | Albatros | Albatros | Marke, nie übersetzen |
 | Flugschule | école de vol | scuola di volo | flight school | die Plattform als Bild |
-| Lotse (Hauptskill `lotse`) | navigateur | navigatore | navigator | sagt im richtigen Moment, was dran ist |
+| Lotse (Hauptskill `lotse`) | aiguilleur du ciel (kurz: l'aiguilleur) | controllore di volo | air traffic controller | sagt aus dem Turm im richtigen Moment, was dran ist; «navigateur/navigatore/navigator» nicht verwenden (Browser, Navi, sitzt im Flugzeug) |
 | Bibliothek | bibliothèque | biblioteca | library | alle Skills, frei lesbar |
 | Skill | skill | skill | skill | |
 | Mission | mission | missione | mission | |
@@ -45,3 +45,9 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | Community | communauté | community | community | |
 | der erste Fan | le premier fan | il primo fan | your first fan | |
 | Hoppla | Oups | Ops | Oops | kleiner Fehler, nichts kaputt |
+| Browser | navigateur web | browser | browser | |
+| Schloss-Symbol im Browser (HTTPS) | cadenas | lucchetto | padlock | nicht dasselbe wie das SSH-Schloss |
+| Telefonbuch (DNS) | annuaire | elenco telefonico | phone book | |
+| Repo | dépôt | repository | repository | wenn das Wort nötig ist, sonst Logbuch |
+| Arbeiter am Fliessband | ouvrier | operaio | worker | |
+| Landingpage | landing page | landing page | landing page | |
