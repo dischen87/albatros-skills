@@ -1,6 +1,9 @@
 {
   "name": "albatros",
-  "owner": { "name": "Albatros Partner", "url": "https://albatros.build" },
+  "owner": {
+    "name": "Albatros Partner",
+    "url": "https://albatros.build"
+  },
   "metadata": {
     "description": "Albatros: Deine KI im Terminal führt dich von der Idee zur eigenen Webseite oder zum eigenen Geschäft, auf einem echten Server."
   },
@@ -9,6 +12,24 @@
       "name": "albatros",
       "source": "./plugins/albatros",
       "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung). Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "albatros-fr",
+      "source": "./plugins/albatros-fr",
+      "description": "L'aiguilleur du ciel te dit, d'après ton état réel, quel skill est à faire maintenant (avec connexion). En plus, la bibliothèque ouverte : école de vol et parcours site web avec clé SSH, serveur, Git, tapis roulant, domaine, photos du serveur et tout ce qu'il faut pour ton premier site web, en français et sans jargon technique.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "albatros-it",
+      "source": "./plugins/albatros-it",
+      "description": "Il controllore di volo ti dice, secondo il tuo stato reale, quale skill tocca adesso (con accesso). In più la biblioteca aperta: scuola di volo e percorso sito web con chiave SSH, server, Git, nastro trasportatore, dominio, foto del server e tutto per il tuo primo sito web, in italiano e senza gergo tecnico.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "albatros-en",
+      "source": "./plugins/albatros-en",
+      "description": "The air traffic controller tells you, based on where you really are, which skill is up now (sign-in needed). Plus the open library: flight school and website path with SSH key, server, Git, pipeline, domain, snapshots and everything for your first website, in English and without jargon.",
       "version": "0.1.0"
     }
   ]
