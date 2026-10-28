@@ -62,7 +62,7 @@ plugins/albatros/
   .claude-plugin/plugin.json
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
   skills/<name>/SKILL.md            18 Skills, der Skill start ist zugleich /albatros:start
-  evals/<name>/                     ein Eval-Fall pro Skill (claude plugin eval)
+  evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
 missionen/<weg>/<nr>-<slug>.md      32 Missionen: flugschule 10, webseite 8, geschaeft 14
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
