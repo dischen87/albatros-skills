@@ -78,7 +78,7 @@ Now follow the skill `ssh-schluessel`. In short: the key is made on the person's
 
 Check the mission with `mission_pruefen` (ID `flugschule-01-start`). Celebrate briefly and without going over the top. Then suggest exactly one next step.
 
-From here the skill `lotse` takes over (`../lotse/SKILL.md`, in Claude Code `albatros-en:lotse`): call the tool `lage`. Based on where the person really stands, it says which skill is up now, and the navigator follows it. Tell the person that from now on they can simply ask “What's next?”.
+From here the skill `lotse` takes over (`../lotse/SKILL.md`, in Claude Code `albatros-en:lotse`): call the tool `lage`. Based on where the person really stands, it says which skill is up now, and the air traffic controller follows it. Tell the person that from now on they can simply ask “What's next?”.
 
 If `lage` is missing, this order applies:
 

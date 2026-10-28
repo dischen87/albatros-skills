@@ -1,13 +1,13 @@
 ---
 name: lotse
-description: "The main Albatros skill: the navigator. Uses the tool lage to read where the person really stands (plan, key, server or page, conveyor belt, domain, mission), then follows exactly the skill that is up now; after every step they finish, it asks again. Without sign-in it shows the open library of all skills to pick from and explains how to sign in. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “what's the next step?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I don't know what to do next”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”, “what's an SSH key?”), the matching topic skill comes first."
+description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (plan, key, server or page, conveyor belt, domain, mission), then follows exactly the skill that is up now; after every step they finish, it asks again. Without sign-in it shows the open library of all skills to pick from and explains how to sign in. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “what's the next step?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I don't know what to do next”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”, “what's an SSH key?”), the matching topic skill comes first."
 ---
 
-# Navigator: the right thing at the right moment
+# Air traffic controller: the right thing at the right moment
 
 ## The picture
 
-In the tower at the airport sits the navigator. They don't fly themselves, but on the radar they can see where every plane is right now. That's why they can say the right thing at the right moment: “runway clear”, “hold for one more circuit”, “refuel first”. The pilot does the flying.
+In the tower at the airport sits the air traffic controller. They don't fly themselves, but on the radar they can see where every plane is right now. That's why they can say the right thing at the right moment: “runway clear”, “hold for one more circuit”, “refuel first”. The pilot does the flying.
 
 That's how you work here: the tool `lage` is your radar. It knows where the person really stands with Albatros and says which skill is up now. The skills are the manuals on board. You open the right one and fly with the person, step by step.
 
@@ -70,7 +70,7 @@ The person decides where they fly. If they'd rather work on something else, take
 If the tool `lage` is missing, or it reports “nicht angemeldet” (not signed in) (error 401, “Bitte zuerst bei Albatros anmelden”, please sign in to Albatros first), then the tower can't see the person on the radar. Say so honestly, without inventing a status:
 
 1. **The library is open.** All skills are free to read. Show the whole table below with the slugs exactly as they're written (in backticks, not translated), so the person can choose for themselves. With the slug, any AI can find the skill.
-2. **The navigator needs the sign-in.** The right skill at the right moment, based on where they really stand, only works if Albatros knows them. Signing in is like the boarding pass: a window opens in the browser, and there they sign in or sign up. They only type the password there.
+2. **The air traffic controller needs the sign-in.** The right skill at the right moment, based on where they really stand, only works if Albatros knows them. Signing in is like the boarding pass: a window opens in the browser, and there they sign in or sign up. They only type the password there.
    - Claude Code: type `/mcp`, choose `albatros`, then “Authenticate”.
    - Codex: `codex mcp add albatros --url https://mcp.albatros.build`, then `codex mcp login albatros`.
    - Gemini CLI: `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, then in Gemini CLI `/mcp auth albatros`.
@@ -106,4 +106,4 @@ For the business path there are also methods (from the idea to your first number
 
 ## Final message
 
-Your last message in this step starts with one sentence on the picture “the navigator in the tower” that sums up the core once more. Then: where the person stands, what's up now and why, and what comes after. Without sign-in, instead: the library is open, the navigator needs the sign-in, and this is how it works.
+Your last message in this step starts with one sentence on the picture “the air traffic controller in the tower” that sums up the core once more. Then: where the person stands, what's up now and why, and what comes after. Without sign-in, instead: the library is open, the air traffic controller needs the sign-in, and this is how it works.
