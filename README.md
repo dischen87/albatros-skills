@@ -19,7 +19,7 @@ flotte legt mit der Vorlage für jeden neuen Server `{name}/projekt` im Hafen an
 
 Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`. Der MCP-Dienst liefert sie mit dem Werkzeug `methode` an Mitglieder aus.
 
-> Status: privat bis zum Go-live von albatros.build, dann öffentlich (freigegeben am 28.10.2026). Eine Lizenz ist noch nicht gewählt.
+> Status: öffentlich ab dem Go-live von albatros.build (freigegeben am 28.10.2026). Lizenz: MIT, siehe [LICENSE](LICENSE).
 
 ## Installation
 
