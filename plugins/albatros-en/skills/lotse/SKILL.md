@@ -71,9 +71,7 @@ If the tool `lage` is missing, or it reports “nicht angemeldet” (not signed 
 
 1. **The library is open.** All skills are free to read. Show the whole table below with the slugs exactly as they're written (in backticks, not translated), so the person can choose for themselves. With the slug, any AI can find the skill.
 2. **The air traffic controller needs the sign-in.** The right skill at the right moment, based on where they really stand, only works if Albatros knows them. Signing in is like the boarding pass: a window opens in the browser, and there they sign in or sign up. They only type the password there.
-   - Claude Code: type `/mcp`, choose `albatros`, then “Authenticate”.
-   - Codex: `codex mcp add albatros --url https://mcp.albatros.build`, then `codex mcp login albatros`.
-   - Gemini CLI: `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, then in Gemini CLI `/mcp auth albatros`.
+   - You trigger the sign-in yourself; the person doesn't type any commands. How that works in Claude Code, Codex and Gemini CLI is in the skill `start`, step 1 (`../start/SKILL.md`). Follow it.
    - After that, call `lage`. Brand new to Albatros: skill `start`.
 3. If the person picks a skill from the table, read it (`../<kennung>/SKILL.md`) and follow it. Albatros tools need the sign-in there too. Whatever works without it (planning, writing texts, explaining), you still do.
 

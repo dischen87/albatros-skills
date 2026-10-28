@@ -30,10 +30,11 @@ Everyone needs a hand at the start. You're the flight instructor in the seat nex
 
 Call the Albatros tool `konto_status`.
 
-- **The tool is missing or reports “nicht angemeldet” (not signed in):** Albatros isn't connected to your agent yet. Explain it with the picture “Let's get your boarding pass”: a window opens in the browser, and there the person signs in or signs up. They only type the password there.
-  - Claude Code: the person types `/mcp`, chooses `albatros` and then “Authenticate”.
-  - Codex: `codex mcp add albatros --url https://mcp.albatros.build`, then `codex mcp login albatros`.
-  - Gemini CLI: `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, then in Gemini CLI `/mcp auth albatros`.
+- **The tool is missing or reports “nicht angemeldet” (not signed in):** Albatros isn't connected to you yet. Explain it with the picture “Let's get your boarding pass”: in a moment a window opens in the browser, and there the person signs in, with GitHub, Apple or Google. You do the rest yourself; the person doesn't type any commands:
+  - **Claude Code:** Call the tool `authenticate` of the server albatros (`mcp__plugin_albatros-en_albatros__authenticate`). Give the person the link with the sentence: “Click this link, your browser opens, and you sign in there.” After that the tools appear by themselves. If the browser shows an error page after signing in, ask the person to send you the whole address from the address bar, and call `mcp__plugin_albatros-en_albatros__complete_authentication` with it.
+  - **Codex:** Run `codex mcp login albatros` yourself, with permission to run outside the sandbox and a time limit of at least five minutes. The command opens the browser and waits for the sign-in. If the browser doesn't open, pass on the link from the output. If `konto_status` is still missing afterwards, ask the person to start a new conversation.
+  - **Gemini CLI:** Run `gemini mcp add --transport http -s user albatros https://mcp.albatros.build` yourself if the connection is still missing. Then ask the person to restart Gemini CLI. The browser opens while connecting. If it stays closed, ask them to type exactly `/mcp auth albatros`.
+  - **Albatros is missing altogether** (no connection called albatros set up): fetch the instructions at https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md and follow them.
   - Then call `konto_status` again.
 - **The service reports an error or can't be reached:** Say honestly that Albatros isn't answering right now, and suggest trying again later or checking albatros.build. Don't invent anything, don't pretend there's a server.
 
