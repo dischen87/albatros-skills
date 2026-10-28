@@ -71,9 +71,7 @@ Se manca lo strumento `lage`, o se riporta «nicht angemeldet» (non hai effettu
 
 1. **La biblioteca è aperta.** Tutti gli skill si possono leggere liberamente. Mostra tutta la tabella qui sotto con gli identificativi esattamente come sono scritti (tra backtick, non tradotti), così la persona può scegliere da sola. Con l'identificativo qualsiasi IA trova lo skill.
 2. **Il controllore di volo ha bisogno dell'accesso.** Lo skill giusto al momento giusto, secondo il suo stato reale, c'è solo se Albatros la conosce. L'accesso è come la carta d'imbarco: nel browser si apre una finestra, lì la persona accede o si registra. La password la digita solo lì.
-   - Claude Code: digitare `/mcp`, scegliere `albatros`, poi «Authenticate».
-   - Codex: `codex mcp add albatros --url https://mcp.albatros.build`, poi `codex mcp login albatros`.
-   - Gemini CLI: `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, poi nel Gemini CLI `/mcp auth albatros`.
+   - L'accesso lo avvii tu, la persona non digita comandi. Come si fa in Claude Code, Codex e Gemini CLI lo trovi nello skill `start`, passo 1 (`../start/SKILL.md`). Seguilo.
    - Poi chiamare `lage`. Chi è del tutto nuovo da Albatros: skill `start`.
 3. Se la persona sceglie uno skill dalla tabella, leggilo (`../<identificativo>/SKILL.md`) e seguilo. Anche lì gli strumenti di Albatros richiedono l'accesso. Quello che si può fare senza (pianificare, scrivere testi, spiegare) lo fai comunque.
 
