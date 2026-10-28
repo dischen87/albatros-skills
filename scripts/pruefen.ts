@@ -59,6 +59,16 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
 for (const weg of ['flugschule', 'webseite', 'geschaeft'])
   if (!wege.has(weg)) fehler.push(`missionen/${weg}: keine Missionen`);
 
+// Übersetzte Vorlage: flotte legt uebersetzungen/<sprache>/vorlage über vorlage/. YAML muss gleich gebaut sein wie das deutsche,
+// nur Kommentare, name: und Texte in "…" dürfen anders sein. Sonst liefe das Fliessband in einer Sprache mit alten Befehlen.
+const gerippe = (t: string) => t.split('\n').map((z) => z.replace(/#.*$/, '').replace(/"[^"]*"/g, '""').replace(/(name:).*/, '$1').trimEnd()).join('\n');
+for await (const datei of new Glob('uebersetzungen/*/vorlage/**/*').scan({ cwd: wurzel, dot: true })) {
+  const de = 'vorlage/' + datei.split('/').slice(3).join('/');
+  if (!(await Bun.file(wurzel + de).exists())) fehler.push(`${datei}: ${de} gibt es nicht`);
+  else if (/\.ya?ml$/.test(datei) && gerippe(await Bun.file(wurzel + datei).text()) !== gerippe(await Bun.file(wurzel + de).text()))
+    fehler.push(`${datei}: anders gebaut als ${de}`);
+}
+
 if (fehler.length) {
   console.error(fehler.join('\n'));
   process.exit(1);

@@ -6,6 +6,7 @@ Gleiche Begriffe überall: Skills, Missionen, Website, Videos. Wer übersetzt, n
 
 - **Skills:** je Sprache ein eigenes Plugin mit denselben Slugs: `plugins/albatros-fr/skills/<slug>/SKILL.md`, ebenso `albatros-it` und `albatros-en`, je mit `.claude-plugin/plugin.json` und `.mcp.json` wie `plugins/albatros`. Deutsch bleibt `plugins/albatros`. Name und Slug im Kopf bleiben deutsch, die `description` ist übersetzt.
 - **Missionen:** `uebersetzungen/<sprache>/missionen/<weg>/<gleicher Dateiname>.md`. Im Kopf nur `titel` und `bild`, darunter der übersetzte Text. Alles andere (Kennung, Stufe, Skill, Prüfung, Dauer) kommt aus der deutschen Mission.
+- **Projektvorlage und Server:** `uebersetzungen/<sprache>/vorlage/` (gleiche Pfade wie `vorlage/`) und `uebersetzungen/<sprache>/instanz/` (Bordbuch, Hinweise für die KI, Begrüssung; die deutschen liegen in albatros-flotte unter `src/instanz/`). flotte nimmt sie, wenn Server oder Seite mit `sprache` entstehen. YAML bleibt gleich gebaut wie das deutsche, nur Kommentare, `name:` und Texte in Anführungszeichen sind übersetzt (`bun run pruefen` prüft das).
 - Fehlt eine Übersetzung, zeigen Website und Lotse die deutsche Fassung.
 
 Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you» (locker, nicht förmlich). Schweizer Schreibweise: Deutsch mit «ss», Französisch und Italienisch mit «» (wie in der Schweiz), Englisch britisch (colour, organise). Preise: «CHF 15» in allen Sprachen.
@@ -34,6 +35,7 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | Seite (Light, Schaufenster) | page (vitrine) | pagina (vetrina) | page (shop window) | |
 | Logbuch (Git-Repo) | journal de bord | diario di bordo | logbook | |
 | Flugbuch (Fortschritt im Cockpit) | carnet de vol | libretto di volo | flight log | |
+| Bordbuch (`~/BORDBUCH.md` auf dem Server) | manuel de bord | manuale di bordo | flight manual | erklärt den Server; Dateiname bleibt |
 | Hafen (code.aufwind.sh) | port | porto | harbour | wo das Logbuch liegt |
 | Fliessband (Pipeline) | tapis roulant | nastro trasportatore | conveyor belt | |
 | Adresse (name.aufwind.sh) | adresse | indirizzo | address | |
