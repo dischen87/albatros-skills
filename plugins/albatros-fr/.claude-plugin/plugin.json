@@ -1,7 +1,7 @@
 {
   "name": "albatros-fr",
   "version": "0.1.0",
-  "description": "Le navigateur te dit, d'après ton état réel, quel skill est à faire maintenant (avec connexion). En plus, la bibliothèque ouverte : école de vol et parcours site web avec clé SSH, serveur, Git, tapis roulant, domaine, photos du serveur et tout ce qu'il faut pour ton premier site web, en français et sans jargon technique.",
+  "description": "L'aiguilleur du ciel te dit, d'après ton état réel, quel skill est à faire maintenant (avec connexion). En plus, la bibliothèque ouverte : école de vol et parcours site web avec clé SSH, serveur, Git, tapis roulant, domaine, photos du serveur et tout ce qu'il faut pour ton premier site web, en français et sans jargon technique.",
   "author": { "name": "Albatros Partner", "url": "https://albatros.build" },
   "homepage": "https://albatros.build",
   "repository": "https://github.com/dischen87/albatros-skills",

@@ -78,7 +78,7 @@ Suis maintenant le skill `ssh-schluessel`. En bref : la clé naît sur l'ordin
 
 Valide la mission avec `mission_pruefen` (identifiant `flugschule-01-start`). Fête ça brièvement, sans exagérer. Propose ensuite exactement une prochaine étape.
 
-À partir d'ici, c'est le skill `lotse` qui prend le relais (`../lotse/SKILL.md`, dans Claude Code `albatros-fr:lotse`) : appelle l'outil `lage`. Il dit, d'après l'état réel, quel skill est à faire maintenant, et le navigateur le suit. Dis à la personne qu'à l'avenir, elle peut simplement demander « On fait quoi ensuite ? ».
+À partir d'ici, c'est le skill `lotse` qui prend le relais (`../lotse/SKILL.md`, dans Claude Code `albatros-fr:lotse`) : appelle l'outil `lage`. Il dit, d'après l'état réel, quel skill est à faire maintenant, et l'aiguilleur le suit. Dis à la personne qu'à l'avenir, elle peut simplement demander « On fait quoi ensuite ? ».
 
 Si `lage` manque, cet ordre s'applique :
 

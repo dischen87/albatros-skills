@@ -1,13 +1,13 @@
 ---
 name: lotse
-description: "Skill principal d'Albatros : le navigateur. Demande avec l'outil lage l'état réel de la personne (abonnement, clé, serveur ou page, tapis roulant, domaine, mission), puis suit exactement le skill qui est à faire maintenant ; après chaque étape réussie, il redemande. Sans connexion, il montre la bibliothèque ouverte de tous les skills pour choisir soi-même et explique comment se connecter. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « on fait quoi ensuite ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je ne sais plus quoi faire », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? », « c'est quoi une clé SSH ? »), le skill spécialisé correspondant a la priorité."
+description: "Skill principal d'Albatros : l'aiguilleur du ciel. Demande avec l'outil lage l'état réel de la personne (abonnement, clé, serveur ou page, tapis roulant, domaine, mission), puis suit exactement le skill qui est à faire maintenant ; après chaque étape réussie, il redemande. Sans connexion, il montre la bibliothèque ouverte de tous les skills pour choisir soi-même et explique comment se connecter. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « on fait quoi ensuite ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je ne sais plus quoi faire », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? », « c'est quoi une clé SSH ? »), le skill spécialisé correspondant a la priorité."
 ---
 
-# Navigateur : la bonne chose au bon moment
+# Aiguilleur du ciel : la bonne chose au bon moment
 
 ## L'image
 
-Dans la tour de contrôle de l'aéroport, il y a le navigateur. Il ne vole pas lui-même, mais il voit sur le radar où se trouve chaque avion. C'est pour ça qu'il peut dire au bon moment ce qui est à faire : « piste libre », « encore un tour d'attente », « d'abord faire le plein ». Voler, c'est la pilote qui le fait elle-même.
+Dans la tour de contrôle de l'aéroport, il y a l'aiguilleur du ciel. Il ne vole pas lui-même, mais il voit sur le radar où se trouve chaque avion. C'est pour ça qu'il peut dire au bon moment ce qui est à faire : « piste libre », « encore un tour d'attente », « d'abord faire le plein ». Voler, c'est la pilote qui le fait elle-même.
 
 Voilà comment tu travailles ici : l'outil `lage` est ton radar. Il connaît l'état réel de la personne chez Albatros et dit quel skill est à faire maintenant. Les skills sont les manuels à bord. Tu ouvres le bon et tu voles avec la personne, étape par étape.
 
@@ -70,7 +70,7 @@ C'est la personne qui décide où elle vole. Si elle préfère travailler sur au
 Si l'outil `lage` manque, ou s'il répond « nicht angemeldet » (pas connecté ; erreur 401, « Bitte zuerst bei Albatros anmelden », merci de te connecter d'abord à Albatros), alors la tour ne voit pas la personne sur le radar. Dis-le honnêtement, sans inventer d'état :
 
 1. **La bibliothèque est ouverte.** Tous les skills sont lisibles librement. Montre tout le tableau ci-dessous avec les identifiants exactement comme ils sont écrits (entre backticks, pas traduits), pour que la personne puisse choisir elle-même. Avec l'identifiant, n'importe quelle IA trouve le skill.
-2. **Le navigateur a besoin de la connexion.** Le bon skill au bon moment, d'après son état réel, ça n'existe que si Albatros la connaît. La connexion, c'est comme la carte d'embarquement : une fenêtre s'ouvre dans le navigateur web, la personne s'y connecte ou s'inscrit. Le mot de passe, elle le tape seulement là.
+2. **L'aiguilleur a besoin de la connexion.** Le bon skill au bon moment, d'après son état réel, ça n'existe que si Albatros la connaît. La connexion, c'est comme la carte d'embarquement : une fenêtre s'ouvre dans le navigateur web, la personne s'y connecte ou s'inscrit. Le mot de passe, elle le tape seulement là.
    - Claude Code : taper `/mcp`, choisir `albatros`, puis « Authenticate ».
    - Codex : `codex mcp add albatros --url https://mcp.albatros.build`, puis `codex mcp login albatros`.
    - Gemini CLI : `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, puis dans Gemini CLI `/mcp auth albatros`.
@@ -106,4 +106,4 @@ Pour le parcours entreprise, il y a en plus des méthodes (de l'idée jusqu'aux 
 
 ## Message final
 
-Ton dernier message de cette étape commence par une phrase sur l'image « le navigateur dans la tour de contrôle », qui redit l'essentiel. Ensuite : où en est la personne, ce qui est à faire maintenant et pourquoi, et ce qui vient ensuite. Sans connexion, à la place : la bibliothèque est ouverte, le navigateur a besoin de la connexion, et voilà comment elle se fait.
+Ton dernier message de cette étape commence par une phrase sur l'image « l'aiguilleur du ciel dans la tour de contrôle », qui redit l'essentiel. Ensuite : où en est la personne, ce qui est à faire maintenant et pourquoi, et ce qui vient ensuite. Sans connexion, à la place : la bibliothèque est ouverte, l'aiguilleur a besoin de la connexion, et voilà comment elle se fait.
