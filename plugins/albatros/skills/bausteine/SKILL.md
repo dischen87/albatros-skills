@@ -51,11 +51,12 @@ Ein Server mit Pilot hat 4 GB Arbeitsspeicher und 40 GB Platz, ohne Auslagerungs
 
 | Was | Im Betrieb | Beim Bauen | Platz |
 |---|---|---|---|
+| Grundlast: System, Docker, Arbeiter am Fliessband | 150 MB, eingeplant 0,5 GB | kurz mehr | – |
 | Webseite aus der Vorlage | 10 MB | kurz | klein |
 | PocketBase (alle drei Rezepte zusammen) | 20 MB | kurz | 40 MB |
 | Strapi mit Postgres | 150 MB + 55 MB | Spitze 2,5 GB, erster Bau etwa 7 Minuten | 1,4 GB |
 
-Webseite, PocketBase und Strapi zusammen brauchen im Betrieb etwa 250 MB. Eng wird es nur beim Bauen, darum baut das Fliessband einen Auftrag nach dem anderen. Nicht auf den Server gehören Programme, die allein mehr als 1 GB brauchen, zum Beispiel Keycloak, Supabase, Logto, Mattermost oder Texterkennung (OCR). Für ein eigenes Login nimm PocketBase.
+Für Bausteine bleiben also etwa 3,5 GB. Webseite, PocketBase und Strapi zusammen brauchen im Betrieb etwa 250 MB. Eng wird es nur beim Bauen, darum baut das Fliessband einen Auftrag nach dem anderen. Nicht auf den Server gehören Programme, die allein mehr als 1 GB brauchen, zum Beispiel Keycloak, Supabase, Logto, Mattermost oder Texterkennung (OCR). Für ein eigenes Login nimm PocketBase.
 
 Vor dem Einbau: `free -h` auf dem Server zeigt, wie viel frei ist. Nach dem Einbau: `docker stats --no-stream` zeigt, was jeder Baustein braucht.
 

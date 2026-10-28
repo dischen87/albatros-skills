@@ -17,7 +17,7 @@ This server belongs to a person learning with Albatros. They usually have no tec
 - Project: `~/projekt`, clone of the repository in the Albatros harbour (Forgejo, https://code.__DOMAIN__): `git@__DOMAIN__:__NAME__/projekt.git`. The person pushes with their own key, the server with its `~/.ssh/code` (set in `~/.ssh/config`). A push to `main` starts the conveyor belt: a Forgejo runner on this server (service `fliessband`) runs `.github/workflows/deploy.yml`. GitHub isn't needed for this.
 - The web server container is called `webseite`, a CMS container `cms`. The missions check these names.
 - Access: `ssh __NAME__@__DOMAIN__` goes through sshpiper to the user `pilot`. The line `albatros-zugang` in `~/.ssh/authorized_keys` must stay. Albatros adds new keys (MCP tool `schluessel_hinterlegen`).
-- Limits: RAM, CPU, storage, processes and bandwidth are limited. Outgoing, the mail ports 25, 465 and 587, the other Albatros servers and the host are blocked. From outside, 22, 80 and 443 are open.
+- Limits: RAM, CPU, storage, processes and bandwidth are limited. Outgoing, the mail ports 25, 465 and 587, the other Albatros servers and the host are blocked. From outside, only SSH (22) and the Albatros edge server come in; the edge does HTTPS and talks to port 80 of the server. The visitor's address is in `X-Forwarded-For` (the edge sets the header afresh); anyone can fake `X-Real-IP`.
 - Snapshots: every night, kept for 7 days. Before a bigger rebuild, an extra snapshot is worth it (MCP tool `snapshot`). "Back" deletes everything that came after the snapshot.
 
 ## Rules

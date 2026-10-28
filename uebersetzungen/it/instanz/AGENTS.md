@@ -17,7 +17,7 @@ Questo server appartiene a una persona che impara con Albatros. Di solito non ha
 - Progetto: `~/projekt`, clone del repository al porto di Albatros (Forgejo, https://code.__DOMAIN__): `git@__DOMAIN__:__NAME__/projekt.git`. La persona fa push con la sua chiave, il server con la sua `~/.ssh/code` (registrata in `~/.ssh/config`). Un push su `main` avvia il nastro trasportatore: un runner Forgejo su questo server (servizio `fliessband`) esegue `.github/workflows/deploy.yml`. GitHub non serve.
 - Il container del server web si chiama `webseite`, un container CMS `cms`. Le missioni controllano questi nomi.
 - Accesso: `ssh __NAME__@__DOMAIN__` passa tramite sshpiper all'utente `pilot`. La riga `albatros-zugang` in `~/.ssh/authorized_keys` deve restare. Le nuove chiavi le registra Albatros (strumento MCP `schluessel_hinterlegen`).
-- Limiti: RAM, CPU, spazio, processi e banda sono limitati. In uscita sono bloccati le porte e-mail 25, 465 e 587, gli altri server di Albatros e l'host. Dall'esterno sono aperte 22, 80 e 443.
+- Limiti: RAM, CPU, spazio, processi e banda sono limitati. In uscita sono bloccati le porte e-mail 25, 465 e 587, gli altri server di Albatros e l'host. Dall'esterno entrano solo SSH (22) e il server edge di Albatros; il server edge fa l'HTTPS e parla con la porta 80 del server. L'indirizzo dei visitatori si trova in `X-Forwarded-For` (il server edge riscrive l'intestazione); `X-Real-IP` chiunque può falsificarlo.
 - Snapshot: ogni notte, per 7 giorni. Prima di una ristrutturazione più grande conviene uno snapshot a parte (strumento MCP `snapshot`). «Ritorno» cancella tutto ciò che è venuto dopo lo snapshot.
 
 ## Regole
