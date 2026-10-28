@@ -100,6 +100,7 @@ ssh -o StrictHostKeyChecking=accept-new {name}@aufwind.sh 'echo "Ich war hier" >
 ## Wenn es hakt
 
 - **`Permission denied (publickey)`**: Das Schloss passt nicht zur Tür. Prüf der Reihe nach: Ist der Server-Name richtig? Wurde das Schloss hochgeladen (`konto_status`)? Steht der Eintrag in `~/.ssh/config`? Test mit `ssh -v {name}@aufwind.sh` und such nach der Zeile «Offering public key».
+- **«Dieser Schlüssel gehört schon zu einem anderen Konto»:** Ein Schloss gehört zu genau einem Albatros-Konto, wie bei GitHub. Für ein zweites Konto einen eigenen Schlüssel erzeugen (`ssh-keygen -t ed25519 -C "albatros-zwei" -f ~/.ssh/albatros-zwei -N ""`) und in `~/.ssh/config` einen eigenen Eintrag anlegen: `Host aufwind-zwei` mit `HostName aufwind.sh`, `IdentityFile ~/.ssh/albatros-zwei` und `IdentitiesOnly yes`. Für dieses Konto heisst die Adresse dann `aufwind-zwei` statt `aufwind.sh`, zum Beispiel `git@aufwind-zwei:<name>/projekt.git`.
 - **Neuer Computer:** neuer Hausschlüssel auf dem neuen Computer, Schloss zusätzlich hochladen. Den alten Hausschlüssel nie per Mail oder Stick kopieren.
 - **Computer verloren oder gestohlen:** Das alte Schloss sofort im Cockpit entfernen. Das ist, als würdest du den Schliesszylinder auswechseln.
 - **`WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED`**: Der Ausweis des Servers ist anders als beim letzten Mal. Nicht einfach wegklicken. Fingerabdruck im Cockpit vergleichen. Erst wenn er stimmt, die alte Zeile mit `ssh-keygen -R aufwind.sh` entfernen.

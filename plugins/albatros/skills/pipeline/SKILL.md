@@ -28,7 +28,7 @@ Bei dir startet das Band, sobald du einen Eintrag in den Hafen schickst (Skill `
 
 ### 1. Was schon da ist
 
-**Mit Light** gibt es kein Fliessband: Albatros stellt nach jedem Push den Ordner `seite/` aus `main` direkt aus, ohne Bau und ohne Prüfung. Erklär das Bild trotzdem. Das Band mit Qualitätskontrolle gehört zu Pilot (`upgrade_link`, Stufe `pilot`). Die Datei `deploy.yml` aus der Vorlage schläft bei Light und wacht beim Wechsel zu Pilot auf. Die Mission `flugschule-05-pipeline` gehört zu Pilot.
+**Mit Light** gibt es kein Fliessband: Albatros stellt nach jedem Push den Ordner `seite/` aus `main` direkt aus, ohne Bau und ohne Prüfung. Erklär das Bild trotzdem. Das Band mit Qualitätskontrolle gehört zu Pilot (`upgrade_link`, Stufe `pilot`). Die Datei `deploy.yml` aus der Vorlage schläft bei Light. Beim Wechsel zu Pilot schaltet Albatros das Band ein und lässt es gleich einmal laufen, damit der eigene Server die Seite ausliefert. Die Mission `flugschule-05-pipeline` gehört zu Pilot.
 
 **Mit Pilot:** `konto_status` nennt den Namen des Servers, die Adresse des Hafens (`git@aufwind.sh:{name}/projekt.git`) und ob der Arbeiter bereit ist. Frag die Person nicht danach. Die Vorlage von Albatros bringt `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` schon mit: Lies sie mit der Person und vergleiche mit dem Kern unten. Fehlen sie, legst du sie an, auch wenn der Ordner noch leer ist, und sagst danach, was noch fehlt (Logbuch im Hafen, Inhalt der Seite).
 

@@ -25,7 +25,7 @@ Ein Haus ist so sicher wie sein nachlässigster Moment. Einbrecher suchen nicht 
 
 ## Ablauf
 
-**Mit Light** ist alles öffentlich, was Albatros ausstellt (der Ordner `seite/`), auch was nirgends verlinkt ist. Dort gehören gar keine Geheimnisse hinein. Die Schritte 1 und 2 gelten trotzdem. Alles mit Server, `.env` und Ports gilt erst mit Pilot.
+**Mit Light** ist alles öffentlich, was Albatros ausstellt, auch was nirgends verlinkt ist: der Ordner `seite/`. Fehlt er, ist es `public/` oder sogar das ganze Repo mit `docs/`. Darum bleibt die Seite in `seite/`. Dort gehören gar keine Geheimnisse hinein. Die Schritte 1 und 2 gelten trotzdem. Alles mit Server, `.env` und Ports gilt erst mit Pilot.
 
 ### 1. Ist schon etwas unter der Fussmatte?
 

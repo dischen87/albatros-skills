@@ -70,7 +70,7 @@ Noch ein zweiter Eintrag, damit es sitzt. Danach im Browser zeigen: `https://cod
 
 ### 4. Das Logbuch auf dem Server
 
-**Mit Light** gibt es keinen Server: Der Push ist schon die Auslieferung. Albatros zeigt den Ordner `seite/` aus `main` unter `https://{name}.aufwind.sh`. Seite im Browser neu laden, die Änderung ist da. Weiter mit Schritt 5.
+**Mit Light** gibt es keinen Server: Der Push ist schon die Auslieferung. Albatros zeigt den Ordner `seite/` aus `main` unter `https://{name}.aufwind.sh`, nach etwa 30 Sekunden. Fehlt `seite/`, nimmt Albatros `public/` und sonst das ganze Repo, darum bleibt die Seite in `seite/`. Höchstens 100 MB, Verknüpfungen (Symlinks) zeigt Albatros nie. Seite im Browser neu laden, die Änderung ist da. Weiter mit Schritt 5.
 
 **Mit Pilot:** Dein Server hat eine eigene Kopie in `~/projekt`. Albatros hat sie beim Einrichten angelegt, mit einem Lese-Schlüssel nur für deinen Hafen. Bringt das Logbuch das Fliessband mit (`.github/workflows/deploy.yml`), holt es bei jedem Push die neuen Einträge selbst (Skill `pipeline`). Prüfen:
 
