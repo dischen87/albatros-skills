@@ -8,7 +8,7 @@
     {
       "name": "albatros",
       "source": "./plugins/albatros",
-      "description": "Flugschule und Weg Webseite: SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und alles für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+      "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung). Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
       "version": "0.1.0"
     }
   ]

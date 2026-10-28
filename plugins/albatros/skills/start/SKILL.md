@@ -75,7 +75,11 @@ Folge jetzt dem Skill `ssh-schluessel`. Kurz: Der Schlüssel entsteht auf dem Co
 
 ### 7. Flugbuch und nächste Mission
 
-Prüf die Mission mit `mission_pruefen` (Kennung `flugschule-01-start`). Feiere kurz und ohne Übertreibung. Schlag dann genau einen nächsten Schritt vor:
+Prüf die Mission mit `mission_pruefen` (Kennung `flugschule-01-start`). Feiere kurz und ohne Übertreibung. Schlag dann genau einen nächsten Schritt vor.
+
+Ab hier übernimmt der Skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros:lotse`): Ruf das Werkzeug `lage` auf. Es sagt nach dem echten Stand, welcher Skill jetzt dran ist, und der Lotse folgt ihm. Sag der Person, dass sie künftig einfach «Wie weiter?» fragen kann.
+
+Fehlt `lage`, gilt diese Reihenfolge:
 
 - **Pilot:** Die Flugschule geht weiter mit `server-kennenlernen`, danach `git-logbuch` und `pipeline`.
 - **Light:** Die Flugschule geht weiter mit `git-logbuch`. Missionen, die einen eigenen Server brauchen (`abo: pilot`), lässt du aus.

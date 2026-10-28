@@ -32,6 +32,15 @@ for await (const datei of new Glob('plugins/*/skills/*/SKILL.md').scan(wurzel)) 
   skills.add(ordner);
 }
 
+// Die Bibliothek im Hauptskill lotse nennt jeden Skill ihres Plugins, damit man ohne Anmeldung selbst wählen kann
+for await (const datei of new Glob('plugins/*/skills/lotse/SKILL.md').scan(wurzel)) {
+  const text = await Bun.file(wurzel + datei).text();
+  for await (const andere of new Glob(datei.replace('lotse/SKILL.md', '*/SKILL.md')).scan(wurzel)) {
+    const name = andere.split('/').at(-2)!;
+    if (name !== 'lotse' && !text.includes(`| \`${name}\` |`)) fehler.push(`${datei}: Skill «${name}» fehlt in der Bibliothek`);
+  }
+}
+
 const wege = new Set<string>();
 for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
   const [, weg, name] = datei.split('/');

@@ -1,7 +1,7 @@
 {
   "name": "albatros",
   "version": "0.1.0",
-  "description": "Flugschule und Weg Webseite: SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und alles für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+  "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung). Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
   "author": { "name": "Albatros Partner", "url": "https://albatros.build" },
   "homepage": "https://albatros.build",
   "repository": "https://github.com/dischen87/albatros-skills",

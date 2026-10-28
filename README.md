@@ -19,6 +19,16 @@ flotte legt mit der Vorlage für jeden neuen Server `{name}/projekt` im Hafen an
 
 Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`. Der MCP-Dienst liefert sie mit dem Werkzeug `methode` an Mitglieder aus.
 
+## Hauptskill und Bibliothek
+
+Die Skills sind eine offene Bibliothek: Jede und jeder kann sie lesen und selbst den passenden wählen. Der spannende Teil ist, im richtigen Moment das Richtige zu tun. Das macht der Hauptskill **`lotse`**, wie der Fluglotse im Turm, der auf dem Radar sieht, wo jedes Flugzeug ist:
+
+1. Er ruft das Werkzeug `lage` auf. Es liest den echten Stand der Person bei Albatros (Abo, Schlüssel, Server oder Seite, Fliessband, Domain, Mission) und nennt den Skill, der jetzt dran ist, mit Grund und dem, was danach kommt.
+2. Er liest diesen Skill (`../<kennung>/SKILL.md` im selben Plugin, in Claude Code auch `albatros:<kennung>`) und folgt ihm. Beim Weg Geschäft holt er die Methode mit `methode`.
+3. Nach jedem geschafften Schritt fragt er `lage` erneut.
+
+Der Lotse funktioniert nur mit Anmeldung, denn nur dann kennt Albatros den Stand. Wann welcher Skill dran ist, entscheidet der MCP-Dienst, nicht dieses Repo. Ohne Anmeldung zeigt der Lotse die Bibliothek mit einer Zeile pro Skill und erklärt, wie die Anmeldung geht. Die Kennungen der Skills bleiben deutsch und stabil, auch in den Plugins für andere Sprachen.
+
 > Status: öffentlich ab dem Go-live von albatros.build (freigegeben am 28.10.2026). Lizenz: MIT, siehe [LICENSE](LICENSE).
 
 ## Installation
@@ -61,7 +71,7 @@ Danach in Gemini CLI: `/mcp auth albatros`.
 plugins/albatros/
   .claude-plugin/plugin.json
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
-  skills/<name>/SKILL.md            18 Skills, der Skill start ist zugleich /albatros:start
+  skills/<name>/SKILL.md            19 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
   evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
 missionen/<weg>/<nr>-<slug>.md      32 Missionen: flugschule 10, webseite 8, geschaeft 14
@@ -74,6 +84,7 @@ scripts/pruefen.ts                  prüft Skills und Missionen
 
 | Weg | Skill | Bild |
 |---|---|---|
+| alle | `lotse` | der Fluglotse im Turm: sagt, was jetzt dran ist |
 | Flugschule | `start` | Bordkarte holen und einsteigen |
 | | `ssh-schluessel` | Hausschlüssel und Schloss |
 | | `server-kennenlernen` | Rundgang durch die neue Wohnung |
