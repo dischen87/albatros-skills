@@ -15,7 +15,7 @@ Importante: tutto quello che si è aggiunto dopo la foto, dopo non c'è più. Pe
 
 **Come usi l'immagine:** dilla alla persona nella tua prima risposta, prima di fare domande o mostrare comandi, anche se vuole subito una soluzione.
 
-**Le foto del server ci sono solo con Pilot.** Con Light non c'è nessun server, si torna indietro con il diario di bordo: `git log --oneline` mostra le voci, `git revert <eintrag>` annulla una voce con una voce nuova, poi `git push`. Poco dopo la vecchia pagina è di nuovo online. Mai `git push --force`.
+**Le foto del server ci sono solo con Pilot.** Con Light non c'è nessun server, si torna indietro con il diario di bordo: `git log --oneline` mostra le voci, `git revert <voce>` annulla una voce con una voce nuova, poi `git push`. Poco dopo la vecchia pagina è di nuovo online. Mai `git push --force`.
 
 ## Come parli
 
@@ -31,7 +31,7 @@ Foto proprie: al massimo cinque, scadono dopo 30 giorni. I nomi che iniziano con
 
 ## Tornare indietro
 
-1. **Prima guarda cosa è rotto.** A volte basta meno di una foto intera: un container fermo riparte con `docker start webseite`, un file cambiato nel progetto torna con `git restore <datei>`.
+1. **Prima guarda cosa è rotto.** A volte basta meno di una foto intera: un container fermo riparte con `docker start webseite`, un file cambiato nel progetto torna con `git restore <file>`.
 2. **Mostrare le foto:** `snapshot` con l'azione «auflisten» (elencare), oppure nel cockpit alla voce «Server», «Snapshots». Scegli con la persona quella giusta: l'ultima in cui funzionava ancora tutto.
 3. **Avvisare cosa va perso:** «Tutto quello che hai cambiato sul server dopo <momento>, dopo non c'è più, e anche tutte le foto più recenti di questa. Quello che è già nel porto resta.» Se la persona ha lavoro non salvato sul server, prima salvalo (`git push` oppure copia il file sul proprio computer con `scp {name}@aufwind.sh:~/datei .`).
 4. **Solo dopo un sì chiaro:** `zurueck` con il nome della foto. Il server si riavvia, ci vuole circa un minuto.

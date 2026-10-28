@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-    healthcheck:                         # «läuft» heisst noch nicht «funktioniert»
+    healthcheck:                         # «gira» non vuol dire ancora «funziona»
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 10s
       retries: 6
@@ -60,11 +60,11 @@ name: Fliessband
 on:
   push:
     branches: [main]
-  workflow_dispatch:                    # Knopf «Run workflow» für einen Lauf von Hand
+  workflow_dispatch:                    # pulsante «Run workflow» per un giro a mano
 
 jobs:
   fliessband:
-    runs-on: albatros                   # der Arbeiter auf deinem eigenen Server, er macht einen Auftrag nach dem anderen
+    runs-on: albatros                   # l'operaio sul tuo server, fa un lavoro dopo l'altro
     defaults:
       run:
         shell: bash
@@ -75,17 +75,17 @@ jobs:
       - name: Bauen und ausliefern, notfalls zurück
         run: |
           set -euo pipefail
-          cd ~/projekt                  # hier wohnt deine Seite, der Stand kommt immer aus dem Logbuch
+          cd ~/projekt                  # qui abita la tua pagina, lo stato viene sempre dal diario di bordo
           ALT=$(git rev-parse HEAD)
           git fetch -q origin main && git reset -q --hard "$SHA"
-          # Station 1: bauen. Klappt das nicht, bleibt die alte Seite online.
+          # Stazione 1: costruire. Se non riesce, la vecchia pagina resta online.
           if ! docker compose build; then
             git reset -q --hard "$ALT"
             echo "Bau fehlgeschlagen, die alte Seite bleibt online" >&2
             exit 1
           fi
-          # Station 2: ausliefern, mit dem Gesundheitscheck aus compose.yaml
-          sudo systemctl disable --now willkommen 2>/dev/null || true   # Begrüssungsseite gibt Port 80 frei
+          # Stazione 2: consegnare, con il controllo di salute da compose.yaml
+          sudo systemctl disable --now willkommen 2>/dev/null || true   # la pagina di benvenuto libera la porta 80
           if ! docker compose up -d --wait --wait-timeout 120; then
             echo "Neue Version ist nicht gesund, zurück auf $ALT" >&2
             docker compose logs --tail 30 >&2 || true

@@ -27,7 +27,7 @@ Su ogni nave c'è un diario di bordo. Ogni voce dice: chi, quando, cosa e perch�
 ## Le tre regole
 
 1. **Solo su `main`.** Un diario di bordo, una linea. I rami sono per più avanti e per le grandi ristrutturazioni.
-2. **Solo i propri file, aggiunti uno per uno:** `git add <datei>`. Mai `git add .`, `git add -A` o `git commit -a`. Quelli spazzano nel diario di bordo anche lavori a metà e segreti come `.env`.
+2. **Solo i propri file, aggiunti uno per uno:** `git add <file>`. Mai `git add .`, `git add -A` o `git commit -a`. Quelli spazzano nel diario di bordo anche lavori a metà e segreti come `.env`.
 3. **Mai `git push --force`.** Se un push viene rifiutato, prima `git pull --rebase`, poi di nuovo `git push`.
 
 ## Procedura
@@ -38,8 +38,8 @@ Su ogni nave c'è un diario di bordo. Ogni voce dice: chi, quando, cosa e perch�
 - La chiave di casa dello skill `ssh-schluessel` apre anche il porto. La voce `Host aufwind.sh` in `~/.ssh/config` vale per tutte e due le porte.
 - Una volta sola impostare il nome per il diario di bordo:
   ```bash
-  git config --global user.name "Vorname Nachname"
-  git config --global user.email "deine-adresse@beispiel.ch"
+  git config --global user.name "Nome Cognome"
+  git config --global user.email "tuo-indirizzo@esempio.ch"
   ```
 
 ### 2. Prendere il diario di bordo
@@ -58,14 +58,12 @@ Il diario di bordo è privato: lo vedi solo tu. Poi controlla il `.gitignore`, a
 La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Poi insieme:
 
 ```bash
-git status                     # Was hat sich geändert?
-git add README.md              # Genau diese Datei aufnehmen
-git diff --cached              # Was kommt ins Logbuch?
-git commit -m "README: Ziel des Projekts in einem Satz"
-git pull --rebase && git push  # In den Hafen schicken
+git status                     # Cosa è cambiato?
+git add README.md              # Aggiungere esattamente questo file
+git diff --cached              # Cosa finisce nel diario di bordo?
+git commit -m "README: obiettivo del progetto in una frase"
+git pull --rebase && git push  # Mandare al porto
 ```
-
-(I commenti nel blocco dicono: cosa è cambiato? · aggiungere esattamente questo file · cosa finisce nel diario di bordo? · mandare al porto.)
 
 Le buone note dicono cosa e perché, in meno di 60 caratteri: «Contatto: aggiunto numero di telefono». Male: «update», «fix», «varie».
 
@@ -91,10 +89,10 @@ Se mancano le nuove voci, le prendi a mano: `ssh {name}@aufwind.sh 'git -C ~/pro
 
 - **`Permission denied (publickey)` al porto:** La serratura non è depositata, oppure manca la voce in `~/.ssh/config` (skill `ssh-schluessel`).
 - **Push rifiutato (`rejected`):** Nel porto c'è una voce più recente. `git pull --rebase`, poi `git push`.
-- **Conflitto durante il rebase:** Due voci hanno cambiato la stessa riga. Nel file, tra `<<<<<<<` e `>>>>>>>`, decidete insieme cosa resta, poi `git add <datei>`, `git rebase --continue`, `git push`.
+- **Conflitto durante il rebase:** Due voci hanno cambiato la stessa riga. Nel file, tra `<<<<<<<` e `>>>>>>>`, decidete insieme cosa resta, poi `git add <file>`, `git rebase --continue`, `git push`.
 - **Modifiche aperte di altri in `git status`:** non toccarle, non portarle con te. Aggiungi solo i tuoi file.
 - **Un segreto è finito nel diario di bordo:** Cancellarlo non basta, resta nelle voci vecchie. Subito skill `sicherheit`: generare di nuovo il segreto presso il fornitore.
-- **Tornare a uno stato precedente di un file:** `git log --oneline <datei>` mostra le voci, `git restore --source <eintrag> <datei>` lo riporta indietro. Poi una nuova voce.
+- **Tornare a uno stato precedente di un file:** `git log --oneline <file>` mostra le voci, `git restore --source <voce> <file>` lo riporta indietro. Poi una nuova voce.
 
 ## Messaggio finale
 

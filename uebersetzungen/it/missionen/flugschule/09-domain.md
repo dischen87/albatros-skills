@@ -24,4 +24,4 @@ La tua pagina è già raggiungibile su `{name}.aufwind.sh`. Con un dominio propr
 
 ## Ce l'hai fatta quando
 
-- `https://<deine-domain>` mostra la tua pagina con il simbolo del lucchetto.
+- `https://<il-tuo-dominio>` mostra la tua pagina con il simbolo del lucchetto.

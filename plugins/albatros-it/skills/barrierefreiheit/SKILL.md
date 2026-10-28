@@ -69,14 +69,14 @@ Le segnalazioni vanno nel protocollo come osservazioni. Quello che gli strumenti
 `docs/barrierefreiheit.md`:
 
 ```markdown
-# Barrierefreiheit: Prüfprotokoll (<Datum>)
+# Accessibilità: protocollo di verifica (<data>)
 
-| Punkt | Ergebnis | Beleg (Seite, Stelle) | Reparatur |
+| Punto | Risultato | Prova (pagina, punto) | Riparazione |
 |---|---|---|---|
-| Kontrast Text | erfüllt / nicht erfüllt / nicht relevant | … | … |
+| Contrasto del testo | soddisfatto / non soddisfatto / non pertinente | … | … |
 
-## Kontraste
-| Farbpaar | Wert | reicht für |
+## Contrasti
+| Coppia di colori | Valore | basta per |
 |---|---|---|
 ```
 

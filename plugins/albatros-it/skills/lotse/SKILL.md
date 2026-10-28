@@ -46,7 +46,7 @@ La tua risposta inizia con il punto della situazione, in tre parti brevi e solo 
 
 Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, di' la sua immagine in due o tre frasi e mostra il primo passo concreto. Poi ti fermi e aspetti la persona. Il resto dello skill lo fate dopo insieme, passo dopo passo. Per questa prima risposta leggi solo lo skill: ancora nessun file del progetto, nessun comando. È un unico messaggio breve, e il punto della situazione c'è dentro.
 
-- **Skill:** Leggi il file `../<kennung>/SKILL.md` nello stesso plugin (cioè accanto a questa cartella), p. es. `../pipeline/SKILL.md`. In Claude Code funziona anche con lo skill `albatros-it:<kennung>`. Gli identificativi sono uguali in ogni lingua.
+- **Skill:** Leggi il file `../<identificativo>/SKILL.md` nello stesso plugin (cioè accanto a questa cartella), p. es. `../pipeline/SKILL.md`. In Claude Code funziona anche con lo skill `albatros-it:<identificativo>`. Gli identificativi sono uguali in ogni lingua.
 - **Metodo** (percorso attività): Prendilo con lo strumento `methode` e il nome indicato, e segui le sue istruzioni.
 - **warten** (aspettare): Dillo in modo onesto e breve, più o meno per quanto. Se va bene, usa il tempo per una domanda sul progetto. Poi richiama `lage`.
 - **Strumento `coach_fragen`:** Questo la persona non lo può risolvere da sola. Formula con lei la domanda e ponila con `coach_fragen`.
@@ -75,7 +75,7 @@ Se manca lo strumento `lage`, o se riporta «nicht angemeldet» (non hai effettu
    - Codex: `codex mcp add albatros --url https://mcp.albatros.build`, poi `codex mcp login albatros`.
    - Gemini CLI: `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, poi nel Gemini CLI `/mcp auth albatros`.
    - Poi chiamare `lage`. Chi è del tutto nuovo da Albatros: skill `start`.
-3. Se la persona sceglie uno skill dalla tabella, leggilo (`../<kennung>/SKILL.md`) e seguilo. Anche lì gli strumenti di Albatros richiedono l'accesso. Quello che si può fare senza (pianificare, scrivere testi, spiegare) lo fai comunque.
+3. Se la persona sceglie uno skill dalla tabella, leggilo (`../<identificativo>/SKILL.md`) e seguilo. Anche lì gli strumenti di Albatros richiedono l'accesso. Quello che si può fare senza (pianificare, scrivere testi, spiegare) lo fai comunque.
 
 Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente che Albatros al momento non risponde e offri la biblioteca. Più tardi riprova `lage`.
 

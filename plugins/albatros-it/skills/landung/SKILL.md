@@ -34,22 +34,22 @@ Ripassa brevemente con la persona (vedi skill `kosten`): il progetto ha bisogno 
 `docs/landung.md` nel progetto:
 
 ```markdown
-# Umzug auf eigenen Server
+# Trasloco su un server proprio
 
-## Kisten
-- [ ] Logbuch: alles gepusht (`git status` sauber)
-- [ ] Logbuch im neuen Hafen (z. B. GitHub), alle Einträge dort angekommen
-- [ ] Geheimnisse: Liste der Namen aus `.env.example` (Werte nie hier!)
-- [ ] Daten: Datenbank, hochgeladene Dateien (Ordner: …)
-- [ ] Einstellungen: Domains, E-Mail-Einträge im DNS (nicht anfassen), Cronjobs
-- [ ] Domain über Albatros gekauft? Dann mit dem Auth-Code (`domain_mitnehmen`) zu einem neuen Registrar
+## Scatole
+- [ ] Diario di bordo: tutto mandato al porto (`git status` pulito)
+- [ ] Diario di bordo nel nuovo porto (p. es. GitHub), tutte le voci arrivate
+- [ ] Segreti: lista dei nomi da `.env.example` (mai i valori qui!)
+- [ ] Dati: banca dati, file caricati (cartella: …)
+- [ ] Impostazioni: domini, voci e-mail nel DNS (non toccarle), cronjob
+- [ ] Dominio comprato tramite Albatros? Allora con l'auth-code (`domain_mitnehmen`) a un nuovo registrar
 
-## Was ich selbst übernehme
-- [ ] Updates (automatisch, nur Sicherheitsupdates)
-- [ ] Sicherungen (nächtlich, ausser Haus, verschlüsselt, Probe jeden Monat)
-- [ ] Überwachung (Seite antwortet? Platte voll?)
+## Cosa mi assumo io
+- [ ] Aggiornamenti (automatici, solo quelli di sicurezza)
+- [ ] Backup (ogni notte, fuori casa, cifrati, prova ogni mese)
+- [ ] Sorveglianza (il sito risponde? disco pieno?)
 
-## Ablauf und Datum
+## Procedura e data
 …
 ```
 
@@ -73,25 +73,25 @@ Su Albatros l'operaio del nastro trasportatore abita in casa. Nella casa propria
 2. **Traslocare il diario di bordo:**
    ```bash
    git remote rename origin albatros
-   gh repo create <projektname> --private --source . --remote origin --push
+   gh repo create <nome-progetto> --private --source . --remote origin --push
    ```
    Il vecchio porto resta raggiungibile come `albatros` finché non te ne vai.
 3. **Chiave di lettura per il nuovo server:** prende lui stesso il diario di bordo, solo in lettura. La sua chiave di casa resta sul server, a GitHub va solo la serratura:
    ```bash
-   ssh deploy@<neue-adresse> 'ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N "" -C eigener-server'
-   ssh deploy@<neue-adresse> 'cat ~/.ssh/id_ed25519.pub' > server-schloss.pub
-   gh repo deploy-key add server-schloss.pub --title "eigener-server"   # nur lesen, das ist der Standard
+   ssh deploy@<nuovo-indirizzo> 'ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N "" -C eigener-server'
+   ssh deploy@<nuovo-indirizzo> 'cat ~/.ssh/id_ed25519.pub' > server-schloss.pub
+   gh repo deploy-key add server-schloss.pub --title "eigener-server"   # solo lettura, è l'impostazione standard
    rm server-schloss.pub
-   ssh deploy@<neue-adresse> 'ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts && git clone git@github.com:<benutzer>/<projektname>.git ~/projekt'
+   ssh deploy@<nuovo-indirizzo> 'ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts && git clone git@github.com:<utente>/<nome-progetto>.git ~/projekt'
    ```
    Confronta l'impronta digitale di github.com con quella su docs.github.com.
 4. **Una chiave propria per il nastro trasportatore**, mai la chiave di casa della persona. Così si può bloccare da sola:
    ```bash
    ssh-keygen -t ed25519 -f ~/.ssh/fliessband -N "" -C fliessband
-   ssh deploy@<neue-adresse> 'cat >> ~/.ssh/authorized_keys' < ~/.ssh/fliessband.pub
+   ssh deploy@<nuovo-indirizzo> 'cat >> ~/.ssh/authorized_keys' < ~/.ssh/fliessband.pub
    gh secret set DEPLOY_KEY < ~/.ssh/fliessband
-   gh secret set DEPLOY_KNOWN_HOSTS --body "$(ssh-keyscan -t ed25519 <neue-adresse> 2>/dev/null)"
-   gh variable set SERVER --body "deploy@<neue-adresse>"
+   gh secret set DEPLOY_KNOWN_HOSTS --body "$(ssh-keyscan -t ed25519 <nuovo-indirizzo> 2>/dev/null)"
+   gh variable set SERVER --body "deploy@<nuovo-indirizzo>"
    gh variable set SEITE_URL --body "https://<domain>"
    ```
    La chiave va direttamente dal file nella cassaforte di GitHub (Secrets), mai nella chat e mai nel diario di bordo. Dopo si può cancellare `~/.ssh/fliessband` dal computer.
@@ -99,12 +99,12 @@ Su Albatros l'operaio del nastro trasportatore abita in casa. Nella casa propria
    ```yaml
    jobs:
      fliessband:
-       runs-on: ubuntu-latest              # ein Arbeiter von GitHub statt deines Servers
+       runs-on: ubuntu-latest              # un operaio di GitHub invece del tuo server
        permissions:
-         contents: read                    # so wenig Rechte wie möglich
+         contents: read                    # meno diritti possibile
        concurrency:
          group: ausliefern
-         cancel-in-progress: false         # eine laufende Auslieferung nie abbrechen
+         cancel-in-progress: false         # mai interrompere una consegna in corso
        env:
          ZIEL: ${{ vars.SERVER }}
          SEITE: ${{ vars.SEITE_URL }}
@@ -122,11 +122,11 @@ Su Albatros l'operaio del nastro trasportatore abita in casa. Nella casa propria
          - name: Bauen und ausliefern, notfalls zurück
            run: |
              ssh "$ZIEL" "SHA=$SHA bash -s" <<'EOF'
-             # hier der Block aus der Albatros-Version, ab «set -euo pipefail» bis «echo "läuft: $SHA"», ohne die Zeile mit willkommen
+             # qui il blocco della versione Albatros, da «set -euo pipefail» fino a «echo "läuft: $SHA"», senza la riga con willkommen
              EOF
          - name: Endkontrolle von aussen
            run: |
-             # unverändert aus der Albatros-Version
+             # invariato dalla versione Albatros
    ```
    I segreti arrivano ai comandi solo tramite `env:`, mai direttamente come `${{ secrets.… }}` in una riga `run`. Poi `gh workflow run deploy.yml` e `gh run watch`. Deve diventare verde.
 
@@ -138,7 +138,7 @@ Su Albatros l'operaio del nastro trasportatore abita in casa. Nella casa propria
 
 ### 6. Cambiare l'indirizzo
 
-Prima testa tramite l'indirizzo del nuovo server, senza cambiare l'elenco telefonico: `curl --resolve <domain>:443:<neue-ip> https://<domain>/`. Poi dipende da dove è affittato l'indirizzo.
+Prima testa tramite l'indirizzo del nuovo server, senza cambiare l'elenco telefonico: `curl --resolve <domain>:443:<nuovo-ip> https://<domain>/`. Poi dipende da dove è affittato l'indirizzo.
 
 **Comprato tramite Albatros** (`konto_status` lo mostra alla voce «Eigene Domains», domini propri): l'elenco telefonico per questo indirizzo lo tiene Albatros. L'indirizzo trasloca con te presso un registrar scelto dalla persona:
 

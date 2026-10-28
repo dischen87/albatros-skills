@@ -25,19 +25,19 @@ Proprio così devono lavorare le statistiche del tuo sito web: poche tacche con 
 
 ### 1. Prima la lista, poi l'integrazione
 
-Crea con la persona `docs/statistik.md`. Per cominciare basta un evento obiettivo: l'azione che per lei conta (da `docs/plan.md`, «Woran wir Erfolg merken», cioè da cosa capiamo il successo).
+Crea con la persona `docs/statistik.md`. Per cominciare basta un evento obiettivo: l'azione che per lei conta (da `docs/plan.md`, «Da cosa capiamo il successo»).
 
 ```markdown
-# Ereignis-Plan
+# Piano degli eventi
 
-| Ereignis | zählt wenn | Pflicht-Angaben |
+| Evento | conta quando | Dati obbligatori |
 |---|---|---|
-| `$pageview` | automatisch bei jedem Seitenaufruf | – |
-| `generate_lead` | Formular erfolgreich abgeschickt (Server hat bestätigt) | `form` (welches Formular) |
-| `sign_up` | Newsletter-Anmeldung bestätigt | `location` (wo auf der Seite) |
+| `$pageview` | automaticamente a ogni visualizzazione di pagina | – |
+| `generate_lead` | modulo inviato con successo (il server ha confermato) | `form` (quale modulo) |
+| `sign_up` | iscrizione alla newsletter confermata | `location` (dove sul sito) |
 
-Eigene Besuche: herausgefiltert seit <Datum>
-Änderungen: <Datum> – <was umbenannt, warum>
+Visite proprie: filtrate dal <data>
+Modifiche: <data> – <cosa è stato rinominato, perché>
 ```
 
 Regole per i nomi: minuscolo con trattino basso (`generate_lead`), preferire i nomi standard conosciuti (`purchase`, `sign_up`, `generate_lead`), un evento per azione, le varianti come dato (`form: "kontakt"`), mai dare il nome secondo la posizione (`passo_2`).
@@ -53,8 +53,8 @@ Lo snippet d'integrazione attuale dalle istruzioni di PostHog («Web snippet») 
 ```js
 posthog.init('phc_…', {
   api_host: 'https://eu.i.posthog.com',
-  persistence: 'memory',              // keine Cookies, kein Banner nötig
-  person_profiles: 'identified_only', // keine Profile von anonymen Besuchern
+  persistence: 'memory',              // niente cookie, niente banner
+  person_profiles: 'identified_only', // nessun profilo di visitatori anonimi
 })
 ```
 
@@ -65,7 +65,7 @@ posthog.init('phc_…', {
 Conta solo dopo il successo, non quando si apre il modulo:
 
 ```js
-// nachdem der Server das Formular bestätigt hat:
+// dopo che il server ha confermato il modulo:
 posthog.capture('generate_lead', { form: 'kontakt' })
 ```
 
