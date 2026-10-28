@@ -51,9 +51,9 @@ Es gibt drei Stufen. Preise und Grenzen nennst du nur aus `konto_status` oder vo
 
 - **Gratis:** Skills, Missionen lesen, die Community. Keine eigene Seite im Netz.
 - **Light:** eine Webseite unter `https://{name}.aufwind.sh`, direkt aus dem Logbuch: Was die Person in den Hafen schickt (`git push`), ist kurz danach online. Gut für Seiten aus Texten und Bildern: Verein, Portfolio, Laden mit Kontakt per Mail. Kein eigener Server, kein Fliessband, keine eigene Domain.
-- **Pilot:** ein eigener Server (Bild: eine eigene Wohnung im grossen Haus) mit Fliessband, täglichen Fotos und eigener Domain. Nötig, sobald auf der Seite ein Programm läuft: eine Anmeldung für Mitglieder, eine Datenbank, ein eigenes Bearbeitungsfenster für Inhalte oder ein Formular, das mehr tut als eine Mail zu öffnen.
+- **Pilot:** ein eigener Server (Bild: eine eigene Wohnung im grossen Haus) mit Fliessband, täglichen Fotos und eigener Domain. Nötig, sobald auf der Seite ein Programm läuft: eine Anmeldung für Mitglieder, eine Datenbank, ein eigenes Bearbeitungsfenster für Inhalte oder ein Formular, das mehr tut als eine Mail zu öffnen. Ebenso, sobald die Seite unter einer eigenen Domain laufen soll (`chor-wil.ch`): Die gibt es nur mit Pilot.
 
-Erklär die Stufen in Alltagssprache, ohne Kürzel wie RAM, CMS oder Login, und nur so genau, wie die Person es für die Wahl braucht. Empfiehl die kleinste Stufe, die reicht, mit einem Satz Begründung, und sag gleich, wie es weitergeht: Link zur Zahlungsseite dieser Stufe, dann Schlüssel und Seite. Für eine Seite mit Texten und Bildern ist das Light. Wechseln geht später jederzeit: Die Adresse der Seite und das Logbuch bleiben.
+Erklär die Stufen in Alltagssprache, ohne Kürzel wie RAM, CMS oder Login, und nur so genau, wie die Person es für die Wahl braucht. Empfiehl die kleinste Stufe, die reicht, mit einem Satz Begründung, und sag gleich, wie es weitergeht: Link zur Zahlungsseite dieser Stufe, dann Schlüssel und Seite. Für eine Seite mit Texten und Bildern ist das Light. Nenn Pilot als Weg für später, wenn ein Programm oder eine eigene Domain dazukommt. Wechseln geht später jederzeit: Die Adresse der Seite und das Logbuch bleiben.
 
 Eine Seite im Netz gibt es erst mit hinterlegtem Zahlungsmittel. Erklär den Grund in einem Satz: Das schützt alle davor, dass jemand Albatros für Unfug missbraucht. Hol mit `upgrade_link` und der gewählten Stufe (`light` oder `pilot`) den Link zur Zahlungsseite und gib ihn der Person. Die Karte tippt sie nur dort ein. Danach `konto_status` aufrufen und warten, bis das Abo aktiv ist.
 
@@ -67,6 +67,7 @@ Folge jetzt dem Skill `ssh-schluessel`. Kurz: Der Schlüssel entsteht auf dem Co
 
 - **Light:** `seite_erstellen` mit dem Namen, den die Person für ihre Adresse will (klein, ohne Leerzeichen, er wird Teil von `name.aufwind.sh`), und ihrem Schloss, falls es noch nicht hinterlegt ist. Bild: «Dein Schaufenster in einer Ladenstrasse: Du richtest es ein, Albatros schliesst jeden Morgen auf.» Albatros legt das Logbuch im Hafen an und zeigt die Seite daraus. `konto_status` nennt danach die Seite und die Adresse des Hafens.
 - **Pilot:** `server_erstellen`. Bild: «Deine Wohnung in einem grossen Haus: eigene Tür, eigene Zimmer, die Nachbarn sehen nicht hinein.» Das dauert meist eine bis zwei Minuten. Frag mit `konto_status` nach, bis der Server bereit ist. Er heisst wie die Person (z. B. `anna`).
+- **Sprache:** Gib bei beiden `sprache` mit, die Sprache, in der du mit der Person sprichst (`de`, `fr`, `it` oder `en`). Dann sind ihre erste Seite, das Logbuch und auf dem Server das Bordbuch in ihrer Sprache.
 
 ### 6. Erster Besuch
 
