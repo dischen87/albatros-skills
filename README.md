@@ -19,7 +19,7 @@ flotte legt mit der Vorlage für jeden neuen Server `{name}/projekt` im Hafen an
 
 Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`. Der MCP-Dienst liefert sie mit dem Werkzeug `methode` an Mitglieder aus.
 
-> Status: privat. Das Repo wird erst öffentlich, wenn Mathias es freigibt. Eine Lizenz ist noch nicht gewählt.
+> Status: privat bis zum Go-live von albatros.build, dann öffentlich (freigegeben am 28.10.2026). Eine Lizenz ist noch nicht gewählt.
 
 ## Installation
 
@@ -31,7 +31,7 @@ Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`.
 /albatros:start
 ```
 
-Lokal aus diesem Ordner: `/plugin marketplace add /Users/mathias/diisi_projekte/albatros-skills`.
+Lokal aus einem geklonten Ordner: `/plugin marketplace add ./albatros-skills`.
 
 Beim ersten Werkzeug-Aufruf meldet sich Albatros über den Browser an (`/mcp`, dann `albatros` und «Authenticate»).
 
