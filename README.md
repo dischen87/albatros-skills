@@ -64,6 +64,19 @@ Danach in Gemini CLI: `/mcp auth albatros`.
 
 `npx skills` findet die Skills über `.claude-plugin/marketplace.json`, getestet mit `skills@1.7.4`. Den Befehl `/albatros:start` gibt es nur in Claude Code. In Codex und Gemini sagst du «Starte Albatros», dann lädt die KI den Skill `start`.
 
+## Sprachen
+
+Alle Skills und Missionen gibt es auf Deutsch, Französisch, Italienisch und Englisch, mit denselben Kennungen. Begriffe und Ablage: [GLOSSAR.md](GLOSSAR.md).
+
+| Sprache | Claude Code | Codex und Gemini CLI |
+|---|---|---|
+| Deutsch | `/plugin install albatros@albatros` | `npx skills add dischen87/albatros-skills` |
+| Français | `/plugin install albatros-fr@albatros` | `npx skills add https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-fr` |
+| Italiano | `/plugin install albatros-it@albatros` | `npx skills add https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-it` |
+| English | `/plugin install albatros-en@albatros` | `npx skills add https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-en` |
+
+Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass sie alles in der Sprache der Person weitergibt. Evals gibt es nur für Deutsch.
+
 ## Aufbau
 
 ```
