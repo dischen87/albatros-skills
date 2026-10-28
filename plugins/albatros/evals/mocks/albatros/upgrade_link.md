@@ -2,4 +2,5 @@
 type: fixed
 ---
 
-Link zur Zahlungsseite für Pilot (CHF 40 pro Monat, gültig 30 Minuten): https://albatros.build/abo/checkout/test
+Link zur Zahlungsseite (Pilot, CHF 40 pro Monat): https://albatros.build/abo/checkout/test
+Die Karte gibst du nur dort ein. Danach mit konto_status prüfen, ob das Abo aktiv ist.

@@ -2,4 +2,5 @@
 type: fixed
 ---
 
-Link zur Zahlungsseite für Light (CHF 15 pro Monat, gültig 30 Minuten): https://albatros.build/abo/checkout/test-light
+Link zur Zahlungsseite (Light, CHF 15 pro Monat): https://albatros.build/abo/checkout/test-light
+Die Karte gibst du nur dort ein. Danach mit konto_status prüfen, ob das Abo aktiv ist.
