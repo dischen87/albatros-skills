@@ -10,7 +10,7 @@ Un système de gestion de contenu (CMS) est un tableau d'affichage dans le coulo
 ## Ce que tu apprends
 
 - quand un CMS vaut la peine, et quand non
-- trois niveaux : des textes dans le projet, un tableau d'affichage via ton journal de bord, ton propre CMS
+- quatre niveaux : des textes dans le projet, un tableau d'affichage via ton journal de bord, un petit tableau d'affichage sur le serveur, un grand CMS
 - comment un programme comme Strapi tourne dans un conteneur
 - ce qu'est un tunnel et pourquoi l'espace d'administration ne doit pas être public
 

@@ -19,7 +19,7 @@ Un plan sur une feuille de papier suffit. Il évite beaucoup de transformations 
 - **Ne pas seulement poser des questions :** S'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées (`[Hypothèse : …]`). Demande ce qui manque seulement à la fin.
 - Tutoiement, questions courtes, une question par message. Reprends les réponses mot pour mot : la personne doit reconnaître son plan. Pas de jargon : « pages » plutôt que « sitemap », « menu » plutôt que « navigation ».
 
-## Déroulement : sept questions
+## Déroulement : huit questions
 
 1. **De quoi s'agit-il ?** En une phrase, comme tu le raconterais à une voisine.
 2. **Pour qui ?** Qui doit trouver le site ? Le plus concrètement possible : « les parents du quartier qui cherchent une cantine de midi » plutôt que « tout le monde ».
@@ -32,7 +32,8 @@ Un plan sur une feuille de papier suffit. Il évite beaucoup de transformations 
    - Mentions légales et protection des données (obligatoire, voir le skill `recht-ch`)
 5. **Qu'est-ce qui existe déjà ?** Textes, photos, logo, prix, horaires d'ouverture. Ce qui manque va sur la liste pour le skill `inhalte`.
 6. **Quels modèles ?** Deux ou trois sites web qui plaisent à la personne, et ce qui lui plaît exactement (les couleurs, le calme, les photos, la brièveté des textes). Cela aidera plus tard avec le skill `gestaltung`.
-7. **À quoi vois-tu que le site fonctionne ?** Un chiffre que la personne veut suivre, par exemple le nombre de demandes par mois. Le skill `statistik` en aura besoin plus tard.
+7. **Que doit savoir faire le site ?** Dans quelles langues, qui modifie les contenus, les visiteurs doivent-ils s'inscrire ou se connecter ? Avec plusieurs langues, ça reste un site normal. Il ne faut une brique que pour une liste d'inscription, une connexion ou un tableau d'affichage pour d'autres (skill `bausteine`).
+8. **À quoi vois-tu que le site fonctionne ?** Un chiffre que la personne veut suivre, par exemple le nombre de demandes par mois. Le skill `statistik` en aura besoin plus tard.
 
 ## Le plan
 
@@ -45,6 +46,8 @@ Un plan sur une feuille de papier suffit. Il évite beaucoup de transformations 
 **Pour qui :** …
 **Chose principale pour les visiteurs :** … (bouton : « … »)
 **À quoi nous voyons le succès :** …
+**Langues :** …
+**Briques :** aucune / liste d'inscription / membres avec connexion / tableau d'affichage / grand CMS
 
 ## Pages
 - Accueil : …
@@ -62,7 +65,7 @@ Un plan sur une feuille de papier suffit. Il évite beaucoup de transformations 
 
 ## Ce que tu épargnes à la personne
 
-- **Trop à la fois :** Blog, boutique, espace membres et trois langues, c'est pour plus tard. D'abord une page qui fait bien la chose principale.
+- **Trop à la fois :** Blog, boutique et espace membres, c'est pour plus tard. D'abord une page qui fait bien la chose principale. Plusieurs langues ne posent pas de problème si les textes sont là.
 - **Des choix techniques trop tôt :** Le modèle dans le dépôt suffit pour commencer. Un système pour les contenus (skill `cms`) ne vient que lorsque quelqu'un sans connaissances techniques doit régulièrement modifier des contenus.
 - **Logo et couleurs en premier :** La mise en forme vient après le contenu. Une belle page vide n'aide personne.
 

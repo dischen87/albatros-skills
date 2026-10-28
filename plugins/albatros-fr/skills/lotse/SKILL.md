@@ -44,6 +44,8 @@ Ta réponse commence par le point de situation, en trois parties courtes et seul
 - **À faire maintenant :** l'étape et sa raison.
 - **Ensuite :** ce qui vient après.
 
+Dans le premier point de situation d'une conversation, il y a en plus une phrase sur le sac à dos : la personne a son IA avec elle, et avec Claude Code, Codex et Gemini CLI, tout marche pareil. Nomme les trois par leur nom.
+
 Juste après, dans la même réponse, tu commences l'étape : lis le skill, donne son image en deux ou trois phrases et montre la première étape concrète. Puis tu t'arrêtes et tu attends la personne. Le reste du skill, vous le parcourez ensuite ensemble, étape par étape. Pour cette première réponse, tu lis seulement le skill : encore aucun fichier du projet, aucune commande. C'est un seul message, court, et le point de situation est dedans.
 
 - **Skill :** lis le fichier `../<identifiant>/SKILL.md` dans le même plugin (donc à côté de ce dossier), p. ex. `../pipeline/SKILL.md`. Dans Claude Code, ça marche aussi avec le skill `albatros-fr:<identifiant>`. Les identifiants sont les mêmes dans toutes les langues.
@@ -95,6 +97,7 @@ Si Albatros répond avec une autre erreur ou ne répond pas du tout : dis honn
 | `inhalte` | Écrire et choisir les textes et les images de la page |
 | `gestaltung` | La page doit être plus simple à utiliser et plus belle |
 | `cms` | Modifier plus tard les contenus toi-même, sans code |
+| `bausteine` | La page doit savoir faire plus : liste d'inscription, connexion pour les membres, tableau d'affichage, grand CMS |
 | `seo-grundlagen` | La page doit être trouvée sur Google et compagnie |
 | `barrierefreiheit` | La page doit être facile à lire et à utiliser pour tout le monde |
 | `recht-ch` | Mentions légales et déclaration de protection des données pour la Suisse |

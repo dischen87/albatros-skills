@@ -10,7 +10,7 @@ A content management system (CMS) is a noticeboard in the hallway: anyone with s
 ## What you'll learn
 
 - when a CMS is worth it and when it isn't
-- three levels: texts in the project, a noticeboard through your logbook, your own CMS
+- four levels: texts in the project, a noticeboard through your logbook, a small noticeboard on the server, a big CMS
 - how a program like Strapi runs in a container
 - what a tunnel is and why the admin area shouldn't be public
 

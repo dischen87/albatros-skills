@@ -53,3 +53,14 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | Repo | dépôt | repository | repository | wenn das Wort nötig ist, sonst Logbuch |
 | Arbeiter am Fliessband | ouvrier | operaio | worker | |
 | Landingpage | landing page | landing page | landing page | |
+| Bert | Bert | Bert | Bert | der Albatros, Maskottchen; Name nie übersetzen |
+| Rucksack (die KI kommt mit) | sac à dos | zaino | rucksack | immer mit allen drei Namen: Claude Code, Codex, Gemini CLI |
+| Baustein | brique | blocco | building block | fertiges Teil für die Seite (Skill `bausteine`) |
+| Fertigteile beim Hausbau | éléments préfabriqués dans la construction d'une maison | elementi prefabbricati nella costruzione di una casa | prefab parts when building a house | Bild für Bausteine |
+| Anmeldeliste | liste d'inscription | lista di iscrizione | sign-up list | Baustein (PocketBase) |
+| Mitgliederbereich mit Login | espace membres avec connexion | area membri con accesso | members' area with login | Baustein (PocketBase) |
+| Pinnwand | tableau d'affichage | bacheca | noticeboard | Baustein (PocketBase) |
+| grosses CMS | grand CMS | CMS grande | big CMS | Baustein (Strapi mit Postgres) |
+| Verwaltung (Admin-Bereich) | administration | amministrazione | admin area | |
+| Arbeitsspeicher | mémoire vive | memoria di lavoro (RAM) | memory (RAM) | |
+| geheimer Gang (SSH-Tunnel) | passage secret (tunnel) | passaggio segreto (tunnel) | secret passage (tunnel) | |

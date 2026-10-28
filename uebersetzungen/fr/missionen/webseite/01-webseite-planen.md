@@ -16,7 +16,7 @@ Personne ne construit une maison sans plan. Avant que ton IA construise une seul
 
 ## Comment t'y prendre
 
-1. Ton IA te pose sept questions, l'une après l'autre.
+1. Ton IA te pose huit questions, l'une après l'autre.
 2. Vous écrivez les réponses sous forme de plan.
 3. Tu lis le plan et tu dis s'il est juste.
 4. Le plan va dans le journal de bord et sur le serveur.

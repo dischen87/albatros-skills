@@ -16,7 +16,7 @@ Nessuno costruisce una casa senza pianta. Prima che la tua IA costruisca anche u
 
 ## Come procedi
 
-1. La tua IA ti fa sette domande, una dopo l'altra.
+1. La tua IA ti fa otto domande, una dopo l'altra.
 2. Scrivete insieme le risposte sotto forma di pianta.
 3. Leggi il piano e dici se è giusto.
 4. Il piano va nel diario di bordo e sul server.

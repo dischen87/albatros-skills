@@ -10,7 +10,7 @@ Un sistema per gestire i contenuti (CMS) è una bacheca nel corridoio: chi vuole
 ## Cosa impari
 
 - quando conviene un CMS e quando no
-- tre livelli: testi nel progetto, bacheca tramite il tuo diario di bordo, CMS proprio
+- quattro livelli: testi nel progetto, bacheca tramite il tuo diario di bordo, bacheca piccola sul server, CMS grande
 - come un programma come Strapi gira in un container
 - cos'è un tunnel e perché l'area di amministrazione non deve essere pubblica
 

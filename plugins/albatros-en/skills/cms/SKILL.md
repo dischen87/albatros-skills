@@ -27,44 +27,32 @@ Ask three things:
 2. Who changes it? (people without a terminal → more likely yes)
 3. Are there lots of entries of the same kind? (events, products, posts → more likely yes)
 
-Three levels, always take the simplest one that's enough:
+Four levels, always take the simplest one that's enough:
 
 | Level | What | Good if |
 |---|---|---|
 | A: texts in the project | content as Markdown files in the repo, the AI changes them | one person with AI looks after everything, rare changes |
 | B: noticeboard via your logbook | an editing window in the browser (e.g. Decap CMS) that changes the files in the repo | others should change texts, but no database is needed |
-| C: own CMS | a program with a database on the server, e.g. Strapi | lots of entries, several roles, image management, later an app too |
+| C: small noticeboard | PocketBase on the server, entries with title, date, text and picture | others look after news or dates, few fields, hardly any memory (about 20 MB) |
+| D: big CMS | Strapi with its own database on the server | lots of content types, several roles, image management, later an app too (about 200 MB, build up to 2.5 GB) |
 
-If A or B is the answer: write that in `docs/plan.md` and stop here. That's a good result. Level C needs an own server, so Pilot. With Light, A and B work.
+If A or B is the answer: write that in `docs/plan.md` and stop here. That's a good result. C and D need an own server, so Pilot. With Light, A and B work. C and D are ready-made building blocks; you build them in with the skill `bausteine` (recipe `pinnwand` or building block `strapi`).
 
-## 2. Set up Strapi (level C)
+## 2. Set up Strapi (level D)
 
-### Before
+Strapi comes as a ready-made building block with its own Postgres database: skill `bausteine`, section “Strapi”. The most important points up front, so you can explain them to the person:
 
-- Strapi needs memory. Check with `free -h` on the server whether at least about 1 GB is free. Otherwise get more power first (skill `kosten`).
-- Take a photo: tool `snapshot` with the name `vor-cms` (skill `zurueck-auf-gestern`).
+- **Memory:** While running, Strapi with its database needs about 200 MB, and up to 2.5 GB while building. The first build takes about 7 minutes. Check with `free -h` whether enough is free for building. A photo first: tool `snapshot` with the name `vor-cms`.
+- **Secrets** are created by `bausteine/strapi/geheimnisse.sh` directly on the server, never in the logbook (skill `sicherheit`).
+- **Content types** you write as files under `bausteine/strapi/cms/src/api/`; on the server they can't be clicked together. Pattern: recipe `veranstaltungen`.
+- **The secret passage to the noticeboard:** The admin area isn't public. The person reaches it through a tunnel. Picture: a secret passage from their computer straight into the hallway, which nobody from the street walks past.
 
-### Set up
+  ```bash
+  ssh -N -L 1337:localhost:1337 {name}@aufwind.sh
+  ```
 
-1. Locally, create a Strapi project in the repo's `cms/` folder (current instructions: `npx create-strapi@latest cms`), with SQLite as the database. The database file doesn't go into the logbook (`.gitignore`).
-2. In `compose.yaml`, add a service `cms`: container name `cms`, port only on the inside (`127.0.0.1:1337:1337`), a volume for the database and uploaded pictures. Secrets (`APP_KEYS`, `JWT_SECRET`, `ADMIN_JWT_SECRET`, `API_TOKEN_SALT`) as environment variables from a `.env` on the server, never in the repo (skill `sicherheit`).
-3. Logbook and conveyor belt (skills `git-logbuch`, `pipeline`). After that, on the server: `docker ps` shows `cms`.
-
-### The secret passage to the noticeboard
-
-The editing area isn't public. The person reaches it through a tunnel. Picture: a secret passage from their computer straight into the hallway, which nobody from the street walks past.
-
-```bash
-ssh -L 1337:localhost:1337 {name}@aufwind.sh
-```
-
-As long as this window is open, they open `http://localhost:1337/admin` in the browser. The first time, they create the admin account there themselves. They only type the password there.
-
-### Connect the content
-
-1. Create a content type with the person (e.g. “Event” with title, date, place, text, picture).
-2. The website fetches the entries while building via `http://cms:1337/api/...` from the same Docker network. An API token with read-only rights, stored as a secret on the server.
-3. New entries appear after the next build. If you want it instantly: a webhook in Strapi that triggers the build. That only comes when it really gets in the way.
+  As long as the tunnel is open, they open `http://localhost:1337/admin`. The first time, they create the account there themselves. They only type the password there.
+- **Content on the site:** Whatever is listed in `OEFFENTLICH` (`bausteine/strapi/cms/src/index.ts`), the site reads at `/cms/api/…` on its own address, straight after publishing. A new build isn't needed for that.
 
 ## Stumbling blocks
 
@@ -74,7 +62,7 @@ As long as this window is open, they open `http://localhost:1337/admin` in the b
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-04-cms`. The check looks at whether the container `cms` is running. If the person has deliberately decided on level A or B, tell them they may skip this mission. That's a good decision, not a gap.
+`mission_pruefen` with `webseite-04-cms`. The check looks at whether the container `cms` is running (Strapi). If the person has deliberately decided on level A, B or C, tell them they may skip this mission. That's a good decision, not a gap.
 
 ## Final message
 

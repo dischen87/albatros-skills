@@ -16,7 +16,7 @@ Nobody builds a house without a floor plan. Before your AI builds a single line,
 
 ## How you go about it
 
-1. Your AI asks you seven questions, one after the other.
+1. Your AI asks you eight questions, one after the other.
 2. Together you write down the answers as a floor plan.
 3. You read the plan and say whether it's right.
 4. The plan goes into the logbook and onto the server.

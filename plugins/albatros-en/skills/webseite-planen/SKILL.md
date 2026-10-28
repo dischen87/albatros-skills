@@ -19,7 +19,7 @@ A floor plan on one sheet of paper is enough. It saves a lot of rebuilding later
 - Casual “you”, short questions, one question per message. Write the answers down word for word, so the person recognises their own plan. No jargon: “pages” instead of “sitemap”, “menu” instead of “navigation”.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 
-## Steps: seven questions
+## Steps: eight questions
 
 1. **What's it about?** In one sentence, the way you'd tell a neighbour.
 2. **Who's it for?** Who should find the site? As specific as possible: “parents in the neighbourhood looking for a lunch club” instead of “everyone”.
@@ -32,7 +32,8 @@ A floor plan on one sheet of paper is enough. It saves a lot of rebuilding later
    - Legal notice (Impressum, the details Swiss law requires about who runs the site) and privacy policy (mandatory, see skill `recht-ch`)
 5. **What's already there?** Texts, photos, logo, prices, opening hours. Whatever's missing goes on the list for the skill `inhalte`.
 6. **Which examples?** Two or three websites the person likes, and what exactly about them (colours, calm, photos, how short the texts are). That helps later with the skill `gestaltung`.
-7. **How will you know the site works?** One number the person wants to keep an eye on, e.g. enquiries per month. The skill `statistik` needs that later.
+7. **What does the site need to be able to do?** In which languages, who changes the content, should visitors sign up or log in? Several languages still make a normal site. Only a sign-up list, a login or a noticeboard for others needs a building block (skill `bausteine`).
+8. **How will you know the site works?** One number the person wants to keep an eye on, e.g. enquiries per month. The skill `statistik` needs that later.
 
 ## The floor plan
 
@@ -45,6 +46,8 @@ Write the answers down with the person in `docs/plan.md` in the project:
 **Who it's for:** …
 **Main thing for visitors:** … (button: “…”)
 **How we'll know it works:** …
+**Languages:** …
+**Building blocks:** none / sign-up list / members with login / noticeboard / big CMS
 
 ## Pages
 - Home: …
@@ -62,7 +65,7 @@ At the end, read the plan back to the person and ask: “Is that right?” Only 
 
 ## What you spare the person
 
-- **Too much at once:** a blog, a shop, a members' area and three languages are for later. First a site that does the main thing well.
+- **Too much at once:** a blog, a shop and a members' area are for later. First a site that does the main thing well. Several languages are no problem if the texts are there.
 - **Tech decisions too early:** the template in the repo is enough to start with. A system for content (skill `cms`) only comes when someone without tech skills regularly has to change content.
 - **Logo and colours first:** design comes after content. A beautiful empty site helps nobody.
 

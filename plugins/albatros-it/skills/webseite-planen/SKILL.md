@@ -19,7 +19,7 @@ Basta una pianta su un foglio di carta. Più tardi risparmia molti lavori di ris
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Dai del tu, domande brevi, una domanda per messaggio. Riprendi le risposte alla lettera: la persona deve riconoscere il suo piano. Niente gergo tecnico: «pagine» invece di «sitemap», «menu» invece di «navigazione».
 
-## Procedura: sette domande
+## Procedura: otto domande
 
 1. **Di cosa si tratta?** In una frase, come lo racconteresti a una vicina di casa.
 2. **Per chi?** Chi deve trovare il sito? Il più concreto possibile: «genitori del quartiere che cercano una mensa per il pranzo» invece di «tutti».
@@ -32,7 +32,8 @@ Basta una pianta su un foglio di carta. Più tardi risparmia molti lavori di ris
    - Impressum e protezione dei dati (obbligatori, vedi lo skill `recht-ch`)
 5. **Cosa c'è già?** Testi, foto, logo, prezzi, orari d'apertura. Quello che manca va sulla lista per lo skill `inhalte`.
 6. **Quali modelli?** Due o tre siti web che piacciono alla persona, e cosa esattamente le piace (colori, calma, foto, quanto sono brevi i testi). Più tardi aiuta con lo skill `gestaltung`.
-7. **Da cosa capisci che il sito funziona?** Un numero che la persona vuole tenere d'occhio, per esempio le richieste al mese. Più tardi serve allo skill `statistik`.
+7. **Cosa deve saper fare il sito?** In quali lingue, chi cambia i contenuti, i visitatori devono iscriversi o accedere? Più lingue restano un sito normale. Solo una lista di iscrizione, un accesso o una bacheca per altri richiedono un blocco (skill `bausteine`).
+8. **Da cosa capisci che il sito funziona?** Un numero che la persona vuole tenere d'occhio, per esempio le richieste al mese. Più tardi serve allo skill `statistik`.
 
 ## La pianta
 
@@ -45,6 +46,8 @@ Scrivi le risposte con la persona in `docs/plan.md` nel progetto:
 **Per chi:** …
 **La cosa principale per i visitatori:** … (pulsante: «…»)
 **Da cosa capiamo il successo:** …
+**Lingue:** …
+**Blocchi:** nessuno / lista di iscrizione / membri con accesso / bacheca / CMS grande
 
 ## Pagine
 - Pagina iniziale: …
@@ -62,7 +65,7 @@ Alla fine leggi il piano alla persona e chiedi: «È giusto così?» Solo dopo v
 
 ## Cosa risparmi alla persona
 
-- **Troppo tutto in una volta:** Blog, negozio online, area per i membri e tre lingue sono cose per dopo. Prima un sito che fa bene la cosa principale.
+- **Troppo tutto in una volta:** Blog, negozio online e area per i membri sono cose per dopo. Prima un sito che fa bene la cosa principale. Più lingue non sono un problema, se i testi ci sono.
 - **Decisioni tecniche troppo presto:** Per cominciare basta il modello nel repo. Un sistema per i contenuti (skill `cms`) arriva solo quando qualcuno senza conoscenze tecniche deve cambiare regolarmente i contenuti.
 - **Logo e colori per primi:** L'aspetto viene dopo i contenuti. Una bella pagina vuota non aiuta nessuno.
 

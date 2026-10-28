@@ -44,6 +44,8 @@ Your answer starts with the status report, in three short parts and only with de
 - **Up now:** the step and the reason for it.
 - **After that:** what comes next.
 
+In the first status report of a conversation there's also one sentence about the rucksack: the person has their AI with them, and everything works the same with Claude Code, Codex and Gemini CLI. Name all three.
+
 Straight after that, in the same answer, you start on the step: read the skill, give its picture in two or three sentences and show the first concrete step. Then you stop and wait for the person. You go through the rest of the skill together, step by step, after that. For this first answer you only read the skill: no files in the project yet, no commands. It's one single short message, and the status report is in it.
 
 - **Skill:** Read the file `../<kennung>/SKILL.md` in the same plugin, next to this folder (`<kennung>` is the slug), e.g. `../pipeline/SKILL.md`. In Claude Code you can also use the skill `albatros-en:<kennung>`. The slugs are the same in every language.
@@ -95,6 +97,7 @@ If Albatros answers with a different error or doesn't answer at all: say honestl
 | `inhalte` | Write and choose texts and pictures for the site |
 | `gestaltung` | The site should be easier to use and look better |
 | `cms` | Change content yourself later, without code |
+| `bausteine` | The site should do more: a sign-up list, a login for members, a noticeboard, a big CMS |
 | `seo-grundlagen` | The site should be found on Google and the like |
 | `barrierefreiheit` | The site should be easy for everyone to read and use |
 | `recht-ch` | Legal notice and privacy policy for Switzerland |
