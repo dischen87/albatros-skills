@@ -1,0 +1,47 @@
+# Glossar: Albatros in vier Sprachen
+
+Gleiche Begriffe überall: Skills, Missionen, Website, Videos. Wer übersetzt, nimmt diese Wörter und keine Synonyme. Die Slugs der Skills und Kennungen der Missionen bleiben deutsch (`ssh-schluessel`, `flugschule-01-start`), damit `lage` und die Website sie in jeder Sprache finden.
+
+## Wo die Übersetzungen liegen
+
+- **Skills:** je Sprache ein eigenes Plugin mit denselben Slugs: `plugins/albatros-fr/skills/<slug>/SKILL.md`, ebenso `albatros-it` und `albatros-en`, je mit `.claude-plugin/plugin.json` und `.mcp.json` wie `plugins/albatros`. Deutsch bleibt `plugins/albatros`. Name und Slug im Kopf bleiben deutsch, die `description` ist übersetzt.
+- **Missionen:** `uebersetzungen/<sprache>/missionen/<weg>/<gleicher Dateiname>.md`. Im Kopf nur `titel` und `bild`, darunter der übersetzte Text. Alles andere (Kennung, Stufe, Skill, Prüfung, Dauer) kommt aus der deutschen Mission.
+- Fehlt eine Übersetzung, zeigen Website und Lotse die deutsche Fassung.
+
+Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you» (locker, nicht förmlich). Schweizer Schreibweise: Deutsch mit «ss», Französisch und Italienisch mit «» (wie in der Schweiz), Englisch britisch (colour, organise). Preise: «CHF 15» in allen Sprachen.
+
+| Deutsch | Français | Italiano | English | Bedeutung |
+|---|---|---|---|---|
+| Albatros | Albatros | Albatros | Albatros | Marke, nie übersetzen |
+| Flugschule | école de vol | scuola di volo | flight school | die Plattform als Bild |
+| Lotse (Hauptskill `lotse`) | navigateur | navigatore | navigator | sagt im richtigen Moment, was dran ist |
+| Bibliothek | bibliothèque | biblioteca | library | alle Skills, frei lesbar |
+| Skill | skill | skill | skill | |
+| Mission | mission | missione | mission | |
+| abheben · Idee und Produkt | décoller · idée et produit | decollare · idea e prodotto | take off · idea and product | Stufe 1 |
+| fliegen · Setup und live gehen | voler · mise en place et mise en ligne | volare · configurazione e messa online | fly · set-up and going live | Stufe 2 |
+| landen · der erste Fan | atterrir · le premier fan | atterrare · il primo fan | land · your first fan | Stufe 3 |
+| Anlauf | élan | rincorsa | run-up | |
+| Bordkarte (Konto) | carte d'embarquement | carta d'imbarco | boarding pass | |
+| Cockpit | cockpit | cockpit | cockpit | |
+| Gratis · Light · Pilot | Gratuit · Light · Pilot | Gratis · Light · Pilot | Free · Light · Pilot | Stufen; Light und Pilot sind Namen |
+| Weg Webseite | parcours site web | percorso sito web | website path | |
+| Weg Geschäft | parcours entreprise | percorso attività | business path | |
+| Methode (Weg Geschäft) | méthode | metodo | method | privat, nur für Mitglieder |
+| Hausschlüssel (privater SSH-Schlüssel) | clé de la maison | chiave di casa | house key | bleibt auf dem Computer |
+| Schloss (öffentlicher SSH-Schlüssel) | serrure | serratura | lock | kommt auf den Server |
+| Server (Wohnung im grossen Haus) | serveur (appartement dans un grand immeuble) | server (appartamento in un grande palazzo) | server (flat in a big building) | |
+| Seite (Light, Schaufenster) | page (vitrine) | pagina (vetrina) | page (shop window) | |
+| Logbuch (Git-Repo) | journal de bord | diario di bordo | logbook | |
+| Flugbuch (Fortschritt im Cockpit) | carnet de vol | libretto di volo | flight log | |
+| Hafen (code.aufwind.sh) | port | porto | harbour | wo das Logbuch liegt |
+| Fliessband (Pipeline) | tapis roulant | nastro trasportatore | conveyor belt | |
+| Adresse (name.aufwind.sh) | adresse | indirizzo | address | |
+| eigene Domain | propre domaine | dominio proprio | own domain | |
+| Zurück auf gestern (Snapshot) | retour à hier | ritorno a ieri | back to yesterday | |
+| Foto des Servers (Snapshot) | photo du serveur | foto del server | photo of the server | |
+| Coach · KI | Coach · IA | Coach · IA | Coach · AI | Kennzeichen der KI |
+| KI im Terminal | IA dans le terminal | IA nel terminale | AI in the terminal | Claude Code, Codex, Gemini CLI |
+| Community | communauté | community | community | |
+| der erste Fan | le premier fan | il primo fan | your first fan | |
+| Hoppla | Oups | Ops | Oops | kleiner Fehler, nichts kaputt |
