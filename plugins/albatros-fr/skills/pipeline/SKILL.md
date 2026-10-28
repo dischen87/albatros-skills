@@ -20,7 +20,7 @@ Chez toi, le tapis démarre dès que tu envoies une entrée au port (skill `git-
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon, avec les hypothèses marquées (`[hypothèse : …]`). Ne demande ce qui manque qu'à la fin.
+- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon, avec les hypothèses marquées (`[Hypothèse : …]`). Ne demande ce qui manque qu'à la fin.
 - Tutoiement. Parcours le fichier du workflow avec la personne, poste par poste, avant qu'il ne tourne.
 - Le tapis roulant n'a besoin ni de clé ni de secret de la personne : l'ouvrier habite déjà sur son serveur. Sa clé de la maison n'a jamais sa place dans le tapis roulant.
 - Si le tapis est rouge : corriger la cause, ne jamais désactiver le contrôle.
@@ -31,7 +31,7 @@ Chez toi, le tapis démarre dès que tu envoies une entrée au port (skill `git-
 
 **Avec Light**, il n'y a pas de tapis roulant : après chaque push, Albatros publie directement le dossier `seite/` de `main`, sans construction et sans contrôle. Explique quand même l'image. Le tapis avec contrôle qualité fait partie de Pilot (`upgrade_link`, niveau `pilot`). Le fichier `deploy.yml` du modèle dort avec Light. Au passage à Pilot, Albatros met le tapis en marche et le fait tourner une fois tout de suite, pour que le propre serveur livre la page. La mission `flugschule-05-pipeline` fait partie de Pilot.
 
-**Avec Pilot :** `konto_status` donne le nom du serveur, l'adresse du port (`git@aufwind.sh:{name}/projekt.git`) et indique si l'ouvrier est prêt. Ne le demande pas à la personne. Le modèle d'Albatros contient déjà `.github/workflows/deploy.yml`, `compose.yaml` et `Dockerfile` : lis-les avec la personne et compare avec l'essentiel ci-dessous. Les commentaires du modèle sont en allemand : traduis-les pour la personne. S'ils manquent, tu les crées, même si le dossier est encore vide, et tu dis ensuite ce qui manque encore (journal de bord au port, contenu de la page).
+**Avec Pilot :** `konto_status` donne le nom du serveur, l'adresse du port (`git@aufwind.sh:{name}/projekt.git`) et indique si l'ouvrier est prêt. Ne le demande pas à la personne. Le modèle d'Albatros contient déjà `.github/workflows/deploy.yml`, `compose.yaml` et `Dockerfile` : lis-les avec la personne et compare avec l'essentiel ci-dessous. Dans le modèle, les commentaires et les messages sont en allemand ; ci-dessous, les commentaires sont traduits. Les noms des étapes et les messages restent tels quels, pour que le fichier corresponde au modèle ; traduis-les pour la personne. S'ils manquent, tu les crées, même si le dossier est encore vide, et tu dis ensuite ce qui manque encore (journal de bord au port, contenu de la page).
 
 Le conteneur du serveur web s'appelle `webseite` et écoute dans le serveur sur le port 80. Albatros dirige `https://{name}.aufwind.sh` vers lui. Sur un serveur tout neuf, la page d'accueil (service `willkommen`) occupe le port 80. Le tapis roulant la désactive avant le premier démarrage. Si tu démarres une fois à la main, d'abord `sudo systemctl disable --now willkommen`.
 
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-    healthcheck:                         # «läuft» heisst noch nicht «funktioniert»
+    healthcheck:                         # « tourne » ne veut pas encore dire « fonctionne »
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 10s
       retries: 6
@@ -60,11 +60,11 @@ name: Fliessband
 on:
   push:
     branches: [main]
-  workflow_dispatch:                    # Knopf «Run workflow» für einen Lauf von Hand
+  workflow_dispatch:                    # bouton « Run workflow » pour un passage à la main
 
 jobs:
   fliessband:
-    runs-on: albatros                   # der Arbeiter auf deinem eigenen Server, er macht einen Auftrag nach dem anderen
+    runs-on: albatros                   # l'ouvrier sur ton propre serveur, il fait une commande après l'autre
     defaults:
       run:
         shell: bash
@@ -75,17 +75,17 @@ jobs:
       - name: Bauen und ausliefern, notfalls zurück
         run: |
           set -euo pipefail
-          cd ~/projekt                  # hier wohnt deine Seite, der Stand kommt immer aus dem Logbuch
+          cd ~/projekt                  # ici habite ta page, l'état vient toujours du journal de bord
           ALT=$(git rev-parse HEAD)
           git fetch -q origin main && git reset -q --hard "$SHA"
-          # Station 1: bauen. Klappt das nicht, bleibt die alte Seite online.
+          # poste 1 : construire. Si ça ne marche pas, l'ancienne page reste en ligne.
           if ! docker compose build; then
             git reset -q --hard "$ALT"
             echo "Bau fehlgeschlagen, die alte Seite bleibt online" >&2
             exit 1
           fi
-          # Station 2: ausliefern, mit dem Gesundheitscheck aus compose.yaml
-          sudo systemctl disable --now willkommen 2>/dev/null || true   # Begrüssungsseite gibt Port 80 frei
+          # poste 2 : livrer, avec le contrôle de santé de compose.yaml
+          sudo systemctl disable --now willkommen 2>/dev/null || true   # la page d'accueil libère le port 80
           if ! docker compose up -d --wait --wait-timeout 120; then
             echo "Neue Version ist nicht gesund, zurück auf $ALT" >&2
             docker compose logs --tail 30 >&2 || true

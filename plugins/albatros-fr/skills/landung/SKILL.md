@@ -115,7 +115,7 @@ Chez Albatros, l'ouvrier du tapis roulant habite dans la maison. Dans ta propre 
              DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
              DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
            run: |
-             [ -n "$DEPLOY_KEY" ] || { echo "::error::Secret DEPLOY_KEY fehlt"; exit 1; }
+             [ -n "$DEPLOY_KEY" ] || { echo "::error::Secret DEPLOY_KEY manquant"; exit 1; }
              install -d -m 700 ~/.ssh
              printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
              printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts

@@ -25,7 +25,7 @@ Les statistiques de ton site web doivent travailler exactement comme ça : peu
 
 ### 1. D'abord la liste, ensuite l'intégration
 
-Crée avec la personne `docs/statistik.md`. Un seul événement cible suffit pour commencer : l'action qui compte pour elle (tirée de `docs/plan.md`, la partie sur la façon de reconnaître le succès).
+Crée avec la personne `docs/statistik.md`. Un seul événement cible suffit pour commencer : l'action qui compte pour elle (tirée de `docs/plan.md`, ligne « À quoi nous voyons le succès »).
 
 ```markdown
 # Plan des événements
@@ -40,7 +40,7 @@ Propres visites : filtrées depuis le <date>
 Modifications : <date> – <ce qui a été renommé, pourquoi>
 ```
 
-Règles pour les noms : en minuscules avec un trait de soulignement (`generate_lead`), préférer les noms standard connus (`purchase`, `sign_up`, `generate_lead`), un événement par action, les variantes comme indication (`form: "kontakt"`), ne jamais nommer d'après la position (`schritt_2`).
+Règles pour les noms : en minuscules avec un trait de soulignement (`generate_lead`), préférer les noms standard connus (`purchase`, `sign_up`, `generate_lead`), un événement par action, les variantes comme indication (`form: "contact"`), ne jamais nommer d'après la position (`schritt_2`).
 
 ### 2. Créer le projet PostHog
 
@@ -66,7 +66,7 @@ Compter seulement après le succès, pas à l'ouverture du formulaire :
 
 ```js
 // après que le serveur a confirmé le formulaire :
-posthog.capture('generate_lead', { form: 'kontakt' })
+posthog.capture('generate_lead', { form: 'contact' })
 ```
 
 N'envoie jamais de noms, d'adresses e-mail, de numéros de téléphone ou de texte libre comme indication.

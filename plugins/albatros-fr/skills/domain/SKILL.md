@@ -7,9 +7,9 @@ description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin
 
 ## L'image
 
-- **Domaine** (`meinladen.ch`) : ton adresse, que les gens peuvent retenir.
+- **Domaine** (`monmagasin.ch`) : ton adresse, que les gens peuvent retenir.
 - **Serveur** : la maison, joignable sous un numéro que personne ne peut retenir.
-- **DNS** : l'annuaire d'Internet. Il dit : « meinladen.ch habite dans la maison avec ce numéro. »
+- **DNS** : l'annuaire d'Internet. Il dit : « monmagasin.ch habite dans la maison avec ce numéro. »
 - **Registraire** : l'office où tu loues l'adresse pour un an. Albatros peut s'en charger pour toi. C'est quand même toi qui es inscrite ou inscrit comme titulaire.
 
 Ton site est déjà joignable sous `{name}.aufwind.sh`. Avec un propre domaine, il reçoit une adresse qui t'appartient. Si tu déménages plus tard (skill `landung`), tu emportes l'adresse.
@@ -57,16 +57,16 @@ Prends toujours les valeurs de la réponse de `domain_verbinden`, jamais des val
 
 ### 5. Poser les entrées chez le registraire
 
-La personne ouvre chez le registraire la gestion DNS (souvent « DNS », « Zone » ou « entrées de serveur de noms »). Guide-la champ par champ : Type, Nom, Valeur. Piège typique : certains registraires ajoutent eux-mêmes le domaine. Le champ « Nom » s'appelle alors seulement `_albatros` au lieu de `_albatros.meinladen.ch`.
+La personne ouvre chez le registraire la gestion DNS (souvent « DNS », « Zone » ou « entrées de serveur de noms »). Guide-la champ par champ : Type, Nom, Valeur. Piège typique : certains registraires ajoutent eux-mêmes le domaine. Le champ « Nom » s'appelle alors seulement `_albatros` au lieu de `_albatros.monmagasin.ch`.
 
 ### 6. Attendre et contrôler
 
 L'annuaire n'est pas réimprimé partout tout de suite. Ça prend des minutes, rarement des heures. Contrôle avec :
 
 ```bash
-dig +short TXT _albatros.meinladen.ch
-dig +short meinladen.ch
-dig +short www.meinladen.ch
+dig +short TXT _albatros.monmagasin.ch
+dig +short monmagasin.ch
+dig +short www.monmagasin.ch
 ```
 
 Si les réponses correspondent aux valeurs de l'étape 4, appelle encore une fois `domain_verbinden`. Albatros contrôle la preuve et va ensuite chercher automatiquement le certificat (le symbole du cadenas dans le navigateur web). Sans contrôle, pas de certificat.
