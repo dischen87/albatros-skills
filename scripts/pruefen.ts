@@ -68,6 +68,11 @@ for await (const datei of new Glob('uebersetzungen/*/vorlage/**/*').scan({ cwd: 
   else if (/\.ya?ml$/.test(datei) && gerippe(await Bun.file(wurzel + datei).text()) !== gerippe(await Bun.file(wurzel + de).text()))
     fehler.push(`${datei}: anders gebaut als ${de}`);
 }
+// motd.sh läuft beim Einloggen als root: muss sich als Shell-Skript lesen lassen
+for await (const datei of new Glob('uebersetzungen/*/instanz/*.sh').scan(wurzel)) {
+  const r = Bun.spawnSync(['sh', '-n', wurzel + datei]);
+  if (r.exitCode !== 0) fehler.push(`${datei}: sh -n scheitert: ${r.stderr.toString().trim()}`);
+}
 
 if (fehler.length) {
   console.error(fehler.join('\n'));
