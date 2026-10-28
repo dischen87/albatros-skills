@@ -148,6 +148,7 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 bun install
 bun run pruefen                       # Kopfdaten aller Skills und Missionen gegen das Schema
 claude plugin validate .              # Marktplatz und Plugin
+QUELLE=$PWD bash scripts/einbau-test.sh   # Einbau nach EINRICHTEN.md in leerem Home (CI: Job einbau)
 claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Write \
   --model sonnet --judge-model sonnet --runs 3 --threshold 0.8 -j 4
 ```

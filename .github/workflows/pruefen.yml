@@ -14,3 +14,15 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run pruefen
       - run: npx -y @anthropic-ai/claude-code plugin validate .
+  einbau:                     # baut Albatros so ein, wie EINRICHTEN.md es der KI vorgibt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g @anthropic-ai/claude-code @openai/codex @google/gemini-cli   # bewusst die neusten: veraltete Befehle sollen auffallen
+      - name: Einbau in Claude Code, Codex und Gemini CLI
+        env:
+          QUELLE: ${{ github.event_name == 'pull_request' && github.workspace || '' }}   # bei main das echte GitHub-Repo
+        run: bash scripts/einbau-test.sh
