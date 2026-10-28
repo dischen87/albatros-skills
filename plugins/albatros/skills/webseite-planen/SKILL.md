@@ -18,7 +18,7 @@ Ein Grundriss auf einer Seite Papier reicht. Er spart später viele Umbauten.
 - **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form, kurze Fragen, eine Frage pro Nachricht. Nimm die Antworten wörtlich auf, die Person soll ihren Plan wiedererkennen. Kein Fachjargon: «Seiten» statt «Sitemap», «Menü» statt «Navigation».
 
-## Ablauf: sieben Fragen
+## Ablauf: acht Fragen
 
 1. **Worum geht es?** In einem Satz, so wie du es einer Nachbarin erzählen würdest.
 2. **Für wen?** Wer soll die Seite finden? Möglichst konkret: «Eltern im Quartier, die einen Mittagstisch suchen» statt «alle».
@@ -31,7 +31,8 @@ Ein Grundriss auf einer Seite Papier reicht. Er spart später viele Umbauten.
    - Impressum und Datenschutz (Pflicht, siehe Skill `recht-ch`)
 5. **Was ist schon da?** Texte, Fotos, Logo, Preise, Öffnungszeiten. Was fehlt, kommt auf die Liste für den Skill `inhalte`.
 6. **Welche Vorbilder?** Zwei, drei Webseiten, die der Person gefallen, und was genau daran (Farben, Ruhe, Fotos, wie kurz die Texte sind). Das hilft später beim Skill `gestaltung`.
-7. **Woran merkst du, dass die Seite funktioniert?** Eine Zahl, die die Person beobachten will, z. B. Anfragen pro Monat. Das braucht später der Skill `statistik`.
+7. **Was muss die Seite können?** In welchen Sprachen, wer ändert die Inhalte, sollen Besucher sich eintragen oder einloggen? Mehrere Sprachen bleiben eine normale Seite. Erst eine Anmeldeliste, ein Login oder eine Pinnwand für andere braucht einen Baustein (Skill `bausteine`).
+8. **Woran merkst du, dass die Seite funktioniert?** Eine Zahl, die die Person beobachten will, z. B. Anfragen pro Monat. Das braucht später der Skill `statistik`.
 
 ## Der Grundriss
 
@@ -44,6 +45,8 @@ Schreib die Antworten mit der Person in `docs/plan.md` im Projekt:
 **Für wen:** …
 **Hauptsache für Besucher:** … (Knopf: «…»)
 **Woran wir Erfolg merken:** …
+**Sprachen:** …
+**Bausteine:** keine / Anmeldeliste / Mitglieder mit Login / Pinnwand / grosses CMS
 
 ## Seiten
 - Start: …
@@ -61,7 +64,7 @@ Lies den Plan der Person am Schluss vor und frag: «Stimmt das so?» Erst dann i
 
 ## Was du der Person ersparst
 
-- **Zu viel auf einmal:** Blog, Shop, Mitgliederbereich und drei Sprachen sind etwas für später. Zuerst eine Seite, die die Hauptsache gut kann.
+- **Zu viel auf einmal:** Blog, Shop und Mitgliederbereich sind etwas für später. Zuerst eine Seite, die die Hauptsache gut kann. Mehrere Sprachen sind kein Problem, wenn die Texte da sind.
 - **Technik-Entscheide zu früh:** Die Vorlage im Repo reicht für den Anfang. Ein System für Inhalte (Skill `cms`) kommt erst, wenn regelmässig jemand ohne Technik Inhalte ändern muss.
 - **Logo und Farben als erstes:** Gestaltung kommt nach dem Inhalt. Eine schöne leere Seite hilft niemandem.
 

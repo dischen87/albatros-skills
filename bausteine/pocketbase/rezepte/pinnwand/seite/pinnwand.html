@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pinnwand</title>
+</head>
+<body>
+  <h1>Pinnwand</h1>
+  <div id="beitraege"><p>Lädt …</p></div>
+  <script>
+    // Holt die Beiträge aus PocketBase, die neusten zuerst
+    (async () => {
+      const ziel = document.getElementById('beitraege');
+      const r = await fetch('/api/collections/beitraege/records?sort=-datum&perPage=50');
+      if (!r.ok) return void (ziel.textContent = 'Die Pinnwand ist gerade nicht erreichbar.');
+      const { items } = await r.json();
+      ziel.replaceChildren(...items.map((b) => {
+        const a = document.createElement('article');
+        const h = document.createElement('h2');
+        h.textContent = b.titel;
+        a.append(h);
+        if (b.datum) a.append(Object.assign(document.createElement('p'), { textContent: new Date(b.datum).toLocaleDateString('de-CH') }));
+        if (b.bild) a.append(Object.assign(document.createElement('img'), { src: `/api/files/${b.collectionId}/${b.id}/${b.bild}?thumb=800x0`, alt: '', width: 800 }));
+        const t = document.createElement('div');
+        t.innerHTML = b.text; // kommt nur aus der Verwaltung
+        a.append(t);
+        return a;
+      }));
+      if (!items.length) ziel.textContent = 'Noch nichts an der Pinnwand.';
+    })();
+  </script>
+</body>
+</html>

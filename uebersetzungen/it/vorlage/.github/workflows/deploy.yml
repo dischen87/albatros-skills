@@ -28,11 +28,11 @@ jobs:
           fi
           # Tappa 2: consegnare, con il controllo di salute di compose.yaml
           sudo systemctl disable --now willkommen 2>/dev/null || true   # la pagina di benvenuto libera la porta 80
-          if ! docker compose up -d --wait --wait-timeout 120; then
+          if ! docker compose up -d --wait --wait-timeout 300; then
             echo "La nuova versione non è in salute, ritorno a $ALT" >&2
             docker compose logs --tail 30 >&2 || true
             git reset -q --hard "$ALT"
-            docker compose up -d --build --wait --wait-timeout 120 || true
+            docker compose up -d --build --wait --wait-timeout 300 || true
             exit 1
           fi
           echo "online: $SHA"

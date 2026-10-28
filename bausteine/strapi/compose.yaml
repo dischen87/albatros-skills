@@ -1,0 +1,44 @@
+# Baustein Strapi. Einbauen: zuerst sh bausteine/strapi/geheimnisse.sh auf dem Server, dann in compose.yaml im Projekt
+# unter include: die Zeile - bausteine/strapi/compose.yaml
+services:
+  cms:
+    container_name: cms
+    build: .
+    restart: unless-stopped
+    env_file: .env                      # Geheimnisse nur auf dem Server (geheimnisse.sh), nie im Logbuch
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: cms-db
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      NODE_OPTIONS: --max-old-space-size=768
+    mem_limit: 1g
+    depends_on:
+      cms-db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:1337:1337"           # Verwaltung nur über den Tunnel: ssh -L 1337:localhost:1337 …
+    volumes:
+      - uploads:/cms/public/uploads     # hochgeladene Bilder bleiben bei jedem Neubau
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:1337/_health"]
+      interval: 10s
+      retries: 12
+  cms-db:
+    container_name: cms-db
+    image: postgres:17-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: strapi
+    mem_limit: 256m
+    volumes:
+      - cms-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "strapi", "-d", "strapi"]
+      interval: 5s
+      retries: 12
+volumes:
+  uploads:
+  cms-db:

@@ -1,6 +1,6 @@
 # Albatros einrichten: Anleitung für deine KI
 
-Diese Seite ist für dich, die KI. Eine Person hat sie dir gegeben, damit du Albatros für sie einrichtest. Sie kennt keine Befehle im Terminal, darum führst du jeden Befehl selbst aus.
+Diese Seite ist für dich, die KI: Claude Code, Codex oder Gemini CLI. Die Person nimmt dich im Rucksack mit auf ihren Weg und hat dir die Seite gegeben, damit du Albatros für sie einrichtest. Sie kennt keine Befehle im Terminal, darum führst du jeden Befehl selbst aus.
 
 - Sag vor jedem Schritt in einem Satz, was passiert. Zum Beispiel: «Gleich öffnet sich dein Browser, dort meldest du dich mit GitHub, Apple oder Google an.»
 - Von der Person brauchst du nur Klicks: eine Freigabe in deinem Fenster und die Anmeldung im Browser. Ein Befehl, den sie tippen muss, ist die Ausnahme. Dann nennst du ihn wörtlich.

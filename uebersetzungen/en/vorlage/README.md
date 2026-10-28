@@ -11,6 +11,8 @@ This is your logbook, it lives in the harbour. When you send a change on `main` 
 | `Dockerfile` | the building instructions: a small web server with your page (Pilot) |
 | `compose.yaml` | how the page runs on the server (container `webseite`, port 80, Pilot) |
 | `.github/workflows/deploy.yml` | the conveyor belt: build, deliver, check, roll back if needed (Pilot) |
+| `nginx.conf` | how the web server delivers your page |
+| `bausteine/` | ready-made parts like a sign-up list, login or CMS (Pilot) |
 | `.gitignore` | what never goes into the logbook, for example `.env` with secrets |
 
 Questions? Tell your AI "Explain my project" or start Albatros with `/albatros-en:start`.

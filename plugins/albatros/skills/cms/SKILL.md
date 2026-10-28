@@ -26,44 +26,32 @@ Frag drei Dinge:
 2. Wer ändert sie? (Menschen ohne Terminal → eher ja)
 3. Gibt es viele gleichartige Einträge? (Veranstaltungen, Produkte, Beiträge → eher ja)
 
-Drei Stufen, immer die einfachste nehmen, die reicht:
+Vier Stufen, immer die einfachste nehmen, die reicht:
 
 | Stufe | Was | Gut wenn |
 |---|---|---|
 | A: Texte im Projekt | Inhalte als Markdown-Dateien im Repo, die KI ändert sie | eine Person mit KI pflegt alles, selten Änderungen |
 | B: Pinnwand über dein Logbuch | ein Bearbeitungsfenster im Browser (z. B. Decap CMS), das die Dateien im Repo ändert | andere sollen Texte ändern, aber keine Datenbank nötig |
-| C: eigenes CMS | ein Programm mit Datenbank auf dem Server, z. B. Strapi | viele Einträge, mehrere Rollen, Bilder-Verwaltung, später auch eine App |
+| C: kleine Pinnwand | PocketBase auf dem Server, Einträge mit Titel, Datum, Text und Bild | andere pflegen News oder Termine, wenige Felder, kaum Speicher (etwa 20 MB) |
+| D: grosses CMS | Strapi mit eigener Datenbank auf dem Server | viele Inhaltstypen, mehrere Rollen, Bilderverwaltung, später auch eine App (etwa 200 MB, Bau bis 2,5 GB) |
 
-Ist A oder B die Antwort: Schreib das in `docs/plan.md` und hör hier auf. Das ist ein gutes Ergebnis. Stufe C braucht einen eigenen Server, also Pilot. Mit Light gehen A und B.
+Ist A oder B die Antwort: Schreib das in `docs/plan.md` und hör hier auf. Das ist ein gutes Ergebnis. C und D brauchen einen eigenen Server, also Pilot. Mit Light gehen A und B. C und D sind fertige Bausteine, du baust sie mit dem Skill `bausteine` ein (Rezept `pinnwand` oder Baustein `strapi`).
 
-## 2. Strapi einrichten (Stufe C)
+## 2. Strapi einrichten (Stufe D)
 
-### Vorher
+Strapi kommt als fertiger Baustein mit eigener Postgres-Datenbank: Skill `bausteine`, Abschnitt «Strapi». Das Wichtigste vorab, damit du es der Person erklären kannst:
 
-- Strapi braucht Arbeitsspeicher. Prüf mit `free -h` auf dem Server, ob mindestens etwa 1 GB frei ist. Sonst zuerst mehr Leistung (Skill `kosten`).
-- Foto machen: Werkzeug `snapshot` mit Namen `vor-cms` (Skill `zurueck-auf-gestern`).
+- **Speicher:** Im Betrieb braucht Strapi mit Datenbank etwa 200 MB, beim Bauen bis 2,5 GB. Der erste Bau dauert etwa 7 Minuten. Prüf mit `free -h`, ob beim Bauen genug frei ist. Foto vorher: Werkzeug `snapshot` mit Namen `vor-cms`.
+- **Geheimnisse** legt `bausteine/strapi/geheimnisse.sh` direkt auf dem Server an, nie im Logbuch (Skill `sicherheit`).
+- **Inhaltstypen** schreibst du als Dateien unter `bausteine/strapi/cms/src/api/`, auf dem Server lassen sie sich nicht anklicken. Muster: Rezept `veranstaltungen`.
+- **Der geheime Gang zur Pinnwand:** Die Verwaltung ist nicht öffentlich. Die Person erreicht sie über einen Tunnel. Bild: ein geheimer Gang von ihrem Computer direkt in den Flur, an dem niemand von der Strasse vorbeikommt.
 
-### Einrichten
+  ```bash
+  ssh -N -L 1337:localhost:1337 {name}@aufwind.sh
+  ```
 
-1. Lokal ein Strapi-Projekt im Ordner `cms/` des Repos anlegen (aktuelle Anleitung: `npx create-strapi@latest cms`), mit SQLite als Datenbank. Die Datenbank-Datei kommt nicht ins Logbuch (`.gitignore`).
-2. In `compose.yaml` einen Dienst `cms` ergänzen: Container-Name `cms`, Port nur nach innen (`127.0.0.1:1337:1337`), ein Volume für Datenbank und hochgeladene Bilder. Geheimnisse (`APP_KEYS`, `JWT_SECRET`, `ADMIN_JWT_SECRET`, `API_TOKEN_SALT`) als Umgebungsvariablen aus einer `.env` auf dem Server, nie im Repo (Skill `sicherheit`).
-3. Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`). Danach auf dem Server: `docker ps` zeigt `cms`.
-
-### Der geheime Gang zur Pinnwand
-
-Der Bearbeitungsbereich ist nicht öffentlich. Die Person erreicht ihn über einen Tunnel. Bild: ein geheimer Gang von ihrem Computer direkt in den Flur, an dem niemand von der Strasse vorbeikommt.
-
-```bash
-ssh -L 1337:localhost:1337 {name}@aufwind.sh
-```
-
-Solange dieses Fenster offen ist, öffnet sie im Browser `http://localhost:1337/admin`. Beim ersten Mal legt sie dort selbst das Admin-Konto an. Das Passwort tippt sie nur dort.
-
-### Inhalte anbinden
-
-1. Mit der Person einen Inhaltstyp anlegen (z. B. «Veranstaltung» mit Titel, Datum, Ort, Text, Bild).
-2. Die Webseite holt die Einträge beim Bauen über `http://cms:1337/api/...` aus dem gleichen Docker-Netz. Ein API-Token mit nur Leserechten, als Geheimnis auf dem Server.
-3. Neue Einträge erscheinen nach dem nächsten Bau. Wer es sofort will: ein Webhook in Strapi, der den Bau auslöst. Das kommt erst, wenn es wirklich stört.
+  Solange der Tunnel offen ist, öffnet sie `http://localhost:1337/admin`. Beim ersten Mal legt sie dort selbst das Konto an. Das Passwort tippt sie nur dort.
+- **Inhalte auf der Seite:** Was in `OEFFENTLICH` steht (`bausteine/strapi/cms/src/index.ts`), liest die Seite unter `/cms/api/…` der eigenen Adresse, gleich nach dem Veröffentlichen. Ein neuer Bau ist dafür nicht nötig.
 
 ## Stolpersteine
 
@@ -73,7 +61,7 @@ Solange dieses Fenster offen ist, öffnet sie im Browser `http://localhost:1337/
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-04-cms`. Die Prüfung schaut, ob der Container `cms` läuft. Hat sich die Person bewusst für Stufe A oder B entschieden, sag ihr, dass sie diese Mission überspringen darf. Das ist eine gute Entscheidung, keine Lücke.
+`mission_pruefen` mit `webseite-04-cms`. Die Prüfung schaut, ob der Container `cms` läuft (Strapi). Hat sich die Person bewusst für Stufe A, B oder C entschieden, sag ihr, dass sie diese Mission überspringen darf. Das ist eine gute Entscheidung, keine Lücke.
 
 ## Schlussnachricht
 

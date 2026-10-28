@@ -1,0 +1,19 @@
+# Baustein PocketBase. Einbauen: in compose.yaml im Projekt unter include: die Zeile - bausteine/pocketbase/compose.yaml
+services:
+  pocketbase:
+    container_name: pocketbase
+    build: .
+    restart: unless-stopped
+    environment:
+      GOMEMLIMIT: 200MiB                # gibt Speicher früh zurück, der Server hat keinen Auslagerungsspeicher
+    mem_limit: 256m
+    ports:
+      - "127.0.0.1:8090:8090"           # Verwaltung nur über den Tunnel: ssh -L 8090:localhost:8090 …
+    volumes:
+      - pb_data:/pb/pb_data             # Daten bleiben bei jedem Neubau
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8090/api/health"]
+      interval: 10s
+      retries: 6
+volumes:
+  pb_data:

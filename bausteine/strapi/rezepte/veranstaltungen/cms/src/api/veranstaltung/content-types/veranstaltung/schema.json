@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "veranstaltungen",
+  "info": {
+    "singularName": "veranstaltung",
+    "pluralName": "veranstaltungen",
+    "displayName": "Veranstaltung"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "titel": { "type": "string", "required": true },
+    "datum": { "type": "datetime", "required": true },
+    "ort": { "type": "string" },
+    "text": { "type": "blocks" },
+    "bild": { "type": "media", "multiple": false, "allowedTypes": ["images"] }
+  }
+}

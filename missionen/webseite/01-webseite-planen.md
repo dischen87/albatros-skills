@@ -25,7 +25,7 @@ Niemand baut ein Haus ohne Grundriss. Bevor deine KI eine Zeile baut, klärt ihr
 
 ## So gehst du vor
 
-1. Deine KI stellt dir sieben Fragen, eine nach der anderen.
+1. Deine KI stellt dir acht Fragen, eine nach der anderen.
 2. Ihr schreibt die Antworten als Grundriss auf.
 3. Du liest den Plan und sagst, ob er stimmt.
 4. Der Plan kommt ins Logbuch und auf den Server.

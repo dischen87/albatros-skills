@@ -43,6 +43,8 @@ Deine Antwort beginnt mit dem Lagebericht, in drei kurzen Teilen und nur mit Ang
 - **Jetzt dran:** der Schritt und der Grund dafür.
 - **Danach:** was als Nächstes kommt.
 
+Im ersten Lagebericht eines Gesprächs steht dazu ein Satz zum Rucksack: Die Person hat ihre KI dabei, und mit Claude Code, Codex und Gemini CLI klappt alles gleich. Nenn alle drei beim Namen.
+
 Gleich danach, in derselben Antwort, fängst du mit dem Schritt an: Lies den Skill, sag sein Bild in zwei, drei Sätzen und zeig den ersten konkreten Schritt. Dann hältst du an und wartest auf die Person. Den Rest des Skills geht ihr danach Schritt für Schritt zusammen durch. Für diese erste Antwort liest du nur den Skill: noch keine Dateien im Projekt, keine Befehle. Sie ist eine einzige, kurze Nachricht, und der Lagebericht steht darin.
 
 - **Skill:** Lies die Datei `../<kennung>/SKILL.md` im selben Plugin (also neben diesem Ordner), z. B. `../pipeline/SKILL.md`. In Claude Code geht es auch über den Skill `albatros:<kennung>`. Die Kennungen sind in jeder Sprache gleich.
@@ -94,6 +96,7 @@ Antwortet Albatros mit einem anderen Fehler oder gar nicht: Sag ehrlich, dass Al
 | `inhalte` | Texte und Bilder für die Seite schreiben und auswählen |
 | `gestaltung` | Die Seite soll einfacher zu bedienen sein und besser aussehen |
 | `cms` | Inhalte später ohne Code selbst ändern |
+| `bausteine` | Die Seite soll mehr können: Anmeldeliste, Login für Mitglieder, Pinnwand, grosses CMS |
 | `seo-grundlagen` | Die Seite soll bei Google und Co. gefunden werden |
 | `barrierefreiheit` | Die Seite soll für alle gut lesbar und bedienbar sein |
 | `recht-ch` | Impressum und Datenschutzerklärung für die Schweiz |

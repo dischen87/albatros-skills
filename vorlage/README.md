@@ -11,6 +11,8 @@ Das ist dein Logbuch, es liegt im Hafen. Schickst du eine Änderung auf `main` i
 | `Dockerfile` | die Bauanleitung: ein kleiner Webserver mit deiner Seite (Pilot) |
 | `compose.yaml` | wie die Seite auf dem Server läuft (Container `webseite`, Port 80, Pilot) |
 | `.github/workflows/deploy.yml` | das Fliessband: bauen, ausliefern, prüfen, notfalls zurück (Pilot) |
+| `nginx.conf` | wie der Webserver deine Seite ausliefert |
+| `bausteine/` | fertige Teile wie Anmeldeliste, Login oder CMS (Pilot) |
 | `.gitignore` | was nie ins Logbuch kommt, zum Beispiel `.env` mit Geheimnissen |
 
 Fragen? Sag deiner KI «Erklär mir mein Projekt» oder starte Albatros mit `/albatros:start`.

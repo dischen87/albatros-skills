@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anmelden</title>
+</head>
+<body>
+  <h1>Anmelden</h1>
+  <form id="anmeldung">
+    <label>Name <input name="name" required maxlength="100"></label>
+    <label>E-Mail <input name="email" type="email" required></label>
+    <label>Anlass <input name="anlass" maxlength="100"></label>
+    <label>Nachricht <textarea name="nachricht" maxlength="2000"></textarea></label>
+    <button>Anmelden</button>
+  </form>
+  <p id="antwort" role="status"></p>
+  <script>
+    // Schickt die Anmeldung an PocketBase (über /api/ der eigenen Adresse)
+    document.getElementById('anmeldung').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const antwort = document.getElementById('antwort');
+      const r = await fetch('/api/collections/anmeldungen/records', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(e.target))),
+      });
+      antwort.textContent = r.ok ? 'Danke, du bist angemeldet.' : 'Das hat nicht geklappt. Prüf deine Angaben und versuch es nochmals.';
+      if (r.ok) e.target.reset();
+    });
+  </script>
+</body>
+</html>

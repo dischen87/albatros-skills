@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mitglieder</title>
+  <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.28.1/dist/pocketbase.umd.js"></script>
+</head>
+<body>
+  <h1>Mitglieder</h1>
+  <form id="login">
+    <label>E-Mail <input name="email" type="email" required autocomplete="email"></label>
+    <label>Passwort <input name="passwort" type="password" required minlength="8" autocomplete="current-password"></label>
+    <button name="was" value="anmelden">Anmelden</button>
+    <button name="was" value="registrieren">Neu registrieren</button>
+  </form>
+  <section id="bereich" hidden>
+    <p>Angemeldet als <span id="wer"></span>. <button id="abmelden">Abmelden</button></p>
+    <div id="mitteilungen"></div>
+  </section>
+  <p id="meldung" role="status"></p>
+  <script>
+    const pb = new PocketBase('/');
+    const $ = (id) => document.getElementById(id);
+
+    async function zeigen() {
+      const drin = pb.authStore.isValid;
+      $('login').hidden = drin;
+      $('bereich').hidden = !drin;
+      if (!drin) return;
+      $('wer').textContent = pb.authStore.record.email;
+      const liste = await pb.collection('mitteilungen').getFullList({ sort: '-created' });
+      $('mitteilungen').replaceChildren(...liste.map((m) => {
+        const a = document.createElement('article');
+        const h = document.createElement('h2');
+        h.textContent = m.titel;
+        const t = document.createElement('div');
+        t.innerHTML = m.text; // kommt nur aus der Verwaltung
+        a.append(h, t);
+        return a;
+      }));
+    }
+
+    $('login').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const email = f.get('email'), passwort = f.get('passwort');
+      try {
+        if (e.submitter.value === 'registrieren') {
+          await pb.collection('users').create({ email, password: passwort, passwordConfirm: passwort });
+        }
+        await pb.collection('users').authWithPassword(email, passwort);
+        $('meldung').textContent = '';
+        await zeigen();
+      } catch {
+        $('meldung').textContent = 'Das hat nicht geklappt. Prüf E-Mail und Passwort (mindestens 8 Zeichen).';
+      }
+    });
+    $('abmelden').addEventListener('click', () => { pb.authStore.clear(); zeigen(); });
+    zeigen();
+  </script>
+</body>
+</html>
