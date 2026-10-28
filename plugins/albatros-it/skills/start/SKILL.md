@@ -52,9 +52,9 @@ Ci sono tre livelli. Prezzi e limiti li dici solo da `konto_status` o dalla pagi
 
 - **Gratis:** skill, leggere le missioni, la community. Nessuna pagina propria in rete.
 - **Light:** un sito web su `https://{name}.aufwind.sh`, direttamente dal diario di bordo: quello che la persona manda al porto (`git push`) poco dopo è online. Va bene per siti fatti di testi e immagini: associazione, portfolio, negozio con contatto per e-mail. Nessun server proprio, nessun nastro trasportatore, nessun dominio proprio.
-- **Pilot:** un server tuo (immagine: un appartamento tuo in un grande palazzo) con nastro trasportatore, foto quotidiane e dominio proprio. Serve appena sul sito gira un programma: un accesso per i membri, una banca dati, una finestra propria per modificare i contenuti o un modulo che fa più che aprire una e-mail.
+- **Pilot:** un server tuo (immagine: un appartamento tuo in un grande palazzo) con nastro trasportatore, foto quotidiane e dominio proprio. Serve appena sul sito gira un programma: un accesso per i membri, una banca dati, una finestra propria per modificare i contenuti o un modulo che fa più che aprire una e-mail. Lo stesso appena il sito deve funzionare con un dominio proprio (`chor-wil.ch`): c'è solo con Pilot.
 
-Spiega i livelli con parole di tutti i giorni, senza sigle come RAM, CMS o login, e solo con la precisione che serve alla persona per scegliere. Consiglia il livello più piccolo che basta, con una frase di motivazione, e di' subito come si va avanti: link alla pagina di pagamento di quel livello, poi chiave e pagina. Per una pagina con testi e immagini è Light. Cambiare si può sempre, anche più tardi: l'indirizzo della pagina e il diario di bordo restano.
+Spiega i livelli con parole di tutti i giorni, senza sigle come RAM, CMS o login, e solo con la precisione che serve alla persona per scegliere. Consiglia il livello più piccolo che basta, con una frase di motivazione, e di' subito come si va avanti: link alla pagina di pagamento di quel livello, poi chiave e pagina. Per una pagina con testi e immagini è Light. Indica Pilot come strada per più tardi, quando si aggiunge un programma o un dominio proprio. Cambiare si può sempre, anche più tardi: l'indirizzo della pagina e il diario di bordo restano.
 
 Una pagina in rete c'è solo con un mezzo di pagamento depositato. Spiega il motivo in una frase: così tutti sono protetti da chi vorrebbe usare Albatros per fare danni. Con `upgrade_link` e il livello scelto (`light` o `pilot`) prendi il link alla pagina di pagamento e dallo alla persona. La carta la digita solo lì. Poi chiama `konto_status` e aspetta che l'abbonamento sia attivo.
 
@@ -68,6 +68,7 @@ Ora segui lo skill `ssh-schluessel`. In breve: la chiave nasce sul computer dell
 
 - **Light:** `seite_erstellen` con il nome che la persona vuole per il suo indirizzo (minuscolo, senza spazi, diventa parte di `name.aufwind.sh`) e con la sua serratura, se non è ancora depositata. Immagine: «La tua vetrina in una via di negozi: tu la allestisci, Albatros apre ogni mattina.» Albatros crea il diario di bordo nel porto e ne mostra la pagina. Dopo, `konto_status` indica la pagina e l'indirizzo del porto.
 - **Pilot:** `server_erstellen`. Immagine: «Il tuo appartamento in un grande palazzo: porta tua, stanze tue, i vicini non vedono dentro.» Di solito ci vogliono uno o due minuti. Chiedi con `konto_status` finché il server è pronto. Si chiama come la persona (p. es. `anna`).
+- **Lingua:** Per entrambi passa `sprache`, la lingua in cui parli con la persona (`de`, `fr`, `it` o `en`). Così la sua prima pagina, il diario di bordo e, sul server, il manuale di bordo sono nella sua lingua.
 
 ### 6. Prima visita
 
