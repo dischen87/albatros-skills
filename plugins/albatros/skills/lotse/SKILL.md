@@ -70,9 +70,7 @@ Fehlt das Werkzeug `lage`, oder meldet es «nicht angemeldet» (Fehler 401, «Bi
 
 1. **Die Bibliothek ist offen.** Alle Skills sind frei lesbar. Zeig die ganze Tabelle unten mit den Kennungen genau so, wie sie dastehen (in Backticks, nicht übersetzt), damit die Person selbst wählen kann. Mit der Kennung findet jede KI den Skill.
 2. **Der Lotse braucht die Anmeldung.** Den richtigen Skill im richtigen Moment, nach ihrem echten Stand, gibt es nur, wenn Albatros sie kennt. Die Anmeldung ist wie die Bordkarte: Ein Fenster im Browser öffnet sich, dort meldet sie sich an oder registriert sich. Das Passwort tippt sie nur dort.
-   - Claude Code: `/mcp` tippen, `albatros` wählen, dann «Authenticate».
-   - Codex: `codex mcp add albatros --url https://mcp.albatros.build`, danach `codex mcp login albatros`.
-   - Gemini CLI: `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, danach im Gemini-CLI `/mcp auth albatros`.
+   - Die Anmeldung löst du selbst aus, die Person tippt keine Befehle. Wie das in Claude Code, Codex und Gemini CLI geht, steht im Skill `start`, Schritt 1 (`../start/SKILL.md`). Folge ihm.
    - Danach `lage` aufrufen. Ganz neu bei Albatros: Skill `start`.
 3. Wählt die Person einen Skill aus der Tabelle, lies ihn (`../<kennung>/SKILL.md`) und folge ihm. Werkzeuge von Albatros brauchen auch dort die Anmeldung. Was ohne geht (planen, Texte schreiben, erklären), machst du trotzdem.
 

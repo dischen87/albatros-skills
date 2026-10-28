@@ -33,36 +33,26 @@ Der Lotse funktioniert nur mit Anmeldung, denn nur dann kennt Albatros den Stand
 
 ## Installation
 
-### Claude Code
+Die Person tippt keine Befehle. Sie sagt ihrer KI (Claude Code, Codex oder Gemini CLI) einen Satz:
 
-```
-/plugin marketplace add dischen87/albatros-skills
-/plugin install albatros@albatros
-/albatros:start
-```
+> Richte mir Albatros ein: https://albatros.build/einrichten
 
-Lokal aus einem geklonten Ordner: `/plugin marketplace add ./albatros-skills`.
+Die KI liest die Anleitung [EINRICHTEN.md](EINRICHTEN.md) und erledigt alles selbst: Plugin oder Skills, Verbindung zu Albatros und Anmeldung. Von der Person braucht sie nur eine Freigabe im Fenster der KI und die Anmeldung im Browser. In Claude Code tippt sie zusätzlich einmal `/reload-plugins`, in Gemini CLI startet sie das Programm einmal neu. Bis die Seite auf albatros.build steht, gilt dieselbe Anleitung unter https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md.
 
-Beim ersten Werkzeug-Aufruf meldet sich Albatros über den Browser an (`/mcp`, dann `albatros` und «Authenticate»).
+Getestet am 28.10.2026:
+- **Claude Code 2.1.283:** In einer interaktiven Sitzung ruft die KI das Werkzeug `authenticate` des Servers albatros auf. Es gibt einen Link zur Anmeldung zurück, danach sind die Werkzeuge da. Mit `claude -p` gibt es dieses Werkzeug nicht. `claude mcp login` braucht ein echtes Terminal.
+- **Codex 0.142:** `codex plugin marketplace add` und `codex mcp login` schreiben in `~/.codex` und brauchen das Netz. In der Sandbox scheitern sie oder können den Browser nicht öffnen. Darum fragt die KI einmal um Freigabe. `codex mcp login` wartet ohne Terminal, bis die Anmeldung im Browser fertig ist.
+- **Gemini CLI:** nicht getestet, nach der Dokumentation.
 
-### Codex CLI
+Von Hand, für alle, die selbst tippen wollen:
 
-```bash
-npx skills add dischen87/albatros-skills -a codex
-codex mcp add albatros --url https://mcp.albatros.build
-codex mcp login albatros
-```
+| KI | Befehle |
+|---|---|
+| Claude Code | `/plugin marketplace add dischen87/albatros-skills`, `/plugin install albatros@albatros`, dann `/mcp`, `albatros`, «Authenticate» |
+| Codex | `codex plugin marketplace add dischen87/albatros-skills`, `codex plugin add albatros@albatros`, `codex mcp login albatros` |
+| Gemini CLI | `npx skills add dischen87/albatros-skills -a gemini-cli -g -y --skill '*'`, `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, im Programm `/mcp auth albatros` |
 
-### Gemini CLI
-
-```bash
-npx skills add dischen87/albatros-skills -a gemini-cli
-gemini mcp add --transport http -s user albatros https://mcp.albatros.build
-```
-
-Danach in Gemini CLI: `/mcp auth albatros`.
-
-`npx skills` findet die Skills über `.claude-plugin/marketplace.json`, getestet mit `skills@1.7.4`. Den Befehl `/albatros:start` gibt es nur in Claude Code. In Codex und Gemini sagst du «Starte Albatros», dann lädt die KI den Skill `start`.
+Den Befehl `/albatros:start` gibt es nur in Claude Code. In Codex und Gemini sagt die Person «Starte Albatros», dann lädt die KI den Skill `start`. `npx skills` findet die Skills über `.claude-plugin/marketplace.json`, getestet mit `skills@1.7.4`.
 
 ## Sprachen
 
