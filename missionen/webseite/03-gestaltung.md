@@ -36,5 +36,5 @@ Neue Farbe über klemmenden Türen macht die Fehler nur schöner. Darum prüfst 
 
 ## Geschafft, wenn
 
-- in `~/projekt/docs/gestaltung/richtungen.md` dein Entscheid steht
+- in `docs/gestaltung/richtungen.md` dein Entscheid steht
 - und deine Seite antwortet.

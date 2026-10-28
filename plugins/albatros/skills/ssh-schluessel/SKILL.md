@@ -75,7 +75,9 @@ chmod 600 ~/.ssh/config
 
 ### 5. Erster Besuch
 
-Lass die Person diesen Befehl selbst tippen (in Claude Code mit `!` davor):
+**Mit Light** gibt es keinen Server zum Besuchen. Teste das Schloss am Hafen: `ssh -T git@aufwind.sh`. Begrüsst er die Person mit ihrem Namen («successfully authenticated»), passt der Schlüssel. Danach weiter mit dem Skill `git-logbuch`. Der Rest dieses Schritts und die Mission `flugschule-02-ssh-schluessel` gehören zu Pilot.
+
+**Mit Pilot:** Lass die Person diesen Befehl selbst tippen (in Claude Code mit `!` davor):
 
 ```bash
 ssh {name}@aufwind.sh

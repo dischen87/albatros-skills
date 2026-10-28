@@ -33,4 +33,4 @@ In der Post kommt jeder Brief in genau ein beschriftetes Fach. Erst wenn alles s
 
 ## Geschafft, wenn
 
-- `docs/kundenstimmen.md` mit Sortierplan, Auswertung und Massnahmen auf deinem Server liegt.
+- `docs/kundenstimmen.md` mit Sortierplan, Auswertung und Massnahmen in deinem Projekt liegt.

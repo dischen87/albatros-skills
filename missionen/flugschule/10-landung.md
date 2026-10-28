@@ -32,4 +32,4 @@ Du kannst bei Albatros bleiben, solange du willst. Aber du sollst jederzeit ausz
 
 ## Geschafft, wenn
 
-- auf deinem Server die Umzugsliste `~/projekt/docs/landung.md` liegt.
+- in deinem Projekt die Umzugsliste `docs/landung.md` liegt.

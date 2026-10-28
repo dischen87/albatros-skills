@@ -57,7 +57,7 @@ Die KI darf Entwürfe schreiben. Dann zusammen mit der Person:
 
 ### 6. Auf die Seite bringen
 
-Bitte die Person, jede Angabe im Text zu prüfen (Zeiten, Wege, Preise, Namen). Du kennst sie nur aus ihrer Beschreibung. Dann Texte und Bilder ins Projekt, ins Logbuch (Skill `git-logbuch`), über das Fliessband (Skill `pipeline`) auf den Server. Dann zusammen auf dem Handy anschauen, nicht nur am Computer.
+Bitte die Person, jede Angabe im Text zu prüfen (Zeiten, Wege, Preise, Namen). Du kennst sie nur aus ihrer Beschreibung. Dann Texte und Bilder ins Projekt, ins Logbuch (Skill `git-logbuch`) und, mit Pilot, über das Fliessband (Skill `pipeline`) auf den Server. Dann zusammen auf dem Handy anschauen, nicht nur am Computer.
 
 ## Mission prüfen
 

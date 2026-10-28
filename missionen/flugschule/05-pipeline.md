@@ -5,6 +5,7 @@ stufe: fliegen
 titel: Das Fliessband für deine Seite
 bild: Fliessband mit Qualitätskontrolle
 dauer: 60
+abo: pilot
 pruefung:
   - typ: workflow
     datei: .github/workflows/deploy.yml

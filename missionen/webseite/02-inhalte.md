@@ -35,5 +35,5 @@ Gestaltung ist das Licht im Schaufenster, die Inhalte sind die Ware. Ohne Ware v
 
 ## Geschafft, wenn
 
-- die Inhaltsliste `~/projekt/docs/inhalte.md` auf deinem Server liegt
+- die Inhaltsliste `docs/inhalte.md` in deinem Projekt liegt
 - und deine Seite unter `https://{name}.aufwind.sh` antwortet.

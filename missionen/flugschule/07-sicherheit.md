@@ -20,7 +20,7 @@ Ein Haus ist so sicher wie sein nachlässigster Moment: ein Schlüssel unter der
 ## Was du lernst
 
 - warum Geheimnisse nie ins Logbuch gehören, auch nicht für einen Moment
-- wo sie stattdessen liegen: in einer `.env` auf dem Server, die nie ins Logbuch kommt
+- wo sie stattdessen liegen: in einer `.env` auf dem Server, die nie ins Logbuch kommt. Auf einer Seite mit Light gehören gar keine hinein, denn alles darauf ist öffentlich.
 - welche Türen offen sein müssen und welche nicht
 - wie Updates deine Schlösser frisch halten
 
@@ -29,8 +29,8 @@ Ein Haus ist so sicher wie sein nachlässigster Moment: ein Schlüssel unter der
 1. Mit deiner KI prüfen, ob schon ein Geheimnis im Logbuch gelandet ist.
 2. `.env` in die Liste der Dinge setzen, die Git ignoriert.
 3. Geheimnisse an den richtigen Ort verschieben. Was schon öffentlich war, wird ausgetauscht.
-4. Den Sicherheits-Rundgang auf dem Server machen.
+4. Mit Pilot: den Sicherheits-Rundgang auf dem Server machen.
 
 ## Geschafft, wenn
 
-- die Datei `~/projekt/.gitignore` auf deinem Server `.env` enthält.
+- die Datei `.gitignore` in deinem Projekt `.env` enthält.

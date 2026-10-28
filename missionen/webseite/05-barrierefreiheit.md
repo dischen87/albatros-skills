@@ -32,4 +32,4 @@ Eine Treppe ist für viele gut, für manche eine Mauer. Eine Rampe daneben hilft
 
 ## Geschafft, wenn
 
-- auf deinem Server das Prüfprotokoll `~/projekt/docs/barrierefreiheit.md` liegt.
+- in deinem Projekt das Prüfprotokoll `docs/barrierefreiheit.md` liegt.

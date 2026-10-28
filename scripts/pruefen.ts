@@ -42,6 +42,8 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
     for (const e of pruefeMission.errors!) fehler.push(`${datei}: ${e.instancePath || '/'} ${e.message}`);
   if (k.id !== `${weg}-${name.replace(/\.md$/, '')}`) fehler.push(`${datei}: id muss «${weg}-${name.replace(/\.md$/, '')}» sein`);
   if (k.weg !== weg) fehler.push(`${datei}: weg muss «${weg}» sein`);
+  if (k.abo !== 'pilot' && k.pruefung?.some((p: any) => p.typ === 'docker' || p.typ === 'workflow'))
+    fehler.push(`${datei}: Prüfung mit docker oder workflow braucht abo: pilot`);
   // ponytail: Methoden des Wegs geschaeft liegen im privaten Repo albatros-methoden und sind hier nicht prüfbar.
   if (weg !== 'geschaeft' && !skills.has(k.skill)) fehler.push(`${datei}: Skill «${k.skill}» gibt es nicht`);
 }

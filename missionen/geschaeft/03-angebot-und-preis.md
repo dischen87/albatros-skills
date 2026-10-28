@@ -33,4 +33,4 @@ Der Boden sind deine Kosten pro Verkauf, darunter verlierst du Geld. Die Decke i
 
 ## Geschafft, wenn
 
-- die Datei `docs/angebot.md` mit Angebot, Rechnung und Preis auf deinem Server liegt.
+- die Datei `docs/angebot.md` mit Angebot, Rechnung und Preis in deinem Projekt liegt.

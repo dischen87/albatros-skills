@@ -36,5 +36,5 @@ Vor jedem Start geht die Pilotin einmal ums Flugzeug und hakt eine feste Liste a
 
 ## Geschafft, wenn
 
-- `docs/go-live-check.md` mit Kurzfassung und Befunden auf deinem Server liegt.
+- `docs/go-live-check.md` mit Kurzfassung und Befunden in deinem Projekt liegt.
 - deine Seite unter `https://{name}.aufwind.sh` antwortet.

@@ -33,4 +33,4 @@ In einem Laden wird nur verkauft, was angeschrieben im Regal steht. Was im Lager
 
 ## Geschafft, wenn
 
-- `docs/funktionen-audit.md` mit Funktionsliste, Befunden und Plan auf deinem Server liegt.
+- `docs/funktionen-audit.md` mit Funktionsliste, Befunden und Plan in deinem Projekt liegt.

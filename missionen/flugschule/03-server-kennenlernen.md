@@ -5,6 +5,7 @@ stufe: fliegen
 titel: Rundgang durch deinen Server
 bild: Rundgang durch die neue Wohnung
 dauer: 30
+abo: pilot
 pruefung:
   - typ: datei
     pfad: ~/rundgang.md

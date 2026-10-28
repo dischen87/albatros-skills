@@ -33,4 +33,4 @@ Bezahlte Werbung ist wie ein Flyer-Verteiler vor deinem Laden. Er lohnt sich nur
 
 ## Geschafft, wenn
 
-- die Datei `docs/werbung.md` mit Rechnung, Obergrenze, Plan und Entscheid auf deinem Server liegt.
+- die Datei `docs/werbung.md` mit Rechnung, Obergrenze, Plan und Entscheid in deinem Projekt liegt.

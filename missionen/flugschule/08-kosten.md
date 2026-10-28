@@ -31,4 +31,4 @@ Wer alles aufschreibt, erlebt keine Überraschung auf der Rechnung. Du machst ei
 
 ## Geschafft, wenn
 
-- auf deinem Server die Datei `~/projekt/docs/kosten.md` liegt.
+- in deinem Projekt die Datei `docs/kosten.md` liegt.

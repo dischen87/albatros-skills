@@ -5,6 +5,7 @@ stufe: fliegen
 titel: Kaputt machen erlaubt
 bild: Das tägliche Foto der ganzen Wohnung
 dauer: 20
+abo: pilot
 pruefung:
   - typ: docker
     container: webseite

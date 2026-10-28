@@ -5,6 +5,7 @@ stufe: fliegen
 titel: Eine Pinnwand für deine Inhalte
 bild: Pinnwand im Flur
 dauer: 60
+abo: pilot
 pruefung:
   - typ: docker
     container: cms

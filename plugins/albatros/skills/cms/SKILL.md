@@ -34,7 +34,7 @@ Drei Stufen, immer die einfachste nehmen, die reicht:
 | B: Pinnwand über dein Logbuch | ein Bearbeitungsfenster im Browser (z. B. Decap CMS), das die Dateien im Repo ändert | andere sollen Texte ändern, aber keine Datenbank nötig |
 | C: eigenes CMS | ein Programm mit Datenbank auf dem Server, z. B. Strapi | viele Einträge, mehrere Rollen, Bilder-Verwaltung, später auch eine App |
 
-Ist A oder B die Antwort: Schreib das in `docs/plan.md` und hör hier auf. Das ist ein gutes Ergebnis.
+Ist A oder B die Antwort: Schreib das in `docs/plan.md` und hör hier auf. Das ist ein gutes Ergebnis. Stufe C braucht einen eigenen Server, also Pilot. Mit Light gehen A und B.
 
 ## 2. Strapi einrichten (Stufe C)
 

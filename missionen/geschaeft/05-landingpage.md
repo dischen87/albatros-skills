@@ -36,4 +36,4 @@ Am Anschlagbrett im Supermarkt versteht man einen guten Aushang im Vorbeigehen u
 ## Geschafft, wenn
 
 - deine Seite unter `https://{name}.aufwind.sh` antwortet und
-- die Datei `docs/landingpage.md` mit deinem Plan und dem Testergebnis auf deinem Server liegt.
+- die Datei `docs/landingpage.md` mit deinem Plan und dem Testergebnis in deinem Projekt liegt.

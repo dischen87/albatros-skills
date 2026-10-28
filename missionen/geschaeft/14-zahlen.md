@@ -33,4 +33,4 @@ Dein Geschäft ist ein Laden an einer Strasse. Leute gehen vorbei, schauen ins S
 
 ## Geschafft, wenn
 
-- die Datei `docs/zahlen.md` mit deinen Zahlen und deiner Deutung auf deinem Server liegt.
+- die Datei `docs/zahlen.md` mit deinen Zahlen und deiner Deutung in deinem Projekt liegt.

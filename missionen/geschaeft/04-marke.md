@@ -33,4 +33,4 @@ Deine Marke ist dein Ladenschild in einer belebten Gasse. Dazu gehören der Name
 
 ## Geschafft, wenn
 
-- die Datei `docs/marke.md` mit Kern, Ton, Name, Prüfungen und Aussehen auf deinem Server liegt.
+- die Datei `docs/marke.md` mit Kern, Ton, Name, Prüfungen und Aussehen in deinem Projekt liegt.

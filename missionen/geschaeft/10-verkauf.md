@@ -33,4 +33,4 @@ Eine gute Briefträgerin klingelt nur, wenn sie etwas für dich hat, und hört a
 
 ## Geschafft, wenn
 
-- `docs/verkauf.md` mit Anmeldewegen, Mail-Plan und Entwürfen auf deinem Server liegt.
+- `docs/verkauf.md` mit Anmeldewegen, Mail-Plan und Entwürfen in deinem Projekt liegt.

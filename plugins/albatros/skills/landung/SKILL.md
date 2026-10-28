@@ -26,6 +26,8 @@ Der Umzug ist kein Neubau. Dein Projekt ist schon in Kisten verpackt, die übera
 
 Kurz mit der Person durchgehen (siehe Skill `kosten`): Braucht das Projekt mehr, als Albatros bietet? Will sie alles selbst in der Hand haben? Hat sie jeden Monat ein, zwei Stunden für Pflege? Wenn nicht, ist Bleiben eine gute Entscheidung.
 
+**Mit Light** ist der Umzug klein: Der Ordner `seite/` läuft bei jedem Anbieter für statische Seiten. Das Logbuch zu GitHub mitnehmen (Schritt 4, Punkte 1 und 2) und dort die Seite einschalten, zum Beispiel mit GitHub Pages. Server, Fliessband und Domain-Umzug entfallen, die Umzugsliste bleibt.
+
 ### 2. Umzugsliste
 
 `docs/landung.md` im Projekt:
@@ -157,7 +159,7 @@ Eine Woche beobachten. Läuft alles, das Abo bei Albatros anpassen oder kündige
 
 ### 8. Mission prüfen
 
-`docs/landung.md` ins Logbuch und über das Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-10-landung`. Die Prüfung schaut, ob die Umzugsliste auf dem Albatros-Server liegt. Am besten schreibt die Person die Liste, solange sie noch bei Albatros wohnt.
+`docs/landung.md` ins Logbuch und über das Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-10-landung`. Die Prüfung schaut, ob die Umzugsliste `docs/landung.md` im Projekt liegt (mit Pilot auf dem Albatros-Server, mit Light im Hafen). Am besten schreibt die Person die Liste, solange sie noch bei Albatros wohnt.
 
 ## Stolpersteine
 

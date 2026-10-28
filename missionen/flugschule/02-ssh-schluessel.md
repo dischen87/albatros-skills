@@ -5,6 +5,7 @@ stufe: fliegen
 titel: Dein Hausschlüssel für den Server
 bild: Hausschlüssel und Schloss
 dauer: 20
+abo: pilot
 pruefung:
   - typ: datei
     pfad: ~/hallo.txt

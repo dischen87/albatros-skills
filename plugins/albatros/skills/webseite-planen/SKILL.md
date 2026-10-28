@@ -67,7 +67,7 @@ Lies den Plan der Person am Schluss vor und frag: «Stimmt das so?» Erst dann i
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-01-webseite-planen`. Die Prüfung schaut, ob `~/projekt/docs/plan.md` auf dem Server liegt.
+`mission_pruefen` mit `webseite-01-webseite-planen`. Die Prüfung schaut, ob `docs/plan.md` im Projekt liegt (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
 
 ## Schlussnachricht
 

@@ -35,5 +35,5 @@ Eine Ladenbesitzerin zählt an der Tür nur, was vorher auf ihrer Liste steht, u
 
 ## Geschafft, wenn
 
-- der Ereignis-Plan `~/projekt/docs/statistik.md` auf deinem Server liegt
+- der Ereignis-Plan `docs/statistik.md` in deinem Projekt liegt
 - und deine Seite den PostHog-Einbau enthält.

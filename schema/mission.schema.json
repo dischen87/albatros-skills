@@ -39,6 +39,10 @@
         ]
       }
     },
+    "abo": {
+      "description": "Kleinstes Abo, mit dem die Mission geht. Fehlt das Feld, geht sie ab Light: Dann prüft flotte Dateien (~/projekt/…) im Repo im Hafen statt auf dem Server. pilot heisst: braucht den eigenen Server (Docker, Fliessband, Snapshots, SSH auf den Server, eigene Domain). Mit Gratis lassen sich Missionen nur lesen.",
+      "enum": ["light", "pilot"]
+    },
     "skill": {
       "description": "Name des Skills, der die Person durch die Mission führt. Beim Weg geschaeft ist es eine Methode, die der MCP-Dienst über das Werkzeug methode ausliefert.",
       "type": "string",

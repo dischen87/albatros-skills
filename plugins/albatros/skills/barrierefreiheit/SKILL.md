@@ -88,7 +88,7 @@ Dann reparieren, kritische Punkte zuerst (alles, was eine Person ganz ausschlies
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-05-barrierefreiheit`. Die Prüfung schaut, ob `~/projekt/docs/barrierefreiheit.md` auf dem Server liegt.
+`mission_pruefen` mit `webseite-05-barrierefreiheit`. Die Prüfung schaut, ob `docs/barrierefreiheit.md` im Projekt liegt (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
 
 ## Schlussnachricht
 

@@ -33,4 +33,4 @@ Ein Paket ist nicht zugestellt, wenn es auf dem Wagen liegt, sondern wenn es vor
 
 ## Geschafft, wenn
 
-- `docs/feedback.md` mit Tickets, Bescheiden und einer Runde auf deinem Server liegt.
+- `docs/feedback.md` mit Tickets, Bescheiden und einer Runde in deinem Projekt liegt.

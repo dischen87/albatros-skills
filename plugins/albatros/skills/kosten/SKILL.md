@@ -45,12 +45,13 @@ Schreib die Tabelle mit der Person in `docs/kosten.md` in ihrem Projekt, mit Mon
 
 ### 4. Wann lohnt sich mehr Leistung oder ein Umzug?
 
+- **Von Light zu Pilot:** sobald auf der Seite ein Programm laufen soll (Datenbank, Anmeldung, eigenes CMS) oder eine eigene Domain dazukommt.
 - **Mehr Leistung bei Albatros:** wenn die Seite langsam wird und `free -h` dauernd wenig freie Arbeitsfläche zeigt.
 - **Umzug auf einen eigenen Server** (Skill `landung`): wenn das Projekt Geld verdient, dauerhaft mehr Leistung braucht, als die grösste Stufe bietet, oder die Person alles selbst in der Hand haben will. Ein eigener Server ist oft günstiger in der Miete, aber teurer in der eigenen Zeit: Updates, Sicherungen und Überwachung macht dann niemand mehr für dich.
 
 ### 5. Mission prüfen
 
-`mission_pruefen` mit `flugschule-08-kosten`. Die Prüfung schaut, ob `~/projekt/docs/kosten.md` auf dem Server liegt.
+`mission_pruefen` mit `flugschule-08-kosten`. Die Prüfung schaut, ob `docs/kosten.md` im Projekt liegt (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
 
 ## Schlussnachricht
 

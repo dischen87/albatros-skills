@@ -70,7 +70,9 @@ Noch ein zweiter Eintrag, damit es sitzt. Danach im Browser zeigen: `https://cod
 
 ### 4. Das Logbuch auf dem Server
 
-Dein Server hat eine eigene Kopie in `~/projekt`. Albatros hat sie beim Einrichten angelegt, mit einem Lese-Schlüssel nur für deinen Hafen. Bringt das Logbuch das Fliessband mit (`.github/workflows/deploy.yml`), holt es bei jedem Push die neuen Einträge selbst (Skill `pipeline`). Prüfen:
+**Mit Light** gibt es keinen Server: Der Push ist schon die Auslieferung. Albatros zeigt den Ordner `seite/` aus `main` unter `https://{name}.aufwind.sh`. Seite im Browser neu laden, die Änderung ist da. Weiter mit Schritt 5.
+
+**Mit Pilot:** Dein Server hat eine eigene Kopie in `~/projekt`. Albatros hat sie beim Einrichten angelegt, mit einem Lese-Schlüssel nur für deinen Hafen. Bringt das Logbuch das Fliessband mit (`.github/workflows/deploy.yml`), holt es bei jedem Push die neuen Einträge selbst (Skill `pipeline`). Prüfen:
 
 ```bash
 ssh {name}@aufwind.sh 'git -C ~/projekt log --oneline -3'
@@ -80,7 +82,7 @@ Fehlen die neuen Einträge, holst du sie von Hand: `ssh {name}@aufwind.sh 'git -
 
 ### 5. Mission prüfen
 
-`mission_pruefen` mit `flugschule-04-git-logbuch`. Die Prüfung schaut, ob `~/projekt` auf dem Server ein Git-Repo mit mindestens zwei Einträgen auf `main` ist.
+`mission_pruefen` mit `flugschule-04-git-logbuch`. Die Prüfung schaut, ob das Logbuch mindestens zwei Einträge auf `main` hat: mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen.
 
 ## Wenn es hakt
 

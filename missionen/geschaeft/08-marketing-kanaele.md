@@ -33,4 +33,4 @@ Dein Geschäft hat viele Türen: die Suche im Netz, Empfehlungen, Social Media, 
 
 ## Geschafft, wenn
 
-- die Datei `docs/kanaele.md` mit deinen Kanälen, Links und dem ersten Testplan auf deinem Server liegt.
+- die Datei `docs/kanaele.md` mit deinen Kanälen, Links und dem ersten Testplan in deinem Projekt liegt.

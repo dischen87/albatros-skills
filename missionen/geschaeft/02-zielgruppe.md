@@ -33,4 +33,4 @@ Auf einem Foto einer Menschenmenge erkennt sich niemand. Ein Porträt zeigt eine
 
 ## Geschafft, wenn
 
-- die Datei `docs/zielgruppe.md` mit deinem Porträt auf deinem Server liegt.
+- die Datei `docs/zielgruppe.md` mit deinem Porträt in deinem Projekt liegt.

@@ -26,7 +26,7 @@ Deine Seite ist schon unter `{name}.aufwind.sh` erreichbar. Mit einer eigenen Do
 
 ### 1. Passt das Abo?
 
-Eigene Domains gibt es nur im bezahlten Abo. Prüf mit `konto_status`. Fehlt es, erklär den Unterschied und hol mit `upgrade_link` den Link. Nichts aufdrängen. Suchen geht auch ohne Abo.
+Eigene Domains gibt es nur mit Pilot, nicht mit Gratis oder Light. Prüf mit `konto_status`. Fehlt Pilot, erklär den Unterschied und hol mit `upgrade_link` (Stufe `pilot`) den Link. Nichts aufdrängen. Suchen geht mit jedem Abo.
 
 ### 2. Hat die Person schon eine Adresse?
 

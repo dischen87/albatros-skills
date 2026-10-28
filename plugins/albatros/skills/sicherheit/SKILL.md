@@ -25,6 +25,8 @@ Ein Haus ist so sicher wie sein nachlässigster Moment. Einbrecher suchen nicht 
 
 ## Ablauf
 
+**Mit Light** ist alles öffentlich, was Albatros ausstellt (der Ordner `seite/`), auch was nirgends verlinkt ist. Dort gehören gar keine Geheimnisse hinein. Die Schritte 1 und 2 gelten trotzdem. Alles mit Server, `.env` und Ports gilt erst mit Pilot.
+
 ### 1. Ist schon etwas unter der Fussmatte?
 
 ```bash
@@ -76,7 +78,7 @@ Auf Albatros kümmert sich die Plattform um die Haustür (Firewall, Schutz gegen
 
 ### 7. Mission prüfen
 
-Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-07-sicherheit`. Die Prüfung schaut, ob `~/projekt/.gitignore` auf dem Server `.env` enthält.
+Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-07-sicherheit`. Die Prüfung schaut, ob `.gitignore` im Projekt `.env` enthält (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
 
 ## Wenn etwas passiert ist
 

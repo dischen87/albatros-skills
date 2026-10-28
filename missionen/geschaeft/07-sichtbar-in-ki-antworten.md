@@ -33,4 +33,4 @@ Viele Leute fragen heute eine KI, bevor sie etwas kaufen. Die KI ist wie die Aus
 
 ## Geschafft, wenn
 
-- `docs/ki-sichtbarkeit.md` mit Fragenliste, Technik-Check und erster Messung auf deinem Server liegt.
+- `docs/ki-sichtbarkeit.md` mit Fragenliste, Technik-Check und erster Messung in deinem Projekt liegt.

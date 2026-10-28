@@ -33,4 +33,4 @@ Auf jedem Schiff gibt es ein Logbuch: Wer hat wann was gemacht, und warum? Git i
 
 ## Geschafft, wenn
 
-- `~/projekt` auf deinem Server ein Git-Repo ist, mit mindestens zwei Einträgen auf `main`.
+- dein Logbuch mindestens zwei Einträge auf `main` hat: mit Light im Hafen, mit Pilot auch in `~/projekt` auf deinem Server.

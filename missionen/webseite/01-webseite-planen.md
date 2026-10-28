@@ -32,4 +32,4 @@ Niemand baut ein Haus ohne Grundriss. Bevor deine KI eine Zeile baut, klärt ihr
 
 ## Geschafft, wenn
 
-- auf deinem Server die Datei `~/projekt/docs/plan.md` liegt.
+- in deinem Projekt die Datei `docs/plan.md` liegt.

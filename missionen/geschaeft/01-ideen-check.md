@@ -35,4 +35,4 @@ Die Gespräche selbst brauchen ein paar Tage. Die Zeit oben ist die Arbeit mit d
 
 ## Geschafft, wenn
 
-- die Datei `docs/ideen-check.md` mit deinen Annahmen, Gesprächen und deinem Entscheid auf deinem Server liegt.
+- die Datei `docs/ideen-check.md` mit deinen Annahmen, Gesprächen und deinem Entscheid in deinem Projekt liegt.
