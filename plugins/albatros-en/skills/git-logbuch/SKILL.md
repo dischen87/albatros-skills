@@ -55,7 +55,7 @@ The logbook is private: only you can see it. Then check the `.gitignore`, with a
 
 ### 3. The first entry
 
-The person changes something small themselves, e.g. one line in `README.md`. Then together:
+The person changes something small themselves, e.g. one line in `README.md`. You open the file for them (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) and name the exact line and the new text. If they don’t feel up to it or nothing changes, you do it yourself and show them the change with `git diff`. Then together:
 
 ```bash
 git status                     # What has changed?

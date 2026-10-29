@@ -55,7 +55,7 @@ Le journal de bord est privé : toi seul le vois. Ensuite, vérifier le `.giti
 
 ### 3. La première entrée
 
-La personne modifie elle-même quelque chose de petit, p. ex. une ligne dans `README.md`. Puis ensemble :
+La personne modifie elle-même quelque chose de petit, p. ex. une ligne dans `README.md`. Tu lui ouvres le fichier (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) et tu lui indiques exactement la ligne et le nouveau texte. Si elle n’ose pas ou si rien ne change, tu le fais toi-même et tu lui montres la modification avec `git diff`. Puis ensemble :
 
 ```bash
 git status                     # Qu'est-ce qui a changé ?

@@ -55,7 +55,7 @@ Il diario di bordo è privato: lo vedi solo tu. Poi controlla il `.gitignore`, a
 
 ### 3. La prima voce
 
-La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Poi insieme:
+La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Le apri tu il file (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) e le indichi esattamente la riga e il nuovo testo. Se non se la sente o non cambia nulla, lo fai tu e le mostri la modifica con `git diff`. Poi insieme:
 
 ```bash
 git status                     # Cosa è cambiato?

@@ -169,6 +169,7 @@ try {
       const fehler = await page.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } }))
         .violations.map((v) => ({ id: v.id, impact: v.impact, hilfe: v.help, n: v.nodes.length, wo: v.nodes.slice(0, 3).map((n) => n.target.join(' ')) })));
       for (const v of fehler) melde('ablaeufe', ['critical', 'serious'].includes(v.impact) ? 'rot' : 'gelb', `${p}: ${v.hilfe} (${v.id}, ${v.n}×)`, v.wo);
+      if (!fehler.length) melde('ablaeufe', 'grün', `${p}: Zugang nach WCAG 2.2 AA (axe): nichts gefunden`);
       const ziele = await page.$$eval('a[href], img[src], link[rel=stylesheet][href], script[src], source[src]', (es) => es.map((e) => e.getAttribute('href') ?? e.getAttribute('src')));
       for (const z of ziele) {
         if (!z || /^(#|mailto:|tel:|javascript:|data:)/i.test(z)) continue;
@@ -194,6 +195,7 @@ try {
       await page.setViewportSize({ width: 390, height: 844 });
     }
   }
+  if (B.ablaeufe && geprueft.size && ![...geprueft.values()].includes(false)) melde('ablaeufe', 'grün', `${geprueft.size} Links und Dateien geprüft, keiner tot`);
   if (B.aussehen) melde('aussehen', 'hinweis', 'Fotos in docs/pruefung/fotos/ (390 und 1440 px): selbst anschauen und mit der Liste der KI-Merkmale im Skill gestaltung vergleichen');
 } finally {
   await browser.close();

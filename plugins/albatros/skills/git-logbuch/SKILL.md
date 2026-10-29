@@ -54,7 +54,7 @@ Das Logbuch ist privat: Nur du siehst es. Danach die `.gitignore` prüfen, minde
 
 ### 3. Der erste Eintrag
 
-Die Person ändert selbst etwas Kleines, z. B. eine Zeile im `README.md`. Dann zusammen:
+Die Person ändert selbst etwas Kleines, z. B. eine Zeile im `README.md`. Du öffnest ihr die Datei (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) und nennst genau die Zeile und den neuen Text. Traut sie sich das nicht zu oder ändert sich nichts, machst du es selbst und zeigst ihr die Änderung mit `git diff`. Dann zusammen:
 
 ```bash
 git status                     # Was hat sich geändert?
