@@ -203,7 +203,7 @@ try {
 
 // ---------- Code und Tempo: Lighthouse und Bilder ----------
 if (B.code) {
-  for (const p of SEITEN.filter((x) => titel[x] !== undefined).slice(0, 6)) {
+  for (const p of SEITEN.filter((x) => titel[x] !== undefined)) {
     // Nicht spawnSync: Das blockiert diesen Prozess und damit den kleinen Server, den Lighthouse gerade abfragt
     const stdout = await new Promise((fertig) => {
       const c = spawn(process.execPath, [modul('lighthouse', 'cli', 'index.js'), BASIS + p, '--output=json', '--quiet', '--chrome-flags=--headless=new --no-sandbox',
