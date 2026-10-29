@@ -73,6 +73,8 @@ Un plan sur une feuille de papier suffit. Il évite beaucoup de transformations 
 
 `mission_pruefen` avec `webseite-01-webseite-planen`. La vérification regarde si `docs/plan.md` se trouve dans le projet (avec Pilot dans `~/projekt` sur le serveur, avec Light dans le port).
 
+Ensuite vient le skill `webseite-bauen` (mission `webseite-02-bauen`) : du plan au site sur Internet. Lis-le (`../webseite-bauen/SKILL.md`) et commence là à l'étape 1.
+
 ## Message final
 
 Ton dernier message à cette étape commence par une phrase sur l'image « le plan de la maison », qui en redit l'essentiel. Ensuite : ce qui est fait, où se trouve le résultat, ce qui reste ouvert et ce qui vient ensuite.

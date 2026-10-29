@@ -134,6 +134,10 @@ Veröffentlicht wird nur, was der Person gehört oder wofür sie die Erlaubnis h
 - Die Person warten lassen («schau später nochmal rein»): Du prüfst selbst, bis die Seite da ist (Schritt 8).
 - Einen Schritt nicht gemeldet: Das Haus auf der Insel bleibt stehen. Melde jeden Schritt, sobald er geschafft ist.
 
+## Mission prüfen
+
+`mission_pruefen` mit `webseite-02-bauen`, sobald die Seite im Netz ist. Die Prüfung schaut, ob `docs/prd.md` im Projekt liegt und die Seite antwortet.
+
 ## Schlussnachricht
 
 Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «vom Grundriss zum fertigen Haus», der den Kern noch einmal sagt. Danach: welcher der acht Schritte geschafft ist, wo das Ergebnis liegt, was die Person entscheiden muss und welcher Schritt als Nächstes kommt.

@@ -135,6 +135,10 @@ Si pubblica solo quello che appartiene alla persona o per cui ha il permesso (sk
 - Far aspettare la persona («guarda più tardi»): controlli tu finché la pagina c'è (passo 8).
 - Un passo non segnalato: la casa sull'isola resta ferma. Segnala ogni passo appena è riuscito.
 
+## Verifica la missione
+
+`mission_pruefen` con `webseite-02-bauen`, appena il sito è in rete. La verifica controlla se `docs/prd.md` si trova nel progetto e se il sito risponde.
+
 ## Messaggio finale
 
 Il tuo ultimo messaggio in questo passo inizia con una frase sull'immagine «dalla pianta alla casa finita», che ne ripete il nocciolo. Poi: quale degli otto passi è fatto, dove si trova il risultato, cosa deve decidere la persona e quale passo viene dopo.

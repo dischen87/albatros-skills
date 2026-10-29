@@ -73,6 +73,8 @@ At the end, read the plan back to the person and ask: “Is that right?” Only 
 
 `mission_pruefen` with `webseite-01-webseite-planen`. The check looks at whether `docs/plan.md` is in the project (with Pilot in `~/projekt` on the server, with Light in the harbour).
 
+Next comes the skill `webseite-bauen` (mission `webseite-02-bauen`): from floor plan to a page on the web. Read it (`../webseite-bauen/SKILL.md`) and start there with step 1.
+
 ## Final message
 
 Your last message in this step starts with one sentence on the picture “the floor plan” that sums up the core once more. Then: what's done, where the result is, what's still open and what comes next.

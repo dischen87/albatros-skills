@@ -135,6 +135,10 @@ On ne publie que ce qui appartient à la personne ou ce pour quoi elle a l'autor
 - Faire attendre la personne (« regarde plus tard ») : tu vérifies toi-même jusqu'à ce que la page soit là (étape 8).
 - Une étape pas annoncée : la maison sur l'île arrête de grandir. Annonce chaque étape dès qu'elle est réussie.
 
+## Vérifier la mission
+
+`mission_pruefen` avec `webseite-02-bauen`, dès que le site est en ligne. La vérification regarde si `docs/prd.md` se trouve dans le projet et si le site répond.
+
 ## Message final
 
 Ton dernier message de cette étape commence par une phrase sur l'image « du plan à la maison terminée », qui redit l'essentiel. Ensuite : laquelle des huit étapes est réussie, où se trouve le résultat, ce que la personne doit décider et quelle étape vient ensuite.

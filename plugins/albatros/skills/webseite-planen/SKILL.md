@@ -72,6 +72,8 @@ Lies den Plan der Person am Schluss vor und frag: «Stimmt das so?» Erst dann i
 
 `mission_pruefen` mit `webseite-01-webseite-planen`. Die Prüfung schaut, ob `docs/plan.md` im Projekt liegt (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
 
+Danach kommt der Skill `webseite-bauen` (Mission `webseite-02-bauen`): vom Grundriss zur Seite im Netz. Lies ihn (`../webseite-bauen/SKILL.md`) und fang dort mit Schritt 1 an.
+
 ## Schlussnachricht
 
 Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «der Grundriss», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt.

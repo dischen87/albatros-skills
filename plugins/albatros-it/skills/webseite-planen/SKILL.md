@@ -73,6 +73,8 @@ Alla fine leggi il piano alla persona e chiedi: «È giusto così?» Solo dopo v
 
 `mission_pruefen` con `webseite-01-webseite-planen`. La verifica controlla se `docs/plan.md` si trova nel progetto (con Pilot in `~/projekt` sul server, con Light nel porto).
 
+Dopo viene lo skill `webseite-bauen` (missione `webseite-02-bauen`): dalla pianta al sito in rete. Leggilo (`../webseite-bauen/SKILL.md`) e comincia lì dal passo 1.
+
 ## Messaggio finale
 
 Il tuo ultimo messaggio in questo passo inizia con una frase sull'immagine «la pianta», che ne ripete il nocciolo. Poi: cosa è fatto, dove si trova il risultato, cosa resta aperto e cosa viene dopo.

@@ -137,6 +137,10 @@ Only what belongs to the person, or what they have permission for, gets publishe
 - Making the person wait (“have a look later”): you check yourself until the site is there (step 8).
 - A step not reported: the house on the island stops growing. Report every step as soon as it's done.
 
+## Check the mission
+
+`mission_pruefen` with `webseite-02-bauen` as soon as the page is on the web. The check looks at whether `docs/prd.md` is in the project and the page answers.
+
 ## Final message
 
 Your last message in this step starts with one sentence on the picture “from floor plan to finished house” that sums up the core once more. Then: which of the eight steps is done, where the result is, what the person has to decide and which step comes next.
