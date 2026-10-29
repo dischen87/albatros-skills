@@ -1,6 +1,6 @@
 ---
 name: gestaltung
-description: "Retravaille l'utilisation et l'apparence d'un petit site web avec une personne sans connaissances préalables, étape par étape avec son IA. D'abord vérifier sous trois angles (déroulements, accès, états et langage), puis réparer l'utilisation, puis trois directions bien différentes au choix, des valeurs fixes pour les couleurs, la police et les espacements (tokens) et la transformation de toutes les pages, avec des photos en largeur natel et ordinateur. Utilise ce skill quand on dit « design », « ça a l'air ennuyeux », « ça fait bricolé », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « layout »."
+description: "Retravaille l'utilisation et l'apparence d'un petit site web avec une personne sans connaissances préalables, étape par étape avec son IA. D'abord vérifier sous trois angles (déroulements, accès, états et langage), puis réparer l'utilisation, puis le caractère du site avant les couleurs préférées, trois directions bien différentes au choix, une vérification contre le look typique de l'IA, des valeurs fixes pour les couleurs, la police et les espacements (tokens), la question des éléments graphiques (icônes, illustrations, photos, mascotte, 3D, sur demande avec les outils d'images d'Albatros) et la transformation de toutes les pages, avec des photos en largeur natel et ordinateur. Utilise ce skill quand on dit « design », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « layout », « icônes », « illustrations », « mascotte », « 3D »."
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -50,13 +50,28 @@ Présente à la personne, regroupé, ce qu'elle doit décider (avec ta recommand
 
 ### 3. Trois directions
 
-1. **Modèles :** regarder les deux ou trois sites du plan. Qu'est-ce qu'ils font bien ? Qu'est-ce qu'on ne reprend pas (leur logo, leurs couleurs, leur police) ?
-2. **Diagnostic :** Pourquoi l'apparence actuelle ne tient-elle pas ? Typique : tous les titres aussi forts, deux styles côte à côte, une couleur avec plusieurs significations, des espacements qui changent.
-3. **Trois directions bien différentes**, pas seulement trois couleurs. Elles se distinguent par l'idée, la police, le rôle de la couleur, les formes et la profondeur. Exemple : « Doux » (chaleureux, arrondi), « Clair » (calme comme un journal), « Vif » (aplats de couleur, grands titres).
-4. Chaque direction montre **les mêmes deux ou trois pages** (accueil, sous-page la plus importante, contact) avec de vrais textes. Un texte de remplissage fausse le jugement.
-5. Identique dans toutes les directions : logo, textes obligatoires, un bouton principal par page, accessibilité.
+1. **Le caractère avant les couleurs.** Demande des traits de caractère, pas des couleurs préférées. Propose des paires d'opposés au choix, adaptées au site : traditionnel ou sportif, village de montagne ou ville, calme ou vivant, raffiné ou terre à terre, pour les hôtes ou pour les membres. En plus, une question : quels trois mots les visiteurs doivent-ils se dire après dix secondes ? Note les réponses dans `docs/gestaltung/richtungen.md`. Chacune des trois directions met en avant d'autres de ces traits. Les couleurs en découlent, ainsi que du logo et de l'environnement, jamais l'inverse.
+2. **Modèles :** regarder les deux ou trois sites du plan. Qu'est-ce qu'ils font bien ? Qu'est-ce qu'on ne reprend pas (leur logo, leurs couleurs, leur police) ?
+3. **Diagnostic :** Pourquoi l'apparence actuelle ne tient-elle pas ? Typique : tous les titres aussi forts, deux styles côte à côte, une couleur avec plusieurs significations, des espacements qui changent.
+4. **Trois directions bien différentes**, pas seulement trois couleurs. Elles se distinguent par l'idée, la police, le rôle de la couleur, les formes et la profondeur. Exemple : « Doux » (chaleureux, arrondi), « Clair » (calme comme un journal), « Vif » (aplats de couleur, grands titres).
+5. Chaque direction montre **les mêmes deux ou trois pages** (accueil, sous-page la plus importante, contact) avec de vrais textes. Un texte de remplissage fausse le jugement.
+6. Identique dans toutes les directions : logo, textes obligatoires, un bouton principal par page, accessibilité.
 
 `docs/gestaltung/richtungen.md` : tout en haut la ligne `Entscheid: <direction ou mélange> (<date>)`, en dessous le diagnostic et, pour chaque direction, un tableau (idée, police, couleurs, formes, force, risque). Le mot `Entscheid:` (décision) reste en allemand, c'est lui que la vérification de la mission cherche. Les ébauches en fichiers HTML dans `docs/gestaltung/entwuerfe/`, pour que la personne puisse les ouvrir dans son navigateur web.
+
+### Ne pas avoir l'air fait par une IA
+
+Les sites faits par une IA se reconnaissent aux mêmes signes. Vérifie chaque ébauche et le site terminé avec cette liste et écris le résultat dans `docs/gestaltung/richtungen.md` (ligne `Signes d'IA vérifiés : …`) :
+
+- Des dégradés de violet et de bleu, des effets de lueur et de verre.
+- Des emoji comme icônes.
+- Inter ou une autre police standard partout, tous les titres aussi forts.
+- Un en-tête centré avec une tache de couleur derrière et deux boutons côte à côte.
+- Trois cartes identiques sur une ligne, avec la même ombre, le même arrondi et chacune une icône.
+- Le look banque d'images : des gens souriants devant un ordinateur portable, des montagnes de n'importe où.
+- Des formules creuses : « Bienvenue sur notre site web », « Découvrez », « Votre partenaire pour », « avec passion », « innovant », « sans couture ».
+
+À la place : de vraies photos du lieu et des gens, une police avec du caractère, adaptée aux traits choisis, des couleurs tirées du logo et de l'environnement, une structure qui vient du contenu (si les dates sont l'essentiel, elles sont en haut) et des phrases concrètes avec des noms, des chiffres et des lieux. Dans le code, tu trouves les dégradés et les polices standard avec `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Les emoji et les formules creuses, tu les cherches dans les textes, le reste dans les photos.
 
 ### 4. Le nuancier (tokens)
 
@@ -67,13 +82,40 @@ Un fichier `tokens.css` avec des variables CSS : couleurs pour clair et sombre
 - Le mode sombre n'échange que les variables de couleur (`@media (prefers-color-scheme: dark)`).
 - En dehors de `tokens.css`, aucune couleur ni aucune taille de police n'est écrite à la main dans le code.
 
+### Éléments graphiques : toujours demander
+
+Une fois la direction fixée, tu demandes toujours : « Tu veux encore des éléments graphiques en plus ? » Présente les possibilités avec l'effort qu'elles demandent :
+
+- **Icônes :** un seul jeu, cohérent (par exemple Lucide ou Phosphor), jamais d'emoji et jamais deux jeux mélangés.
+- **Illustrations :** peu nombreuses, dans le même style, pour les endroits vides et les explications.
+- **Ses propres photos :** une liste de photos, ce que la personne doit photographier (le lieu, des gens en action, des détails). De vraies photos battent n'importe quelle image générée.
+- **Une mascotte :** un personnage qui guide à travers le site. D'abord une planche avec quatre à six poses du même personnage, puis des règles qui disent quand il apparaît : jamais lors d'erreurs, de refus ou de moments délicats. Les clips animés durent au plus 5 secondes, puis s'arrêtent (WCAG 2.2.2). Chaque image, tu la regardes toi-même, aussi en agrandi.
+- **3D :** un objet ou le personnage en modèle 3D, par exemple pour l'en-tête de la page d'accueil.
+
+Ce que la personne choisit va dans `docs/gestaltung/richtungen.md` et dans le nuancier (tailles, espacements, règles).
+
+**Avec Albatros**, les images, les personnages détourés et les modèles 3D naissent avec les outils d'Albatros, payés avec le crédit de la personne (prix coûtant plus 35 %) :
+
+- `bild_erzeugen` avec `beschreibung` (description) et `format` (`quadrat` carré, `quer` paysage, `hoch` portrait ou `breit` large), `bild_freistellen` avec `bild_url` (une image avec fond transparent), `modell_3d` avec `bild_url` (un modèle 3D en GLB, de préférence à partir d'une image détourée).
+- `guthaben` montre le crédit, les prix et le lien pour recharger. Les prix, tu ne les donnes que d'après cette réponse.
+- Avant le premier appel qui coûte quelque chose, tu appelles `guthaben`, tu donnes le prix et tu demandes une fois : « Une image coûte CHF …, ton crédit suffit pour … Je le fais ? » Ensuite, après chaque appel, tu indiques brièvement le coût et le reste, sans redemander. Si le crédit ne suffit pas, tu transmets le lien pour recharger.
+- Chaque résultat, tu l'enregistres tout de suite dans le projet (`curl -o web/public/bilder/<name>.png <url>`), car après 7 jours, il a disparu. Pour une variante, tu changes la description : la même description renvoie la même image pendant 15 minutes, sans nouveaux frais.
+- Chaque image générée, tu la regardes toi-même avant de la montrer à la personne. Sur le site ne va que ce qu'elle a choisi.
+- Si un outil répond « kommt bald » (bientôt disponible), tu continues sans outils d'images (plus bas).
+
+**Avec un propre compte Hugging Face**, ça marche aussi, comme alternative. La personne crée le compte elle-même et se connecte elle-même. Tu ajoutes le serveur officiel : `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Avec Codex, c'est `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, avec Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Les Spaces pour les images, le détourage et la 3D, elle les choisit sous huggingface.co/settings/mcp. Gratuitement, il y a 5 minutes de temps de calcul par jour. Sans connexion, le serveur ne propose que la recherche dans le Hub.
+
+**Droits :** chaque modèle a une licence ; lis-la sur la page du modèle avant qu'une image n'arrive sur le site. FLUX.1 schnell (Apache 2.0), BiRefNet (MIT) et TRELLIS (MIT) permettent aussi l'usage commercial, FLUX.1 dev seulement l'usage non commercial. Les images générées ne montrent pas de vraies personnes ni de logos d'autrui. Les vrais lieux et les vraies personnes viennent de propres photos, avec leur consentement.
+
+**Sans outils d'images**, le chemin est le même : des icônes d'un jeu libre, de propres photos, des illustrations d'une collection libre avec une licence claire, une mascotte dessinée ou plus tard, pas de 3D.
+
 ### 5. Transformation
 
 Le contenu et les déroulements restent. D'abord la base (intégrer les tokens, les parties communes, une page modèle), puis les autres pages. S'il manque une valeur dans le nuancier, tu l'ajoutes là, pas dans le code de la page.
 
 ### 6. Photos et validation
 
-Photographier chaque page, en largeur natel et en largeur ordinateur, en clair et en sombre :
+Photographier chaque page, en largeur natel et en largeur ordinateur, en clair et en sombre. Si le site ne tourne pas encore sur Internet, tu prends l'adresse de l'aperçu (`http://localhost:4321`) :
 
 ```bash
 npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.aufwind.sh docs/gestaltung/fotos/start-375.png

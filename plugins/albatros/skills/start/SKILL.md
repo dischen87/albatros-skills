@@ -27,6 +27,8 @@ Starthilfe braucht jede und jeder. Du bist die Fluglehrerin oder der Fluglehrer 
 
 ## Ablauf
 
+**Eine bestehende Webseite:** Schickt die Person nur die Adresse einer Webseite (https://…) oder «Modernisiere …», folgst du sofort dem Skill `webseite-modernisieren`. Er fängt ohne Rückfrage mit der Bestandsaufnahme an. Die Schritte hier (Anmeldung, Abo, Schlüssel) kommen erst, wenn die neue Seite ins Netz soll.
+
 ### 1. Ist Albatros verbunden?
 
 Ruf das Werkzeug `konto_status` von Albatros auf.
@@ -37,6 +39,7 @@ Ruf das Werkzeug `konto_status` von Albatros auf.
   - **Gemini CLI:** Führ `gemini mcp add --transport http -s user albatros https://mcp.albatros.build` selbst aus, falls die Verbindung noch fehlt. Bitte die Person dann, Gemini CLI neu zu starten. Beim Verbinden öffnet sich der Browser. Bleibt er zu, bitte sie, genau `/mcp auth albatros` einzutippen.
   - **Fehlt Albatros ganz** (keine Verbindung namens albatros eingerichtet): Hol die Anleitung https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md und folge ihr.
   - Danach `konto_status` nochmals aufrufen.
+- **Verbunden:** Öffne die Insel der Person im Browser: `open https://albatros.build/cockpit/insel` (mit Sprachpräfix wie `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). Dort steht pro Projekt ein Haus, das mit jedem Schritt wächst (Skill `webseite-bauen`).
 - **Meldet der Dienst einen Fehler oder ist er nicht erreichbar:** Sag ehrlich, dass Albatros gerade nicht antwortet, und schlag vor, es später nochmals zu versuchen oder auf albatros.build nachzuschauen. Nichts erfinden, keinen Server vortäuschen.
 
 ### 2. Welcher Weg?
@@ -74,7 +77,7 @@ Folge jetzt dem Skill `ssh-schluessel`. Kurz: Der Schlüssel entsteht auf dem Co
 
 ### 5. Die Seite oder der Server entsteht
 
-- **Light:** `seite_erstellen` mit dem Namen, den die Person für ihre Adresse will (klein, ohne Leerzeichen, er wird Teil von `name.aufwind.sh`), und ihrem Schloss, falls es noch nicht hinterlegt ist. Bild: «Dein Schaufenster in einer Ladenstrasse: Du richtest es ein, Albatros schliesst jeden Morgen auf.» Albatros legt das Logbuch im Hafen an und zeigt die Seite daraus. `konto_status` nennt danach die Seite und die Adresse des Hafens.
+- **Light:** `seite_erstellen` mit dem Namen, den die Person für ihre Adresse will (klein, ohne Leerzeichen, er wird Teil von `name.aufwind.sh`), und ihrem Schloss, falls es noch nicht hinterlegt ist. Bild: «Dein Schaufenster in einer Ladenstrasse: Du richtest es ein, und was du in den Hafen schickst, steht kurz danach im Fenster.» Albatros legt das Logbuch im Hafen an und zeigt die Seite daraus. `konto_status` nennt danach die Seite und die Adresse des Hafens. Weicht der Name in der Antwort von dem ab, den die Person wollte, sag es ihr gleich.
 - **Pilot:** `server_erstellen`. Bild: «Deine Wohnung in einem grossen Haus: eigene Tür, eigene Zimmer, die Nachbarn sehen nicht hinein.» Das dauert meist eine bis zwei Minuten. Frag mit `konto_status` nach, bis der Server bereit ist. Er heisst wie die Person (z. B. `anna`).
 - **Sprache:** Gib bei beiden `sprache` mit, die Sprache, in der du mit der Person sprichst (`de`, `fr`, `it` oder `en`). Dann sind ihre erste Seite, das Logbuch und auf dem Server das Bordbuch in ihrer Sprache.
 
@@ -94,7 +97,7 @@ Fehlt `lage`, gilt diese Reihenfolge:
 
 - **Pilot:** Die Flugschule geht weiter mit `server-kennenlernen`, danach `git-logbuch` und `pipeline`. Braucht die Seite Bausteine (Schritt 3), folgen sie danach mit `bausteine`.
 - **Light:** Die Flugschule geht weiter mit `git-logbuch`. Missionen, die einen eigenen Server brauchen (`abo: pilot`), lässt du aus.
-- Beim Weg Webseite folgt danach `webseite-planen`, beim Weg Geschäft die Methode `ideen-check`.
+- Beim Weg Webseite folgt danach `webseite-planen` und dann `webseite-bauen` (Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Server), beim Weg Geschäft die Methode `ideen-check`.
 
 Mit `mission_holen` bekommst du die aktuelle Mission und ihre Prüfung, falls die Person den Faden verloren hat.
 

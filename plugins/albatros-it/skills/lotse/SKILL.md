@@ -44,7 +44,7 @@ La tua risposta inizia con il punto della situazione, in tre parti brevi e solo 
 - **Cosa tocca adesso:** il passo e il suo motivo.
 - **Dopo:** cosa viene come prossima cosa.
 
-Nel primo punto della situazione di una conversazione c'è in più una frase sullo zaino: la persona ha con sé la sua IA, e con Claude Code, Codex e Gemini CLI funziona tutto allo stesso modo. Chiama tutte e tre per nome.
+Nel primo punto della situazione di una conversazione apri l'isola della persona nel browser (`open https://albatros.build/it/cockpit/insel`, con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), lì la sua casa cresce con ogni passo. In più c'è una frase sullo zaino: la persona ha con sé la sua IA, e con Claude Code, Codex e Gemini CLI funziona tutto allo stesso modo. Chiama tutte e tre per nome.
 
 Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, di' la sua immagine in due o tre frasi e mostra il primo passo concreto. Poi ti fermi e aspetti la persona. Il resto dello skill lo fate dopo insieme, passo dopo passo. Per questa prima risposta leggi solo lo skill: ancora nessun file del progetto, nessun comando. È un unico messaggio breve, e il punto della situazione c'è dentro.
 
@@ -66,6 +66,8 @@ Se lavorate a lungo su un passo, ripeti in breve nel tuo ultimo messaggio il pun
 ### 4. Quando la persona vuole altro
 
 È la persona a decidere dove vola. Se preferisce lavorare a qualcos'altro, prendi lo skill adatto dalla biblioteca qui sotto. Di' in una frase cosa consiglierebbe `lage` come prossima cosa, così non lo dimentica.
+
+Se la persona manda l'indirizzo di un sito web esistente (https://…) o «Modernizza …», segui subito lo skill `webseite-modernisieren`, con o senza accesso. Comincia senza domande con l'inventario.
 
 ## Senza accesso
 
@@ -93,6 +95,8 @@ Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente
 | `kosten` | Quanto costa il mio progetto al mese, quale abbonamento fa per me |
 | `domain` | Trovare, comprare o collegare un indirizzo tuo come mionegozio.ch |
 | `landung` | Trasloco su un server tuo fuori da Albatros |
+| `webseite-bauen` | Dal piano al sito finito in otto passi: mockup, design, framework, PRD, in locale, porto, nastro trasportatore, server |
+| `webseite-modernisieren` | Rinnovare un sito web esistente: inventario di tutte le pagine e funzioni, poi piano e aspetto |
 | `webseite-planen` | Prima di costruire: per chi, quali pagine, quali contenuti |
 | `inhalte` | Scrivere e scegliere testi e immagini per il sito |
 | `gestaltung` | Il sito deve essere più facile da usare e più bello |

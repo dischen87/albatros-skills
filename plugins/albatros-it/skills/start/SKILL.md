@@ -28,6 +28,8 @@ Un aiuto alla partenza serve a tutte e a tutti. Tu sei l'istruttrice o l'istrutt
 
 ## Procedura
 
+**Un sito web esistente:** Se la persona manda solo l'indirizzo di un sito web (https://…) o «Modernizza …», segui subito lo skill `webseite-modernisieren`. Comincia senza domande con l'inventario. I passi di qui (accesso, abbonamento, chiave) vengono solo quando il nuovo sito deve andare in rete.
+
 ### 1. Albatros è collegato?
 
 Chiama lo strumento `konto_status` di Albatros.
@@ -38,6 +40,7 @@ Chiama lo strumento `konto_status` di Albatros.
   - **Gemini CLI:** Esegui tu `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, se il collegamento manca ancora. Poi chiedi alla persona di riavviare Gemini CLI. Durante il collegamento si apre il browser. Se resta chiuso, chiedile di digitare esattamente `/mcp auth albatros`.
   - **Albatros manca del tutto** (nessun collegamento chiamato albatros configurato): prendi le istruzioni https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md e seguile.
   - Poi richiama `konto_status`.
+- **Collegato:** Apri l'isola della persona nel browser: `open https://albatros.build/it/cockpit/insel` (con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). Lì c'è per ogni progetto una casa che cresce con ogni passo (skill `webseite-bauen`).
 - **Il servizio riporta un errore o non è raggiungibile:** Di' onestamente che Albatros al momento non risponde, e proponi di riprovare più tardi o di dare un'occhiata su albatros.build. Non inventare niente, non fingere un server.
 
 ### 2. Quale percorso?
@@ -75,7 +78,7 @@ Ora segui lo skill `ssh-schluessel`. In breve: la chiave nasce sul computer dell
 
 ### 5. Nasce la pagina o il server
 
-- **Light:** `seite_erstellen` con il nome che la persona vuole per il suo indirizzo (minuscolo, senza spazi, diventa parte di `name.aufwind.sh`) e con la sua serratura, se non è ancora depositata. Immagine: «La tua vetrina in una via di negozi: tu la allestisci, Albatros apre ogni mattina.» Albatros crea il diario di bordo nel porto e ne mostra la pagina. Dopo, `konto_status` indica la pagina e l'indirizzo del porto.
+- **Light:** `seite_erstellen` con il nome che la persona vuole per il suo indirizzo (minuscolo, senza spazi, diventa parte di `name.aufwind.sh`) e con la sua serratura, se non è ancora depositata. Immagine: «La tua vetrina in una via di negozi: tu la allestisci, e quello che mandi al porto è in vetrina poco dopo.» Albatros crea il diario di bordo nel porto e ne mostra la pagina. Dopo, `konto_status` indica la pagina e l'indirizzo del porto. Se il nome nella risposta è diverso da quello che la persona voleva, diglielo subito.
 - **Pilot:** `server_erstellen`. Immagine: «Il tuo appartamento in un grande palazzo: porta tua, stanze tue, i vicini non vedono dentro.» Di solito ci vogliono uno o due minuti. Chiedi con `konto_status` finché il server è pronto. Si chiama come la persona (p. es. `anna`).
 - **Lingua:** Per entrambi passa `sprache`, la lingua in cui parli con la persona (`de`, `fr`, `it` o `en`). Così la sua prima pagina, il diario di bordo e, sul server, il manuale di bordo sono nella sua lingua.
 
@@ -95,7 +98,7 @@ Se `lage` manca, vale quest'ordine:
 
 - **Pilot:** La scuola di volo continua con `server-kennenlernen`, poi `git-logbuch` e `pipeline`. Se il sito ha bisogno di blocchi (passo 3), dopo segue `bausteine`.
 - **Light:** La scuola di volo continua con `git-logbuch`. Le missioni che richiedono un server proprio (`abo: pilot`) le salti.
-- Nel percorso sito web segue poi `webseite-planen`, nel percorso attività il metodo `ideen-check`.
+- Nel percorso sito web segue poi `webseite-planen` e dopo `webseite-bauen` (mockup, design, framework, PRD, in locale, porto, nastro trasportatore, server), nel percorso attività il metodo `ideen-check`.
 
 Con `mission_holen` ottieni la missione attuale e la sua verifica, se la persona ha perso il filo.
 

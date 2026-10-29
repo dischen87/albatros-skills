@@ -44,7 +44,7 @@ Your answer starts with the status report, in three short parts and only with de
 - **Up now:** the step and the reason for it.
 - **After that:** what comes next.
 
-In the first status report of a conversation there's also one sentence about the rucksack: the person has their AI with them, and everything works the same with Claude Code, Codex and Gemini CLI. Name all three.
+In the first status report of a conversation, you open the person's island in the browser (`open https://albatros.build/en/cockpit/insel`, with the language prefix `/en` like `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), where their house grows with every step. On top of that comes one sentence about the rucksack: the person has their AI with them, and everything works the same with Claude Code, Codex and Gemini CLI. Name all three.
 
 Straight after that, in the same answer, you start on the step: read the skill, give its picture in two or three sentences and show the first concrete step. Then you stop and wait for the person. You go through the rest of the skill together, step by step, after that. For this first answer you only read the skill: no files in the project yet, no commands. It's one single short message, and the status report is in it.
 
@@ -66,6 +66,8 @@ If you work on one step for a long time, repeat the status report briefly in you
 ### 4. If the person wants something else
 
 The person decides where they fly. If they'd rather work on something else, take the matching skill from the library below. Say in one sentence what `lage` would suggest next, so they don't forget it.
+
+If the person sends the address of an existing website (https://…) or “Modernise …”, you follow the skill `webseite-modernisieren` straight away, with or without sign-in. It starts on the inventory without asking first.
 
 ## Without sign-in
 
@@ -93,6 +95,8 @@ If Albatros answers with a different error or doesn't answer at all: say honestl
 | `kosten` | What does my project cost each month, which plan fits |
 | `domain` | Find, buy or connect your own address like meinladen.ch |
 | `landung` | Move to your own server outside Albatros |
+| `webseite-bauen` | From the plan to the finished site in eight steps: mockup, design, framework, PRD, local, harbour, conveyor belt, server |
+| `webseite-modernisieren` | Renew an existing website: an inventory of all pages and features, then plan and design |
 | `webseite-planen` | Before you build: for whom, which pages, which content |
 | `inhalte` | Write and choose texts and pictures for the site |
 | `gestaltung` | The site should be easier to use and look better |

@@ -1,6 +1,6 @@
 ---
 name: gestaltung
-description: "Reworks how a small website works and looks, with a person who has no prior knowledge, step by step with their AI. First a check from three angles (flows, access, states and language), then fixing how it works, then three clearly different directions to choose from, fixed values for colours, type and spacing (tokens), and rebuilding all pages with screenshots at phone and desktop width. Use this skill for “design”, “it looks boring”, “it looks home-made”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”."
+description: "Reworks how a small website works and looks, with a person who has no prior knowledge, step by step with their AI. First a check from three angles (flows, access, states and language), then fixing how it works, then the site's character instead of favourite colours, three clearly different directions to choose from, a check against the typical AI look, fixed values for colours, type and spacing (tokens), the question about design elements (icons, illustrations, photos, mascot, 3D, on request with the Albatros image tools) and rebuilding all pages with screenshots at phone and desktop width. Use this skill for “design”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “illustrations”, “mascot”, “3D”."
 ---
 
 # Design: first the foundations, then the facade
@@ -50,13 +50,28 @@ Put everything the person has to decide in front of them in one go (with your re
 
 ### 3. Three directions
 
-1. **Examples:** look at the two or three sites from the plan. What do they do well? What don't we copy (their logo, colours, font)?
-2. **Diagnosis:** Why doesn't today's look work? Typical: all headings equally loud, two styles side by side, one colour with several meanings, spacing that keeps changing.
-3. **Three clearly different directions**, not just three colours. They differ in idea, font, the role of colour, shapes and depth. Example: “Soft” (warm, round), “Clear” (calm like a newspaper), “Bold” (blocks of colour, big headings).
-4. Each direction shows **the same two or three pages** (home, most important subpage, contact) with real texts. Placeholder text skews the judgement.
-5. The same in all directions: logo, mandatory texts, one main button per page, accessibility.
+1. **Character before colours.** Ask about qualities, not favourite colours. Put pairs of opposites forward to choose from, to suit the site: traditional or sporty, mountain village or city, calm or lively, refined or down-to-earth, for guests or for members. Plus one question: which three words should visitors think after ten seconds? Write the answers down in `docs/gestaltung/richtungen.md`. Each of the three directions stresses different ones of these qualities. Colours follow from them and from the logo and surroundings, never the other way round.
+2. **Examples:** look at the two or three sites from the plan. What do they do well? What don't we copy (their logo, colours, font)?
+3. **Diagnosis:** Why doesn't today's look work? Typical: all headings equally loud, two styles side by side, one colour with several meanings, spacing that keeps changing.
+4. **Three clearly different directions**, not just three colours. They differ in idea, font, the role of colour, shapes and depth. Example: “Soft” (warm, round), “Clear” (calm like a newspaper), “Bold” (blocks of colour, big headings).
+5. Each direction shows **the same two or three pages** (home, most important subpage, contact) with real texts. Placeholder text skews the judgement.
+6. The same in all directions: logo, mandatory texts, one main button per page, accessibility.
 
 `docs/gestaltung/richtungen.md`: at the top the line `Entscheid: <direction or mix> (<date>)` (“Entscheid” means decision; keep the word `Entscheid:` exactly as it is, because the mission check looks for it), below it the diagnosis and one table per direction (idea, font, colours, shapes, strength, risk). The drafts as HTML files in `docs/gestaltung/entwuerfe/`, so the person can open them in the browser.
+
+### Don't look like AI
+
+AI sites give themselves away with the same traits. Check every draft and the finished site against this list and write the result in `docs/gestaltung/richtungen.md` (line `AI traits checked: …`):
+
+- Gradients in purple and blue, glow and glass effects.
+- Emoji as icons.
+- Inter or another default font everywhere, all headings equally loud.
+- A centred header with a blob of colour behind it and two buttons side by side.
+- Three identical cards in a row, with the same shadow, the same rounded corners and one icon each.
+- The stock photo look: smiling people at a laptop, mountains from anywhere.
+- Filler phrases: “Welcome to our website”, “Discover”, “Your partner for”, “with passion”, “innovative”, “seamless”.
+
+Instead: real photos of the place and the people, a font with character that suits the qualities, colours from the logo and surroundings, a structure that comes from the content (if dates are the main thing, they go at the top), and concrete sentences with names, numbers and places. In the code you find gradients and default fonts with `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji and filler phrases you look for in the texts, the rest in the screenshots.
 
 ### 4. The colour fan (tokens)
 
@@ -67,13 +82,40 @@ One file `tokens.css` with CSS variables: colours for light and dark, fonts, fon
 - Dark mode only swaps the colour variables (`@media (prefers-color-scheme: dark)`).
 - Outside `tokens.css`, no colour and no font size is written into the code by hand.
 
+### Design elements: always ask
+
+Once the direction is settled, you always ask: “Would you like any design elements as well?” Put the options forward with the effort each one takes:
+
+- **Icons:** one single, consistent set (for example Lucide or Phosphor), never emoji and never two sets mixed.
+- **Illustrations:** a few, in the same style, for empty spots and explanations.
+- **Your own photos:** a photo list of what the person should photograph (the place, people in action, details). Real photos beat any generated picture.
+- **A mascot:** a character that guides people through the site. First a sheet with four to six poses of the same character, then rules for when it appears: never with errors, cancellations or delicate moments. Animated clips play for 5 seconds at most and then stop (WCAG 2.2.2). You look at every picture yourself, zoomed in too.
+- **3D:** an object or the character as a 3D model, for example for the header of the home page.
+
+Whatever the person picks goes into `docs/gestaltung/richtungen.md` and into the colour fan (sizes, spacing, rules).
+
+**With Albatros**, pictures, cut-out characters and 3D models are made with the Albatros tools, paid from the person's credit (cost price plus 35 %):
+
+- `bild_erzeugen` with `beschreibung` (the description) and `format` (`quadrat` square, `quer` landscape, `hoch` portrait or `breit` wide), `bild_freistellen` with `bild_url` (a picture with a transparent background), `modell_3d` with `bild_url` (a 3D model as GLB, ideally from a cut-out picture).
+- `guthaben` shows the balance, the prices and the link to top up. You only give prices from this answer.
+- Before the first call that costs something, you call `guthaben`, give the price and ask once: “A picture costs CHF …, your credit is enough for … Shall I?” After that, after every call you briefly give the cost and what's left, without asking again. If the credit isn't enough, pass on the link to top up.
+- You save every result in the project straight away (`curl -o web/public/bilder/<name>.png <url>`), because after 7 days it's gone. For a variant you change the description: the same description returns the same picture for 15 minutes, at no extra cost.
+- You look at every generated picture yourself before you show it to the person. Only what they've chosen goes on the site.
+- If a tool answers “kommt bald” (coming soon), you carry on without the image tools (below).
+
+**With their own Hugging Face account** it works too, as an alternative. The person creates the account themselves and signs in themselves. You add the official server: `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. With Codex it's `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, with Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. They choose the Spaces for pictures, cutting out and 3D at huggingface.co/settings/mcp. For free there are 5 minutes of computing time a day. Without signing in, the server only offers search in the Hub.
+
+**Rights:** Every model has a licence; read it on the model page before a picture goes on the site. FLUX.1 schnell (Apache 2.0), BiRefNet (MIT) and TRELLIS (MIT) also allow commercial use, FLUX.1 dev only non-commercial use. Generated pictures show no real people and no other people's logos. Real places and people come from the person's own photos, with consent.
+
+**Without image tools** the path works just the same: icons from a free set, your own photos, illustrations from a free collection with a clear licence, a mascot drawn by hand or later, no 3D.
+
 ### 5. Rebuild
 
 Content and flows stay. First the groundwork (include the tokens, shared parts, one model page), then the other pages. If a value is missing from the colour fan, you add it there, not in the page's code.
 
 ### 6. Screenshots and sign-off
 
-Take a screenshot of every page, at phone width and desktop width, light and dark:
+Take a screenshot of every page, at phone width and desktop width, light and dark. If the site isn't on the web yet, use the address of the preview (`http://localhost:4321`):
 
 ```bash
 npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.aufwind.sh docs/gestaltung/fotos/start-375.png

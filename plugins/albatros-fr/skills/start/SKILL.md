@@ -28,6 +28,8 @@ Tout le monde a besoin d'un coup de pouce au départ. Toi, tu es l'instructrice 
 
 ## Déroulement
 
+**Un site web existant :** si la personne envoie seulement l'adresse d'un site web (https://…) ou « Modernise … », tu suis tout de suite le skill `webseite-modernisieren`. Il commence par l'état des lieux sans poser de question. Les étapes d'ici (connexion, abonnement, clé) ne viennent que quand le nouveau site doit aller sur Internet.
+
 ### 1. Albatros est-il connecté ?
 
 Appelle l'outil `konto_status` d'Albatros.
@@ -38,6 +40,7 @@ Appelle l'outil `konto_status` d'Albatros.
   - **Gemini CLI :** exécute toi-même `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, si la connexion manque encore. Demande ensuite à la personne de redémarrer Gemini CLI. Au moment de la connexion, le navigateur web s'ouvre. S'il reste fermé, demande-lui de taper exactement `/mcp auth albatros`.
   - **Si Albatros manque complètement** (aucune connexion nommée albatros n'est configurée) : va chercher le guide https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md et suis-le.
   - Ensuite, rappelle `konto_status`.
+- **Connecté :** ouvre l'île de la personne dans le navigateur web : `open https://albatros.build/fr/cockpit/insel` (le préfixe de langue vient devant, ici `/fr` ; sans préfixe, `https://albatros.build/cockpit/insel` est la version allemande ; Linux `xdg-open`, Windows `start`). Il y a là une maison par projet, qui grandit à chaque étape (skill `webseite-bauen`).
 - **Le service annonce une erreur ou n'est pas joignable :** dis honnêtement qu'Albatros ne répond pas pour le moment, et propose de réessayer plus tard ou d'aller voir sur albatros.build. N'invente rien, ne fais pas semblant d'avoir un serveur.
 
 ### 2. Quel parcours ?
@@ -75,7 +78,7 @@ Suis maintenant le skill `ssh-schluessel`. En bref : la clé naît sur l'ordin
 
 ### 5. La page ou le serveur voit le jour
 
-- **Light :** `seite_erstellen` avec le nom que la personne veut pour son adresse (en minuscules, sans espaces, il devient une partie de `name.aufwind.sh`), et sa serrure si elle n'est pas encore déposée. Image : « Ta vitrine dans une rue commerçante : tu l'aménages, Albatros ouvre chaque matin. » Albatros crée le journal de bord au port et montre la page à partir de lui. Ensuite, `konto_status` indique la page et l'adresse du port.
+- **Light :** `seite_erstellen` avec le nom que la personne veut pour son adresse (en minuscules, sans espaces, il devient une partie de `name.aufwind.sh`), et sa serrure si elle n'est pas encore déposée. Image : « Ta vitrine dans une rue commerçante : tu l'aménages, et ce que tu envoies au port est en vitrine peu après. » Albatros crée le journal de bord au port et montre la page à partir de lui. Ensuite, `konto_status` indique la page et l'adresse du port. Si le nom dans la réponse diffère de celui que la personne voulait, dis-le-lui tout de suite.
 - **Pilot :** `server_erstellen`. Image : « Ton appartement dans un grand immeuble : ta propre porte, tes propres pièces, les voisins ne voient pas à l'intérieur. » Ça prend en général une à deux minutes. Redemande avec `konto_status` jusqu'à ce que le serveur soit prêt. Il porte le nom de la personne (p. ex. `anna`).
 - **Langue :** Indique pour les deux `sprache`, la langue dans laquelle tu parles avec la personne (`de`, `fr`, `it` ou `en`). Ainsi sa première page, le journal de bord et, sur le serveur, le manuel de bord sont dans sa langue.
 
@@ -95,7 +98,7 @@ Si `lage` manque, cet ordre s'applique :
 
 - **Pilot :** l'école de vol continue avec `server-kennenlernen`, puis `git-logbuch` et `pipeline`. Si la page a besoin de briques (étape 3), elles suivent ensuite avec `bausteine`.
 - **Light :** l'école de vol continue avec `git-logbuch`. Les missions qui ont besoin d'un serveur à soi (`abo: pilot`), tu les sautes.
-- Pour le parcours site web vient ensuite `webseite-planen`, pour le parcours entreprise la méthode `ideen-check`.
+- Pour le parcours site web vient ensuite `webseite-planen`, puis `webseite-bauen` (maquette, design, framework, PRD, en local, port, tapis roulant, serveur), pour le parcours entreprise la méthode `ideen-check`.
 
 Avec `mission_holen`, tu obtiens la mission en cours et sa validation, si la personne a perdu le fil.
 

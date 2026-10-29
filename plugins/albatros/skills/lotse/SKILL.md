@@ -43,7 +43,7 @@ Deine Antwort beginnt mit dem Lagebericht, in drei kurzen Teilen und nur mit Ang
 - **Jetzt dran:** der Schritt und der Grund dafür.
 - **Danach:** was als Nächstes kommt.
 
-Im ersten Lagebericht eines Gesprächs steht dazu ein Satz zum Rucksack: Die Person hat ihre KI dabei, und mit Claude Code, Codex und Gemini CLI klappt alles gleich. Nenn alle drei beim Namen.
+Im ersten Lagebericht eines Gesprächs öffnest du die Insel der Person im Browser (`open https://albatros.build/cockpit/insel`, mit Sprachpräfix wie `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), dort wächst ihr Haus mit jedem Schritt. Dazu kommt ein Satz zum Rucksack: Die Person hat ihre KI dabei, und mit Claude Code, Codex und Gemini CLI klappt alles gleich. Nenn alle drei beim Namen.
 
 Gleich danach, in derselben Antwort, fängst du mit dem Schritt an: Lies den Skill, sag sein Bild in zwei, drei Sätzen und zeig den ersten konkreten Schritt. Dann hältst du an und wartest auf die Person. Den Rest des Skills geht ihr danach Schritt für Schritt zusammen durch. Für diese erste Antwort liest du nur den Skill: noch keine Dateien im Projekt, keine Befehle. Sie ist eine einzige, kurze Nachricht, und der Lagebericht steht darin.
 
@@ -65,6 +65,8 @@ Arbeitet ihr lange an einem Schritt, wiederhol in deiner letzten Nachricht kurz 
 ### 4. Wenn die Person etwas anderes will
 
 Die Person bestimmt, wohin sie fliegt. Will sie lieber an etwas anderem arbeiten, nimm den passenden Skill aus der Bibliothek unten. Sag in einem Satz, was `lage` als Nächstes empfehlen würde, damit sie es nicht vergisst.
+
+Schickt die Person die Adresse einer bestehenden Webseite (https://…) oder «Modernisiere …», folgst du sofort dem Skill `webseite-modernisieren`, mit oder ohne Anmeldung. Er fängt ohne Rückfrage mit der Bestandsaufnahme an.
 
 ## Ohne Anmeldung
 
@@ -92,6 +94,8 @@ Antwortet Albatros mit einem anderen Fehler oder gar nicht: Sag ehrlich, dass Al
 | `kosten` | Was kostet mein Projekt im Monat, welches Abo passt |
 | `domain` | Eine eigene Adresse wie meinladen.ch finden, kaufen oder verbinden |
 | `landung` | Umzug auf einen eigenen Server ausserhalb von Albatros |
+| `webseite-bauen` | Vom Plan zur fertigen Seite in acht Schritten: Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Server |
+| `webseite-modernisieren` | Eine bestehende Webseite erneuern: Bestandsaufnahme aller Seiten und Funktionen, dann Plan und Gestaltung |
 | `webseite-planen` | Bevor gebaut wird: für wen, welche Seiten, welche Inhalte |
 | `inhalte` | Texte und Bilder für die Seite schreiben und auswählen |
 | `gestaltung` | Die Seite soll einfacher zu bedienen sein und besser aussehen |

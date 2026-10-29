@@ -1,6 +1,6 @@
 ---
 name: gestaltung
-description: 'Überarbeitet Bedienung und Aussehen einer kleinen Webseite mit einer Person ohne Vorwissen, Schritt für Schritt mit ihrer KI. Zuerst prüfen aus drei Blickwinkeln (Abläufe, Zugang, Zustände und Sprache), dann die Bedienung reparieren, dann drei klar verschiedene Richtungen zur Wahl, feste Werte für Farben, Schrift und Abstände (Tokens) und der Umbau aller Seiten mit Fotos in Handy- und Desktopbreite. Nutze den Skill bei «Design», «sieht langweilig aus», «sieht selbstgebastelt aus», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «wirkt unprofessionell», «Layout».'
+description: 'Überarbeitet Bedienung und Aussehen einer kleinen Webseite mit einer Person ohne Vorwissen, Schritt für Schritt mit ihrer KI. Zuerst prüfen aus drei Blickwinkeln (Abläufe, Zugang, Zustände und Sprache), dann die Bedienung reparieren, dann der Charakter der Seite statt Lieblingsfarben, drei klar verschiedene Richtungen zur Wahl, eine Prüfung gegen den typischen KI-Look, feste Werte für Farben, Schrift und Abstände (Tokens), die Frage nach Gestaltungselementen (Icons, Illustrationen, Fotos, Maskottchen, 3D, auf Wunsch mit den Bild-Werkzeugen von Albatros) und der Umbau aller Seiten mit Fotos in Handy- und Desktopbreite. Nutze den Skill bei «Design», «sieht langweilig aus», «sieht selbstgebastelt aus», «sieht nach KI aus», «vibe coded», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «wirkt unprofessionell», «Layout», «Icons», «Illustrationen», «Maskottchen», «3D».'
 ---
 
 # Gestaltung: erst das Fundament, dann die Fassade
@@ -49,13 +49,28 @@ Lege der Person gesammelt vor, was sie entscheiden muss (mit deiner Empfehlung),
 
 ### 3. Drei Richtungen
 
-1. **Vorbilder:** die zwei, drei Seiten aus dem Plan anschauen. Was machen sie gut? Was übernehmen wir nicht (deren Logo, Farben, Schrift)?
-2. **Diagnose:** Warum trägt das heutige Aussehen nicht? Typisch: alle Titel gleich laut, zwei Stile nebeneinander, eine Farbe mit mehreren Bedeutungen, wechselnde Abstände.
-3. **Drei klar verschiedene Richtungen**, nicht nur drei Farben. Sie unterscheiden sich in Idee, Schrift, Rolle der Farbe, Formen und Tiefe. Beispiel: «Weich» (warm, rund), «Klar» (ruhig wie eine Zeitung), «Kräftig» (Farbflächen, grosse Titel).
-4. Jede Richtung zeigt **dieselben zwei bis drei Seiten** (Start, wichtigste Unterseite, Kontakt) mit echten Texten. Platzhaltertext verfälscht das Urteil.
-5. In allen Richtungen gleich: Logo, Pflichttexte, ein Hauptknopf pro Seite, Barrierefreiheit.
+1. **Charakter zuerst, nicht Farben.** Frag nach Eigenschaften, nicht nach Lieblingsfarben. Leg Gegensatzpaare zur Wahl vor, passend zur Seite: traditionell oder sportlich, Bergdorf oder Stadt, ruhig oder lebendig, edel oder bodenständig, für Gäste oder für Mitglieder. Dazu eine Frage: Welche drei Wörter sollen Besucher nach zehn Sekunden denken? Halte die Antworten in `docs/gestaltung/richtungen.md` fest. Jede der drei Richtungen betont andere dieser Eigenschaften. Farben folgen daraus und aus Logo und Umgebung, nie umgekehrt.
+2. **Vorbilder:** die zwei, drei Seiten aus dem Plan anschauen. Was machen sie gut? Was übernehmen wir nicht (deren Logo, Farben, Schrift)?
+3. **Diagnose:** Warum trägt das heutige Aussehen nicht? Typisch: alle Titel gleich laut, zwei Stile nebeneinander, eine Farbe mit mehreren Bedeutungen, wechselnde Abstände.
+4. **Drei klar verschiedene Richtungen**, nicht nur drei Farben. Sie unterscheiden sich in Idee, Schrift, Rolle der Farbe, Formen und Tiefe. Beispiel: «Weich» (warm, rund), «Klar» (ruhig wie eine Zeitung), «Kräftig» (Farbflächen, grosse Titel).
+5. Jede Richtung zeigt **dieselben zwei bis drei Seiten** (Start, wichtigste Unterseite, Kontakt) mit echten Texten. Platzhaltertext verfälscht das Urteil.
+6. In allen Richtungen gleich: Logo, Pflichttexte, ein Hauptknopf pro Seite, Barrierefreiheit.
 
 `docs/gestaltung/richtungen.md`: oben die Zeile `Entscheid: <Richtung oder Mischung> (<Datum>)`, darunter Diagnose und pro Richtung eine Tabelle (Idee, Schrift, Farben, Formen, Stärke, Risiko). Die Entwürfe als HTML-Dateien in `docs/gestaltung/entwuerfe/`, damit die Person sie im Browser öffnen kann.
+
+### Nicht nach KI aussehen
+
+KI-Seiten erkennt man an denselben Merkmalen. Prüf jeden Entwurf und die fertige Seite gegen diese Liste und schreib das Ergebnis in `docs/gestaltung/richtungen.md` (Zeile `KI-Merkmale geprüft: …`):
+
+- Verläufe in Lila und Blau, Glüh- und Glaseffekte.
+- Emoji als Icons.
+- Inter oder eine andere Standardschrift überall, alle Titel gleich laut.
+- Zentrierter Kopf mit Farbklecks dahinter und zwei Knöpfen nebeneinander.
+- Drei gleiche Karten in einer Reihe, mit gleichem Schatten, gleicher Rundung und je einem Icon.
+- Stockbild-Look: lächelnde Menschen am Laptop, Berge von irgendwo.
+- Füllfloskeln: «Willkommen auf unserer Webseite», «Entdecken Sie», «Ihr Partner für», «mit Leidenschaft», «innovativ», «nahtlos».
+
+Stattdessen: echte Fotos des Ortes und der Menschen, eine Schrift mit Charakter passend zu den Eigenschaften, Farben aus Logo und Umgebung, ein Aufbau aus dem Inhalt (sind Termine die Hauptsache, stehen sie oben) und konkrete Sätze mit Namen, Zahlen und Orten. Im Code findest du Verläufe und Standardschriften mit `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji und Floskeln suchst du in den Texten, den Rest in den Fotos.
 
 ### 4. Der Farbfächer (Tokens)
 
@@ -66,13 +81,40 @@ Eine Datei `tokens.css` mit CSS-Variablen: Farben für hell und dunkel, Schrifte
 - Dunkelmodus tauscht nur die Farb-Variablen aus (`@media (prefers-color-scheme: dark)`).
 - Ausserhalb von `tokens.css` steht keine Farbe und keine Schriftgrösse von Hand im Code.
 
+### Gestaltungselemente: immer fragen
+
+Steht die Richtung, fragst du immer: «Möchtest du noch Gestaltungselemente dazu?» Leg die Möglichkeiten mit Aufwand vor:
+
+- **Icons:** ein einziger, einheitlicher Satz (zum Beispiel Lucide oder Phosphor), nie Emoji und nie zwei Sätze gemischt.
+- **Illustrationen:** wenige, im gleichen Stil, für leere Stellen und Erklärungen.
+- **Eigene Fotos:** eine Fotoliste, was die Person fotografieren soll (Ort, Menschen in Aktion, Details). Echte Fotos schlagen jedes erzeugte Bild.
+- **Ein Maskottchen:** eine Figur, die durch die Seite führt. Zuerst ein Blatt mit vier bis sechs Posen derselben Figur, dann Regeln, wann sie erscheint: nie bei Fehlern, Absagen oder heiklen Momenten. Bewegte Clips spielen höchstens 5 Sekunden und bleiben dann stehen (WCAG 2.2.2). Jedes Bild schaust du selbst an, auch vergrössert.
+- **3D:** ein Gegenstand oder die Figur als 3D-Modell, zum Beispiel für den Kopf der Startseite.
+
+Was die Person wählt, kommt in `docs/gestaltung/richtungen.md` und in den Farbfächer (Grössen, Abstände, Regeln).
+
+**Mit Albatros** entstehen Bilder, freigestellte Figuren und 3D-Modelle über die Werkzeuge von Albatros, bezahlt aus dem Guthaben der Person (Selbstkosten plus 35 %):
+
+- `bild_erzeugen` mit `beschreibung` und `format` (`quadrat`, `quer`, `hoch` oder `breit`), `bild_freistellen` mit `bild_url` (ein Bild mit transparentem Hintergrund), `modell_3d` mit `bild_url` (ein 3D-Modell als GLB, am besten aus einem freigestellten Bild).
+- `guthaben` zeigt den Stand, die Preise und den Link zum Aufladen. Preise nennst du nur aus dieser Antwort.
+- Vor dem ersten Aufruf, der etwas kostet, rufst du `guthaben` auf, nennst den Preis und fragst einmal: «Ein Bild kostet CHF …, dein Guthaben reicht für … Soll ich?» Danach nennst du nach jedem Aufruf kurz Kosten und Rest, ohne neu zu fragen. Reicht das Guthaben nicht, gibst du den Link zum Aufladen weiter.
+- Jedes Ergebnis speicherst du sofort im Projekt (`curl -o web/public/bilder/<name>.png <url>`), denn nach 7 Tagen ist es weg. Für eine Variante änderst du die Beschreibung: Dieselbe Beschreibung gibt 15 Minuten lang dasselbe Bild zurück, ohne neue Kosten.
+- Jedes erzeugte Bild schaust du selbst an, bevor du es der Person zeigst. Auf die Seite kommt nur, was sie gewählt hat.
+- Antwortet ein Werkzeug «kommt bald», machst du ohne Bild-Werkzeuge weiter (unten).
+
+**Mit einem eigenen Hugging-Face-Konto** geht es auch, als Alternative. Die Person legt das Konto selbst an und meldet sich selbst an. Du bindest den offiziellen Server ein: `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Mit Codex heisst es `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, mit Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Die Spaces für Bilder, Freistellen und 3D wählt sie unter huggingface.co/settings/mcp. Gratis gibt es 5 Minuten Rechenzeit pro Tag. Ohne Anmeldung bietet der Server nur die Suche im Hub.
+
+**Rechte:** Jedes Modell hat eine Lizenz, lies sie auf der Modellseite, bevor ein Bild auf die Seite kommt. FLUX.1 schnell (Apache 2.0), BiRefNet (MIT) und TRELLIS (MIT) erlauben auch gewerbliche Nutzung, FLUX.1 dev nur nicht gewerbliche. Erzeugte Bilder zeigen keine echten Personen und keine fremden Logos. Echte Orte und Menschen kommen von eigenen Fotos mit Einverständnis.
+
+**Ohne Bild-Werkzeuge** geht der Weg genauso: Icons aus einem freien Satz, eigene Fotos, Illustrationen aus einer freien Sammlung mit klarer Lizenz, ein Maskottchen gezeichnet oder später, kein 3D.
+
 ### 5. Umbau
 
 Inhalt und Abläufe bleiben. Zuerst die Grundlage (Tokens einbinden, gemeinsame Teile, eine Vorbild-Seite), dann die übrigen Seiten. Fehlt ein Wert im Farbfächer, ergänzt du ihn dort, nicht im Code der Seite.
 
 ### 6. Fotos und Freigabe
 
-Jede Seite fotografieren, in Handybreite und Desktopbreite, hell und dunkel:
+Jede Seite fotografieren, in Handybreite und Desktopbreite, hell und dunkel. Läuft die Seite noch nicht im Netz, nimmst du die Adresse der Vorschau (`http://localhost:4321`):
 
 ```bash
 npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.aufwind.sh docs/gestaltung/fotos/start-375.png

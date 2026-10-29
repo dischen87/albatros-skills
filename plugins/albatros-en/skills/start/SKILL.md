@@ -28,6 +28,8 @@ Everyone needs a hand at the start. You're the flight instructor in the seat nex
 
 ## Steps
 
+**An existing website:** If the person just sends the address of a website (https://…) or “Modernise …”, you follow the skill `webseite-modernisieren` straight away. It starts on the inventory without asking first. The steps here (sign-in, plan, key) only come once the new site is to go on the web.
+
 ### 1. Is Albatros connected?
 
 Call the Albatros tool `konto_status`.
@@ -38,6 +40,7 @@ Call the Albatros tool `konto_status`.
   - **Gemini CLI:** Run `gemini mcp add --transport http -s user albatros https://mcp.albatros.build` yourself if the connection is still missing. Then ask the person to restart Gemini CLI. The browser opens while connecting. If it stays closed, ask them to type exactly `/mcp auth albatros`.
   - **Albatros is missing altogether** (no connection called albatros set up): fetch the instructions at https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md and follow them.
   - Then call `konto_status` again.
+- **Connected:** Open the person's island in the browser: `open https://albatros.build/en/cockpit/insel` (with the language prefix `/en` like `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). There's a house there for every project, and it grows with every step (skill `webseite-bauen`).
 - **The service reports an error or can't be reached:** Say honestly that Albatros isn't answering right now, and suggest trying again later or checking albatros.build. Don't invent anything, don't pretend there's a server.
 
 ### 2. Which path?
@@ -75,7 +78,7 @@ Now follow the skill `ssh-schluessel`. In short: the key is made on the person's
 
 ### 5. The page or the server is created
 
-- **Light:** `seite_erstellen` with the name the person wants for their address (lower case, no spaces, it becomes part of `name.aufwind.sh`), and their lock, if it isn't stored yet. Picture: “Your shop window on a shopping street: you set it up, Albatros unlocks it every morning.” Albatros creates the logbook in the harbour and shows the page from it. After that, `konto_status` gives the page and the address of the harbour.
+- **Light:** `seite_erstellen` with the name the person wants for their address (lower case, no spaces, it becomes part of `name.aufwind.sh`), and their lock, if it isn't stored yet. Picture: “Your shop window on a shopping street: you set it up, and whatever you send to the harbour is in the window shortly after.” Albatros creates the logbook in the harbour and shows the page from it. After that, `konto_status` gives the page and the address of the harbour. If the name in the answer differs from the one the person wanted, tell them right away.
 - **Pilot:** `server_erstellen`. Picture: “Your flat in a big building: your own door, your own rooms, the neighbours can't see in.” It usually takes one to two minutes. Check with `konto_status` until the server is ready. It's named after the person (e.g. `anna`).
 - **Language:** For both, pass `sprache`: the language you're speaking with the person in (`de`, `fr`, `it` or `en`). Then their first page, the logbook and, on the server, the flight manual are in their language.
 
@@ -95,7 +98,7 @@ If `lage` is missing, this order applies:
 
 - **Pilot:** the flight school carries on with `server-kennenlernen`, then `git-logbuch` and `pipeline`. If the site needs building blocks (step 3), they follow after that with `bausteine`.
 - **Light:** the flight school carries on with `git-logbuch`. Missions that need a server of your own (`abo: pilot`) you leave out.
-- On the website path, `webseite-planen` comes after that; on the business path, the method `ideen-check`.
+- On the website path, `webseite-planen` comes after that and then `webseite-bauen` (mockup, design, framework, PRD, local, harbour, conveyor belt, server); on the business path, the method `ideen-check`.
 
 With `mission_holen` you get the current mission and its check, if the person has lost the thread.
 

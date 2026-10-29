@@ -99,10 +99,13 @@ scripts/pruefen.ts                  prüft Skills und Missionen
 | | `kosten` | Haushaltsbuch |
 | | `domain` | Adresse im Telefonbuch |
 | | `landung` | Umzug ins eigene Haus |
-| Webseite | `webseite-planen` | Grundriss |
+| Webseite | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite |
+| | `webseite-planen` | Grundriss |
+| | `webseite-bauen` | vom Grundriss zum fertigen Haus: Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Server |
 | | `inhalte` | Ware im Schaufenster |
 | | `gestaltung` | erst das Fundament, dann die Fassade |
 | | `cms` | Pinnwand im Flur |
+| | `bausteine` | Fertigteile beim Hausbau |
 | | `seo-grundlagen` | Wegweiser und Stadtplan |
 | | `barrierefreiheit` | Rampe neben der Treppe |
 | | `recht-ch` | Klingelschild und Hausordnung |
@@ -159,6 +162,21 @@ claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Wri
 
 - Der Fall `ssh-schluessel-lokal` (Tag `bash`) lässt die KI den Schlüssel wirklich mit `ssh-keygen` erzeugen. Er braucht `--allow-tools Bash` und eine Maschine, auf der Claude Code Bash in Evals erlaubt.
 - Die Evals rufen nie den echten MCP-Server. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/`.
+- Evals mit Bash laufen auf diesem Mac nicht (der Docker-Ordner enthält einen symbolischen Link). Die Fälle `modernisieren-*` lesen die Seite darum mit WebFetch, mit 15 Minuten Zeit pro Lauf.
+
+### Durchspiel-Test
+
+Ein echter Durchlauf mit zwei KIs, ergänzend zu den Einzel-Evals:
+
+```bash
+bun scripts/durchspiel.ts https://www.grindelwald-curling.ch/ --runden 20 --budget 30
+bun scripts/durchspiel.ts --auswerten <temp-ordner> <ergebnis-ordner>   # nur Fotos, Protokoll und Bewertung eines Laufs
+```
+
+- Die eine KI (Claude Code mit dem Plugin, Sonnet) bekommt nur «Modernisiere <adresse>». Die andere spielt eine Person ohne Technikwissen und beantwortet kurz, was gefragt wird (Haiku).
+- Albatros ist eine Attrappe (`scripts/durchspiel/mock-mcp.ts`, Antworten aus `scripts/durchspiel/mocks/` und `evals/mocks/albatros/`). Der Hafen ist ein lokales Git-Repo, das `seite_erstellen` unter dem gewünschten Namen anlegt. `open`, `xdg-open` und `ssh` schreiben nur ins Protokoll. `curl` auf `https://<name>.aufwind.sh` bekommt die Seite aus `seite/` im Hafen, wie bei Light (502, solange nichts da ist). Keine Zahlung, kein Server, nichts wird veröffentlicht.
+- Ergebnis in `plugins/albatros/evals/results/durchspiel-<zeit>/`: Verlauf, Protokoll (Schritte an die Insel, geöffnete Adressen, Einträge im Hafen), Fotos vorher und nachher (390 und 1440 breit), Bewertung nach Raster und Kosten.
+- Raster: jede Funktion aus `docs/bestand.md` auf der neuen Seite oder mit Entscheid weggelassen, Frage nach den Eigenschaften, Frage nach Gestaltungselementen, keine KI-Merkmale, die Person musste nie wissen, was zu tun ist, Reihenfolge der acht Schritte, PRD vor dem Bau, Insel geöffnet und alle Schritte gemeldet, Push in den Hafen, die KI prüft selbst, bis die Seite live ist, und der Name ist der gewünschte.
 
 ## Quellen
 

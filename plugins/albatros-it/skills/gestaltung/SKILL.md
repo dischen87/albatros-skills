@@ -1,6 +1,6 @@
 ---
 name: gestaltung
-description: "Rivede l'uso e l'aspetto di un piccolo sito web con una persona senza conoscenze tecniche, passo per passo con la sua IA. Prima un controllo da tre punti di vista (percorsi, accesso, stati e linguaggio), poi la riparazione dell'uso, poi tre direzioni chiaramente diverse tra cui scegliere, valori fissi per colori, caratteri e spaziature (token) e il rifacimento di tutte le pagine con foto in larghezza telefonino e desktop. Usa lo skill con «design», «sembra noioso», «sembra fatto in casa», «renderlo più bello», «colori», «carattere», «font», «redesign», «tre varianti», «non sembra professionale», «layout»."
+description: "Rivede l'uso e l'aspetto di un piccolo sito web con una persona senza conoscenze tecniche, passo per passo con la sua IA. Prima un controllo da tre punti di vista (percorsi, accesso, stati e linguaggio), poi la riparazione dell'uso, poi il carattere del sito invece dei colori preferiti, tre direzioni chiaramente diverse tra cui scegliere, un controllo contro il tipico aspetto da IA, valori fissi per colori, caratteri e spaziature (token), la domanda sugli elementi grafici (icone, illustrazioni, foto, mascotte, 3D, se si vuole con gli strumenti per immagini di Albatros) e il rifacimento di tutte le pagine con foto in larghezza telefonino e desktop. Usa lo skill con «design», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «font», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «illustrazioni», «mascotte», «3D»."
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -50,13 +50,28 @@ Presenta alla persona tutto insieme quello che deve decidere (con la tua raccoma
 
 ### 3. Tre direzioni
 
-1. **Modelli:** guarda i due o tre siti del piano. Cosa fanno bene? Cosa non riprendiamo (il loro logo, i colori, il carattere)?
-2. **Diagnosi:** Perché l'aspetto di oggi non regge? Tipico: tutti i titoli alla stessa voce, due stili uno accanto all'altro, un colore con più significati, spaziature che cambiano.
-3. **Tre direzioni chiaramente diverse**, non solo tre colori. Si distinguono per idea, carattere, ruolo del colore, forme e profondità. Esempio: «Morbida» (calda, rotonda), «Chiara» (calma come un giornale), «Decisa» (superfici di colore, titoli grandi).
-4. Ogni direzione mostra **le stesse due o tre pagine** (iniziale, sottopagina più importante, contatto) con testi veri. Il testo segnaposto falsa il giudizio.
-5. Uguale in tutte le direzioni: logo, testi obbligatori, un pulsante principale per pagina, accessibilità.
+1. **Il carattere prima dei colori.** Chiedi delle caratteristiche, non dei colori preferiti. Proponi coppie di opposti tra cui scegliere, adatte al sito: tradizionale o sportivo, villaggio di montagna o città, calmo o vivace, elegante o alla mano, per gli ospiti o per i membri. In più una domanda: quali tre parole devono pensare i visitatori dopo dieci secondi? Annota le risposte in `docs/gestaltung/richtungen.md`. Ognuna delle tre direzioni mette in risalto altre di queste caratteristiche. I colori ne derivano, insieme al logo e all'ambiente, mai il contrario.
+2. **Modelli:** guarda i due o tre siti del piano. Cosa fanno bene? Cosa non riprendiamo (il loro logo, i colori, il carattere)?
+3. **Diagnosi:** Perché l'aspetto di oggi non regge? Tipico: tutti i titoli alla stessa voce, due stili uno accanto all'altro, un colore con più significati, spaziature che cambiano.
+4. **Tre direzioni chiaramente diverse**, non solo tre colori. Si distinguono per idea, carattere, ruolo del colore, forme e profondità. Esempio: «Morbida» (calda, rotonda), «Chiara» (calma come un giornale), «Decisa» (superfici di colore, titoli grandi).
+5. Ogni direzione mostra **le stesse due o tre pagine** (iniziale, sottopagina più importante, contatto) con testi veri. Il testo segnaposto falsa il giudizio.
+6. Uguale in tutte le direzioni: logo, testi obbligatori, un pulsante principale per pagina, accessibilità.
 
 `docs/gestaltung/richtungen.md`: in alto la riga `Entscheid: <direzione o combinazione> (<data>)` (la parola `Entscheid:` resta in tedesco, perché la verifica della missione la cerca), sotto la diagnosi e per ogni direzione una tabella (idea, carattere, colori, forme, punto di forza, rischio). Le bozze come file HTML in `docs/gestaltung/entwuerfe/`, così la persona può aprirle nel browser.
+
+### Non sembrare fatto dall'IA
+
+I siti fatti con l'IA si riconoscono dagli stessi tratti. Controlla ogni bozza e il sito finito con questa lista e scrivi il risultato in `docs/gestaltung/richtungen.md` (riga `Tratti dell'IA controllati: …`):
+
+- Sfumature in viola e blu, effetti luminosi e di vetro.
+- Emoji come icone.
+- Inter o un altro carattere standard dappertutto, tutti i titoli alla stessa voce.
+- Testata centrata con una macchia di colore dietro e due pulsanti uno accanto all'altro.
+- Tre schede uguali in fila, con la stessa ombra, lo stesso arrotondamento e un'icona ciascuna.
+- Aspetto da immagini di repertorio: persone sorridenti al portatile, montagne di chissà dove.
+- Frasi fatte: «Benvenuti sul nostro sito», «Scopri», «Il vostro partner per», «con passione», «innovativo», «senza intoppi».
+
+Invece: foto vere del luogo e delle persone, un carattere tipografico con personalità, adatto alle caratteristiche, colori dal logo e dall'ambiente, una struttura che nasce dal contenuto (se gli appuntamenti sono la cosa principale, stanno in alto) e frasi concrete con nomi, numeri e luoghi. Nel codice trovi sfumature e caratteri standard con `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji e frasi fatte le cerchi nei testi, il resto nelle foto.
 
 ### 4. La mazzetta dei colori (token)
 
@@ -67,13 +82,40 @@ Un file `tokens.css` con variabili CSS: colori per chiaro e scuro, caratteri, di
 - La modalità scura scambia solo le variabili dei colori (`@media (prefers-color-scheme: dark)`).
 - Fuori da `tokens.css` nel codice non c'è nessun colore e nessuna dimensione di carattere scritta a mano.
 
+### Elementi grafici: chiedi sempre
+
+Quando la direzione è decisa, chiedi sempre: «Vuoi aggiungere anche degli elementi grafici?» Presenta le possibilità con il lavoro che richiedono:
+
+- **Icone:** un unico set uniforme (per esempio Lucide o Phosphor), mai emoji e mai due set mescolati.
+- **Illustrazioni:** poche, nello stesso stile, per i punti vuoti e le spiegazioni.
+- **Foto proprie:** una lista di cosa deve fotografare la persona (il luogo, persone in azione, dettagli). Le foto vere battono qualsiasi immagine generata.
+- **Una mascotte:** una figura che accompagna attraverso il sito. Prima un foglio con quattro-sei pose della stessa figura, poi le regole su quando compare: mai con errori, disdette o momenti delicati. I clip animati durano al massimo 5 secondi e poi si fermano (WCAG 2.2.2). Ogni immagine la guardi tu stesso, anche ingrandita.
+- **3D:** un oggetto o la figura come modello 3D, per esempio per la testata della pagina iniziale.
+
+Quello che sceglie la persona va in `docs/gestaltung/richtungen.md` e nella mazzetta dei colori (dimensioni, spaziature, regole).
+
+**Con Albatros** immagini, figure scontornate e modelli 3D nascono con gli strumenti di Albatros, pagati dal credito della persona (prezzo di costo più 35 %):
+
+- `bild_erzeugen` con `beschreibung` e `format` (`quadrat`, `quer`, `hoch` o `breit`), `bild_freistellen` con `bild_url` (un'immagine con sfondo trasparente), `modell_3d` con `bild_url` (un modello 3D in formato GLB, meglio se da un'immagine scontornata).
+- `guthaben` mostra il saldo, i prezzi e il link per ricaricare. I prezzi li dici solo da questa risposta.
+- Prima della prima chiamata che costa qualcosa chiami `guthaben`, dici il prezzo e chiedi una volta: «Un'immagine costa CHF …, il tuo credito basta per … Procedo?» Dopo, a ogni chiamata dici in breve costo e resto, senza chiedere di nuovo. Se il credito non basta, passi il link per ricaricare.
+- Ogni risultato lo salvi subito nel progetto (`curl -o web/public/bilder/<name>.png <url>`), perché dopo 7 giorni sparisce. Per una variante cambi la descrizione: la stessa descrizione per 15 minuti restituisce la stessa immagine, senza nuovi costi.
+- Ogni immagine generata la guardi tu stesso prima di mostrarla alla persona. Sul sito va solo quello che ha scelto lei.
+- Se uno strumento risponde «kommt bald» (arriva presto), vai avanti senza strumenti per immagini (vedi sotto).
+
+**Con un account Hugging Face proprio** si può fare anche così, come alternativa. La persona crea l'account da sola e accede da sola. Tu colleghi il server ufficiale: `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Con Codex è `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, con Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Gli Spaces per immagini, scontorno e 3D li sceglie lei su huggingface.co/settings/mcp. Gratis ci sono 5 minuti di calcolo al giorno. Senza accesso il server offre solo la ricerca nell'Hub.
+
+**Diritti:** Ogni modello ha una licenza: leggila sulla pagina del modello prima che un'immagine vada sul sito. FLUX.1 schnell (Apache 2.0), BiRefNet (MIT) e TRELLIS (MIT) permettono anche l'uso commerciale, FLUX.1 dev solo quello non commerciale. Le immagini generate non mostrano persone reali né loghi di altri. Luoghi e persone reali vengono da foto proprie, con il consenso.
+
+**Senza strumenti per immagini** il percorso è lo stesso: icone da un set libero, foto proprie, illustrazioni da una raccolta libera con una licenza chiara, una mascotte disegnata o più tardi, niente 3D.
+
 ### 5. Rifacimento
 
 Contenuti e percorsi restano. Prima la base (integrare i token, parti comuni, una pagina modello), poi le altre pagine. Se nella mazzetta dei colori manca un valore, lo aggiungi lì, non nel codice della pagina.
 
 ### 6. Foto e approvazione
 
-Fotografa ogni pagina, in larghezza telefonino e in larghezza desktop, chiara e scura:
+Fotografa ogni pagina, in larghezza telefonino e in larghezza desktop, chiara e scura. Se il sito non è ancora in rete, usi l'indirizzo dell'anteprima (`http://localhost:4321`):
 
 ```bash
 npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.aufwind.sh docs/gestaltung/fotos/start-375.png

@@ -44,7 +44,7 @@ Ta réponse commence par le point de situation, en trois parties courtes et seul
 - **À faire maintenant :** l'étape et sa raison.
 - **Ensuite :** ce qui vient après.
 
-Dans le premier point de situation d'une conversation, il y a en plus une phrase sur le sac à dos : la personne a son IA avec elle, et avec Claude Code, Codex et Gemini CLI, tout marche pareil. Nomme les trois par leur nom.
+Dans le premier point de situation d'une conversation, tu ouvres l'île de la personne dans le navigateur web (`open https://albatros.build/fr/cockpit/insel` ; le préfixe de langue vient devant, ici `/fr` ; sans préfixe, `https://albatros.build/cockpit/insel` est la version allemande ; Linux `xdg-open`, Windows `start`), c'est là que sa maison grandit à chaque étape. Il y a en plus une phrase sur le sac à dos : la personne a son IA avec elle, et avec Claude Code, Codex et Gemini CLI, tout marche pareil. Nomme les trois par leur nom.
 
 Juste après, dans la même réponse, tu commences l'étape : lis le skill, donne son image en deux ou trois phrases et montre la première étape concrète. Puis tu t'arrêtes et tu attends la personne. Le reste du skill, vous le parcourez ensuite ensemble, étape par étape. Pour cette première réponse, tu lis seulement le skill : encore aucun fichier du projet, aucune commande. C'est un seul message, court, et le point de situation est dedans.
 
@@ -66,6 +66,8 @@ Si vous travaillez longtemps sur une étape, répète brièvement le point de si
 ### 4. Quand la personne veut autre chose
 
 C'est la personne qui décide où elle vole. Si elle préfère travailler sur autre chose, prends le skill qui convient dans la bibliothèque plus bas. Dis en une phrase ce que `lage` recommanderait ensuite, pour qu'elle ne l'oublie pas.
+
+Si la personne envoie l'adresse d'un site web existant (https://…) ou « Modernise … », tu suis tout de suite le skill `webseite-modernisieren`, avec ou sans connexion. Il commence par l'état des lieux sans poser de question.
 
 ## Sans connexion
 
@@ -93,6 +95,8 @@ Si Albatros répond avec une autre erreur ou ne répond pas du tout : dis honn
 | `kosten` | Combien coûte mon projet par mois, quel abonnement me convient |
 | `domain` | Trouver, acheter ou relier ta propre adresse comme monmagasin.ch |
 | `landung` | Déménager sur ton propre serveur, en dehors d'Albatros |
+| `webseite-bauen` | Du plan au site terminé en huit étapes : maquette, design, framework, PRD, en local, port, tapis roulant, serveur |
+| `webseite-modernisieren` | Renouveler un site web existant : état des lieux de toutes les pages et fonctions, puis plan et mise en forme |
 | `webseite-planen` | Avant de construire : pour qui, quelles pages, quels contenus |
 | `inhalte` | Écrire et choisir les textes et les images de la page |
 | `gestaltung` | La page doit être plus simple à utiliser et plus belle |

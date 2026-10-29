@@ -61,6 +61,13 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | Mitgliederbereich mit Login | espace membres avec connexion | area membri con accesso | members' area with login | Baustein (PocketBase) |
 | Pinnwand | tableau d'affichage | bacheca | noticeboard | Baustein (PocketBase) |
 | grosses CMS | grand CMS | CMS grande | big CMS | Baustein (Strapi mit Postgres) |
+| einen Altbau renovieren | rénover une vieille maison | ristrutturare una casa vecchia | renovating an old house | Bild für `webseite-modernisieren` |
+| Bestandsaufnahme · Bestandsplan (`docs/bestand.md`) | état des lieux · plan de l'état des lieux | inventario · piano dell'inventario | inventory · inventory plan | was die alte Seite hat |
+| vom Grundriss zum fertigen Haus | du plan à la maison terminée | dalla pianta alla casa finita | from floor plan to finished house | Bild für `webseite-bauen` |
+| Mockup · Entwürfe · PRD | maquette · ébauches · PRD | mockup · bozze · PRD | mockup · drafts · PRD | Schritte 1, 2 und 4 von `webseite-bauen`; PRD = der Bauplan mit Unterschrift |
+| Insel (Cockpit) | île | isola | island | dort wächst pro Projekt ein Haus mit jedem Schritt |
+| Guthaben | crédit | credito | credit | für Bilder, Freistellen und 3D (Selbstkosten plus 35 %) |
+| Charakter statt Farben | le caractère avant les couleurs | il carattere prima dei colori | character before colours | Gestaltung: zuerst Eigenschaften |
 | Verwaltung (Admin-Bereich) | administration | amministrazione | admin area | |
 | Arbeitsspeicher | mémoire vive | memoria di lavoro (RAM) | memory (RAM) | |
 | geheimer Gang (SSH-Tunnel) | passage secret (tunnel) | passaggio segreto (tunnel) | secret passage (tunnel) | |
