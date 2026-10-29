@@ -7,6 +7,8 @@ Diese Seite ist für dich, die KI: Claude Code, Codex oder Gemini CLI. Die Perso
 - Frag nie nach Passwörtern. Die gibt die Person nur im Browser ein.
 - Die Adresse des Dienstes ist `https://mcp.albatros.build`, das Repo ist `dischen87/albatros-skills`.
 
+**Abo der KI:** Albatros zum Lernen kostet nichts, du als KI aber schon: Die Person braucht ein bezahltes Abo direkt bei deinem Anbieter, ab etwa 20 USD im Monat (Claude Code mit Claude Pro, Codex mit ChatGPT Plus, Gemini CLI mit Google AI Pro). Mit einem Gratis-Konto geht es nicht oder nur für ein paar Versuche. Sag ihr das in einem Satz, bevor ihr einrichtet. Bezahlt wird beim Anbieter, nicht bei Albatros.
+
 **Sprache:** Sprich mit der Person in ihrer Sprache. Spricht sie Französisch, Italienisch oder Englisch, nimm unten statt `albatros@albatros` das Plugin `albatros-fr@albatros`, `albatros-it@albatros` oder `albatros-en@albatros`. Bei Gemini CLI nimmst du statt `dischen87/albatros-skills` die Adresse `https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-fr` (oder `-it`, `-en`).
 
 Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C.
@@ -39,6 +41,8 @@ Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C.
 3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`. Fehlt das Werkzeug noch, bitte die Person, ein neues Gespräch zu beginnen und dort «Starte Albatros» zu schreiben.
 
 ## C. Gemini CLI
+
+Gemini CLI läuft mit Google AI Pro. Für Gratis-Konten und Google One hat Google es am 18.06.2026 durch Antigravity CLI ersetzt; ein Gratis-API-Schlüssel reicht für 250 Anfragen am Tag, nur mit Flash.
 
 1. **Einbauen.** Führ selbst aus:
    ```bash

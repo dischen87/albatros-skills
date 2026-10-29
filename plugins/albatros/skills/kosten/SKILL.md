@@ -26,7 +26,7 @@ Frag nach und schreib mit:
 |---|---|---|---|
 | Albatros-Abo | Miete | je nach Stufe | `konto_status` |
 | Eigene Domain (`.ch`) | Miete pro Jahr | etwa ein Kinobillett pro Jahr | `domain_suchen` oder Preisseite des Registrars |
-| KI im Terminal (Claude, Codex, Gemini) | Miete | je nach Abo | Abo der Person |
+| KI im Terminal (Claude Code, Codex, Gemini CLI) | Miete | ab etwa 20 USD im Monat: Claude Pro, ChatGPT Plus oder für Gemini CLI Google AI Pro; ein Gratis-Konto reicht nicht oder nur für ein paar Versuche | Preisseite des Anbieters; bezahlt wird dort, nicht bei Albatros |
 | E-Mail mit eigener Domain | Miete | klein | Anbieter |
 | Statistik (z. B. PostHog) | Nebenkosten | meist gratis bis zu einer Grenze | Preisseite |
 | Versand von E-Mails (Newsletter) | Nebenkosten | gratis bis zu einer Grenze, dann pro Mail | Preisseite |

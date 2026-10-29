@@ -27,7 +27,7 @@ Ask and write it down:
 |---|---|---|---|
 | Albatros plan | rent | depends on the plan | `konto_status` |
 | Own domain (`.ch`) | rent per year | about the price of a cinema ticket a year | `domain_suchen` or the registrar's pricing page |
-| AI in the terminal (Claude, Codex, Gemini) | rent | depends on the subscription | the person's subscription |
+| AI in the terminal (Claude Code, Codex, Gemini CLI) | rent | from about 20 USD a month: Claude Pro, ChatGPT Plus or, for Gemini CLI, Google AI Pro; a free account isn't enough, or only for a few tries | the provider's pricing page; paid there, not at Albatros |
 | Email with your own domain | rent | small | provider |
 | Statistics (e.g. PostHog) | running costs | usually free up to a limit | pricing page |
 | Sending emails (newsletter) | running costs | free up to a limit, then per email | pricing page |
