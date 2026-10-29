@@ -44,7 +44,7 @@ La tua risposta inizia con il punto della situazione, in tre parti brevi e solo 
 - **Cosa tocca adesso:** il passo e il suo motivo.
 - **Dopo:** cosa viene come prossima cosa.
 
-Nel primo punto della situazione di una conversazione apri l'isola della persona nel browser (`open https://albatros.build/it/cockpit/insel`, con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), lì la sua casa cresce con ogni passo. In più c'è una frase sullo zaino: la persona ha con sé la sua IA, e con Claude Code, Codex e Gemini CLI funziona tutto allo stesso modo. Chiama tutte e tre per nome.
+Nel primo punto della situazione di una conversazione apri l'isola della persona nel browser (`open https://albatros.build/it/cockpit/insel`, con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), lì la sua casa cresce con ogni passo. In più c'è una frase sullo zaino: la persona ha con sé la sua IA, e con Claude Code, Codex, Gemini CLI e Cursor funziona tutto allo stesso modo. Chiama tutte e quattro per nome.
 
 Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, di' la sua immagine in due o tre frasi e mostra il primo passo concreto. Poi ti fermi e aspetti la persona. Il resto dello skill lo fate dopo insieme, passo dopo passo. Per questa prima risposta leggi solo lo skill: ancora nessun file del progetto, nessun comando. È un unico messaggio breve, e il punto della situazione c'è dentro.
 
@@ -75,7 +75,7 @@ Se manca lo strumento `lage`, o se riporta «nicht angemeldet» (non hai effettu
 
 1. **La biblioteca è aperta.** Tutti gli skill si possono leggere liberamente. Mostra tutta la tabella qui sotto con gli identificativi esattamente come sono scritti (tra backtick, non tradotti), così la persona può scegliere da sola. Con l'identificativo qualsiasi IA trova lo skill.
 2. **Il controllore di volo ha bisogno dell'accesso.** Lo skill giusto al momento giusto, secondo il suo stato reale, c'è solo se Albatros la conosce. L'accesso è come la carta d'imbarco: nel browser si apre una finestra, lì la persona accede o si registra. La password la digita solo lì.
-   - L'accesso lo avvii tu, la persona non digita comandi. Come si fa in Claude Code, Codex e Gemini CLI lo trovi nello skill `start`, passo 1 (`../start/SKILL.md`). Seguilo.
+   - L'accesso lo avvii tu, la persona non digita comandi. Come si fa in Claude Code, Codex, Gemini CLI e Cursor lo trovi nello skill `start`, passo 1 (`../start/SKILL.md`). Seguilo.
    - Poi chiamare `lage`. Chi è del tutto nuovo da Albatros: skill `start`.
 3. Se la persona sceglie uno skill dalla tabella, leggilo (`../<identificativo>/SKILL.md`) e seguilo. Anche lì gli strumenti di Albatros richiedono l'accesso. Quello che si può fare senza (pianificare, scrivere testi, spiegare) lo fai comunque.
 

@@ -1,17 +1,17 @@
 # Albatros einrichten: Anleitung für deine KI
 
-Diese Seite ist für dich, die KI: Claude Code, Codex oder Gemini CLI. Die Person nimmt dich im Rucksack mit auf ihren Weg und hat dir die Seite gegeben, damit du Albatros für sie einrichtest. Sie kennt keine Befehle im Terminal, darum führst du jeden Befehl selbst aus.
+Diese Seite ist für dich, die KI: Claude Code, Codex, Gemini CLI oder Cursor. Die Person nimmt dich im Rucksack mit auf ihren Weg und hat dir die Seite gegeben, damit du Albatros für sie einrichtest. Sie kennt keine Befehle im Terminal, darum führst du jeden Befehl selbst aus.
 
 - Sag vor jedem Schritt in einem Satz, was passiert. Zum Beispiel: «Gleich öffnet sich dein Browser, dort meldest du dich mit GitHub, Apple oder Google an.»
 - Von der Person brauchst du nur Klicks: eine Freigabe in deinem Fenster und die Anmeldung im Browser. Ein Befehl, den sie tippen muss, ist die Ausnahme. Dann nennst du ihn wörtlich.
 - Frag nie nach Passwörtern. Die gibt die Person nur im Browser ein.
 - Die Adresse des Dienstes ist `https://mcp.albatros.build`, das Repo ist `dischen87/albatros-skills`.
 
-**Abo der KI:** Albatros zum Lernen kostet nichts, du als KI aber schon: Die Person braucht ein bezahltes Abo direkt bei deinem Anbieter, ab etwa 20 USD im Monat (Claude Code mit Claude Pro, Codex mit ChatGPT Plus, Gemini CLI mit Google AI Pro). Mit einem Gratis-Konto geht es nicht oder nur für ein paar Versuche. Sag ihr das in einem Satz, bevor ihr einrichtet. Bezahlt wird beim Anbieter, nicht bei Albatros.
+**Abo der KI:** Albatros zum Lernen kostet nichts, du als KI aber schon: Die Person braucht ein bezahltes Abo direkt bei deinem Anbieter, ab 8 USD im Monat (Cursor mit Plus), sonst ab etwa 20 USD (Claude Code mit Claude Pro, Codex mit ChatGPT Plus, Gemini CLI mit Google AI Pro). Mit einem Gratis-Konto geht es nicht oder nur für ein paar Versuche. Sag ihr das in einem Satz, bevor ihr einrichtet. Bezahlt wird beim Anbieter, nicht bei Albatros.
 
-**Sprache:** Sprich mit der Person in ihrer Sprache. Spricht sie Französisch, Italienisch oder Englisch, nimm unten statt `albatros@albatros` das Plugin `albatros-fr@albatros`, `albatros-it@albatros` oder `albatros-en@albatros`. Bei Gemini CLI nimmst du statt `dischen87/albatros-skills` die Adresse `https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-fr` (oder `-it`, `-en`).
+**Sprache:** Sprich mit der Person in ihrer Sprache. Spricht sie Französisch, Italienisch oder Englisch, nimm unten statt `albatros@albatros` das Plugin `albatros-fr@albatros`, `albatros-it@albatros` oder `albatros-en@albatros`. Bei Gemini CLI und Cursor nimmst du statt `dischen87/albatros-skills` die Adresse `https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-fr` (oder `-it`, `-en`).
 
-Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C.
+Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C. Cursor (im Editor oder im Terminal als `agent`): Teil D.
 
 ## A. Claude Code
 
@@ -51,6 +51,21 @@ Gemini CLI läuft mit Google AI Pro. Für Gratis-Konten und Google One hat Googl
    ```
 2. **Neu starten.** Gemini CLI verbindet sich erst beim nächsten Start mit Albatros. Bitte die Person, Gemini CLI zu schliessen, wieder zu öffnen und «Starte Albatros» zu schreiben. Beim Verbinden öffnet sich der Browser zur Anmeldung. Bleibt er zu, bitte sie, genau das einzutippen: `/mcp auth albatros`.
 3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`.
+
+## D. Cursor
+
+1. **Einbauen.** Führ selbst aus:
+   ```bash
+   npx skills add dischen87/albatros-skills -a cursor -g -y --skill '*'
+   node -e 'const fs=require("fs"),f=require("os").homedir()+"/.cursor/mcp.json";let c={};try{c=JSON.parse(fs.readFileSync(f,"utf8"))}catch(e){if(e.code!=="ENOENT")throw e}c.mcpServers={...c.mcpServers,albatros:{url:"https://mcp.albatros.build"}};fs.mkdirSync(require("path").dirname(f),{recursive:true});fs.writeFileSync(f,JSON.stringify(c,null,2))'
+   ```
+   Der erste Befehl legt die Skills dorthin, wo Cursor sie liest (`~/.agents/skills`). Der zweite trägt Albatros in `~/.cursor/mcp.json` ein. Was dort schon steht, bleibt. Ist die Datei kaputt, bricht er ab, ohne etwas zu ändern: Dann zeig der Person die Fehlermeldung.
+2. **Anmelden.** Im Terminal (Cursor CLI, Befehl `agent`) führst du selbst aus, mit einer Zeitgrenze von mindestens fünf Minuten:
+   ```bash
+   agent mcp login albatros
+   ```
+   Der Befehl öffnet den Browser und wartet, bis die Person sich angemeldet hat. Sag vorher: «Gleich öffnet sich dein Browser, dort meldest du dich mit GitHub, Apple oder Google an.» Im Editor von Cursor bittest du die Person, Cursor neu zu starten. Beim Verbinden öffnet Cursor den Browser zur Anmeldung. Bleibt er zu, bitte sie, in den Einstellungen von Cursor unter MCP bei albatros die Anmeldung zu starten.
+3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`. Fehlt das Werkzeug noch, bitte die Person, ein neues Gespräch zu beginnen und dort «Starte Albatros» zu schreiben.
 
 ## Wenn etwas nicht klappt
 

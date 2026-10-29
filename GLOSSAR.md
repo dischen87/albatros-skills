@@ -43,7 +43,7 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | Zurück auf gestern (Snapshot) | retour à hier | ritorno a ieri | back to yesterday | |
 | Foto des Servers (Snapshot) | photo du serveur | foto del server | photo of the server | |
 | Coach · KI | Coach · IA | Coach · IA | Coach · AI | Kennzeichen der KI |
-| KI im Terminal | IA dans le terminal | IA nel terminale | AI in the terminal | Claude Code, Codex, Gemini CLI |
+| KI im Terminal | IA dans le terminal | IA nel terminale | AI in the terminal | Claude Code, Codex, Gemini CLI, Cursor |
 | Community | communauté | community | community | |
 | der erste Fan | le premier fan | il primo fan | your first fan | |
 | Hoppla | Oups | Ops | Oops | kleiner Fehler, nichts kaputt |
@@ -54,7 +54,7 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | Arbeiter am Fliessband | ouvrier | operaio | worker | |
 | Landingpage | landing page | landing page | landing page | |
 | Bert | Bert | Bert | Bert | der Albatros, Maskottchen; Name nie übersetzen |
-| Rucksack (die KI kommt mit) | sac à dos | zaino | rucksack | immer mit allen drei Namen: Claude Code, Codex, Gemini CLI |
+| Rucksack (die KI kommt mit) | sac à dos | zaino | rucksack | immer mit allen vier Namen: Claude Code, Codex, Gemini CLI, Cursor |
 | Baustein | brique | blocco | building block | fertiges Teil für die Seite (Skill `bausteine`) |
 | Fertigteile beim Hausbau | éléments préfabriqués dans la construction d'une maison | elementi prefabbricati nella costruzione di una casa | prefab parts when building a house | Bild für Bausteine |
 | Anmeldeliste | liste d'inscription | lista di iscrizione | sign-up list | Baustein (PocketBase) |

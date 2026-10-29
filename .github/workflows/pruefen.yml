@@ -22,7 +22,9 @@ jobs:
         with:
           node-version: 22
       - run: npm install -g @anthropic-ai/claude-code @openai/codex @google/gemini-cli   # bewusst die neusten: veraltete Befehle sollen auffallen
-      - name: Einbau in Claude Code, Codex und Gemini CLI
+      - name: Cursor CLI (agent)   # ohne Konto, der Check ruft nur agent mcp login --help auf
+        run: curl https://cursor.com/install -fsS | bash && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Einbau in Claude Code, Codex, Gemini CLI und Cursor
         env:
           QUELLE: ${{ github.event_name == 'pull_request' && github.workspace || '' }}   # bei main das echte GitHub-Repo
         run: bash scripts/einbau-test.sh

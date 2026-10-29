@@ -43,7 +43,7 @@ Deine Antwort beginnt mit dem Lagebericht, in drei kurzen Teilen und nur mit Ang
 - **Jetzt dran:** der Schritt und der Grund dafür.
 - **Danach:** was als Nächstes kommt.
 
-Im ersten Lagebericht eines Gesprächs öffnest du die Insel der Person im Browser (`open https://albatros.build/cockpit/insel`, mit Sprachpräfix wie `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), dort wächst ihr Haus mit jedem Schritt. Dazu kommt ein Satz zum Rucksack: Die Person hat ihre KI dabei, und mit Claude Code, Codex und Gemini CLI klappt alles gleich. Nenn alle drei beim Namen.
+Im ersten Lagebericht eines Gesprächs öffnest du die Insel der Person im Browser (`open https://albatros.build/cockpit/insel`, mit Sprachpräfix wie `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), dort wächst ihr Haus mit jedem Schritt. Dazu kommt ein Satz zum Rucksack: Die Person hat ihre KI dabei, und mit Claude Code, Codex, Gemini CLI und Cursor klappt alles gleich. Nenn alle vier beim Namen.
 
 Gleich danach, in derselben Antwort, fängst du mit dem Schritt an: Lies den Skill, sag sein Bild in zwei, drei Sätzen und zeig den ersten konkreten Schritt. Dann hältst du an und wartest auf die Person. Den Rest des Skills geht ihr danach Schritt für Schritt zusammen durch. Für diese erste Antwort liest du nur den Skill: noch keine Dateien im Projekt, keine Befehle. Sie ist eine einzige, kurze Nachricht, und der Lagebericht steht darin.
 
@@ -74,7 +74,7 @@ Fehlt das Werkzeug `lage`, oder meldet es «nicht angemeldet» (Fehler 401, «Bi
 
 1. **Die Bibliothek ist offen.** Alle Skills sind frei lesbar. Zeig die ganze Tabelle unten mit den Kennungen genau so, wie sie dastehen (in Backticks, nicht übersetzt), damit die Person selbst wählen kann. Mit der Kennung findet jede KI den Skill.
 2. **Der Lotse braucht die Anmeldung.** Den richtigen Skill im richtigen Moment, nach ihrem echten Stand, gibt es nur, wenn Albatros sie kennt. Die Anmeldung ist wie die Bordkarte: Ein Fenster im Browser öffnet sich, dort meldet sie sich an oder registriert sich. Das Passwort tippt sie nur dort.
-   - Die Anmeldung löst du selbst aus, die Person tippt keine Befehle. Wie das in Claude Code, Codex und Gemini CLI geht, steht im Skill `start`, Schritt 1 (`../start/SKILL.md`). Folge ihm.
+   - Die Anmeldung löst du selbst aus, die Person tippt keine Befehle. Wie das in Claude Code, Codex, Gemini CLI und Cursor geht, steht im Skill `start`, Schritt 1 (`../start/SKILL.md`). Folge ihm.
    - Danach `lage` aufrufen. Ganz neu bei Albatros: Skill `start`.
 3. Wählt die Person einen Skill aus der Tabelle, lies ihn (`../<kennung>/SKILL.md`) und folge ihm. Werkzeuge von Albatros brauchen auch dort die Anmeldung. Was ohne geht (planen, Texte schreiben, erklären), machst du trotzdem.
 

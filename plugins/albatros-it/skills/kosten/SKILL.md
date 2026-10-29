@@ -27,7 +27,7 @@ Chiedi e annota:
 |---|---|---|---|
 | Abbonamento Albatros | affitto | secondo il livello | `konto_status` |
 | Dominio proprio (`.ch`) | affitto annuale | circa un biglietto del cinema all'anno | `domain_suchen` o pagina dei prezzi del registrar |
-| IA nel terminale (Claude Code, Codex, Gemini CLI) | affitto | da circa 20 USD al mese: Claude Pro, ChatGPT Plus o, per Gemini CLI, Google AI Pro; un account gratuito non basta, o solo per qualche prova | pagina dei prezzi del fornitore; si paga lì, non ad Albatros |
+| IA nel terminale (Claude Code, Codex, Gemini CLI, Cursor) | affitto | da 8 USD al mese con Cursor Plus, altrimenti da circa 20 USD: Claude Pro, ChatGPT Plus o, per Gemini CLI, Google AI Pro; un account gratuito non basta, o solo per qualche prova | pagina dei prezzi del fornitore; si paga lì, non ad Albatros |
 | E-mail con dominio proprio | affitto | piccolo | fornitore |
 | Statistiche (p. es. PostHog) | spese accessorie | di solito gratis fino a un limite | pagina dei prezzi |
 | Invio di e-mail (newsletter) | spese accessorie | gratis fino a un limite, poi per e-mail | pagina dei prezzi |

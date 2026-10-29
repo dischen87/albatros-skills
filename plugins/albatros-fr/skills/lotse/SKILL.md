@@ -44,7 +44,7 @@ Ta réponse commence par le point de situation, en trois parties courtes et seul
 - **À faire maintenant :** l'étape et sa raison.
 - **Ensuite :** ce qui vient après.
 
-Dans le premier point de situation d'une conversation, tu ouvres l'île de la personne dans le navigateur web (`open https://albatros.build/fr/cockpit/insel` ; le préfixe de langue vient devant, ici `/fr` ; sans préfixe, `https://albatros.build/cockpit/insel` est la version allemande ; Linux `xdg-open`, Windows `start`), c'est là que sa maison grandit à chaque étape. Il y a en plus une phrase sur le sac à dos : la personne a son IA avec elle, et avec Claude Code, Codex et Gemini CLI, tout marche pareil. Nomme les trois par leur nom.
+Dans le premier point de situation d'une conversation, tu ouvres l'île de la personne dans le navigateur web (`open https://albatros.build/fr/cockpit/insel` ; le préfixe de langue vient devant, ici `/fr` ; sans préfixe, `https://albatros.build/cockpit/insel` est la version allemande ; Linux `xdg-open`, Windows `start`), c'est là que sa maison grandit à chaque étape. Il y a en plus une phrase sur le sac à dos : la personne a son IA avec elle, et avec Claude Code, Codex, Gemini CLI et Cursor, tout marche pareil. Nomme les quatre par leur nom.
 
 Juste après, dans la même réponse, tu commences l'étape : lis le skill, donne son image en deux ou trois phrases et montre la première étape concrète. Puis tu t'arrêtes et tu attends la personne. Le reste du skill, vous le parcourez ensuite ensemble, étape par étape. Pour cette première réponse, tu lis seulement le skill : encore aucun fichier du projet, aucune commande. C'est un seul message, court, et le point de situation est dedans.
 
@@ -75,7 +75,7 @@ Si l'outil `lage` manque, ou s'il répond « nicht angemeldet » (pas connec
 
 1. **La bibliothèque est ouverte.** Tous les skills sont lisibles librement. Montre tout le tableau ci-dessous avec les identifiants exactement comme ils sont écrits (entre backticks, pas traduits), pour que la personne puisse choisir elle-même. Avec l'identifiant, n'importe quelle IA trouve le skill.
 2. **L'aiguilleur a besoin de la connexion.** Le bon skill au bon moment, d'après son état réel, ça n'existe que si Albatros la connaît. La connexion, c'est comme la carte d'embarquement : une fenêtre s'ouvre dans le navigateur web, la personne s'y connecte ou s'inscrit. Le mot de passe, elle le tape seulement là.
-   - C'est toi qui lances la connexion, la personne ne tape aucune commande. Comment faire dans Claude Code, Codex et Gemini CLI, c'est expliqué dans le skill `start`, étape 1 (`../start/SKILL.md`). Suis-le.
+   - C'est toi qui lances la connexion, la personne ne tape aucune commande. Comment faire dans Claude Code, Codex, Gemini CLI et Cursor, c'est expliqué dans le skill `start`, étape 1 (`../start/SKILL.md`). Suis-le.
    - Ensuite, appeler `lage`. Toute nouvelle chez Albatros : skill `start`.
 3. Si la personne choisit un skill dans le tableau, lis-le (`../<identifiant>/SKILL.md`) et suis-le. Là aussi, les outils d'Albatros ont besoin de la connexion. Ce qui marche sans (planifier, écrire des textes, expliquer), tu le fais quand même.
 
