@@ -113,10 +113,10 @@ Ein einfaches Fliessband, nichts Spezielles (Skill `pipeline`). Mit Light brauch
 - **Light:** Albatros zeigt die Seite ohne eigenen Server unter `https://{name}.aufwind.sh`.
 - **Pilot:** Die Seite läuft auf dem eigenen Server, ebenfalls unter `https://{name}.aufwind.sh`.
 
-**Du schaust selbst nach, die Person wartet nie.** Statt «schau in ein paar Minuten nochmal rein» prüfst du nach dem Push selbst, bis die Seite da ist, höchstens drei Minuten:
+**Du schaust selbst nach, die Person wartet nie.** Statt «schau in ein paar Minuten nochmal rein» prüfst du nach dem Push selbst, bis deine neue Seite da ist, höchstens drei Minuten. Die Adresse antwortet schon vorher (mit der Vorlage oder der Willkommensseite). Darum wartest du auf den Titel deiner Seite, wie er in `seite/index.html` zwischen `<title>` und `</title>` steht:
 
 ```bash
-curl -sf -o /dev/null --retry 12 --retry-delay 15 --retry-all-errors https://{name}.aufwind.sh/ && echo "Seite ist da"
+for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<Titel deiner Seite>" && echo "Seite ist da" && break; sleep 15; done
 ```
 
 - **Da:** Melde `fliessband` und `live`, öffne die Adresse mit der Person (`open https://{name}.aufwind.sh`) und vergleiche mit den Fotos aus Schritt 5.

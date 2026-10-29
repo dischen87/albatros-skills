@@ -116,10 +116,10 @@ A simple conveyor belt, nothing special (skill `pipeline`). With Light you don't
 - **Light:** Albatros shows the site without a server of your own at `https://{name}.aufwind.sh`.
 - **Pilot:** The site runs on your own server, also at `https://{name}.aufwind.sh`.
 
-**You check yourself, the person never waits.** Instead of “have another look in a few minutes”, you check yourself after the push until the site is there, for three minutes at most:
+**You check yourself, the person never waits.** Instead of “have another look in a few minutes”, you check yourself after the push until your new site is there, for three minutes at most. The address already answers before that (with the template or the welcome page). So you wait for your site's title, as it stands in `seite/index.html` between `<title>` and `</title>`:
 
 ```bash
-curl -sf -o /dev/null --retry 12 --retry-delay 15 --retry-all-errors https://{name}.aufwind.sh/ && echo "The site is there"
+for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<your site's title>" && echo "The site is there" && break; sleep 15; done
 ```
 
 - **It's there:** report `fliessband` and `live`, open the address with the person (`open https://{name}.aufwind.sh`) and compare it with the screenshots from step 5.

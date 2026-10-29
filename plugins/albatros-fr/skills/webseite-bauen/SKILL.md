@@ -114,10 +114,10 @@ Un tapis roulant simple, rien de spécial (skill `pipeline`). Avec Light, il n'e
 - **Light :** Albatros montre la page sans serveur à soi sous `https://{name}.aufwind.sh`.
 - **Pilot :** la page tourne sur le serveur à soi, elle aussi sous `https://{name}.aufwind.sh`.
 
-**Tu vérifies toi-même, la personne n'attend jamais.** Au lieu de « regarde à nouveau dans quelques minutes », tu vérifies toi-même après le push jusqu'à ce que la page soit là, trois minutes au plus :
+**Tu vérifies toi-même, la personne n'attend jamais.** Au lieu de « regarde à nouveau dans quelques minutes », tu vérifies toi-même après le push jusqu'à ce que ta nouvelle page soit là, trois minutes au plus. L'adresse répond déjà avant (avec le modèle ou la page de bienvenue). C'est pourquoi tu attends le titre de ta page, tel qu'il figure dans `seite/index.html` entre `<title>` et `</title>` :
 
 ```bash
-curl -sf -o /dev/null --retry 12 --retry-delay 15 --retry-all-errors https://{name}.aufwind.sh/ && echo "La page est là"
+for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titre de ta page>" && echo "La page est là" && break; sleep 15; done
 ```
 
 - **Elle est là :** annonce `fliessband` et `live`, ouvre l'adresse avec la personne (`open https://{name}.aufwind.sh`) et compare avec les photos de l'étape 5.

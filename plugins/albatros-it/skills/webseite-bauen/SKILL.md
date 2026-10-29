@@ -114,10 +114,10 @@ Un nastro trasportatore semplice, niente di speciale (skill `pipeline`). Con Lig
 - **Light:** Albatros mostra la pagina senza server proprio su `https://{name}.aufwind.sh`.
 - **Pilot:** La pagina gira sul server proprio, anche lei su `https://{name}.aufwind.sh`.
 
-**Controlli tu, la persona non aspetta mai.** Invece di «guarda di nuovo tra qualche minuto», dopo il push controlli tu finché la pagina c'è, al massimo tre minuti:
+**Controlli tu, la persona non aspetta mai.** Invece di «guarda di nuovo tra qualche minuto», dopo il push controlli tu finché la tua nuova pagina c'è, al massimo tre minuti. L'indirizzo risponde già prima (con il modello o la pagina di benvenuto). Perciò aspetti il titolo della tua pagina, come sta in `seite/index.html` tra `<title>` e `</title>`:
 
 ```bash
-curl -sf -o /dev/null --retry 12 --retry-delay 15 --retry-all-errors https://{name}.aufwind.sh/ && echo "La pagina c'è"
+for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titolo della tua pagina>" && echo "La pagina c'è" && break; sleep 15; done
 ```
 
 - **C'è:** segnala `fliessband` e `live`, apri l'indirizzo con la persona (`open https://{name}.aufwind.sh`) e confrontalo con le foto del passo 5.
