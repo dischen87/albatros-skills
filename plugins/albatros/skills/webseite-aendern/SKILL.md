@@ -17,7 +17,7 @@ Ein Umbau im bewohnten Haus: Im Ordner liegen die Pläne und die Materialliste (
 - Die Regeln stehen in `docs/`: Designsystem, Tech-Stack und PRD. Neue Farben, Schriften, Abstände oder ein anderes Framework gibt es nur nach einem ausdrücklichen Ja der Person, und dann zuerst im Designsystem.
 - Ins Netz geht nichts ohne Freigabe. Mit Light ist der Push schon die Veröffentlichung.
 - Was die Person sehen soll (Vorher und Nachher, Vorschau, fertige Seite), öffnest du selbst: `open <adresse oder datei>` (Linux `xdg-open`, Windows `start`).
-- Die Änderung mit der eigenen KI kostet nichts extra, nur das Abo der KI beim Anbieter. Will die Person den Wunsch lieber nicht selbst umsetzen, macht Albatros ihn für CHF 29 pro Wunsch. Wie das geht, steht im Cockpit.
+- Die Änderung mit der eigenen KI kostet nichts extra, nur das Abo der KI beim Anbieter. Will die Person den Wunsch lieber nicht selbst umsetzen, sag ihr: «Wenn du das nicht selbst machen willst, kann Albatros es für CHF 29 umsetzen. Das kommt bald ins Cockpit.»
 
 ## Ablauf
 

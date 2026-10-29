@@ -18,7 +18,7 @@ Des travaux dans une maison habitée : dans le classeur, il y a les plans et l
 - Les règles se trouvent dans `docs/` : système de design, stack technique et PRD. De nouvelles couleurs, polices, espacements ou un autre framework, seulement après un oui explicite de la personne, et alors d'abord dans le système de design.
 - Rien ne va en ligne sans autorisation. Avec Light, le push est déjà la publication.
 - Ce que la personne doit voir (avant et après, aperçu, site terminé), tu l'ouvres toi-même : `open <adresse ou fichier>` (Linux `xdg-open`, Windows `start`).
-- La modification avec sa propre IA ne coûte rien de plus, seulement l'abonnement de l'IA chez le fournisseur. Si la personne préfère ne pas faire le souhait elle-même, Albatros le fait pour CHF 29 par souhait. Comment ça marche, c'est écrit dans le cockpit.
+- La modification avec sa propre IA ne coûte rien de plus, seulement l'abonnement de l'IA chez le fournisseur. Si la personne préfère ne pas faire le souhait elle-même, dis-lui : « Si tu ne veux pas le faire toi-même, Albatros peut s'en charger pour CHF 29. Ça arrive bientôt dans le cockpit. »
 
 ## Déroulement
 
