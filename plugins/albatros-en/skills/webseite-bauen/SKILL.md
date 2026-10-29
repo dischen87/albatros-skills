@@ -230,6 +230,8 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<your site
   If nothing is red there, report `fliessband` and `live`, open the address with the person (`open https://{name}.aufwind.sh`) and compare it with the screenshots from step 7.
 - **Still not there after three minutes:** ask `konto_status`. With Light it says whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour, because nothing was built before the push or `seite/` is in `.gitignore`. With Pilot you look in the harbour under “Actions” to see where the conveyor belt stopped (skill `pipeline`). Fix it, new entry, push, check again. Only if it still doesn't work do you tell the person what you checked and ask the coach (`coach_fragen`).
 
+If the person then wants something different (“there’s still … missing”, a date, a text), you load the skill `webseite-aendern` and follow it. The site is released and online, so every change needs its criterion in the PRD, a before and after, and a new release before the push.
+
 Your own domain comes along with the skill `domain` (only with Pilot), and then you report `domain`.
 
 Only what belongs to the person, or what they have permission for, gets published (skill `webseite-modernisieren`, section “Rights”).

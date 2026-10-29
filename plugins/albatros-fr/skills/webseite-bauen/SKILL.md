@@ -228,6 +228,8 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titre de 
   S'il n'y a rien de rouge, tu annonces `fliessband` et `live`, tu ouvres l'adresse avec la personne (`open https://{name}.aufwind.sh`) et tu compares avec les photos de l'étape 7.
 - **Toujours pas là après trois minutes :** demande `konto_status`. Avec Light, il indique si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port, parce que rien n'a été construit avant le push ou que `seite/` figure dans `.gitignore`. Avec Pilot, tu regardes au port sous « Actions » où le tapis roulant s'est arrêté (skill `pipeline`). Corriger, nouvelle entrée, push, vérifier à nouveau. Seulement si ça ne marche toujours pas, tu dis à la personne ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
 
+Si la personne souhaite ensuite autre chose (« il manque encore … », une date, un texte), tu charges le skill `webseite-aendern` et tu le suis. Le site est validé et en ligne, donc chaque modification a besoin de son critère dans le PRD, d'un avant et après et d'une nouvelle autorisation avant le push.
+
 Un propre domaine s'ajoute avec le skill `domain` (seulement Pilot), ensuite tu annonces `domain`.
 
 On ne publie que ce qui appartient à la personne ou ce pour quoi elle a l'autorisation (skill `webseite-modernisieren`, section « Droits »).

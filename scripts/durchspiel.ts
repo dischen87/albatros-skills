@@ -41,16 +41,18 @@ if (!AUSWERTEN) {
     : { command: 'bun', args: [join(repo, 'scripts/durchspiel/mock-mcp.ts')], env: { DURCHSPIEL_LOG: LOG, DURCHSPIEL_HAFEN: HAFEN } } } }));
   mkdirSync(arbeit);
   // open und xdg-open protokollieren nur (es gibt keinen Bildschirm). Ohne --echt auch ssh als Attrappe, und curl auf
-  // https://<name>.aufwind.sh geht an den Webserver unten (Port 4398), alles andere ans echte curl
+  // https://<name>.aufwind.sh geht an den Webserver unten (Port 4398), alles andere ans echte curl. node bekommt die Adresse als
+  // http://<name>.localhost:4398, damit pruefen.mjs --live (Chromium, Lighthouse, fetch) auch dort landet und nie bei aufwind.sh
   mkdirSync(join(tmp, 'bin'));
   for (const n of ['open', 'xdg-open']) { writeFileSync(join(tmp, 'bin', n), `#!/bin/sh\necho "$*" >> ${GEOEFFNET}\n`); chmodSync(join(tmp, 'bin', n), 0o755); }
 }
 if (!AUSWERTEN && !ECHT) {
   writeFileSync(join(tmp, 'bin/ssh'), `#!/bin/sh\necho "ssh $*" >> ${LOG}\ncase "$*" in *-T*) echo "Hi $(cat ${join(HAFEN, 'seite')} 2>/dev/null || echo du)! You've successfully authenticated, but Forgejo does not provide shell access." >&2; exit 1;; esac\necho "Attrappe: kein echter Server im Durchspiel-Test"\n`);
   writeFileSync(join(tmp, 'bin/curl'), `#!/bin/sh\nfor a; do shift\n  case "$a" in\n    http*://code.aufwind.sh*) ;;\n    http*://*.aufwind.sh|http*://*.aufwind.sh/*|*.aufwind.sh|*.aufwind.sh/*) r=\${a#*://}; h=\${r%%/*}; p=\${r#"$h"}; a="http://127.0.0.1:4398\${p:-/}"; set -- "$@" -H "Host: $h";;\n  esac\n  set -- "$@" "$a"\ndone\nexec /usr/bin/curl "$@"\n`);
-  for (const n of ['ssh', 'curl']) chmodSync(join(tmp, 'bin', n), 0o755);
+  writeFileSync(join(tmp, 'bin/node'), `#!/bin/sh\nfor a; do shift\n  case "$a" in\n    http*://code.aufwind.sh*) ;;\n    http*://*.aufwind.sh|http*://*.aufwind.sh/*) r=\${a#*://}; h=\${r%%/*}; a="http://\${h%.aufwind.sh}.localhost:4398\${r#"$h"}";;\n  esac\n  set -- "$@" "$a"\ndone\nexec ${Bun.which('node')} "$@"\n`);
+  for (const n of ['ssh', 'curl', 'node']) chmodSync(join(tmp, 'bin', n), 0o755);
   // Hafen: Vorlage als bare Repo, seite_erstellen kopiert sie nach hafen/<name>/projekt.git, wie flotte es anlegt
-  writeFileSync(join(tmp, 'gitconfig'), `[user]\n\tname = Vorstand Curling\n\temail = vorstand@example.test\n[init]\n\tdefaultBranch = main\n[url "${HAFEN}/"]\n\tinsteadOf = git@aufwind.sh:\n`);
+  writeFileSync(join(tmp, 'gitconfig'), `[user]\n\tname = ${FALL === 'musikverein' ? 'Präsidentin Musikverein Testdorf' : 'Vorstand Curling'}\n\temail = vorstand@example.test\n[init]\n\tdefaultBranch = main\n[url "${HAFEN}/"]\n\tinsteadOf = git@aufwind.sh:\n`);
   mkdirSync(join(HAFEN, 'vorlage.git'), { recursive: true });
   git(join(HAFEN, 'vorlage.git'), 'init', '-q', '--bare', '-b', 'main');
   cpSync(join(repo, 'vorlage'), join(tmp, 'vorlage'), { recursive: true });
@@ -81,7 +83,7 @@ const verlauf: Eintrag[] = AUSWERTEN ? JSON.parse(readFileSync(join(ergebnis, 'v
 let kostenPerson = 0;
 if (!AUSWERTEN) {
   // Light: Was im Hafen auf main unter seite/ liegt, ist unter https://<name>.aufwind.sh zu sehen (Abrufe in live.log)
-  const live = ECHT ? null : Bun.serve({ port: 4398, fetch: (r) => {
+  const live = ECHT ? null : Bun.serve({ port: 4398, hostname: '::', fetch: (r) => {
     const name = (r.headers.get('host') ?? '').split('.')[0], pfad = decodeURIComponent(new URL(r.url).pathname).replace(/^\/+|\/+$/g, '');
     const roh = (p: string) => { const x = Bun.spawnSync(['git', '--git-dir', join(HAFEN, name, 'projekt.git'), 'show', `main:seite/${p}`]); return x.exitCode === 0 && !x.stdout.toString().startsWith('tree ') ? x.stdout : null; };
     const p = name === seiteName() ? [pfad, `${pfad}/index.html`.replace(/^\//, ''), `${pfad}.html`].find((x) => x && roh(x)) : undefined;

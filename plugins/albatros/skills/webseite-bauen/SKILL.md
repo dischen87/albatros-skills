@@ -227,6 +227,8 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<Titel dei
   Ist dort nichts rot, meldest du `fliessband` und `live`, öffnest die Adresse mit der Person (`open https://{name}.aufwind.sh`) und vergleichst mit den Fotos aus Schritt 7.
 - **Nach drei Minuten noch nicht da:** Frag `konto_status`. Mit Light steht dort, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil vor dem Push nicht gebaut wurde oder `seite/` in `.gitignore` steht. Mit Pilot schaust du im Hafen unter «Actions» nach, wo das Fliessband stehen blieb (Skill `pipeline`). Beheben, neuer Eintrag, pushen, nochmals prüfen. Erst wenn es dann immer noch nicht geht, sagst du der Person, was du geprüft hast, und fragst den Coach (`coach_fragen`).
 
+Wünscht die Person danach noch etwas anders («es fehlt noch …», ein Termin, ein Text), lädst du den Skill `webseite-aendern` und folgst ihm. Die Seite ist freigegeben und im Netz, darum braucht jede Änderung ihr Kriterium im PRD, vorher und nachher und eine neue Freigabe vor dem Push.
+
 Eine eigene Domain kommt mit dem Skill `domain` dazu (nur Pilot), dann meldest du `domain`.
 
 Veröffentlicht wird nur, was der Person gehört oder wofür sie die Erlaubnis hat (Skill `webseite-modernisieren`, Abschnitt «Rechte»).
