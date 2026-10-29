@@ -40,7 +40,7 @@
       }
     },
     "abo": {
-      "description": "Kleinstes Abo, mit dem die Mission geht. Fehlt das Feld, geht sie ab Light: Dann prüft flotte Dateien (~/projekt/…) im Repo im Hafen statt auf dem Server. pilot heisst: braucht den eigenen Server (Docker, Fliessband, Snapshots, SSH auf den Server, eigene Domain). Mit Gratis lassen sich Missionen nur lesen.",
+      "description": "Kleinstes Abo, mit dem die Mission geht. Fehlt das Feld, geht sie ab Light: Dann prüft flotte Dateien (~/projekt/…) im Repo im Hafen statt auf dem Server. pilot heisst: braucht den eigenen Server (Docker, Fliessband, Snapshots, SSH auf den Server). Mit Gratis lassen sich Missionen nur lesen.",
       "enum": ["light", "pilot"]
     },
     "skill": {

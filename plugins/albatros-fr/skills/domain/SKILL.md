@@ -73,7 +73,7 @@ Si les réponses correspondent aux valeurs de l'étape 4, appelle encore une foi
 
 ### 7. Contrôler la mission
 
-Ouvre `https://<domain>` avec la personne. Avec Pilot, ensuite `mission_pruefen` avec `flugschule-09-domain`.
+Ouvre `https://<domain>` avec la personne. Ensuite `mission_pruefen` avec `flugschule-09-domain`.
 
 ## Quand ça coince
 

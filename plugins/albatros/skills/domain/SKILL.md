@@ -72,7 +72,7 @@ Stimmen die Antworten mit den Werten aus Schritt 4 überein, ruf `domain_verbind
 
 ### 7. Mission prüfen
 
-Öffne `https://<domain>` mit der Person. Mit Pilot dann `mission_pruefen` mit `flugschule-09-domain`.
+Öffne `https://<domain>` mit der Person. Dann `mission_pruefen` mit `flugschule-09-domain`.
 
 ## Wenn es hakt
 

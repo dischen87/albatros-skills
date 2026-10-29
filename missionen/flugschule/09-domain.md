@@ -5,7 +5,6 @@ stufe: fliegen
 titel: Deine eigene Adresse
 bild: Adresse im Telefonbuch
 dauer: 45
-abo: pilot
 pruefung:
   - typ: http
     url: https://{domain}

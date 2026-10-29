@@ -73,7 +73,7 @@ Se le risposte corrispondono ai valori del passo 4, chiama di nuovo `domain_verb
 
 ### 7. Verifica la missione
 
-Apri `https://<domain>` con la persona. Con Pilot poi `mission_pruefen` con `flugschule-09-domain`.
+Apri `https://<domain>` con la persona. Poi `mission_pruefen` con `flugschule-09-domain`.
 
 ## Se qualcosa si inceppa
 

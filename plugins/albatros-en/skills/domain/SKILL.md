@@ -73,7 +73,7 @@ If the answers match the values from step 4, call `domain_verbinden` again. Alba
 
 ### 7. Check the mission
 
-Open `https://<domain>` with the person. With Pilot, then `mission_pruefen` with `flugschule-09-domain`.
+Open `https://<domain>` with the person. Then `mission_pruefen` with `flugschule-09-domain`.
 
 ## When it gets stuck
 
