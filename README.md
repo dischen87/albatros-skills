@@ -80,10 +80,10 @@ plugins/albatros/
   skills/<name>/SKILL.md            19 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
   evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
-missionen/<weg>/<nr>-<slug>.md      32 Missionen: flugschule 10, webseite 8, geschaeft 14
+missionen/<weg>/<nr>-<slug>.md      33 Missionen: flugschule 10, webseite 9, geschaeft 14
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
 vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, Dockerfile, compose.yaml, Fliessband
-scripts/pruefen.ts                  prüft Skills und Missionen
+scripts/pruefen.ts                  prüft Skills und Missionen, auch dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt
 ```
 
 ## Skills
@@ -103,7 +103,7 @@ scripts/pruefen.ts                  prüft Skills und Missionen
 | | `landung` | Umzug ins eigene Haus |
 | Webseite | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite |
 | | `webseite-planen` | Grundriss |
-| | `webseite-bauen` | vom Grundriss zum fertigen Haus: Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Server |
+| | `webseite-bauen` | die kleine Fabrik: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live; misst mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder) |
 | | `inhalte` | Ware im Schaufenster |
 | | `gestaltung` | erst das Fundament, dann die Fassade |
 | | `cms` | Pinnwand im Flur |
@@ -164,6 +164,7 @@ claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Wri
 
 - Der Fall `ssh-schluessel-lokal` (Tag `bash`) lässt die KI den Schlüssel wirklich mit `ssh-keygen` erzeugen. Er braucht `--allow-tools Bash` und eine Maschine, auf der Claude Code Bash in Evals erlaubt.
 - Die Evals rufen nie den echten MCP-Server. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/`.
+- Der Fall `webseite-aendern-termin` legt mit `case.yaml` und `scaffold.sh` eine fertige Seite (docs/, Termine als Daten) in den Arbeitsordner. Er läuft nur mit `--scaffold` und `--allow-tools Write,Edit`. Die Fälle `webseite-bauen-prd` und `webseite-bauen-pruefung` prüfen Tech-Stack, PRD mit Abnahmekriterien und die vier Berichte aus Messwerten, ohne Bash.
 - Evals mit Bash laufen auf diesem Mac nicht (der Docker-Ordner enthält einen symbolischen Link). Die Fälle `modernisieren-*` lesen die Seite darum mit WebFetch, mit 15 Minuten Zeit pro Lauf.
 
 ### Durchspiel-Test
@@ -175,12 +176,13 @@ bun scripts/durchspiel.ts https://www.grindelwald-curling.ch/ --runden 20 --budg
 bun scripts/durchspiel.ts --auswerten <temp-ordner> <ergebnis-ordner>   # nur Fotos, Protokoll und Bewertung eines Laufs
 ```
 
-Gegen die echte Plattform läuft er nur im Workflow «Durchspiel» von `dischen87/albatros` (`--echt --fall musikverein`): Die E2E-Person zahlt Light mit der Testkarte, die KI meldet sich über das echte MCP an und baut eine Seite für den erfundenen Musikverein Testdorf unter `e2e-plattform.aufwind.sh`. Danach wird alles wie im E2E weggeräumt. Inhalte fremder Seiten gehen nie ins Netz, darum ist `--echt` nur mit diesem Fall erlaubt.
+Gegen die echte Plattform läuft er nur im Workflow «Durchspiel» von `dischen87/albatros` (`--echt --fall musikverein`): Die E2E-Person beginnt wie neu (Hafen-Repo auf der Vorlage, Flugbuch und Insel leer) und bekommt Light ohne Zahlung, die KI meldet sich über das echte MCP an und baut eine Seite für den erfundenen Musikverein Testdorf unter `e2e-plattform.aufwind.sh`. Danach wird alles wie im E2E weggeräumt. Inhalte fremder Seiten gehen nie ins Netz, darum ist `--echt` nur mit diesem Fall erlaubt.
 
 - Die eine KI (Claude Code mit dem Plugin, Sonnet) bekommt nur «Modernisiere <adresse>». Die andere spielt eine Person ohne Technikwissen und beantwortet kurz, was gefragt wird (Haiku).
 - Albatros ist eine Attrappe (`scripts/durchspiel/mock-mcp.ts`, Antworten aus `scripts/durchspiel/mocks/` und `evals/mocks/albatros/`). Der Hafen ist ein lokales Git-Repo, das `seite_erstellen` unter dem gewünschten Namen anlegt. `open`, `xdg-open` und `ssh` schreiben nur ins Protokoll. `curl` auf `https://<name>.aufwind.sh` bekommt die Seite aus `seite/` im Hafen, wie bei Light: zuerst die Vorlage, nach dem Push die neue Seite. Keine Zahlung, kein Server, nichts wird veröffentlicht.
 - Ergebnis in `plugins/albatros/evals/results/durchspiel-<zeit>/`: Verlauf, Protokoll (Schritte an die Insel, geöffnete Adressen, Einträge im Hafen), Fotos vorher und nachher (390 und 1440 breit), Bewertung nach Raster und Kosten.
-- Raster: jede Funktion aus `docs/bestand.md` auf der neuen Seite oder mit Entscheid weggelassen, Frage nach den Eigenschaften, Frage nach Gestaltungselementen, keine KI-Merkmale, die Person musste nie wissen, was zu tun ist, Reihenfolge der acht Schritte, PRD vor dem Bau, Insel geöffnet und alle Schritte gemeldet, Push in den Hafen, die KI prüft selbst, bis die Seite live ist, und der Name ist der gewünschte.
+- Raster: jede Funktion aus `docs/bestand.md` auf der neuen Seite oder mit Entscheid weggelassen, Frage nach den Eigenschaften, Frage nach Gestaltungselementen, keine KI-Merkmale, die Person musste nie wissen, was zu tun ist, Reihenfolge der neun Schritte, Designsystem, Tech-Stack mit Grund und JavaScript-Budget, prüfbare Abnahmekriterien vor dem Bau, vier Prüfberichte mit Ampel, Freigabe vor dem Push, Insel geöffnet und alle Schritte gemeldet, Push in den Hafen, die KI prüft selbst, bis die Seite live ist, und der Name ist der gewünschte.
+- Maschinell: `pruefen.mjs --nur ablaeufe,code` auf der gebauten Seite (Zugang mit axe, tote Links, JavaScript je Seite, Lighthouse, Bilder), Ergebnis in `maschinell/` neben der Bewertung.
 
 ## Quellen
 

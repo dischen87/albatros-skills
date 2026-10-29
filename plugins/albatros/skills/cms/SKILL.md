@@ -61,7 +61,7 @@ Strapi kommt als fertiger Baustein mit eigener Postgres-Datenbank: Skill `bauste
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-04-cms`. Die Prüfung schaut, ob der Container `cms` läuft (Strapi). Hat sich die Person bewusst für Stufe A, B oder C entschieden, sag ihr, dass sie diese Mission überspringen darf. Das ist eine gute Entscheidung, keine Lücke.
+`mission_pruefen` mit `webseite-05-cms`. Die Prüfung schaut, ob der Container `cms` läuft (Strapi). Hat sich die Person bewusst für Stufe A, B oder C entschieden, sag ihr, dass sie diese Mission überspringen darf. Das ist eine gute Entscheidung, keine Lücke.
 
 ## Schlussnachricht
 

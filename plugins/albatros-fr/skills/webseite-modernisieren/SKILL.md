@@ -102,7 +102,7 @@ Tu inscris les décisions dans `docs/bestand.md` (colonne Décision) et dans `do
 
 ### 5. Construire en huit étapes
 
-À partir d'ici, tu suis le skill `webseite-bauen`, dans son ordre fixe : maquette, design, framework, PRD, en local, port, tapis roulant, page ou serveur. En plus, ceci s'applique :
+À partir d'ici, tu suis le skill `webseite-bauen`, dans son ordre fixe : mandat, maquette, système de design, stack technique, PRD avec critères de réception, construction en local, quatre vérifications, validation, port, tapis roulant et en ligne. Ton mandat, c'est `docs/bestand.md`. En plus, ceci s'applique :
 
 - Le PRD liste chaque fonction de `docs/bestand.md`, avec sa décision. Aucune ne disparaît en silence.
 - Pour la mise en forme, tu regardes aussi les photos de l'ancien site : qu'est-ce qui est sacré (logo, couleurs) ? Qu'est-ce qui fait dépassé ?

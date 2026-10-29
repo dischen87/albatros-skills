@@ -74,7 +74,7 @@ Mentions légales et protection des données comme pages à part, accessibles de
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-06-recht-ch`. La vérification regarde si `https://{name}.aufwind.sh/impressum` et `/datenschutz` répondent.
+`mission_pruefen` avec `webseite-07-recht-ch`. La vérification regarde si `https://{name}.aufwind.sh/impressum` et `/datenschutz` répondent.
 
 ## Message final
 

@@ -74,7 +74,7 @@ Impressum e protezione dei dati come pagine a sé, raggiungibili da ogni pagina 
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-06-recht-ch`. La verifica controlla se `https://{name}.aufwind.sh/impressum` e `/datenschutz` rispondono. Questi due indirizzi restano così, anche su un sito in italiano.
+`mission_pruefen` con `webseite-07-recht-ch`. La verifica controlla se `https://{name}.aufwind.sh/impressum` e `/datenschutz` rispondono. Questi due indirizzi restano così, anche su un sito in italiano.
 
 ## Messaggio finale
 

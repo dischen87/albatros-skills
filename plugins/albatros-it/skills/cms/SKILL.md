@@ -62,7 +62,7 @@ Strapi arriva come blocco pronto con una banca dati Postgres propria: skill `bau
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-04-cms`. La verifica controlla se il container `cms` è in funzione (Strapi). Se la persona ha scelto consapevolmente il livello A, B o C, dille che può saltare questa missione. È una buona decisione, non una lacuna.
+`mission_pruefen` con `webseite-05-cms`. La verifica controlla se il container `cms` è in funzione (Strapi). Se la persona ha scelto consapevolmente il livello A, B o C, dille che può saltare questa missione. È una buona decisione, non una lacuna.
 
 ## Messaggio finale
 

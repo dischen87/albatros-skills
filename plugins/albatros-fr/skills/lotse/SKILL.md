@@ -69,6 +69,8 @@ C'est la personne qui décide où elle vole. Si elle préfère travailler sur au
 
 Si la personne envoie l'adresse d'un site web existant (https://…) ou « Modernise … », tu suis tout de suite le skill `webseite-modernisieren`, avec ou sans connexion. Il commence par l'état des lieux sans poser de question.
 
+Si la personne veut changer quelque chose sur son site terminé (« nouvelle date », « modifier un texte », « remplacer une image », « il manque … »), tu suis le skill `webseite-aendern`, même si `lage` propose autre chose.
+
 ## Sans connexion
 
 Si l'outil `lage` manque, ou s'il répond « nicht angemeldet » (pas connecté ; erreur 401, « Bitte zuerst bei Albatros anmelden », merci de te connecter d'abord à Albatros), alors la tour ne voit pas la personne sur le radar. Dis-le honnêtement, sans inventer d'état :
@@ -95,7 +97,8 @@ Si Albatros répond avec une autre erreur ou ne répond pas du tout : dis honn
 | `kosten` | Combien coûte mon projet par mois, quel abonnement me convient |
 | `domain` | Trouver, acheter ou relier ta propre adresse comme monmagasin.ch |
 | `landung` | Déménager sur ton propre serveur, en dehors d'Albatros |
-| `webseite-bauen` | Du plan au site terminé en huit étapes : maquette, design, framework, PRD, en local, port, tapis roulant, serveur |
+| `webseite-bauen` | Du plan au site terminé comme dans une petite fabrique, en neuf étapes : mandat, maquette, système de design, stack technique, PRD avec critères de réception, construction en local, quatre vérifications, validation, port, tapis roulant et en ligne |
+| `webseite-aendern` | Changer quelque chose sur le site terminé : date, texte, image ou nouvelle page, dans le système de design existant, avec vérification et validation |
 | `webseite-modernisieren` | Renouveler un site web existant : état des lieux de toutes les pages et fonctions, puis plan et mise en forme |
 | `webseite-planen` | Avant de construire : pour qui, quelles pages, quels contenus |
 | `inhalte` | Écrire et choisir les textes et les images de la page |

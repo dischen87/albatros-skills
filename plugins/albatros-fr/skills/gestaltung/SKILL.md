@@ -133,7 +133,7 @@ Regarde toi-même chaque photo et compare-la avec l'ébauche. Seulement ensuite,
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-03-gestaltung`. La vérification regarde si `~/projekt/docs/gestaltung/richtungen.md` contient une décision (`Entscheid:`) et si le site répond.
+`mission_pruefen` avec `webseite-04-gestaltung`. La vérification regarde si `~/projekt/docs/gestaltung/richtungen.md` contient une décision (`Entscheid:`) et si le site répond.
 
 ## Message final
 

@@ -62,7 +62,7 @@ Demande à la personne de vérifier chaque information dans le texte (horaires, 
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-02-inhalte`. La vérification regarde si `~/projekt/docs/inhalte.md` existe et si le site répond sous `https://{name}.aufwind.sh`.
+`mission_pruefen` avec `webseite-03-inhalte`. La vérification regarde si `~/projekt/docs/inhalte.md` existe et si le site répond sous `https://{name}.aufwind.sh`.
 
 ## Message final
 

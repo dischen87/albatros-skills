@@ -91,7 +91,7 @@ In PostHog, in the project settings, switch on “Filter out internal and test u
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-07-statistik`. The check looks at whether `~/projekt/docs/statistik.md` exists and the site contains the PostHog set-up.
+`mission_pruefen` with `webseite-08-statistik`. The check looks at whether `~/projekt/docs/statistik.md` exists and the site contains the PostHog set-up.
 
 ## Final message
 

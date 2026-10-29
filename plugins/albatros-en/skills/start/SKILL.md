@@ -30,6 +30,8 @@ Everyone needs a hand at the start. You're the flight instructor in the seat nex
 
 **An existing website:** If the person just sends the address of a website (https://…) or “Modernise …”, you follow the skill `webseite-modernisieren` straight away. It starts on the inventory without asking first. The steps here (sign-in, plan, key) only come once the new site is to go on the web.
 
+**Changing a site at Albatros:** If the person already has a site at name.aufwind.sh, built by themselves or by Albatros, and wants to change something (“new date”, “change a text”, “swap a picture”, “… is missing”), you follow the skill `webseite-aendern`.
+
 ### 1. Is Albatros connected?
 
 Call the Albatros tool `konto_status`.
@@ -99,7 +101,7 @@ If `lage` is missing, this order applies:
 
 - **Pilot:** the flight school carries on with `server-kennenlernen`, then `git-logbuch` and `pipeline`. If the site needs building blocks (step 3), they follow after that with `bausteine`.
 - **Light:** the flight school carries on with `git-logbuch`. Missions that need a server of your own (`abo: pilot`) you leave out.
-- On the website path, `webseite-planen` comes after that and then `webseite-bauen` (mockup, design, framework, PRD, local, harbour, conveyor belt, server); on the business path, the method `ideen-check`.
+- On the website path, `webseite-planen` comes after that and then `webseite-bauen` (the small factory: brief, mockup, design system, tech stack, PRD with acceptance criteria, local build, four checks, release, harbour, conveyor belt and live); on the business path, the method `ideen-check`.
 
 With `mission_holen` you get the current mission and its check, if the person has lost the thread.
 

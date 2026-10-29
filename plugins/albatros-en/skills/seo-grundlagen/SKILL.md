@@ -70,7 +70,7 @@ Real links from fitting places: the directory of the neighbourhood or trade asso
 
 ## Check the mission
 
-Logbook and conveyor belt (skills `git-logbuch`, `pipeline`), then `mission_pruefen` with `webseite-08-seo-grundlagen`. The check looks at whether `https://{name}.aufwind.sh/sitemap.xml` and `/robots.txt` answer.
+Logbook and conveyor belt (skills `git-logbuch`, `pipeline`), then `mission_pruefen` with `webseite-09-seo-grundlagen`. The check looks at whether `https://{name}.aufwind.sh/sitemap.xml` and `/robots.txt` answer.
 
 ## Final message
 

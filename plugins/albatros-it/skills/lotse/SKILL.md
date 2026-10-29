@@ -69,6 +69,8 @@ Se lavorate a lungo su un passo, ripeti in breve nel tuo ultimo messaggio il pun
 
 Se la persona manda l'indirizzo di un sito web esistente (https://…) o «Modernizza …», segui subito lo skill `webseite-modernisieren`, con o senza accesso. Comincia senza domande con l'inventario.
 
+Se la persona vuole cambiare qualcosa sul suo sito finito («nuova data», «cambiare un testo», «sostituire un'immagine», «manca …»), segui lo skill `webseite-aendern`, anche se `lage` propone altro.
+
 ## Senza accesso
 
 Se manca lo strumento `lage`, o se riporta «nicht angemeldet» (non hai effettuato l'accesso; errore 401, «Bitte zuerst bei Albatros anmelden»), la torre non vede la persona sul radar. Dillo onestamente, senza inventare uno stato:
@@ -95,7 +97,8 @@ Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente
 | `kosten` | Quanto costa il mio progetto al mese, quale abbonamento fa per me |
 | `domain` | Trovare, comprare o collegare un indirizzo tuo come mionegozio.ch |
 | `landung` | Trasloco su un server tuo fuori da Albatros |
-| `webseite-bauen` | Dal piano al sito finito in otto passi: mockup, design, framework, PRD, in locale, porto, nastro trasportatore, server |
+| `webseite-bauen` | Dal piano al sito finito come in una piccola fabbrica, in nove passi: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online |
+| `webseite-aendern` | Cambiare qualcosa sul sito finito: data, testo, immagine o una nuova pagina, nel sistema di design esistente, con verifica e approvazione |
 | `webseite-modernisieren` | Rinnovare un sito web esistente: inventario di tutte le pagine e funzioni, poi piano e aspetto |
 | `webseite-planen` | Prima di costruire: per chi, quali pagine, quali contenuti |
 | `inhalte` | Scrivere e scegliere testi e immagini per il sito |

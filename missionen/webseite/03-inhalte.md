@@ -1,5 +1,5 @@
 ---
-id: webseite-02-inhalte
+id: webseite-03-inhalte
 weg: webseite
 stufe: abheben
 titel: Die Ware ins Schaufenster

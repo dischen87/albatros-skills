@@ -102,7 +102,7 @@ You enter the decisions in `docs/bestand.md` (Decision column) and in `docs/plan
 
 ### 5. Building in eight steps
 
-From here you follow the skill `webseite-bauen`, in its fixed order: mockup, design, framework, PRD, local, harbour, conveyor belt, page or server. On top of that:
+From here you follow the skill `webseite-bauen`, in its fixed order: brief, mockup, design system, tech stack, PRD with acceptance criteria, local build, four checks, release, harbour, conveyor belt and live. Your brief is `docs/bestand.md`. On top of that:
 
 - The PRD lists every feature from `docs/bestand.md`, with its decision. None is dropped silently.
 - For the design, you read the screenshots of the old site as well: what's sacred (logo, colours)? What looks out of date?

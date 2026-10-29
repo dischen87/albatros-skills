@@ -70,7 +70,7 @@ Link veri da luoghi adatti: elenco del quartiere o dell'associazione di categori
 
 ## Verifica la missione
 
-Diario di bordo e nastro trasportatore (skill `git-logbuch`, `pipeline`), poi `mission_pruefen` con `webseite-08-seo-grundlagen`. La verifica controlla se `https://{name}.aufwind.sh/sitemap.xml` e `/robots.txt` rispondono.
+Diario di bordo e nastro trasportatore (skill `git-logbuch`, `pipeline`), poi `mission_pruefen` con `webseite-09-seo-grundlagen`. La verifica controlla se `https://{name}.aufwind.sh/sitemap.xml` e `/robots.txt` rispondono.
 
 ## Messaggio finale
 

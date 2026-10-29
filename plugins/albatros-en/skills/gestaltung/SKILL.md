@@ -133,7 +133,7 @@ Look at every screenshot yourself and compare it with the draft. Only then show 
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-03-gestaltung`. The check looks at whether `~/projekt/docs/gestaltung/richtungen.md` contains a decision (the line starting with `Entscheid:`) and the site answers.
+`mission_pruefen` with `webseite-04-gestaltung`. The check looks at whether `~/projekt/docs/gestaltung/richtungen.md` contains a decision (the line starting with `Entscheid:`) and the site answers.
 
 ## Final message
 

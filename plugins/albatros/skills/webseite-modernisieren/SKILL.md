@@ -101,7 +101,7 @@ Die Entscheide trägst du in `docs/bestand.md` (Spalte Entscheid) und in `docs/p
 
 ### 5. Bauen in acht Schritten
 
-Ab hier folgst du dem Skill `webseite-bauen`, in seiner festen Reihenfolge: Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Seite oder Server. Dabei gilt zusätzlich:
+Ab hier folgst du dem Skill `webseite-bauen`, in seiner festen Reihenfolge: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live. Dein Auftrag ist `docs/bestand.md`. Dabei gilt zusätzlich:
 
 - Das PRD führt jede Funktion aus `docs/bestand.md` auf, mit ihrem Entscheid. Keine fällt still weg.
 - Für die Gestaltung liest du die Fotos der alten Seite mit: Was ist heilig (Logo, Farben)? Was wirkt veraltet?

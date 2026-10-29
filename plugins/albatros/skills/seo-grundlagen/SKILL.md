@@ -69,7 +69,7 @@ Echte Links von passenden Orten: Verzeichnis des Quartiers oder Verbands, Partne
 
 ## Mission prüfen
 
-Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `webseite-08-seo-grundlagen`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/sitemap.xml` und `/robots.txt` antworten.
+Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `webseite-09-seo-grundlagen`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/sitemap.xml` und `/robots.txt` antworten.
 
 ## Schlussnachricht
 

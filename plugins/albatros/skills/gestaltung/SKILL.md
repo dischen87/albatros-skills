@@ -132,7 +132,7 @@ Jedes Foto selbst anschauen und mit dem Entwurf vergleichen. Erst dann der Perso
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-03-gestaltung`. Die Prüfung schaut, ob `~/projekt/docs/gestaltung/richtungen.md` einen Entscheid enthält und die Seite antwortet.
+`mission_pruefen` mit `webseite-04-gestaltung`. Die Prüfung schaut, ob `~/projekt/docs/gestaltung/richtungen.md` einen Entscheid enthält und die Seite antwortet.
 
 ## Schlussnachricht
 

@@ -91,7 +91,7 @@ In PostHog, nelle impostazioni del progetto, attiva «Filter out internal and te
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-07-statistik`. La verifica controlla se `~/projekt/docs/statistik.md` esiste e se il sito contiene l'integrazione di PostHog.
+`mission_pruefen` con `webseite-08-statistik`. La verifica controlla se `~/projekt/docs/statistik.md` esiste e se il sito contiene l'integrazione di PostHog.
 
 ## Messaggio finale
 

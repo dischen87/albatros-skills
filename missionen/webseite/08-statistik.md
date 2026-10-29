@@ -1,5 +1,5 @@
 ---
-id: webseite-07-statistik
+id: webseite-08-statistik
 weg: webseite
 stufe: fliegen
 titel: Die Strichliste an der Ladentür

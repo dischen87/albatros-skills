@@ -89,7 +89,7 @@ Then repair, critical points first (anything that shuts a person out completely)
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-05-barrierefreiheit`. The check looks at whether `docs/barrierefreiheit.md` is in the project (with Pilot in `~/projekt` on the server, with Light in the harbour).
+`mission_pruefen` with `webseite-06-barrierefreiheit`. The check looks at whether `docs/barrierefreiheit.md` is in the project (with Pilot in `~/projekt` on the server, with Light in the harbour).
 
 ## Final message
 

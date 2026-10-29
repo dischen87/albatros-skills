@@ -73,7 +73,7 @@ Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar.
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-06-recht-ch`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/impressum` und `/datenschutz` antworten.
+`mission_pruefen` mit `webseite-07-recht-ch`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/impressum` und `/datenschutz` antworten.
 
 ## Schlussnachricht
 

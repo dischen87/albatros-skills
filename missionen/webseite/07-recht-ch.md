@@ -1,5 +1,5 @@
 ---
-id: webseite-06-recht-ch
+id: webseite-07-recht-ch
 weg: webseite
 stufe: fliegen
 titel: Klingelschild und Hausordnung

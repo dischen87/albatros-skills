@@ -76,7 +76,7 @@ Legal notice and privacy policy as pages of their own, reachable from the footer
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-06-recht-ch`. The check looks at whether `https://{name}.aufwind.sh/impressum` and `/datenschutz` answer.
+`mission_pruefen` with `webseite-07-recht-ch`. The check looks at whether `https://{name}.aufwind.sh/impressum` and `/datenschutz` answer.
 
 ## Final message
 

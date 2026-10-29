@@ -102,7 +102,7 @@ Le decisioni le scrivi in `docs/bestand.md` (colonna Decisione) e in `docs/plan.
 
 ### 5. Costruire in otto passi
 
-Da qui segui lo skill `webseite-bauen`, nel suo ordine fisso: mockup, design, framework, PRD, in locale, porto, nastro trasportatore, pagina o server. In più vale:
+Da qui segui lo skill `webseite-bauen`, nel suo ordine fisso: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online. Il tuo incarico è `docs/bestand.md`. In più vale:
 
 - Il PRD elenca ogni funzione di `docs/bestand.md`, con la sua decisione. Nessuna sparisce in silenzio.
 - Per l'aspetto leggi anche le foto del vecchio sito: cosa è sacro (logo, colori)? Cosa sembra superato?

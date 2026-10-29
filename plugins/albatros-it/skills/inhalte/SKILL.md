@@ -62,7 +62,7 @@ Chiedi alla persona di verificare ogni dato nel testo (orari, percorsi, prezzi, 
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-02-inhalte`. La verifica controlla se `~/projekt/docs/inhalte.md` esiste e se il sito risponde su `https://{name}.aufwind.sh`.
+`mission_pruefen` con `webseite-03-inhalte`. La verifica controlla se `~/projekt/docs/inhalte.md` esiste e se il sito risponde su `https://{name}.aufwind.sh`.
 
 ## Messaggio finale
 

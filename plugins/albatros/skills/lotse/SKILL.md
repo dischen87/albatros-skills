@@ -68,6 +68,8 @@ Die Person bestimmt, wohin sie fliegt. Will sie lieber an etwas anderem arbeiten
 
 Schickt die Person die Adresse einer bestehenden Webseite (https://…) oder «Modernisiere …», folgst du sofort dem Skill `webseite-modernisieren`, mit oder ohne Anmeldung. Er fängt ohne Rückfrage mit der Bestandsaufnahme an.
 
+Will die Person an ihrer fertigen Seite etwas ändern («neuer Termin», «Text ändern», «Bild austauschen», «es fehlt …»), folgst du dem Skill `webseite-aendern`, auch wenn `lage` etwas anderes vorschlägt.
+
 ## Ohne Anmeldung
 
 Fehlt das Werkzeug `lage`, oder meldet es «nicht angemeldet» (Fehler 401, «Bitte zuerst bei Albatros anmelden»), dann sieht der Turm die Person nicht auf dem Radar. Sag das ehrlich, ohne einen Stand zu erfinden:
@@ -94,7 +96,8 @@ Antwortet Albatros mit einem anderen Fehler oder gar nicht: Sag ehrlich, dass Al
 | `kosten` | Was kostet mein Projekt im Monat, welches Abo passt |
 | `domain` | Eine eigene Adresse wie meinladen.ch finden, kaufen oder verbinden |
 | `landung` | Umzug auf einen eigenen Server ausserhalb von Albatros |
-| `webseite-bauen` | Vom Plan zur fertigen Seite in acht Schritten: Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Server |
+| `webseite-bauen` | Vom Plan zur fertigen Seite wie in einer kleinen Fabrik, in neun Schritten: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live |
+| `webseite-aendern` | An der fertigen Seite etwas ändern: Termin, Text, Bild oder eine neue Seite, im bestehenden Designsystem, mit Prüfung und Freigabe |
 | `webseite-modernisieren` | Eine bestehende Webseite erneuern: Bestandsaufnahme aller Seiten und Funktionen, dann Plan und Gestaltung |
 | `webseite-planen` | Bevor gebaut wird: für wen, welche Seiten, welche Inhalte |
 | `inhalte` | Texte und Bilder für die Seite schreiben und auswählen |

@@ -89,7 +89,7 @@ Ensuite réparer, les points critiques d'abord (tout ce qui exclut complètement
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-05-barrierefreiheit`. La vérification regarde si `docs/barrierefreiheit.md` se trouve dans le projet (avec Pilot dans `~/projekt` sur le serveur, avec Light dans le port).
+`mission_pruefen` avec `webseite-06-barrierefreiheit`. La vérification regarde si `docs/barrierefreiheit.md` se trouve dans le projet (avec Pilot dans `~/projekt` sur le serveur, avec Light dans le port).
 
 ## Message final
 

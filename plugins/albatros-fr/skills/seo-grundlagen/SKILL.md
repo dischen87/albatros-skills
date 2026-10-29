@@ -70,7 +70,7 @@ De vrais liens depuis des endroits qui conviennent : l'annuaire du quartier ou
 
 ## Vérifier la mission
 
-Journal de bord et tapis roulant (skills `git-logbuch`, `pipeline`), puis `mission_pruefen` avec `webseite-08-seo-grundlagen`. La vérification regarde si `https://{name}.aufwind.sh/sitemap.xml` et `/robots.txt` répondent.
+Journal de bord et tapis roulant (skills `git-logbuch`, `pipeline`), puis `mission_pruefen` avec `webseite-09-seo-grundlagen`. La vérification regarde si `https://{name}.aufwind.sh/sitemap.xml` et `/robots.txt` répondent.
 
 ## Message final
 

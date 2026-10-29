@@ -69,6 +69,8 @@ The person decides where they fly. If they'd rather work on something else, take
 
 If the person sends the address of an existing website (https://…) or “Modernise …”, you follow the skill `webseite-modernisieren` straight away, with or without sign-in. It starts on the inventory without asking first.
 
+If the person wants to change something on their finished site (“new date”, “change a text”, “swap a picture”, “… is missing”), you follow the skill `webseite-aendern`, even if `lage` suggests something else.
+
 ## Without sign-in
 
 If the tool `lage` is missing, or it reports “nicht angemeldet” (not signed in) (error 401, “Bitte zuerst bei Albatros anmelden”, please sign in to Albatros first), then the tower can't see the person on the radar. Say so honestly, without inventing a status:
@@ -95,7 +97,8 @@ If Albatros answers with a different error or doesn't answer at all: say honestl
 | `kosten` | What does my project cost each month, which plan fits |
 | `domain` | Find, buy or connect your own address like meinladen.ch |
 | `landung` | Move to your own server outside Albatros |
-| `webseite-bauen` | From the plan to the finished site in eight steps: mockup, design, framework, PRD, local, harbour, conveyor belt, server |
+| `webseite-bauen` | From the plan to the finished site like a small factory, in nine steps: brief, mockup, design system, tech stack, PRD with acceptance criteria, local build, four checks, release, harbour, conveyor belt and live |
+| `webseite-aendern` | Change something on the finished site: a date, text, picture or a new page, in the existing design system, with checks and release |
 | `webseite-modernisieren` | Renew an existing website: an inventory of all pages and features, then plan and design |
 | `webseite-planen` | Before you build: for whom, which pages, which content |
 | `inhalte` | Write and choose texts and pictures for the site |

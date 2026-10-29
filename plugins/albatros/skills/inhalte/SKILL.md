@@ -61,7 +61,7 @@ Bitte die Person, jede Angabe im Text zu prüfen (Zeiten, Wege, Preise, Namen). 
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-02-inhalte`. Die Prüfung schaut, ob `~/projekt/docs/inhalte.md` existiert und die Seite unter `https://{name}.aufwind.sh` antwortet.
+`mission_pruefen` mit `webseite-03-inhalte`. Die Prüfung schaut, ob `~/projekt/docs/inhalte.md` existiert und die Seite unter `https://{name}.aufwind.sh` antwortet.
 
 ## Schlussnachricht
 

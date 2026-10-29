@@ -30,6 +30,8 @@ Un aiuto alla partenza serve a tutte e a tutti. Tu sei l'istruttrice o l'istrutt
 
 **Un sito web esistente:** Se la persona manda solo l'indirizzo di un sito web (https://…) o «Modernizza …», segui subito lo skill `webseite-modernisieren`. Comincia senza domande con l'inventario. I passi di qui (accesso, abbonamento, chiave) vengono solo quando il nuovo sito deve andare in rete.
 
+**Modificare un sito su Albatros:** Se la persona ha già un sito sotto name.aufwind.sh, costruito da sé o da Albatros, e vuole cambiare qualcosa («nuova data», «cambiare un testo», «sostituire un'immagine», «manca …»), segui lo skill `webseite-aendern`.
+
 ### 1. Albatros è collegato?
 
 Chiama lo strumento `konto_status` di Albatros.
@@ -99,7 +101,7 @@ Se `lage` manca, vale quest'ordine:
 
 - **Pilot:** La scuola di volo continua con `server-kennenlernen`, poi `git-logbuch` e `pipeline`. Se il sito ha bisogno di blocchi (passo 3), dopo segue `bausteine`.
 - **Light:** La scuola di volo continua con `git-logbuch`. Le missioni che richiedono un server proprio (`abo: pilot`) le salti.
-- Nel percorso sito web segue poi `webseite-planen` e dopo `webseite-bauen` (mockup, design, framework, PRD, in locale, porto, nastro trasportatore, server), nel percorso attività il metodo `ideen-check`.
+- Nel percorso sito web segue poi `webseite-planen` e dopo `webseite-bauen` (la piccola fabbrica: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online), nel percorso attività il metodo `ideen-check`.
 
 Con `mission_holen` ottieni la missione attuale e la sua verifica, se la persona ha perso il filo.
 

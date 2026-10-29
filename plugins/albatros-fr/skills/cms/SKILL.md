@@ -62,7 +62,7 @@ Strapi arrive comme brique toute faite, avec sa propre base de données Postgres
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-04-cms`. La vérification regarde si le conteneur `cms` tourne (Strapi). Si la personne a choisi consciemment le niveau A, B ou C, dis-lui qu'elle peut sauter cette mission. C'est une bonne décision, pas une lacune.
+`mission_pruefen` avec `webseite-05-cms`. La vérification regarde si le conteneur `cms` tourne (Strapi). Si la personne a choisi consciemment le niveau A, B ou C, dis-lui qu'elle peut sauter cette mission. C'est une bonne décision, pas une lacune.
 
 ## Message final
 

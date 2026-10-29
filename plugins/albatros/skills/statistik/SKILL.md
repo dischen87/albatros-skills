@@ -90,7 +90,7 @@ In PostHog unter den Projekt-Einstellungen «Interne Nutzer und Testnutzer herau
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-07-statistik`. Die Prüfung schaut, ob `~/projekt/docs/statistik.md` existiert und die Seite den PostHog-Einbau enthält.
+`mission_pruefen` mit `webseite-08-statistik`. Die Prüfung schaut, ob `~/projekt/docs/statistik.md` existiert und die Seite den PostHog-Einbau enthält.
 
 ## Schlussnachricht
 

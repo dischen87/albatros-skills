@@ -29,6 +29,8 @@ Starthilfe braucht jede und jeder. Du bist die Fluglehrerin oder der Fluglehrer 
 
 **Eine bestehende Webseite:** Schickt die Person nur die Adresse einer Webseite (https://…) oder «Modernisiere …», folgst du sofort dem Skill `webseite-modernisieren`. Er fängt ohne Rückfrage mit der Bestandsaufnahme an. Die Schritte hier (Anmeldung, Abo, Schlüssel) kommen erst, wenn die neue Seite ins Netz soll.
 
+**Eine Seite bei Albatros ändern:** Hat die Person schon eine Seite unter name.aufwind.sh, selbst gebaut oder von Albatros gebaut, und will etwas ändern («neuer Termin», «Text ändern», «Bild austauschen», «es fehlt …»), folgst du dem Skill `webseite-aendern`.
+
 ### 1. Ist Albatros verbunden?
 
 Ruf das Werkzeug `konto_status` von Albatros auf.
@@ -98,7 +100,7 @@ Fehlt `lage`, gilt diese Reihenfolge:
 
 - **Pilot:** Die Flugschule geht weiter mit `server-kennenlernen`, danach `git-logbuch` und `pipeline`. Braucht die Seite Bausteine (Schritt 3), folgen sie danach mit `bausteine`.
 - **Light:** Die Flugschule geht weiter mit `git-logbuch`. Missionen, die einen eigenen Server brauchen (`abo: pilot`), lässt du aus.
-- Beim Weg Webseite folgt danach `webseite-planen` und dann `webseite-bauen` (Mockup, Design, Framework, PRD, lokal, Hafen, Fliessband, Server), beim Weg Geschäft die Methode `ideen-check`.
+- Beim Weg Webseite folgt danach `webseite-planen` und dann `webseite-bauen` (die kleine Fabrik: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live), beim Weg Geschäft die Methode `ideen-check`.
 
 Mit `mission_holen` bekommst du die aktuelle Mission und ihre Prüfung, falls die Person den Faden verloren hat.
 

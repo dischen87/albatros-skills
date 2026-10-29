@@ -133,7 +133,7 @@ Guarda tu stesso ogni foto e confrontala con la bozza. Solo dopo mostrala alla p
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-03-gestaltung`. La verifica controlla se `~/projekt/docs/gestaltung/richtungen.md` contiene una decisione (la riga `Entscheid:`) e se il sito risponde.
+`mission_pruefen` con `webseite-04-gestaltung`. La verifica controlla se `~/projekt/docs/gestaltung/richtungen.md` contiene una decisione (la riga `Entscheid:`) e se il sito risponde.
 
 ## Messaggio finale
 

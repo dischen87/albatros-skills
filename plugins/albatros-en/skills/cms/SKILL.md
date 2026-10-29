@@ -62,7 +62,7 @@ Strapi comes as a ready-made building block with its own Postgres database: skil
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-04-cms`. The check looks at whether the container `cms` is running (Strapi). If the person has deliberately decided on level A, B or C, tell them they may skip this mission. That's a good decision, not a gap.
+`mission_pruefen` with `webseite-05-cms`. The check looks at whether the container `cms` is running (Strapi). If the person has deliberately decided on level A, B or C, tell them they may skip this mission. That's a good decision, not a gap.
 
 ## Final message
 

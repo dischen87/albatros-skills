@@ -62,7 +62,7 @@ Ask the person to check every detail in the text (times, directions, prices, nam
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-02-inhalte`. The check looks at whether `~/projekt/docs/inhalte.md` exists and the site answers at `https://{name}.aufwind.sh`.
+`mission_pruefen` with `webseite-03-inhalte`. The check looks at whether `~/projekt/docs/inhalte.md` exists and the site answers at `https://{name}.aufwind.sh`.
 
 ## Final message
 

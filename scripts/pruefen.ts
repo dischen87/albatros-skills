@@ -59,6 +59,20 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
 for (const weg of ['flugschule', 'webseite', 'geschaeft'])
   if (!wege.has(weg)) fehler.push(`missionen/${weg}: keine Missionen`);
 
+// Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md
+// sind in jeder Sprache gleich: Sie geben keinen Text aus, den die Person liest, ohne dass die KI ihn erklärt.
+const uebersetzt = async (pfad: string) => Bun.file(wurzel + pfad).exists();
+for (const s of ['fr', 'it', 'en']) {
+  for await (const datei of new Glob('plugins/albatros/skills/*/*').scan(wurzel)) {
+    const dort = datei.replace('plugins/albatros/', `plugins/albatros-${s}/`);
+    if (!(await uebersetzt(dort))) fehler.push(`${dort} fehlt`);
+    else if (!datei.endsWith('SKILL.md') && (await Bun.file(wurzel + dort).text()) !== (await Bun.file(wurzel + datei).text())) fehler.push(`${dort}: anders als ${datei}`);
+  }
+  for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
+    if (!(await uebersetzt(`uebersetzungen/${s}/${datei}`))) fehler.push(`uebersetzungen/${s}/${datei} fehlt`);
+  }
+}
+
 // Übersetzte Vorlage: flotte legt uebersetzungen/<sprache>/vorlage über vorlage/. YAML muss gleich gebaut sein wie das deutsche,
 // nur Kommentare, name: und Texte in "…" dürfen anders sein. Sonst liefe das Fliessband in einer Sprache mit alten Befehlen.
 const gerippe = (t: string) => t.split('\n').map((z) => z.replace(/#.*$/, '').replace(/"[^"]*"/g, '""').replace(/(name:).*/, '$1').trimEnd()).join('\n');
