@@ -173,6 +173,8 @@ bun scripts/durchspiel.ts https://www.grindelwald-curling.ch/ --runden 20 --budg
 bun scripts/durchspiel.ts --auswerten <temp-ordner> <ergebnis-ordner>   # nur Fotos, Protokoll und Bewertung eines Laufs
 ```
 
+Gegen die echte Plattform läuft er nur im Workflow «Durchspiel» von `dischen87/albatros` (`--echt --fall musikverein`): Die E2E-Person zahlt Light mit der Testkarte, die KI meldet sich über das echte MCP an und baut eine Seite für den erfundenen Musikverein Testdorf unter `e2e-plattform.aufwind.sh`. Danach wird alles wie im E2E weggeräumt. Inhalte fremder Seiten gehen nie ins Netz, darum ist `--echt` nur mit diesem Fall erlaubt.
+
 - Die eine KI (Claude Code mit dem Plugin, Sonnet) bekommt nur «Modernisiere <adresse>». Die andere spielt eine Person ohne Technikwissen und beantwortet kurz, was gefragt wird (Haiku).
 - Albatros ist eine Attrappe (`scripts/durchspiel/mock-mcp.ts`, Antworten aus `scripts/durchspiel/mocks/` und `evals/mocks/albatros/`). Der Hafen ist ein lokales Git-Repo, das `seite_erstellen` unter dem gewünschten Namen anlegt. `open`, `xdg-open` und `ssh` schreiben nur ins Protokoll. `curl` auf `https://<name>.aufwind.sh` bekommt die Seite aus `seite/` im Hafen, wie bei Light: zuerst die Vorlage, nach dem Push die neue Seite. Keine Zahlung, kein Server, nichts wird veröffentlicht.
 - Ergebnis in `plugins/albatros/evals/results/durchspiel-<zeit>/`: Verlauf, Protokoll (Schritte an die Insel, geöffnete Adressen, Einträge im Hafen), Fotos vorher und nachher (390 und 1440 breit), Bewertung nach Raster und Kosten.
