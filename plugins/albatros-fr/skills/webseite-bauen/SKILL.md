@@ -30,8 +30,8 @@ Une maison se construit dans un ordre fixe : mandat, esquisse, échantillons d
 | 4. Stack technique | le mode de construction | `docs/stack.md` | |
 | 5. PRD avec critères d'acceptation | le plan de construction avec signature | `docs/prd.md` avec `Validé :` | `prd` |
 | 6. Construire | le gros œuvre | `web/`, `seite/` | `lokal` |
-| 7. Vérifier | la réception par des spécialistes | `docs/pruefung/` avec quatre rapports | |
-| 8. Autorisation | la remise des clés | `Freigegeben:` dans `docs/prd.md` | |
+| 7. Vérifier | la réception par des spécialistes | `docs/pruefung/` avec quatre rapports | `pruefung` |
+| 8. Autorisation | la remise des clés | `Freigegeben:` dans `docs/prd.md` | `freigabe` |
 | 9. Port, tapis roulant, en ligne | l'emménagement | site en ligne, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
 
 Ce qui figure dans la colonne « Résultat » doit être là à la fin de l'étape. S'il manque, l'étape n'est pas réussie.
@@ -46,7 +46,7 @@ open https://albatros.build/fr/cockpit/insel     # macOS; Linux: xdg-open, Windo
 
 L'île se recharge toute seule, l'ouvrir une fois suffit.
 
-Après chaque étape réussie qui a une entrée dans la colonne « Île », tu appelles l'outil `schritt_melden` d'Albatros, avec `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `hafen`, `fliessband`, `live`, `domain`) et `sprache` (la langue de la conversation, ici `fr`). `projekt`, tu le laisses de côté dans le cas normal : c'est alors le journal de bord au port qui compte (`git@aufwind.sh:<name>/projekt.git`), même s'il n'est créé que plus tard. Seulement pour un autre projet, qui se trouve uniquement sur l'ordinateur, tu donnes un nom court fait de minuscules, de chiffres et de « - ». La réponse indique l'étape et l'adresse de l'île. Dis à la personne en une phrase que sa maison a grandi.
+Après chaque étape réussie qui a une entrée dans la colonne « Île », tu appelles l'outil `schritt_melden` d'Albatros, avec `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) et `sprache` (la langue de la conversation, ici `fr`). `projekt`, tu le laisses de côté dans le cas normal : c'est alors le journal de bord au port qui compte (`git@aufwind.sh:<name>/projekt.git`), même s'il n'est créé que plus tard. Seulement pour un autre projet, qui se trouve uniquement sur l'ordinateur, tu donnes un nom court fait de minuscules, de chiffres et de « - ». La réponse indique l'étape et l'adresse de l'île. Dis à la personne en une phrase que sa maison a grandi.
 
 - L'île ne fait qu'avancer. Si tu annonces une étape qui est déjà là, rien ne change. La réponse le dit, tu ne réessaies pas.
 - `hafen`, `fliessband`, `live` et `domain`, Albatros les voit aussi tout seul. Annonce-les quand même, dès qu'elles sont réussies.
@@ -149,7 +149,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
 - Quand l'aperçu tourne, tu annonces `lokal`, avant de montrer le site à la personne et d'attendre sa réponse.
 
-### 7. Vérifier
+### 7. Vérifier (`schritt: pruefung`)
 
 Quatre spécialistes font la réception de la construction, chacun écrit un rapport avec un feu (vert, orange ou rouge). Le script `pruefen.mjs` de ce skill mesure ce qui peut se mesurer. Copie-le dans le projet et lance-le :
 
@@ -186,13 +186,13 @@ Ensuite, tu écris quatre rapports, chacun sur une page, dans la langue de la pe
 
 Ensuite, tu passes en revue les critères d'acceptation dans `docs/prd.md` : ceux qui sont remplis, tu les coches (`- [x]`) et tu écris brièvement à côté où ou avec quoi tu l'as vérifié. Ce qui n'est pas rempli reste ouvert, avec la raison.
 
-Rouge veut dire : corriger, reconstruire, vérifier à nouveau, jusqu'à ce que plus rien ne soit rouge. Orange ne passe qu'avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même.
+Rouge veut dire : corriger, reconstruire, vérifier à nouveau, jusqu'à ce que plus rien ne soit rouge. Orange ne passe qu'avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même. Quand les quatre rapports sont dans `docs/pruefung/` et que plus rien n'est rouge, tu annonces `pruefung`.
 
-### 8. Autorisation
+### 8. Autorisation (`schritt: freigabe`)
 
 La remise des clés : la personne décide si le site peut sortir. Montre-lui les quatre feux en une phrase chacun, ouvre les rapports et l'aperçu et dis ce qui reste ouvert. Dis aussi : avec Light, la prochaine étape est la publication, le site est alors visible pour tout le monde. Demande : « Le site peut-il aller en ligne comme ça ? »
 
-Seulement après son oui explicite, tu écris dans `docs/prd.md`, sous `Validé :`, la ligne `Freigegeben: <date> par <nom>`. Le mot `Freigegeben:` (autorisé) reste en allemand, c'est lui que la vérification de la mission cherche. Si elle veut changer quelque chose, on revient à l'étape 6, puis on repasse par la vérification.
+Seulement après son oui explicite, tu écris dans `docs/prd.md`, sous `Validé :`, la ligne `Freigegeben: <date> par <nom>`. Le mot `Freigegeben:` (autorisé) reste en allemand, c'est lui que la vérification de la mission cherche. Ensuite, tu annonces `freigabe`. Si elle veut changer quelque chose, on revient à l'étape 6, puis on repasse par la vérification.
 
 ### 9. Port, tapis roulant et en ligne (`schritt: hafen`, `fliessband`, `live`)
 

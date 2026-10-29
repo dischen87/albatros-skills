@@ -30,8 +30,8 @@ Una casa nasce in un ordine fisso: incarico, schizzo, campioni dei materiali, ti
 | 4. Stack tecnologico | il tipo di costruzione | `docs/stack.md` | |
 | 5. PRD con criteri di collaudo | il progetto con la firma | `docs/prd.md` con `Approvato:` | `prd` |
 | 6. Costruire | la costruzione grezza | `web/`, `seite/` | `lokal` |
-| 7. Controllare | il collaudo degli esperti | `docs/pruefung/` con quattro rapporti | |
-| 8. Via libera | la consegna delle chiavi | `Freigegeben:` in `docs/prd.md` | |
+| 7. Controllare | il collaudo degli esperti | `docs/pruefung/` con quattro rapporti | `pruefung` |
+| 8. Via libera | la consegna delle chiavi | `Freigegeben:` in `docs/prd.md` | `freigabe` |
 | 9. Porto, nastro trasportatore, in rete | il trasloco | sito in rete, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
 
 Quello che sta nella colonna «Risultato» deve esserci alla fine del passo. Se manca, il passo non è riuscito.
@@ -46,7 +46,7 @@ open https://albatros.build/it/cockpit/insel     # macOS; Linux: xdg-open, Windo
 
 L'isola si aggiorna da sola, basta aprirla una volta.
 
-Dopo ogni passo riuscito che ha una voce nella colonna «Isola» chiami lo strumento `schritt_melden` di Albatros, con `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `hafen`, `fliessband`, `live`, `domain`) e `sprache` (la lingua della conversazione). `projekt` di solito lo lasci via: allora vale il diario di bordo nel porto (`git@aufwind.sh:<name>/projekt.git`), anche se nasce solo più tardi. Solo per un altro progetto che sta soltanto sul computer passi un nome breve fatto di lettere minuscole, cifre e «-». La risposta indica il passo e l'indirizzo dell'isola. Di' alla persona in una frase che la sua casa è cresciuta.
+Dopo ogni passo riuscito che ha una voce nella colonna «Isola» chiami lo strumento `schritt_melden` di Albatros, con `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) e `sprache` (la lingua della conversazione). `projekt` di solito lo lasci via: allora vale il diario di bordo nel porto (`git@aufwind.sh:<name>/projekt.git`), anche se nasce solo più tardi. Solo per un altro progetto che sta soltanto sul computer passi un nome breve fatto di lettere minuscole, cifre e «-». La risposta indica il passo e l'indirizzo dell'isola. Di' alla persona in una frase che la sua casa è cresciuta.
 
 - L'isola va solo avanti. Se segnali un passo che c'è già, non cambia niente. La risposta lo dice, e tu non riprovi.
 - `hafen`, `fliessband`, `live` e `domain` Albatros li vede anche da solo. Segnalali comunque, appena sono riusciti.
@@ -149,7 +149,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
 - Quando l'anteprima gira, segnali `lokal`, prima di mostrare il sito alla persona e aspettare la sua risposta.
 
-### 7. Controllare
+### 7. Controllare (`schritt: pruefung`)
 
 Quattro esperti fanno il collaudo della costruzione, ognuno scrive un rapporto con un semaforo. Lo script `pruefen.mjs` in questo skill misura quello che si può misurare. Copialo nel progetto e fallo partire:
 
@@ -186,13 +186,13 @@ Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
 Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: quelli soddisfatti li spunti (`- [x]`) e scrivi in breve dove o con cosa li hai controllati. Quello che non è soddisfatto resta aperto, con il motivo.
 
-Rosso vuol dire: correggere, ricostruire, controllare di nuovo, finché niente è più rosso. Giallo va bene solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo quando hai guardato tu le foto.
+Rosso vuol dire: correggere, ricostruire, controllare di nuovo, finché niente è più rosso. Giallo va bene solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo quando hai guardato tu le foto. Quando i quattro rapporti sono in `docs/pruefung/` e niente è più rosso, segnali `pruefung`.
 
-### 8. Via libera
+### 8. Via libera (`schritt: freigabe`)
 
 La consegna delle chiavi: è la persona a decidere se il sito può uscire. Mostrale i quattro semafori con una frase ciascuno, apri i rapporti e l'anteprima e dille cosa resta aperto. Dille anche: con Light il prossimo passo è la pubblicazione, poi il sito è visibile a tutti. Chiedi: «Il sito può andare in rete così?»
 
-Solo dopo il suo sì esplicito scrivi in `docs/prd.md`, sotto `Approvato:`, la riga `Freigegeben: <data> da <nome>`. La parola `Freigegeben:` resta in tedesco, perché la verifica della missione la cerca. Se vuole cambiare qualcosa, si torna al passo 6 e poi di nuovo al controllo.
+Solo dopo il suo sì esplicito scrivi in `docs/prd.md`, sotto `Approvato:`, la riga `Freigegeben: <data> da <nome>`. La parola `Freigegeben:` resta in tedesco, perché la verifica della missione la cerca. Poi segnali `freigabe`. Se vuole cambiare qualcosa, si torna al passo 6 e poi di nuovo al controllo.
 
 ### 9. Porto, nastro trasportatore e in rete (`schritt: hafen`, `fliessband`, `live`)
 

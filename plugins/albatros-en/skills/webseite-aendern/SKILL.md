@@ -18,7 +18,7 @@ Renovating a house you live in: the folder holds the plans and the list of mater
 - The rules are in `docs/`: design system, tech stack and PRD. New colours, fonts, spacing or another framework only come after a clear yes from the person, and then first in the design system.
 - Nothing goes on the web without the release. With Light, the push already means publishing.
 - Whatever the person should see (before and after, preview, finished site), you open yourself: `open <address or file>` (Linux `xdg-open`, Windows `start`).
-- Making the change with their own AI costs nothing extra, only the AI subscription with its provider. If the person would rather not make the change themselves, tell them: “If you don't want to do it yourself, Albatros can do it for CHF 29. It's coming to the cockpit soon.”
+- Making the change with their own AI is free; it only takes the AI subscription with its provider. If the person would rather not make the change themselves, there's “We do it for you” for CHF 29 per request: they describe it in the cockpit at `https://albatros.build/en/cockpit/wuensche` (open the address for them) and pay before it's done. The team then changes their logbook in the harbour. This works with Light once the site is online, not yet with their own server (Pilot).
 
 ## The steps
 

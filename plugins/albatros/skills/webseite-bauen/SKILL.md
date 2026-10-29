@@ -29,8 +29,8 @@ Ein Haus entsteht in einer festen Reihenfolge: Auftrag, Skizze, Materialmuster, 
 | 4. Tech-Stack | die Bauweise | `docs/stack.md` | |
 | 5. PRD mit Abnahmekriterien | der Bauplan mit Unterschrift | `docs/prd.md` mit `Abgenommen:` | `prd` |
 | 6. Bauen | der Rohbau | `web/`, `seite/` | `lokal` |
-| 7. Prüfen | die Abnahme durch Fachleute | `docs/pruefung/` mit vier Berichten | |
-| 8. Freigabe | die Schlüsselübergabe | `Freigegeben:` in `docs/prd.md` | |
+| 7. Prüfen | die Abnahme durch Fachleute | `docs/pruefung/` mit vier Berichten | `pruefung` |
+| 8. Freigabe | die Schlüsselübergabe | `Freigegeben:` in `docs/prd.md` | `freigabe` |
 | 9. Hafen, Fliessband, live | der Einzug | Seite im Netz, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
 
 Was in der Spalte «Ergebnis» steht, muss am Ende des Schritts da sein. Fehlt es, ist der Schritt nicht geschafft.
@@ -45,7 +45,7 @@ open https://albatros.build/cockpit/insel        # macOS; Linux: xdg-open, Windo
 
 Die Insel lädt sich selbst nach, einmal öffnen reicht.
 
-Nach jedem geschafften Schritt mit einem Eintrag in der Spalte «Insel» rufst du das Werkzeug `schritt_melden` von Albatros auf, mit `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `hafen`, `fliessband`, `live`, `domain`) und `sprache` (die Sprache des Gesprächs). `projekt` lässt du im Normalfall weg: Dann gilt das Logbuch im Hafen (`git@aufwind.sh:<name>/projekt.git`), auch wenn es erst später entsteht. Nur für ein weiteres Projekt, das bloss auf dem Computer liegt, gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit. Die Antwort nennt den Schritt und die Adresse der Insel. Sag der Person in einem Satz, dass ihr Haus gewachsen ist.
+Nach jedem geschafften Schritt mit einem Eintrag in der Spalte «Insel» rufst du das Werkzeug `schritt_melden` von Albatros auf, mit `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) und `sprache` (die Sprache des Gesprächs). `projekt` lässt du im Normalfall weg: Dann gilt das Logbuch im Hafen (`git@aufwind.sh:<name>/projekt.git`), auch wenn es erst später entsteht. Nur für ein weiteres Projekt, das bloss auf dem Computer liegt, gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit. Die Antwort nennt den Schritt und die Adresse der Insel. Sag der Person in einem Satz, dass ihr Haus gewachsen ist.
 
 - Die Insel geht nur vorwärts. Meldest du einen Schritt, der schon steht, ändert sich nichts. Die Antwort sagt das, du versuchst es nicht nochmals.
 - `hafen`, `fliessband`, `live` und `domain` sieht Albatros auch selbst. Melde sie trotzdem, sobald sie geschafft sind.
@@ -148,7 +148,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
 - Läuft die Vorschau, meldest du `lokal`, bevor du der Person die Seite zeigst und auf ihre Antwort wartest.
 
-### 7. Prüfen
+### 7. Prüfen (`schritt: pruefung`)
 
 Vier Fachleute nehmen den Bau ab, jede schreibt einen Bericht mit Ampel. Das Skript `pruefen.mjs` in diesem Skill misst, was sich messen lässt. Kopier es ins Projekt und lass es laufen:
 
@@ -185,13 +185,13 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
 Dann gehst du die Abnahmekriterien in `docs/prd.md` durch: Erfüllte hakst du ab (`- [x]`) und schreibst kurz dazu, wo oder womit geprüft. Was nicht erfüllt ist, bleibt offen, mit Grund.
 
-Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast.
+Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, meldest du `pruefung`.
 
-### 8. Freigabe
+### 8. Freigabe (`schritt: freigabe`)
 
 Die Schlüsselübergabe: Die Person entscheidet, ob die Seite hinaus darf. Zeig ihr die vier Ampeln in je einem Satz, öffne die Berichte und die Vorschau und sag dazu, was offen ist. Sag auch: Mit Light ist der nächste Schritt die Veröffentlichung, die Seite ist dann für alle sichtbar. Frag: «Darf die Seite so ins Netz?»
 
-Erst nach ihrem ausdrücklichen Ja schreibst du unter `Abgenommen:` in `docs/prd.md` die Zeile `Freigegeben: <Datum> von <Name>`. Will sie etwas ändern, geht es zurück zu Schritt 6 und danach nochmals durch die Prüfung.
+Erst nach ihrem ausdrücklichen Ja schreibst du unter `Abgenommen:` in `docs/prd.md` die Zeile `Freigegeben: <Datum> von <Name>`. Danach meldest du `freigabe`. Will sie etwas ändern, geht es zurück zu Schritt 6 und danach nochmals durch die Prüfung.
 
 ### 9. Hafen, Fliessband und live (`schritt: hafen`, `fliessband`, `live`)
 

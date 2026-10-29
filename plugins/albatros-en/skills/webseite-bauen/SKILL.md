@@ -30,8 +30,8 @@ A house goes up in a fixed order: brief, sketch, material samples, building meth
 | 4. Tech stack | the building method | `docs/stack.md` | |
 | 5. PRD with acceptance criteria | the building plan with a signature | `docs/prd.md` with `Signed off:` | `prd` |
 | 6. Build | the shell of the house | `web/`, `seite/` | `lokal` |
-| 7. Check | the inspection by experts | `docs/pruefung/` with four reports | |
-| 8. Release | handing over the keys | `Freigegeben:` in `docs/prd.md` | |
+| 7. Check | the inspection by experts | `docs/pruefung/` with four reports | `pruefung` |
+| 8. Release | handing over the keys | `Freigegeben:` in `docs/prd.md` | `freigabe` |
 | 9. Harbour, conveyor belt, live | moving in | site on the web, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
 
 Whatever is in the “Result” column has to be there at the end of the step. If it's missing, the step isn't done.
@@ -46,7 +46,7 @@ open https://albatros.build/en/cockpit/insel        # macOS; Linux: xdg-open, Wi
 
 The island reloads by itself; opening it once is enough.
 
-After every finished step with an entry in the “Island” column, you call the Albatros tool `schritt_melden`, with `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `hafen`, `fliessband`, `live`, `domain`) and `sprache` (the language of the conversation, here `en`). Normally you leave out `projekt`: then the logbook in the harbour counts (`git@aufwind.sh:<name>/projekt.git`), even if it's only created later. Only for a further project that just sits on the computer do you pass a short name made of lower-case letters, digits and “-”. The answer names the step and the address of the island. Tell the person in one sentence that their house has grown.
+After every finished step with an entry in the “Island” column, you call the Albatros tool `schritt_melden`, with `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) and `sprache` (the language of the conversation, here `en`). Normally you leave out `projekt`: then the logbook in the harbour counts (`git@aufwind.sh:<name>/projekt.git`), even if it's only created later. Only for a further project that just sits on the computer do you pass a short name made of lower-case letters, digits and “-”. The answer names the step and the address of the island. Tell the person in one sentence that their house has grown.
 
 - The island only goes forwards. If you report a step that's already there, nothing changes. The answer says so, and you don't try again.
 - Albatros also sees `hafen`, `fliessband`, `live` and `domain` by itself. Report them anyway as soon as they're done.
@@ -149,7 +149,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
 - Once the preview is running, report `lokal` before you show the site to the person and wait for their answer.
 
-### 7. Check
+### 7. Check (`schritt: pruefung`)
 
 Four experts inspect the building, and each one writes a report with a traffic light. The script `pruefen.mjs` in this skill measures whatever can be measured. Copy it into the project and run it:
 
@@ -186,13 +186,13 @@ After that you write four reports, one page each, in the person's language:
 
 Then you go through the acceptance criteria in `docs/prd.md`: you tick off the ones that are met (`- [x]`) and note briefly where or how they were checked. Whatever isn't met stays open, with a reason.
 
-Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself.
+Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you report `pruefung`.
 
-### 8. Release
+### 8. Release (`schritt: freigabe`)
 
 Handing over the keys: the person decides whether the site may go out. Show them the four traffic lights in one sentence each, open the reports and the preview, and say what's still open. Also say: with Light, the next step is publishing, and then the site is visible to everyone. Ask: “May the site go on the web like this?”
 
-Only after their clear yes do you write the line `Freigegeben: <date> by <name>` under `Signed off:` in `docs/prd.md`. (“Freigegeben” means released; keep the word `Freigegeben:` exactly as it is, because the mission check looks for it.) If they want to change something, it's back to step 6 and then through the check again.
+Only after their clear yes do you write the line `Freigegeben: <date> by <name>` under `Signed off:` in `docs/prd.md`. (“Freigegeben” means released; keep the word `Freigegeben:` exactly as it is, because the mission check looks for it.) Then you report `freigabe`. If they want to change something, it's back to step 6 and then through the check again.
 
 ### 9. Harbour, conveyor belt and live (`schritt: hafen`, `fliessband`, `live`)
 

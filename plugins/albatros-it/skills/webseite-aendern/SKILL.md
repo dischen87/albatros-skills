@@ -18,7 +18,7 @@ Ristrutturare una casa abitata: nella cartella ci sono i progetti e la lista dei
 - Le regole stanno in `docs/`: sistema di design, stack tecnologico e PRD. Nuovi colori, caratteri, spaziature o un altro framework solo dopo un sì esplicito della persona, e allora prima nel sistema di design.
 - Niente va in rete senza via libera. Con Light il push è già la pubblicazione.
 - Quello che la persona deve vedere (prima e dopo, anteprima, sito finito) lo apri tu: `open <indirizzo o file>` (Linux `xdg-open`, Windows `start`).
-- La modifica con la propria IA non costa niente in più, solo l'abbonamento dell'IA presso il fornitore. Se la persona preferisce non farla da sé, dille: «Se non vuoi farlo da te, Albatros può farlo per CHF 29. Arriva presto nel cockpit.»
+- La modifica con la propria IA è gratis, serve solo l'abbonamento dell'IA presso il fornitore. Se la persona preferisce non farla da sé, c'è «Lo facciamo noi per te» per CHF 29 a richiesta: la descrive nel cockpit su `https://albatros.build/it/cockpit/wuensche` (apri tu l'indirizzo per lei) e paga prima che venga fatta. Il team modifica poi il suo diario di bordo nel porto. Funziona con Light appena il sito è online, non ancora con un server proprio (Pilot).
 
 ## Procedura
 
