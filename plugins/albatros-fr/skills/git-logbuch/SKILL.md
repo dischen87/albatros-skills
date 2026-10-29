@@ -55,7 +55,7 @@ Le journal de bord est privé : toi seul le vois. Ensuite, vérifier le `.giti
 
 ### 3. La première entrée
 
-La personne modifie elle-même quelque chose de petit, p. ex. une ligne dans `README.md`. Tu lui ouvres le fichier (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) et tu lui indiques exactement la ligne et le nouveau texte. Si elle n’ose pas ou si rien ne change, tu le fais toi-même et tu lui montres la modification avec `git diff`. Puis ensemble :
+La personne modifie elle-même quelque chose de petit, p. ex. une ligne dans `README.md`. Tu lui ouvres le fichier (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) et tu lui indiques exactement la ligne et le nouveau texte. Si elle n’ose pas ou si rien ne change, tu le fais toi-même et tu lui montres la modification avec `git diff`. La première entrée reste petite, même si la personne donne déjà des contenus : sur le chemin Site web, le site ne naît qu’avec `webseite-planen` et `webseite-bauen`, avec plan, contrôle et validation. Tu gardes ses contenus pour le plan. Puis ensemble :
 
 ```bash
 git status                     # Qu'est-ce qui a changé ?
@@ -71,7 +71,7 @@ Encore une deuxième entrée, pour que ça rentre. Ensuite, montrer dans le navi
 
 ### 4. Le journal de bord sur le serveur
 
-**Avec Light**, il n'y a pas de serveur : le push est déjà la livraison. Albatros affiche le dossier `seite/` de `main` sous `https://{name}.aufwind.sh`, après environ 30 secondes. Si `seite/` manque, Albatros prend `public/`, sinon tout le repo ; c'est pourquoi la page reste dans `seite/`. Au maximum 100 Mo ; les raccourcis (liens symboliques), Albatros ne les affiche jamais. Recharger la page dans le navigateur web, la modification est là. Continuer avec l'étape 5.
+**Avec Light**, il n'y a pas de serveur : le push est déjà la livraison. Albatros affiche le dossier `seite/` de `main` sous `https://{name}.aufwind.sh`, après environ 30 secondes. Si `seite/` manque, Albatros prend `public/`, sinon tout le repo ; c'est pourquoi la page reste dans `seite/`. Au maximum 100 Mo ; les raccourcis (liens symboliques), Albatros ne les affiche jamais. Avant de dire que la modification est en ligne, tu vérifies toi-même, toutes les 15 secondes, trois minutes au plus : `curl -s https://{name}.aufwind.sh | grep -F "<nouveau texte>"`. Puis tu ouvres la page pour la personne. Continuer avec l'étape 5.
 
 **Avec Pilot :** ton serveur a sa propre copie dans `~/projekt`. Albatros l'a créée lors de l'installation, avec une clé de lecture uniquement pour ton port. Si le journal de bord contient le tapis roulant (`.github/workflows/deploy.yml`), celui-ci récupère tout seul les nouvelles entrées à chaque push (skill `pipeline`). Vérifier :
 

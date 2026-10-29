@@ -54,7 +54,7 @@ Das Logbuch ist privat: Nur du siehst es. Danach die `.gitignore` prüfen, minde
 
 ### 3. Der erste Eintrag
 
-Die Person ändert selbst etwas Kleines, z. B. eine Zeile im `README.md`. Du öffnest ihr die Datei (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) und nennst genau die Zeile und den neuen Text. Traut sie sich das nicht zu oder ändert sich nichts, machst du es selbst und zeigst ihr die Änderung mit `git diff`. Dann zusammen:
+Die Person ändert selbst etwas Kleines, z. B. eine Zeile im `README.md`. Du öffnest ihr die Datei (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) und nennst genau die Zeile und den neuen Text. Traut sie sich das nicht zu oder ändert sich nichts, machst du es selbst und zeigst ihr die Änderung mit `git diff`. Der erste Eintrag bleibt klein, auch wenn die Person schon Inhalte nennt: Auf dem Weg Webseite entsteht die Seite erst mit `webseite-planen` und `webseite-bauen`, mit Plan, Prüfung und Freigabe. Ihre Inhalte merkst du dir für den Grundriss. Dann zusammen:
 
 ```bash
 git status                     # Was hat sich geändert?
@@ -70,7 +70,7 @@ Noch ein zweiter Eintrag, damit es sitzt. Danach im Browser zeigen: `https://cod
 
 ### 4. Das Logbuch auf dem Server
 
-**Mit Light** gibt es keinen Server: Der Push ist schon die Auslieferung. Albatros zeigt den Ordner `seite/` aus `main` unter `https://{name}.aufwind.sh`, nach etwa 30 Sekunden. Fehlt `seite/`, nimmt Albatros `public/` und sonst das ganze Repo, darum bleibt die Seite in `seite/`. Höchstens 100 MB, Verknüpfungen (Symlinks) zeigt Albatros nie. Seite im Browser neu laden, die Änderung ist da. Weiter mit Schritt 5.
+**Mit Light** gibt es keinen Server: Der Push ist schon die Auslieferung. Albatros zeigt den Ordner `seite/` aus `main` unter `https://{name}.aufwind.sh`, nach etwa 30 Sekunden. Fehlt `seite/`, nimmt Albatros `public/` und sonst das ganze Repo, darum bleibt die Seite in `seite/`. Höchstens 100 MB, Verknüpfungen (Symlinks) zeigt Albatros nie. Bevor du sagst, dass die Änderung im Netz ist, schaust du selbst nach, alle 15 Sekunden, höchstens drei Minuten: `curl -s https://{name}.aufwind.sh | grep -F "<neuer Text>"`. Dann öffnest du die Seite für die Person. Weiter mit Schritt 5.
 
 **Mit Pilot:** Dein Server hat eine eigene Kopie in `~/projekt`. Albatros hat sie beim Einrichten angelegt, mit einem Lese-Schlüssel nur für deinen Hafen. Bringt das Logbuch das Fliessband mit (`.github/workflows/deploy.yml`), holt es bei jedem Push die neuen Einträge selbst (Skill `pipeline`). Prüfen:
 

@@ -55,7 +55,7 @@ The logbook is private: only you can see it. Then check the `.gitignore`, with a
 
 ### 3. The first entry
 
-The person changes something small themselves, e.g. one line in `README.md`. You open the file for them (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) and name the exact line and the new text. If they don’t feel up to it or nothing changes, you do it yourself and show them the change with `git diff`. Then together:
+The person changes something small themselves, e.g. one line in `README.md`. You open the file for them (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) and name the exact line and the new text. If they don’t feel up to it or nothing changes, you do it yourself and show them the change with `git diff`. The first entry stays small, even if the person already gives you content: on the website path the site only comes with `webseite-planen` and `webseite-bauen`, with plan, checks and sign-off. Keep their content for the floor plan. Then together:
 
 ```bash
 git status                     # What has changed?
@@ -73,7 +73,7 @@ Make a second entry so it sticks. Then show it in the browser: `https://code.auf
 
 ### 4. The logbook on the server
 
-**With Light** there's no server: the push already is the delivery. Albatros shows the folder `seite/` from `main` at `https://{name}.aufwind.sh`, after about 30 seconds. If `seite/` is missing, Albatros takes `public/`, and otherwise the whole repo, so the page stays in `seite/`. At most 100 MB, and Albatros never shows shortcuts (symlinks). Reload the page in the browser, and the change is there. Carry on with step 5.
+**With Light** there's no server: the push already is the delivery. Albatros shows the folder `seite/` from `main` at `https://{name}.aufwind.sh`, after about 30 seconds. If `seite/` is missing, Albatros takes `public/`, and otherwise the whole repo, so the page stays in `seite/`. At most 100 MB, and Albatros never shows shortcuts (symlinks). Before you say the change is online, check yourself, every 15 seconds for at most three minutes: `curl -s https://{name}.aufwind.sh | grep -F "<new text>"`. Then open the page for the person. Carry on with step 5.
 
 **With Pilot:** your server has its own copy in `~/projekt`. Albatros created it during set-up, with a read-only key just for your harbour. If the logbook brings the conveyor belt with it (`.github/workflows/deploy.yml`), it fetches the new entries by itself on every push (skill `pipeline`). Check:
 

@@ -55,7 +55,7 @@ Il diario di bordo è privato: lo vedi solo tu. Poi controlla il `.gitignore`, a
 
 ### 3. La prima voce
 
-La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Le apri tu il file (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) e le indichi esattamente la riga e il nuovo testo. Se non se la sente o non cambia nulla, lo fai tu e le mostri la modifica con `git diff`. Poi insieme:
+La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Le apri tu il file (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) e le indichi esattamente la riga e il nuovo testo. Se non se la sente o non cambia nulla, lo fai tu e le mostri la modifica con `git diff`. La prima voce resta piccola, anche se la persona dà già dei contenuti: sul percorso sito web il sito nasce solo con `webseite-planen` e `webseite-bauen`, con piano, verifica e approvazione. I suoi contenuti li tieni per la pianta. Poi insieme:
 
 ```bash
 git status                     # Cosa è cambiato?
@@ -71,7 +71,7 @@ Ancora una seconda voce, così si fissa. Poi mostra nel browser: `https://code.a
 
 ### 4. Il diario di bordo sul server
 
-**Con Light** non c'è un server: il push è già la consegna. Albatros mostra la cartella `seite/` da `main` su `https://{name}.aufwind.sh`, dopo circa 30 secondi. Se manca `seite/`, Albatros prende `public/` e altrimenti tutto il repo, per questo la pagina resta in `seite/`. Al massimo 100 MB, i collegamenti (symlink) Albatros non li mostra mai. Ricarica la pagina nel browser, la modifica c'è. Avanti con il passo 5.
+**Con Light** non c'è un server: il push è già la consegna. Albatros mostra la cartella `seite/` da `main` su `https://{name}.aufwind.sh`, dopo circa 30 secondi. Se manca `seite/`, Albatros prende `public/` e altrimenti tutto il repo, per questo la pagina resta in `seite/`. Al massimo 100 MB, i collegamenti (symlink) Albatros non li mostra mai. Prima di dire che la modifica è online, controlli tu stesso, ogni 15 secondi, al massimo tre minuti: `curl -s https://{name}.aufwind.sh | grep -F "<nuovo testo>"`. Poi apri la pagina per la persona. Avanti con il passo 5.
 
 **Con Pilot:** Il tuo server ha una copia sua in `~/projekt`. Albatros l'ha creata durante la configurazione, con una chiave di sola lettura solo per il tuo porto. Se il diario di bordo porta con sé il nastro trasportatore (`.github/workflows/deploy.yml`), a ogni push prende da solo le nuove voci (skill `pipeline`). Verificare:
 
