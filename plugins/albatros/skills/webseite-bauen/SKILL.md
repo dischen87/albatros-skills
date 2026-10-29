@@ -102,7 +102,7 @@ Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme gepr
 **Design:** Richtung <Name>, siehe docs/designsystem.md
 **Tech-Stack:** siehe docs/stack.md
 **Hosting:** Light (Seite aus dem Hafen, ohne eigenen Server) oder Pilot (eigener Server)
-**Domain:** name.aufwind.sh, später eigene Domain (nur mit Pilot)
+**Domain:** name.aufwind.sh, später eigene Domain (mit Light oder Pilot)
 **Nicht dabei:** …
 
 ## Abnahmekriterien
@@ -229,7 +229,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<Titel dei
 
 Wünscht die Person danach noch etwas anders («es fehlt noch …», ein Termin, ein Text), lädst du den Skill `webseite-aendern` und folgst ihm. Die Seite ist freigegeben und im Netz, darum braucht jede Änderung ihr Kriterium im PRD, vorher und nachher und eine neue Freigabe vor dem Push.
 
-Eine eigene Domain kommt mit dem Skill `domain` dazu (nur Pilot), dann meldest du `domain`.
+Eine eigene Domain kommt mit dem Skill `domain` dazu, mit Light wie mit Pilot, dann meldest du `domain`.
 
 Veröffentlicht wird nur, was der Person gehört oder wofür sie die Erlaubnis hat (Skill `webseite-modernisieren`, Abschnitt «Rechte»).
 

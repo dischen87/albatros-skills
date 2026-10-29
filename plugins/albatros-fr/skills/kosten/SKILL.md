@@ -26,7 +26,7 @@ Demande et note :
 | Poste | Type | Ordre de grandeur | D'où vient le prix exact |
 |---|---|---|---|
 | Abonnement Albatros | loyer | selon le niveau | `konto_status` |
-| Propre domaine (`.ch`) | loyer par an | à peu près un billet de cinéma par an | `domain_suchen` ou page de prix du registraire |
+| Propre domaine (`.ch`), avec Light ou Pilot | loyer par an, à part de l'abonnement | à peu près un billet de cinéma par an | `domain_suchen` ou page de prix du registraire |
 | IA dans le terminal (Claude Code, Codex, Gemini CLI, Cursor) | loyer | à partir de 8 USD par mois avec Cursor Plus, sinon à partir d'environ 20 USD : Claude Pro, ChatGPT Plus ou, pour Gemini CLI, Google AI Pro ; un compte gratuit ne suffit pas, ou seulement pour quelques essais | page des prix du fournisseur ; on paie là-bas, pas chez Albatros |
 | E-mail avec son propre domaine | loyer | petit | fournisseur |
 | Statistique (par exemple PostHog) | charges | le plus souvent gratuit jusqu'à une limite | page de prix |
@@ -46,7 +46,7 @@ Demande et note :
 
 ### 4. Quand est-ce que plus de puissance ou un déménagement vaut la peine ?
 
-- **De Light à Pilot :** dès qu'un programme doit tourner sur le site (base de données, connexion, propre CMS) ou qu'un propre domaine s'ajoute.
+- **De Light à Pilot :** dès qu'un programme doit tourner sur le site (base de données, connexion, propre CMS). Pour un propre domaine, Light suffit.
 - **Plus de puissance chez Albatros :** quand le site devient lent et que `free -h` montre en permanence peu de plan de travail libre.
 - **Déménager sur un propre serveur** (skill `landung`) : quand le projet rapporte de l'argent, a besoin durablement de plus de puissance que le plus grand niveau n'en offre, ou que la personne veut tout avoir en main. Un propre serveur est souvent moins cher en loyer, mais plus cher en temps : les mises à jour, les sauvegardes et la surveillance, plus personne ne les fait pour toi.
 

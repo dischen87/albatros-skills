@@ -50,6 +50,7 @@ Se manca `designsystem.md` o `stack.md` (sito più vecchio), prima li scrivi in 
 
 - **Piccola:** cambiare un testo, una data, un prezzo, un orario d'apertura, un link o un'immagine, su una pagina che c'è già. Va veloce, senza mockup e senza bozze. Appuntamenti e liste li cambi in `web/src/data/*.json`, non nel codice della pagina.
 - **Grande:** una nuova pagina, una nuova funzione, una nuova sezione o un altro aspetto. Qui scrivi prima i criteri di collaudo (passo 4) e aspetti il sì. Una nuova pagina riceve prima un mockup in scala di grigi (skill `webseite-bauen`, passo 2). Se la funzione ha bisogno di un programma (lista d'iscrizione, login), è un blocco con Pilot (skill `bausteine`).
+- **Indirizzo proprio** (`miaassociazione.ch` invece di `{name}.aufwind.sh`): nessuna ristrutturazione. Per questo carichi lo skill `domain`, con Light come con Pilot. Il dominio costa a parte, all'anno.
 
 Di' alla persona in una frase cos'è e come si va avanti.
 

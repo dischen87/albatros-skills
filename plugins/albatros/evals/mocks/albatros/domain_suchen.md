@@ -10,4 +10,4 @@ Frei (Preis pro Jahr, gleich auch für die Verlängerung):
 - veloladen-thun.ch: CHF 22
 - velothun.com: CHF 26
 (2 Premium-Domains mit Sonderpreis ausgeblendet.)
-Kaufen mit domain_kaufen (nur Pilot).
+Kaufen mit domain_kaufen (Light oder Pilot).

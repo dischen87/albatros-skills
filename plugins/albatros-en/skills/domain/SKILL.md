@@ -1,6 +1,6 @@
 ---
 name: domain
-description: "Finds, buys or connects an own domain (e.g. meinladen.ch) for the Albatros server. Explains domain and DNS with the picture of an address in the phone book, suggests names, uses domain_suchen to search what's free and buys through Albatros with domain_kaufen (the person is the owner and only enters their details on the payment page). A domain the person already has gets connected with domain_verbinden: DNS records, the TXT proof _albatros and a check, until the site shows the padlock in the browser. Use this skill for “my own domain”, “my own address”, “buy a .ch”, “which domain is free”, “search for a domain”, “DNS”, “A record”, “CNAME”, “TXT record”, “my domain doesn't point to my site”, “certificate”, “https isn't working”."
+description: "Finds, buys or connects an own domain (e.g. meinladen.ch) for the site or server at Albatros, with Light as with Pilot. Explains domain and DNS with the picture of an address in the phone book, suggests names, uses domain_suchen to search what's free and buys through Albatros with domain_kaufen (the person is the owner and only enters their details on the payment page). A domain the person already has gets connected with domain_verbinden: DNS records, the TXT proof _albatros and a check, until the site shows the padlock in the browser. Use this skill for “my own domain”, “my own address”, “buy a .ch”, “which domain is free”, “search for a domain”, “DNS”, “A record”, “CNAME”, “TXT record”, “my domain doesn't point to my site”, “certificate”, “https isn't working”."
 ---
 
 # Domain: your address in the phone book
@@ -27,7 +27,7 @@ Your site can already be reached at `{name}.aufwind.sh`. With an own domain, it 
 
 ### 1. Is the plan right?
 
-Own domains only come with Pilot, not with Free or Light. Check with `konto_status`. If Pilot is missing, explain the difference and get the link with `upgrade_link` (level `pilot`). Don't push anything. Searching works with every plan.
+Own domains come with Light and with Pilot, not with Free. Check with `konto_status`. If the person is on Free, explain the difference and get the link with `upgrade_link` (level `light`). Don't push anything. Searching works with every plan. Buying and connecting work as soon as the site (Light) or the server (Pilot) is up. The domain costs extra, per year, on top of the plan.
 
 ### 2. Does the person already have an address?
 
@@ -51,7 +51,7 @@ Own domains only come with Pilot, not with Free or Light. Check with `konto_stat
 Call `domain_verbinden` with the domain. The tool answers with exactly the entries that need to go into the phone book:
 
 - a **TXT record** `_albatros.<domain>` with a code. That's the proof the address belongs to you, like a letter only the tenant finds in the letterbox.
-- an entry that points to the server: for `www.<domain>` usually a **CNAME** to `{name}.aufwind.sh` (“lives at”), for the address without `www` an **A** and an **AAAA** record with the numbers from the answer.
+- an entry that points to your site or your server: for `www.<domain>` usually a **CNAME** to `{name}.aufwind.sh` (“lives at”), for the address without `www` an **A** and an **AAAA** record with the numbers from the answer.
 
 Always take the values from the answer of `domain_verbinden`, never values from memory. Show them as a table with the columns Type, Name, Value and **Meaning**, so no abbreviation goes unexplained: TXT = a note with the proof, CNAME = “lives at”, A = house number, AAAA = new, longer house number.
 
@@ -73,7 +73,7 @@ If the answers match the values from step 4, call `domain_verbinden` again. Alba
 
 ### 7. Check the mission
 
-Open `https://<domain>` with the person. Then `mission_pruefen` with `flugschule-09-domain`.
+Open `https://<domain>` with the person. With Pilot, then `mission_pruefen` with `flugschule-09-domain`.
 
 ## When it gets stuck
 

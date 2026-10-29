@@ -107,7 +107,7 @@ From here you follow the skill `webseite-bauen`, in its fixed order: brief, mock
 - The PRD lists every feature from `docs/bestand.md`, with its decision. None is dropped silently.
 - For the design, you read the screenshots of the old site as well: what's sacred (logo, colours)? What looks out of date?
 - After the local build, you show before and after side by side, the home page and the most important subpage, on a phone and on a desktop, with three sentences on what's better and what's stayed the same.
-- The old address only points to the new site once the new one is running (skill `domain`).
+- The current domain of the old site (for example `curling-wil.ch`) stays as it is until the new site is live at `{name}.aufwind.sh`. Only then do you point it to the new site with `domain_verbinden` (skill `domain`, step 4), with Light as with Pilot. The domain stays with its registrar and keeps costing there per year. Leave the email records (MX) alone.
 
 ## Rights
 

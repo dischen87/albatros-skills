@@ -106,7 +106,7 @@ Ab hier folgst du dem Skill `webseite-bauen`, in seiner festen Reihenfolge: Auft
 - Das PRD führt jede Funktion aus `docs/bestand.md` auf, mit ihrem Entscheid. Keine fällt still weg.
 - Für die Gestaltung liest du die Fotos der alten Seite mit: Was ist heilig (Logo, Farben)? Was wirkt veraltet?
 - Nach dem lokalen Bau zeigst du vorher und nachher nebeneinander, Startseite und wichtigste Unterseite, am Handy und am Desktop, mit drei Sätzen dazu, was besser und was gleich geblieben ist.
-- Die alte Adresse zeigt erst auf die neue Seite, wenn die neue läuft (Skill `domain`).
+- Die bisherige Domain der alten Seite (zum Beispiel `curling-wil.ch`) bleibt, bis die neue Seite unter `{name}.aufwind.sh` live ist. Erst dann stellst du sie mit `domain_verbinden` auf die neue Seite um (Skill `domain`, Schritt 4), mit Light wie mit Pilot. Die Domain bleibt bei ihrem Registrar und kostet dort weiter pro Jahr, die E-Mail-Einträge (MX) fasst du nicht an.
 
 ## Rechte
 

@@ -1,6 +1,6 @@
 ---
 name: domain
-description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin.ch) pour le serveur Albatros. Explique le domaine et le DNS avec l'image de l'adresse et de l'annuaire, propose des noms, cherche avec domain_suchen ce qui est libre et achète via Albatros avec domain_kaufen (la personne est titulaire, elle ne donne ses coordonnées que sur la page de paiement). Un domaine que la personne a déjà, le skill le relie avec domain_verbinden : entrées DNS, preuve TXT _albatros et contrôle, jusqu'à ce que le site s'affiche avec le cadenas dans le navigateur web. Utilise ce skill pour « propre domaine », « mon adresse », « acheter un .ch », « quel domaine est libre ? », « chercher un domaine », « DNS », « entrée A », « CNAME », « entrée TXT », « mon domaine ne pointe pas sur mon site », « certificat », « https ne marche pas »."
+description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin.ch) pour le site ou le serveur chez Albatros, avec Light comme avec Pilot. Explique le domaine et le DNS avec l'image de l'adresse et de l'annuaire, propose des noms, cherche avec domain_suchen ce qui est libre et achète via Albatros avec domain_kaufen (la personne est titulaire, elle ne donne ses coordonnées que sur la page de paiement). Un domaine que la personne a déjà, le skill le relie avec domain_verbinden : entrées DNS, preuve TXT _albatros et contrôle, jusqu'à ce que le site s'affiche avec le cadenas dans le navigateur web. Utilise ce skill pour « propre domaine », « mon adresse », « acheter un .ch », « quel domaine est libre ? », « chercher un domaine », « DNS », « entrée A », « CNAME », « entrée TXT », « mon domaine ne pointe pas sur mon site », « certificat », « https ne marche pas »."
 ---
 
 # Domaine : ton adresse dans l'annuaire
@@ -27,7 +27,7 @@ Ton site est déjà joignable sous `{name}.aufwind.sh`. Avec un propre domaine, 
 
 ### 1. L'abonnement convient-il ?
 
-Les propres domaines n'existent qu'avec Pilot, pas avec Gratuit ni avec Light. Vérifie avec `konto_status`. S'il manque Pilot, explique la différence et va chercher le lien avec `upgrade_link` (niveau `pilot`). N'impose rien. Chercher est possible avec chaque abonnement.
+Les propres domaines existent avec Light et avec Pilot, pas avec Gratuit. Vérifie avec `konto_status`. Si la personne a Gratuit, explique la différence et va chercher le lien avec `upgrade_link` (niveau `light`). N'impose rien. Chercher est possible avec chaque abonnement. Acheter et relier sont possibles dès que le site (Light) ou le serveur (Pilot) existe. Le domaine coûte à part, par an, en plus de l'abonnement.
 
 ### 2. La personne a-t-elle déjà une adresse ?
 
@@ -51,7 +51,7 @@ Les propres domaines n'existent qu'avec Pilot, pas avec Gratuit ni avec Light. V
 Appelle `domain_verbinden` avec le domaine. L'outil répond avec exactement les entrées qui doivent aller dans l'annuaire :
 
 - une **entrée TXT** `_albatros.<domain>` avec un code. C'est la preuve que l'adresse t'appartient, comme une lettre que seul le locataire trouve dans la boîte aux lettres.
-- une entrée qui pointe vers le serveur : pour `www.<domain>`, le plus souvent un **CNAME** vers `{name}.aufwind.sh` (« habite chez »), pour l'adresse sans `www` une entrée **A** et une entrée **AAAA** avec les numéros de la réponse.
+- une entrée qui pointe vers ton site ou ton serveur : pour `www.<domain>`, le plus souvent un **CNAME** vers `{name}.aufwind.sh` (« habite chez »), pour l'adresse sans `www` une entrée **A** et une entrée **AAAA** avec les numéros de la réponse.
 
 Prends toujours les valeurs de la réponse de `domain_verbinden`, jamais des valeurs de mémoire. Montre-les sous forme de tableau avec les colonnes Type, Nom, Valeur et **Signification**, pour qu'aucune abréviation ne reste sans explication : TXT = billet avec la preuve, CNAME = « habite chez », A = numéro de la maison, AAAA = nouveau numéro de maison, plus long.
 
@@ -73,7 +73,7 @@ Si les réponses correspondent aux valeurs de l'étape 4, appelle encore une foi
 
 ### 7. Contrôler la mission
 
-Ouvre `https://<domain>` avec la personne. Ensuite `mission_pruefen` avec `flugschule-09-domain`.
+Ouvre `https://<domain>` avec la personne. Avec Pilot, ensuite `mission_pruefen` avec `flugschule-09-domain`.
 
 ## Quand ça coince
 

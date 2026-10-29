@@ -27,7 +27,7 @@ Il trasloco non è una costruzione nuova. Il tuo progetto è già imballato in s
 
 Ripassa brevemente con la persona (vedi skill `kosten`): il progetto ha bisogno di più di quanto offre Albatros? Vuole avere tutto in mano sua? Ha ogni mese un'ora o due per la manutenzione? Se no, restare è un'ottima decisione.
 
-**Con Light** il trasloco è piccolo: la cartella `seite/` funziona presso qualsiasi fornitore di pagine statiche. Portare il diario di bordo su GitHub (passo 4, punti 1 e 2) e lì accendere la pagina, per esempio con GitHub Pages. Server, nastro trasportatore e trasloco del dominio cadono, la lista del trasloco resta.
+**Con Light** il trasloco è piccolo: la cartella `seite/` funziona presso qualsiasi fornitore di pagine statiche. Portare il diario di bordo su GitHub (passo 4, punti 1 e 2) e lì accendere la pagina, per esempio con GitHub Pages. Server e nastro trasportatore cadono, la lista del trasloco resta. Se la pagina ha un dominio proprio, lo sposti come al passo 6, con le voci che indica il nuovo fornitore (su GitHub Pages in Settings → Pages → Custom domain).
 
 ### 2. Lista del trasloco
 
@@ -143,7 +143,7 @@ Prima testa tramite l'indirizzo del nuovo server, senza cambiare l'elenco telefo
 **Comprato tramite Albatros** (`konto_status` lo mostra alla voce «Eigene Domains», domini propri): l'elenco telefonico per questo indirizzo lo tiene Albatros. L'indirizzo trasloca con te presso un registrar scelto dalla persona:
 
 1. La persona crea lei stessa un account presso il nuovo registrar.
-2. Solo con il suo sì chiami `domain_mitnehmen`. Da quel momento Albatros non rinnova più l'indirizzo. Fino al trasloco continua a puntare al server Albatros.
+2. Solo con il suo sì chiami `domain_mitnehmen`. Da quel momento Albatros non rinnova più l'indirizzo. Fino al trasloco continua a puntare alla tua pagina o al tuo server su Albatros.
 3. Lo strumento dà l'**auth-code**, la chiave per il trasloco dell'indirizzo. Mostralo solo alla persona, mai in un file o nel diario di bordo. Lei lo inserisce presso il nuovo registrar e avvia lì il trasloco (trasferimento). Di solito paga in quel momento un anno di rinnovo. Con `.com` e `.net` spesso un trasloco nei primi 60 giorni dopo l'acquisto non è ancora possibile.
 4. Quando il trasloco è concluso, inserisce le voci presso il nuovo registrar: A e AAAA sul nuovo server, `www` e le voci per l'e-mail (MX), se ce n'erano.
 

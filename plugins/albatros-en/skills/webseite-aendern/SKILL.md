@@ -50,6 +50,7 @@ If `designsystem.md` or `stack.md` is missing (an older site), first write a sho
 
 - **Small:** swapping a text, a date, a price, opening hours, a link or a picture on an existing page. That goes quickly, without a mockup or drafts. Dates and lists you change in `web/src/data/*.json`, not in the code of the page.
 - **Big:** a new page, a new feature, a new section or a different look. For that you first write the acceptance criteria (step 4) and wait for the yes. A new page gets a greyscale mockup first (skill `webseite-bauen`, step 2). If the feature needs a program (a sign-up list, a login), that's a building block, with Pilot (skill `bausteine`).
+- **Own address** (`myclub.ch` instead of `{name}.aufwind.sh`): no rebuild. For that you load the skill `domain`, with Light as with Pilot. The domain costs extra, per year.
 
 Tell the person in one sentence which it is and what happens next.
 

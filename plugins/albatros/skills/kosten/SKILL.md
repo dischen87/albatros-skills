@@ -25,7 +25,7 @@ Frag nach und schreib mit:
 | Posten | Art | Typischer Rahmen | Woher der genaue Preis |
 |---|---|---|---|
 | Albatros-Abo | Miete | je nach Stufe | `konto_status` |
-| Eigene Domain (`.ch`) | Miete pro Jahr | etwa ein Kinobillett pro Jahr | `domain_suchen` oder Preisseite des Registrars |
+| Eigene Domain (`.ch`), mit Light oder Pilot | Miete pro Jahr, separat vom Abo | etwa ein Kinobillett pro Jahr | `domain_suchen` oder Preisseite des Registrars |
 | KI im Terminal (Claude Code, Codex, Gemini CLI, Cursor) | Miete | ab 8 USD im Monat mit Cursor Plus, sonst ab etwa 20 USD: Claude Pro, ChatGPT Plus oder für Gemini CLI Google AI Pro; ein Gratis-Konto reicht nicht oder nur für ein paar Versuche | Preisseite des Anbieters; bezahlt wird dort, nicht bei Albatros |
 | E-Mail mit eigener Domain | Miete | klein | Anbieter |
 | Statistik (z. B. PostHog) | Nebenkosten | meist gratis bis zu einer Grenze | Preisseite |
@@ -45,7 +45,7 @@ Schreib die Tabelle mit der Person in `docs/kosten.md` in ihrem Projekt, mit Mon
 
 ### 4. Wann lohnt sich mehr Leistung oder ein Umzug?
 
-- **Von Light zu Pilot:** sobald auf der Seite ein Programm laufen soll (Datenbank, Anmeldung, eigenes CMS) oder eine eigene Domain dazukommt.
+- **Von Light zu Pilot:** sobald auf der Seite ein Programm laufen soll (Datenbank, Anmeldung, eigenes CMS). Für eine eigene Domain reicht Light.
 - **Mehr Leistung bei Albatros:** wenn die Seite langsam wird und `free -h` dauernd wenig freie Arbeitsfläche zeigt.
 - **Umzug auf einen eigenen Server** (Skill `landung`): wenn das Projekt Geld verdient, dauerhaft mehr Leistung braucht, als die grösste Stufe bietet, oder die Person alles selbst in der Hand haben will. Ein eigener Server ist oft günstiger in der Miete, aber teurer in der eigenen Zeit: Updates, Sicherungen und Überwachung macht dann niemand mehr für dich.
 

@@ -107,7 +107,7 @@ Tu inscris les décisions dans `docs/bestand.md` (colonne Décision) et dans `do
 - Le PRD liste chaque fonction de `docs/bestand.md`, avec sa décision. Aucune ne disparaît en silence.
 - Pour la mise en forme, tu regardes aussi les photos de l'ancien site : qu'est-ce qui est sacré (logo, couleurs) ? Qu'est-ce qui fait dépassé ?
 - Après la construction en local, tu montres avant et après côte à côte, la page d'accueil et la sous-page la plus importante, sur le natel et sur l'ordinateur, avec trois phrases sur ce qui est mieux et ce qui est resté pareil.
-- L'ancienne adresse ne pointe vers le nouveau site que quand le nouveau tourne (skill `domain`).
+- Le domaine actuel de l'ancien site (par exemple `curling-wil.ch`) reste tel quel jusqu'à ce que le nouveau site soit en ligne sous `{name}.aufwind.sh`. Ensuite seulement, tu le fais pointer vers le nouveau site avec `domain_verbinden` (skill `domain`, étape 4), avec Light comme avec Pilot. Le domaine reste chez son registraire et continue d'y coûter par an. Tu ne touches pas aux entrées e-mail (MX).
 
 ## Droits
 

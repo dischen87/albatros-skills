@@ -26,7 +26,7 @@ Ask and write it down:
 | Item | Type | Typical range | Where the exact price comes from |
 |---|---|---|---|
 | Albatros plan | rent | depends on the plan | `konto_status` |
-| Own domain (`.ch`) | rent per year | about the price of a cinema ticket a year | `domain_suchen` or the registrar's pricing page |
+| Own domain (`.ch`), with Light or Pilot | rent per year, separate from the plan | about the price of a cinema ticket a year | `domain_suchen` or the registrar's pricing page |
 | AI in the terminal (Claude Code, Codex, Gemini CLI, Cursor) | rent | from 8 USD a month with Cursor Plus, otherwise from about 20 USD: Claude Pro, ChatGPT Plus or, for Gemini CLI, Google AI Pro; a free account isn't enough, or only for a few tries | the provider's pricing page; paid there, not at Albatros |
 | Email with your own domain | rent | small | provider |
 | Statistics (e.g. PostHog) | running costs | usually free up to a limit | pricing page |
@@ -46,7 +46,7 @@ Write the table with the person into `docs/kosten.md` in their project, with the
 
 ### 4. When is more power or a move worth it?
 
-- **From Light to Pilot:** as soon as a program should run on the site (database, sign-in, your own CMS) or an own domain comes in.
+- **From Light to Pilot:** as soon as a program should run on the site (database, sign-in, your own CMS). For your own domain, Light is enough.
 - **More power at Albatros:** when the site gets slow and `free -h` keeps showing little free desk space.
 - **Moving to a server of your own** (skill `landung`): when the project earns money, needs more power for good than the biggest plan offers, or the person wants to have everything in their own hands. A server of your own is often cheaper in rent but more expensive in your own time: nobody does updates, backups and monitoring for you any more.
 

@@ -49,6 +49,7 @@ Fehlt `designsystem.md` oder `stack.md` (ältere Seite), schreibst du sie zuerst
 
 - **Klein:** Text, Termin, Preis, Öffnungszeit, Link oder ein Bild austauschen, auf einer bestehenden Seite. Das geht schnell, ohne Mockup und Entwürfe. Termine und Listen änderst du in `web/src/data/*.json`, nicht im Code der Seite.
 - **Gross:** eine neue Seite, eine neue Funktion, ein neuer Bereich oder ein anderes Aussehen. Dafür schreibst du zuerst die Abnahmekriterien (Schritt 4) und wartest auf das Ja. Eine neue Seite bekommt vorher ein Mockup in Graustufen (Skill `webseite-bauen`, Schritt 2). Braucht die Funktion ein Programm (Anmeldeliste, Login), ist das ein Baustein mit Pilot (Skill `bausteine`).
+- **Eigene Adresse** (`meinverein.ch` statt `{name}.aufwind.sh`): kein Umbau. Dafür lädst du den Skill `domain`, mit Light wie mit Pilot. Die Domain kostet separat pro Jahr.
 
 Sag der Person in einem Satz, was es ist und wie es weitergeht.
 

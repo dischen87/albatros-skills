@@ -103,7 +103,7 @@ Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collau
 **Design:** direzione <nome>, vedi docs/designsystem.md
 **Stack tecnologico:** vedi docs/stack.md
 **Hosting:** Light (pagina dal porto, senza server proprio) o Pilot (server proprio)
-**Dominio:** name.aufwind.sh, più tardi dominio proprio (solo con Pilot)
+**Dominio:** name.aufwind.sh, più tardi dominio proprio (con Light o Pilot)
 **Non incluso:** …
 
 ## Criteri di collaudo
@@ -230,7 +230,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titolo de
 
 Se poi la persona vuole ancora qualcosa di diverso («manca ancora …», una data, un testo), carichi lo skill `webseite-aendern` e lo segui. Il sito ha il via libera ed è online, quindi ogni modifica ha bisogno del suo criterio nel PRD, di un prima e dopo e di un nuovo via libera prima del push.
 
-Un dominio proprio si aggiunge con lo skill `domain` (solo Pilot), poi segnali `domain`.
+Un dominio proprio si aggiunge con lo skill `domain`, con Light come con Pilot, poi segnali `domain`.
 
 Si pubblica solo quello che appartiene alla persona o per cui ha il permesso (skill `webseite-modernisieren`, sezione «Diritti»).
 

@@ -50,6 +50,7 @@ Si `designsystem.md` ou `stack.md` manque (site plus ancien), tu les écris d'ab
 
 - **Petit :** remplacer un texte, une date, un prix, un horaire d'ouverture, un lien ou une image, sur une page qui existe déjà. Ça va vite, sans maquette ni ébauches. Les dates et les listes, tu les changes dans `web/src/data/*.json`, pas dans le code de la page.
 - **Grand :** une nouvelle page, une nouvelle fonction, une nouvelle rubrique ou une autre apparence. Pour ça, tu écris d'abord les critères de réception (étape 4) et tu attends le oui. Une nouvelle page reçoit d'abord une maquette en niveaux de gris (skill `webseite-bauen`, étape 2). Si la fonction a besoin d'un programme (liste d'inscription, login), c'est une brique avec Pilot (skill `bausteine`).
+- **Propre adresse** (`monassociation.ch` au lieu de `{name}.aufwind.sh`) : pas de transformation. Pour ça, tu charges le skill `domain`, avec Light comme avec Pilot. Le domaine coûte à part, par an.
 
 Dis à la personne en une phrase ce que c'est et comment ça continue.
 

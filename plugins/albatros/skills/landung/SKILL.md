@@ -26,7 +26,7 @@ Der Umzug ist kein Neubau. Dein Projekt ist schon in Kisten verpackt, die übera
 
 Kurz mit der Person durchgehen (siehe Skill `kosten`): Braucht das Projekt mehr, als Albatros bietet? Will sie alles selbst in der Hand haben? Hat sie jeden Monat ein, zwei Stunden für Pflege? Wenn nicht, ist Bleiben eine gute Entscheidung.
 
-**Mit Light** ist der Umzug klein: Der Ordner `seite/` läuft bei jedem Anbieter für statische Seiten. Das Logbuch zu GitHub mitnehmen (Schritt 4, Punkte 1 und 2) und dort die Seite einschalten, zum Beispiel mit GitHub Pages. Server, Fliessband und Domain-Umzug entfallen, die Umzugsliste bleibt.
+**Mit Light** ist der Umzug klein: Der Ordner `seite/` läuft bei jedem Anbieter für statische Seiten. Das Logbuch zu GitHub mitnehmen (Schritt 4, Punkte 1 und 2) und dort die Seite einschalten, zum Beispiel mit GitHub Pages. Server und Fliessband entfallen, die Umzugsliste bleibt. Hat die Seite eine eigene Domain, stellst du sie wie in Schritt 6 um, mit den Einträgen, die der neue Anbieter nennt (bei GitHub Pages unter Settings → Pages → Custom domain).
 
 ### 2. Umzugsliste
 
@@ -142,7 +142,7 @@ Zuerst über die Adresse des neuen Servers testen, ohne das Telefonbuch zu ände
 **Über Albatros gekauft** (`konto_status` zeigt sie unter «Eigene Domains»): Das Telefonbuch dafür führt Albatros. Die Adresse zieht mit zu einem Registrar, den die Person wählt:
 
 1. Die Person legt beim neuen Registrar selbst ein Konto an.
-2. Erst mit ihrem Ja `domain_mitnehmen` aufrufen. Ab dann verlängert Albatros die Adresse nicht mehr. Bis zum Umzug zeigt sie weiter auf den Albatros-Server.
+2. Erst mit ihrem Ja `domain_mitnehmen` aufrufen. Ab dann verlängert Albatros die Adresse nicht mehr. Bis zum Umzug zeigt sie weiter auf deine Seite oder deinen Server bei Albatros.
 3. Das Werkzeug gibt den **Auth-Code**, den Schlüssel für den Umzug der Adresse. Zeig ihn nur der Person, nie in einer Datei oder im Logbuch. Sie gibt ihn beim neuen Registrar ein und startet dort den Umzug (Transfer). Meist bezahlt sie dabei ein Jahr Verlängerung. Bei `.com` und `.net` geht ein Umzug in den ersten 60 Tagen nach dem Kauf oft noch nicht.
 4. Ist der Umzug durch, setzt sie beim neuen Registrar die Einträge: A und AAAA auf den neuen Server, `www` und die E-Mail-Einträge (MX), falls es welche gab.
 

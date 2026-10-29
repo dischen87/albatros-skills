@@ -1,6 +1,6 @@
 ---
 name: domain
-description: "Trova, compra o collega un dominio proprio (p. es. mionegozio.ch) per il server Albatros. Spiega dominio e DNS con l'immagine dell'indirizzo e dell'elenco telefonico, propone nomi, cerca con domain_suchen cosa è libero e compra tramite Albatros con domain_kaufen (la persona è titolare, i suoi dati li inserisce solo sulla pagina di pagamento). Un dominio che la persona ha già, lo skill lo collega con domain_verbinden: voci DNS, prova TXT _albatros e verifica, finché la pagina compare nel browser con il lucchetto. Usa lo skill con «dominio proprio», «il mio indirizzo», «comprare un .ch», «quale dominio è libero?», «cercare un dominio», «DNS», «record A», «CNAME», «record TXT», «il dominio non punta alla mia pagina», «certificato», «https non funziona»."
+description: "Trova, compra o collega un dominio proprio (p. es. mionegozio.ch) per la pagina o il server su Albatros, con Light come con Pilot. Spiega dominio e DNS con l'immagine dell'indirizzo e dell'elenco telefonico, propone nomi, cerca con domain_suchen cosa è libero e compra tramite Albatros con domain_kaufen (la persona è titolare, i suoi dati li inserisce solo sulla pagina di pagamento). Un dominio che la persona ha già, lo skill lo collega con domain_verbinden: voci DNS, prova TXT _albatros e verifica, finché la pagina compare nel browser con il lucchetto. Usa lo skill con «dominio proprio», «il mio indirizzo», «comprare un .ch», «quale dominio è libero?», «cercare un dominio», «DNS», «record A», «CNAME», «record TXT», «il dominio non punta alla mia pagina», «certificato», «https non funziona»."
 ---
 
 # Dominio: il tuo indirizzo nell'elenco telefonico
@@ -27,7 +27,7 @@ La tua pagina è già raggiungibile su `{name}.aufwind.sh`. Con un dominio propr
 
 ### 1. L'abbonamento va bene?
 
-I domini propri ci sono solo con Pilot, non con Gratis o Light. Verifica con `konto_status`. Se manca Pilot, spiega la differenza e prendi il link con `upgrade_link` (livello `pilot`). Non imporre niente. Cercare si può con ogni abbonamento.
+I domini propri ci sono con Light e con Pilot, non con Gratis. Verifica con `konto_status`. Se la persona ha Gratis, spiega la differenza e prendi il link con `upgrade_link` (livello `light`). Non imporre niente. Cercare si può con ogni abbonamento. Comprare e collegare si può appena c'è la pagina (Light) o il server (Pilot). Il dominio costa a parte, all'anno, in più dell'abbonamento.
 
 ### 2. La persona ha già un indirizzo?
 
@@ -51,7 +51,7 @@ I domini propri ci sono solo con Pilot, non con Gratis o Light. Verifica con `ko
 Chiama `domain_verbinden` con il dominio. Lo strumento risponde con esattamente le voci che devono andare nell'elenco telefonico:
 
 - una **voce TXT** `_albatros.<domain>` con un codice. È la prova che l'indirizzo è tuo, come una lettera che solo l'inquilino trova nella buca delle lettere.
-- una voce che punta al server: per `www.<domain>` di solito un **CNAME** su `{name}.aufwind.sh` («abita presso»), per l'indirizzo senza `www` una voce **A** e una **AAAA** con i numeri della risposta.
+- una voce che punta alla tua pagina o al tuo server: per `www.<domain>` di solito un **CNAME** su `{name}.aufwind.sh` («abita presso»), per l'indirizzo senza `www` una voce **A** e una **AAAA** con i numeri della risposta.
 
 Prendi sempre i valori dalla risposta di `domain_verbinden`, mai valori a memoria. Mostrali come tabella con le colonne Tipo, Nome, Valore e **Significato**, così nessuna sigla resta senza spiegazione: TXT = biglietto con la prova, CNAME = «abita presso», A = numero civico, AAAA = numero civico nuovo, più lungo.
 
@@ -73,7 +73,7 @@ Se le risposte corrispondono ai valori del passo 4, chiama di nuovo `domain_verb
 
 ### 7. Verifica la missione
 
-Apri `https://<domain>` con la persona. Poi `mission_pruefen` con `flugschule-09-domain`.
+Apri `https://<domain>` con la persona. Con Pilot poi `mission_pruefen` con `flugschule-09-domain`.
 
 ## Se qualcosa si inceppa
 

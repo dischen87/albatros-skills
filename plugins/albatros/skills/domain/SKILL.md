@@ -1,6 +1,6 @@
 ---
 name: domain
-description: 'Findet, kauft oder verbindet eine eigene Domain (z. B. meinladen.ch) für den Albatros-Server. Erklärt Domain und DNS mit dem Bild von Adresse und Telefonbuch, schlägt Namen vor, sucht mit domain_suchen, was frei ist, und kauft über Albatros mit domain_kaufen (die Person ist Inhaberin, ihre Angaben gibt sie nur auf der Zahlungsseite ein). Eine Domain, die die Person schon hat, verbindet der Skill mit domain_verbinden: DNS-Einträge, TXT-Beweis _albatros und Prüfung, bis die Seite mit Schloss im Browser erscheint. Nutze den Skill bei «eigene Domain», «meine Adresse», «.ch kaufen», «welche Domain ist frei», «Domain suchen», «DNS», «A-Eintrag», «CNAME», «TXT-Eintrag», «Domain zeigt nicht auf meine Seite», «Zertifikat», «https geht nicht».'
+description: 'Findet, kauft oder verbindet eine eigene Domain (z. B. meinladen.ch) für die Seite oder den Server bei Albatros, mit Light wie mit Pilot. Erklärt Domain und DNS mit dem Bild von Adresse und Telefonbuch, schlägt Namen vor, sucht mit domain_suchen, was frei ist, und kauft über Albatros mit domain_kaufen (die Person ist Inhaberin, ihre Angaben gibt sie nur auf der Zahlungsseite ein). Eine Domain, die die Person schon hat, verbindet der Skill mit domain_verbinden: DNS-Einträge, TXT-Beweis _albatros und Prüfung, bis die Seite mit Schloss im Browser erscheint. Nutze den Skill bei «eigene Domain», «meine Adresse», «.ch kaufen», «welche Domain ist frei», «Domain suchen», «DNS», «A-Eintrag», «CNAME», «TXT-Eintrag», «Domain zeigt nicht auf meine Seite», «Zertifikat», «https geht nicht».'
 ---
 
 # Domain: deine Adresse im Telefonbuch
@@ -26,7 +26,7 @@ Deine Seite ist schon unter `{name}.aufwind.sh` erreichbar. Mit einer eigenen Do
 
 ### 1. Passt das Abo?
 
-Eigene Domains gibt es nur mit Pilot, nicht mit Gratis oder Light. Prüf mit `konto_status`. Fehlt Pilot, erklär den Unterschied und hol mit `upgrade_link` (Stufe `pilot`) den Link. Nichts aufdrängen. Suchen geht mit jedem Abo.
+Eigene Domains gibt es mit Light und mit Pilot, nicht mit Gratis. Prüf mit `konto_status`. Hat die Person Gratis, erklär den Unterschied und hol mit `upgrade_link` (Stufe `light`) den Link. Nichts aufdrängen. Suchen geht mit jedem Abo. Kaufen und verbinden gehen, sobald die Seite (Light) oder der Server (Pilot) steht. Die Domain kostet separat pro Jahr, zusätzlich zum Abo.
 
 ### 2. Hat die Person schon eine Adresse?
 
@@ -50,7 +50,7 @@ Eigene Domains gibt es nur mit Pilot, nicht mit Gratis oder Light. Prüf mit `ko
 Ruf `domain_verbinden` mit der Domain auf. Das Werkzeug antwortet mit genau den Einträgen, die ins Telefonbuch müssen:
 
 - einem **TXT-Eintrag** `_albatros.<domain>` mit einem Code. Das ist der Beweis, dass die Adresse dir gehört, wie ein Brief, den nur der Mieter am Briefkasten findet.
-- einem Eintrag, der auf den Server zeigt: für `www.<domain>` meist ein **CNAME** auf `{name}.aufwind.sh` («wohnt bei»), für die Adresse ohne `www` ein **A**- und ein **AAAA**-Eintrag mit den Nummern aus der Antwort.
+- einem Eintrag, der auf deine Seite oder deinen Server zeigt: für `www.<domain>` meist ein **CNAME** auf `{name}.aufwind.sh` («wohnt bei»), für die Adresse ohne `www` ein **A**- und ein **AAAA**-Eintrag mit den Nummern aus der Antwort.
 
 Nimm immer die Werte aus der Antwort von `domain_verbinden`, nie Werte aus dem Gedächtnis. Zeig sie als Tabelle mit den Spalten Typ, Name, Wert und **Bedeutung**, damit kein Kürzel unerklärt bleibt: TXT = Zettel mit dem Beweis, CNAME = «wohnt bei», A = Hausnummer, AAAA = neue, längere Hausnummer.
 
@@ -72,7 +72,7 @@ Stimmen die Antworten mit den Werten aus Schritt 4 überein, ruf `domain_verbind
 
 ### 7. Mission prüfen
 
-Öffne `https://<domain>` mit der Person. Dann `mission_pruefen` mit `flugschule-09-domain`.
+Öffne `https://<domain>` mit der Person. Mit Pilot dann `mission_pruefen` mit `flugschule-09-domain`.
 
 ## Wenn es hakt
 

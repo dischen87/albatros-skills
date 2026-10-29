@@ -26,7 +26,7 @@ Chiedi e annota:
 | Voce | Tipo | Ordine di grandezza tipico | Da dove viene il prezzo esatto |
 |---|---|---|---|
 | Abbonamento Albatros | affitto | secondo il livello | `konto_status` |
-| Dominio proprio (`.ch`) | affitto annuale | circa un biglietto del cinema all'anno | `domain_suchen` o pagina dei prezzi del registrar |
+| Dominio proprio (`.ch`), con Light o Pilot | affitto annuale, a parte dall'abbonamento | circa un biglietto del cinema all'anno | `domain_suchen` o pagina dei prezzi del registrar |
 | IA nel terminale (Claude Code, Codex, Gemini CLI, Cursor) | affitto | da 8 USD al mese con Cursor Plus, altrimenti da circa 20 USD: Claude Pro, ChatGPT Plus o, per Gemini CLI, Google AI Pro; un account gratuito non basta, o solo per qualche prova | pagina dei prezzi del fornitore; si paga lì, non ad Albatros |
 | E-mail con dominio proprio | affitto | piccolo | fornitore |
 | Statistiche (p. es. PostHog) | spese accessorie | di solito gratis fino a un limite | pagina dei prezzi |
@@ -46,7 +46,7 @@ Scrivi con la persona la tabella in `docs/kosten.md` nel suo progetto, con la so
 
 ### 4. Quando conviene più potenza o un trasloco?
 
-- **Da Light a Pilot:** appena sulla pagina deve girare un programma (banca dati, accesso per membri, CMS proprio) o si aggiunge un dominio proprio.
+- **Da Light a Pilot:** appena sulla pagina deve girare un programma (banca dati, accesso per membri, CMS proprio). Per un dominio proprio basta Light.
 - **Più potenza da Albatros:** quando la pagina diventa lenta e `free -h` mostra di continuo poca memoria di lavoro libera.
 - **Trasloco su un server proprio** (skill `landung`): quando il progetto guadagna soldi, ha bisogno in modo permanente di più potenza di quanta ne offra il livello più grande, o la persona vuole avere tutto in mano sua. Un server proprio spesso costa meno d'affitto, ma di più in tempo tuo: aggiornamenti, backup e sorveglianza a quel punto non li fa più nessuno per te.
 

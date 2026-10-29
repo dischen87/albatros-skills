@@ -107,7 +107,7 @@ Da qui segui lo skill `webseite-bauen`, nel suo ordine fisso: incarico, mockup, 
 - Il PRD elenca ogni funzione di `docs/bestand.md`, con la sua decisione. Nessuna sparisce in silenzio.
 - Per l'aspetto leggi anche le foto del vecchio sito: cosa è sacro (logo, colori)? Cosa sembra superato?
 - Dopo la costruzione in locale mostri prima e dopo uno accanto all'altro, pagina iniziale e sottopagina più importante, sul telefonino e sul desktop, con tre frasi su cosa è migliorato e cosa è rimasto uguale.
-- Il vecchio indirizzo punta al nuovo sito solo quando il nuovo funziona (skill `domain`).
+- Il dominio attuale del vecchio sito (per esempio `curling-wil.ch`) resta com'è finché il nuovo sito è online su `{name}.aufwind.sh`. Solo allora lo fai puntare al nuovo sito con `domain_verbinden` (skill `domain`, passo 4), con Light come con Pilot. Il dominio resta presso il suo registrar e lì continua a costare all'anno. Le voci per l'e-mail (MX) non le tocchi.
 
 ## Diritti
 

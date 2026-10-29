@@ -103,7 +103,7 @@ Le PRD, c'est le plan de construction sur une page, avec la liste de ce qu'on v�
 **Design :** direction <nom>, voir docs/designsystem.md
 **Stack technique :** voir docs/stack.md
 **Hébergement :** Light (page tirée du port, sans serveur à soi) ou Pilot (serveur à soi)
-**Domaine :** name.aufwind.sh, plus tard propre domaine (seulement avec Pilot)
+**Domaine :** name.aufwind.sh, plus tard propre domaine (avec Light ou Pilot)
 **Pas inclus :** …
 
 ## Critères d'acceptation
@@ -230,7 +230,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titre de 
 
 Si la personne souhaite ensuite autre chose (« il manque encore … », une date, un texte), tu charges le skill `webseite-aendern` et tu le suis. Le site est validé et en ligne, donc chaque modification a besoin de son critère dans le PRD, d'un avant et après et d'une nouvelle autorisation avant le push.
 
-Un propre domaine s'ajoute avec le skill `domain` (seulement Pilot), ensuite tu annonces `domain`.
+Un propre domaine s'ajoute avec le skill `domain`, avec Light comme avec Pilot, ensuite tu annonces `domain`.
 
 On ne publie que ce qui appartient à la personne ou ce pour quoi elle a l'autorisation (skill `webseite-modernisieren`, section « Droits »).
 

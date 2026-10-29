@@ -27,7 +27,7 @@ Le déménagement n'est pas une construction neuve. Ton projet est déjà emball
 
 Passe-le brièvement en revue avec la personne (voir le skill `kosten`) : le projet a-t-il besoin de plus que ce qu'Albatros offre ? Veut-elle tout avoir en main ? A-t-elle une ou deux heures par mois pour l'entretien ? Sinon, rester est une bonne décision.
 
-**Avec Light**, le déménagement est petit : le dossier `seite/` tourne chez n'importe quel fournisseur de pages statiques. Emporter le journal de bord sur GitHub (étape 4, points 1 et 2) et y activer la page, par exemple avec GitHub Pages. Le serveur, le tapis roulant et le déménagement du domaine tombent, la liste de déménagement reste.
+**Avec Light**, le déménagement est petit : le dossier `seite/` tourne chez n'importe quel fournisseur de pages statiques. Emporter le journal de bord sur GitHub (étape 4, points 1 et 2) et y activer la page, par exemple avec GitHub Pages. Le serveur et le tapis roulant tombent, la liste de déménagement reste. Si le site a un propre domaine, tu le changes comme à l'étape 6, avec les entrées que donne le nouveau fournisseur (chez GitHub Pages sous Settings → Pages → Custom domain).
 
 ### 2. Liste de déménagement
 
@@ -143,7 +143,7 @@ D'abord tester par l'adresse du nouveau serveur, sans changer l'annuaire : `cu
 **Achetée via Albatros** (`konto_status` la montre sous « Eigene Domains », propres domaines) : c'est Albatros qui tient l'annuaire pour elle. L'adresse déménage vers un registraire que la personne choisit :
 
 1. La personne crée elle-même un compte chez le nouveau registraire.
-2. Seulement avec son oui, appeler `domain_mitnehmen`. À partir de là, Albatros ne renouvelle plus l'adresse. Jusqu'au déménagement, elle continue de pointer vers le serveur Albatros.
+2. Seulement avec son oui, appeler `domain_mitnehmen`. À partir de là, Albatros ne renouvelle plus l'adresse. Jusqu'au déménagement, elle continue de pointer vers ton site ou ton serveur chez Albatros.
 3. L'outil donne l'**auth-code**, la clé pour le déménagement de l'adresse. Montre-le seulement à la personne, jamais dans un fichier ou dans le journal de bord. Elle le saisit chez le nouveau registraire et y lance le déménagement (transfert). Le plus souvent, elle paie à ce moment-là une année de renouvellement. Pour `.com` et `.net`, un déménagement n'est souvent pas encore possible dans les 60 premiers jours après l'achat.
 4. Une fois le déménagement terminé, elle pose les entrées chez le nouveau registraire : A et AAAA vers le nouveau serveur, `www` et les entrées e-mail (MX), s'il y en avait.
 

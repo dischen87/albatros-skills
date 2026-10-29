@@ -27,7 +27,7 @@ The move isn't a new build. Your project is already packed in boxes that fit any
 
 Go through it briefly with the person (see skill `kosten`): Does the project need more than Albatros offers? Do they want to have everything in their own hands? Do they have an hour or two every month for upkeep? If not, staying is a good decision.
 
-**With Light** the move is small: the `seite/` folder runs with any provider for static sites. Take the logbook to GitHub (step 4, points 1 and 2) and switch the site on there, for example with GitHub Pages. Server, conveyor belt and domain move fall away; the moving checklist stays.
+**With Light** the move is small: the `seite/` folder runs with any provider for static sites. Take the logbook to GitHub (step 4, points 1 and 2) and switch the site on there, for example with GitHub Pages. Server and conveyor belt fall away; the moving checklist stays. If the site has its own domain, switch it over as in step 6, with the records the new provider gives you (on GitHub Pages under Settings → Pages → Custom domain).
 
 ### 2. Moving checklist
 
@@ -143,7 +143,7 @@ First test through the new server's address, without changing the phone book: `c
 **Bought through Albatros** (`konto_status` shows it under “Eigene Domains”, own domains): Albatros keeps the phone book for it. The address moves along to a registrar the person chooses:
 
 1. The person creates an account with the new registrar themselves.
-2. Only call `domain_mitnehmen` after their yes. From then on, Albatros no longer renews the address. Until the move, it keeps pointing to the Albatros server.
+2. Only call `domain_mitnehmen` after their yes. From then on, Albatros no longer renews the address. Until the move, it keeps pointing to your site or server at Albatros.
 3. The tool gives the **auth code**, the key for moving the address. Show it only to the person, never in a file or in the logbook. They enter it at the new registrar and start the move there (transfer). Usually they pay for a year's renewal while doing so. With `.com` and `.net`, a move often isn't possible in the first 60 days after buying.
 4. Once the move is through, they set the entries at the new registrar: A and AAAA to the new server, `www` and the email entries (MX), if there were any.
 
