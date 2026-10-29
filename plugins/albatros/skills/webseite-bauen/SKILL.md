@@ -52,7 +52,7 @@ Sagt die Person nichts dazu, nimmst du, was am meisten Sinn macht, und sagst in 
 
 ### 4. PRD zeigen und abnehmen lassen (`schritt: prd`)
 
-Schreib `docs/prd.md` auf einer Seite und zeig es der Person. Erst nach ihrem Ja wird gebaut.
+Schreib `docs/prd.md` auf einer Seite und zeig es der Person. Erst nach ihrem Ja wird gebaut. Nach dem Ja meldest du zuerst `prd`, dann baust du.
 
 ```markdown
 # PRD: <Name der Seite>
@@ -85,7 +85,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 - Fotos in Handy- und Desktopbreite (Skill `gestaltung`, Schritt 6) und Vergleich mit dem PRD: Geh jede Funktion und jeden Inhalt daraus durch und schreib in `docs/prd.md` dazu, wo sie auf der neuen Seite stehen. Fehlt etwas, baust du es nach, bevor es in den Hafen geht. Fehlt Material (zum Beispiel die Sponsorenlogos), steht ein klar beschrifteter Platzhalter da, nie ein anderes Bild unter falschem Namen.
 - Schau dir jedes Foto selbst an wie eine Besucherin: Ist Text auf Bildern gut lesbar, ist nichts abgeschnitten oder verdeckt? Was nicht passt, behebst du, bevor es in den Hafen geht.
 - Das Zeichen im Browser-Tab (`web/public/favicon.svg` und `favicon.ico`) ist das «A» von Astro: Ersetze es durch das Logo oder ein Zeichen daraus.
-- Läuft die Vorschau, meldest du `lokal`.
+- Läuft die Vorschau, meldest du `lokal`, bevor du der Person die Seite zeigst und auf ihre Antwort wartest.
 
 ### 6. In den Hafen schicken (`schritt: hafen`)
 

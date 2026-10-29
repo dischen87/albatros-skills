@@ -53,7 +53,7 @@ Se la persona non dice niente, prendi quello che ha più senso e dici in una fra
 
 ### 4. Mostrare il PRD e farlo approvare (`schritt: prd`)
 
-Scrivi `docs/prd.md` su una pagina e mostralo alla persona. Solo dopo il suo sì si costruisce.
+Scrivi `docs/prd.md` su una pagina e mostralo alla persona. Solo dopo il suo sì si costruisce. Dopo il sì segnali prima `prd`, poi costruisci.
 
 ```markdown
 # PRD: <nome del sito>
@@ -86,7 +86,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 - Foto in larghezza telefonino e desktop (skill `gestaltung`, passo 6) e confronto con il PRD: passa in rassegna ogni funzione e ogni contenuto e scrivi in `docs/prd.md` dove si trovano sul nuovo sito. Se manca qualcosa, lo costruisci prima che vada nel porto. Se manca del materiale (per esempio i loghi degli sponsor), c'è un segnaposto chiaramente indicato, mai un'altra immagine sotto un nome sbagliato.
 - Guarda tu ogni foto come una visitatrice: il testo sulle immagini si legge bene, niente è tagliato o coperto? Quello che non va lo correggi prima che vada nel porto.
 - Il simbolo nella scheda del browser (`web/public/favicon.svg` e `favicon.ico`) è la «A» di Astro: sostituiscilo con il logo o un segno tratto da esso.
-- Quando l'anteprima gira, segnali `lokal`.
+- Quando l'anteprima gira, segnali `lokal`, prima di mostrare il sito alla persona e aspettare la sua risposta.
 
 ### 6. Mandare al porto (`schritt: hafen`)
 

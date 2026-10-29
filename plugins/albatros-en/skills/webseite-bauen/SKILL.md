@@ -53,7 +53,7 @@ If the person doesn't say anything about it, you take whatever makes the most se
 
 ### 4. Show the PRD and get it signed off (`schritt: prd`)
 
-Write `docs/prd.md` on one page and show it to the person. Building only starts after their yes.
+Write `docs/prd.md` on one page and show it to the person. Building only starts after their yes. After the yes, report `prd` first, then build.
 
 ```markdown
 # PRD: <name of the site>
@@ -86,7 +86,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 - Screenshots at phone and desktop width (skill `gestaltung`, step 6) and a comparison with the PRD: go through every feature and every piece of content in it and note in `docs/prd.md` where they are on the new site. If something is missing, you build it before it goes to the harbour. If material is missing (for example the sponsor logos), there's a clearly labelled placeholder, never a different picture under the wrong name.
 - Look at every screenshot yourself like a visitor would: is text on pictures easy to read, is nothing cut off or covered? Fix whatever doesn't fit before it goes to the harbour.
 - The icon in the browser tab (`web/public/favicon.svg` and `favicon.ico`) is Astro's “A”: replace it with the logo or a mark taken from it.
-- Once the preview is running, report `lokal`.
+- Once the preview is running, report `lokal` before you show the site to the person and wait for their answer.
 
 ### 6. Send it to the harbour (`schritt: hafen`)
 
