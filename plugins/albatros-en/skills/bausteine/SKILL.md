@@ -87,7 +87,7 @@ PocketBase is one single small program with a database, login and admin area. Th
 - **Enter the address:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js`, set the line `ADRESSE` to the site's address (`https://{name}.aufwind.sh` or your own domain). It appears in emails like “forgotten password”.
 - **Add the recipe:** From `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` goes to `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (if present) to `bausteine/pocketbase/pb_hooks/` and `seite/*.html` goes to `seite/`.
   - `anmeldeliste`: the form `anmelden.html`. Everyone may sign up, only the admin area can read the list.
-  - `buchungen`: `buchen.html` shows the free dates, takes bookings and cancels them via the link in the email. More below under “Bookings”.
+  - `buchungen`: `buchen.html` (free dates, booking, cancelling via the link in the email) and `verwaltung.html` (“My bookings” for the person: who's coming, cancelling, weekly schedule). More below under “Bookings”.
   - `mitglieder`: `mitglieder.html` with register, log in, log out. Only logged-in members see the messages. The members are listed in the admin area under `users`.
   - `pinnwand`: `pinnwand.html` shows posts with date and picture. Writing happens in the admin area.
   - You write your own fields or collections as another file `pb_migrations/3_*.js`, following the same pattern.
@@ -103,12 +103,46 @@ PocketBase is one single small program with a database, login and admin area. Th
 
 ### Bookings
 
-The recipe `buchungen` is a small booking tool for classes, guided tours and appointments, without customer accounts and without paying online. It's tested: two people never get the same last place, past dates can't be booked, and emails give the time in Swiss time.
+The recipe `buchungen` is a small booking tool for classes, guided tours and appointments, without customer accounts and without paying online. It's tested: two people never get the same last place, past dates can't be booked, a class stays at 18:30 even after the clocks change, and emails give the time in Swiss time.
 
-- **What the person looks after,** in the admin area: `angebote` (the offers: title, place, a price note like “CHF 25, cash or TWINT on site”, booking cut-off in hours, active) and `termine` (the dates: offer, start, end, places). They see the bookings under `buchungen`. To cancel a single one: status `storniert` and a reason. To cancel a whole class: `abgesagt` on the date, plus the reason, and everyone who booked gets an email. Never delete dates.
-- **Emails first:** Without the mail settings (the “Emails” point above), nobody gets a confirmation. Only go live once a test booking has arrived at the person's own address. Notices about new bookings go to the sender address; you enter a different one in `pb_hooks/buchungen.js` at `MELDUNGEN_AN`.
-- **Test before every push** on the person's computer (Mac or Linux, on Windows in WSL): `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. It downloads PocketBase and checks everything, including five bookings at the same time for the last place. If you change anything in the recipe, it has to stay green.
-- **Adapt the page:** `buchen.html` takes on the site's colours, fonts and spacing (set the variables at the top of the file to the values from `tokens.css`), and the texts go into the person's language. “Book a place” becomes the main button on the home page.
+**How you put it to the person:** “Visitors pick a date on your site and get a confirmation by email. You enter your classes once as a weekly schedule, for example every Monday at 18:30 with 12 places, and on the page ‘My bookings’ you see who's coming.”
+
+You do the technical part, the person only decides. In this order:
+
+1. **Photo of the server** (tool `snapshot`, name `vor-baustein`), before anything gets added.
+2. **Ask for the classes before you build:** name, weekday, time, length, places, location, price and how long before the start people can still book. If the plan only says “we've got that”, ask for them now. Write them in `docs/kurse.md` and as `bausteine/pocketbase/pb_migrations/3_kurse.js` (pattern below): that way the dates are there from the first start, and nobody types them up.
+3. **Add it:** `2_buchungen.js` to `bausteine/pocketbase/pb_migrations/`, both files from `pb_hooks/` to `bausteine/pocketbase/pb_hooks/`. Leave the folder `rezepte/buchungen` where it is; the test lives there.
+4. **Make two proper pages out of it,** with header, menu and footer like all the others, never the bare HTML files:
+   - `seite/buchen.html` becomes the booking page, for example `web/src/pages/kurse.astro` in the site's layout: take over the content of `<main>`, the script as `<script is:inline>`, and from the styles only the parts without `body`, `main` and `h1`. At the top, the weekly schedule in words (“Monday 18:30 Evening yoga”), from `docs/kurse.md`.
+   - `seite/verwaltung.html` becomes “My bookings”, for example `web/src/pages/verwaltung.astro`, with `<meta name="robots" content="noindex">` and not in the menu.
+   - Set the colours at the top of both files to the site's tokens (`var(--…)` from `tokens.css`), no copied colour values.
+   - Enter the path of the booking page in `pb_hooks/buchungen.js` at `BUCHUNGSSEITE` (for example `"/kurse/"`), otherwise the links in the emails lead nowhere.
+5. **Check, with proof:** `bun bausteine/pocketbase/rezepte/buchungen/test.ts` must report “Alles grün”. Then build in `web/` (`npm run build`) and start `bun bausteine/pocketbase/lokal.ts`: the whole site runs with the booking tool on the person's computer, and emails show up in the terminal instead of reaching real people. Book a place yourself, cancel it again, and log in on “My bookings” with the account that `lokal.ts` shows. Show the person the screenshot of the confirmation and the text of the email. Without this output, the check isn't green.
+6. **Emails, before the person shares the link:** After going live, set up the emails (the “Emails” point above) and book a place on the web to the person's own address. Only once this email has arrived is the booking tool finished. Notices about new bookings go to the sender address; you enter a different one in `pb_hooks/buchungen.js` at `MELDUNGEN_AN`.
+7. **Show the person how to look after it themselves:** open “My bookings” on their phone (`https://{name}.aufwind.sh/verwaltung/`) and log in with the admin area's account. There they see the next two weeks, cancel a booking or a whole date (everyone who booked gets an email with the reason), and add classes or end them. Bookmark the page for them. One-off dates like a workshop don't go there (yet), but into the admin area under `termine` (the dates).
+
+Pattern for `3_kurse.js` (weekdays `mo` to `so`, time in Swiss time, booking cut-off in minutes before the start):
+
+```js
+/// <reference path="../pb_data/types.d.ts" />
+// The classes from docs/kurse.md. Later the person changes them on “My bookings” themselves.
+migrate((app) => {
+  const kurs = (titel, ort, preis, buchungsschluss_min, plaene) => {
+    const a = new Record(app.findCollectionByNameOrId("angebote"));
+    a.set("titel", titel); a.set("ort", ort); a.set("preis_hinweis", preis); a.set("buchungsschluss_min", buchungsschluss_min); a.set("aktiv", true);
+    app.save(a);
+    for (const [wochentag, zeit, dauer_min, plaetze] of plaene) {
+      const w = new Record(app.findCollectionByNameOrId("wochenplan"));
+      w.set("angebot", a.id); w.set("wochentag", wochentag); w.set("zeit", zeit); w.set("dauer_min", dauer_min); w.set("plaetze", plaetze); w.set("aktiv", true);
+      app.save(w);
+    }
+  };
+  kurs("Evening yoga", "Seestrasse 1, Testwil", "CHF 25, cash or TWINT on site", 30, [["mo", "18:30", 75, 12], ["mi", "18:30", 75, 12]]);
+});
+```
+
+The weekly schedule creates the dates eight weeks ahead, and new ones are added every night. If the person changes the time or places, that applies to all dates without a booking; booked ones stay as they are.
+
 - **If you extend it, these rules stay:** Free places are always places minus active bookings, never a counter. Checks happen on the server (`pb_hooks/`), never only in the browser. Store times as a point in time, show them with `Europe/Zurich`. Give deadlines as a date and time, never “24 h before”. After booking, a confirmation page and an email. Only collect what's needed: no address, no date of birth, no health details. A deletion period (suggestion: 12 months after the date) goes into the privacy policy (skill `recht-ch`).
 - **Deliberately left out,** until it's missed: paying online (if there are many no-shows, or for a deposit: a payment link with the booking number), customer accounts for subscriptions or 10-visit passes (recipe `mitglieder`), a waiting list, a reminder the day before.
 - **With Light** there's no real booking: without a program on the server, nobody counts the places. Say so honestly and leave the choice: a request by email or through a form service (“You'll get a confirmation by tomorrow”), a link to someone else's booking tool (costs money, data often abroad), or Pilot with this recipe.

@@ -87,7 +87,7 @@ PocketBase est un seul petit programme avec base de données, connexion et admin
 - **Inscrire l'adresse :** dans `bausteine/pocketbase/pb_migrations/1_einstellungen.js`, mettre la ligne `ADRESSE` sur l'adresse de la page (`https://{name}.aufwind.sh` ou le propre domaine). Elle apparaît dans les e-mails comme « Mot de passe oublié ».
 - **Mettre en place la recette :** depuis `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` va dans `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (s'il y en a) dans `bausteine/pocketbase/pb_hooks/` et `seite/*.html` dans `seite/`.
   - `anmeldeliste` : formulaire `anmelden.html`. Tout le monde peut s'inscrire, seule l'administration peut lire.
-  - `buchungen` : `buchen.html` affiche les dates libres, prend les réservations et les annule par le lien de l'e-mail. Plus de détails plus bas, sous « Réservations ».
+  - `buchungen` : `buchen.html` (dates libres, réserver, annuler par le lien de l'e-mail) et `verwaltung.html` (« Mes réservations » pour la personne : qui vient, annuler, programme de la semaine). Plus de détails plus bas, sous « Réservations ».
   - `mitglieder` : `mitglieder.html` pour créer un compte, se connecter et se déconnecter. Seuls les membres connectés voient les messages. Les membres se trouvent dans l'administration sous `users`.
   - `pinnwand` : `pinnwand.html` affiche des articles avec date et image. On les écrit dans l'administration.
   - Des champs ou des collections en plus, tu les écris dans un autre fichier `pb_migrations/3_*.js`, sur le même modèle.
@@ -103,12 +103,46 @@ PocketBase est un seul petit programme avec base de données, connexion et admin
 
 ### Réservations
 
-La recette `buchungen` est un petit outil de réservation pour des cours, des visites guidées et des rendez-vous, sans compte client et sans paiement en ligne. Elle est testée : deux personnes n'obtiennent jamais la même dernière place, les dates passées ne peuvent pas être réservées, les e-mails donnent l'heure en heure suisse.
+La recette `buchungen` est un petit outil de réservation pour des cours, des visites guidées et des rendez-vous, sans compte client et sans paiement en ligne. Elle est testée : deux personnes n'obtiennent jamais la même dernière place, les dates passées ne peuvent pas être réservées, un cours reste à 18:30 même après le changement d'heure, les e-mails donnent l'heure suisse.
 
-- **Ce dont la personne s'occupe,** dans l'administration : `angebote` (les offres : titre, lieu, indication de prix comme « CHF 25, en espèces ou TWINT sur place », clôture des réservations en heures, actif) et `termine` (les dates : offre, début, fin, places). Les réservations, elle les voit sous `buchungen`. En annuler une seule : statut `storniert` et une raison. Annuler tout un cours : sur la date, `abgesagt` et la raison, toutes les personnes qui ont réservé reçoivent un e-mail. Ne jamais supprimer de dates.
-- **D'abord les e-mails :** sans réglages des e-mails (point « E-mails » plus haut), personne ne reçoit de confirmation. Ne mettre en ligne que quand une réservation de test est arrivée à l'adresse de la personne. Les avis de nouvelles réservations vont à l'adresse de l'expéditeur ; une autre, tu l'inscris dans `pb_hooks/buchungen.js` à `MELDUNGEN_AN`.
-- **Tester avant chaque push** sur l'ordinateur de la personne (Mac ou Linux, sous Windows dans WSL) : `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. Il télécharge PocketBase et vérifie tout, aussi cinq réservations simultanées sur la dernière place. Si vous modifiez quelque chose dans la recette, il doit rester vert.
-- **Adapter la page :** `buchen.html` reprend les couleurs, la police et les espacements du site (mettre les variables tout en haut du fichier sur les valeurs de `tokens.css`), les textes passent dans la langue de la personne. « Réserver une place » devient le bouton principal de la page d'accueil.
+**Tu le dis ainsi à la personne :** « Les visiteurs choisissent une date sur ton site et reçoivent une confirmation par e-mail. Tu inscris tes cours une seule fois comme programme de la semaine, par exemple chaque lundi à 18:30 avec 12 places, et tu vois sur la page “Mes réservations” qui vient. »
+
+La technique, c'est toi qui t'en occupes, la personne ne fait que décider. Dans cet ordre :
+
+1. **Photo du serveur** (outil `snapshot`, nom `vor-baustein`), avant d'installer quoi que ce soit.
+2. **Demander les cours avant de construire :** nom, jour de la semaine, heure, durée, places, lieu, prix et jusqu'à combien de temps avant le début on peut réserver. Si le plan dit seulement « on l'a », demande-les maintenant. Écris-les dans `docs/kurse.md` et comme `bausteine/pocketbase/pb_migrations/3_kurse.js` (modèle plus bas) : ainsi les dates sont là dès le premier démarrage, personne ne les recopie.
+3. **Installer :** `2_buchungen.js` dans `bausteine/pocketbase/pb_migrations/`, les deux fichiers de `pb_hooks/` dans `bausteine/pocketbase/pb_hooks/`. Le dossier `rezepte/buchungen`, tu le laisses en place, c'est là que se trouve le test.
+4. **En faire deux vraies pages,** avec en-tête, menu et pied de page comme toutes les autres, jamais les fichiers HTML nus :
+   - `seite/buchen.html` devient la page pour réserver, par exemple `web/src/pages/kurse.astro` dans la mise en page du site : reprendre le contenu de `<main>`, le script comme `<script is:inline>`, et des styles seulement les parties sans `body`, `main` et `h1`. En haut, le programme de la semaine en toutes lettres (« Lundi 18:30 Yoga du soir »), tiré de `docs/kurse.md`.
+   - `seite/verwaltung.html` devient « Mes réservations », par exemple `web/src/pages/verwaltung.astro`, avec `<meta name="robots" content="noindex">` et pas dans le menu.
+   - Les couleurs tout en haut des deux fichiers, tu les mets sur les tokens du site (`var(--…)` de `tokens.css`), pas de valeurs de couleur copiées.
+   - Le chemin de la page pour réserver, tu l'inscris dans `pb_hooks/buchungen.js` à `BUCHUNGSSEITE` (par exemple `"/kurse/"`), sinon les liens des e-mails ne mènent nulle part.
+5. **Vérifier, avec preuve :** `bun bausteine/pocketbase/rezepte/buchungen/test.ts` doit annoncer « Alles grün ». Ensuite, construire dans `web/` (`npm run build`) et lancer `bun bausteine/pocketbase/lokal.ts` : tout le site tourne avec l'outil de réservation sur l'ordinateur de la personne, les e-mails apparaissent dans le terminal au lieu d'arriver chez de vraies personnes. Réserve toi-même une place, annule-la, connecte-toi sur « Mes réservations » avec le compte que `lokal.ts` affiche. Montre à la personne la photo de la confirmation et le texte de l'e-mail. Sans ces résultats, la vérification n'est pas verte.
+6. **Les e-mails, avant que la personne partage le lien :** après la mise en ligne, régler les e-mails (point « E-mails » plus haut) et réserver en ligne une place à l'adresse de la personne. L'outil de réservation n'est terminé que quand cet e-mail est arrivé. Les avis de nouvelles réservations vont à l'adresse de l'expéditeur ; une autre, tu l'inscris dans `pb_hooks/buchungen.js` à `MELDUNGEN_AN`.
+7. **Montrer à la personne comment elle s'en occupe elle-même :** ouvrir « Mes réservations » sur le natel (`https://{name}.aufwind.sh/verwaltung/`) et se connecter avec le compte de l'administration. Elle y voit les deux prochaines semaines, annule une réservation ou toute une date (toutes les personnes qui ont réservé reçoivent un e-mail avec la raison), inscrit des cours ou y met fin. Ajoute-lui la page aux favoris. Les dates uniques comme un atelier ne se font pas (encore) là, mais dans l'administration sous `termine` (les dates).
+
+Modèle pour `3_kurse.js` (jours de la semaine de `mo` à `so`, heure en heure suisse, clôture des réservations en minutes avant le début) :
+
+```js
+/// <reference path="../pb_data/types.d.ts" />
+// Les cours de docs/kurse.md. Plus tard, la personne les modifie elle-même sur « Mes réservations ».
+migrate((app) => {
+  const kurs = (titel, ort, preis, buchungsschluss_min, plaene) => {
+    const a = new Record(app.findCollectionByNameOrId("angebote"));
+    a.set("titel", titel); a.set("ort", ort); a.set("preis_hinweis", preis); a.set("buchungsschluss_min", buchungsschluss_min); a.set("aktiv", true);
+    app.save(a);
+    for (const [wochentag, zeit, dauer_min, plaetze] of plaene) {
+      const w = new Record(app.findCollectionByNameOrId("wochenplan"));
+      w.set("angebot", a.id); w.set("wochentag", wochentag); w.set("zeit", zeit); w.set("dauer_min", dauer_min); w.set("plaetze", plaetze); w.set("aktiv", true);
+      app.save(w);
+    }
+  };
+  kurs("Yoga du soir", "Seestrasse 1, Testwil", "CHF 25, en espèces ou TWINT sur place", 30, [["mo", "18:30", 75, 12], ["mi", "18:30", 75, 12]]);
+});
+```
+
+Le programme de la semaine produit les dates huit semaines à l'avance, et de nouvelles s'ajoutent chaque nuit. Si la personne change l'heure ou les places, ça vaut pour toutes les dates sans réservation ; celles qui sont réservées restent comme elles sont.
+
 - **Si vous l'étendez, ces règles restent :** les places libres, c'est toujours les places moins les réservations actives, jamais un compteur. La vérification se fait sur le serveur (`pb_hooks/`), jamais seulement dans le navigateur web. Enregistrer les heures comme un instant précis, les afficher avec `Europe/Zurich`. Donner les délais avec la date et l'heure, jamais « 24 h avant ». Après la réservation, une page de confirmation et un e-mail. Ne demander que le nécessaire : pas d'adresse, pas de date de naissance, pas d'informations sur la santé. Un délai d'effacement (proposition : 12 mois après la date) va dans la déclaration de protection des données (skill `recht-ch`).
 - **Volontairement pas inclus,** seulement quand ça manque : le paiement en ligne (s'il y a beaucoup de personnes qui ne viennent pas sans prévenir, ou pour un acompte : un lien de paiement avec le numéro de réservation), des comptes clients pour des abonnements ou des cartes de 10 entrées (recette `mitglieder`), une liste d'attente, un rappel la veille.
 - **Avec Light,** pas de vraie réservation : sans programme sur le serveur, personne ne compte les places. Le dire honnêtement et laisser le choix : une demande par e-mail ou par un service de formulaires (« Tu reçois une confirmation d'ici demain »), un lien vers l'outil de réservation d'un autre fournisseur (payant, données souvent à l'étranger), ou Pilot avec cette recette.

@@ -16,7 +16,7 @@ A floor plan on one sheet of paper is enough. It saves a lot of rebuilding later
 ## How you talk
 
 - **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
-- Casual “you”, short questions, one question per message. Write the answers down word for word, so the person recognises their own plan. No jargon: “pages” instead of “sitemap”, “menu” instead of “navigation”.
+- Casual “you”, short questions. One question per message; if the person has already told you a lot, only ask what's missing, even two or three short questions at once. Write the answers down word for word, so the person recognises their own plan. No jargon: “pages” instead of “sitemap”, “menu” instead of “navigation”.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 
 ## Steps: eight questions
@@ -30,7 +30,7 @@ A floor plan on one sheet of paper is enough. It saves a lot of rebuilding later
    - About us, or about me
    - Contact
    - Legal notice (Impressum, the details Swiss law requires about who runs the site) and privacy policy (mandatory, see skill `recht-ch`)
-5. **What's already there?** Texts, photos, logo, prices, opening hours. Whatever's missing goes on the list for the skill `inhalte`.
+5. **What's already there?** Texts, photos, logo, prices, opening hours. If the person says “we've got that”, ask for it straight away (text, list or a photo of it), above all for anything a feature needs, for example classes with times and places. Whatever's missing goes on the list for the skill `inhalte`.
 6. **Which examples?** Two or three websites the person likes, and what exactly about them (colours, calm, photos, how short the texts are). That helps later with the skill `gestaltung`.
 7. **What does the site need to be able to do?** In which languages, who changes the content, should visitors sign up or log in? Several languages still make a normal site. Only a sign-up list, bookings with places, a login or a noticeboard for others needs a building block (skill `bausteine`).
 8. **How will you know the site works?** One number the person wants to keep an eye on, e.g. enquiries per month. The skill `statistik` needs that later.

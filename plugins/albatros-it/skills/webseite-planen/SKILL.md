@@ -17,7 +17,7 @@ Basta una pianta su un foglio di carta. Più tardi risparmia molti lavori di ris
 
 - **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
-- Dai del tu, domande brevi, una domanda per messaggio. Riprendi le risposte alla lettera: la persona deve riconoscere il suo piano. Niente gergo tecnico: «pagine» invece di «sitemap», «menu» invece di «navigazione».
+- Dai del tu, domande brevi. Una domanda per messaggio; se la persona ha già raccontato molto, chiedi solo quello che manca, anche due o tre domande brevi insieme. Riprendi le risposte alla lettera: la persona deve riconoscere il suo piano. Niente gergo tecnico: «pagine» invece di «sitemap», «menu» invece di «navigazione».
 
 ## Procedura: otto domande
 
@@ -30,7 +30,7 @@ Basta una pianta su un foglio di carta. Più tardi risparmia molti lavori di ris
    - Chi siamo oppure chi sono
    - Contatto
    - Impressum e protezione dei dati (obbligatori, vedi lo skill `recht-ch`)
-5. **Cosa c'è già?** Testi, foto, logo, prezzi, orari d'apertura. Quello che manca va sulla lista per lo skill `inhalte`.
+5. **Cosa c'è già?** Testi, foto, logo, prezzi, orari d'apertura. Se la persona dice «ce l'abbiamo», chiedilo subito (testo, lista o una foto), soprattutto tutto quello che serve a una funzione, per esempio corsi con orari e posti. Quello che manca va sulla lista per lo skill `inhalte`.
 6. **Quali modelli?** Due o tre siti web che piacciono alla persona, e cosa esattamente le piace (colori, calma, foto, quanto sono brevi i testi). Più tardi aiuta con lo skill `gestaltung`.
 7. **Cosa deve saper fare il sito?** In quali lingue, chi cambia i contenuti, i visitatori devono iscriversi o accedere? Più lingue restano un sito normale. Solo una lista di iscrizione, prenotazioni con posti, un accesso o una bacheca per altri richiedono un blocco (skill `bausteine`).
 8. **Da cosa capisci che il sito funziona?** Un numero che la persona vuole tenere d'occhio, per esempio le richieste al mese. Più tardi serve allo skill `statistik`.

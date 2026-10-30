@@ -87,7 +87,7 @@ PocketBase è un unico piccolo programma con banca dati, accesso e amministrazio
 - **Inserire l'indirizzo:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js` imposta la riga `ADRESSE` sull'indirizzo del sito (`https://{name}.aufwind.sh` o il dominio proprio). Compare nelle e-mail come «Password dimenticata».
 - **Inserire la ricetta:** Da `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` va in `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (se c'è) in `bausteine/pocketbase/pb_hooks/` e `seite/*.html` va in `seite/`.
   - `anmeldeliste`: modulo `anmelden.html`. Tutti possono iscriversi, leggere può solo l'amministrazione.
-  - `buchungen`: `buchen.html` mostra le date libere, accetta le prenotazioni e le annulla tramite il link nell'e-mail. Altro più sotto in «Prenotazioni».
+  - `buchungen`: `buchen.html` (date libere, prenotare, annullare tramite il link nell'e-mail) e `verwaltung.html` («Le mie prenotazioni» per la persona: chi viene, annullare, programma settimanale). Altro più sotto in «Prenotazioni».
   - `mitglieder`: `mitglieder.html` con registrarsi, accedere, uscire. Le comunicazioni le vedono solo i membri che hanno effettuato l'accesso. I membri si trovano nell'amministrazione sotto `users`.
   - `pinnwand`: `pinnwand.html` mostra gli articoli con data e immagine. Si scrive nell'amministrazione.
   - Campi o raccolte propri li scrivi come ulteriore file `pb_migrations/3_*.js` secondo lo stesso schema.
@@ -103,12 +103,46 @@ PocketBase è un unico piccolo programma con banca dati, accesso e amministrazio
 
 ### Prenotazioni
 
-La ricetta `buchungen` è un piccolo strumento di prenotazione per corsi, visite guidate e appuntamenti, senza account cliente e senza pagamento online. È collaudata: due persone non ricevono mai lo stesso ultimo posto, le date passate non si possono prenotare, le e-mail indicano l'ora svizzera.
+La ricetta `buchungen` è un piccolo strumento di prenotazione per corsi, visite guidate e appuntamenti, senza account cliente e senza pagamento online. È collaudata: due persone non ricevono mai lo stesso ultimo posto, le date passate non si possono prenotare, un corso resta alle 18:30 anche dopo il cambio dell'ora, le e-mail indicano l'ora svizzera.
 
-- **Cosa cura la persona,** nell'amministrazione: `angebote` (le offerte: titolo, luogo, indicazione del prezzo come «CHF 25, in contanti o TWINT sul posto», chiusura delle prenotazioni in ore, attivo) e `termine` (le date: offerta, inizio, fine, posti). Le prenotazioni le vede sotto `buchungen`. Annullarne una sola: stato `storniert` e un motivo. Annullare un intero corso: sulla data `abgesagt` e il motivo, tutte le persone prenotate ricevono un'e-mail. Non cancellare mai le date.
-- **Prima le e-mail:** Senza le impostazioni e-mail (punto «E-mail» qui sopra) nessuno riceve una conferma. Vai online solo quando una prenotazione di prova è arrivata all'indirizzo della persona. Gli avvisi di nuove prenotazioni vanno all'indirizzo del mittente; un altro lo inserisci in `pb_hooks/buchungen.js` alla voce `MELDUNGEN_AN`.
-- **Testare prima di ogni push** sul computer della persona (Mac o Linux, su Windows in WSL): `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. Scarica PocketBase e controlla tutto, anche cinque prenotazioni contemporanee sull'ultimo posto. Se cambiate qualcosa nella ricetta, deve restare verde.
-- **Adattare la pagina:** `buchen.html` riprende colori, caratteri e spaziature del sito (imposta le variabili in cima al file sui valori di `tokens.css`), i testi vanno nella lingua della persona. «Prenota un posto» diventa il pulsante principale della pagina iniziale.
+**Alla persona lo dici così:** «I visitatori scelgono una data sul tuo sito e ricevono una conferma per e-mail. Inserisci i tuoi corsi una volta sola come programma settimanale, per esempio ogni lunedì alle 18:30 con 12 posti, e sulla pagina “Le mie prenotazioni” vedi chi viene.»
+
+La parte tecnica la fai tu, la persona decide soltanto. In quest'ordine:
+
+1. **Foto del server** (strumento `snapshot`, nome `vor-baustein`), prima di montare qualsiasi cosa.
+2. **Chiedere i corsi prima di costruire:** nome, giorno della settimana, ora, durata, posti, luogo, prezzo e fino a quanto prima dell'inizio si può prenotare. Se nel piano c'è solo «ce l'abbiamo», chiedili adesso. Scrivili in `docs/kurse.md` e come `bausteine/pocketbase/pb_migrations/3_kurse.js` (schema qui sotto): così le date ci sono dal primo avvio, nessuno le ricopia.
+3. **Montare:** `2_buchungen.js` in `bausteine/pocketbase/pb_migrations/`, entrambi i file di `pb_hooks/` in `bausteine/pocketbase/pb_hooks/`. La cartella `rezepte/buchungen` la lasci dov'è, lì c'è il test.
+4. **Farne due pagine vere,** con testata, menu e piè di pagina come tutte le altre, mai i file HTML nudi:
+   - Da `seite/buchen.html` nasce la pagina per prenotare, per esempio `web/src/pages/kurse.astro` nel layout del sito: riprendere il contenuto di `<main>`, lo script come `<script is:inline>`, degli stili solo le parti senza `body`, `main` e `h1`. In alto c'è il programma settimanale a parole («Lunedì 18:30 Yoga serale»), da `docs/kurse.md`.
+   - Da `seite/verwaltung.html` nasce «Le mie prenotazioni», per esempio `web/src/pages/verwaltung.astro`, con `<meta name="robots" content="noindex">` e non nel menu.
+   - I colori in cima a entrambi i file li imposti sui token del sito (`var(--…)` da `tokens.css`), niente valori di colore copiati.
+   - Il percorso della pagina per prenotare lo inserisci in `pb_hooks/buchungen.js` alla voce `BUCHUNGSSEITE` (per esempio `"/kurse/"`), altrimenti i link nelle e-mail non portano da nessuna parte.
+5. **Controllare, con una prova:** `bun bausteine/pocketbase/rezepte/buchungen/test.ts` deve segnalare «Alles grün». Poi costruire in `web/` (`npm run build`) e avviare `bun bausteine/pocketbase/lokal.ts`: tutto il sito gira con lo strumento di prenotazione sul computer della persona, le e-mail compaiono nel terminale invece che da persone vere. Prenota tu stesso un posto, annullalo, accedi a «Le mie prenotazioni» con l'account che mostra `lokal.ts`. Mostra alla persona la foto della conferma e il testo dell'e-mail. Senza questi risultati il controllo non è verde.
+6. **Le e-mail, prima che la persona condivida il link:** dopo la messa online imposta le e-mail (punto «E-mail» qui sopra) e prenota in rete un posto all'indirizzo della persona. Lo strumento di prenotazione è finito solo quando questa e-mail è arrivata. Gli avvisi di nuove prenotazioni vanno all'indirizzo del mittente; un altro lo inserisci in `pb_hooks/buchungen.js` alla voce `MELDUNGEN_AN`.
+7. **Mostrare alla persona come gestire tutto da sola:** aprire «Le mie prenotazioni» sul cellulare (`https://{name}.aufwind.sh/verwaltung/`) e accedere con l'account dell'amministrazione. Lì vede le prossime due settimane, annulla una prenotazione o un'intera data (tutte le persone prenotate ricevono un'e-mail con il motivo), inserisce corsi o li termina. Aggiungile la pagina ai preferiti. Le date singole come un workshop non si fanno (ancora) lì, ma nell'amministrazione sotto `termine` (le date).
+
+Schema per `3_kurse.js` (giorni della settimana da `mo` a `so`, ora in ora svizzera, chiusura delle prenotazioni in minuti prima dell'inizio):
+
+```js
+/// <reference path="../pb_data/types.d.ts" />
+// I corsi da docs/kurse.md. Più tardi la persona li cambia da sola su «Le mie prenotazioni».
+migrate((app) => {
+  const kurs = (titel, ort, preis, buchungsschluss_min, plaene) => {
+    const a = new Record(app.findCollectionByNameOrId("angebote"));
+    a.set("titel", titel); a.set("ort", ort); a.set("preis_hinweis", preis); a.set("buchungsschluss_min", buchungsschluss_min); a.set("aktiv", true);
+    app.save(a);
+    for (const [wochentag, zeit, dauer_min, plaetze] of plaene) {
+      const w = new Record(app.findCollectionByNameOrId("wochenplan"));
+      w.set("angebot", a.id); w.set("wochentag", wochentag); w.set("zeit", zeit); w.set("dauer_min", dauer_min); w.set("plaetze", plaetze); w.set("aktiv", true);
+      app.save(w);
+    }
+  };
+  kurs("Yoga serale", "Seestrasse 1, Testwil", "CHF 25, in contanti o TWINT sul posto", 30, [["mo", "18:30", 75, 12], ["mi", "18:30", 75, 12]]);
+});
+```
+
+Dal programma settimanale nascono le date per otto settimane in anticipo, ogni notte se ne aggiungono di nuove. Se la persona cambia ora o posti, vale per tutte le date senza prenotazioni; quelle prenotate restano come sono.
+
 - **Se lo ampliate, queste regole restano:** I posti liberi sono sempre i posti meno le prenotazioni attive, mai un contatore. Il controllo avviene nel server (`pb_hooks/`), mai solo nel browser. Salvare gli orari come istante preciso, mostrarli con `Europe/Zurich`. Indicare le scadenze con data e ora, mai «24 h prima». Dopo la prenotazione una pagina di conferma e un'e-mail. Raccogliere solo quello che serve: niente indirizzo, niente data di nascita, niente dati sulla salute. Un termine di cancellazione (proposta: 12 mesi dopo la data) va nella dichiarazione sulla protezione dei dati (skill `recht-ch`).
 - **Volutamente non incluso,** solo quando manca: pagamento online (se molte persone non si presentano, o per un acconto: un link di pagamento con il numero di prenotazione), account cliente per abbonamenti o carte da 10 ingressi (ricetta `mitglieder`), lista d'attesa, promemoria il giorno prima.
 - **Con Light** non si può prenotare davvero: senza un programma sul server nessuno conta i posti. Dillo onestamente e lascia la scelta: richiesta per e-mail o con un servizio di moduli («Ricevi una conferma entro domani»), un link a uno strumento di prenotazione di un altro fornitore (costa, dati spesso all'estero), o Pilot con questa ricetta.

@@ -123,7 +123,8 @@ The PRD is the building plan on one page, with the list of what gets checked at 
 
 ### For all pages
 - [ ] Content as in the brief, no placeholder without a clear label
-- [ ] Phone (390 px wide): nothing cut off, readable without zooming, buttons at least 44 px high
+- [ ] Phone (390 px wide): nothing cut off, readable without zooming, at least 16 px of margin on the left and right, buttons at least 44 px high
+- [ ] Every page, including the building blocks' pages (for example for booking), has a header, menu and footer with the legal notice and privacy policy
 - [ ] Contrast: text at least 4.5 : 1, buttons and borders at least 3 : 1
 - [ ] Works with the keyboard, the focus is visible
 - [ ] Legal notice and privacy policy are there and linked on every page
@@ -153,6 +154,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 
 - In `web/astro.config.mjs`: `outDir: '../seite'`. Albatros delivers the folder `seite/`, with Light directly and with Pilot over the conveyor belt.
 - `tokens.css` from step 3 sits in `web/src/styles/` and is included in every layout. You build the components from `docs/designsystem.md` first, then the pages out of them.
+- **Data first:** Whatever the person named in the plan (classes with times and places, prices, opening hours), you collect now, before you build. A “we've got that” in the plan isn't enough: ask for the text, the list or a photo of it.
 - Lists like dates, tournaments or sponsors sit as data in `web/src/data/*.json`, and the pages read them. Documents and pictures go into `web/public/`, pictures made smaller.
 - The icon in the browser tab (`web/public/favicon.svg` and `favicon.ico`) is Astro's “A”: replace it with the logo or a mark taken from it.
 - If material is missing (for example the sponsor logos), there's a clearly labelled placeholder, never a different picture under the wrong name.
@@ -160,6 +162,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```bash
   cd web && npm run build && npx astro preview --open
   ```
+- **With a building block** (bookings, sign-up list, login), you start `bun bausteine/pocketbase/lokal.ts` instead of the preview: only then do forms and bookings really work, on the person's computer.
 - Once the preview is running, report `lokal` before you show the site to the person and wait for their answer.
 
 ### 7. Check (`schritt: pruefung`)
@@ -178,6 +181,7 @@ After that you write four reports, one page each, in the person's language:
 
 - `docs/pruefung/sicherheit.md` (security and the law): secrets in the code, `npm audit`, no `.env` in `seite/`, legal notice and privacy policy there and complete (skill `recht-ch`), which outside services and cookies the site uses.
 - `docs/pruefung/ablaeufe.md` (flows and access): the accessibility rules (WCAG 2.2 AA, axe) on every page, dead links, every form tried out once yourself, the home page gone through with the keyboard (Tab), the flows from the PRD step by step.
+  - **Green only with proof.** For every feature with a building block, the test's output (“Alles grün”) and a screenshot of a real test booking or a real entry on this computer go into the report. If something didn't work, the traffic light is yellow or red. Never write “walked through” if you haven't done it.
 - `docs/pruefung/aussehen.md` (looks): only values from `tokens.css`, design system followed, every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`.
 - `docs/pruefung/code.md` (code and speed): Lighthouse in the four areas, JavaScript per page, picture sizes, and which acceptance criteria are met.
 
@@ -241,6 +245,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<your site
   node scripts/pruefen.mjs --live https://{name}.aufwind.sh
   ```
   If nothing is red there, report `fliessband` and `live`, open the address with the person (`open https://{name}.aufwind.sh`) and compare it with the screenshots from step 7.
+- **With a building block, “live” doesn't mean “done” yet:** Only once the data is in (for example the classes) and a test booking on the web has brought its email to the person's own address (skill `bausteine`) do you tell the person they can share the link. Until then, say honestly what's still missing.
 - **Still not there after three minutes:** ask `konto_status`. With Light it says whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour, because nothing was built before the push or `seite/` is in `.gitignore`. With Pilot you look in the harbour under “Actions” to see where the conveyor belt stopped (skill `pipeline`). Fix it, new entry, push, check again. Only if it still doesn't work do you tell the person what you checked and ask the coach (`coach_fragen`).
 
 If the person then wants something different (“there’s still … missing”, a date, a text), you load the skill `webseite-aendern` and follow it. The site is released and online, so every change needs its criterion in the PRD, a before and after, and a new release before the push.

@@ -72,7 +72,7 @@ I siti fatti con l'IA si riconoscono dagli stessi tratti. Controlla ogni bozza e
 - Emoji come icone.
 - Inter o un altro carattere standard dappertutto, tutti i titoli alla stessa voce.
 - Testata centrata con una macchia di colore dietro e due pulsanti uno accanto all'altro.
-- Tre schede uguali in fila, con la stessa ombra, lo stesso arrotondamento e un'icona ciascuna.
+- Tre o quattro schede della stessa grandezza una accanto all'altra, non importa se con icona, arrotondate o squadrate. È il tratto dell'IA più frequente: ordina il contenuto secondo la sua importanza, non in caselle uguali.
 - Aspetto da immagini di repertorio: persone sorridenti al portatile, montagne di chissà dove.
 - Frasi fatte: «Benvenuti sul nostro sito», «Scopri», «Il vostro partner per», «con passione», «innovativo», «senza intoppi».
 - Numeri, recensioni, citazioni o loghi di clienti inventati. Promesse di tempo come «in 60 secondi».
@@ -137,7 +137,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Guarda tu stesso ogni foto e confrontala con la bozza. Solo dopo mostrala alla persona. Dopo il suo sì: diario di bordo (skill `git-logbuch`), nastro trasportatore (skill `pipeline`).
+Guarda tu stesso ogni foto e confrontala con la bozza: sul telefonino il testo ha spazio a sinistra e a destra? Niente è tagliato o spostato? Solo dopo mostrala alla persona. Dopo il suo sì: diario di bordo (skill `git-logbuch`), nastro trasportatore (skill `pipeline`).
 
 ## Trappole
 

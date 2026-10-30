@@ -123,7 +123,8 @@ Le PRD, c'est le plan de construction sur une page, avec la liste de ce qu'on v�
 
 ### Pour toutes les pages
 - [ ] Contenu comme dans le mandat, pas d'espace réservé sans nom clair
-- [ ] Natel (390 px de large) : rien de coupé, lisible sans zoom, boutons d'au moins 44 px de haut
+- [ ] Natel (390 px de large) : rien de coupé, lisible sans zoom, au moins 16 px de marge à gauche et à droite, boutons d'au moins 44 px de haut
+- [ ] Chaque page, aussi les pages des briques (par exemple pour réserver), a un en-tête, un menu et un pied de page avec l'impressum et la protection des données
 - [ ] Contraste : texte au moins 4,5 : 1, boutons et bordures au moins 3 : 1
 - [ ] Utilisable au clavier, le focus est visible
 - [ ] Impressum et protection des données présents et liés sur chaque page
@@ -153,6 +154,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 
 - Dans `web/astro.config.mjs` : `outDir: '../seite'`. Albatros livre le dossier `seite/`, avec Light directement et avec Pilot par le tapis roulant.
 - `tokens.css` de l'étape 3 se trouve dans `web/src/styles/` et est intégré dans chaque mise en page (layout). Les composants de `docs/designsystem.md`, tu les construis d'abord, puis les pages à partir d'eux.
+- **D'abord les données :** ce que la personne a nommé dans le plan (des cours avec horaires et places, des prix, des horaires d'ouverture), tu vas le chercher maintenant, avant de construire. Un « on l'a » dans le plan ne suffit pas : demande le texte, la liste ou une photo.
 - Les listes comme les dates, les tournois ou les sponsors sont des données dans `web/src/data/*.json`, que les pages lisent. Les documents et les images vont dans `web/public/`, les images réduites.
 - Le symbole dans l'onglet du navigateur (`web/public/favicon.svg` et `favicon.ico`) est le « A » d'Astro : remplace-le par le logo ou un signe tiré de celui-ci.
 - S'il manque du matériel (par exemple les logos des sponsors), il y a un espace réservé clairement nommé, jamais une autre image sous un faux nom.
@@ -160,6 +162,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```bash
   cd web && npm run build && npx astro preview --open
   ```
+- **Avec une brique** (réservations, liste d'inscription, connexion), au lieu de l'aperçu tu lances `bun bausteine/pocketbase/lokal.ts` : c'est la seule façon de faire vraiment marcher les formulaires et les réservations, sur l'ordinateur de la personne.
 - Quand l'aperçu tourne, tu annonces `lokal`, avant de montrer le site à la personne et d'attendre sa réponse.
 
 ### 7. Vérifier (`schritt: pruefung`)
@@ -178,6 +181,7 @@ Ensuite, tu écris quatre rapports, chacun sur une page, dans la langue de la pe
 
 - `docs/pruefung/sicherheit.md` (sécurité et droit) : secrets dans le code, `npm audit`, pas de `.env` dans `seite/`, impressum et protection des données présents et complets (skill `recht-ch`), quels services d'autres fournisseurs et quels cookies le site utilise.
 - `docs/pruefung/ablaeufe.md` (déroulements et accès) : les règles d'accessibilité (WCAG 2.2 AA, axe) sur chaque page, les liens morts, chaque formulaire essayé une fois toi-même, la page d'accueil parcourue au clavier (Tab), les déroulements du PRD étape par étape.
+  - **Vert seulement avec une preuve.** Pour chaque fonction avec une brique, la sortie du test (« Alles grün ») et une photo d'une vraie réservation de test ou d'une vraie inscription sur cet ordinateur vont dans le rapport. Si quelque chose n'a pas marché, le feu est orange ou rouge. N'écris jamais « parcouru de bout en bout » si tu ne l'as pas fait.
 - `docs/pruefung/aussehen.md` (apparence) : seulement des valeurs de `tokens.css`, système de design respecté, chaque photo regardée toi-même (coupé, caché, lisible ?) et vérifiée avec la liste des signes d'IA du skill `gestaltung`.
 - `docs/pruefung/code.md` (code et vitesse) : Lighthouse dans les quatre domaines, JavaScript par page, tailles des images, et quels critères d'acceptation sont remplis.
 
@@ -239,6 +243,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titre de 
   node scripts/pruefen.mjs --live https://{name}.aufwind.sh
   ```
   S'il n'y a rien de rouge, tu annonces `fliessband` et `live`, tu ouvres l'adresse avec la personne (`open https://{name}.aufwind.sh`) et tu compares avec les photos de l'étape 7.
+- **Avec une brique, « en ligne » ne veut pas encore dire « terminé » :** seulement quand les données sont dedans (par exemple les cours) et qu'une réservation de test faite en ligne a apporté son e-mail à l'adresse de la personne (skill `bausteine`), tu dis à la personne qu'elle peut partager le lien. Jusque-là, tu dis honnêtement ce qui manque encore.
 - **Toujours pas là après trois minutes :** demande `konto_status`. Avec Light, il indique si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port, parce que rien n'a été construit avant le push ou que `seite/` figure dans `.gitignore`. Avec Pilot, tu regardes au port sous « Actions » où le tapis roulant s'est arrêté (skill `pipeline`). Corriger, nouvelle entrée, push, vérifier à nouveau. Seulement si ça ne marche toujours pas, tu dis à la personne ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
 
 Si la personne souhaite ensuite autre chose (« il manque encore … », une date, un texte), tu charges le skill `webseite-aendern` et tu le suis. Le site est validé et en ligne, donc chaque modification a besoin de son critère dans le PRD, d'un avant et après et d'une nouvelle autorisation avant le push.

@@ -72,7 +72,7 @@ AI sites give themselves away with the same traits. Check every draft and the fi
 - Emoji as icons.
 - Inter or another default font everywhere, all headings equally loud.
 - A centred header with a blob of colour behind it and two buttons side by side.
-- Three identical cards in a row, with the same shadow, the same rounded corners and one icon each.
+- Three or four cards of the same size side by side, with or without icons, rounded or square. This is the most common AI trait: arrange the content by how important it is, not in identical boxes.
 - The stock photo look: smiling people at a laptop, mountains from anywhere.
 - Filler phrases: “Welcome to our website”, “Discover”, “Your partner for”, “with passion”, “innovative”, “seamless”.
 - Made-up numbers, reviews, quotes or customer logos. Time promises like “in 60 seconds”.
@@ -137,7 +137,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Look at every screenshot yourself and compare it with the draft. Only then show it to the person. After their yes: logbook (skill `git-logbuch`), conveyor belt (skill `pipeline`).
+Look at every screenshot yourself and compare it with the draft: on the phone, does the text have room on the left and right? Is nothing cut off or out of place? Only then show it to the person. After their yes: logbook (skill `git-logbuch`), conveyor belt (skill `pipeline`).
 
 ## Stumbling blocks
 

@@ -123,7 +123,8 @@ Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collau
 
 ### Per tutte le pagine
 - [ ] Contenuto come nell'incarico, nessun segnaposto senza un'indicazione chiara
-- [ ] Telefonino (largo 390 px): niente tagliato, leggibile senza zoom, pulsanti alti almeno 44 px
+- [ ] Telefonino (largo 390 px): niente tagliato, leggibile senza zoom, a sinistra e a destra almeno 16 px di margine, pulsanti alti almeno 44 px
+- [ ] Ogni pagina, anche le pagine dei blocchi (per esempio per prenotare), ha testata, menu e piè di pagina con Impressum e protezione dei dati
 - [ ] Contrasto: testo almeno 4,5 : 1, pulsanti e bordi almeno 3 : 1
 - [ ] Si può usare con la tastiera, il focus è visibile
 - [ ] Impressum e protezione dei dati ci sono e hanno un link su ogni pagina
@@ -153,6 +154,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 
 - In `web/astro.config.mjs`: `outDir: '../seite'`. Albatros consegna la cartella `seite/`, con Light direttamente e con Pilot attraverso il nastro trasportatore.
 - `tokens.css` del passo 3 sta in `web/src/styles/` e viene incluso in ogni layout. Prima costruisci i componenti di `docs/designsystem.md`, poi con questi le pagine.
+- **Prima i dati:** quello che la persona ha nominato nel piano (corsi con orari e posti, prezzi, orari d'apertura) lo vai a prendere adesso, prima di costruire. Un «ce l'abbiamo» nel piano non basta: chiedi il testo, la lista o una foto.
 - Liste come appuntamenti, tornei o sponsor stanno come dati in `web/src/data/*.json`, le pagine le leggono. Documenti e immagini vanno in `web/public/`, le immagini rimpicciolite.
 - Il simbolo nella scheda del browser (`web/public/favicon.svg` e `favicon.ico`) è la «A» di Astro: sostituiscilo con il logo o un segno tratto da esso.
 - Se manca del materiale (per esempio i loghi degli sponsor), c'è un segnaposto chiaramente indicato, mai un'altra immagine sotto un nome sbagliato.
@@ -160,6 +162,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```bash
   cd web && npm run build && npx astro preview --open
   ```
+- **Con un blocco** (prenotazioni, lista di iscrizione, accesso) invece dell'anteprima avvii `bun bausteine/pocketbase/lokal.ts`: solo così moduli e prenotazioni funzionano davvero, sul computer della persona.
 - Quando l'anteprima gira, segnali `lokal`, prima di mostrare il sito alla persona e aspettare la sua risposta.
 
 ### 7. Controllare (`schritt: pruefung`)
@@ -178,6 +181,7 @@ Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
 - `docs/pruefung/sicherheit.md` (sicurezza e aspetti legali): segreti nel codice, `npm audit`, nessun `.env` in `seite/`, Impressum e protezione dei dati presenti e completi (skill `recht-ch`), quali servizi esterni e cookie usa il sito.
 - `docs/pruefung/ablaeufe.md` (percorsi e accesso): le regole per l'accessibilità (WCAG 2.2 AA, axe) su ogni pagina, link morti, ogni modulo provato tu stesso una volta, la pagina iniziale percorsa con la tastiera (Tab), i percorsi del PRD passo per passo.
+  - **Verde solo con una prova.** Per ogni funzione con un blocco, nel rapporto vanno il risultato del test («Alles grün») e una foto di una vera prenotazione di prova o di una vera iscrizione su questo computer. Se qualcosa non ha funzionato, il semaforo è giallo o rosso. Non scrivere mai «provato fino in fondo» se non l'hai fatto.
 - `docs/pruefung/aussehen.md` (aspetto): solo valori di `tokens.css`, sistema di design rispettato, ogni foto guardata da te (tagliato, coperto, leggibile?) e controllata con la lista dei tratti tipici dell'IA nello skill `gestaltung`.
 - `docs/pruefung/code.md` (codice e velocità): Lighthouse nei quattro ambiti, JavaScript per pagina, dimensioni delle immagini, e quali criteri di collaudo sono soddisfatti.
 
@@ -239,6 +243,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titolo de
   node scripts/pruefen.mjs --live https://{name}.aufwind.sh
   ```
   Se lì niente è rosso, segnali `fliessband` e `live`, apri l'indirizzo con la persona (`open https://{name}.aufwind.sh`) e confrontalo con le foto del passo 7.
+- **Con un blocco «online» non vuol dire ancora «finito»:** solo quando i dati ci sono (per esempio i corsi) e una prenotazione di prova in rete ha portato la sua e-mail all'indirizzo della persona (skill `bausteine`), dici alla persona che può condividere il link. Fino ad allora dici onestamente cosa manca ancora.
 - **Dopo tre minuti non c'è ancora:** chiedi `konto_status`. Con Light lì c'è scritto se l'ultimo stato è online o cosa manca. Spesso nel porto manca `seite/index.html`, perché prima del push non si è costruito o perché `seite/` sta in `.gitignore`. Con Pilot guardi nel porto sotto «Actions» dove si è fermato il nastro trasportatore (skill `pipeline`). Correggere, nuova voce, push, controllare di nuovo. Solo se non funziona ancora, dici alla persona cosa hai controllato e chiedi al coach (`coach_fragen`).
 
 Se poi la persona vuole ancora qualcosa di diverso («manca ancora …», una data, un testo), carichi lo skill `webseite-aendern` e lo segui. Il sito ha il via libera ed è online, quindi ogni modifica ha bisogno del suo criterio nel PRD, di un prima e dopo e di un nuovo via libera prima del push.

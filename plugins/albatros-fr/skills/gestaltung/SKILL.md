@@ -72,7 +72,7 @@ Les sites faits par une IA se reconnaissent aux mêmes signes. Vérifie chaque �
 - Des emoji comme icônes.
 - Inter ou une autre police standard partout, tous les titres aussi forts.
 - Un en-tête centré avec une tache de couleur derrière et deux boutons côte à côte.
-- Trois cartes identiques sur une ligne, avec la même ombre, le même arrondi et chacune une icône.
+- Trois ou quatre cartes de même taille côte à côte, peu importe qu'elles aient une icône, des coins arrondis ou droits. C'est le signe d'IA le plus fréquent : range le contenu selon son importance, pas dans des cases identiques.
 - Le look banque d'images : des gens souriants devant un ordinateur portable, des montagnes de n'importe où.
 - Des formules creuses : « Bienvenue sur notre site web », « Découvrez », « Votre partenaire pour », « avec passion », « innovant », « sans couture ».
 - Des chiffres, des avis, des citations ou des logos de clients inventés. Des promesses de temps comme « en 60 secondes ».
@@ -137,7 +137,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Regarde toi-même chaque photo et compare-la avec l'ébauche. Seulement ensuite, montre-la à la personne. Après son oui : journal de bord (skill `git-logbuch`), tapis roulant (skill `pipeline`).
+Regarde toi-même chaque photo et compare-la avec l'ébauche : sur le natel, le texte a-t-il de l'air à gauche et à droite ? Rien n'est coupé ni décalé ? Seulement ensuite, montre-la à la personne. Après son oui : journal de bord (skill `git-logbuch`), tapis roulant (skill `pipeline`).
 
 ## Pièges
 
