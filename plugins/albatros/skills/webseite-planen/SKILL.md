@@ -31,7 +31,7 @@ Ein Grundriss auf einer Seite Papier reicht. Er spart später viele Umbauten.
    - Impressum und Datenschutz (Pflicht, siehe Skill `recht-ch`)
 5. **Was ist schon da?** Texte, Fotos, Logo, Preise, Öffnungszeiten. Was fehlt, kommt auf die Liste für den Skill `inhalte`.
 6. **Welche Vorbilder?** Zwei, drei Webseiten, die der Person gefallen, und was genau daran (Farben, Ruhe, Fotos, wie kurz die Texte sind). Das hilft später beim Skill `gestaltung`.
-7. **Was muss die Seite können?** In welchen Sprachen, wer ändert die Inhalte, sollen Besucher sich eintragen oder einloggen? Mehrere Sprachen bleiben eine normale Seite. Erst eine Anmeldeliste, ein Login oder eine Pinnwand für andere braucht einen Baustein (Skill `bausteine`).
+7. **Was muss die Seite können?** In welchen Sprachen, wer ändert die Inhalte, sollen Besucher sich eintragen oder einloggen? Mehrere Sprachen bleiben eine normale Seite. Erst eine Anmeldeliste, Buchungen mit Plätzen, ein Login oder eine Pinnwand für andere braucht einen Baustein (Skill `bausteine`).
 8. **Woran merkst du, dass die Seite funktioniert?** Eine Zahl, die die Person beobachten will, z. B. Anfragen pro Monat. Das braucht später der Skill `statistik`.
 
 ## Der Grundriss

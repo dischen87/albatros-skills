@@ -1,6 +1,6 @@
 ---
 name: bausteine
-description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti: lista di iscrizione, area membri con accesso, bacheca (PocketBase) o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «banca dati», «database», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
+description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso, bacheca (PocketBase) o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «strumento di prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservazione», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «banca dati», «database», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -38,6 +38,7 @@ Una domanda per messaggio, solo quante ne servono perché la risposta sia chiara
 | Pagamenti, donazioni | Link di pagamento di un fornitore come Stripe (Payment Link), sul sito come pulsante | Light | niente in più |
 | Newsletter | Un servizio come Brevo, modulo del servizio sul sito | Light | niente in più |
 | Le persone si iscrivono, voglio vedere la lista | **Lista di iscrizione** (PocketBase, ricetta `anmeldeliste`) | Pilot | circa 20 MB |
+| I visitatori prenotano un posto o un appuntamento (corso, visita guidata, appuntamento dal parrucchiere), voglio vedere le prenotazioni e poterle annullare | **Prenotazioni** (PocketBase, ricetta `buchungen`) | Pilot | circa 20 MB |
 | I membri accedono e vedono un'area tutta loro | **Area membri con accesso** (PocketBase, ricetta `mitglieder`) | Pilot | circa 20 MB |
 | Altri curano news o appuntamenti nel browser | **Bacheca** (PocketBase, ricetta `pinnwand`) | Pilot | circa 20 MB |
 | Molti tipi di contenuto, più ruoli, gestione delle immagini, più tardi un'app | **CMS grande** (Strapi con Postgres) | Pilot | circa 200 MB, costruzione fino a 2,5 GB |
@@ -53,7 +54,7 @@ Un server con Pilot ha 4 GB di memoria di lavoro (RAM) e 40 GB di spazio, senza 
 | Cosa | In funzione | Durante la costruzione | Spazio |
 |---|---|---|---|
 | Sito dal modello | 10 MB | breve | poco |
-| PocketBase (tutte e tre le ricette insieme) | 20 MB | breve | 40 MB |
+| PocketBase (tutte le ricette insieme) | 20 MB | breve | 40 MB |
 | Strapi con Postgres | 150 MB + 55 MB | picco 2,5 GB, prima costruzione circa 7 minuti | 1,4 GB |
 
 Sito, PocketBase e Strapi insieme, in funzione, usano circa 250 MB. Si fa stretto solo durante la costruzione, per questo il nastro trasportatore costruisce un lavoro dopo l'altro. Sul server non vanno programmi che da soli usano più di 1 GB, per esempio Keycloak, Supabase, Logto, Mattermost o il riconoscimento del testo (OCR). Per un accesso proprio prendi PocketBase.
@@ -79,13 +80,14 @@ Vale per ogni blocco. Prima fai una foto del server: strumento `snapshot` con il
 4. **Nel diario di bordo e al porto.** Il nastro trasportatore costruisce e consegna (skill `pipeline`). Se la costruzione non riesce, il vecchio sito resta online.
 5. **Verificare** sul server: `docker ps` mostra il blocco come `healthy`.
 
-## 5. PocketBase: lista di iscrizione, membri, bacheca
+## 5. PocketBase: lista di iscrizione, prenotazioni, membri, bacheca
 
 PocketBase è un unico piccolo programma con banca dati, accesso e amministrazione. Il sito gli parla sotto `/api/` del proprio indirizzo. L'amministrazione resta fuori dal sito pubblico.
 
 - **Inserire l'indirizzo:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js` imposta la riga `ADRESSE` sull'indirizzo del sito (`https://{name}.aufwind.sh` o il dominio proprio). Compare nelle e-mail come «Password dimenticata».
-- **Inserire la ricetta:** Da `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` va in `bausteine/pocketbase/pb_migrations/` e `seite/*.html` va in `seite/`.
+- **Inserire la ricetta:** Da `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` va in `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (se c'è) in `bausteine/pocketbase/pb_hooks/` e `seite/*.html` va in `seite/`.
   - `anmeldeliste`: modulo `anmelden.html`. Tutti possono iscriversi, leggere può solo l'amministrazione.
+  - `buchungen`: `buchen.html` mostra le date libere, accetta le prenotazioni e le annulla tramite il link nell'e-mail. Altro più sotto in «Prenotazioni».
   - `mitglieder`: `mitglieder.html` con registrarsi, accedere, uscire. Le comunicazioni le vedono solo i membri che hanno effettuato l'accesso. I membri si trovano nell'amministrazione sotto `users`.
   - `pinnwand`: `pinnwand.html` mostra gli articoli con data e immagine. Si scrive nell'amministrazione.
   - Campi o raccolte propri li scrivi come ulteriore file `pb_migrations/3_*.js` secondo lo stesso schema.
@@ -98,6 +100,18 @@ PocketBase è un unico piccolo programma con banca dati, accesso e amministrazio
 - **Aprire l'amministrazione:** Se altri hanno bisogno dell'amministrazione senza terminale, o se la persona vuole vedere la lista sul cellulare: in `bausteine/pocketbase/nginx.conf` togli i `#` davanti alla sezione «Verwaltung freigeben» (aprire l'amministrazione), nel diario di bordo, al porto. Allora è su `https://{name}.aufwind.sh/_/`, protetta con la password dell'amministrazione. Aprila solo quando il primo account c'è. Appena partono le e-mail, la persona attiva nell'amministrazione sotto `_superusers` → Options l'accesso a due fattori (MFA).
 - **E-mail** (confermare l'indirizzo, password dimenticata): Il server non può inviare attraverso le solite porte per le e-mail. Nell'amministrazione sotto Settings → Mail settings: server SMTP `smtp.resend.com`, porta `2587`, utente `resend`, come password la chiave API di Resend. Quella la digita lì la persona stessa. Va anche Brevo, con `smtp-relay.brevo.com` e la porta `2525`. Il mittente è un indirizzo del dominio proprio, confermato presso il servizio e-mail.
 - **Accedere con Google, Apple o GitHub:** si fa nell'amministrazione sotto `users` → Options → OAuth2. Serve un account presso il rispettivo fornitore. Fallo solo quando e-mail e password funzionano.
+
+### Prenotazioni
+
+La ricetta `buchungen` è un piccolo strumento di prenotazione per corsi, visite guidate e appuntamenti, senza account cliente e senza pagamento online. È collaudata: due persone non ricevono mai lo stesso ultimo posto, le date passate non si possono prenotare, le e-mail indicano l'ora svizzera.
+
+- **Cosa cura la persona,** nell'amministrazione: `angebote` (le offerte: titolo, luogo, indicazione del prezzo come «CHF 25, in contanti o TWINT sul posto», chiusura delle prenotazioni in ore, attivo) e `termine` (le date: offerta, inizio, fine, posti). Le prenotazioni le vede sotto `buchungen`. Annullarne una sola: stato `storniert` e un motivo. Annullare un intero corso: sulla data `abgesagt` e il motivo, tutte le persone prenotate ricevono un'e-mail. Non cancellare mai le date.
+- **Prima le e-mail:** Senza le impostazioni e-mail (punto «E-mail» qui sopra) nessuno riceve una conferma. Vai online solo quando una prenotazione di prova è arrivata all'indirizzo della persona. Gli avvisi di nuove prenotazioni vanno all'indirizzo del mittente; un altro lo inserisci in `pb_hooks/buchungen.js` alla voce `MELDUNGEN_AN`.
+- **Testare prima di ogni push** sul computer della persona (Mac o Linux, su Windows in WSL): `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. Scarica PocketBase e controlla tutto, anche cinque prenotazioni contemporanee sull'ultimo posto. Se cambiate qualcosa nella ricetta, deve restare verde.
+- **Adattare la pagina:** `buchen.html` riprende colori, caratteri e spaziature del sito (imposta le variabili in cima al file sui valori di `tokens.css`), i testi vanno nella lingua della persona. «Prenota un posto» diventa il pulsante principale della pagina iniziale.
+- **Se lo ampliate, queste regole restano:** I posti liberi sono sempre i posti meno le prenotazioni attive, mai un contatore. Il controllo avviene nel server (`pb_hooks/`), mai solo nel browser. Salvare gli orari come istante preciso, mostrarli con `Europe/Zurich`. Indicare le scadenze con data e ora, mai «24 h prima». Dopo la prenotazione una pagina di conferma e un'e-mail. Raccogliere solo quello che serve: niente indirizzo, niente data di nascita, niente dati sulla salute. Un termine di cancellazione (proposta: 12 mesi dopo la data) va nella dichiarazione sulla protezione dei dati (skill `recht-ch`).
+- **Volutamente non incluso,** solo quando manca: pagamento online (se molte persone non si presentano, o per un acconto: un link di pagamento con il numero di prenotazione), account cliente per abbonamenti o carte da 10 ingressi (ricetta `mitglieder`), lista d'attesa, promemoria il giorno prima.
+- **Con Light** non si può prenotare davvero: senza un programma sul server nessuno conta i posti. Dillo onestamente e lascia la scelta: richiesta per e-mail o con un servizio di moduli («Ricevi una conferma entro domani»), un link a uno strumento di prenotazione di un altro fornitore (costa, dati spesso all'estero), o Pilot con questa ricetta.
 
 ## 6. Strapi: il CMS grande
 

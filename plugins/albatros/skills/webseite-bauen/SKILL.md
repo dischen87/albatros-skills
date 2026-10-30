@@ -114,8 +114,11 @@ Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme gepr
 ### <jede weitere Seite>
 - [ ] …
 
-### <jede Funktion, zum Beispiel ein Formular>
+### <jede Funktion, zum Beispiel ein Formular oder Buchungen>
 - [ ] Absenden geht, fehlende Pflichtfelder melden sich verständlich, die Nachricht kommt bei <Adresse> an
+- [ ] Jede Liste zeigt, ob sie lädt, leer ist (ein Satz und ein Knopf) oder einen Fehler hat (mit «Nochmals versuchen», nie als leere Liste getarnt)
+- [ ] Nach dem Absenden eine Bestätigungsseite: was passiert ist, die Nummer, was als Nächstes kommt, wie man es rückgängig macht
+- [ ] Der Knopf sagt das Ergebnis («Platz buchen», nicht «Senden») und ist gesperrt, solange gesendet wird
 
 ### Für alle Seiten
 - [ ] Inhalt wie im Auftrag, kein Platzhalter ohne klare Beschriftung
@@ -128,6 +131,16 @@ Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme gepr
 
 Abgenommen: <Datum> von <Name>
 ```
+
+**Funktionen bauen wie die Profis.** Was Besucher tun (buchen, anmelden, bestellen, anfragen), baust du nach diesen Regeln, auch wenn die Person nicht danach fragt:
+
+- **Drei Türen:** öffentliche Seiten ohne Login; eine Seite für Gäste per Link mit geheimem Code, ohne Konto (zum Beispiel «Buchung absagen»); die Verwaltung nur für die Person, nie verlinkt.
+- **Eine Quelle je Wahrheit:** Angebote, Preise, Fristen und Öffnungszeiten stehen an einem Ort. Seite, Formular, Mail und Bedingungen lesen von dort.
+- **Ein Wort je Ding,** gleich auf der Seite, in der Mail und in der Verwaltung. Eine Anfrage ist keine Buchung. Die Wörter stehen in `docs/designsystem.md`.
+- **Prüfen im Server, nie nur im Browser:** Plätze, Fristen und Status rechnet der Server. Für Buchungen gibt es das getestete Rezept `buchungen` (Skill `bausteine`), statt es neu zu erfinden.
+- **Ehrliche Fehler:** Antwortet ein Dienst nicht, ist das ein Fehler mit «Nochmals versuchen», nie «keine Termine».
+- **Schweizer Format:** «CHF 1'250.–», «Di, 3. Nov. 2026, 18:00–19:15 Uhr», Zeiten in `Europe/Zurich`.
+- **Handy zuerst:** Bei 390 px kein seitliches Scrollen, die Hauptaktion ist ohne Scrollen sichtbar, ein Formular fragt eine Sache pro Schritt («Schritt 2 von 3»).
 
 Jedes Kriterium muss man prüfen können: Man sieht oder misst, ob es stimmt. «Schön» oder «modern» ist kein Kriterium. Schreib stattdessen, woran man es erkennt. Zeig der Person das PRD in einer Kurzfassung im Chat und öffne die Datei. Erst nach ihrem Ja trägst du `Abgenommen:` mit Datum und Namen ein, meldest `prd` und baust.
 

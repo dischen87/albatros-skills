@@ -115,8 +115,11 @@ Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collau
 ### <ogni altra pagina>
 - [ ] …
 
-### <ogni funzione, per esempio un modulo>
+### <ogni funzione, per esempio un modulo o le prenotazioni>
 - [ ] L'invio funziona, i campi obbligatori mancanti lo dicono in modo comprensibile, il messaggio arriva a <indirizzo>
+- [ ] Ogni lista mostra se sta caricando, se è vuota (una frase e un pulsante) o se c'è un errore (con «Riprova», mai camuffato da lista vuota)
+- [ ] Dopo l'invio una pagina di conferma: cosa è successo, il numero, cosa viene dopo, come annullarlo
+- [ ] Il pulsante dice il risultato («Prenota un posto», non «Invia») ed è disattivato durante l'invio
 
 ### Per tutte le pagine
 - [ ] Contenuto come nell'incarico, nessun segnaposto senza un'indicazione chiara
@@ -129,6 +132,16 @@ Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collau
 
 Approvato: <data> da <nome>
 ```
+
+**Costruire le funzioni come i professionisti.** Quello che fanno i visitatori (prenotare, iscriversi, ordinare, chiedere informazioni) lo costruisci con queste regole, anche se la persona non lo chiede:
+
+- **Tre porte:** pagine pubbliche senza accesso; una pagina per gli ospiti tramite un link con un codice segreto, senza account (per esempio «Annulla prenotazione»); l'amministrazione solo per la persona, mai collegata con un link.
+- **Una fonte per ogni verità:** offerte, prezzi, scadenze e orari d'apertura stanno in un solo posto. Sito, modulo, e-mail e condizioni leggono da lì.
+- **Una parola per ogni cosa,** uguale sul sito, nell'e-mail e nell'amministrazione. Una richiesta non è una prenotazione. Le parole stanno in `docs/designsystem.md`.
+- **Controllare nel server, mai solo nel browser:** posti, scadenze e stato li calcola il server. Per le prenotazioni c'è la ricetta collaudata `buchungen` (skill `bausteine`), invece di reinventarla.
+- **Errori onesti:** se un servizio non risponde, è un errore con «Riprova», mai «nessuna data».
+- **Formato svizzero:** «CHF 1'250.–», «mar 3 nov 2026, 18:00–19:15», orari in `Europe/Zurich`.
+- **Prima il telefonino:** a 390 px nessuno scorrimento laterale, l'azione principale si vede senza scorrere, un modulo chiede una cosa per passo («Passo 2 di 3»).
 
 Ogni criterio deve potersi controllare: si vede o si misura se è giusto. «Bello» o «moderno» non è un criterio. Scrivi invece da cosa lo si riconosce. Mostra alla persona il PRD in breve nella chat e apri il file. Solo dopo il suo sì scrivi `Approvato:` con data e nome, segnali `prd` e costruisci.
 

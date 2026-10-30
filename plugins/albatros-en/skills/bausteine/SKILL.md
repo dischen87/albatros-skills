@@ -1,6 +1,6 @@
 ---
 name: bausteine
-description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks: a sign-up list, a members' area with login, a noticeboard (PocketBase) or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
+description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks: a sign-up list, bookings for classes and appointments, a members' area with login, a noticeboard (PocketBase) or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 ---
 
 # Building blocks: prefab parts for your site
@@ -38,6 +38,7 @@ One question per message, only as many as it takes for the answer to be clear:
 | Payments, donations | A payment link from a provider like Stripe (Payment Link), as a button on the site | Light | nothing extra |
 | Newsletter | A service like Brevo, with the service's form on the site | Light | nothing extra |
 | People sign up, I want to see the list | **Sign-up list** (PocketBase, recipe `anmeldeliste`) | Pilot | about 20 MB |
+| Visitors book a place or an appointment (class, guided tour, hairdresser's appointment), I want to see the bookings and be able to cancel them | **Bookings** (PocketBase, recipe `buchungen`) | Pilot | about 20 MB |
 | Members log in and see an area of their own | **Members' area with login** (PocketBase, recipe `mitglieder`) | Pilot | about 20 MB |
 | Others look after news or dates in the browser | **Noticeboard** (PocketBase, recipe `pinnwand`) | Pilot | about 20 MB |
 | Lots of content types, several roles, image management, an app later | **Big CMS** (Strapi with Postgres) | Pilot | about 200 MB, build up to 2.5 GB |
@@ -53,7 +54,7 @@ A server with Pilot has 4 GB of memory (RAM) and 40 GB of space, without swap sp
 | What | While running | While building | Space |
 |---|---|---|---|
 | Website from the template | 10 MB | brief | small |
-| PocketBase (all three recipes together) | 20 MB | brief | 40 MB |
+| PocketBase (all recipes together) | 20 MB | brief | 40 MB |
 | Strapi with Postgres | 150 MB + 55 MB | peak 2.5 GB, first build about 7 minutes | 1.4 GB |
 
 Website, PocketBase and Strapi together need about 250 MB while running. It only gets tight while building, which is why the conveyor belt builds one job after another. Programs that need more than 1 GB on their own don't belong on the server, for example Keycloak, Supabase, Logto, Mattermost or text recognition (OCR). For a login of your own, take PocketBase.
@@ -79,13 +80,14 @@ This applies to every building block. Take a photo of the server first: tool `sn
 4. **Into the logbook and to the harbour.** The conveyor belt builds and delivers (skill `pipeline`). If the build fails, the old site stays online.
 5. **Check** on the server: `docker ps` shows the building block as `healthy`.
 
-## 5. PocketBase: sign-up list, members, noticeboard
+## 5. PocketBase: sign-up list, bookings, members, noticeboard
 
 PocketBase is one single small program with a database, login and admin area. The website talks to it at `/api/` on its own address. The admin area stays closed to the outside.
 
 - **Enter the address:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js`, set the line `ADRESSE` to the site's address (`https://{name}.aufwind.sh` or your own domain). It appears in emails like “forgotten password”.
-- **Add the recipe:** From `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` goes to `bausteine/pocketbase/pb_migrations/` and `seite/*.html` goes to `seite/`.
+- **Add the recipe:** From `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` goes to `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (if present) to `bausteine/pocketbase/pb_hooks/` and `seite/*.html` goes to `seite/`.
   - `anmeldeliste`: the form `anmelden.html`. Everyone may sign up, only the admin area can read the list.
+  - `buchungen`: `buchen.html` shows the free dates, takes bookings and cancels them via the link in the email. More below under “Bookings”.
   - `mitglieder`: `mitglieder.html` with register, log in, log out. Only logged-in members see the messages. The members are listed in the admin area under `users`.
   - `pinnwand`: `pinnwand.html` shows posts with date and picture. Writing happens in the admin area.
   - You write your own fields or collections as another file `pb_migrations/3_*.js`, following the same pattern.
@@ -98,6 +100,18 @@ PocketBase is one single small program with a database, login and admin area. Th
 - **Open up the admin area:** If others need the admin area without a terminal, or the person wants to see the list on their phone: in `bausteine/pocketbase/nginx.conf`, remove the `#` in front of the block “Verwaltung freigeben” (open up the admin area), into the logbook, to the harbour. Then it's at `https://{name}.aufwind.sh/_/`, protected with the admin area's password. Only open it up once the first account exists. As soon as emails are going out, the person switches on two-factor sign-in (MFA) in the admin area under `_superusers` → Options.
 - **Emails** (confirm address, forgotten password): The server isn't allowed to send over the usual mail ports. In the admin area under Settings → Mail settings: SMTP server `smtp.resend.com`, port `2587`, user `resend`, and as the password the API key from Resend. The person types that in there themselves. Brevo works too, with `smtp-relay.brevo.com` and port `2525`. The sender is an address on your own domain that's confirmed with the mail service.
 - **Signing in with Google, Apple or GitHub:** works in the admin area under `users` → Options → OAuth2. That needs an account with each provider. Only do it once email and password are working.
+
+### Bookings
+
+The recipe `buchungen` is a small booking tool for classes, guided tours and appointments, without customer accounts and without paying online. It's tested: two people never get the same last place, past dates can't be booked, and emails give the time in Swiss time.
+
+- **What the person looks after,** in the admin area: `angebote` (the offers: title, place, a price note like “CHF 25, cash or TWINT on site”, booking cut-off in hours, active) and `termine` (the dates: offer, start, end, places). They see the bookings under `buchungen`. To cancel a single one: status `storniert` and a reason. To cancel a whole class: `abgesagt` on the date, plus the reason, and everyone who booked gets an email. Never delete dates.
+- **Emails first:** Without the mail settings (the “Emails” point above), nobody gets a confirmation. Only go live once a test booking has arrived at the person's own address. Notices about new bookings go to the sender address; you enter a different one in `pb_hooks/buchungen.js` at `MELDUNGEN_AN`.
+- **Test before every push** on the person's computer (Mac or Linux, on Windows in WSL): `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. It downloads PocketBase and checks everything, including five bookings at the same time for the last place. If you change anything in the recipe, it has to stay green.
+- **Adapt the page:** `buchen.html` takes on the site's colours, fonts and spacing (set the variables at the top of the file to the values from `tokens.css`), and the texts go into the person's language. “Book a place” becomes the main button on the home page.
+- **If you extend it, these rules stay:** Free places are always places minus active bookings, never a counter. Checks happen on the server (`pb_hooks/`), never only in the browser. Store times as a point in time, show them with `Europe/Zurich`. Give deadlines as a date and time, never “24 h before”. After booking, a confirmation page and an email. Only collect what's needed: no address, no date of birth, no health details. A deletion period (suggestion: 12 months after the date) goes into the privacy policy (skill `recht-ch`).
+- **Deliberately left out,** until it's missed: paying online (if there are many no-shows, or for a deposit: a payment link with the booking number), customer accounts for subscriptions or 10-visit passes (recipe `mitglieder`), a waiting list, a reminder the day before.
+- **With Light** there's no real booking: without a program on the server, nobody counts the places. Say so honestly and leave the choice: a request by email or through a form service (“You'll get a confirmation by tomorrow”), a link to someone else's booking tool (costs money, data often abroad), or Pilot with this recipe.
 
 ## 6. Strapi: the big CMS
 

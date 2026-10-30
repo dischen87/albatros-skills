@@ -32,7 +32,7 @@ Basta una pianta su un foglio di carta. Più tardi risparmia molti lavori di ris
    - Impressum e protezione dei dati (obbligatori, vedi lo skill `recht-ch`)
 5. **Cosa c'è già?** Testi, foto, logo, prezzi, orari d'apertura. Quello che manca va sulla lista per lo skill `inhalte`.
 6. **Quali modelli?** Due o tre siti web che piacciono alla persona, e cosa esattamente le piace (colori, calma, foto, quanto sono brevi i testi). Più tardi aiuta con lo skill `gestaltung`.
-7. **Cosa deve saper fare il sito?** In quali lingue, chi cambia i contenuti, i visitatori devono iscriversi o accedere? Più lingue restano un sito normale. Solo una lista di iscrizione, un accesso o una bacheca per altri richiedono un blocco (skill `bausteine`).
+7. **Cosa deve saper fare il sito?** In quali lingue, chi cambia i contenuti, i visitatori devono iscriversi o accedere? Più lingue restano un sito normale. Solo una lista di iscrizione, prenotazioni con posti, un accesso o una bacheca per altri richiedono un blocco (skill `bausteine`).
 8. **Da cosa capisci che il sito funziona?** Un numero che la persona vuole tenere d'occhio, per esempio le richieste al mese. Più tardi serve allo skill `statistik`.
 
 ## La pianta

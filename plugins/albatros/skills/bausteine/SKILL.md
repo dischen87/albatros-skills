@@ -1,6 +1,6 @@
 ---
 name: bausteine
-description: 'Findet mit einer Person ohne Vorwissen heraus, was ihre Seite können soll, und baut die passenden fertigen Bausteine ein: Anmeldeliste, Mitgliederbereich mit Login, Pinnwand (PocketBase) oder ein grosses CMS (Strapi mit Postgres), mit gemessenem Arbeitsspeicher. Erklärt mit dem Bild der Fertigteile beim Hausbau. Nutze den Skill bei «Anmeldung», «Anmeldeliste», «Formular speichern», «Login», «Mitgliederbereich», «Admin-Bereich», «Benutzer verwalten», «Datenbank», «Strapi», «CMS», «PocketBase», «Baustein», «was passt auf meinen Server», «reicht mein Server», und wenn eine Seite mehr können soll als Texte und Bilder zeigen.'
+description: 'Findet mit einer Person ohne Vorwissen heraus, was ihre Seite können soll, und baut die passenden fertigen Bausteine ein: Anmeldeliste, Buchungen für Kurse und Termine, Mitgliederbereich mit Login, Pinnwand (PocketBase) oder ein grosses CMS (Strapi mit Postgres), mit gemessenem Arbeitsspeicher. Erklärt mit dem Bild der Fertigteile beim Hausbau. Nutze den Skill bei «Anmeldung», «Anmeldeliste», «Buchung», «Buchungstool», «Kurse buchen», «Termin buchen», «Reservation», «Platz reservieren», «Formular speichern», «Login», «Mitgliederbereich», «Admin-Bereich», «Benutzer verwalten», «Datenbank», «Strapi», «CMS», «PocketBase», «Baustein», «was passt auf meinen Server», «reicht mein Server», und wenn eine Seite mehr können soll als Texte und Bilder zeigen.'
 ---
 
 # Bausteine: Fertigteile für deine Seite
@@ -37,6 +37,7 @@ Eine Frage pro Nachricht, nur so viele, bis die Antwort klar ist:
 | Bezahlen, Spenden | Zahlungslink eines Anbieters wie Stripe (Payment Link), auf der Seite als Knopf | Light | nichts extra |
 | Newsletter | Ein Dienst wie Brevo, Formular des Dienstes auf der Seite | Light | nichts extra |
 | Leute tragen sich ein, ich will die Liste sehen | **Anmeldeliste** (PocketBase, Rezept `anmeldeliste`) | Pilot | etwa 20 MB |
+| Besucher buchen einen Platz oder Termin (Kurs, Führung, Termin beim Coiffeur), ich will die Buchungen sehen und absagen können | **Buchungen** (PocketBase, Rezept `buchungen`) | Pilot | etwa 20 MB |
 | Mitglieder melden sich an und sehen einen eigenen Bereich | **Mitgliederbereich mit Login** (PocketBase, Rezept `mitglieder`) | Pilot | etwa 20 MB |
 | Andere pflegen News oder Termine im Browser | **Pinnwand** (PocketBase, Rezept `pinnwand`) | Pilot | etwa 20 MB |
 | Viele Inhaltstypen, mehrere Rollen, Bilderverwaltung, später eine App | **Grosses CMS** (Strapi mit Postgres) | Pilot | etwa 200 MB, Bau bis 2,5 GB |
@@ -53,7 +54,7 @@ Ein Server mit Pilot hat 4 GB Arbeitsspeicher und 40 GB Platz, ohne Auslagerungs
 |---|---|---|---|
 | Grundlast: System, Docker, Arbeiter am Fliessband | 150 MB, eingeplant 0,5 GB | kurz mehr | – |
 | Webseite aus der Vorlage | 10 MB | kurz | klein |
-| PocketBase (alle drei Rezepte zusammen) | 20 MB | kurz | 40 MB |
+| PocketBase (alle Rezepte zusammen) | 20 MB | kurz | 40 MB |
 | Strapi mit Postgres | 150 MB + 55 MB | Spitze 2,5 GB, erster Bau etwa 7 Minuten | 1,4 GB |
 
 Für Bausteine bleiben also etwa 3,5 GB. Webseite, PocketBase und Strapi zusammen brauchen im Betrieb etwa 250 MB. Eng wird es nur beim Bauen, darum baut das Fliessband einen Auftrag nach dem anderen. Nicht auf den Server gehören Programme, die allein mehr als 1 GB brauchen, zum Beispiel Keycloak, Supabase, Logto, Mattermost oder Texterkennung (OCR). Für ein eigenes Login nimm PocketBase.
@@ -79,13 +80,14 @@ Gilt für jeden Baustein. Mach vorher ein Foto des Servers: Werkzeug `snapshot` 
 4. **Ins Logbuch und in den Hafen.** Das Fliessband baut und liefert aus (Skill `pipeline`). Klappt der Bau nicht, bleibt die alte Seite online.
 5. **Prüfen** auf dem Server: `docker ps` zeigt den Baustein als `healthy`.
 
-## 5. PocketBase: Anmeldeliste, Mitglieder, Pinnwand
+## 5. PocketBase: Anmeldeliste, Buchungen, Mitglieder, Pinnwand
 
 PocketBase ist ein einziges kleines Programm mit Datenbank, Login und Verwaltung. Die Webseite spricht es unter `/api/` der eigenen Adresse an. Die Verwaltung bleibt draussen.
 
 - **Adresse eintragen:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js` die Zeile `ADRESSE` auf die Adresse der Seite setzen (`https://{name}.aufwind.sh` oder die eigene Domain). Sie steht in Mails wie «Passwort vergessen».
-- **Rezept einsetzen:** Aus `bausteine/pocketbase/rezepte/<rezept>/` kommt `pb_migrations/2_*.js` nach `bausteine/pocketbase/pb_migrations/` und `seite/*.html` nach `seite/`.
+- **Rezept einsetzen:** Aus `bausteine/pocketbase/rezepte/<rezept>/` kommt `pb_migrations/2_*.js` nach `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (falls vorhanden) nach `bausteine/pocketbase/pb_hooks/` und `seite/*.html` nach `seite/`.
   - `anmeldeliste`: Formular `anmelden.html`. Alle dürfen sich eintragen, lesen kann nur die Verwaltung.
+  - `buchungen`: `buchen.html` zeigt die freien Termine, nimmt Buchungen an und sagt sie per Link aus der Mail ab. Mehr unten unter «Buchungen».
   - `mitglieder`: `mitglieder.html` mit Registrieren, Anmelden, Abmelden. Mitteilungen sehen nur angemeldete Mitglieder. Die Mitglieder stehen in der Verwaltung unter `users`.
   - `pinnwand`: `pinnwand.html` zeigt Beiträge mit Datum und Bild. Schreiben geht in der Verwaltung.
   - Eigene Felder oder Sammlungen schreibst du als weitere Datei `pb_migrations/3_*.js` nach dem gleichen Muster.
@@ -98,6 +100,18 @@ PocketBase ist ein einziges kleines Programm mit Datenbank, Login und Verwaltung
 - **Verwaltung freigeben:** Brauchen andere die Verwaltung ohne Terminal, oder will die Person die Liste am Handy sehen: In `bausteine/pocketbase/nginx.conf` die `#` vor dem Block «Verwaltung freigeben» entfernen, ins Logbuch, in den Hafen. Dann ist sie unter `https://{name}.aufwind.sh/_/`, geschützt mit dem Passwort der Verwaltung. Erst freigeben, wenn das erste Konto steht. Sobald Mails gehen, schaltet die Person in der Verwaltung unter `_superusers` → Options die Zwei-Faktor-Anmeldung (MFA) ein.
 - **Mails** (Adresse bestätigen, Passwort vergessen): Der Server darf nicht über die üblichen Mail-Ports senden. In der Verwaltung unter Settings → Mail settings: SMTP-Server `smtp.resend.com`, Port `2587`, Benutzer `resend`, als Passwort den API-Schlüssel von Resend. Den tippt die Person dort selbst ein. Brevo geht auch, mit `smtp-relay.brevo.com` und Port `2525`. Absender ist eine Adresse der eigenen Domain, die beim Mail-Dienst bestätigt ist.
 - **Anmelden mit Google, Apple oder GitHub:** geht in der Verwaltung unter `users` → Options → OAuth2. Das braucht ein Konto beim jeweiligen Anbieter. Mach es erst, wenn E-Mail und Passwort laufen.
+
+### Buchungen
+
+Das Rezept `buchungen` ist ein kleines Buchungstool für Kurse, Führungen und Termine, ohne Kundenkonto und ohne Bezahlen online. Es ist getestet: Zwei Leute bekommen nie denselben letzten Platz, vergangene Termine sind nicht buchbar, Mails nennen die Zeit in Schweizer Zeit.
+
+- **Was die Person pflegt,** in der Verwaltung: `angebote` (Titel, Ort, Preis-Hinweis wie «CHF 25, bar oder TWINT vor Ort», Buchungsschluss in Stunden, aktiv) und `termine` (Angebot, Beginn, Ende, Plätze). Buchungen sieht sie unter `buchungen`. Eine einzelne absagen: Status `storniert` und ein Grund. Einen ganzen Kurs absagen: beim Termin `abgesagt` und den Grund, alle Gebuchten bekommen eine Mail. Termine nie löschen.
+- **Mails zuerst:** Ohne Mail-Einstellungen (Abschnitt «Mails» oben) bekommt niemand eine Bestätigung. Erst live gehen, wenn eine Testbuchung an die eigene Adresse angekommen ist. Meldungen über neue Buchungen gehen an die Absender-Adresse, eine andere trägst du in `pb_hooks/buchungen.js` bei `MELDUNGEN_AN` ein.
+- **Testen vor jedem Push** auf dem Computer der Person (Mac oder Linux, unter Windows in WSL): `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. Er lädt PocketBase und prüft alles, auch fünf gleichzeitige Buchungen auf den letzten Platz. Ändert ihr etwas am Rezept, muss er grün bleiben.
+- **Seite anpassen:** `buchen.html` übernimmt Farben, Schrift und Abstände der Seite (die Variablen oben in der Datei auf die Werte aus `tokens.css` setzen), die Texte kommen in die Sprache der Person. «Platz buchen» wird der Hauptknopf auf der Startseite.
+- **Wenn ihr es erweitert, bleiben diese Regeln:** Frei ist immer Plätze minus aktive Buchungen, nie ein Zähler. Geprüft wird im Server (`pb_hooks/`), nie nur im Browser. Zeiten speichern als Zeitpunkt, anzeigen mit `Europe/Zurich`. Fristen als Datum und Uhrzeit nennen, nie «24 h vorher». Nach dem Buchen eine Bestätigungsseite und eine Mail. Nur erfassen, was nötig ist: keine Adresse, kein Geburtsdatum, keine Gesundheitsangaben. Eine Löschfrist (Vorschlag: 12 Monate nach dem Termin) kommt in die Datenschutzerklärung (Skill `recht-ch`).
+- **Bewusst nicht dabei,** erst wenn es fehlt: Bezahlen online (bei vielen No-Shows oder für eine Anzahlung: ein Zahlungslink mit der Buchungsnummer), Kundenkonten für Abos oder 10er-Karten (Rezept `mitglieder`), Warteliste, Erinnerung am Vortag.
+- **Mit Light** geht kein echtes Buchen: Ohne Programm auf dem Server zählt niemand die Plätze. Ehrlich sagen und die Wahl lassen: Anfrage per Mail oder Formular-Dienst («Du bekommst bis morgen eine Bestätigung»), ein fremdes Buchungstool verlinken (kostet, Daten oft im Ausland), oder Pilot mit diesem Rezept.
 
 ## 6. Strapi: das grosse CMS
 

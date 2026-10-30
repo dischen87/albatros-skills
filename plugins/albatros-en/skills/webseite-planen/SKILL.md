@@ -32,7 +32,7 @@ A floor plan on one sheet of paper is enough. It saves a lot of rebuilding later
    - Legal notice (Impressum, the details Swiss law requires about who runs the site) and privacy policy (mandatory, see skill `recht-ch`)
 5. **What's already there?** Texts, photos, logo, prices, opening hours. Whatever's missing goes on the list for the skill `inhalte`.
 6. **Which examples?** Two or three websites the person likes, and what exactly about them (colours, calm, photos, how short the texts are). That helps later with the skill `gestaltung`.
-7. **What does the site need to be able to do?** In which languages, who changes the content, should visitors sign up or log in? Several languages still make a normal site. Only a sign-up list, a login or a noticeboard for others needs a building block (skill `bausteine`).
+7. **What does the site need to be able to do?** In which languages, who changes the content, should visitors sign up or log in? Several languages still make a normal site. Only a sign-up list, bookings with places, a login or a noticeboard for others needs a building block (skill `bausteine`).
 8. **How will you know the site works?** One number the person wants to keep an eye on, e.g. enquiries per month. The skill `statistik` needs that later.
 
 ## The floor plan

@@ -48,6 +48,11 @@ Severity: **critical** (the main thing doesn't work, or the law is broken), **hi
 
 Put everything the person has to decide in front of them in one go (with your recommendation), not one by one. Then fix: first the shared parts (button, form field, error message, confirmation), then the pages. Colours and fonts stay as they are in this step.
 
+- **Main button:** about 56 px high, 17 px text, semi-bold. The second button is white with a border, links are underlined.
+- **Disabled** is never invisible: 40 % opacity, with the reason written next to it.
+- **Fields:** 48 to 52 px high, the label sits above (never just a placeholder in the field), help or error below, in words and not just in colour.
+- **Status** (free, fully booked, confirmed) always as a word and a shape, never just as a colour.
+
 ### 3. Three directions
 
 1. **Character before colours.** Ask about qualities, not favourite colours. Put pairs of opposites forward to choose from, to suit the site: traditional or sporty, mountain village or city, calm or lively, refined or down-to-earth, for guests or for members. Plus one question: which three words should visitors think after ten seconds? Write the answers down in `docs/gestaltung/richtungen.md`. Each of the three directions stresses different ones of these qualities. Colours follow from them and from the logo and surroundings, never the other way round.
@@ -70,8 +75,11 @@ AI sites give themselves away with the same traits. Check every draft and the fi
 - Three identical cards in a row, with the same shadow, the same rounded corners and one icon each.
 - The stock photo look: smiling people at a laptop, mountains from anywhere.
 - Filler phrases: “Welcome to our website”, “Discover”, “Your partner for”, “with passion”, “innovative”, “seamless”.
+- Made-up numbers, reviews, quotes or customer logos. Time promises like “in 60 seconds”.
+- Grey shadows, two kinds of depth side by side (shadow here, border there), mixed icon sets.
+- More than six sections on the home page.
 
-Instead: real photos of the place and the people, a font with character that suits the qualities, colours from the logo and surroundings, a structure that comes from the content (if dates are the main thing, they go at the top), and concrete sentences with names, numbers and places. In the code you find gradients and default fonts with `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji and filler phrases you look for in the texts, the rest in the screenshots.
+Instead: one single signature mark, used sparingly (a stroke under one word in the heading, a highlighter on at most one word per section), real photos of the place and the people, a font with character that suits the qualities, colours from the logo and surroundings, a structure that comes from the content (if dates are the main thing, they go at the top), and concrete sentences with names, numbers and places. In the code you find gradients and default fonts with `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji and filler phrases you look for in the texts, the rest in the screenshots.
 
 ### 4. The colour fan (tokens)
 
@@ -81,6 +89,13 @@ One file `tokens.css` with CSS variables: colours for light and dark, fonts, fon
 - Calculate contrast, don't estimate it: text at least 4.5 : 1, buttons and borders at least 3 : 1 (formula in the skill `barrierefreiheit`). Put the values in as comments.
 - Dark mode only swaps the colour variables (`@media (prefers-color-scheme: dark)`).
 - Outside `tokens.css`, no colour and no font size is written into the code by hand.
+- **Type:** two families at most, a heading font with character and a calm body font, self-hosted (woff2, `font-display: swap`). Text 16 to 17 px with a line height of 1.5, nothing under 12 px. Big headings with a line height of 1.0 to 1.1 and set slightly tighter (−0.01 to −0.03 em), smaller on the phone with `clamp()`. Bold (700) only for the biggest headings, otherwise semi-bold (600). Prices and times with `font-variant-numeric: tabular-nums`.
+- **Spacing** only from one scale: 4, 8, 12, 16, 24, 32, 48 px (bigger for sections). Content at most about 1200 px wide, a 16 px margin on the phone.
+- **Rounded corners:** three steps by size (field, card, large surface), always smaller inside than outside. Buttons either all round or all square.
+- **Depth:** one method for the whole site, either surfaces with a shadow or a fine line without a shadow. Shadows tinted in the text colour, never grey, two levels at most. The background is slightly warm, cards are white.
+- **Motion:** press 90 to 100 ms, transitions 160 to 200 ms, one movement per event. With “Reduce motion”, only cross-fades.
+- **Focus:** 2 to 3 px in the action colour with a 2 px gap, at least 3 : 1 on every background.
+- **The error colour** only for errors and anything urgent.
 
 ### Design elements: always ask
 
@@ -89,8 +104,8 @@ Once the direction is settled, you always ask: “Would you like any design elem
 - **Icons:** one single, consistent set (for example Lucide or Phosphor), never emoji and never two sets mixed.
 - **Illustrations:** a few, in the same style, for empty spots and explanations.
 - **Your own photos:** a photo list of what the person should photograph (the place, people in action, details). Real photos beat any generated picture.
-- **A mascot:** a character that guides people through the site. First a sheet with four to six poses of the same character, then rules for when it appears: never with errors, cancellations or delicate moments. Animated clips play for 5 seconds at most and then stop (WCAG 2.2.2). You look at every picture yourself, zoomed in too.
-- **3D:** an object or the character as a 3D model, for example for the header of the home page.
+- **A mascot:** a character that guides people through the site. First a sheet with four to six poses of the same character, one for each moment (welcome, searching, success, empty), then rules for when it appears: never with errors, cancellations or delicate moments, never next to photos of people, never behind lists or forms. Size: at most half the width for the welcome, small otherwise. It's decoration (`alt=""`); the sentence next to it works without it too. Animated clips only load once they're visible, play for 5 seconds at most and then stop (WCAG 2.2.2). You look at every picture yourself, zoomed in too.
+- **3D:** an object or the character as a 3D model, only in the header of the home page and only from tablet width up. A still image comes first; the 3D only loads once the header is visible. On a phone, without a graphics card or with “Reduce motion”, the still image stays.
 
 Whatever the person picks goes into `docs/gestaltung/richtungen.md` and into the colour fan (sizes, spacing, rules).
 

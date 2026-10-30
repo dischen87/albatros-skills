@@ -48,6 +48,11 @@ Gravità: **critica** (la cosa principale non funziona o viola la legge), **alta
 
 Presenta alla persona tutto insieme quello che deve decidere (con la tua raccomandazione), non punto per punto. Poi ripara: prima le parti comuni (pulsante, campo del modulo, messaggio d'errore, conferma), poi le pagine. Colori e caratteri in questo passo restano come sono.
 
+- **Pulsante principale:** alto circa 56 px, carattere da 17 px, semigrassetto. Il secondo pulsante è bianco con bordo, i link sono sottolineati.
+- **Disattivato** non è mai invisibile: opacità al 40 %, e accanto c'è scritto perché.
+- **Campi:** alti da 48 a 52 px, l'etichetta sta sopra (mai solo un segnaposto nel campo), aiuto o errore sotto, con una parola e non solo con il colore.
+- **Stato** (libero, al completo, confermato) sempre come parola e forma, mai solo come colore.
+
 ### 3. Tre direzioni
 
 1. **Il carattere prima dei colori.** Chiedi delle caratteristiche, non dei colori preferiti. Proponi coppie di opposti tra cui scegliere, adatte al sito: tradizionale o sportivo, villaggio di montagna o città, calmo o vivace, elegante o alla mano, per gli ospiti o per i membri. In più una domanda: quali tre parole devono pensare i visitatori dopo dieci secondi? Annota le risposte in `docs/gestaltung/richtungen.md`. Ognuna delle tre direzioni mette in risalto altre di queste caratteristiche. I colori ne derivano, insieme al logo e all'ambiente, mai il contrario.
@@ -70,8 +75,11 @@ I siti fatti con l'IA si riconoscono dagli stessi tratti. Controlla ogni bozza e
 - Tre schede uguali in fila, con la stessa ombra, lo stesso arrotondamento e un'icona ciascuna.
 - Aspetto da immagini di repertorio: persone sorridenti al portatile, montagne di chissà dove.
 - Frasi fatte: «Benvenuti sul nostro sito», «Scopri», «Il vostro partner per», «con passione», «innovativo», «senza intoppi».
+- Numeri, recensioni, citazioni o loghi di clienti inventati. Promesse di tempo come «in 60 secondi».
+- Ombre grigie, due tipi di profondità uno accanto all'altro (ombra qui, bordo là), set di icone mescolati.
+- Più di sei sezioni sulla pagina iniziale.
 
-Invece: foto vere del luogo e delle persone, un carattere tipografico con personalità, adatto alle caratteristiche, colori dal logo e dall'ambiente, una struttura che nasce dal contenuto (se gli appuntamenti sono la cosa principale, stanno in alto) e frasi concrete con nomi, numeri e luoghi. Nel codice trovi sfumature e caratteri standard con `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji e frasi fatte le cerchi nei testi, il resto nelle foto.
+Invece: un unico segno distintivo, usato con parsimonia (una linea sotto una parola del titolo, un evidenziatore per al massimo una parola per sezione), foto vere del luogo e delle persone, un carattere tipografico con personalità, adatto alle caratteristiche, colori dal logo e dall'ambiente, una struttura che nasce dal contenuto (se gli appuntamenti sono la cosa principale, stanno in alto) e frasi concrete con nomi, numeri e luoghi. Nel codice trovi sfumature e caratteri standard con `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji e frasi fatte le cerchi nei testi, il resto nelle foto.
 
 ### 4. La mazzetta dei colori (token)
 
@@ -81,6 +89,13 @@ Un file `tokens.css` con variabili CSS: colori per chiaro e scuro, caratteri, di
 - Calcola il contrasto, non stimarlo: testo almeno 4,5 : 1, pulsanti e bordi almeno 3 : 1 (formula nello skill `barrierefreiheit`). Scrivi i valori come commento.
 - La modalità scura scambia solo le variabili dei colori (`@media (prefers-color-scheme: dark)`).
 - Fuori da `tokens.css` nel codice non c'è nessun colore e nessuna dimensione di carattere scritta a mano.
+- **Caratteri:** al massimo due famiglie, un carattere per i titoli con personalità e un carattere tranquillo per il testo, ospitati in proprio (woff2, `font-display: swap`). Testo da 16 a 17 px con interlinea 1,5, niente sotto i 12 px. Titoli grandi con interlinea da 1,0 a 1,1 e un po' più stretti (da −0,01 a −0,03 em), sul telefonino più piccoli con `clamp()`. Grassetto (700) solo per i titoli più grandi, altrimenti semigrassetto (600). Prezzi e orari con `font-variant-numeric: tabular-nums`.
+- **Spaziature** solo da una serie: 4, 8, 12, 16, 24, 32, 48 px (più grandi per le sezioni). Contenuto largo al massimo circa 1200 px, sul telefonino 16 px di margine.
+- **Arrotondamenti:** tre livelli secondo la grandezza (campo, scheda, superficie grande), dentro sempre più piccoli che fuori. I pulsanti o tutti arrotondati o tutti squadrati.
+- **Profondità:** un solo metodo per tutto il sito, o superficie con ombra o linea sottile senza ombra. Ombre tinte del colore del testo, mai grigie, al massimo due livelli. Lo sfondo è leggermente caldo, le schede sono bianche.
+- **Movimento:** pressione da 90 a 100 ms, cambio da 160 a 200 ms, un movimento per evento. Con «Riduci movimento» solo dissolvenze.
+- **Focus:** da 2 a 3 px nel colore d'azione con 2 px di distanza, su ogni sfondo almeno 3 : 1.
+- **Il colore d'errore** solo per errori e cose urgenti.
 
 ### Elementi grafici: chiedi sempre
 
@@ -89,8 +104,8 @@ Quando la direzione è decisa, chiedi sempre: «Vuoi aggiungere anche degli elem
 - **Icone:** un unico set uniforme (per esempio Lucide o Phosphor), mai emoji e mai due set mescolati.
 - **Illustrazioni:** poche, nello stesso stile, per i punti vuoti e le spiegazioni.
 - **Foto proprie:** una lista di cosa deve fotografare la persona (il luogo, persone in azione, dettagli). Le foto vere battono qualsiasi immagine generata.
-- **Una mascotte:** una figura che accompagna attraverso il sito. Prima un foglio con quattro-sei pose della stessa figura, poi le regole su quando compare: mai con errori, disdette o momenti delicati. I clip animati durano al massimo 5 secondi e poi si fermano (WCAG 2.2.2). Ogni immagine la guardi tu stesso, anche ingrandita.
-- **3D:** un oggetto o la figura come modello 3D, per esempio per la testata della pagina iniziale.
+- **Una mascotte:** una figura che accompagna attraverso il sito. Prima un foglio con quattro-sei pose della stessa figura, una per ogni momento (benvenuto, ricerca, successo, vuoto), poi le regole su quando compare: mai con errori, disdette o momenti delicati, mai accanto a foto di persone, mai dietro liste o moduli. Grandezza: per il benvenuto al massimo metà della larghezza, altrimenti piccola. È decorazione (`alt=""`), la frase accanto regge anche senza di lei. I clip animati si caricano solo quando sono visibili, durano al massimo 5 secondi e poi si fermano (WCAG 2.2.2). Ogni immagine la guardi tu stesso, anche ingrandita.
+- **3D:** un oggetto o la figura come modello 3D, solo nella testata della pagina iniziale e solo dalla larghezza di un tablet in su. Prima c'è un'immagine ferma, il 3D si carica solo quando la testata è visibile. Sul telefonino, senza scheda grafica o con «Riduci movimento» resta l'immagine ferma.
 
 Quello che sceglie la persona va in `docs/gestaltung/richtungen.md` e nella mazzetta dei colori (dimensioni, spaziature, regole).
 

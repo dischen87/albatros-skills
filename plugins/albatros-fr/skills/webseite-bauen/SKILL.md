@@ -115,8 +115,11 @@ Le PRD, c'est le plan de construction sur une page, avec la liste de ce qu'on v�
 ### <chaque autre page>
 - [ ] …
 
-### <chaque fonction, par exemple un formulaire>
+### <chaque fonction, par exemple un formulaire ou des réservations>
 - [ ] L'envoi marche, les champs obligatoires manquants le signalent de façon compréhensible, le message arrive à <adresse>
+- [ ] Chaque liste montre si elle charge, si elle est vide (une phrase et un bouton) ou s'il y a une erreur (avec « Réessayer », jamais déguisée en liste vide)
+- [ ] Après l'envoi, une page de confirmation : ce qui s'est passé, le numéro, ce qui vient ensuite, comment l'annuler
+- [ ] Le bouton dit le résultat (« Réserver une place », pas « Envoyer ») et il est désactivé pendant l'envoi
 
 ### Pour toutes les pages
 - [ ] Contenu comme dans le mandat, pas d'espace réservé sans nom clair
@@ -129,6 +132,16 @@ Le PRD, c'est le plan de construction sur une page, avec la liste de ce qu'on v�
 
 Validé : <date> par <nom>
 ```
+
+**Construire les fonctions comme les pros.** Ce que font les visiteurs (réserver, s'inscrire, commander, demander), tu le construis selon ces règles, même si la personne ne le demande pas :
+
+- **Trois portes :** des pages publiques sans connexion ; une page pour les hôtes par un lien avec un code secret, sans compte (par exemple « Annuler la réservation ») ; l'administration seulement pour la personne, jamais liée.
+- **Une source par vérité :** les offres, les prix, les délais et les horaires d'ouverture se trouvent à un seul endroit. La page, le formulaire, l'e-mail et les conditions les lisent à cet endroit.
+- **Un mot par chose,** le même sur la page, dans l'e-mail et dans l'administration. Une demande n'est pas une réservation. Les mots figurent dans `docs/designsystem.md`.
+- **Vérifier sur le serveur, jamais seulement dans le navigateur web :** les places, les délais et le statut, c'est le serveur qui les calcule. Pour les réservations, il y a la recette testée `buchungen` (skill `bausteine`), au lieu de la réinventer.
+- **Des erreurs honnêtes :** si un service ne répond pas, c'est une erreur avec « Réessayer », jamais « aucune date ».
+- **Format suisse :** « CHF 1'250.– », « mar. 3 nov. 2026, 18:00–19:15 », heures en `Europe/Zurich`.
+- **Le natel d'abord :** à 390 px, pas de défilement horizontal, l'action principale est visible sans défiler, un formulaire demande une chose par étape (« Étape 2 sur 3 »).
 
 Chaque critère doit pouvoir être vérifié : on voit ou on mesure s'il est rempli. « Beau » ou « moderne » n'est pas un critère. Écris à la place à quoi on le reconnaît. Montre le PRD à la personne en version courte dans le chat et ouvre le fichier. Seulement après son oui, tu inscris `Validé :` avec la date et le nom, tu annonces `prd` et tu construis.
 

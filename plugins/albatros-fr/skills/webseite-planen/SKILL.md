@@ -32,7 +32,7 @@ Un plan sur une feuille de papier suffit. Il évite beaucoup de transformations 
    - Mentions légales et protection des données (obligatoire, voir le skill `recht-ch`)
 5. **Qu'est-ce qui existe déjà ?** Textes, photos, logo, prix, horaires d'ouverture. Ce qui manque va sur la liste pour le skill `inhalte`.
 6. **Quels modèles ?** Deux ou trois sites web qui plaisent à la personne, et ce qui lui plaît exactement (les couleurs, le calme, les photos, la brièveté des textes). Cela aidera plus tard avec le skill `gestaltung`.
-7. **Que doit savoir faire le site ?** Dans quelles langues, qui modifie les contenus, les visiteurs doivent-ils s'inscrire ou se connecter ? Avec plusieurs langues, ça reste un site normal. Il ne faut une brique que pour une liste d'inscription, une connexion ou un tableau d'affichage pour d'autres (skill `bausteine`).
+7. **Que doit savoir faire le site ?** Dans quelles langues, qui modifie les contenus, les visiteurs doivent-ils s'inscrire ou se connecter ? Avec plusieurs langues, ça reste un site normal. Il ne faut une brique que pour une liste d'inscription, des réservations avec des places, une connexion ou un tableau d'affichage pour d'autres (skill `bausteine`).
 8. **À quoi vois-tu que le site fonctionne ?** Un chiffre que la personne veut suivre, par exemple le nombre de demandes par mois. Le skill `statistik` en aura besoin plus tard.
 
 ## Le plan

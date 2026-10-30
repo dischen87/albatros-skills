@@ -48,6 +48,11 @@ Gravité : **critique** (la chose principale ne marche pas ou la loi est viol�
 
 Présente à la personne, regroupé, ce qu'elle doit décider (avec ta recommandation), pas un point après l'autre. Ensuite réparer : d'abord les parties communes (bouton, champ de formulaire, message d'erreur, confirmation), puis les pages. Les couleurs et les polices restent telles quelles à cette étape.
 
+- **Bouton principal :** environ 56 px de haut, police de 17 px, demi-gras. Le deuxième bouton est blanc avec une bordure, les liens sont soulignés.
+- **Désactivé** n'est jamais invisible : 40 % d'opacité, et à côté, on lit pourquoi.
+- **Champs :** 48 à 52 px de haut, le libellé est au-dessus (jamais seulement un texte indicatif dans le champ), l'aide ou l'erreur en dessous, avec un mot et pas seulement avec une couleur.
+- **États** (libre, complet, confirmé) toujours sous forme de mot et de forme, jamais seulement de couleur.
+
 ### 3. Trois directions
 
 1. **Le caractère avant les couleurs.** Demande des traits de caractère, pas des couleurs préférées. Propose des paires d'opposés au choix, adaptées au site : traditionnel ou sportif, village de montagne ou ville, calme ou vivant, raffiné ou terre à terre, pour les hôtes ou pour les membres. En plus, une question : quels trois mots les visiteurs doivent-ils se dire après dix secondes ? Note les réponses dans `docs/gestaltung/richtungen.md`. Chacune des trois directions met en avant d'autres de ces traits. Les couleurs en découlent, ainsi que du logo et de l'environnement, jamais l'inverse.
@@ -70,8 +75,11 @@ Les sites faits par une IA se reconnaissent aux mêmes signes. Vérifie chaque �
 - Trois cartes identiques sur une ligne, avec la même ombre, le même arrondi et chacune une icône.
 - Le look banque d'images : des gens souriants devant un ordinateur portable, des montagnes de n'importe où.
 - Des formules creuses : « Bienvenue sur notre site web », « Découvrez », « Votre partenaire pour », « avec passion », « innovant », « sans couture ».
+- Des chiffres, des avis, des citations ou des logos de clients inventés. Des promesses de temps comme « en 60 secondes ».
+- Des ombres grises, deux sortes de profondeur côte à côte (une ombre ici, une bordure là), des jeux d'icônes mélangés.
+- Plus de six sections sur la page d'accueil.
 
-À la place : de vraies photos du lieu et des gens, une police avec du caractère, adaptée aux traits choisis, des couleurs tirées du logo et de l'environnement, une structure qui vient du contenu (si les dates sont l'essentiel, elles sont en haut) et des phrases concrètes avec des noms, des chiffres et des lieux. Dans le code, tu trouves les dégradés et les polices standard avec `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Les emoji et les formules creuses, tu les cherches dans les textes, le reste dans les photos.
+À la place : un seul signe distinctif, utilisé avec parcimonie (un trait sous un mot du titre, un surligneur pour au plus un mot par section), de vraies photos du lieu et des gens, une police avec du caractère, adaptée aux traits choisis, des couleurs tirées du logo et de l'environnement, une structure qui vient du contenu (si les dates sont l'essentiel, elles sont en haut) et des phrases concrètes avec des noms, des chiffres et des lieux. Dans le code, tu trouves les dégradés et les polices standard avec `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Les emoji et les formules creuses, tu les cherches dans les textes, le reste dans les photos.
 
 ### 4. Le nuancier (tokens)
 
@@ -81,6 +89,13 @@ Un fichier `tokens.css` avec des variables CSS : couleurs pour clair et sombre
 - Recalculer le contraste, ne pas l'estimer : texte au moins 4,5 : 1, boutons et bordures au moins 3 : 1 (formule dans le skill `barrierefreiheit`). Noter les valeurs en commentaire.
 - Le mode sombre n'échange que les variables de couleur (`@media (prefers-color-scheme: dark)`).
 - En dehors de `tokens.css`, aucune couleur ni aucune taille de police n'est écrite à la main dans le code.
+- **Police :** au plus deux familles, une police de titre avec du caractère et une police de texte calme, hébergées soi-même (woff2, `font-display: swap`). Texte de 16 à 17 px avec un interligne de 1,5, rien en dessous de 12 px. Grands titres avec un interligne de 1,0 à 1,1 et un peu plus serrés (−0,01 à −0,03 em), plus petits sur le natel avec `clamp()`. Gras (700) seulement pour les plus grands titres, sinon demi-gras (600). Prix et heures avec `font-variant-numeric: tabular-nums`.
+- **Espacements** tirés d'une seule série : 4, 8, 12, 16, 24, 32, 48 px (plus grands pour les sections). Contenu large d'environ 1200 px au plus, 16 px de marge sur le natel.
+- **Arrondis :** trois niveaux selon la taille (champ, carte, grande surface), toujours plus petits à l'intérieur qu'à l'extérieur. Les boutons soit tous arrondis, soit tous carrés.
+- **Profondeur :** une seule méthode pour tout le site, soit une surface avec ombre, soit une fine ligne sans ombre. Ombres teintées de la couleur du texte, jamais grises, au plus deux niveaux. Le fond est légèrement chaud, les cartes sont blanches.
+- **Mouvement :** appui 90 à 100 ms, transition 160 à 200 ms, un seul mouvement par événement. Avec « Réduire les animations », seulement des fondus.
+- **Focus :** 2 à 3 px dans la couleur d'action, avec 2 px d'écart, au moins 3 : 1 sur chaque fond.
+- **La couleur d'erreur** seulement pour les erreurs et ce qui est urgent.
 
 ### Éléments graphiques : toujours demander
 
@@ -89,8 +104,8 @@ Une fois la direction fixée, tu demandes toujours : « Tu veux encore des �
 - **Icônes :** un seul jeu, cohérent (par exemple Lucide ou Phosphor), jamais d'emoji et jamais deux jeux mélangés.
 - **Illustrations :** peu nombreuses, dans le même style, pour les endroits vides et les explications.
 - **Ses propres photos :** une liste de photos, ce que la personne doit photographier (le lieu, des gens en action, des détails). De vraies photos battent n'importe quelle image générée.
-- **Une mascotte :** un personnage qui guide à travers le site. D'abord une planche avec quatre à six poses du même personnage, puis des règles qui disent quand il apparaît : jamais lors d'erreurs, de refus ou de moments délicats. Les clips animés durent au plus 5 secondes, puis s'arrêtent (WCAG 2.2.2). Chaque image, tu la regardes toi-même, aussi en agrandi.
-- **3D :** un objet ou le personnage en modèle 3D, par exemple pour l'en-tête de la page d'accueil.
+- **Une mascotte :** un personnage qui guide à travers le site. D'abord une planche avec quatre à six poses du même personnage, chacune pour un moment (bienvenue, recherche, succès, vide), puis des règles qui disent quand il apparaît : jamais lors d'erreurs, de refus ou de moments délicats, jamais à côté de photos de personnes, jamais derrière des listes ou des formulaires. Taille : pour la bienvenue, au plus la moitié de la largeur, sinon petit. Il est décoratif (`alt=""`), la phrase à côté tient aussi sans lui. Les clips animés ne se chargent que quand ils sont visibles, durent au plus 5 secondes, puis s'arrêtent (WCAG 2.2.2). Chaque image, tu la regardes toi-même, aussi en agrandi.
+- **3D :** un objet ou le personnage en modèle 3D, seulement dans l'en-tête de la page d'accueil et seulement à partir de la largeur d'une tablette. D'abord, il y a une image fixe ; la 3D ne se charge que quand l'en-tête est visible. Sur le natel, sans carte graphique ou avec « Réduire les animations », l'image fixe reste.
 
 Ce que la personne choisit va dans `docs/gestaltung/richtungen.md` et dans le nuancier (tailles, espacements, règles).
 

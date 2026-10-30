@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Platz buchen</title>
+  <style>
+    /* Nur das Nötigste, damit die Seite allein brauchbar ist. Beim Einbau übernimmt sie Farben, Schrift und Abstände der Seite
+       (docs/designsystem.md): die Variablen unten auf die Tokens der Seite setzen. */
+    :root { --text: #1d2433; --leise: #5b6475; --linie: #d5d9e0; --flaeche: #fff; --grund: #f6f5f2; --aktion: #1f5f8b; --fehler: #b42318; --ok: #1e7a46; }
+    body { margin: 0; background: var(--grund); color: var(--text); font: 17px/1.5 system-ui, sans-serif; }
+    main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: clamp(28px, 4vw + 12px, 40px); line-height: 1.1; margin: 0 0 8px; }
+    h2 { font-size: 20px; margin: 24px 0 8px; }
+    .leise { color: var(--leise); }
+    .karte { background: var(--flaeche); border: 1px solid var(--linie); border-radius: 16px; padding: 16px; margin: 12px 0; }
+    .termin { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+    .termin b { display: block; }
+    .frei { font-variant-numeric: tabular-nums; }
+    button, .knopf { min-height: 48px; padding: 0 20px; border-radius: 12px; border: 0; background: var(--aktion); color: #fff; font: 600 17px/1 system-ui, sans-serif; cursor: pointer; }
+    button.zweit { background: var(--flaeche); color: var(--aktion); border: 1.5px solid var(--aktion); }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--aktion); outline-offset: 2px; }
+    label { display: block; font-weight: 600; margin: 16px 0 4px; }
+    input, select, textarea { box-sizing: border-box; width: 100%; min-height: 48px; padding: 10px 12px; border: 1.5px solid var(--linie); border-radius: 12px; font: inherit; background: #fff; }
+    .hinweis { margin: 16px 0; }
+    .fehler { color: var(--fehler); font-weight: 600; }
+    .ok { color: var(--ok); font-weight: 600; }
+    .falle { position: absolute; left: -9999px; }
+    [hidden] { display: none !important; }
+    @media (max-width: 420px) { .termin { flex-direction: column; align-items: stretch; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Platz buchen</h1>
+  <p class="leise" id="schritt">Schritt 1 von 2: Wähl einen Termin.</p>
+
+  <!-- 1. Termine: lädt, leer, Fehler oder Liste -->
+  <section id="termine" aria-live="polite">
+    <p id="laedt">Die Termine werden geladen …</p>
+    <div id="leer" hidden><p>Gerade gibt es keine freien Termine. Schau später wieder vorbei oder schreib uns.</p></div>
+    <div id="ladefehler" hidden><p class="fehler">Die Termine lassen sich gerade nicht laden.</p><button class="zweit" type="button" id="nochmals">Nochmals versuchen</button></div>
+    <p id="meldung" class="fehler" role="alert" hidden></p>
+    <div id="liste"></div>
+  </section>
+
+  <!-- 2. Angaben -->
+  <form id="angaben" hidden novalidate>
+    <div class="karte" id="gewaehlt"></div>
+    <label for="name">Dein Name</label>
+    <input id="name" name="name" required maxlength="100" autocomplete="name">
+    <label for="email">Deine E-Mail</label>
+    <input id="email" name="email" type="email" required autocomplete="email">
+    <label for="anzahl">Wie viele Personen?</label>
+    <select id="anzahl" name="anzahl"></select>
+    <label for="nachricht">Nachricht (freiwillig)</label>
+    <textarea id="nachricht" name="nachricht" maxlength="500" rows="3"></textarea>
+    <label class="falle" aria-hidden="true">Nicht ausfüllen <input name="website" tabindex="-1" autocomplete="off"></label>
+    <p class="hinweis leise" id="bedingungen">Kostenlos absagen bis zum Beginn, mit dem Link in deiner Bestätigung.</p>
+    <p id="formfehler" class="fehler" role="alert" hidden></p>
+    <button id="buchen">Platz buchen</button>
+    <button class="zweit" type="button" id="zurueck">Anderen Termin wählen</button>
+  </form>
+
+  <!-- 3. Bestätigung -->
+  <section id="bestaetigt" hidden aria-live="polite">
+    <p class="ok">Gebucht! Dein Platz ist reserviert.</p>
+    <div class="karte" id="beleg"></div>
+    <p>Du bekommst gleich eine Bestätigung per Mail. Darin steht auch der Link, falls du absagen musst.</p>
+  </section>
+
+  <!-- Absagen über den Link aus der Mail: buchen.html?absagen=<code> -->
+  <section id="absagen" hidden aria-live="polite">
+    <div class="karte" id="absage-beleg"><p>Deine Buchung wird geladen …</p></div>
+    <p id="absage-text"></p>
+    <button id="absage-knopf" hidden>Buchung absagen</button>
+  </section>
+</main>
+<script>
+  // Spricht PocketBase über /api/ der eigenen Adresse an. Plätze, Status und Absagen prüft der Server (pb_hooks/buchungen.pb.js).
+  const $ = (id) => document.getElementById(id);
+  const zone = { timeZone: 'Europe/Zurich' };
+  const datum = (s) => new Date(s.replace(' ', 'T'));
+  const tag = (s) => datum(s).toLocaleDateString('de-CH', { ...zone, weekday: 'long', day: 'numeric', month: 'long' });
+  const uhr = (s) => datum(s).toLocaleTimeString('de-CH', { ...zone, hour: '2-digit', minute: '2-digit' });
+  const text = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+  let gewaehlt = null;
+
+  async function termineLaden() {
+    for (const id of ['leer', 'ladefehler']) $(id).hidden = true;
+    $('laedt').hidden = false;
+    $('liste').innerHTML = '';
+    try {
+      const r = await fetch('/api/collections/termine_frei/records?sort=beginn&expand=angebot&perPage=100');
+      if (!r.ok) throw new Error(r.status);
+      const termine = (await r.json()).items.filter((t) => t.expand?.angebot);
+      $('laedt').hidden = true;
+      if (!termine.length) { $('leer').hidden = false; return; }
+      let letzterTag = '';
+      for (const t of termine) {
+        if (tag(t.beginn) !== letzterTag) { letzterTag = tag(t.beginn); $('liste').insertAdjacentHTML('beforeend', `<h2>${text(letzterTag)}</h2>`); }
+        const a = t.expand.angebot, voll = t.frei <= 0;
+        $('liste').insertAdjacentHTML('beforeend', `
+          <div class="karte termin">
+            <div><b>${text(a.titel)}</b>${uhr(t.beginn)}–${uhr(t.ende)} Uhr${a.ort ? ` · ${text(a.ort)}` : ''}
+              <div class="leise frei">${voll ? 'Ausgebucht' : t.frei === 1 ? 'Noch 1 Platz frei' : `Noch ${t.frei} Plätze frei`}${a.preis_hinweis ? ` · ${text(a.preis_hinweis)}` : ''}</div></div>
+            <button type="button" data-id="${t.id}" ${voll ? 'disabled aria-label="Ausgebucht"' : ''}>${voll ? 'Ausgebucht' : 'Wählen'}</button>
+          </div>`);
+      }
+      for (const b of $('liste').querySelectorAll('button[data-id]')) b.onclick = () => waehlen(termine.find((t) => t.id === b.dataset.id));
+    } catch {
+      $('laedt').hidden = true;
+      $('ladefehler').hidden = false;
+    }
+  }
+
+  function waehlen(t) {
+    gewaehlt = t;
+    $('termine').hidden = true;
+    $('angaben').hidden = false;
+    $('schritt').textContent = 'Schritt 2 von 2: Deine Angaben.';
+    $('gewaehlt').innerHTML = `<b>${text(t.expand.angebot.titel)}</b><br>${text(tag(t.beginn))}, ${uhr(t.beginn)}–${uhr(t.ende)} Uhr${t.expand.angebot.ort ? `<br>${text(t.expand.angebot.ort)}` : ''}`;
+    $('anzahl').innerHTML = Array.from({ length: Math.min(t.frei, 10) }, (_, i) => `<option>${i + 1}</option>`).join('');
+    $('bedingungen').textContent = `Kostenlos absagen bis zum Beginn, mit dem Link in deiner Bestätigung.${t.expand.angebot.preis_hinweis ? ` ${t.expand.angebot.preis_hinweis}.` : ''}`;
+    $('formfehler').hidden = true;
+    $('name').focus();
+  }
+
+  $('zurueck').onclick = () => { $('angaben').hidden = true; $('termine').hidden = false; $('schritt').textContent = 'Schritt 1 von 2: Wähl einen Termin.'; };
+  $('nochmals').onclick = termineLaden;
+
+  $('angaben').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    if (!f.reportValidity()) return;
+    $('buchen').disabled = true;
+    $('buchen').textContent = 'Wird gebucht …';
+    $('formfehler').hidden = true;
+    try {
+      const r = await fetch('/api/collections/buchungen/records', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ...Object.fromEntries(new FormData(f)), termin: gewaehlt.id, anzahl: Number(f.anzahl.value) }),
+      });
+      const antwort = await r.json().catch(() => ({}));
+      if (!r.ok) {
+        // Voll oder vorbei: zurück zur Liste mit frischen Plätzen und der Meldung oben
+        if (/voll|nicht mehr buchbar/.test(antwort.message ?? '')) {
+          $('angaben').hidden = true; $('termine').hidden = false;
+          $('meldung').textContent = `${antwort.message} Hier sind die anderen Termine.`; $('meldung').hidden = false;
+          return termineLaden();
+        }
+        const feld = Object.values(antwort.data ?? {})[0];
+        throw new Error(feld?.message ? 'Prüf bitte deine Angaben, vor allem die E-Mail.' : antwort.message || 'Das hat nicht geklappt.');
+      }
+      f.hidden = true;
+      $('schritt').hidden = true;
+      $('beleg').innerHTML = `${$('gewaehlt').innerHTML}<br>${antwort.anzahl === 1 ? '1 Person' : `${antwort.anzahl} Personen`}<br><span class="leise">Nummer ${text(antwort.id)}</span>`;
+      $('bestaetigt').hidden = false;
+      $('bestaetigt').scrollIntoView();
+    } catch (err) {
+      $('formfehler').textContent = err.message === 'Failed to fetch' ? 'Keine Verbindung. Prüf dein Internet und versuch es nochmals.' : err.message;
+      $('formfehler').hidden = false;
+    } finally {
+      $('buchen').disabled = false;
+      $('buchen').textContent = 'Platz buchen';
+    }
+  });
+
+  async function absagen(code) {
+    for (const id of ['termine', 'schritt']) $(id).hidden = true;
+    $('absagen').hidden = false;
+    document.querySelector('h1').textContent = 'Buchung absagen';
+    const url = `/api/buchungen/absagen/${encodeURIComponent(code)}`;
+    const zeigen = (b) => {
+      $('absage-beleg').innerHTML = `<b>${text(b.angebot)}</b><br>${text(b.wann)}${b.ort ? `<br>${text(b.ort)}` : ''}<br><span class="leise">Nummer ${text(b.nummer)}</span>`;
+      const weg = b.status === 'storniert';
+      $('absage-text').innerHTML = weg ? '<span class="ok">Diese Buchung ist abgesagt.</span> <a href="buchen.html">Andere Termine ansehen</a>'
+        : b.begonnen ? 'Der Termin hat schon begonnen. Absagen geht nur vorher.' : 'Kannst du nicht kommen? Dann gib den Platz frei, so kann jemand anderes kommen.';
+      $('absage-knopf').hidden = weg || b.begonnen;
+    };
+    const r = await fetch(url).catch(() => null);
+    const b = await r?.json().catch(() => null);
+    if (!r?.ok) { $('absage-beleg').innerHTML = `<p class="fehler">${text(b?.message ?? 'Die Buchung lässt sich gerade nicht laden. Versuch es später nochmals.')}</p>`; return; }
+    zeigen(b);
+    $('absage-knopf').onclick = async () => {
+      $('absage-knopf').disabled = true;
+      const r2 = await fetch(url, { method: 'POST' }).catch(() => null);
+      const b2 = await r2?.json().catch(() => null);
+      $('absage-knopf').disabled = false;
+      if (r2?.ok) zeigen(b2); else $('absage-text').innerHTML = `<span class="fehler">${text(b2?.message ?? 'Das hat nicht geklappt. Versuch es nochmals.')}</span>`;
+    };
+  }
+
+  const code = new URLSearchParams(location.search).get('absagen');
+  code ? absagen(code) : termineLaden();
+</script>
+</body>
+</html>

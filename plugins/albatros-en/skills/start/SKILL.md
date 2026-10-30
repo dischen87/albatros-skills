@@ -61,7 +61,7 @@ Save the choice with `weg_waehlen`. Both paths start with the flight school (key
 On the website path, you first clarify what the site should be able to do. One question decides it: **Should anyone be able to enter something on the site, sign up or log in, or do other people look after the content in the browser?**
 
 - **No: a normal site, and Light is enough for that.** Even with several languages (one folder per language). Lists like dates or products sit in a file in the project, and the site reads them: a light database in the code. Payments work with a payment link (for example Stripe), a newsletter with a service like Brevo, both without a server of your own.
-- **Yes: a site with building blocks, and that needs Pilot.** Ready-made building blocks for a sign-up list, a members' area with login, a noticeboard or a big CMS run on a server of your own (skill `bausteine`).
+- **Yes: a site with building blocks, and that needs Pilot.** Ready-made building blocks for a sign-up list, bookings for classes and appointments, a members' area with login, a noticeboard or a big CMS run on a server of your own (skill `bausteine`).
 
 If the person has already answered that (for example “only I change the texts, no login”), don't ask any further: recommend straight away and finish with the next step. Don't ask about their own domain: it works with Light as with Pilot and comes later (skill `domain`). Otherwise ask exactly this one question. Languages, content and examples get sorted out later in the floor plan (skill `webseite-planen`).
 
@@ -69,7 +69,7 @@ There are three plans. You only give prices and limits from `konto_status` or fr
 
 - **Free:** skills, reading missions, the community. No page of your own on the web. Only Albatros is free: the subscription for the AI in the terminal (see the rucksack) always comes on top.
 - **Light:** a website at `https://{name}.aufwind.sh`, straight from the logbook: whatever the person sends to the harbour (`git push`) is online shortly afterwards. Good for sites made of text and pictures: a club, a portfolio, a shop with contact by email. No server of your own. Their own domain (`chor-wil.ch`) can come along; it costs extra, per year.
-- **Pilot:** a server of your own (picture: your own flat in a big building) with a conveyor belt and daily photos. Needed as soon as a program runs on the site: a sign-up list, a login for members, your own editing window for content, or a form that does more than open an email. There are ready-made building blocks for that (skill `bausteine`). Your own domain works here too.
+- **Pilot:** a server of your own (picture: your own flat in a big building) with a conveyor belt and daily photos. Needed as soon as a program runs on the site: a sign-up list, bookings with places, a login for members, your own editing window for content, or a form that does more than open an email. There are ready-made building blocks for that (skill `bausteine`). Your own domain works here too.
 
 Explain the plans in everyday language, without abbreviations like RAM, CMS or login, and only in as much detail as the person needs to choose. Recommend the smallest plan that's enough, with one sentence of reasoning, and say straight away how it goes on: link to the payment page for that plan, then key and page. For a site with text and pictures, that's Light. Mention Pilot as the path for later, once a program comes along. Switching is possible any time later: the site's address and the logbook stay.
 

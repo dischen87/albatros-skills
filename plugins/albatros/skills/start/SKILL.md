@@ -60,7 +60,7 @@ Speichere die Wahl mit `weg_waehlen`. Beide Wege beginnen mit der Flugschule (Sc
 Beim Weg Webseite klärst du zuerst, was die Seite können soll. Entscheidend ist eine Frage: **Soll auf der Seite jemand etwas eintragen, sich anmelden oder einloggen, oder pflegen andere die Inhalte im Browser?**
 
 - **Nein: normale Seite, dafür reicht Light.** Auch mit mehreren Sprachen (je Sprache ein Ordner). Listen wie Termine oder Produkte liegen als Datei im Projekt, die Seite liest sie: eine leichte Datenbank im Code. Bezahlen geht mit einem Zahlungslink (zum Beispiel Stripe), ein Newsletter mit einem Dienst wie Brevo, beides ohne eigenen Server.
-- **Ja: Seite mit Bausteinen, dafür braucht es Pilot.** Fertige Bausteine für Anmeldeliste, Mitgliederbereich mit Login, Pinnwand oder ein grosses CMS laufen auf dem eigenen Server (Skill `bausteine`).
+- **Ja: Seite mit Bausteinen, dafür braucht es Pilot.** Fertige Bausteine für Anmeldeliste, Buchungen für Kurse und Termine, Mitgliederbereich mit Login, Pinnwand oder ein grosses CMS laufen auf dem eigenen Server (Skill `bausteine`).
 
 Hat die Person das schon beantwortet (zum Beispiel «nur ich ändere die Texte, kein Login»), frag nicht weiter: Empfiehl gleich und schliess mit dem nächsten Schritt. Nach einer eigenen Domain fragst du nicht: Sie geht mit Light wie mit Pilot und kommt später dazu (Skill `domain`). Sonst stell genau diese eine Frage. Sprachen, Inhalte und Vorbilder klärt später der Grundriss (Skill `webseite-planen`).
 
@@ -68,7 +68,7 @@ Es gibt drei Stufen. Preise und Grenzen nennst du nur aus `konto_status` oder vo
 
 - **Gratis:** Skills, Missionen lesen, die Community. Keine eigene Seite im Netz. Gratis ist nur Albatros: Das Abo der KI im Terminal (siehe Rucksack) kommt immer dazu.
 - **Light:** eine Webseite unter `https://{name}.aufwind.sh`, direkt aus dem Logbuch: Was die Person in den Hafen schickt (`git push`), ist kurz danach online. Gut für Seiten aus Texten und Bildern: Verein, Portfolio, Laden mit Kontakt per Mail. Kein eigener Server. Eine eigene Domain (`chor-wil.ch`) kann dazukommen, sie kostet separat pro Jahr.
-- **Pilot:** ein eigener Server (Bild: eine eigene Wohnung im grossen Haus) mit Fliessband und täglichen Fotos. Nötig, sobald auf der Seite ein Programm läuft: eine Anmeldeliste, ein Login für Mitglieder, ein eigenes Bearbeitungsfenster für Inhalte oder ein Formular, das mehr tut als eine Mail zu öffnen. Dafür gibt es fertige Bausteine (Skill `bausteine`). Eine eigene Domain geht hier genauso.
+- **Pilot:** ein eigener Server (Bild: eine eigene Wohnung im grossen Haus) mit Fliessband und täglichen Fotos. Nötig, sobald auf der Seite ein Programm läuft: eine Anmeldeliste, Buchungen mit Plätzen, ein Login für Mitglieder, ein eigenes Bearbeitungsfenster für Inhalte oder ein Formular, das mehr tut als eine Mail zu öffnen. Dafür gibt es fertige Bausteine (Skill `bausteine`). Eine eigene Domain geht hier genauso.
 
 Erklär die Stufen in Alltagssprache, ohne Kürzel wie RAM, CMS oder Login, und nur so genau, wie die Person es für die Wahl braucht. Empfiehl die kleinste Stufe, die reicht, mit einem Satz Begründung, und sag gleich, wie es weitergeht: Link zur Zahlungsseite dieser Stufe, dann Schlüssel und Seite. Für eine Seite mit Texten und Bildern ist das Light. Nenn Pilot als Weg für später, wenn ein Programm dazukommt. Wechseln geht später jederzeit: Die Adresse der Seite und das Logbuch bleiben.
 

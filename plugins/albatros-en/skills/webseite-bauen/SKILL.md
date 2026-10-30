@@ -115,8 +115,11 @@ The PRD is the building plan on one page, with the list of what gets checked at 
 ### <every other page>
 - [ ] …
 
-### <every feature, for example a form>
+### <every feature, for example a form or bookings>
 - [ ] Sending works, missing required fields are pointed out clearly, the message arrives at <address>
+- [ ] Every list shows whether it's loading, empty (one sentence and a button) or has an error (with “Try again”, never disguised as an empty list)
+- [ ] After sending, a confirmation page: what happened, the number, what comes next, how to undo it
+- [ ] The button names the result (“Book a place”, not “Submit”) and is disabled while sending
 
 ### For all pages
 - [ ] Content as in the brief, no placeholder without a clear label
@@ -129,6 +132,16 @@ The PRD is the building plan on one page, with the list of what gets checked at 
 
 Signed off: <date> by <name>
 ```
+
+**Build features like the pros do.** Whatever visitors do (book, sign up, order, enquire), you build by these rules, even if the person doesn't ask for it:
+
+- **Three doors:** public pages without a login; a page for guests via a link with a secret code, without an account (for example “Cancel booking”); the admin area only for the person, never linked.
+- **One source per truth:** offers, prices, deadlines and opening hours live in one place. The page, form, email and terms all read from there.
+- **One word per thing,** the same on the site, in the email and in the admin area. An enquiry isn't a booking. The words are in `docs/designsystem.md`.
+- **Check on the server, never only in the browser:** places, deadlines and status are worked out by the server. For bookings there's the tested recipe `buchungen` (skill `bausteine`), instead of reinventing it.
+- **Honest errors:** if a service doesn't answer, that's an error with “Try again”, never “no dates”.
+- **Swiss format:** “CHF 1'250.–”, “Tue, 3 Nov 2026, 18:00–19:15”, times in `Europe/Zurich`.
+- **Phone first:** at 390 px no sideways scrolling, the main action is visible without scrolling, a form asks one thing per step (“Step 2 of 3”).
 
 Every criterion has to be checkable: you can see or measure whether it's true. “Nice” or “modern” is not a criterion. Instead, write how you can tell. Show the person a short version of the PRD in the chat and open the file. Only after their yes do you fill in `Signed off:` with the date and name, report `prd` and build.
 
