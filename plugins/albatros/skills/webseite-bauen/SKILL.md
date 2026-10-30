@@ -122,7 +122,8 @@ Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme gepr
 
 ### Für alle Seiten
 - [ ] Inhalt wie im Auftrag, kein Platzhalter ohne klare Beschriftung
-- [ ] Handy (390 px breit): nichts abgeschnitten, ohne Zoom lesbar, Knöpfe mindestens 44 px hoch
+- [ ] Handy (390 px breit): nichts abgeschnitten, ohne Zoom lesbar, links und rechts mindestens 16 px Rand, Knöpfe mindestens 44 px hoch
+- [ ] Jede Seite, auch die Seiten der Bausteine (zum Beispiel zum Buchen), hat Kopf, Menü und Fuss mit Impressum und Datenschutz
 - [ ] Kontrast: Text mindestens 4,5 : 1, Knöpfe und Ränder mindestens 3 : 1
 - [ ] Mit der Tastatur bedienbar, der Fokus ist sichtbar
 - [ ] Impressum und Datenschutz vorhanden und auf jeder Seite verlinkt
@@ -152,6 +153,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 
 - In `web/astro.config.mjs`: `outDir: '../seite'`. Albatros liefert den Ordner `seite/` aus, mit Light direkt und mit Pilot über das Fliessband.
 - `tokens.css` aus Schritt 3 liegt in `web/src/styles/` und wird in jedem Layout eingebunden. Die Komponenten aus `docs/designsystem.md` baust du zuerst, dann die Seiten daraus.
+- **Daten zuerst:** Was die Person im Plan genannt hat (Kurse mit Zeiten und Plätzen, Preise, Öffnungszeiten), holst du jetzt, bevor du baust. Ein «haben wir» im Plan reicht nicht: Bitte um den Text, die Liste oder ein Foto davon.
 - Listen wie Termine, Turniere oder Sponsoren liegen als Daten in `web/src/data/*.json`, die Seiten lesen sie. Dokumente und Bilder kommen nach `web/public/`, Bilder verkleinert.
 - Das Zeichen im Browser-Tab (`web/public/favicon.svg` und `favicon.ico`) ist das «A» von Astro: Ersetze es durch das Logo oder ein Zeichen daraus.
 - Fehlt Material (zum Beispiel die Sponsorenlogos), steht ein klar beschrifteter Platzhalter da, nie ein anderes Bild unter falschem Namen.
@@ -159,6 +161,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```bash
   cd web && npm run build && npx astro preview --open
   ```
+- **Mit einem Baustein** (Buchungen, Anmeldeliste, Login) startest du statt der Vorschau `bun bausteine/pocketbase/lokal.ts`: Nur so laufen Formulare und Buchungen wirklich, auf dem Computer der Person.
 - Läuft die Vorschau, meldest du `lokal`, bevor du der Person die Seite zeigst und auf ihre Antwort wartest.
 
 ### 7. Prüfen (`schritt: pruefung`)
@@ -177,6 +180,7 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
 - `docs/pruefung/sicherheit.md` (Sicherheit und Recht): Geheimnisse im Code, `npm audit`, keine `.env` in `seite/`, Impressum und Datenschutz vorhanden und vollständig (Skill `recht-ch`), welche fremden Dienste und Cookies die Seite nutzt.
 - `docs/pruefung/ablaeufe.md` (Abläufe und Zugang): die Regeln für Barrierefreiheit (WCAG 2.2 AA, axe) auf jeder Seite, tote Links, jedes Formular selbst einmal ausprobiert, die Startseite mit der Tastatur durchgegangen (Tab), die Abläufe aus dem PRD Schritt für Schritt.
+  - **Grün nur mit Beweis.** Für jede Funktion mit Baustein gehören die Ausgabe des Tests («Alles grün») und ein Foto einer echten Testbuchung oder eines echten Eintrags auf diesem Computer in den Bericht. Lief etwas nicht, ist die Ampel gelb oder rot. Schreib nie «durchgespielt», wenn du es nicht getan hast.
 - `docs/pruefung/aussehen.md` (Aussehen): nur Werte aus `tokens.css`, Designsystem eingehalten, jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft.
 - `docs/pruefung/code.md` (Code und Tempo): Lighthouse in den vier Bereichen, JavaScript je Seite, Bildgrössen, und welche Abnahmekriterien erfüllt sind.
 
@@ -238,6 +242,7 @@ for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<Titel dei
   node scripts/pruefen.mjs --live https://{name}.aufwind.sh
   ```
   Ist dort nichts rot, meldest du `fliessband` und `live`, öffnest die Adresse mit der Person (`open https://{name}.aufwind.sh`) und vergleichst mit den Fotos aus Schritt 7.
+- **Mit einem Baustein ist «live» noch nicht «fertig»:** Erst wenn die Daten drin sind (zum Beispiel die Kurse) und eine Testbuchung im Netz ihre Mail an die eigene Adresse gebracht hat (Skill `bausteine`), sagst du der Person, dass sie den Link teilen kann. Bis dahin sagst du ehrlich, was noch fehlt.
 - **Nach drei Minuten noch nicht da:** Frag `konto_status`. Mit Light steht dort, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil vor dem Push nicht gebaut wurde oder `seite/` in `.gitignore` steht. Mit Pilot schaust du im Hafen unter «Actions» nach, wo das Fliessband stehen blieb (Skill `pipeline`). Beheben, neuer Eintrag, pushen, nochmals prüfen. Erst wenn es dann immer noch nicht geht, sagst du der Person, was du geprüft hast, und fragst den Coach (`coach_fragen`).
 
 Wünscht die Person danach noch etwas anders («es fehlt noch …», ein Termin, ein Text), lädst du den Skill `webseite-aendern` und folgst ihm. Die Seite ist freigegeben und im Netz, darum braucht jede Änderung ihr Kriterium im PRD, vorher und nachher und eine neue Freigabe vor dem Push.

@@ -87,7 +87,7 @@ PocketBase ist ein einziges kleines Programm mit Datenbank, Login und Verwaltung
 - **Adresse eintragen:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js` die Zeile `ADRESSE` auf die Adresse der Seite setzen (`https://{name}.aufwind.sh` oder die eigene Domain). Sie steht in Mails wie «Passwort vergessen».
 - **Rezept einsetzen:** Aus `bausteine/pocketbase/rezepte/<rezept>/` kommt `pb_migrations/2_*.js` nach `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (falls vorhanden) nach `bausteine/pocketbase/pb_hooks/` und `seite/*.html` nach `seite/`.
   - `anmeldeliste`: Formular `anmelden.html`. Alle dürfen sich eintragen, lesen kann nur die Verwaltung.
-  - `buchungen`: `buchen.html` zeigt die freien Termine, nimmt Buchungen an und sagt sie per Link aus der Mail ab. Mehr unten unter «Buchungen».
+  - `buchungen`: `buchen.html` (freie Termine, buchen, absagen per Link aus der Mail) und `verwaltung.html` («Meine Buchungen» für die Person: wer kommt, absagen, Wochenplan). Mehr unten unter «Buchungen».
   - `mitglieder`: `mitglieder.html` mit Registrieren, Anmelden, Abmelden. Mitteilungen sehen nur angemeldete Mitglieder. Die Mitglieder stehen in der Verwaltung unter `users`.
   - `pinnwand`: `pinnwand.html` zeigt Beiträge mit Datum und Bild. Schreiben geht in der Verwaltung.
   - Eigene Felder oder Sammlungen schreibst du als weitere Datei `pb_migrations/3_*.js` nach dem gleichen Muster.
@@ -103,12 +103,46 @@ PocketBase ist ein einziges kleines Programm mit Datenbank, Login und Verwaltung
 
 ### Buchungen
 
-Das Rezept `buchungen` ist ein kleines Buchungstool für Kurse, Führungen und Termine, ohne Kundenkonto und ohne Bezahlen online. Es ist getestet: Zwei Leute bekommen nie denselben letzten Platz, vergangene Termine sind nicht buchbar, Mails nennen die Zeit in Schweizer Zeit.
+Das Rezept `buchungen` ist ein kleines Buchungstool für Kurse, Führungen und Termine, ohne Kundenkonto und ohne Bezahlen online. Es ist getestet: Zwei Leute bekommen nie denselben letzten Platz, vergangene Termine sind nicht buchbar, ein Kurs bleibt auch nach der Zeitumstellung um 18:30, Mails nennen die Schweizer Zeit.
 
-- **Was die Person pflegt,** in der Verwaltung: `angebote` (Titel, Ort, Preis-Hinweis wie «CHF 25, bar oder TWINT vor Ort», Buchungsschluss in Stunden, aktiv) und `termine` (Angebot, Beginn, Ende, Plätze). Buchungen sieht sie unter `buchungen`. Eine einzelne absagen: Status `storniert` und ein Grund. Einen ganzen Kurs absagen: beim Termin `abgesagt` und den Grund, alle Gebuchten bekommen eine Mail. Termine nie löschen.
-- **Mails zuerst:** Ohne Mail-Einstellungen (Abschnitt «Mails» oben) bekommt niemand eine Bestätigung. Erst live gehen, wenn eine Testbuchung an die eigene Adresse angekommen ist. Meldungen über neue Buchungen gehen an die Absender-Adresse, eine andere trägst du in `pb_hooks/buchungen.js` bei `MELDUNGEN_AN` ein.
-- **Testen vor jedem Push** auf dem Computer der Person (Mac oder Linux, unter Windows in WSL): `bun bausteine/pocketbase/rezepte/buchungen/test.ts`. Er lädt PocketBase und prüft alles, auch fünf gleichzeitige Buchungen auf den letzten Platz. Ändert ihr etwas am Rezept, muss er grün bleiben.
-- **Seite anpassen:** `buchen.html` übernimmt Farben, Schrift und Abstände der Seite (die Variablen oben in der Datei auf die Werte aus `tokens.css` setzen), die Texte kommen in die Sprache der Person. «Platz buchen» wird der Hauptknopf auf der Startseite.
+**Der Person sagst du es so:** «Besucher wählen auf deiner Seite einen Termin und bekommen eine Bestätigung per Mail. Du trägst deine Kurse einmal als Wochenplan ein, zum Beispiel jeden Montag 18:30 mit 12 Plätzen, und siehst auf der Seite ‹Meine Buchungen›, wer kommt.»
+
+Die Technik machst du, die Person entscheidet nur. In dieser Reihenfolge:
+
+1. **Foto des Servers** (Werkzeug `snapshot`, Name `vor-baustein`), bevor etwas eingebaut wird.
+2. **Die Kurse erfragen, bevor du baust:** Name, Wochentag, Uhrzeit, Dauer, Plätze, Ort, Preis und bis wie kurz vor Beginn man buchen kann. Steht im Plan nur «haben wir», bitte jetzt darum. Schreib sie in `docs/kurse.md` und als `bausteine/pocketbase/pb_migrations/3_kurse.js` (Muster unten): So sind die Termine ab dem ersten Start da, niemand tippt sie ab.
+3. **Einbauen:** `2_buchungen.js` nach `bausteine/pocketbase/pb_migrations/`, beide Dateien aus `pb_hooks/` nach `bausteine/pocketbase/pb_hooks/`. Den Ordner `rezepte/buchungen` lässt du stehen, dort liegt der Test.
+4. **Zwei richtige Seiten daraus,** mit Kopf, Menü und Fuss wie alle anderen, nie die nackten HTML-Dateien:
+   - Aus `seite/buchen.html` wird die Seite zum Buchen, zum Beispiel `web/src/pages/kurse.astro` im Layout der Seite: den Inhalt von `<main>` übernehmen, das Skript als `<script is:inline>`, von den Styles nur die Teile ohne `body`, `main` und `h1`. Oben steht der Wochenplan in Worten («Montag 18:30 Yoga am Abend»), aus `docs/kurse.md`.
+   - Aus `seite/verwaltung.html` wird «Meine Buchungen», zum Beispiel `web/src/pages/verwaltung.astro`, mit `<meta name="robots" content="noindex">` und nicht im Menü.
+   - Die Farben oben in beiden Dateien setzt du auf die Tokens der Seite (`var(--…)` aus `tokens.css`), keine kopierten Farbwerte.
+   - Den Pfad der Seite zum Buchen trägst du in `pb_hooks/buchungen.js` bei `BUCHUNGSSEITE` ein (zum Beispiel `"/kurse/"`), sonst führen die Links in den Mails ins Leere.
+5. **Prüfen, mit Beweis:** `bun bausteine/pocketbase/rezepte/buchungen/test.ts` muss «Alles grün» melden. Dann in `web/` bauen (`npm run build`) und `bun bausteine/pocketbase/lokal.ts` starten: Die ganze Seite läuft mit dem Buchungstool auf dem Computer der Person, Mails erscheinen im Terminal statt bei echten Leuten. Buch selbst einen Platz, sag ihn wieder ab, melde dich auf «Meine Buchungen» mit dem Konto an, das `lokal.ts` anzeigt. Zeig der Person das Foto der Bestätigung und den Text der Mail. Ohne diese Ausgaben ist die Prüfung nicht grün.
+6. **Mails, bevor die Person den Link teilt:** Nach dem Live-Gang die Mails einrichten (Abschnitt «Mails» oben) und im Netz einen Platz an die eigene Adresse buchen. Erst wenn diese Mail angekommen ist, ist das Buchungstool fertig. Meldungen über neue Buchungen gehen an die Absender-Adresse, eine andere trägst du in `pb_hooks/buchungen.js` bei `MELDUNGEN_AN` ein.
+7. **Der Person zeigen, wie sie selbst pflegt:** «Meine Buchungen» am Handy öffnen (`https://{name}.aufwind.sh/verwaltung/`) und mit dem Konto der Verwaltung anmelden. Dort sieht sie die nächsten zwei Wochen, sagt eine Buchung oder einen ganzen Termin ab (alle Gebuchten bekommen eine Mail mit dem Grund), trägt Kurse ein oder beendet sie. Leg ihr die Seite als Lesezeichen an. Einzeltermine wie ein Workshop gehen (noch) nicht dort, sondern in der Verwaltung unter `termine`.
+
+Muster für `3_kurse.js` (Wochentage `mo` bis `so`, Uhrzeit in Schweizer Zeit, Buchungsschluss in Minuten vor Beginn):
+
+```js
+/// <reference path="../pb_data/types.d.ts" />
+// Die Kurse aus docs/kurse.md. Später ändert die Person sie selbst auf «Meine Buchungen».
+migrate((app) => {
+  const kurs = (titel, ort, preis, buchungsschluss_min, plaene) => {
+    const a = new Record(app.findCollectionByNameOrId("angebote"));
+    a.set("titel", titel); a.set("ort", ort); a.set("preis_hinweis", preis); a.set("buchungsschluss_min", buchungsschluss_min); a.set("aktiv", true);
+    app.save(a);
+    for (const [wochentag, zeit, dauer_min, plaetze] of plaene) {
+      const w = new Record(app.findCollectionByNameOrId("wochenplan"));
+      w.set("angebot", a.id); w.set("wochentag", wochentag); w.set("zeit", zeit); w.set("dauer_min", dauer_min); w.set("plaetze", plaetze); w.set("aktiv", true);
+      app.save(w);
+    }
+  };
+  kurs("Yoga am Abend", "Seestrasse 1, Testwil", "CHF 25, bar oder TWINT vor Ort", 30, [["mo", "18:30", 75, 12], ["mi", "18:30", 75, 12]]);
+});
+```
+
+Aus dem Wochenplan entstehen die Termine für acht Wochen im Voraus, jede Nacht kommen neue dazu. Ändert die Person Zeit oder Plätze, gilt das für alle Termine ohne Buchung; gebuchte bleiben, wie sie sind.
+
 - **Wenn ihr es erweitert, bleiben diese Regeln:** Frei ist immer Plätze minus aktive Buchungen, nie ein Zähler. Geprüft wird im Server (`pb_hooks/`), nie nur im Browser. Zeiten speichern als Zeitpunkt, anzeigen mit `Europe/Zurich`. Fristen als Datum und Uhrzeit nennen, nie «24 h vorher». Nach dem Buchen eine Bestätigungsseite und eine Mail. Nur erfassen, was nötig ist: keine Adresse, kein Geburtsdatum, keine Gesundheitsangaben. Eine Löschfrist (Vorschlag: 12 Monate nach dem Termin) kommt in die Datenschutzerklärung (Skill `recht-ch`).
 - **Bewusst nicht dabei,** erst wenn es fehlt: Bezahlen online (bei vielen No-Shows oder für eine Anzahlung: ein Zahlungslink mit der Buchungsnummer), Kundenkonten für Abos oder 10er-Karten (Rezept `mitglieder`), Warteliste, Erinnerung am Vortag.
 - **Mit Light** geht kein echtes Buchen: Ohne Programm auf dem Server zählt niemand die Plätze. Ehrlich sagen und die Wahl lassen: Anfrage per Mail oder Formular-Dienst («Du bekommst bis morgen eine Bestätigung»), ein fremdes Buchungstool verlinken (kostet, Daten oft im Ausland), oder Pilot mit diesem Rezept.

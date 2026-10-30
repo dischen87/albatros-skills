@@ -1,67 +1,33 @@
-// Test des Rezepts buchungen gegen ein echtes PocketBase (Version aus ../../Dockerfile), mit einer Mail-Attrappe auf localhost.
-//   bun bausteine/pocketbase/rezepte/buchungen/test.ts            (lädt PocketBase in einen Temp-Ordner, prüft die Prüfsumme)
-//   POCKETBASE=/pfad/zu/pocketbase bun …/test.ts                    (mit einem vorhandenen Programm)
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+// Test des Rezepts buchungen gegen ein echtes PocketBase (Version aus dem Dockerfile), mit einer Mail-Attrappe auf diesem Computer.
+//   bun bausteine/pocketbase/rezepte/buchungen/test.ts      (lädt PocketBase einmal nach ~/.cache, prüft die Prüfsumme)
+// Ist das Rezept eingebaut (bausteine/pocketbase/pb_hooks/buchungen.pb.js), prüft er die eingebauten Dateien, also genau das, was
+// ins Netz geht. Sonst das Rezept selbst.
+import { cpSync, existsSync, mkdirSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { einstellen, lesbar, mailAttrappe, pocketbase, wurzelVon } from '../../programm.ts';
 
-const hier = import.meta.dir, pb = join(hier, '../..');
+const hier = import.meta.dir, pb = wurzelVon(hier);
+const eingebaut = existsSync(join(pb, 'pb_hooks', 'buchungen.pb.js'));
 const tmp = mkdtempSync(join(tmpdir(), 'buchungen-'));
 let fehler = 0;
 const pruefe = (ok: unknown, was: string) => { console.log(`${ok ? '✓' : '✗'} ${was}`); if (!ok) fehler++; };
 
-async function programm() {
-  if (process.env.POCKETBASE) return process.env.POCKETBASE;
-  const v = /PB_VERSION=([\d.]+)/.exec(readFileSync(join(pb, 'Dockerfile'), 'utf8'))![1]!;
-  const os = process.platform === 'darwin' ? 'darwin' : 'linux', arch = process.arch === 'arm64' ? 'arm64' : 'amd64';
-  const datei = `pocketbase_${v}_${os}_${arch}.zip`, url = `https://github.com/pocketbase/pocketbase/releases/download/v${v}`;
-  const zip = new Uint8Array(await (await fetch(`${url}/${datei}`)).arrayBuffer());
-  const summe = (await (await fetch(`${url}/checksums.txt`)).text()).split('\n').find((z) => z.endsWith(datei))?.split(/\s+/)[0];
-  if (new Bun.CryptoHasher('sha256').update(zip).digest('hex') !== summe) throw new Error(`Prüfsumme von ${datei} stimmt nicht`);
-  writeFileSync(join(tmp, datei), zip);
-  Bun.spawnSync(['unzip', '-q', datei, 'pocketbase'], { cwd: tmp });
-  return join(tmp, 'pocketbase');
-}
-
-// Mail-Attrappe: nimmt SMTP an und merkt sich jede Mail
 const mails: string[] = [];
-const smtp = Bun.listen<{ daten: boolean; puffer: string }>({
-  hostname: '127.0.0.1', port: 0,
-  socket: {
-    open(s) { s.data = { daten: false, puffer: '' }; s.write('220 attrappe\r\n'); },
-    data(s, d) {
-      s.data.puffer += d.toString();
-      if (s.data.daten) {
-        const i = s.data.puffer.indexOf('\r\n.\r\n');
-        if (i < 0) return;
-        mails.push(s.data.puffer.slice(0, i));
-        s.data = { daten: false, puffer: s.data.puffer.slice(i + 5) };
-        s.write('250 ok\r\n');
-      }
-      let n;
-      while (!s.data.daten && (n = s.data.puffer.indexOf('\r\n')) >= 0) {
-        const z = s.data.puffer.slice(0, n).toUpperCase();
-        s.data.puffer = s.data.puffer.slice(n + 2);
-        if (z.startsWith('EHLO') || z.startsWith('HELO')) s.write('250 attrappe\r\n');
-        else if (z.startsWith('DATA')) { s.data.daten = true; s.write('354 los\r\n'); }
-        else if (z.startsWith('QUIT')) { s.write('221 tschuess\r\n'); s.end(); }
-        else s.write('250 ok\r\n');
-      }
-    },
-  },
-});
+const smtp = mailAttrappe((m) => mails.push(m));
 
-const pocketbase = await programm();
+const programm = await pocketbase(pb);
+console.log(eingebaut ? 'Prüfe die eingebauten Dateien in bausteine/pocketbase.' : 'Prüfe das Rezept.');
 mkdirSync(join(tmp, 'pb_migrations')); mkdirSync(join(tmp, 'pb_hooks'));
 cpSync(join(pb, 'pb_migrations'), join(tmp, 'pb_migrations'), { recursive: true });
-cpSync(join(hier, 'pb_migrations'), join(tmp, 'pb_migrations'), { recursive: true });
-cpSync(join(hier, 'pb_hooks'), join(tmp, 'pb_hooks'), { recursive: true });
+cpSync(join(eingebaut ? pb : hier, 'pb_hooks'), join(tmp, 'pb_hooks'), { recursive: true });
+if (!eingebaut) cpSync(join(hier, 'pb_migrations'), join(tmp, 'pb_migrations'), { recursive: true });
 const port = 18000 + Math.floor(Math.random() * 1000), api = `http://127.0.0.1:${port}/api`;
 const passwort = crypto.randomUUID();
 const env = { ...process.env, TZ: 'Europe/Zurich' };
 const dirs = [`--dir=${join(tmp, 'pb_data')}`, `--migrationsDir=${join(tmp, 'pb_migrations')}`, `--hooksDir=${join(tmp, 'pb_hooks')}`];
-Bun.spawnSync([pocketbase, 'superuser', 'upsert', 'test@example.com', passwort, ...dirs], { env });
-const server = Bun.spawn([pocketbase, 'serve', `--http=127.0.0.1:${port}`, ...dirs], { env, stdout: 'ignore', stderr: 'pipe' });
+Bun.spawnSync([programm, 'superuser', 'upsert', 'test@example.com', passwort, ...dirs], { env });
+const server = Bun.spawn([programm, 'serve', `--http=127.0.0.1:${port}`, ...dirs], { env, stdout: 'ignore', stderr: 'pipe' });
 
 try {
   for (let i = 0; i < 50 && !(await fetch(`${api}/health`).catch(() => null))?.ok; i++) await Bun.sleep(200);
@@ -75,11 +41,11 @@ try {
   const admin = als(token), gast = als(null);
 
   // Mails an die Attrappe, damit die Mails wirklich gebaut und gesendet werden
-  await admin('PATCH', '/settings', { meta: { appURL: 'https://yoga.example', senderAddress: 'studio@example.com', senderName: 'Studio' }, smtp: { enabled: true, host: '127.0.0.1', port: smtp.port, tls: false } });
+  await einstellen(api, token, smtp.port, 'https://yoga.example');
 
   const iso = (ms: number) => new Date(ms).toISOString().replace('T', ' ');
   const tag = 24 * 3600e3;
-  const angebot = (await admin('POST', '/collections/angebote/records', { titel: 'Yoga am Abend', ort: 'Studio, Seestrasse 1', preis_hinweis: 'CHF 25, bar vor Ort', aktiv: true, buchungsschluss_std: 0 })).body.id;
+  const angebot = (await admin('POST', '/collections/angebote/records', { titel: 'Yoga am Abend', ort: 'Studio, Seestrasse 1', preis_hinweis: 'CHF 25, bar vor Ort', aktiv: true, buchungsschluss_min: 0 })).body.id;
   const termin = async (ab: number, plaetze: number) => (await admin('POST', '/collections/termine/records', { angebot, beginn: iso(ab), ende: iso(ab + 3600e3), plaetze })).body.id as string;
   // 3. Juli 2030, 17:00 UTC = 19:00 Uhr in Zürich (Sommerzeit)
   const voll = await termin(Date.UTC(2030, 6, 3, 17), 1), zwei = await termin(Date.now() + 2 * tag, 2), vorbei = await termin(Date.now() - tag, 5);
@@ -96,7 +62,7 @@ try {
   const doppelt = await buchen(zwei, { email: 'lea@example.com' });
   pruefe(doppelt.status === 200 && (await buchen(voll, { email: 'lea@example.com' })).status === 400 && (await buchen(zwei, { email: 'LEA@example.com' })).status === 400, 'Gleiche E-Mail zweimal: «schon angemeldet»');
 
-  const frei = (await gast('GET', '/collections/termine_frei/records?sort=beginn')).body.items as { id: string; frei: number }[];
+  const frei = ((await gast('GET', '/collections/termine_frei/records?sort=beginn&perPage=500')).body.items as { id: string; frei: number }[]).filter((t) => [voll, zwei, vorbei].includes(t.id));
   pruefe(frei.length === 2 && frei.find((t) => t.id === voll)?.frei === 0 && frei.find((t) => t.id === zwei)?.frei === 0 && !frei.some((t) => t.id === vorbei), 'Sicht termine_frei: nur künftige Termine, freie Plätze stimmen');
   pruefe((await gast('GET', '/collections/buchungen/records')).status === 403, 'Buchungen sieht nur die Verwaltung');
 
@@ -116,17 +82,33 @@ try {
   const rest = (await admin('GET', `/collections/buchungen/records?filter=${encodeURIComponent(`termin="${zwei}"`)}`)).body.items as { status: string; storniert_von: string }[];
   pruefe(rest.length === 2 && rest.every((r) => r.status === 'storniert' && r.storniert_von === 'betrieb'), 'Termin abgesagt: alle Buchungen storniert');
 
+  // Wochenplan: jeden Montag 18:30, 75 Minuten, über die Umstellung auf Sommerzeit (30. März 2031)
+  const plan = (await admin('POST', '/collections/wochenplan/records', { angebot, wochentag: 'mo', zeit: '18:30', dauer_min: 75, plaetze: 12, ab: '2031-03-10 00:00:00.000Z', bis: '2031-04-14 00:00:00.000Z', aktiv: true })).body;
+  const ausPlan = async () => ((await admin('GET', `/collections/termine/records?perPage=100&sort=beginn&filter=${encodeURIComponent(`wochenplan="${plan.id}"`)}`)).body.items ?? []) as { id: string; beginn: string; ende: string; plaetze: number }[];
+  let wp = await ausPlan();
+  pruefe(wp.length === 6, `Wochenplan: sechs Montage vom 10. März bis 14. April 2031 (${wp.length})`);
+  pruefe(wp.find((t) => t.beginn.startsWith('2031-03-24'))?.beginn === '2031-03-24 17:30:00.000Z' && wp.find((t) => t.beginn.startsWith('2031-03-31'))?.beginn === '2031-03-31 16:30:00.000Z',
+    'Immer 18:30 Uhr Schweizer Zeit, vor und nach der Zeitumstellung');
+  pruefe(wp.every((t) => t.plaetze === 12 && new Date(t.ende.replace(' ', 'T')).getTime() - new Date(t.beginn.replace(' ', 'T')).getTime() === 75 * 60000), 'Plätze und Dauer aus dem Plan');
+  const gebucht = await buchen(wp[0]!.id);
+  await admin('PATCH', `/collections/wochenplan/records/${plan.id}`, { zeit: '19:00' });
+  wp = await ausPlan();
+  pruefe(wp.length === 6 && wp.filter((t) => t.beginn.endsWith('17:30:00.000Z')).length === 1 && wp.find((t) => t.id === gebucht.body.termin),
+    'Neue Zeit gilt für Termine ohne Buchung, der gebuchte bleibt');
+  await admin('PATCH', `/collections/wochenplan/records/${plan.id}`, { aktiv: false });
+  wp = await ausPlan();
+  pruefe(wp.length === 1 && wp[0]!.id === gebucht.body.termin, 'Kurs beendet: Termine ohne Buchung fallen weg, der gebuchte bleibt');
+
+  // Buchungsschluss in Minuten: 30 Minuten vor Beginn ist Schluss
+  const knapp = (await admin('POST', '/collections/angebote/records', { titel: 'Knapp', aktiv: true, buchungsschluss_min: 30 })).body.id;
+  const inZwanzig = (await admin('POST', '/collections/termine/records', { angebot: knapp, beginn: iso(Date.now() + 20 * 60000), ende: iso(Date.now() + 80 * 60000), plaetze: 5 })).body.id;
+  const inVierzig = (await admin('POST', '/collections/termine/records', { angebot: knapp, beginn: iso(Date.now() + 40 * 60000), ende: iso(Date.now() + 100 * 60000), plaetze: 5 })).body.id;
+  pruefe((await buchen(inZwanzig)).status === 400 && (await buchen(inVierzig)).status === 200, 'Buchungsschluss 30 Minuten: in 20 Minuten zu spät, in 40 Minuten geht es');
+
   await Bun.sleep(500);
   // quoted-printable zurück in Text (Betreffzeilen bleiben kodiert, darum prüfen wir den Inhalt)
-  const qp = (m: string) => {
-    const t = m.replace(/=\r\n/g, ''), bytes: number[] = [];
-    for (let i = 0; i < t.length; i++) {
-      if (t[i] === '=' && /^[0-9A-F]{2}$/.test(t.slice(i + 1, i + 3))) { bytes.push(parseInt(t.slice(i + 1, i + 3), 16)); i += 2; } else bytes.push(t.charCodeAt(i));
-    }
-    return new TextDecoder().decode(new Uint8Array(bytes));
-  };
-  const text = mails.map(qp).join('\n');
-  pruefe(mails.length === 13, `Mails: je Buchung zwei, Absage per Link zwei, Absage durch die Verwaltung je eine (${mails.length})`);
+  const text = mails.map(lesbar).join('\n');
+  pruefe(mails.length === 17, `Mails: je Buchung zwei, Absage per Link zwei, Absage durch die Verwaltung je eine (${mails.length})`);
   pruefe(text.includes('Dein Platz ist gebucht.') && text.includes('?absagen=') && text.includes('19:00–20:00 Uhr') && text.includes('hat gebucht.'), 'Bestätigung mit Absage-Link und Meldung an den Betrieb');
   pruefe(text.includes('Die Lehrerin ist krank.') && text.includes('Doppelt gebucht.'), 'Absage durch die Verwaltung nennt den Grund');
 } finally {

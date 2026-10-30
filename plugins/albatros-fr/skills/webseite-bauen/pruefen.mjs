@@ -179,6 +179,10 @@ try {
         geprueft.set(u.pathname, ok);
         if (!ok) melde('ablaeufe', 'rot', `Toter Link auf ${p}: ${u.pathname}`);
       }
+      // Impressum und Datenschutz gehören auf jede Seite, auch auf die Seiten der Bausteine (Buchen, Anmelden)
+      const links = await page.$$eval('a[href]', (as) => as.map((a) => `${a.getAttribute('href')} ${a.textContent}`.toLowerCase()).join(' '));
+      if (!/impressum|imprint|mentions|legal|colophon/.test(links)) melde('ablaeufe', 'rot', `${p}: kein Link zum Impressum (gehört auf jede Seite, Skill recht-ch)`);
+      if (!/datenschutz|privacy|confidentialit|protezione/.test(links)) melde('ablaeufe', 'rot', `${p}: kein Link zur Datenschutzerklärung (gehört auf jede Seite, Skill recht-ch)`);
       const formulare = await page.$$eval('form', (fs) => fs.map((f) => f.getAttribute('action') ?? '(ohne action)'));
       if (formulare.length) melde('ablaeufe', 'hinweis', `${p}: ${formulare.length} Formular(e) selbst ausprobieren (absenden, Fehler, Tastatur)`, formulare);
     }
@@ -187,6 +191,16 @@ try {
       const floskeln = [...new Set((text.match(FLOSKELN) ?? []).map((x) => x.toLowerCase()))];
       if (floskeln.length) melde('aussehen', 'gelb', `${p}: Floskeln (KI-Merkmal): ${floskeln.join(', ')}`);
       if (EMOJI.test(await page.$$eval('h1, h2, h3, nav, button, li', (es) => es.map((e) => e.textContent).join(' ')))) melde('aussehen', 'gelb', `${p}: Emoji in Titeln, Menü oder Listen (KI-Merkmal)`);
+      // Handy (390 px): seitlich schieben geht nicht, Text hat links und rechts Luft
+      const handy = await page.evaluate(() => ({
+        breit: document.documentElement.scrollWidth > innerWidth + 1,
+        amRand: [...document.querySelectorAll('h1, h2, h3, p, li, a, button, label, input')].filter((e) => {
+          const r = e.getBoundingClientRect();
+          return r.width > 0 && r.height > 0 && r.right > 0 && r.left < innerWidth && getComputedStyle(e).visibility !== 'hidden' && (r.left < 12 || r.right > innerWidth - 12);
+        }).length,
+      }));
+      if (handy.breit) melde('aussehen', 'rot', `${p}: Auf dem Handy (390 px) lässt sich die Seite seitlich schieben`);
+      if (handy.amRand) melde('aussehen', 'gelb', `${p}: Auf dem Handy kleben ${handy.amRand} Elemente am Rand (weniger als 12 px Luft)`);
       mkdirSync(join(AUS, 'fotos'), { recursive: true });
       const vor = LIVE ? 'live-' : '';
       await page.screenshot({ path: join(AUS, 'fotos', `${vor}${name(p)}-390.png`), fullPage: true });

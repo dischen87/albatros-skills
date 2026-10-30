@@ -13,7 +13,7 @@ onRecordCreateRequest((e) => {
     } catch (_) {
       throw new BadRequestError("Diesen Termin gibt es nicht.");
     }
-    const schluss = t.getDateTime("beginn").unix() * 1000 - a.getInt("buchungsschluss_std") * 3600 * 1000;
+    const schluss = t.getDateTime("beginn").unix() * 1000 - a.getInt("buchungsschluss_min") * 60 * 1000;
     if (t.getBool("abgesagt") || !a.getBool("aktiv") || Date.now() >= schluss) throw new BadRequestError("Dieser Termin ist nicht mehr buchbar.");
     const aktiv = tx.findRecordsByFilter("buchungen", "termin = {:t} && status = 'bestaetigt'", "", 0, 0, { t: t.id });
     if (aktiv.some((r) => r.getString("email").toLowerCase() === b.getString("email").toLowerCase())) {
@@ -36,6 +36,21 @@ onRecordAfterCreateSuccess((e) => {
   require(`${__hooks}/buchungen.js`).mails(e.app, e.record, "neu");
   e.next();
 }, "buchungen");
+
+// Wochenplan: Termine für die nächsten 8 Wochen entstehen sofort beim Speichern und jede Nacht neu
+onRecordAfterCreateSuccess((e) => {
+  require(`${__hooks}/buchungen.js`).planen(e.app, e.record, false);
+  e.next();
+}, "wochenplan");
+
+onRecordAfterUpdateSuccess((e) => {
+  require(`${__hooks}/buchungen.js`).planen(e.app, e.record, true);
+  e.next();
+}, "wochenplan");
+
+cronAdd("wochenplan", "15 3 * * *", () => {
+  require(`${__hooks}/buchungen.js`).planen($app, null, false);
+});
 
 // Die Verwaltung setzt eine Buchung auf storniert (mit Grund): Mail an den Gast
 onRecordUpdateRequest((e) => {

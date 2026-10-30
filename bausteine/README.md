@@ -4,7 +4,7 @@ Fertige Teile für Seiten auf einem Albatros-Server (Pilot), getestet und gemess
 
 | Ordner | Was | Arbeitsspeicher im Betrieb |
 |---|---|---|
-| `pocketbase/` | PocketBase 0.40.5: Datenbank, Login und Verwaltung. Rezepte `anmeldeliste`, `buchungen` (mit Test: `bun pocketbase/rezepte/buchungen/test.ts`), `mitglieder`, `pinnwand` | etwa 20 MB |
+| `pocketbase/` | PocketBase 0.40.5: Datenbank, Login und Verwaltung. Rezepte `anmeldeliste`, `buchungen` (mit Wochenplan und «Meine Buchungen»; Test: `bun pocketbase/rezepte/buchungen/test.ts`), `mitglieder`, `pinnwand`. Lokal mit der Seite: `bun pocketbase/lokal.ts` | etwa 20 MB |
 | `strapi/` | Strapi 5.58 mit Postgres 17. Rezept `veranstaltungen` | etwa 200 MB, Bau bis 2,5 GB |
 
 Holen, im Logbuch des Projekts:

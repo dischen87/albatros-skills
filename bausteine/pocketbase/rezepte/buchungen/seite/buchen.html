@@ -43,6 +43,7 @@
     <div id="ladefehler" hidden><p class="fehler">Die Termine lassen sich gerade nicht laden.</p><button class="zweit" type="button" id="nochmals">Nochmals versuchen</button></div>
     <p id="meldung" class="fehler" role="alert" hidden></p>
     <div id="liste"></div>
+    <button class="zweit" type="button" id="mehr" hidden>Weitere Termine zeigen</button>
   </section>
 
   <!-- 2. Angaben -->
@@ -85,7 +86,7 @@
   const tag = (s) => datum(s).toLocaleDateString('de-CH', { ...zone, weekday: 'long', day: 'numeric', month: 'long' });
   const uhr = (s) => datum(s).toLocaleTimeString('de-CH', { ...zone, hour: '2-digit', minute: '2-digit' });
   const text = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
-  let gewaehlt = null;
+  let gewaehlt = null, alle = false;
 
   async function termineLaden() {
     for (const id of ['leer', 'ladefehler']) $(id).hidden = true;
@@ -97,8 +98,12 @@
       const termine = (await r.json()).items.filter((t) => t.expand?.angebot);
       $('laedt').hidden = true;
       if (!termine.length) { $('leer').hidden = false; return; }
+      // Zuerst nur die nächsten zwei Wochen, damit die Liste kurz bleibt
+      const bald = termine.filter((t) => datum(t.beginn) < Date.now() + 14 * 864e5);
+      const zeigen = alle || !bald.length ? termine : bald;
+      $('mehr').hidden = zeigen.length === termine.length;
       let letzterTag = '';
-      for (const t of termine) {
+      for (const t of zeigen) {
         if (tag(t.beginn) !== letzterTag) { letzterTag = tag(t.beginn); $('liste').insertAdjacentHTML('beforeend', `<h2>${text(letzterTag)}</h2>`); }
         const a = t.expand.angebot, voll = t.frei <= 0;
         $('liste').insertAdjacentHTML('beforeend', `
@@ -129,6 +134,7 @@
 
   $('zurueck').onclick = () => { $('angaben').hidden = true; $('termine').hidden = false; $('schritt').textContent = 'Schritt 1 von 2: Wähl einen Termin.'; };
   $('nochmals').onclick = termineLaden;
+  $('mehr').onclick = () => { alle = true; termineLaden(); };
 
   $('angaben').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -175,7 +181,7 @@
     const zeigen = (b) => {
       $('absage-beleg').innerHTML = `<b>${text(b.angebot)}</b><br>${text(b.wann)}${b.ort ? `<br>${text(b.ort)}` : ''}<br><span class="leise">Nummer ${text(b.nummer)}</span>`;
       const weg = b.status === 'storniert';
-      $('absage-text').innerHTML = weg ? '<span class="ok">Diese Buchung ist abgesagt.</span> <a href="buchen.html">Andere Termine ansehen</a>'
+      $('absage-text').innerHTML = weg ? `<span class="ok">Diese Buchung ist abgesagt.</span> <a href="${location.pathname}">Andere Termine ansehen</a>`
         : b.begonnen ? 'Der Termin hat schon begonnen. Absagen geht nur vorher.' : 'Kannst du nicht kommen? Dann gib den Platz frei, so kann jemand anderes kommen.';
       $('absage-knopf').hidden = weg || b.begonnen;
     };

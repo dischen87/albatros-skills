@@ -71,7 +71,7 @@ KI-Seiten erkennt man an denselben Merkmalen. Prüf jeden Entwurf und die fertig
 - Emoji als Icons.
 - Inter oder eine andere Standardschrift überall, alle Titel gleich laut.
 - Zentrierter Kopf mit Farbklecks dahinter und zwei Knöpfen nebeneinander.
-- Drei gleiche Karten in einer Reihe, mit gleichem Schatten, gleicher Rundung und je einem Icon.
+- Drei oder vier gleich grosse Karten nebeneinander, egal ob mit Icon, rund oder eckig. Das ist das häufigste KI-Merkmal: Ordne den Inhalt nach seiner Wichtigkeit, nicht in gleiche Kästchen.
 - Stockbild-Look: lächelnde Menschen am Laptop, Berge von irgendwo.
 - Füllfloskeln: «Willkommen auf unserer Webseite», «Entdecken Sie», «Ihr Partner für», «mit Leidenschaft», «innovativ», «nahtlos».
 - Erfundene Zahlen, Bewertungen, Zitate oder Kundenlogos. Zeitversprechen wie «in 60 Sekunden».
@@ -136,7 +136,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Jedes Foto selbst anschauen und mit dem Entwurf vergleichen. Erst dann der Person zeigen. Nach ihrem Ja: Logbuch (Skill `git-logbuch`), Fliessband (Skill `pipeline`).
+Jedes Foto selbst anschauen und mit dem Entwurf vergleichen: Hat der Text auf dem Handy links und rechts Luft? Ist nichts abgeschnitten oder versetzt? Erst dann der Person zeigen. Nach ihrem Ja: Logbuch (Skill `git-logbuch`), Fliessband (Skill `pipeline`).
 
 ## Stolpersteine
 

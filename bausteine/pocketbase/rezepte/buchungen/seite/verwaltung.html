@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Meine Buchungen</title>
+  <style>
+    /* Wie buchen.html: beim Einbau die Variablen auf die Tokens der Seite setzen (docs/designsystem.md). */
+    :root { --text: #1d2433; --leise: #5b6475; --linie: #d5d9e0; --flaeche: #fff; --grund: #f6f5f2; --aktion: #1f5f8b; --fehler: #b42318; --ok: #1e7a46; }
+    body { margin: 0; background: var(--grund); color: var(--text); font: 18px/1.5 system-ui, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: clamp(28px, 4vw + 12px, 40px); line-height: 1.1; margin: 0 0 8px; }
+    h2 { font-size: 22px; margin: 32px 0 8px; }
+    .leise { color: var(--leise); }
+    .karte { background: var(--flaeche); border: 1px solid var(--linie); border-radius: 16px; padding: 16px; margin: 12px 0; }
+    .kopf { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
+    .person { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--linie); }
+    button { min-height: 56px; padding: 0 20px; border-radius: 12px; border: 0; background: var(--aktion); color: #fff; font: 600 17px/1 system-ui, sans-serif; cursor: pointer; }
+    button.zweit { background: var(--flaeche); color: var(--aktion); border: 1.5px solid var(--aktion); min-height: 48px; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--aktion); outline-offset: 2px; }
+    label { display: block; font-weight: 600; margin: 16px 0 4px; }
+    input, select { box-sizing: border-box; width: 100%; min-height: 52px; padding: 10px 12px; border: 1.5px solid var(--linie); border-radius: 12px; font: inherit; background: #fff; }
+    .zwei { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .fehler { color: var(--fehler); font-weight: 600; }
+    .ok { color: var(--ok); font-weight: 600; }
+    .abgesagt { opacity: .6; }
+    [hidden] { display: none !important; }
+    @media (max-width: 420px) { .person { flex-direction: column; align-items: stretch; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Meine Buchungen</h1>
+
+  <form id="login" class="karte">
+    <p class="leise" style="margin:0">Melde dich mit dem Konto deiner Verwaltung an.</p>
+    <label for="email">E-Mail</label>
+    <input id="email" type="email" autocomplete="username" required>
+    <label for="passwort">Passwort</label>
+    <input id="passwort" type="password" autocomplete="current-password" required>
+    <p id="loginfehler" class="fehler" role="alert" hidden></p>
+    <p><button id="anmelden">Anmelden</button></p>
+  </form>
+
+  <div id="app" hidden>
+    <p class="leise">Hier siehst du, wer kommt. Absagen schickt der Person automatisch eine Mail. <button class="zweit" type="button" id="abmelden">Abmelden</button></p>
+    <p id="meldung" role="status" hidden></p>
+
+    <h2>Die nächsten zwei Wochen</h2>
+    <div id="termine" aria-live="polite"><p>Wird geladen …</p></div>
+
+    <h2>Wochenplan</h2>
+    <p class="leise">Jeder Eintrag macht die Termine für die nächsten acht Wochen von selbst. Ändern gilt für alle Termine, die noch niemand gebucht hat.</p>
+    <div id="plan"><p>Wird geladen …</p></div>
+
+    <form id="neu" class="karte">
+      <h2 style="margin-top:0">Kurs eintragen</h2>
+      <label for="titel">Name des Kurses</label>
+      <input id="titel" list="angebote" required maxlength="100" placeholder="zum Beispiel Yoga am Abend">
+      <datalist id="angebote"></datalist>
+      <div class="zwei">
+        <div><label for="wochentag">Wochentag</label>
+          <select id="wochentag"><option value="mo">Montag</option><option value="di">Dienstag</option><option value="mi">Mittwoch</option><option value="do">Donnerstag</option><option value="fr">Freitag</option><option value="sa">Samstag</option><option value="so">Sonntag</option></select></div>
+        <div><label for="zeit">Uhrzeit</label><input id="zeit" type="time" required value="18:30"></div>
+        <div><label for="dauer">Dauer in Minuten</label><input id="dauer" type="number" min="5" max="1440" required value="60"></div>
+        <div><label for="plaetze">Plätze</label><input id="plaetze" type="number" min="1" required value="12"></div>
+      </div>
+      <label for="ort">Ort (nur bei einem neuen Kurs)</label>
+      <input id="ort" maxlength="200">
+      <label for="preis">Preis (nur bei einem neuen Kurs)</label>
+      <input id="preis" maxlength="200" placeholder="zum Beispiel CHF 25, bar oder TWINT vor Ort">
+      <p id="neufehler" class="fehler" role="alert" hidden></p>
+      <p><button id="eintragen">Kurs eintragen</button></p>
+    </form>
+  </div>
+</main>
+<script>
+  // Spricht PocketBase über /api/ der eigenen Adresse an, mit dem Konto der Verwaltung. Der Schlüssel bleibt nur in diesem Tab.
+  // ponytail: ein Konto für alles; eigene Konten fürs Team (Sammlung mit Rechten nur für Buchungen), sobald mehrere Leute pflegen.
+  const $ = (id) => document.getElementById(id);
+  const zone = { timeZone: 'Europe/Zurich' };
+  const datum = (s) => new Date(s.replace(' ', 'T'));
+  const wann = (t) => `${datum(t.beginn).toLocaleDateString('de-CH', { ...zone, weekday: 'short', day: 'numeric', month: 'short' })}, ${datum(t.beginn).toLocaleTimeString('de-CH', { ...zone, hour: '2-digit', minute: '2-digit' })}–${datum(t.ende).toLocaleTimeString('de-CH', { ...zone, hour: '2-digit', minute: '2-digit' })}`;
+  const text = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+  const TAGE = { mo: 'Montag', di: 'Dienstag', mi: 'Mittwoch', do: 'Donnerstag', fr: 'Freitag', sa: 'Samstag', so: 'Sonntag' };
+  const iso = (d) => d.toISOString().replace('T', ' ');
+  let token = sessionStorage.getItem('verwaltung');
+
+  async function api(pfad, optionen = {}) {
+    const r = await fetch(`/api${pfad}`, { ...optionen, headers: { 'content-type': 'application/json', authorization: token ?? '', ...optionen.headers } });
+    if (r.status === 401) { abmelden(); throw new Error('Bitte nochmals anmelden.'); }
+    const body = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(body.message || 'Das hat nicht geklappt.');
+    return body;
+  }
+  const melde = (t, ok = true) => { $('meldung').textContent = t; $('meldung').className = ok ? 'ok' : 'fehler'; $('meldung').hidden = false; };
+
+  $('login').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('anmelden').disabled = true;
+    $('loginfehler').hidden = true;
+    try {
+      const r = await fetch('/api/collections/_superusers/auth-with-password', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identity: $('email').value, password: $('passwort').value }) });
+      const b = await r.json().catch(() => ({}));
+      if (b.mfaId) throw new Error('Für dieses Konto ist die Anmeldung in zwei Schritten an. Bitte die Verwaltung unter /_/ benutzen.');
+      if (!r.ok) throw new Error('E-Mail oder Passwort stimmen nicht.');
+      token = b.token;
+      sessionStorage.setItem('verwaltung', token);
+      $('passwort').value = '';
+      zeigen();
+    } catch (err) {
+      $('loginfehler').textContent = err.message === 'Failed to fetch' ? 'Keine Verbindung. Prüf dein Internet.' : err.message;
+      $('loginfehler').hidden = false;
+    } finally { $('anmelden').disabled = false; }
+  });
+
+  function abmelden() { token = null; sessionStorage.removeItem('verwaltung'); $('app').hidden = true; $('login').hidden = false; }
+  $('abmelden').onclick = abmelden;
+
+  async function termineLaden() {
+    const jetzt = new Date(), bis = new Date(Date.now() + 14 * 864e5);
+    try {
+      const filter = encodeURIComponent(`beginn >= "${iso(jetzt)}" && beginn <= "${iso(bis)}"`);
+      const [t, b] = await Promise.all([
+        api(`/collections/termine/records?perPage=200&sort=beginn&expand=angebot&filter=${filter}`),
+        api(`/collections/buchungen/records?perPage=500&sort=created&filter=${encodeURIComponent(`termin.beginn >= "${iso(jetzt)}" && termin.beginn <= "${iso(bis)}" && status = "bestaetigt"`)}`),
+      ]);
+      if (!t.items.length) { $('termine').innerHTML = '<p>In den nächsten zwei Wochen gibt es keine Termine. Trag unten einen Kurs in den Wochenplan ein.</p>'; return; }
+      $('termine').innerHTML = t.items.map((termin) => {
+        const leute = b.items.filter((x) => x.termin === termin.id), belegt = leute.reduce((s, x) => s + x.anzahl, 0);
+        return `<section class="karte${termin.abgesagt ? ' abgesagt' : ''}">
+          <div class="kopf"><b>${text(wann(termin))} · ${text(termin.expand?.angebot?.titel)}</b>
+            <span>${termin.abgesagt ? 'abgesagt' : `${belegt} von ${termin.plaetze} Plätzen`}</span></div>
+          ${termin.abgesagt ? '' : leute.length ? leute.map((x) => `<div class="person"><div><b>${text(x.name)}</b>${x.anzahl > 1 ? ` (${x.anzahl} Personen)` : ''}<br><a href="mailto:${text(x.email)}">${text(x.email)}</a>${x.nachricht ? `<br><span class="leise">${text(x.nachricht)}</span>` : ''}</div>
+            <button class="zweit" type="button" data-absagen="${x.id}" data-name="${text(x.name)}">Absagen</button></div>`).join('') : '<p class="leise">Noch niemand gebucht.</p>'}
+          ${termin.abgesagt ? '' : `<p><button class="zweit" type="button" data-kurs="${termin.id}" data-anzahl="${leute.length}">Diesen Termin absagen</button></p>`}
+        </section>`;
+      }).join('');
+      for (const k of $('termine').querySelectorAll('[data-absagen]')) k.onclick = async () => {
+        const grund = prompt(`Buchung von ${k.dataset.name} absagen. Grund (steht in der Mail an die Person):`);
+        if (grund === null) return;
+        k.disabled = true;
+        try { await api(`/collections/buchungen/records/${k.dataset.absagen}`, { method: 'PATCH', body: JSON.stringify({ status: 'storniert', grund }) }); melde(`Abgesagt. ${k.dataset.name} bekommt eine Mail.`); termineLaden(); }
+        catch (err) { melde(err.message, false); k.disabled = false; }
+      };
+      for (const k of $('termine').querySelectorAll('[data-kurs]')) k.onclick = async () => {
+        const grund = prompt(`Diesen Termin absagen?${k.dataset.anzahl !== '0' ? ` ${k.dataset.anzahl} Gebuchte bekommen eine Mail mit dem Grund.` : ''} Grund:`);
+        if (grund === null) return;
+        k.disabled = true;
+        try { await api(`/collections/termine/records/${k.dataset.kurs}`, { method: 'PATCH', body: JSON.stringify({ abgesagt: true, grund }) }); melde('Termin abgesagt.'); termineLaden(); }
+        catch (err) { melde(err.message, false); k.disabled = false; }
+      };
+    } catch (err) {
+      $('termine').innerHTML = `<p class="fehler">Die Termine lassen sich gerade nicht laden. ${text(err.message)}</p><button class="zweit" type="button" onclick="termineLaden()">Nochmals versuchen</button>`;
+    }
+  }
+
+  let angebote = [];
+  async function planLaden() {
+    try {
+      const [a, w] = await Promise.all([api('/collections/angebote/records?perPage=200&sort=titel'), api('/collections/wochenplan/records?perPage=200&sort=zeit&expand=angebot&filter=aktiv%3Dtrue')]);
+      angebote = a.items;
+      w.items.sort((x, y) => Object.keys(TAGE).indexOf(x.wochentag) - Object.keys(TAGE).indexOf(y.wochentag));
+      $('angebote').innerHTML = angebote.map((x) => `<option value="${text(x.titel)}">`).join('');
+      $('plan').innerHTML = w.items.length ? w.items.map((p) => `<div class="karte kopf"><span><b>${TAGE[p.wochentag]} ${text(p.zeit)}</b> · ${text(p.expand?.angebot?.titel)}<br><span class="leise">${p.dauer_min} Minuten, ${p.plaetze} Plätze</span></span>
+        <button class="zweit" type="button" data-beenden="${p.id}">Beenden</button></div>`).join('') : '<p>Noch kein Kurs im Wochenplan.</p>';
+      for (const k of $('plan').querySelectorAll('[data-beenden]')) k.onclick = async () => {
+        if (!confirm('Diesen Kurs beenden? Termine, die schon gebucht sind, bleiben. Die anderen fallen weg.')) return;
+        try { await api(`/collections/wochenplan/records/${k.dataset.beenden}`, { method: 'PATCH', body: JSON.stringify({ aktiv: false }) }); melde('Kurs beendet.'); planLaden(); termineLaden(); }
+        catch (err) { melde(err.message, false); }
+      };
+    } catch (err) {
+      $('plan').innerHTML = `<p class="fehler">Der Wochenplan lässt sich gerade nicht laden. ${text(err.message)}</p><button class="zweit" type="button" onclick="planLaden()">Nochmals versuchen</button>`;
+    }
+  }
+
+  $('neu').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('eintragen').disabled = true;
+    $('neufehler').hidden = true;
+    try {
+      const titel = $('titel').value.trim();
+      let angebot = angebote.find((x) => x.titel.toLowerCase() === titel.toLowerCase());
+      angebot ??= await api('/collections/angebote/records', { method: 'POST', body: JSON.stringify({ titel, ort: $('ort').value, preis_hinweis: $('preis').value, aktiv: true }) });
+      await api('/collections/wochenplan/records', { method: 'POST', body: JSON.stringify({ angebot: angebot.id, wochentag: $('wochentag').value, zeit: $('zeit').value, dauer_min: Number($('dauer').value), plaetze: Number($('plaetze').value), aktiv: true }) });
+      melde(`Eingetragen: ${titel}, jeden ${TAGE[$('wochentag').value]} um ${$('zeit').value}. Die Termine sind jetzt buchbar.`);
+      e.target.reset();
+      planLaden(); termineLaden();
+    } catch (err) {
+      $('neufehler').textContent = err.message; $('neufehler').hidden = false;
+    } finally { $('eintragen').disabled = false; }
+  });
+
+  function zeigen() { $('login').hidden = true; $('app').hidden = false; termineLaden(); planLaden(); }
+  if (token) zeigen();
+</script>
+</body>
+</html>

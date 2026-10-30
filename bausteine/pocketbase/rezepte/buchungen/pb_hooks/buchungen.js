@@ -2,6 +2,10 @@
 
 // Meldungen über neue Buchungen und Absagen gehen hierhin. Leer: an die Absender-Adresse aus den Mail-Einstellungen.
 const MELDUNGEN_AN = "";
+// Wo die Buchungsseite auf der eigenen Seite liegt (für die Links in den Mails), z. B. "/kurse/" oder "/buchen.html"
+const BUCHUNGSSEITE = "/buchen.html";
+// So weit im Voraus entstehen Termine aus dem Wochenplan
+const VORAUS_TAGE = 56;
 
 const TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 const MONATE = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sept.", "Okt.", "Nov.", "Dez."];
@@ -29,6 +33,56 @@ function zusammenfassung(app, b) {
     anzahl: b.getInt("anzahl"),
     begonnen: Date.now() >= t.getDateTime("beginn").unix() * 1000,
   };
+}
+
+const WOCHENTAG = { so: 0, mo: 1, di: 2, mi: 3, do: 4, fr: 5, sa: 6 };
+const iso = (d) => d.toISOString().replace("T", " ");
+const ortszeit = (dt) => new Date(dt.unix() * 1000);
+
+// Termine aus dem Wochenplan: legt für die nächsten 8 Wochen an, was fehlt (gleiches Angebot, gleicher Beginn). Ein abgesagter
+// Termin bleibt abgesagt, nichts entsteht doppelt. Mit geaendert: Termine dieses Plans ohne Buchung fallen weg und entstehen neu,
+// so gilt eine neue Zeit oder Platzzahl sofort; Termine mit Buchungen bleiben, wie sie sind.
+function planen(app, plan, geaendert) {
+  const plaene = plan ? [plan] : app.findRecordsByFilter("wochenplan", "aktiv = true", "", 0, 0);
+  const termine = app.findCollectionByNameOrId("termine");
+  let neu = 0;
+  for (const w of plaene) {
+    if (geaendert) {
+      for (const t of app.findRecordsByFilter("termine", "wochenplan = {:w} && beginn > @now", "", 0, 0, { w: w.id })) {
+        if (!app.findRecordsByFilter("buchungen", "termin = {:t}", "", 1, 0, { t: t.id }).length) app.delete(t);
+      }
+    }
+    if (!w.getBool("aktiv")) continue;
+    const start = new Date();
+    if (!w.getDateTime("ab").isZero() && ortszeit(w.getDateTime("ab")) > start) start.setTime(ortszeit(w.getDateTime("ab")).getTime());
+    start.setHours(0, 0, 0, 0);
+    let ende = new Date(start.getTime());
+    ende.setDate(ende.getDate() + VORAUS_TAGE);
+    if (!w.getDateTime("bis").isZero()) {
+      const bis = ortszeit(w.getDateTime("bis"));
+      bis.setHours(23, 59, 59, 999);
+      if (bis < ende) ende = bis;
+    }
+    const [hh, mm] = w.getString("zeit").split(":").map(Number);
+    for (const d = new Date(start.getTime()); d <= ende; d.setDate(d.getDate() + 1)) {
+      if (d.getDay() !== WOCHENTAG[w.getString("wochentag")]) continue;
+      const beginn = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hh, mm); // Schweizer Zeit, auch über die Zeitumstellung
+      if (beginn.getTime() <= Date.now()) continue;
+      // Gibt es an diesem Tag schon einen Termin aus diesem Plan (z. B. gebucht, vor einer Zeitänderung) oder genau diesen Termin: nichts
+      const tagEnde = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+      if (app.findRecordsByFilter("termine", "wochenplan = {:w} && beginn >= {:von} && beginn < {:bis}", "", 1, 0, { w: w.id, von: iso(d), bis: iso(tagEnde) }).length) continue;
+      if (app.findRecordsByFilter("termine", "angebot = {:a} && beginn = {:b}", "", 1, 0, { a: w.getString("angebot"), b: iso(beginn) }).length) continue;
+      const t = new Record(termine);
+      t.set("angebot", w.getString("angebot"));
+      t.set("wochenplan", w.id);
+      t.set("beginn", iso(beginn));
+      t.set("ende", iso(new Date(beginn.getTime() + w.getInt("dauer_min") * 60000)));
+      t.set("plaetze", w.getInt("plaetze"));
+      app.save(t);
+      neu++;
+    }
+  }
+  return neu;
 }
 
 function perCode(app, code) {
@@ -60,7 +114,7 @@ function mails(app, b, art) {
   }
   const z = zusammenfassung(app, b);
   const gast = b.getString("email"), betrieb = MELDUNGEN_AN || s.meta.senderAddress;
-  const seite = `${s.meta.appURL}/buchen.html`;
+  const seite = `${s.meta.appURL.replace(/\/$/, "")}${BUCHUNGSSEITE}`;
   const was = `<b>${esc(z.angebot)}</b><br>${esc(z.wann)}${z.ort ? `<br>${esc(z.ort)}` : ""}<br>${z.anzahl === 1 ? "1 Person" : `${z.anzahl} Personen`}`;
   if (art === "neu") {
     senden(app, gast, `Bestätigt: ${z.angebot}, ${z.wann}`, [
@@ -90,4 +144,4 @@ function mails(app, b, art) {
   }
 }
 
-module.exports = { zeit, zusammenfassung, perCode, mails };
+module.exports = { zeit, zusammenfassung, perCode, mails, planen };

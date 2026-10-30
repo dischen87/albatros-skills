@@ -1,7 +1,8 @@
 /// <reference path="../pb_data/types.d.ts" />
-// Buchungen: Angebote mit Terminen und Plätzen, Besucher buchen ohne Konto. Angebote und Termine pflegt die Verwaltung
-// (Tunnel, http://localhost:8090/_/). Buchungen sieht nur die Verwaltung; Plätze, Status und Code setzt der Server
-// (pb_hooks/buchungen.pb.js), nie der Browser. Die Seite liest die freien Plätze aus der Sicht termine_frei.
+// Buchungen: Angebote mit einem Wochenplan («jeden Montag 18:30, 12 Plätze»), daraus entstehen die Termine von selbst
+// (pb_hooks/buchungen.pb.js), Besucher buchen ohne Konto. Gepflegt wird auf der Seite verwaltung.html oder in der Verwaltung
+// (Tunnel, http://localhost:8090/_/). Buchungen sieht nur die Verwaltung; Plätze, Status und Code setzt der Server, nie der Browser.
+// Die Seite liest die freien Plätze aus der Sicht termine_frei.
 migrate((app) => {
   const angebote = new Collection({
     type: "base",
@@ -16,11 +17,32 @@ migrate((app) => {
       { name: "beschreibung", type: "text", max: 2000 },
       { name: "ort", type: "text", max: 200 },
       { name: "preis_hinweis", type: "text", max: 200 },          // z. B. «CHF 25 pro Person, bar oder TWINT vor Ort»
-      { name: "buchungsschluss_std", type: "number", min: 0 },     // so viele Stunden vor Beginn ist Schluss (0: bis zum Beginn)
+      { name: "buchungsschluss_min", type: "number", min: 0, onlyInt: true }, // so viele Minuten vor Beginn ist Schluss (0: bis zum Beginn)
       { name: "aktiv", type: "bool" },
     ],
   });
   app.save(angebote);
+
+  const wochenplan = new Collection({
+    type: "base",
+    name: "wochenplan",
+    listRule: null,
+    viewRule: null,
+    createRule: null,
+    updateRule: null,
+    deleteRule: null,
+    fields: [
+      { name: "angebot", type: "relation", required: true, collectionId: angebote.id, maxSelect: 1, cascadeDelete: true },
+      { name: "wochentag", type: "select", required: true, values: ["mo", "di", "mi", "do", "fr", "sa", "so"], maxSelect: 1 },
+      { name: "zeit", type: "text", required: true, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$" }, // «18:30», Schweizer Zeit
+      { name: "dauer_min", type: "number", required: true, min: 5, max: 1440, onlyInt: true },
+      { name: "plaetze", type: "number", required: true, min: 1, onlyInt: true },
+      { name: "ab", type: "date" },                                // leer: ab heute
+      { name: "bis", type: "date" },                               // leer: ohne Ende
+      { name: "aktiv", type: "bool" },
+    ],
+  });
+  app.save(wochenplan);
 
   const termine = new Collection({
     type: "base",
@@ -32,6 +54,7 @@ migrate((app) => {
     deleteRule: null,
     fields: [
       { name: "angebot", type: "relation", required: true, collectionId: angebote.id, maxSelect: 1 },
+      { name: "wochenplan", type: "relation", collectionId: wochenplan.id, maxSelect: 1 }, // leer: einzeln angelegt
       { name: "beginn", type: "date", required: true },
       { name: "ende", type: "date", required: true },
       { name: "plaetze", type: "number", required: true, min: 1, onlyInt: true },
@@ -76,5 +99,5 @@ migrate((app) => {
       WHERE t.abgesagt = FALSE`,
   }));
 }, (app) => {
-  for (const name of ["termine_frei", "buchungen", "termine", "angebote"]) app.delete(app.findCollectionByNameOrId(name));
+  for (const name of ["termine_frei", "buchungen", "termine", "wochenplan", "angebote"]) app.delete(app.findCollectionByNameOrId(name));
 });
