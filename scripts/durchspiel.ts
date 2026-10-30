@@ -1,7 +1,8 @@
 // Durchspiel-Test: Eine KI mit dem Plugin albatros bekommt nur den ersten Satz der Person (Fall curling: «Modernisiere <adresse>»,
-// Fall musikverein: ein erfundener Verein will eine neue Seite), eine zweite KI spielt die Person ohne Technikwissen und beantwortet
-// ihre Fragen kurz. Am Ende: Fotos vorher und nachher, Bewertung nach Raster, Kosten.
-//   bun scripts/durchspiel.ts [adresse] [--fall curling|musikverein] [--runden 16] [--modell sonnet] [--budget 30] [--ergebnis <ordner>]
+// Fall musikverein: ein erfundener Verein will eine neue Seite, Fall buchung: ein erfundenes Yogastudio will Kurse mit Platzbuchung,
+// also Pilot mit Baustein), eine zweite KI spielt die Person ohne Technikwissen und beantwortet ihre Fragen kurz. Am Ende: Fotos
+// vorher und nachher, Bewertung nach Raster, Kosten.
+//   bun scripts/durchspiel.ts [adresse] [--fall curling|musikverein|buchung] [--runden 16] [--modell sonnet] [--budget 30] [--stand HEAD] [--ergebnis <ordner>]
 //   bun scripts/durchspiel.ts --auswerten <temp-ordner> <ergebnis-ordner>   (nur Fotos, Protokoll und Bewertung eines Laufs)
 //   ALBATROS_MCP_TOKEN=… bun scripts/durchspiel.ts --echt --fall musikverein   (echte Plattform, nur im Workflow durchspiel von albatros)
 // Mit --echt spricht die KI mit dem echten MCP von Albatros (Token der E2E-Person aus der Umgebung, nie in Dateien), mit echtem ssh,
@@ -10,6 +11,10 @@
 // (git@aufwind.sh: zeigt per insteadOf dorthin, seite_erstellen legt es unter dem gewünschten Namen an), open/xdg-open und ssh
 // schreiben nur ins Protokoll, curl auf https://<name>.aufwind.sh bekommt die Seite aus dem Hafen (wie Light). Die Inhalte der Seite
 // gehören ihren Betreibern: Alles bleibt lokal im Temp-Ordner und in plugins/albatros/evals/results/, nichts wird veröffentlicht.
+// Ohne --echt ausserdem: scp, rsync (zum Server) und ssh-keygen nur ins Protokoll, sendmail schreibt Mails nach mails.log, Bausteine
+// und Dateien von albatros-skills auf GitHub kommen aus diesem Repo (Stand der Skills im Lauf). Mit Pilot (Fall buchung, Attrappe in
+// scripts/durchspiel/mocks/buchung/) gibt die Seite /api/ an das PocketBase weiter, das die KI lokal auf Port 8090 laufen lässt.
+// Nach dem Lauf startet ein frisches PocketBase mit den Migrationen der KI (Probe), und der Richter prüft das Buchungstool im Browser.
 import { appendFileSync, chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -26,8 +31,8 @@ const ergebnis = AUSWERTEN ? resolve(args[args.indexOf('--auswerten') + 2]!) : r
 mkdirSync(join(ergebnis, 'fotos'), { recursive: true });
 
 const tmp = AUSWERTEN ? resolve(args[args.indexOf('--auswerten') + 1]!) : mkdtempSync(join(tmpdir(), 'durchspiel-'));
-const LOG = join(tmp, 'albatros.log'), GEOEFFNET = join(tmp, 'geoeffnet.txt'), LIVE = join(tmp, 'live.log');
-const arbeit = join(tmp, 'arbeit'), HAFEN = join(tmp, 'hafen');
+const LOG = join(tmp, 'albatros.log'), GEOEFFNET = join(tmp, 'geoeffnet.txt'), LIVE = join(tmp, 'live.log'), MAILS = join(tmp, 'mails.log');
+const arbeit = join(tmp, 'arbeit'), HAFEN = join(tmp, 'hafen'), STAND = join(tmp, 'stand');
 const ENV = { ...process.env, PATH: `${join(tmp, 'bin')}:${process.env.PATH}`, ...(ECHT ? {} : { GIT_CONFIG_GLOBAL: join(tmp, 'gitconfig') }) };
 const git = (cwd: string, ...a: string[]) => Bun.spawnSync(['git', ...a], { cwd, env: ENV }).stdout.toString();
 // Seite im Hafen: die von seite_erstellen (Datei hafen/seite), sonst das erste Repo ausser der Vorlage
@@ -35,10 +40,14 @@ const seiteName = () => (existsSync(join(HAFEN, 'seite')) ? readFileSync(join(HA
 
 if (!AUSWERTEN) {
   // Plugin mit der Attrappe statt des echten Diensts (mit --echt: echter Dienst, Token aus der Umgebung), Arbeitsordner frisch
-  cpSync(join(repo, 'plugins/albatros'), join(tmp, 'plugin'), { recursive: true, filter: (p) => !p.includes('/evals') });
+  // Stand von Skills, Bausteinen und Vorlage: ein Commit (--stand, Standard HEAD), nie halbfertige Änderungen anderer Sessions
+  mkdirSync(STAND);
+  Bun.spawnSync(['sh', '-c', `git -C '${repo}' archive '${opt('stand', 'HEAD')}' plugins/albatros bausteine vorlage | tar -x -C '${STAND}'`]);
+  writeFileSync(join(tmp, 'stand.txt'), git(repo, 'rev-parse', '--short', opt('stand', 'HEAD')).trim());
+  cpSync(join(STAND, 'plugins/albatros'), join(tmp, 'plugin'), { recursive: true, filter: (p) => !p.includes('/evals') });
   writeFileSync(join(tmp, 'plugin/.mcp.json'), JSON.stringify({ mcpServers: { albatros: ECHT
     ? { type: 'http', url: process.env.ALBATROS_MCP_URL ?? 'https://mcp.albatros.build', headers: { Authorization: 'Bearer ${ALBATROS_MCP_TOKEN}' } }
-    : { command: 'bun', args: [join(repo, 'scripts/durchspiel/mock-mcp.ts')], env: { DURCHSPIEL_LOG: LOG, DURCHSPIEL_HAFEN: HAFEN } } } }));
+    : { command: 'bun', args: [join(repo, 'scripts/durchspiel/mock-mcp.ts')], env: { DURCHSPIEL_LOG: LOG, DURCHSPIEL_HAFEN: HAFEN, DURCHSPIEL_FALL: FALL } } } }));
   mkdirSync(arbeit);
   // open und xdg-open protokollieren nur (es gibt keinen Bildschirm). Ohne --echt auch ssh als Attrappe, und curl auf
   // https://<name>.aufwind.sh geht an den Webserver unten (Port 4398), alles andere ans echte curl. node bekommt die Adresse als
@@ -48,14 +57,20 @@ if (!AUSWERTEN) {
 }
 if (!AUSWERTEN && !ECHT) {
   writeFileSync(join(tmp, 'bin/ssh'), `#!/bin/sh\necho "ssh $*" >> ${LOG}\ncase "$*" in *-T*) echo "Hi $(cat ${join(HAFEN, 'seite')} 2>/dev/null || echo du)! You've successfully authenticated, but Forgejo does not provide shell access." >&2; exit 1;; esac\necho "Attrappe: kein echter Server im Durchspiel-Test"\n`);
-  writeFileSync(join(tmp, 'bin/curl'), `#!/bin/sh\nfor a; do shift\n  case "$a" in\n    http*://code.aufwind.sh*) ;;\n    http*://*.aufwind.sh|http*://*.aufwind.sh/*|*.aufwind.sh|*.aufwind.sh/*) r=\${a#*://}; h=\${r%%/*}; p=\${r#"$h"}; a="http://127.0.0.1:4398\${p:-/}"; set -- "$@" -H "Host: $h";;\n  esac\n  set -- "$@" "$a"\ndone\nexec /usr/bin/curl "$@"\n`);
+  writeFileSync(join(tmp, 'bin/curl'), `#!/bin/sh\nfor a; do shift\n  case "$a" in\n    http*://code.aufwind.sh*) ;;\n    http*://*.aufwind.sh|http*://*.aufwind.sh/*|*.aufwind.sh|*.aufwind.sh/*) r=\${a#*://}; h=\${r%%/*}; p=\${r#"$h"}; a="http://127.0.0.1:4398\${p:-/}"; set -- "$@" -H "Host: $h";;\n    http*://codeload.github.com/dischen87/albatros-skills/*) a="file://${join(tmp, 'albatros-skills-main.tar.gz')}";;\n    http*://raw.githubusercontent.com/dischen87/albatros-skills/main/*) a="file://${STAND}/\${a#*/albatros-skills/main/}";;\n  esac\n  set -- "$@" "$a"\ndone\nexec /usr/bin/curl "$@"\n`);
   writeFileSync(join(tmp, 'bin/node'), `#!/bin/sh\nfor a; do shift\n  case "$a" in\n    http*://code.aufwind.sh*) ;;\n    http*://*.aufwind.sh|http*://*.aufwind.sh/*) r=\${a#*://}; h=\${r%%/*}; a="http://\${h%.aufwind.sh}.localhost:4398\${r#"$h"}";;\n  esac\n  set -- "$@" "$a"\ndone\nexec ${Bun.which('node')} "$@"\n`);
-  for (const n of ['ssh', 'curl', 'node']) chmodSync(join(tmp, 'bin', n), 0o755);
+  // Zum Server nur ins Protokoll, lokal kopieren (ohne «host:») geht weiter; nie ein neuer Schlüssel im echten ~/.ssh; Mails nur in mails.log
+  for (const n of ['scp', 'rsync']) writeFileSync(join(tmp, 'bin', n), `#!/bin/sh\ncase "$*" in\n  *:*) echo "${n} $*" >> ${LOG}; echo "Attrappe: kein echter Server im Durchspiel-Test";;\n  *) exec /usr/bin/${n} "$@";;\nesac\n`);
+  writeFileSync(join(tmp, 'bin/ssh-keygen'), `#!/bin/sh\necho "ssh-keygen $*" >> ${LOG}\necho "Attrappe: Im Durchspiel-Test entsteht kein neuer Schlüssel, das Schloss ist bei Albatros schon hinterlegt."\n`);
+  writeFileSync(join(tmp, 'bin/sendmail'), `#!/bin/sh\n{ echo "--- sendmail $*"; cat; echo; } >> ${MAILS}\n`);
+  for (const n of ['ssh', 'curl', 'node', 'scp', 'rsync', 'ssh-keygen', 'sendmail']) chmodSync(join(tmp, 'bin', n), 0o755);
+  // Bausteine und Dateien von albatros-skills aus diesem Repo statt von GitHub (aufgebaut wie codeload: albatros-skills-main/…)
+  Bun.spawnSync(['tar', '-czf', join(tmp, 'albatros-skills-main.tar.gz'), '-s', ',^,albatros-skills-main/,', '--exclude', 'node_modules', '-C', STAND, 'bausteine', 'vorlage', 'plugins/albatros/skills']);
   // Hafen: Vorlage als bare Repo, seite_erstellen kopiert sie nach hafen/<name>/projekt.git, wie flotte es anlegt
-  writeFileSync(join(tmp, 'gitconfig'), `[user]\n\tname = ${FALL === 'musikverein' ? 'Präsidentin Musikverein Testdorf' : 'Vorstand Curling'}\n\temail = vorstand@example.test\n[init]\n\tdefaultBranch = main\n[url "${HAFEN}/"]\n\tinsteadOf = git@aufwind.sh:\n`);
+  writeFileSync(join(tmp, 'gitconfig'), `[user]\n\tname = ${{ musikverein: 'Präsidentin Musikverein Testdorf', buchung: 'Inhaberin Yogaraum Testwil' }[FALL] ?? 'Vorstand Curling'}\n\temail = vorstand@example.test\n[init]\n\tdefaultBranch = main\n[url "${HAFEN}/"]\n\tinsteadOf = git@aufwind.sh:\n`);
   mkdirSync(join(HAFEN, 'vorlage.git'), { recursive: true });
   git(join(HAFEN, 'vorlage.git'), 'init', '-q', '--bare', '-b', 'main');
-  cpSync(join(repo, 'vorlage'), join(tmp, 'vorlage'), { recursive: true });
+  cpSync(join(STAND, 'vorlage'), join(tmp, 'vorlage'), { recursive: true });
   git(join(tmp, 'vorlage'), 'init', '-q', '-b', 'main'); git(join(tmp, 'vorlage'), 'add', '-A'); git(join(tmp, 'vorlage'), 'commit', '-qm', 'Vorlage von Albatros'); git(join(tmp, 'vorlage'), 'push', '-q', join(HAFEN, 'vorlage.git'), 'main');
 }
 
@@ -74,17 +89,37 @@ Ist die Seite im Hafen und die KI meldet, dass sie unter der Adresse läuft oder
 const MUSIKVEREIN = `Du spielst eine Person ohne Technikwissen: Präsidentin des Musikvereins Testdorf, eines erfundenen Vereins für einen Test. Ihr habt noch keine Webseite und möchtet eine einfache, die du selbst ein paar Mal im Jahr nachführst. Darauf soll: wer ihr seid (Blasmusik, gegründet 1923, rund 35 Mitglieder), die Probe jeden Donnerstag um 20 Uhr im Schulhaus Testdorf, das Jahreskonzert am Samstag, 13. März 2027, um 20 Uhr in der Mehrzweckhalle Testdorf (Eintritt frei, Kollekte), dass neue Mitglieder willkommen sind (alle Register, besonders Klarinette und Posaune) und Kontakt per E-Mail an info@musikverein-testdorf.example. Ihr wollt mehr junge Mitglieder und mehr Publikum. Bilder habt ihr keine. Texte schreibst du selbst, wenn die KI danach fragt: kurz, freundlich, in eigenen Worten. Bei Albatros hast du das Abo Light schon bezahlt, einen Schlüssel hast du noch nicht.
 Regeln: Antworte auf Deutsch, kurz (ein bis drei Sätze), wie ein Mensch im Chat. Beantworte nur, was die KI fragt. Schlag nie selbst technische Schritte vor und sag nie, was die KI als Nächstes tun soll. Musst du wählen, wähle selbst etwas Passendes. Nenn nie echte Personen, Adressen oder Telefonnummern. Fragt die KI nach dem Namen der Adresse oder schlägt sie einen vor, antworte immer: «Nimm bitte e2e-plattform, so heisst unsere Testadresse.» Kostet etwas Geld (zum Beispiel Bilder erzeugen), sag Nein, ihr braucht keine Bilder. Fragt sie, ob sie weitermachen, bauen, in den Hafen schicken soll oder ob die Seite so ins Netz darf: «Ja, mach weiter, das darf so ins Netz.» Bittet sie dich, selbst eine Datei zu ändern oder etwas zu tippen: «Das traue ich mir noch nicht zu, mach du es bitte und zeig mir, was du geändert hast.» Eine eigene Domain willst du nicht.
 Erst wenn die KI meldet, dass die Seite unter https://e2e-plattform.aufwind.sh im Netz steht, und sie dir gezeigt hat, wünschst du dir einmal eine kleine Änderung (eine Vorschau unter localhost oder die Frage, ob sie ins Netz darf, heisst noch nicht, dass sie im Netz steht): «Super! Eine Sache fehlt noch: das Frühlingskonzert am Samstag, 24. April 2027, um 19.30 Uhr in der Kirche Testdorf.» Steht auch das im Netz und die KI hat es dir gezeigt, oder fragt sie nichts mehr, antworte genau: ENDE`;
+const BUCHUNG = `Du spielst eine Person ohne Technikwissen: Mira, Inhaberin des Yogaraums Testwil, eines erfundenen kleinen Yogastudios für einen Test (den Ort Testwil gibt es nicht). Du unterrichtest allein im Yogaraum im alten Schulhaus Testwil, höchstens 12 Plätze pro Kurs. Wochenplan: Montag 18.30 Hatha (75 Minuten), Dienstag 9.00 Yoga 60+ (60 Minuten), Dienstag 19.00 Vinyasa (75 Minuten), Mittwoch 18.30 Yin Yoga (75 Minuten), Donnerstag 12.15 Mittagsyoga (45 Minuten), Samstag 9.30 Vinyasa (90 Minuten). Preise: Einzelstunde CHF 28, 10er-Abo CHF 250, bezahlt wird vor Ort bar oder mit TWINT. Du willst eine Webseite, auf der man den Wochenplan sieht und für einen bestimmten Termin einen Platz buchen kann, mit Name und E-Mail, ohne eigenes Konto. Wer bucht, bekommt eine Bestätigung per Mail. Ist ein Kurs voll, soll man nicht mehr buchen können. Du selbst willst sehen, wer gebucht hat, und eine Buchung absagen können (zum Beispiel wenn jemand anruft), am liebsten auch am Handy. Bezahlen online willst du nicht. Kontakt: hallo@yogaraum-testwil.example. Fotos hast du keine. Bei Albatros bist du angemeldet und hast deinen Schlüssel schon hinterlegt (eine Bekannte hat dir das eingerichtet); ein Abo hast du noch keins.
+Regeln: Antworte auf Deutsch, kurz (ein bis drei Sätze), wie ein Mensch im Chat. Beantworte nur, was die KI fragt. Schlag nie selbst technische Schritte vor und sag nie, was die KI als Nächstes tun soll. Musst du wählen, wähle selbst etwas Passendes. Nenn nie echte Personen, Adressen oder Telefonnummern. Fragt die KI, welches Abo du willst, ohne eines zu empfehlen: «Ich weiss nicht, was ich brauche. Was empfiehlst du?» Gibt sie dir einen Link zur Zahlungsseite: «Erledigt, ich habe bezahlt.» Fragt sie nach dem Namen der Adresse oder schlägt sie einen vor, antworte immer: «Nimm bitte yogaraum-testwil.» Bittet sie dich, im Browser etwas anzulegen oder einzugeben (Konto, Passwort, Schlüssel für Mails): «Erledigt.» Bittet sie dich, im Terminal etwas zu tippen oder eine Datei zu ändern: «Das traue ich mir noch nicht zu, mach du es bitte und zeig mir, was du geändert hast.» Fragt sie nach Gestaltungselementen: Schlichte Formen oder Icons sind gut, erzeugte Fotos willst du nicht. Fragt sie, ob sie weitermachen, bauen, in den Hafen schicken soll oder ob die Seite so ins Netz darf: «Ja, mach weiter, das darf so ins Netz.» Eine eigene Domain willst du jetzt noch nicht.
+Erst wenn die KI meldet, dass die Seite unter https://yogaraum-testwil.aufwind.sh im Netz steht, und sie dir gezeigt hat (eine Vorschau unter localhost heisst noch nicht, dass sie im Netz steht), fragst du einmal: «Super! Wie sehe ich jetzt am Handy, wer gebucht hat, und wie sage ich eine Buchung ab?» Hat sie das erklärt, oder fragt sie nichts mehr, antworte genau: ENDE`;
 const { start: ERSTE, vorher: VORHER, person: PERSON } = FALL === 'musikverein'
   ? { start: 'Ich will eine Webseite für unseren Musikverein Testdorf.', vorher: null, person: MUSIKVEREIN }
-  : { start: `Modernisiere ${ADRESSE}`, vorher: ADRESSE, person: CURLING };
+  : FALL === 'buchung'
+    ? { start: 'Ich habe ein kleines Yogastudio und will eine Webseite, auf der man meine Kurse sieht und einen Platz buchen kann.', vorher: null, person: BUCHUNG }
+    : { start: `Modernisiere ${ADRESSE}`, vorher: ADRESSE, person: CURLING };
 
 type Eintrag = { wer: 'Person' | 'KI'; text: string; kosten?: number; schritte?: number; sekunden?: number };
 const verlauf: Eintrag[] = AUSWERTEN ? JSON.parse(readFileSync(join(ergebnis, 'verlauf.json'), 'utf8')) : [];
 let kostenPerson = 0;
+// Die KI ergänzt im Skill ssh-schluessel das echte ~/.ssh/config: Nach dem Spiel kommt der alte Stand zurück, ihre Fassung in die Ergebnisse
+const SSH_CONFIG = join(homedir(), '.ssh/config'), sshVorher = !AUSWERTEN && !ECHT && existsSync(SSH_CONFIG) ? readFileSync(SSH_CONFIG, 'utf8') : null;
+// Wie bausteine/pocketbase/nginx.conf auf dem Server: /api/ (und /_/) an PocketBase weiterreichen
+const weiter = async (r: Request, port: number) => {
+  const u = new URL(r.url), kopf = new Headers(r.headers);
+  kopf.delete('accept-encoding'); // fetch entpackt selbst; gepackt weitergereicht kommt beim Browser kaputt an
+  return fetch(`http://127.0.0.1:${port}${u.pathname}${u.search}`, { method: r.method, headers: kopf, body: ['GET', 'HEAD'].includes(r.method) ? undefined : await r.arrayBuffer(), signal: AbortSignal.timeout(10_000) })
+    .catch(() => new Response('Bad Gateway', { status: 502 }));
+};
 if (!AUSWERTEN) {
   // Light: Was im Hafen auf main unter seite/ liegt, ist unter https://<name>.aufwind.sh zu sehen (Abrufe in live.log)
-  const live = ECHT ? null : Bun.serve({ port: 4398, hostname: '::', fetch: (r) => {
+  const live = ECHT ? null : Bun.serve({ port: 4398, hostname: '::', fetch: async (r) => {
     const name = (r.headers.get('host') ?? '').split('.')[0], pfad = decodeURIComponent(new URL(r.url).pathname).replace(/^\/+|\/+$/g, '');
+    // Pilot: Statt des Servers antwortet unter /api/ das PocketBase, das die KI lokal laufen lässt (Port 8090)
+    if (existsSync(join(HAFEN, 'server')) && name === seiteName() && /^api(\/|$)/.test(pfad)) {
+      const a = await weiter(r, 8090);
+      appendFileSync(LIVE, `${JSON.stringify({ zeit: new Date().toISOString(), name, pfad: `/${pfad}`, status: a.status })}\n`);
+      return a;
+    }
     const roh = (p: string) => { const x = Bun.spawnSync(['git', '--git-dir', join(HAFEN, name, 'projekt.git'), 'show', `main:seite/${p}`]); return x.exitCode === 0 && !x.stdout.toString().startsWith('tree ') ? x.stdout : null; };
     const p = name === seiteName() ? [pfad, `${pfad}/index.html`.replace(/^\//, ''), `${pfad}.html`].find((x) => x && roh(x)) : undefined;
     const status = name !== seiteName() ? 404 : p ? 200 : roh('index.html') ? 404 : 502;
@@ -112,6 +147,10 @@ if (!AUSWERTEN) {
     if (/^ENDE\b/.test(nachricht)) { verlauf.push({ wer: 'Person', text: 'ENDE' }); break; }
   }
   live?.stop(true);
+  if (sshVorher !== null && readFileSync(SSH_CONFIG, 'utf8') !== sshVorher) {
+    writeFileSync(join(ergebnis, 'ssh-config-der-ki.txt'), readFileSync(SSH_CONFIG, 'utf8'));
+    writeFileSync(SSH_CONFIG, sshVorher);
+  }
 }
 // Vorschau-Server und andere Reste der KI im Arbeitsordner beenden (RAM)
 Bun.spawnSync(['pkill', '-f', `${arbeit}/`]);
@@ -132,12 +171,71 @@ const foto = async (url: string, datei: string, breite: number) => {
   clearTimeout(zeit);
 };
 if (VORHER) for (const b of [390, 1440]) if (!existsSync(join(ergebnis, 'fotos', `vorher-start-${b}.png`))) await foto(VORHER, `vorher-start-${b}.png`, b);
-if (seite) {
+// Probe mit PocketBase (Pilot): frisch, mit den Migrationen und Hooks der KI auf Port 8091; die Seite auf 4399 gibt /api/ und /_/
+// dorthin weiter wie auf dem Server. Mails gehen an sendmail der Attrappe (mails.log). Damit prüft der Richter das Buchungstool.
+const finde = (d: string) => Bun.spawnSync(['find', d, '-type', 'd', '-name', 'pb_migrations', '-not', '-path', '*/node_modules/*', '-not', '-path', '*/rezepte/*']).stdout.toString().split('\n').filter(Boolean)[0];
+const migrationen = seite ? finde(join(seite, '..')) ?? finde(arbeit) : undefined;
+const hooks = migrationen && existsSync(join(migrationen, '..', 'pb_hooks')) ? join(migrationen, '..', 'pb_hooks') : null;
+const PROBE = { mail: 'probe@example.test', passwort: crypto.randomUUID() }; // nur für diese Probe, nirgends gespeichert
+mkdirSync(join(ergebnis, 'probe'), { recursive: true });
+// Mails der Probe: ein kleiner SMTP-Empfänger auf Port 2525 schreibt jede Mail nach mails.log (PocketBase mailt nur über SMTP)
+type Smtp = { puffer: string; daten: boolean; mail: string };
+const smtp = migrationen ? Bun.listen<Smtp>({ hostname: '127.0.0.1', port: 2525, socket: {
+  open: (s) => { s.data = { puffer: '', daten: false, mail: '' }; s.write('220 probe\r\n'); },
+  data: (s, d) => {
+    s.data.puffer += d.toString();
+    for (let i; (i = s.data.puffer.indexOf('\r\n')) >= 0;) {
+      const z = s.data.puffer.slice(0, i);
+      s.data.puffer = s.data.puffer.slice(i + 2);
+      if (s.data.daten && z === '.') { appendFileSync(MAILS, `--- smtp ${new Date().toISOString()}\n${s.data.mail}\n`); s.data.daten = false; s.data.mail = ''; s.write('250 ok\r\n'); }
+      else if (s.data.daten) s.data.mail += `${z}\n`;
+      else if (/^DATA/i.test(z)) { s.data.daten = true; s.write('354 weiter\r\n'); }
+      else if (/^QUIT/i.test(z)) { s.write('221 ade\r\n'); s.end(); }
+      else s.write('250 ok\r\n');
+    }
+  },
+} }) : null;
+const pocketbase = migrationen ? await (async () => {
+  const v = '0.40.5', bin = join(homedir(), '.cache/albatros-durchspiel', `pocketbase-${v}`);
+  if (!existsSync(bin)) {
+    const zip = `pocketbase_${v}_${process.platform}_${process.arch === 'arm64' ? 'arm64' : 'amd64'}.zip`, url = `https://github.com/pocketbase/pocketbase/releases/download/v${v}`, d = join(tmp, 'pb-download');
+    mkdirSync(d, { recursive: true });
+    await Bun.spawn(['/usr/bin/curl', '-fsSLo', join(d, zip), `${url}/${zip}`]).exited;
+    const soll = (await (await fetch(`${url}/checksums.txt`, { signal: AbortSignal.timeout(30_000) })).text()).split('\n').find((z) => z.endsWith(zip))?.split(/\s+/)[0];
+    if (!existsSync(join(d, zip)) || new Bun.CryptoHasher('sha256').update(await Bun.file(join(d, zip)).arrayBuffer()).digest('hex') !== soll) return null;
+    await Bun.spawn(['unzip', '-o', '-q', join(d, zip), 'pocketbase', '-d', d]).exited;
+    mkdirSync(join(bin, '..'), { recursive: true });
+    cpSync(join(d, 'pocketbase'), bin);
+  }
+  const pb = [`--dir=${join(tmp, 'probe/pb_data')}`, `--migrationsDir=${migrationen}`, ...(hooks ? [`--hooksDir=${hooks}`] : [])];
+  await Bun.spawn([bin, 'superuser', 'upsert', PROBE.mail, PROBE.passwort, ...pb], { env: ENV, stdout: Bun.file(join(ergebnis, 'probe/einrichten.log')), stderr: Bun.file(join(ergebnis, 'probe/einrichten-fehler.log')) }).exited;
+  const p = Bun.spawn([bin, 'serve', '--http=127.0.0.1:8091', ...pb], { env: ENV, stdout: Bun.file(join(ergebnis, 'probe/pocketbase.log')), stderr: Bun.file(join(ergebnis, 'probe/pocketbase-fehler.log')) });
+  for (let i = 0; i < 40; i++) {
+    if (await fetch('http://127.0.0.1:8091/api/health').then((r) => r.ok, () => false)) {
+      // Mails an den Empfänger oben, wie auf dem Server mit Resend oder Brevo
+      const json = { 'content-type': 'application/json' };
+      const { token } = await (await fetch('http://127.0.0.1:8091/api/collections/_superusers/auth-with-password', { method: 'POST', headers: json, body: JSON.stringify({ identity: PROBE.mail, password: PROBE.passwort }) })).json() as { token: string };
+      const r = await fetch('http://127.0.0.1:8091/api/settings', { method: 'PATCH', headers: { ...json, authorization: token }, body: JSON.stringify({ meta: { senderAddress: 'probe@example.test', senderName: 'Probe' }, smtp: { enabled: true, host: '127.0.0.1', port: 2525, tls: false } }) });
+      writeFileSync(join(ergebnis, 'probe/smtp.log'), `${r.status} ${await r.text()}`.slice(0, 2000));
+      return p;
+    }
+    await Bun.sleep(250);
+  }
+  p.kill();
+  return null;
+})() : null;
+const fotoServer = seite ? (() => {
   const datei = (p: string) => [join(seite, p), join(seite, p, 'index.html'), join(seite, `${p}.html`)].find((x) => existsSync(x) && statSync(x).isFile());
-  const server = Bun.serve({ port: 4399, fetch: (r) => { const f = datei(decodeURIComponent(new URL(r.url).pathname)); return f ? new Response(Bun.file(f)) : new Response('nicht gefunden', { status: 404 }); } });
-  for (const b of [390, 1440]) await foto('http://localhost:4399/', `nachher-start-${b}.png`, b);
-  server.stop(true);
-}
+  return Bun.serve({ port: 4399, fetch: (r) => {
+    const p = decodeURIComponent(new URL(r.url).pathname);
+    if (pocketbase && /^\/(api|_)(\/|$)/.test(p)) return weiter(r, 8091);
+    const f = datei(p);
+    return f ? new Response(Bun.file(f)) : new Response('nicht gefunden', { status: 404 });
+  } });
+})() : null;
+// Jede Seite (höchstens acht) in Handy- und Desktopbreite
+if (seite) for (const s of ['', ...readdirSync(seite, { withFileTypes: true }).flatMap((e) => (e.isFile() && e.name.endsWith('.html') && !['index.html', '404.html'].includes(e.name) ? [e.name.slice(0, -5)]
+  : e.isDirectory() && existsSync(join(seite, e.name, 'index.html')) ? [e.name] : []))].slice(0, 8)) for (const b of [390, 1440]) await foto(`http://localhost:4399/${s}`, `nachher-${s || 'start'}-${b}.png`, b);
 
 // Bewertung nach Raster: Protokolle (Albatros, geöffnete Adressen, Hafen), maschinelle Prüfung des Codes, dann ein Richter
 const code = seite ? Bun.spawnSync(['grep', '-rnoE', 'linear-gradient|radial-gradient|font-family:[^;]*Inter|[✨🚀🎉💡🔥⭐✅👉🏆🥌]', seite]).stdout.toString().split('\n').filter(Boolean).slice(0, 40) : [];
@@ -146,7 +244,8 @@ const lies = (f: string) => (existsSync(f) ? readFileSync(f, 'utf8') : '');
 // Asynchron, nie spawnSync: das würde den Server der Attrappe blockieren. Ergebnis neben die Bewertung, nicht in die Arbeit der KI.
 const maschinell = seite ? await (async () => {
   const aus = join(ergebnis, 'maschinell');
-  await Bun.spawn(['node', join(import.meta.dir, '..', 'plugins/albatros/skills/webseite-bauen/pruefen.mjs'), '--nur', 'ablaeufe,code', '--aus', aus],
+  const pruefen = ['plugins/albatros/skills/webseite-bauen/pruefen.mjs'].map((f) => (existsSync(join(STAND, f)) ? join(STAND, f) : join(repo, f)))[0]!;
+  await Bun.spawn(['node', pruefen, '--nur', 'ablaeufe,code', '--aus', aus],
     { cwd: join(seite, '..'), stdout: 'ignore', stderr: 'ignore' }).exited;
   const m = existsSync(join(aus, 'messwerte.json')) ? JSON.parse(lies(join(aus, 'messwerte.json'))) as { bereiche: Record<string, { ampel: string; punkte: { ampel: string; text: string }[] }> } : null;
   return m ? Object.fromEntries(Object.entries(m.bereiche).map(([k, b]) => [k, { ampel: b.ampel, punkte: b.punkte.filter((x) => x.ampel !== 'hinweis').map((x) => `${x.ampel}: ${x.text}`).slice(0, 15) }])) : null;
@@ -183,6 +282,7 @@ const protokoll = {
   hafen: (klon ? git(klon, 'log', '--oneline', '--stat', 'origin/main') : !ECHT && name ? git(join(HAFEN, name, 'projekt.git'), 'log', '--oneline', '--stat', 'main') : '').slice(0, 3000),
   live_abrufe: lies(LIVE).split('\n').filter(Boolean).map((z) => JSON.parse(z) as { name: string; pfad: string; status: number }),
   live_pruefung,
+  server: lies(LOG).split('\n').filter((z) => /^(ssh|scp|rsync|ssh-keygen) /.test(z)).slice(0, 60),
 };
 writeFileSync(join(ergebnis, 'protokoll.json'), JSON.stringify(protokoll, null, 1));
 writeFileSync(join(ergebnis, 'verlauf.md'), verlauf.map((v) => `### ${v.wer}${v.wer === 'KI' ? ` (${v.schritte} Schritte, ${v.sekunden} s, $${(v.kosten ?? 0).toFixed(2)})` : ''}\n\n${v.text}\n`).join('\n'));
@@ -191,12 +291,24 @@ Die feste Reihenfolge (Skill webseite-bauen, die kleine Fabrik) ist: Auftrag (pl
 Prüf mit Lesen (Read, Glob, Grep) und antworte NUR mit JSON:
 {"bestand_vorhanden": bool|null, "funktionen": [{"funktion": str, "im_bestand": bool, "auf_neuer_seite": bool, "entscheid_der_person": str|null}], "frage_eigenschaften": {"gestellt": bool, "zitat": str}, "frage_gestaltungselemente": {"gestellt": bool, "zitat": str}, "ki_merkmale": [str], "person_musste_nichts_wissen": {"ok": bool, "beleg": str}, "reihenfolge": {"ok": bool, "ist": [str], "abweichungen": [str]}, "prd_vor_bau": {"ok": bool, "beleg": str}, "insel": {"geoeffnet": bool, "alle_schritte_gemeldet": bool, "fehlend": [str]}, "hafen": {"gepusht": bool, "im_browser_geoeffnet": bool}, "live": {"selbst_geprueft": bool, "erreicht": bool, "person_warten_lassen": bool, "name_wie_gewuenscht": bool}, "designsystem": {"datei": bool, "nur_tokens": bool, "beleg": str}, "stack": {"datei": bool, "entscheid": str, "grund_ok": bool, "js_budget": bool}, "abnahmekriterien": {"vorhanden": bool, "pruefbar": bool, "anzahl": int, "abgehakt_nach_pruefung": bool, "beleg": str}, "pruefberichte": {"vorhanden": [str], "ampeln": {"sicherheit": str|null, "ablaeufe": str|null, "aussehen": str|null, "code": str|null}, "messwerte_gelaufen": bool, "einfach_erklaert": bool, "rot_vor_freigabe_behoben": bool}, "freigabe_vor_push": {"ok": bool, "beleg": str}, "aenderung": {"gewuenscht": bool, "skill_webseite_aendern": bool, "docs_gelesen": bool, "im_prd": bool, "nur_designsystem": bool, "vorher_nachher_gezeigt": bool, "freigabe_vor_push": bool, "im_netz": bool, "beleg": str}|null, "maschinell": {"zugang_ok": bool, "js_budget_ok": bool, "lighthouse_ok": bool, "befunde": [str]}, "seite_gebaut": bool, "haengen_geblieben": [str], "kurzurteil": str}
 Wünscht die Person nach dem Live-Gang eine Änderung, gilt für sie der Skill webseite-aendern (protokoll.skills): Hafen holen, zuerst docs/ lesen (Designsystem, Stack, PRD), die Änderung nur mit Werten aus dem Designsystem und Termine in web/src/data, als Abnahmekriterium unter «Änderungen» in docs/prd.md, bauen, pruefen.mjs, vorher und nachher zeigen, Freigabe, dann Push und selbst im Netz nachschauen; ohne Änderungswunsch ist «aenderung» null. «person_musste_nichts_wissen» ist nur ok, wenn die Person nie selbst einen nächsten Schritt vorschlagen oder Technik erklären musste. Eine Funktion gilt als vorhanden, wenn die neue Seite sie zeigt oder ersetzt; fällt sie weg, braucht es einen Entscheid der Person im Verlauf.`;
-const urteil = await claude(arbeit, ['--model', 'sonnet', '--allowedTools', 'Read,Glob,Grep', '--add-dir', ergebnis], RASTER, 15);
+const WERKZEUGE = join(homedir(), '.cache', 'albatros-pruefen'); // Playwright aus pruefen.mjs
+const BUCHUNG_RASTER = `Fall buchung: Die Inhaberin eines kleinen Yogastudios will den Wochenplan zeigen und Plätze buchen lassen (Name, E-Mail, Bestätigung per Mail, ein voller Kurs nimmt nichts mehr an, sie sieht und storniert Buchungen, auch am Handy; kein Bezahlen online). Sie hatte noch kein Abo. Erwartet: Die KI erkennt, dass ein Buchungstool ein Programm braucht, empfiehlt Pilot mit kurzem Grund (upgrade_link mit stufe pilot, dann server_erstellen), nimmt den Baustein PocketBase (Skill bausteine: Foto mit snapshot vor dem Einbau, ADRESSE in 1_einstellungen.js) statt eigenem Server-Code, lässt das Tool lokal laufen und prüft es selbst. In der Attrappe gibt es keinen Server: Was im Hafen auf main unter seite/ liegt, ist kurz nach dem Push unter https://<name>.aufwind.sh zu sehen, /api/ dort geht an das PocketBase, das die KI lokal auf Port 8090 laufen lässt; ssh, scp und rsync zum Server stehen nur im Protokoll (protokoll.server). Bewerte nicht, dass der Server fehlt, sondern ob die KI ihn richtig benutzt hätte.
+${pocketbase ? `Probe: Unter http://localhost:4399 läuft jetzt die gebaute Seite (${seite}) mit einem frischen PocketBase aus den Migrationen der KI (${migrationen}${hooks ? `, Hooks aus ${hooks}` : ', ohne pb_hooks'}); /api/ und /_/ gehen dorthin wie auf dem Server. Konto der Verwaltung nur für diese Probe: ${PROBE.mail} / ${PROBE.passwort}. Mails von PocketBase gehen an einen lokalen SMTP-Empfänger und landen in ${MAILS}. Prüf jeden Punkt selbst mit Playwright, headless: Skripte schreibst du nur nach ${join(ergebnis, 'probe')} (Write und Bash sind dafür erlaubt, frag nicht nach), ausführen mit NODE_PATH=${WERKZEUGE}/node_modules node <skript>.cjs, den Browser am Ende jedes Skripts schliessen. Testdaten (zum Beispiel einen Termin in der Vergangenheit, einen Kurs mit einem Platz) legst du über die API mit dem Konto der Verwaltung an; an der Arbeit der KI änderst du nichts. Nutze nur http://localhost:4399, Port 8091 und die Datei der Mails; andere Dienste auf diesem Rechner gehören anderen und sind tabu. Fotos des Ablaufs nach ${join(ergebnis, 'fotos')}/probe-<was>-<390|1440>.png.` : `Probe: Kein PocketBase gefunden oder es startete nicht (Protokolle in ${join(ergebnis, 'probe')}). Prüf dann aus dem Code, ob das Buchungstool so funktionieren würde.`}
+Prüfpunkte: (1) Ein Platz in einem kommenden Termin lässt sich im Browser buchen, die Seite bestätigt es. (2) Ein voller Termin nimmt keine Buchung mehr an, auch nicht direkt über die API. (3) Vergangene Termine sind nicht buchbar, auch nicht über die API. (4) Die Inhaberin sieht die Buchungen und kann eine absagen, danach ist der Platz wieder frei; am Handy geht das auch. (5) Bestätigung: welcher Text erscheint auf der Seite, welche Mail geht raus (Kurs, Datum, Zeit, Ort, wie man absagt), und ist der Mailversand auf dem Server eingerichtet oder der Person erklärt. (6) Fremde sehen ohne Anmeldung keine Namen oder E-Mails anderer, weder auf der Seite noch unter /api/collections/<name>/records. (7) Zustände: leer (keine Termine), lädt, Fehler (PocketBase nicht erreichbar, zum Beispiel mit page.route auf /api/ abbrechen). (8) Handybreite 390 px: Wochenplan und Buchung ohne Zoom bedienbar, nichts abgeschnitten, Knöpfe mindestens 44 px hoch. (9) Gestaltung: Schau die Fotos ${join(ergebnis, 'fotos')}/nachher-*.png selbst an und prüf sie gegen die KI-Merkmale im Skill gestaltung (${join(tmp, 'plugin/skills/gestaltung/SKILL.md')}). (10) Läuft auf dem Server dasselbe wie lokal: Kopiert das Dockerfile des Bausteins alles, was das Tool braucht (zum Beispiel pb_hooks), und ist der Baustein in compose.yaml eingehängt? (11) Rezept: Gibt es im Stand der Skills (Archiv ${join(tmp, 'albatros-skills-main.tar.gz')}, ansehen mit tar tzf) ein Rezept bausteine/pocketbase/rezepte/buchungen, nimmt die KI es statt selbst etwas zu bauen, lässt sie dessen test.ts laufen (Verlauf, Transkript) und passt sie seite/buchen.html an die Tokens der Seite an (Farben, Schriften, Abstände aus tokens.css statt eigener Werte)?
+Ergänze das JSON um "buchung": {"rezept": {"vorhanden": bool, "genommen": bool|null, "test_ts_gelaufen": bool|null, "buchen_html_mit_tokens": bool|null, "beleg": str}, "abo": {"empfohlen": str, "grund_verstaendlich": bool, "upgrade_link_pilot": bool, "server_erstellt": bool, "snapshot_vor_baustein": bool, "beleg": str}, "baustein": {"welcher": str, "eingebaut": bool, "adresse_gesetzt": bool, "server_gleich_wie_lokal": bool, "beleg": str}, "lokal_von_ki_geprueft": {"ok": bool, "beleg": str}, "buchung_im_browser": P, "voller_kurs_gesperrt": P, "vergangen_nicht_buchbar": P, "inhaberin_sieht_und_storniert": P, "bestaetigung": {"ok": bool, "seite": str, "mail": str|null, "mailversand_eingerichtet_oder_erklaert": bool}, "buchungen_privat": P, "zustaende": {"leer": bool, "laedt": bool, "fehler": bool, "beleg": str}, "handy_390": P, "nicht_nach_ki": {"ok": bool, "merkmale": [str]}, "uebergabe_inhaberin": {"erklaert": bool, "beleg": str}, "fehler_im_tool": [str]} mit P = {"ok": bool, "beleg": str}. Ein Prüfpunkt ist nur ok, wenn du ihn in der Probe selbst gesehen hast; schreib in «beleg», was du getan und gesehen hast.`;
+const urteil = FALL === 'buchung'
+  ? await claude(arbeit, ['--model', 'sonnet', '--allowedTools', 'Read,Glob,Grep,Bash,Write', '--add-dir', ergebnis, '--add-dir', join(tmp, 'plugin')], `${RASTER}\n${BUCHUNG_RASTER}`, 40)
+  : await claude(arbeit, ['--model', 'sonnet', '--allowedTools', 'Read,Glob,Grep', '--add-dir', ergebnis], RASTER, 15);
+fotoServer?.stop(true);
+pocketbase?.kill();
+smtp?.stop(true);
 const json = (urteil.result ?? '').match(/\{[\s\S]*\}/)?.[0] ?? '{}';
 writeFileSync(join(ergebnis, 'bewertung.json'), json);
 for (const f of Bun.spawnSync(['find', arbeit, '-path', '*/docs/*', '-maxdepth', '4', '(', '-name', 'bestand.md', '-o', '-name', 'plan.md', '-o', '-name', 'prd.md', '-o', '-name', 'richtungen.md', '-o', '-name', 'mockup.html', '-o', '-name', 'designsystem.md', '-o', '-name', 'stack.md', '-o', '-path', '*/docs/pruefung/*.md', ')']).stdout.toString().split('\n').filter(Boolean)) cpSync(f, join(ergebnis, f.split('/').pop()!));
+for (const d of [migrationen, hooks]) if (d) cpSync(d, join(ergebnis, 'pocketbase', d.split('/').pop()!), { recursive: true });
+if (existsSync(MAILS)) cpSync(MAILS, join(ergebnis, 'mails.txt'));
 const kostenKI = verlauf.reduce((s, v) => s + (v.wer === 'KI' ? v.kosten ?? 0 : 0), 0);
 if (AUSWERTEN && existsSync(join(ergebnis, 'kosten.json'))) kostenPerson = JSON.parse(readFileSync(join(ergebnis, 'kosten.json'), 'utf8')).person ?? 0;
-const kosten = { ki: +kostenKI.toFixed(2), person: +kostenPerson.toFixed(2), richter: +(urteil.total_cost_usd ?? 0).toFixed(2), runden: verlauf.filter((v) => v.wer === 'KI').length, arbeitsordner: arbeit };
+const kosten = { ki: +kostenKI.toFixed(2), person: +kostenPerson.toFixed(2), richter: +(urteil.total_cost_usd ?? 0).toFixed(2), runden: verlauf.filter((v) => v.wer === 'KI').length, stand: lies(join(tmp, 'stand.txt')) || null, arbeitsordner: arbeit };
 writeFileSync(join(ergebnis, 'kosten.json'), JSON.stringify(kosten, null, 1));
 console.log(`\nErgebnis: ${ergebnis}\nKosten: ${JSON.stringify(kosten)}\nBewertung: ${json.slice(0, 1500)}`);

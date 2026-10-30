@@ -1,0 +1,405 @@
+[
+ {
+  "name": "lage",
+  "description": "Zuerst aufrufen. Liest den echten Stand der Person (Weg, Abo, Schlüssel, Server oder Seite, Fliessband, Domains, Mission) und sagt, welcher Skill jetzt dran ist (als Slug, z. B. pipeline; beim Weg Geschäft der Name der Methode), mit Grund, höchstens zwei Hinweisen und was danach kommt. Nach jedem geschafften Schritt erneut aufrufen. Hauptskill: lotse.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "name": "konto_status",
+  "description": "Zeigt Anmeldung, gewählten Weg, Abo und den eigenen Server (Status, Adresse, SSH, hinterlegte Schlüssel, Fingerabdruck des Servers) oder bei Light die eigene Seite (Adresse, Hafen, Stand, eigene Domains). Für alle Einzelheiten; was jetzt dran ist, sagt lage. Auch um zu warten, bis ein Server bereit oder ein Abo aktiv ist.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "name": "weg_waehlen",
+  "description": "Speichert den Weg der Person: webseite («Ich will eine Webseite») oder geschaeft («Ich habe eine Geschäftsidee»). Lässt sich später ändern.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "weg": {
+     "type": "string",
+     "enum": [
+      "webseite",
+      "geschaeft"
+     ]
+    }
+   },
+   "required": [
+    "weg"
+   ]
+  }
+ },
+ {
+  "name": "upgrade_link",
+  "description": "Gibt den Link zur Zahlungsseite von Stripe: light (eine Webseite unter name.aufwind.sh, auch mit eigener Domain, ohne eigenen Server) oder pilot (eigener Server mit Snapshots, ebenfalls mit eigenen Domains); die Preise nennt konto_status. Die Person gibt ihre Karte nur dort ein, nie im Chat. Läuft schon ein Abo, kommt der Link zum Kundenportal (zwischen Light und Pilot wechseln, kündigen).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "stufe": {
+     "default": "pilot",
+     "type": "string",
+     "enum": [
+      "light",
+      "pilot"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "wunsch_melden",
+  "description": "Nur wenn die Person ausdrücklich will, dass Albatros eine Änderung an ihrer Seite für sie macht; das kostet pro Wunsch, den Preis nennt die Antwort. Selbst ändern mit ihrer eigenen KI ist gratis (Skill webseite-aendern). Geht nur mit einer Seite mit Light. text: der Wunsch in ihren Worten, ohne Passwörter oder Zugangsdaten. link: freiwillig eine Adresse, z. B. zu einem Bild. Gibt den Link zur Zahlung zurück.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "text": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2000
+    },
+    "link": {
+     "type": "string",
+     "maxLength": 300
+    }
+   },
+   "required": [
+    "text"
+   ]
+  }
+ },
+ {
+  "name": "server_erstellen",
+  "description": "Erstellt den eigenen Server (braucht das Abo Pilot; mit Light stattdessen seite_erstellen). Wer von Light kommt, behält den Namen der Seite samt Repo und Schlüsseln; das passiert nach dem Wechsel zu Pilot auch von selbst innert 5 Minuten. name wird Teil der Adresse: anna → https://anna.aufwind.sh und ssh anna@aufwind.sh. 3–32 Zeichen: Kleinbuchstaben, Ziffern, Bindestrich. Optional gleich den öffentlichen SSH-Schlüssel (Inhalt der .pub-Datei) mitgeben, nie den privaten.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string"
+    },
+    "schluessel": {
+     "type": "string"
+    },
+    "sprache": {
+     "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
+     "type": "string",
+     "enum": [
+      "de",
+      "fr",
+      "it",
+      "en"
+     ]
+    }
+   },
+   "required": [
+    "name"
+   ]
+  }
+ },
+ {
+  "name": "seite_erstellen",
+  "description": "Legt mit dem Abo Light die eigene Webseite an, ohne eigenen Server: name wird die Adresse (anna → https://anna.aufwind.sh), dazu ein Repo im Hafen. Veröffentlicht wird mit git push; nur Dateien, die der Browser direkt zeigt (HTML, CSS, Bilder, JavaScript). 3–32 Zeichen: Kleinbuchstaben, Ziffern, Bindestrich. Optional gleich den öffentlichen SSH-Schlüssel mitgeben, nie den privaten. Mit Pilot stattdessen server_erstellen.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string"
+    },
+    "schluessel": {
+     "type": "string"
+    },
+    "sprache": {
+     "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
+     "type": "string",
+     "enum": [
+      "de",
+      "fr",
+      "it",
+      "en"
+     ]
+    }
+   },
+   "required": [
+    "name"
+   ]
+  }
+ },
+ {
+  "name": "schluessel_hinterlegen",
+  "description": "Hinterlegt einen öffentlichen SSH-Schlüssel (eine Zeile aus der .pub-Datei, beginnt mit ssh-ed25519) auf dem eigenen Server und im Hafen, bei Light nur im Hafen (für git push): das Schloss an der Tür. Der private Schlüssel bleibt auf dem Computer der Person und wird abgelehnt.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "schluessel": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "schluessel"
+   ]
+  }
+ },
+ {
+  "name": "snapshot",
+  "description": "Listet die Snapshots des Servers (tägliches Foto der ganzen Wohnung, 7 Tage). Mit name entsteht vorher ein eigener Snapshot (höchstens 5, je 30 Tage), z. B. vor einem grossen Umbau.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ {
+  "name": "zurueck",
+  "description": "«Zurück auf gestern»: setzt den ganzen Server auf einen Snapshot zurück. Alles danach geht verloren, auch neuere Snapshots. Vorher mit der Person bestätigen und den Namen aus snapshot nehmen.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "snapshot": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "snapshot"
+   ]
+  }
+ },
+ {
+  "name": "domain_verbinden",
+  "description": "Meldet eine eigene Domain (z. B. annas-laden.ch) für die Seite oder den Server an (Light oder Pilot) und sagt, welche Einträge die Person beim Anbieter der Domain setzen muss. Nochmals aufrufen prüft erneut; das Zertifikat folgt, sobald alles stimmt.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "domain": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "domain"
+   ]
+  }
+ },
+ {
+  "name": "domain_suchen",
+  "description": "Sucht freie Domains zu Wünschen der Person (Namen, Wörter oder ganze Domains wie annas-laden.ch; bis 5). Albatros ergänzt Endungen (.ch, .com, .net, .shop, .li) und Varianten und nennt nur, was wirklich frei ist, mit Preis pro Jahr. Schlage vorher selbst ein paar Namen passend zur Idee vor.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "wuensche": {
+     "minItems": 1,
+     "maxItems": 5,
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63
+     }
+    }
+   },
+   "required": [
+    "wuensche"
+   ]
+  }
+ },
+ {
+  "name": "domain_kaufen",
+  "description": "Gibt den Link zur Zahlungsseite für eine freie Domain (Light oder Pilot; Seite oder Server muss stehen). Dort gibt die Person Name, Adresse und Telefon als Inhaberin ein und bezahlt; nie im Chat. Danach registriert Albatros die Domain und verbindet sie mit der Seite oder dem Server, meist in 5 bis 30 Minuten. Stand mit konto_status.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "domain": {
+     "type": "string",
+     "minLength": 4,
+     "maxLength": 253
+    }
+   },
+   "required": [
+    "domain"
+   ]
+  }
+ },
+ {
+  "name": "domain_mitnehmen",
+  "description": "Für den Umzug einer bei Albatros gekauften Domain zu einem anderen Anbieter (Landen): gibt den Auth-Code. Danach verlängert Albatros die Domain nicht mehr. Den Code nur der Person zeigen und beim neuen Anbieter eingeben lassen.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "domain": {
+     "type": "string",
+     "minLength": 4,
+     "maxLength": 253
+    }
+   },
+   "required": [
+    "domain"
+   ]
+  }
+ },
+ {
+  "name": "mission_holen",
+  "description": "Gibt die nächste offene Mission auf dem Weg der Person: Titel, Bild, passender Skill, Prüfung und Anleitung. {name} im Text steht für den Servernamen.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "name": "mission_pruefen",
+  "description": "Prüft eine Mission auf dem Server (z. B. flugschule-01-start). Besteht sie, kommt ein Eintrag ins Flugbuch.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "mission": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "mission"
+   ]
+  }
+ },
+ {
+  "name": "methode",
+  "description": "Holt eine Methode für den Weg Geschäft (z. B. ideen-check, zielgruppe, angebot-und-preis). Ohne name: Liste aller Methoden. Nur für Mitglieder; die KI folgt danach der Anleitung der Methode.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ {
+  "name": "coach_fragen",
+  "description": "Stellt dem Albatros-Coach eine Frage. Er kennt Weg, Server und Mission der Person. Für Rechnung, Konto, Missbrauch oder Fehler an Albatros gibt er die Frage an das Team weiter; die Antwort kommt dann per Mail.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "frage": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "frage"
+   ]
+  }
+ },
+ {
+  "name": "bild_erzeugen",
+  "description": "Erzeugt ein Bild (PNG) aus einer Beschreibung, z. B. ein Icon, eine Illustration oder ein Maskottchen für die Seite. Kostet einen kleinen Betrag aus dem Guthaben der Person (Preise mit guthaben); die Antwort nennt Kosten und Rest. Beschreibe Motiv, Stil, Farben und Hintergrund genau, am besten auf Englisch. Dieselbe Beschreibung innert 15 Minuten liefert dasselbe Bild ohne neue Kosten; für eine Variante die Beschreibung ändern.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "beschreibung": {
+     "type": "string",
+     "minLength": 3,
+     "maxLength": 2000
+    },
+    "format": {
+     "description": "quadrat 1024×1024 (ohne Angabe), quer 1024×768, hoch 768×1024, breit 1024×576",
+     "type": "string",
+     "enum": [
+      "quadrat",
+      "quer",
+      "hoch",
+      "breit"
+     ]
+    }
+   },
+   "required": [
+    "beschreibung"
+   ]
+  }
+ },
+ {
+  "name": "bild_freistellen",
+  "description": "Stellt das Motiv eines Bildes frei: PNG mit durchsichtigem Hintergrund, z. B. für ein Logo oder ein Maskottchen auf farbigem Grund. Kostet einen kleinen Betrag aus dem Guthaben (Preise mit guthaben).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "bild_url": {
+     "type": "string",
+     "minLength": 8,
+     "description": "https-Adresse des Bildes (z. B. aus bild_erzeugen) oder das Bild als data:image/png;base64,… (bis etwa 700 KB)"
+    }
+   },
+   "required": [
+    "bild_url"
+   ]
+  }
+ },
+ {
+  "name": "modell_3d",
+  "description": "Macht aus einem Bild ein 3D-Modell (GLB, mit Farben), z. B. für ein Maskottchen, das sich auf der Seite dreht (<model-viewer>). Am besten mit einem freigestellten Motiv (bild_freistellen). Dauert bis etwa eine Minute und kostet einen kleinen Betrag aus dem Guthaben (Preise mit guthaben).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "bild_url": {
+     "type": "string",
+     "minLength": 8,
+     "description": "https-Adresse des Bildes (z. B. aus bild_erzeugen) oder das Bild als data:image/png;base64,… (bis etwa 700 KB)"
+    }
+   },
+   "required": [
+    "bild_url"
+   ]
+  }
+ },
+ {
+  "name": "guthaben",
+  "description": "Stand des Guthabens für bild_erzeugen, bild_freistellen und modell_3d, Preis pro Aufruf, die letzten Aufrufe und der Link zum Aufladen (CHF 10, 20 oder 50 im Cockpit). Ruf es auf, bevor du Preise nennst, und wenn das Guthaben nicht reicht.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "name": "schritt_melden",
+  "description": "Meldet, dass ein Projekt der Person einen Schritt weiter ist; auf ihrer Insel im Cockpit wächst dann das Gebäude. Schritte in dieser Reihenfolge: mockup (Grundriss), entwuerfe (Bauprofile), prd (Plan unterschrieben), lokal (Rohbau), pruefung (Abnahme, erst wenn die vier Berichte in docs/pruefung/ liegen), freigabe (Schlüsselübergabe, erst nach dem ausdrücklichen Ja der Person, «Freigegeben:» in docs/prd.md), hafen (Logbuch im Hafen), fliessband (Kran), live (Licht an), domain (Fahne mit eigener Adresse). Nur vorwärts: Ein früherer oder derselbe Schritt ändert nichts. hafen, fliessband, live und domain sieht Albatros auch selbst. Gibt die Adresse der Insel zurück: beim Start einmal im Browser öffnen, sie lädt danach selbst nach.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "schritt": {
+     "type": "string",
+     "enum": [
+      "mockup",
+      "entwuerfe",
+      "prd",
+      "lokal",
+      "pruefung",
+      "freigabe",
+      "hafen",
+      "fliessband",
+      "live",
+      "domain"
+     ]
+    },
+    "projekt": {
+     "description": "Ohne Angabe: projekt, das Repo im Hafen (git@aufwind.sh:<name>/projekt.git). Für ein Projekt, das nur auf dem Computer liegt, ein kurzer Name, z. B. baeckerei. Höchstens sechs Projekte.",
+     "type": "string",
+     "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+    },
+    "sprache": {
+     "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
+     "type": "string",
+     "enum": [
+      "de",
+      "fr",
+      "it",
+      "en"
+     ]
+    }
+   },
+   "required": [
+    "schritt"
+   ]
+  }
+ }
+]
