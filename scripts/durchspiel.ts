@@ -143,6 +143,7 @@ if (!AUSWERTEN) {
     const p = await claude(tmp, ['--model', 'haiku', '--system-prompt', PERSON, '--disable-slash-commands'],
       `Bisheriges Gespräch:\n\n${verlauf.map((v) => `${v.wer}: ${v.text}`).join('\n\n')}\n\nDeine nächste Antwort als Person (oder ENDE):`, 5);
     kostenPerson += p.total_cost_usd ?? 0;
+    writeFileSync(join(ergebnis, 'kosten.json'), JSON.stringify({ person: kostenPerson })); // für --auswerten, falls der Lauf abbricht
     nachricht = (p.result ?? 'Ja, mach weiter.').trim();
     if (/^ENDE\b/.test(nachricht)) { verlauf.push({ wer: 'Person', text: 'ENDE' }); break; }
   }
