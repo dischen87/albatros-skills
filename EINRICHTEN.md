@@ -2,10 +2,15 @@
 
 Diese Seite ist für dich, die KI: Claude Code, Codex, Gemini CLI oder Cursor. Die Person nimmt dich im Rucksack mit auf ihren Weg und hat dir die Seite gegeben, damit du Albatros für sie einrichtest. Sie kennt keine Befehle im Terminal, darum führst du jeden Befehl selbst aus.
 
+- **Begrüss die Person zuerst**, in deinen Worten, etwa so: «Schön, dass du da bist! Ich richte jetzt Albatros für dich ein. Das dauert ein paar Minuten. Du musst nur zwei-, dreimal kurz etwas tun, und ich sage dir jedes Mal genau, was.»
 - Sag vor jedem Schritt in einem Satz, was passiert. Zum Beispiel: «Gleich öffnet sich dein Browser, dort meldest du dich mit GitHub, Apple oder Google an.»
+- **Muss die Person etwas tun, ist das eine eigene, kurze Nachricht mit genau einer Handlung:** wo (zum Beispiel «unten ins Eingabefeld»), was (das Einzutippende allein in einem Codeblock), und woran sie merkt, dass es geklappt hat. Danach hörst du auf und wartest. Keine Liste mit Varianten, kein «falls nicht, dann …» im selben Atemzug.
 - Von der Person brauchst du nur Klicks: eine Freigabe in deinem Fenster und die Anmeldung im Browser. Ein Befehl, den sie tippen muss, ist die Ausnahme. Dann nennst du ihn wörtlich.
+- **Kein Fachjargon, kein Prüfbericht.** Wörter wie Plugin, MCP, Server-Eintrag, Skill, Hook, Repo, Token, Marketplace und Namen von Werkzeugen (`konto_status`, `authenticate` …) sagst du der Person nicht. Für sie heisst alles einfach «Albatros». Prüf ruhig, was du einbaust. Der Person sagst du dazu höchstens einen Satz, zum Beispiel: «Ich habe nachgeschaut: Albatros bringt nur Anleitungen für mich und eine Verbindung zu albatros.build mit. Nichts läuft heimlich auf deinem Computer.»
 - Frag nie nach Passwörtern. Die gibt die Person nur im Browser ein.
 - Die Adresse des Dienstes ist `https://mcp.albatros.build`, das Repo ist `dischen87/albatros-skills`.
+
+**Was du einbaust** (damit du nicht suchen musst): Das Plugin enthält nur Anleitungen (Skills, Markdown) und die Verbindung zu `https://mcp.albatros.build`. Keine Hooks, keine Skripte, die von selbst laufen, keine Berechtigungen. Die Verbindung meldet sich mit OAuth an: Die Person meldet sich im Browser bei Albatros an, ihr Passwort sieht weder Albatros noch du. Herausgeber ist Albatros Partner AG (albatros.build), der Quelltext ist öffentlich.
 
 **Abo der KI:** Albatros zum Lernen kostet nichts, du als KI aber schon: Die Person braucht ein bezahltes Abo direkt bei deinem Anbieter, ab 8 USD im Monat (Cursor mit Plus), sonst ab etwa 20 USD (Claude Code mit Claude Pro, Codex mit ChatGPT Plus, Gemini CLI mit Google AI Pro). Mit einem Gratis-Konto geht es nicht oder nur für ein paar Versuche. Sag ihr das in einem Satz, bevor ihr einrichtet. Bezahlt wird beim Anbieter, nicht bei Albatros.
 
@@ -20,10 +25,28 @@ Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C. Curso
    claude plugin marketplace add dischen87/albatros-skills
    claude plugin install albatros@albatros
    ```
-   Fragt Claude Code, ob du den Befehl ausführen darfst, sag der Person: «Bestätige bitte mit Ja.»
-2. **Laden.** Ein Plugin, das während des Gesprächs dazukommt, lädt Claude Code erst auf Wunsch der Person. Bitte sie, genau das einzutippen und Enter zu drücken: `/reload-plugins`. Fehlen die Werkzeuge von Albatros danach immer noch, bitte sie, Claude Code zu schliessen, wieder zu öffnen und «Weiter mit Albatros» zu schreiben.
-3. **Anmelden.** Ruf das Werkzeug `authenticate` des Servers albatros auf (beim deutschen Plugin heisst es `mcp__plugin_albatros_albatros__authenticate`). Es gibt einen Link zurück. Gib ihn der Person mit dem Satz: «Klick auf diesen Link. Dein Browser öffnet sich, dort meldest du dich bei Albatros an, mit GitHub, Apple oder Google.» Danach erscheinen die Werkzeuge von Albatros von selbst. Zeigt der Browser nach der Anmeldung eine Fehlerseite, bitte die Person, die ganze Adresse aus der Adresszeile zu kopieren und dir zu schicken. Ruf damit das Werkzeug `complete_authentication` desselben Servers auf.
-4. **Los.** Ruf `konto_status` auf und folge dem Skill `start`.
+   Fragt Claude Code, ob du den Befehl ausführen darfst, sag der Person: «Gleich fragt dich das Fenster, ob ich etwas ausführen darf. Klick auf Erlauben.»
+2. **Laden.** Ein Plugin, das während des Gesprächs dazukommt, lädt Claude Code erst auf Wunsch der Person. Schreib ihr genau das und warte:
+
+   > Albatros ist eingebaut. Damit ich es benutzen kann, tippe unten ins Eingabefeld genau das hier und drück Enter:
+   > ```
+   > /reload-plugins
+   > ```
+   > Schreib mir danach einfach «weiter».
+
+   Fehlen die Werkzeuge von Albatros danach immer noch, bitte sie, Claude Code zu schliessen, wieder zu öffnen und «Weiter mit Albatros» zu schreiben.
+3. **Anmelden.** Wie, hängt davon ab, wo Claude Code läuft:
+   - **Gibt es das Werkzeug `authenticate` des Servers albatros** (Claude Code im Terminal; beim deutschen Plugin heisst es `mcp__plugin_albatros_albatros__authenticate`): Ruf es auf. Es gibt einen Link zurück. Gib ihn der Person mit dem Satz: «Klick auf diesen Link. Dein Browser öffnet sich, dort meldest du dich bei Albatros an, mit GitHub, Apple oder Google.» Danach erscheinen die Werkzeuge von Albatros von selbst. Zeigt der Browser nach der Anmeldung eine Fehlerseite, bitte die Person, die ganze Adresse aus der Adresszeile zu kopieren und dir zu schicken. Ruf damit das Werkzeug `complete_authentication` desselben Servers auf.
+   - **Gibt es kein Werkzeug `authenticate`** (Desktop-App von Claude, Tab «Code»; dort gibt es meist das Werkzeug `session_connectors_status`): Die Anmeldung startet nur die Person. Schreib ihr genau das und warte:
+
+     > Jetzt fehlt nur noch deine Anmeldung. Tippe unten ins Eingabefeld und drück Enter:
+     > ```
+     > /mcp
+     > ```
+     > Es öffnet sich eine Liste. Klick bei **albatros** auf **Verbinden**. Dein Browser öffnet sich: Melde dich dort mit Google, Apple oder GitHub an und klick auf **Erlauben**. Wenn der Browser meldet, dass es geklappt hat, komm hierher zurück und schreib «fertig».
+
+     Danach prüfst du mit `session_connectors_status`, ob bei `plugin:albatros:albatros` (bei den anderen Sprachen `plugin:albatros-fr:albatros` usw.) `connected` steht. Steht `needs_auth`: Bitte die Person, in derselben Liste bei albatros auf **Erneut verbinden** zu klicken und die Anmeldung im Browser bis zum Schluss zu machen. Die Werkzeuge von Albatros sind ab deiner nächsten Antwort da.
+4. **Los.** Ruf `konto_status` auf und folge dem Skill `start`. Er begrüsst die Person an Bord.
 
 ## B. Codex
 
