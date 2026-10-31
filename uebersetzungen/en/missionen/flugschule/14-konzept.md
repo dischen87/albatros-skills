@@ -25,10 +25,11 @@ A house has a character before it gets its colours: cosy, clear or playful. Choo
 1. You decide whether the project name stays or whether your project goes by a different name to the outside world.
 2. You choose the tone and three words that describe how your site should come across.
 3. You say what has to stay: logo, house colour or font.
-4. Your AI suggests the core and the visual style, and you confirm or change them.
-5. Everything goes into `docs/konzept.md`. Your AI only makes pictures with the Albatros image tools if it has told you the price first and you say yes.
+4. You decide whether a character guides people through your site: yes, no or later. Your AI always asks you this question.
+5. Your AI suggests the core and the visual style, and you confirm or change them. If photos are part of it, you get a photo list straight away.
+6. Everything goes into `docs/konzept.md`. Your AI only makes a picture of your mascot with the Albatros image tools if it has told you the price first and you say yes; otherwise the mascot stays a sketch for now.
 
-On the business path, your brand is added: checking the name, the tone and a simple logo.
+On the business path, your brand comes first: the core, the tone and a name your AI checks with you before it goes on the sign.
 
 ## Done when
 

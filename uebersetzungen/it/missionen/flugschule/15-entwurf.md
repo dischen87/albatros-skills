@@ -22,15 +22,15 @@ Prima che cominci il rustico, l'architetta ha un modello che puoi percorrere con
 
 ## Come procedi
 
-1. La tua IA verifica che sul tuo computer ci siano Node, npm e Git, e ti aiuta se manca qualcosa.
-2. Progetta ogni pagina del tuo piano con testi veri. Ciò che manca ancora è segnato come [da completare].
-3. Per ogni funzione mostra come appaiono la conferma, l'errore e lo stato vuoto.
-4. Sfogli tutto cliccando, sul telefonino e sul computer, e dici che cosa manca o che cosa disturba.
-5. La tua IA modifica finché è tutto giusto e annota i tuoi riscontri in `docs/entwurf.md`.
+1. La tua IA verifica che sul tuo computer ci siano Node, npm e Git, e ti mostra come installare ciò che manca.
+2. Progetta ogni pagina del tuo piano nella direzione che hai scelto, con testi veri. Ciò che manca ancora è segnato come [da completare].
+3. Per ogni funzione mostra come appaiono la conferma, l'errore e lo stato vuoto. Le pagine dei blocchi, per esempio per prenotare, sono una simulazione che sembra già vera.
+4. Uno script di verifica controlla che ogni pagina ci sia, che ogni link porti da qualche parte e che compaiano solo valori della tua mazzetta dei colori.
+5. Sfogli tutto cliccando, sul telefonino e sul computer, e dici che cosa manca o che cosa disturba. La tua IA modifica, ti mostra di nuovo la bozza e annota i tuoi riscontri in `docs/entwurf.md`.
 
-Se è tutto giusto, poi dai il via libera per costruire la bozza. Si costruisce solo ciò che hai visto.
+Se è tutto giusto, ti chiede: «Lo costruiamo così?» Solo il tuo sì chiaro dà il via libera per costruire la bozza. Si costruisce solo ciò che hai visto.
 
 ## Ce l'hai fatta quando
 
-- la tua bozza in `design/entwurf/` mostra ogni pagina del tuo piano e tutti i link portano a pagine esistenti
+- la tua bozza in `design/entwurf/` mostra ogni pagina del tuo piano, tutti i link portano a pagine esistenti e lo script di verifica non segnala niente di rosso
 - e sulla tua isola è raggiunto il passo «Bozza».

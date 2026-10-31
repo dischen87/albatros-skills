@@ -25,10 +25,11 @@ Una casa ha un carattere prima di avere un colore: accogliente, chiara o giocosa
 1. Decidi se il nome del progetto resta o se verso l'esterno il tuo progetto si chiama in un altro modo.
 2. Scegli il tono e tre parole che descrivono l'effetto che deve fare il tuo sito.
 3. Dici che cosa deve restare: logo, colore aziendale o carattere.
-4. La tua IA propone nucleo e linguaggio visivo, e tu confermi o cambi.
-5. Tutto va in `docs/konzept.md`. La tua IA crea immagini con gli strumenti per immagini di Albatros solo se prima ti ha detto il prezzo e tu dici di sì.
+4. Decidi se un personaggio guida attraverso il tuo sito: sì, no o più tardi. Questa domanda la tua IA te la fa sempre.
+5. La tua IA propone nucleo e linguaggio visivo, e tu confermi o cambi. Se ci sono foto, ricevi subito una lista delle foto.
+6. Tutto va in `docs/konzept.md`. Un'immagine del tuo personaggio la tua IA la fa con gli strumenti per immagini di Albatros solo se prima ti ha detto il prezzo e tu dici di sì; altrimenti per ora il personaggio resta uno schizzo.
 
-Sul percorso attività si aggiunge il marchio: verificare il nome, il tono e un logo semplice.
+Sul percorso attività viene prima il marchio: nucleo, tono e un nome che la tua IA verifica con te prima che finisca sull'insegna.
 
 ## Ce l'hai fatta quando
 

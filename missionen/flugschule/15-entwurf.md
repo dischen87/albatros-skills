@@ -31,15 +31,15 @@ Bevor der Rohbau beginnt, steht bei der Architektin ein Modell, durch das du mit
 
 ## So gehst du vor
 
-1. Deine KI prüft, ob Node, npm und Git auf deinem Computer da sind, und hilft, wenn etwas fehlt.
-2. Sie entwirft jede Seite aus deinem Plan mit echten Texten. Was noch fehlt, steht als [Platzhalter] da.
-3. Für jede Funktion zeigt sie, wie Bestätigung, Fehler und leerer Zustand aussehen.
-4. Du klickst dich durch, am Handy und am Computer, und sagst, was fehlt oder stört.
-5. Deine KI ändert, bis es stimmt, und schreibt deine Rückmeldungen in `docs/entwurf.md`.
+1. Deine KI prüft, ob Node, npm und Git auf deinem Computer da sind, und zeigt dir, wie du installierst, was fehlt.
+2. Sie entwirft jede Seite aus deinem Plan in der Richtung, die du gewählt hast, mit echten Texten. Was noch fehlt, steht als [Platzhalter] da.
+3. Für jede Funktion zeigt sie, wie Bestätigung, Fehler und leerer Zustand aussehen. Seiten von Bausteinen, etwa zum Buchen, sind eine Attrappe, die schon echt aussieht.
+4. Ein Prüfskript schaut nach, ob jede Seite da ist, jeder Link führt und nur Werte aus deinem Farbfächer vorkommen.
+5. Du klickst dich durch, am Handy und am Computer, und sagst, was fehlt oder stört. Deine KI ändert, zeigt neu und schreibt deine Rückmeldungen in `docs/entwurf.md`.
 
-Stimmt alles, gibst du den Entwurf danach zum Bauen frei. Gebaut wird nur, was du gesehen hast.
+Stimmt alles, fragt sie dich: «Wollen wir das so bauen?» Erst dein klares Ja gibt den Entwurf zum Bauen frei. Gebaut wird nur, was du gesehen hast.
 
 ## Geschafft, wenn
 
-- dein Entwurf in `design/entwurf/` jede Seite aus deinem Plan zeigt und alle Links auf vorhandene Seiten führen
+- dein Entwurf in `design/entwurf/` jede Seite aus deinem Plan zeigt, alle Links auf vorhandene Seiten führen und das Prüfskript nichts Rotes meldet
 - und auf deiner Insel der Schritt «Entwurf» erreicht ist.

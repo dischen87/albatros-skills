@@ -1,0 +1,7 @@
+/* Aufbau der Seiten im Entwurf: Breiten und Abstände, alles aus tokens.css */
+main { max-width: var(--breite-inhalt); margin: 0 auto; padding: var(--abstand-6) var(--rand-seite); }
+.text { max-width: var(--breite-text); }
+.bild { width: 100%; height: auto; border-radius: var(--rund-mittel); }
+@media (min-width: 48em) {
+  .zwei { display: grid; grid-template-columns: 2fr 1fr; gap: var(--abstand-6); }
+}

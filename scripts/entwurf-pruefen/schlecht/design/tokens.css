@@ -1,0 +1,77 @@
+/* Farbfächer des Musikvereins Testdorf: die einzige Quelle für Farben, Schriften, Grössen, Abstände, Rundungen und Schatten.
+   Kontraste nachgerechnet (Formel im Skill barrierefreiheit): Text mindestens 4,5 : 1, Knöpfe und Ränder mindestens 3 : 1. */
+:root {
+  /* Farben hell, jede einmal */
+  --hell-grund: #faf7f2;        /* leicht warm */
+  --hell-flaeche: #ffffff;
+  --hell-text: #1d1b18;         /* 12,0 : 1 auf --hell-grund */
+  --hell-leise: #8a8378;         /* 4,6 : 1 auf --hell-grund */
+  --hell-aktion: #0b5c8c;       /* 6,7 : 1 auf --hell-grund, nur für Anklickbares */
+  --hell-auf-aktion: #ffffff;   /* 7,1 : 1 auf --hell-aktion */
+  --hell-rand: #8a8378;         /* 3,5 : 1 auf --hell-grund, Felder und Linien */
+  --hell-fehler: #b3261e;       /* 6,1 : 1 auf --hell-grund, nur für Fehler */
+  /* Farben dunkel */
+  --dunkel-grund: #171614;
+  --dunkel-flaeche: #23211e;
+  --dunkel-text: #f1ece4;       /* 15,3 : 1 auf --dunkel-grund */
+  --dunkel-leise: #b9b2a6;      /* 8,5 : 1 auf --dunkel-grund */
+  --dunkel-aktion: #7cc4f0;     /* 9,4 : 1 auf --dunkel-grund */
+  --dunkel-auf-aktion: #0d1b24; /* 9,1 : 1 auf --dunkel-aktion */
+  --dunkel-rand: #77706a;       /* 3,7 : 1 auf --dunkel-grund */
+  --dunkel-fehler: #ff8a80;     /* 7,9 : 1 auf --dunkel-grund */
+
+  /* Was die Seiten nutzen; der Dunkelmodus tauscht nur diese Zeilen */
+  --farbe-grund: var(--hell-grund);
+  --farbe-flaeche: var(--hell-flaeche);
+  --farbe-text: var(--hell-text);
+  --farbe-leise: var(--hell-leise);
+  --farbe-aktion: var(--hell-aktion);
+  --farbe-auf-aktion: var(--hell-auf-aktion);
+  --farbe-rand: var(--hell-rand);
+  --farbe-fehler: var(--hell-fehler);
+
+  /* Schriften: Titel mit Charakter, ruhiger Text (im Test Systemschriften) */
+  --schrift-titel: Georgia, "Times New Roman", serif;
+  --schrift-text: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --groesse-klein: 0.875rem;    /* 14 px, nie unter 12 px */
+  --groesse-text: 1.0625rem;    /* 17 px */
+  --groesse-h2: clamp(1.5rem, 4vw, 2rem);
+  --groesse-h1: clamp(2rem, 7vw, 3.25rem);
+  --zeile-text: 1.5;
+  --zeile-titel: 1.1;
+  --sperrung-titel: -0.02em;
+
+  /* Abstände aus einer Reihe, dazu Breiten und Klickflächen */
+  --abstand-1: 4px; --abstand-2: 8px; --abstand-3: 12px; --abstand-4: 16px; --abstand-5: 24px; --abstand-6: 32px; --abstand-7: 48px;
+  --rand-seite: 16px;
+  --breite-inhalt: 1200px;
+  --breite-text: 70ch;
+  --hoehe-knopf: 56px;
+  --hoehe-feld: 48px;
+  --klickflaeche: 44px;
+
+  /* Rundungen: innen kleiner als aussen */
+  --rund-klein: 6px;
+  --rund-mittel: 12px;
+
+  /* Tiefe: Fläche mit Schatten, in der Textfarbe getönt */
+  --schatten-1: 0 1px 2px rgb(29 27 24 / 0.08), 0 4px 12px rgb(29 27 24 / 0.06);
+  --linie: 1px solid var(--farbe-rand);
+
+  /* Fokus: in der Aktionsfarbe, mit Abstand */
+  --fokus-linie: 3px solid var(--farbe-aktion);
+  --fokus-abstand: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --farbe-grund: var(--dunkel-grund);
+    --farbe-flaeche: var(--dunkel-flaeche);
+    --farbe-text: var(--dunkel-text);
+    --farbe-leise: var(--dunkel-leise);
+    --farbe-aktion: var(--dunkel-aktion);
+    --farbe-auf-aktion: var(--dunkel-auf-aktion);
+    --farbe-rand: var(--dunkel-rand);
+    --farbe-fehler: var(--dunkel-fehler);
+  }
+}

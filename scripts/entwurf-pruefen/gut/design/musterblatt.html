@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Musterblatt · Musikverein Testdorf</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="komponenten.css">
+  <style>
+    main { max-width: var(--breite-inhalt); margin: 0 auto; padding: var(--abstand-6) var(--rand-seite); }
+    .farben { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: var(--abstand-4); }
+    .farbe { padding: var(--abstand-4); border: var(--linie); border-radius: var(--rund-mittel); }
+    .handy { width: 390px; border: var(--linie); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Musterblatt</h1>
+    <h2>Farben</h2>
+    <div class="farben">
+      <p class="farbe" style="background: var(--hell-grund); color: var(--hell-text)">Text auf Grund, hell: 16,0 : 1</p>
+      <p class="farbe" style="background: var(--hell-aktion); color: var(--hell-auf-aktion)">Knopf, hell: 7,1 : 1</p>
+      <p class="farbe" style="background: var(--dunkel-grund); color: var(--dunkel-text)">Text auf Grund, dunkel: 15,3 : 1</p>
+    </div>
+    <h2>Knöpfe</h2>
+    <p><button class="knopf">Mitspielen anfragen</button> <button class="knopf ist-fokus">Fokus</button> <button class="knopf" disabled>Gesperrt</button> gesperrt, bis Name und E-Mail da sind</p>
+    <h2>Feld mit Fehler</h2>
+    <label for="m">E-Mail</label>
+    <input class="feld hat-fehler" id="m" type="email" value="name@" aria-describedby="m-fehler">
+    <p class="fehler" id="m-fehler">Bitte eine E-Mail-Adresse wie name@beispiel.ch</p>
+    <h2>Kopf auf dem Handy (390 px)</h2>
+    <div class="handy">
+      <header class="kopf"><a href="#">Musikverein Testdorf</a><nav><ul class="menue"><li><a href="#">Konzerte</a></li><li><a href="#">Über uns</a></li><li><a href="#">Mitspielen</a></li></ul></nav></header>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mitspielen · Musikverein Testdorf</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../komponenten.css">
+  <link rel="stylesheet" href="entwurf.css">
+</head>
+<body>
+  <a class="sprung" href="#inhalt">Zum Inhalt</a>
+  <header class="kopf">
+    <a href="index.html">Musikverein Testdorf</a>
+    <nav aria-label="Hauptmenü">
+      <ul class="menue">
+        <li><a href="konzerte.html">Konzerte</a></li>
+        <li><a href="ueber-uns.html">Über uns</a></li>
+        <li><a href="mitspielen.html">Mitspielen</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="inhalt">
+    <h1>Mitspielen</h1>
+    <p class="text">Du spielst ein Blasinstrument oder Schlagzeug? Komm an eine Probe. Wir melden uns innert drei Tagen.</p>
+    <form action="mitspielen-bestaetigt.html" method="get">
+      <label for="name">Name</label>
+      <input class="feld" id="name" name="name" autocomplete="name" required>
+      <label for="mail">E-Mail</label>
+      <input class="feld" id="mail" name="mail" type="email" autocomplete="email" required>
+      <button class="knopf" type="submit">Mitspielen anfragen</button>
+    </form>
+    <p>So sieht ein Fehler aus: <a href="mitspielen-fehler.html">Fehler beim Senden</a>.</p>
+  </main>
+  <footer class="fuss">
+    <p>Musikverein Testdorf · Probelokal im Schulhaus Testdorf</p>
+    <p><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+  </footer>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 name: inhalte
-description: 'Hilft einer Person ohne Vorwissen, Texte und Bilder für ihre Webseite zu schreiben und auszuwählen: Startseite in drei Sätzen, kurze Texte für Lesende am Handy, eigene Fotos statt Stockbilder, Bildrechte und Bildgrösse, KI-Texte in die eigene Stimme bringen. Ergebnis ist eine Inhaltsliste in docs/inhalte.md und die Texte auf der Seite. Nutze den Skill bei «Texte schreiben», «was schreibe ich auf die Startseite», «Über uns», «Bilder für die Webseite», «darf ich dieses Bild verwenden», «Text klingt nach KI», «Inhalte».'
+description: 'Hilft einer Person ohne Vorwissen, Texte und Bilder für ihre Webseite zu schreiben und auszuwählen, im Fahrplan für den Entwurf der ganzen Seite (P7): Startseite in drei Sätzen, kurze Texte im Ton aus dem Konzept für Lesende am Handy, fehlende Texte sichtbar als [Platzhalter], eigene Fotos statt Stockbilder mit einer Fotoliste, Bildrechte und Bildgrösse, KI-Texte in die eigene Stimme bringen. Ergebnis ist eine Inhaltsliste in docs/inhalte.md und die Texte im Entwurf. Nutze den Skill bei «Texte schreiben», «was schreibe ich auf die Startseite», «Über uns», «Bilder für die Webseite», «Fotoliste», «darf ich dieses Bild verwenden», «Text klingt nach KI», «Inhalte».'
 metadata:
   stand: 0.2.0
 ---
@@ -9,9 +9,15 @@ metadata:
 
 ## Das Bild
 
-Die Webseite ist ein Schaufenster. Gestaltung ist das Licht und die Dekoration. Die Inhalte sind die Ware. Ein schönes Schaufenster mit leeren Regalen verkauft nichts. Darum kommen die Inhalte vor der Gestaltung.
+Die Webseite ist ein Schaufenster. Gestaltung ist das Licht und die Dekoration. Die Inhalte sind die Ware. Ein schönes Schaufenster mit leeren Regalen verkauft nichts. Darum kommt die Ware ins Modell, bevor gebaut wird: Erst mit echten Texten sieht man, ob die Seite trägt.
 
 **So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
+
+## Im Fahrplan
+
+Die Texte entstehen in P7, als Teil des Entwurfs der ganzen Seite (Skill `entwurf`, Schritt «Die Texte»): Was du hier schreibst, kommt direkt in die Seiten in `design/entwurf/`. Schon gesammelt ist, was die Person hat (`Inhalte vorhanden:` in `docs/recherche.md`, P2), wie sie klingt und was sie verspricht (`Ton:` und `Kern:` in `docs/konzept.md`, P5), und die Fotoliste (in `docs/inhalte.md`, P5). Die Texte schlägst du vor; was fehlt, steht als `[Platzhalter: was fehlt, wer liefert bis wann]` im Entwurf, und die Zahl der Platzhalter steht in der Zeile `Seiten:` von `docs/entwurf.md`. Die Person bestätigt die Texte beim Durchklicken.
+
+Ist die Seite schon im Netz und soll sich ein Text ändern, gilt der Skill `webseite-aendern`.
 
 ## So sprichst du
 
@@ -22,7 +28,7 @@ Die Webseite ist ein Schaufenster. Gestaltung ist das Licht und die Dekoration. 
 
 ### 1. Inhaltsliste aus dem Plan
 
-Nimm die Seiten aus `docs/plan.md` (Skill `webseite-planen`). Leg `docs/inhalte.md` an, pro Seite: Überschrift, zwei, drei Kernsätze, Bilder, der Knopf zur Hauptsache, Stand (Entwurf, fertig).
+Nimm die Seiten aus `docs/plan.md` (Zeile `Seiten:`, Skill `webseite-planen`). Leg `docs/inhalte.md` an oder ergänze sie, wenn es sie mit der Fotoliste aus P5 schon gibt: pro Seite Überschrift, zwei, drei Kernsätze, Bilder, der Knopf zur Hauptsache, Stand (Entwurf, fertig, Platzhalter). Anrede und Ton nimmst du aus `docs/konzept.md`.
 
 ### 2. Die Startseite in drei Sätzen
 
@@ -37,9 +43,10 @@ Wer auf die Startseite kommt, entscheidet in wenigen Sekunden, ob er bleibt. Die
 - Kurze Sätze, ein Gedanke pro Satz. Die meisten lesen am Handy.
 - Das Wichtigste zuerst. Details weiter unten.
 - Konkret statt Werbesprache: «Wir antworten innert 24 Stunden» statt «erstklassiger Service».
-- Eine Anrede durchziehen, Du oder Sie, je nach Publikum.
+- Eine Anrede durchziehen, Du oder Sie, je nach Publikum (im Fahrplan steht sie in `docs/konzept.md` unter `Ton:`).
 - Zwischentitel, die man überfliegen kann.
 - Zahlen, Preise, Öffnungszeiten, Adresse: lieber zweimal prüfen. Falsche Angaben kosten Vertrauen.
+- Was fehlt, erfindest du nicht. Es steht sichtbar im Text, zum Beispiel `[Platzhalter: Öffnungszeiten, liefert Anna bis 7.11.2026]`, damit es niemand übersieht.
 
 ### 4. Texte mit KI
 
@@ -52,19 +59,21 @@ Die KI darf Entwürfe schreiben. Dann zusammen mit der Person:
 
 ### 5. Bilder
 
-- **Eigene Fotos schlagen Stockbilder.** Echte Menschen, echter Ort, Tageslicht, Handy reicht.
+- **Eigene Fotos schlagen Stockbilder.** Echte Menschen, echter Ort, Tageslicht, Handy reicht. Was die Person fotografieren soll, steht in der Fotoliste in `docs/inhalte.md`: was, wo, wer darauf ist, bis wann.
 - **Rechte:** Nur Bilder verwenden, die die Person selbst gemacht hat oder für die sie eine Lizenz hat. Ein Bild aus der Google-Suche ist nicht gratis. Erkennbare Personen vorher fragen (Recht am eigenen Bild), bei Kindern die Eltern.
 - **Grösse:** Fotos vom Handy sind viel zu gross. Verkleinern auf höchstens etwa 2000 Pixel Breite und als WebP speichern, z. B. mit `cwebp -q 80 foto.jpg -o foto.webp` oder einem Online-Werkzeug ihrer Wahl. Ziel: unter 300 KB pro Bild.
 - **Beschreibung für jedes Bild** (Alternativtext), siehe Skill `barrierefreiheit`.
 
-### 6. Auf die Seite bringen
+### 6. In den Entwurf bringen
 
-Bitte die Person, jede Angabe im Text zu prüfen (Zeiten, Wege, Preise, Namen). Du kennst sie nur aus ihrer Beschreibung. Dann Texte und Bilder ins Projekt, ins Logbuch (Skill `git-logbuch`) und, mit Pilot, über das Fliessband (Skill `pipeline`) auf den Server. Dann zusammen auf dem Handy anschauen, nicht nur am Computer.
+Bitte die Person, jede Angabe im Text zu prüfen (Zeiten, Wege, Preise, Namen). Du kennst sie nur aus ihrer Beschreibung. Dann kommen Texte und Bilder in die Seiten des Entwurfs (`design/entwurf/`, Bilder nach `design/entwurf/bilder/`), und ihr schaut sie zusammen auf dem Handy an, nicht nur am Computer (Skill `entwurf`). Gebaut wird erst nach der Freigabe zum Bauen (P8); dann übernimmt der Skill `webseite-bauen` die Texte aus dem Entwurf.
+
+Ist die Seite schon gebaut oder im Netz, kommen neue Texte über den Skill `webseite-aendern`: lokal ändern, zeigen, Freigabe, dann ins Logbuch (Skill `git-logbuch`) und ins Netz.
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-03-inhalte`. Die Prüfung schaut, ob `~/projekt/docs/inhalte.md` existiert und die Seite unter `https://{name}.aufwind.sh` antwortet.
+`mission_pruefen` mit `webseite-03-inhalte`. Die Prüfung schaut, ob das Projekt auf der Insel mindestens beim Schritt «Entwurf» steht: Die ganze Seite ist mit echten Texten zum Durchklicken da. Dazu gehört die Inhaltsliste `docs/inhalte.md` im Projekt.
 
 ## Schlussnachricht
 
-Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «die Ware im Schaufenster», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist und was als Nächstes kommt. Bitte die Person ausdrücklich, den Text in ihre eigene Stimme zu bringen und jede Angabe darin zu prüfen (Zeiten, Wege, Preise), denn du kennst sie nur aus ihrer Beschreibung.
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «die Ware im Schaufenster», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt, was noch offen ist (die Platzhalter mit Namen und Datum) und was als Nächstes kommt. Bitte die Person ausdrücklich, den Text in ihre eigene Stimme zu bringen und jede Angabe darin zu prüfen (Zeiten, Wege, Preise), denn du kennst sie nur aus ihrer Beschreibung.

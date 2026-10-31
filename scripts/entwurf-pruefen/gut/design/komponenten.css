@@ -1,0 +1,50 @@
+/* Komponenten des Musikvereins: Grundlage, Kopf mit Menü, Knopf, Feld, Karte, Fuss. Nur var(--…) aus tokens.css. */
+body {
+  margin: 0;
+  background: var(--farbe-grund);
+  color: var(--farbe-text);
+  font-family: var(--schrift-text);
+  font-size: var(--groesse-text);
+  line-height: var(--zeile-text);
+}
+h1, h2 { font-family: var(--schrift-titel); line-height: var(--zeile-titel); letter-spacing: var(--sperrung-titel); }
+h1 { font-size: var(--groesse-h1); }
+h2 { font-size: var(--groesse-h2); }
+a { color: var(--farbe-aktion); }
+
+.sprung { position: absolute; left: -9999px; }
+.sprung:focus { left: var(--abstand-4); }
+
+/* Der Kopf richtet sich nach seiner eigenen Breite, darum zeigt das Musterblatt ihn auch in 390 px richtig */
+.kopf {
+  container: kopf / inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--abstand-3);
+  padding: var(--abstand-4) var(--rand-seite);
+}
+.menue { display: flex; gap: var(--abstand-4); margin: 0; padding: 0; list-style: none; }
+.menue a { display: inline-flex; align-items: center; min-height: var(--klickflaeche); }
+
+.knopf {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--hoehe-knopf);
+  padding: 0 var(--abstand-5);
+  border: 0;
+  border-radius: var(--rund-klein);
+  background: var(--farbe-aktion);
+  color: var(--farbe-auf-aktion);
+  font: inherit;
+  font-weight: 600;
+}
+.knopf:focus-visible, .knopf.ist-fokus { outline: var(--fokus-linie); outline-offset: var(--fokus-abstand); }
+.knopf[disabled] { opacity: 0.4; }
+
+.feld { min-height: var(--hoehe-feld); padding: 0 var(--abstand-3); border: var(--linie); border-radius: var(--rund-klein); font: inherit; }
+.feld.hat-fehler { border-color: var(--farbe-fehler); }
+.fehler { color: var(--farbe-fehler); }
+
+.karte { padding: var(--abstand-5); border-radius: var(--rund-mittel); background: var(--farbe-flaeche); box-shadow: var(--schatten-1); }
+.fuss { padding: var(--abstand-6) var(--rand-seite); border-top: var(--linie); color: var(--farbe-leise); font-size: var(--groesse-klein); }
