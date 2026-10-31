@@ -1,9 +1,9 @@
 ---
 name: recht-ch
-description: "Gets a small Swiss website legally in order, explained for people with no prior knowledge with the picture of the doorbell nameplate and house rules: legal notice (Impressum, UWG Art. 3 para. 1 let. s), privacy policy under the revised Swiss data protection act revDSG (duty to inform, Art. 19), cookies (Art. 45c FMG), when the EU's GDPR comes in as well, picture rights, marketing emails only with consent. Not legal advice. Use this skill for “Impressum”, “legal notice”, “data protection”, “privacy policy”, “DSG”, “GDPR”, “DSGVO”, “cookie banner”, “do I legally need this”, “what has to be on my website”, “contact form and data protection”."
+description: "Gets a small Swiss website legally in order, explained for people with no prior knowledge with the picture of the doorbell nameplate and house rules: legal notice (Impressum, UWG Art. 3 para. 1 let. s), privacy policy under the revised Swiss data protection act revDSG (duty to inform, Art. 19), cookies (Art. 45c FMG), logins (cookie, logs, retention), when the EU's GDPR comes in as well, picture rights, marketing emails only with consent. Not legal advice. Use this skill for “Impressum”, “legal notice”, “data protection”, “privacy policy”, “DSG”, “GDPR”, “DSGVO”, “cookie banner”, “do I legally need this”, “what has to be on my website”, “contact form and data protection”, “login and data protection”."
 metadata:
   stand: 0.2.0
-  quelle: '1410b2c1e356'
+  quelle: 'd709bb4002f0'
 ---
 
 # Swiss law: doorbell nameplate and house rules
@@ -65,15 +65,25 @@ If the site is also aimed at people in the EU, the GDPR (General Data Protection
 - EU audience: cookies that aren't necessary (statistics, advertising) need consent beforehand. Then a banner with an equally easy “Reject”.
 - Simplest of all: no unnecessary cookies. The statistics from the skill `statistik` run without cookies. Host fonts locally instead of loading them from other people's servers.
 
-### 5. Marketing emails
+### 5. Login and entrance
+
+Applies when the site has a login (recipe `mitglieder`, building block `eingang`, skill `bausteine`).
+
+- **The login cookie** (`__Host-sitzung`, valid for 5 days, unreadable for scripts in the browser) is needed so that someone stays signed in. Art. 45c FMG requires the information for this one too: that it's set, what for, and how to refuse it (without this cookie, signing in doesn't work). One sentence in the privacy policy is enough. This cookie needs no banner and no consent, not even for visitors from the EU: strictly necessary cookies are exempt from consent there (Art. 5(3) of the ePrivacy Directive).
+- **Logs:** PocketBase logs every visit with the IP address and deletes the entries after 5 days (admin area → Settings → Logs). The entrance writes one line per visit, without IP address, without cookie and without anything that identifies the person. Both go into the privacy policy, with the retention period.
+- **Retention:** an account stays until the person or the admin area deletes it. Requests the admin area doesn't approve, it deletes after 30 days at the latest (suggestion; note it in `docs/betrieb.md`). Being signed in ends after 5 days or when signing out on this device.
+- **Sentence for the person's privacy policy** (adapt it, and don't take over anything the site doesn't have):
+  > Members' area: for signing in, we store name, email address, password (only as an unreadable fingerprint) and whether the admin area has approved the account, until the account is deleted. When you sign in, we set a necessary cookie (“__Host-sitzung”, 5 days) so that you stay signed in; without this cookie, signing in isn't possible. Our server logs visits with the IP address for 5 days.
+
+### 6. Marketing emails
 
 Advertising by email only with prior consent (UWG Art. 3 para. 1 let. o). Exception: your own customers, who were told when they bought that they can refuse, for your own similar offers. In every email: the correct sender and a simple, free unsubscribe link. Newsletter sign-up with a confirmation email (double opt-in), so the consent can be proven.
 
-### 6. Pictures and texts
+### 7. Pictures and texts
 
 Only your own or licensed pictures. Recognisable people only with their permission. See skill `inhalte`.
 
-### 7. Build and link the pages
+### 8. Build and link the pages
 
 Legal notice and privacy policy as pages of their own, reachable from the footer of every page. Logbook and conveyor belt (skills `git-logbuch`, `pipeline`). Note in `docs/plan.md`: “Check the privacy policy whenever a new service is added.”
 

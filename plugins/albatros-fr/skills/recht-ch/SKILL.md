@@ -1,9 +1,9 @@
 ---
 name: recht-ch
-description: "Met en ordre sur le plan juridique un petit site web suisse, expliqué à des personnes sans connaissances préalables avec l'image de la plaque de sonnette et du règlement de maison : mentions légales (impressum, art. 3, al. 1, let. s, LCD), déclaration de protection des données selon la LPD révisée (devoir d'informer, art. 19), cookies (art. 45c LTC), quand le RGPD de l'UE s'ajoute, droits sur les images, e-mails publicitaires seulement avec consentement. Pas de conseil juridique. Utilise ce skill pour « impressum », « mentions légales », « protection des données », « déclaration de protection des données », « LPD », « RGPD », « bannière cookies », « est-ce que j'en ai besoin légalement ? », « qu'est-ce qui doit figurer sur mon site ? », « formulaire de contact et protection des données »."
+description: "Met en ordre sur le plan juridique un petit site web suisse, expliqué à des personnes sans connaissances préalables avec l'image de la plaque de sonnette et du règlement de maison : mentions légales (impressum, art. 3, al. 1, let. s, LCD), déclaration de protection des données selon la LPD révisée (devoir d'informer, art. 19), cookies (art. 45c LTC), connexion avec login (cookie, journaux, délais), quand le RGPD de l'UE s'ajoute, droits sur les images, e-mails publicitaires seulement avec consentement. Pas de conseil juridique. Utilise ce skill pour « impressum », « mentions légales », « protection des données », « déclaration de protection des données », « LPD », « RGPD », « bannière cookies », « est-ce que j'en ai besoin légalement ? », « qu'est-ce qui doit figurer sur mon site ? », « formulaire de contact et protection des données », « connexion et protection des données »."
 metadata:
   stand: 0.2.0
-  quelle: '1410b2c1e356'
+  quelle: 'd709bb4002f0'
 ---
 
 # Droit CH : la plaque de sonnette et le règlement de maison
@@ -63,15 +63,25 @@ Si le site s'adresse aussi à des personnes dans l'UE, le RGPD peut s'appliquer 
 - Public dans l'UE : pour les cookies qui ne sont pas nécessaires (statistiques, publicité), il faut un consentement préalable. Il faut alors une bannière avec un bouton « Refuser » de même valeur.
 - Le plus simple : pas de cookies inutiles. Les statistiques du skill `statistik` fonctionnent sans cookies. Intègre les polices en local au lieu de les charger depuis des serveurs tiers.
 
-### 5. E-mails publicitaires
+### 5. Connexion et entrée
+
+Vaut quand le site a une connexion (recette `mitglieder`, brique `eingang`, skill `bausteine`).
+
+- **Le cookie de connexion** (`__Host-sitzung`, valable 5 jours, illisible pour les scripts dans le navigateur web) est nécessaire pour que quelqu'un reste connecté. L'art. 45c LTC exige aussi pour lui l'information : qu'il est placé, dans quel but, et comment le refuser (sans ce cookie, la connexion ne marche pas). Une phrase dans la déclaration de protection des données suffit. Il ne faut ni bannière ni consentement pour ce cookie, pas même pour les visiteurs de l'UE : les cookies strictement nécessaires y sont exemptés du consentement (art. 5, par. 3, de la directive ePrivacy).
+- **Journaux :** PocketBase enregistre chaque accès avec l'adresse IP et efface les entrées après 5 jours (administration → Settings → Logs). L'entrée écrit une ligne par accès, sans adresse IP, sans cookie et sans identifiant de la personne. Les deux vont, avec le délai, dans la déclaration de protection des données.
+- **Délais :** un compte reste jusqu'à ce que la personne ou l'administration l'efface. Les demandes que l'administration n'active pas, elle les efface au plus tard après 30 jours (proposition ; à noter dans `docs/betrieb.md`). La connexion prend fin après 5 jours ou à la déconnexion sur cet appareil.
+- **Phrase pour la déclaration de protection des données** de la personne (à adapter, ne rien reprendre qui n'existe pas sur le site) :
+  > Espace membres : pour la connexion, nous enregistrons le nom, l'adresse e-mail, le mot de passe (seulement sous forme d'empreinte illisible) et si l'administration a activé le compte, jusqu'à ce que le compte soit effacé. À la connexion, nous plaçons un cookie nécessaire (« __Host-sitzung », 5 jours) pour que la connexion soit maintenue ; sans ce cookie, aucune connexion n'est possible. Notre serveur enregistre les accès avec l'adresse IP pendant 5 jours.
+
+### 6. E-mails publicitaires
 
 La publicité par e-mail seulement avec un consentement préalable (art. 3, al. 1, let. o, LCD). Exception : ta propre clientèle, informée lors de l'achat qu'elle peut refuser, pour tes propres offres similaires. Dans chaque e-mail : le bon expéditeur et un lien de désinscription simple et gratuit. Inscription à la newsletter avec un e-mail de confirmation (double opt-in), pour que le consentement soit prouvé.
 
-### 6. Images et textes
+### 7. Images et textes
 
 Uniquement des images à toi ou sous licence. Des personnes reconnaissables seulement avec leur accord. Voir le skill `inhalte`.
 
-### 7. Construire et relier les pages
+### 8. Construire et relier les pages
 
 Mentions légales et protection des données comme pages à part, accessibles depuis le pied de chaque page. Journal de bord et tapis roulant (skills `git-logbuch`, `pipeline`). Note dans `docs/plan.md` : « Vérifier la déclaration de protection des données quand un nouveau service s'ajoute. »
 

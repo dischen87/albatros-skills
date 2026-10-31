@@ -1,18 +1,18 @@
 ---
 name: bausteine
-description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks: a sign-up list, bookings for classes and appointments, a members' area with login, a noticeboard (PocketBase) or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
+description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks, first on their own computer: a sign-up list, bookings for classes and appointments, a members' area with login and approval, a noticeboard (PocketBase), an entrance with one login for several parts, or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “roles”, “entrance”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 metadata:
   stand: 0.2.0
-  quelle: '9f1bc9959480'
+  quelle: '50d2db23bdea'
 ---
 
 # Building blocks: prefab parts for your site
 
 ## The picture
 
-When you build a house, you don't make the windows, doors and kitchen yourself. They come ready-made from the factory, tested and with instructions, and get fitted. A website is just the same: nobody writes a login, a sign-up list or a system for content from scratch. Albatros has them ready as building blocks, tested and measured.
+When you build a house, you don't make the windows, doors and kitchen yourself. They come ready-made from the factory, with instructions, and get fitted. A website is just the same: nobody writes a login, a sign-up list or a system for content from scratch. Albatros has them ready as building blocks. Whatever has a test is tested (bookings, members, entrance); we measured the memory for all of them.
 
-And just like with a house: every part needs space. That's why you first look at what the person really needs.
+And just like with a house: every part needs space. That's why you first look at what the person really needs. Building blocks go in on the person's computer first, like a trial assembly in the workshop; they only go onto the server at launch.
 
 **How to use the picture:** Tell the person in your first answer, before you ask questions or show commands.
 
@@ -42,65 +42,77 @@ One question per message, only as many as it takes for the answer to be clear:
 | Newsletter | A service like Brevo, with the service's form on the site | Light | nothing extra |
 | People sign up, I want to see the list | **Sign-up list** (PocketBase, recipe `anmeldeliste`) | Pilot | about 20 MB |
 | Visitors book a place or an appointment (class, guided tour, hairdresser's appointment), I want to see the bookings and be able to cancel them | **Bookings** (PocketBase, recipe `buchungen`) | Pilot | about 20 MB |
-| Members log in and see an area of their own | **Members' area with login** (PocketBase, recipe `mitglieder`) | Pilot | about 20 MB |
+| Members log in and see an area of their own; anyone new sends a request, and I approve them | **Members' area with login** (PocketBase, recipe `mitglieder`) | Pilot | about 20 MB |
 | Others look after news or dates in the browser | **Noticeboard** (PocketBase, recipe `pinnwand`) | Pilot | about 20 MB |
+| Several parts need the same login, or an area is only for one role (for example the committee) | **Entrance** (building block `eingang`, with the recipe `mitglieder`), section 7 | Pilot | 20 MB, up to 66 MB under full load |
 | Lots of content types, several roles, image management, an app later | **Big CMS** (Strapi with Postgres) | Pilot | about 200 MB, build up to 2.5 GB |
 
 Always recommend the smallest thing that's enough. Several languages on their own are never a reason for a building block. PocketBase covers the sign-up list, login and noticeboard together; it only runs once. Strapi is only worth it once PocketBase gets too small.
 
-If the person has Light and needs a building block: say so honestly. Building blocks run on a server of your own, so with Pilot (skill `kosten`, switch via `upgrade_link` with `pilot`). The logbook and the address stay.
+On the person's own computer every building block works for free, even without a plan. Online it needs a server of its own, so Pilot. If the person has Light, say so honestly as soon as they want a building block: they choose where the site lives at launch (skill `lancieren`, prices from `konto_status`, skill `kosten`). The logbook and the address stay.
 
 ## 3. What fits on the server?
 
-A server with Pilot has 4 GB of memory (RAM) and 40 GB of space, without swap space: if it gets too much, the server shuts down a program. Measured on 28.10.2026 (PocketBase 0.40.5, Strapi 5.58.0, Postgres 17):
+A server with Pilot has 4 GB of memory (RAM) and 40 GB of space, without swap space: if it gets too much, the server shuts down a program. Measured on 28.10.2026 on the server (PocketBase 0.40.5, Strapi 5.58.0, Postgres 17), the entrance on 31.10.2026 on a Mac:
 
 | What | While running | While building | Space |
 |---|---|---|---|
+| Base load: system, Docker, worker on the conveyor belt | 150 MB, 0.5 GB planned | briefly more | – |
 | Website from the template | 10 MB | brief | small |
 | PocketBase (all recipes together) | 20 MB | brief | 40 MB |
+| Entrance | 20 MB, up to 66 MB under full load | brief | small |
 | Strapi with Postgres | 150 MB + 55 MB | peak 2.5 GB, first build about 7 minutes | 1.4 GB |
 
-Website, PocketBase and Strapi together need about 250 MB while running. It only gets tight while building, which is why the conveyor belt builds one job after another. Programs that need more than 1 GB on their own don't belong on the server, for example Keycloak, Supabase, Logto, Mattermost or text recognition (OCR). For a login of your own, take PocketBase.
+That leaves about 3.5 GB for building blocks. Website, PocketBase and Strapi together need about 250 MB while running. It only gets tight while building, which is why the conveyor belt builds one job after another. Programs that need more than 1 GB on their own don't belong on the server, for example Keycloak, Supabase, Logto, Mattermost or text recognition (OCR). For a login of your own, take PocketBase.
 
-Before building it in: `free -h` on the server shows how much is free. After building it in: `docker stats --no-stream` shows what each building block needs.
+Before launch: `free -h` on the server shows how much is free. Afterwards: `docker stats --no-stream` shows what each building block needs.
 
-## 4. Building it in
+## 4. Building it in: locally first, the server at launch
 
-This applies to every building block. Take a photo of the server first: tool `snapshot` with the name `vor-baustein` (skill `zurueck-auf-gestern`).
+**Locally, on the person's computer** (while building, skill `webseite-bauen`; free):
 
 1. **Fetch.** In the logbook on the person's computer (skill `git-logbuch`), you download the building block from the factory, the public repository of Albatros:
    ```bash
    curl -sL https://codeload.github.com/dischen87/albatros-skills/tar.gz/main | tar xz --strip-components=1 albatros-skills-main/bausteine/pocketbase
    ```
-   For Strapi, it ends in `bausteine/strapi`. The recipes are then under `bausteine/<baustein>/rezepte/`.
+   For the entrance, it ends in `bausteine/eingang`, for Strapi in `bausteine/strapi`. The recipes are then under `bausteine/<baustein>/rezepte/`.
+2. **Add the recipe** (section 5, 6 or 7), and put the texts of the pages into the person's language.
+3. **Test:** if the recipe has a test, it must report “Alles grün”: `bun bausteine/pocketbase/rezepte/buchungen/test.ts`, `bun bausteine/pocketbase/rezepte/mitglieder/test.ts`, `bun bausteine/eingang/test.ts`. Once the recipe is built in, it checks the built-in files. Without a green test, you don't go any further.
+4. **The person clicks through it themselves.** Build in `web/` (`npm run build`), then `bun bausteine/pocketbase/lokal.ts` (with the entrance: `--eingang`). The whole site runs with the building block on the person's computer, and emails show up in the terminal instead of reaching real people. Give them the address and tell them what to try (logging in, booking, cancelling). They click, you watch and fix. For the admin area, `lokal.ts` shows an account that only works on this computer.
+5. **Into the logbook**, not yet to the harbour.
+
+Strapi has no test and no `lokal.ts` yet; you write its content types as files (section 6), and you only see it running on the server. Say so honestly.
+
+**At launch, with Pilot** (skill `lancieren`, after the site has been released):
+
+1. **Photo of the server:** tool `snapshot` with the name `vor-baustein` (skill `zurueck-auf-gestern`).
 2. **Hook it in.** At the very top of `compose.yaml`:
    ```yaml
    include:
      - bausteine/pocketbase/compose.yaml
    ```
    The website passes the requests on itself: the template reads every `bausteine/*/nginx.conf`. If the project is older than the building blocks (no `nginx.conf` in the project), get `Dockerfile` and `nginx.conf` from `vorlage/` in the same repository.
-3. **Add the recipe** (section 5 or 6), and put the texts of the pages into the person's language.
-4. **Into the logbook and to the harbour.** The conveyor belt builds and delivers (skill `pipeline`). If the build fails, the old site stays online.
-5. **Check** on the server: `docker ps` shows the building block as `healthy`.
+3. **To the harbour.** The conveyor belt builds and delivers (skill `pipeline`). If the build fails, the old site stays online.
+4. **Check** on the server: `docker ps` shows the building block as `healthy`. Then the first account for the admin area and the emails (section 5).
 
 ## 5. PocketBase: sign-up list, bookings, members, noticeboard
 
 PocketBase is one single small program with a database, login and admin area. The website talks to it at `/api/` on its own address. The admin area stays closed to the outside.
 
 - **Enter the address:** In `bausteine/pocketbase/pb_migrations/1_einstellungen.js`, set the line `ADRESSE` to the site's address (`https://{name}.aufwind.sh` or your own domain). It appears in emails like “forgotten password”.
-- **Add the recipe:** From `bausteine/pocketbase/rezepte/<rezept>/`, `pb_migrations/2_*.js` goes to `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (if present) to `bausteine/pocketbase/pb_hooks/` and `seite/*.html` goes to `seite/`.
+- **Add the recipe:** From `bausteine/pocketbase/rezepte/<rezept>/`, all files from `pb_migrations/` go to `bausteine/pocketbase/pb_migrations/`, `pb_hooks/*` (if present) to `bausteine/pocketbase/pb_hooks/` and `seite/*.html` goes to `seite/`. Leave the recipe's folder where it is; the test lives there.
   - `anmeldeliste`: the form `anmelden.html`. Everyone may sign up, only the admin area can read the list.
   - `buchungen`: `buchen.html` (free dates, booking, cancelling via the link in the email) and `verwaltung.html` (“My bookings” for the person: who's coming, cancelling, weekly schedule). More below under “Bookings”.
-  - `mitglieder`: `mitglieder.html` with register, log in, log out. Only logged-in members see the messages. The members are listed in the admin area under `users`.
+  - `mitglieder`: anyone who registers sends a request. The person confirms their email address with the link in the email, the admin area gets a notice and approves them (in the admin area under `users`, the field `freigegeben`), and then the person gets an email. Only once the address is confirmed and they're approved do they see the messages. Approval and role (`rolle`, for example `vorstand`) are only set by the admin area, never by the person themselves. Pages: `mitglieder.html` (request, log in, state of the request, send the email again, “Forgotten your password?”), `bestaetigen.html` and `passwort.html`; the links in the emails lead to these two. If the pages live elsewhere (for example `/passwort/` in an Astro site), enter the path in `pb_migrations/2_mitteilungen_freigabe.js` (`SEITE_BESTAETIGEN`, `SEITE_PASSWORT`), and the members' area and who gets the notices in `pb_hooks/mitglieder.js` (`MITGLIEDERSEITE`, `MELDUNGEN_AN`). Add your own roles to `ROLLEN` before the site runs. If the old recipe was already built in, the new files simply go in alongside; anyone who was already a member then has to be approved once and confirm their address (“Send the email again” on `mitglieder.html`).
   - `pinnwand`: `pinnwand.html` shows posts with date and picture. Writing happens in the admin area.
   - You write your own fields or collections as another file `pb_migrations/3_*.js`, following the same pattern.
-- **First account for the admin area:** After the first start, PocketBase writes a set-up link into its log. Fetch it and open the secret passage (tunnel), so the admin area stays invisible from the internet:
+- **First account for the admin area** (at launch): After the first start, PocketBase writes a set-up link into its log. Fetch it and open the secret passage (tunnel), so the admin area stays invisible from the internet:
   ```bash
   ssh {name}@aufwind.sh 'cd ~/projekt && docker compose logs pocketbase' | grep pbinstall
   ssh -N -L 8090:localhost:8090 {name}@aufwind.sh
   ```
   Leave the second command running in the background. Give the person the link with `http://localhost:8090` instead of `http://0.0.0.0:8090`. They set their email and password there, only in the browser. If the link has expired: `docker compose restart pocketbase` on the server, and then there's a new one. Later it works via `http://localhost:8090/_/`, as long as the tunnel is open.
-- **Open up the admin area:** If others need the admin area without a terminal, or the person wants to see the list on their phone: in `bausteine/pocketbase/nginx.conf`, remove the `#` in front of the block “Verwaltung freigeben” (open up the admin area), into the logbook, to the harbour. Then it's at `https://{name}.aufwind.sh/_/`, protected with the admin area's password. Only open it up once the first account exists. As soon as emails are going out, the person switches on two-factor sign-in (MFA) in the admin area under `_superusers` → Options.
+- **Open up the admin area:** If others need the admin area without a terminal, or the person wants to see the list on their phone: in `bausteine/pocketbase/nginx.conf`, remove the `#` in front of the block “Verwaltung freigeben” (open up the admin area), into the logbook, to the harbour. Then it's at `https://{name}.aufwind.sh/_/`, protected with the admin area's password. Only open it up once the first account exists. As soon as emails are going out, the person switches on two-factor sign-in (MFA) in the admin area under `_superusers` → Options. With the entrance (section 7), the admin area always stays closed from the outside.
 - **Emails** (confirm address, forgotten password): The server isn't allowed to send over the usual mail ports. In the admin area under Settings → Mail settings: SMTP server `smtp.resend.com`, port `2587`, user `resend`, and as the password the API key from Resend. The person types that in there themselves. Brevo works too, with `smtp-relay.brevo.com` and port `2525`. The sender is an address on your own domain that's confirmed with the mail service.
 - **Signing in with Google, Apple or GitHub:** works in the admin area under `users` → Options → OAuth2. That needs an account with each provider. Only do it once email and password are working.
 
@@ -112,17 +124,17 @@ The recipe `buchungen` is a small booking tool for classes, guided tours and app
 
 You do the technical part, the person only decides. In this order:
 
-1. **Photo of the server** (tool `snapshot`, name `vor-baustein`), before anything gets added.
-2. **Ask for the classes before you build:** name, weekday, time, length, places, location, price and how long before the start people can still book. If the plan only says “we've got that”, ask for them now. Write them in `docs/kurse.md` and as `bausteine/pocketbase/pb_migrations/3_kurse.js` (pattern below): that way the dates are there from the first start, and nobody types them up.
-3. **Add it:** `2_buchungen.js` to `bausteine/pocketbase/pb_migrations/`, both files from `pb_hooks/` to `bausteine/pocketbase/pb_hooks/`. Leave the folder `rezepte/buchungen` where it is; the test lives there.
-4. **Make two proper pages out of it,** with header, menu and footer like all the others, never the bare HTML files:
+1. **Ask for the classes before you build:** name, weekday, time, length, places, location, price and how long before the start people can still book. If the plan only says “we've got that”, ask for them now. Write them in `docs/kurse.md` and as `bausteine/pocketbase/pb_migrations/3_kurse.js` (pattern below): that way the dates are there from the first start, and nobody types them up.
+2. **Add it:** `2_buchungen.js` to `bausteine/pocketbase/pb_migrations/`, both files from `pb_hooks/` to `bausteine/pocketbase/pb_hooks/`. Leave the folder `rezepte/buchungen` where it is; the test lives there.
+3. **Make two proper pages out of it,** with header, menu and footer like all the others, never the bare HTML files:
    - `seite/buchen.html` becomes the booking page, for example `web/src/pages/kurse.astro` in the site's layout: take over the content of `<main>`, the script as `<script is:inline>`, and from the styles only the parts without `body`, `main` and `h1`. At the top, the weekly schedule in words (“Monday 18:30 Evening yoga”), from `docs/kurse.md`.
    - `seite/verwaltung.html` becomes “My bookings”, for example `web/src/pages/verwaltung.astro`, with `<meta name="robots" content="noindex">` and not in the menu.
    - Set the colours at the top of both files to the site's tokens (`var(--…)` from `tokens.css`), no copied colour values.
    - Enter the path of the booking page in `pb_hooks/buchungen.js` at `BUCHUNGSSEITE` (for example `"/kurse/"`), otherwise the links in the emails lead nowhere.
-5. **Check, with proof:** `bun bausteine/pocketbase/rezepte/buchungen/test.ts` must report “Alles grün”. Then build in `web/` (`npm run build`) and start `bun bausteine/pocketbase/lokal.ts`: the whole site runs with the booking tool on the person's computer, and emails show up in the terminal instead of reaching real people. Book a place yourself, cancel it again, and log in on “My bookings” with the account that `lokal.ts` shows. Show the person the screenshot of the confirmation and the text of the email. Without this output, the check isn't green.
+4. **Check, with proof:** `bun bausteine/pocketbase/rezepte/buchungen/test.ts` must report “Alles grün”. Then build in `web/` (`npm run build`) and start `bun bausteine/pocketbase/lokal.ts`: the whole site runs with the booking tool on the person's computer, and emails show up in the terminal instead of reaching real people. The person books a place themselves, cancels it again and logs in on “My bookings” with the account that `lokal.ts` shows. Show them the text of the email. Without this output, the check isn't green.
+5. **At launch:** photo of the server (tool `snapshot`, name `vor-baustein`), hook it in, to the harbour (section 4).
 6. **Emails, before the person shares the link:** After going live, set up the emails (the “Emails” point above) and book a place on the web to the person's own address. Only once this email has arrived is the booking tool finished. Notices about new bookings go to the sender address; you enter a different one in `pb_hooks/buchungen.js` at `MELDUNGEN_AN`.
-7. **Show the person how to look after it themselves:** open “My bookings” on their phone (`https://{name}.aufwind.sh/verwaltung/`) and log in with the admin area's account. There they see the next two weeks, cancel a booking or a whole date (everyone who booked gets an email with the reason), and add classes or end them. Bookmark the page for them. One-off dates like a workshop don't go there (yet), but into the admin area under `termine` (the dates).
+7. **Show the person how to look after it themselves:** open “My bookings” on their phone (`https://{name}.aufwind.sh/verwaltung/`) and log in with the admin area's account. There they see the next two weeks, cancel a booking or a whole date (everyone who booked gets an email with the reason), and add classes or end them. Bookmark the page for them. One-off dates like a workshop don't go there (yet), but into the admin area under `termine` (the dates). If there's an entrance in front (section 7), “My bookings” only works through the tunnel.
 
 Pattern for `3_kurse.js` (weekdays `mo` to `so`, time in Swiss time, booking cut-off in minutes before the start):
 
@@ -152,7 +164,7 @@ The weekly schedule creates the dates eight weeks ahead, and new ones are added 
 
 ## 6. Strapi: the big CMS
 
-Strapi is a complete system for content with roles and image management, plus a database of its own (Postgres). More on that, and on whether it's worth it: skill `cms`.
+Strapi is a complete system for content with roles and image management, plus a database of its own (Postgres). More on that, and on whether it's worth it: skill `cms`. Strapi only runs on the server, so at launch.
 
 1. **Secrets first,** before `include` is in the harbour, otherwise the first build fails. From the logbook, without you seeing them:
    ```bash
@@ -165,11 +177,36 @@ Strapi is a complete system for content with roles and image management, plus a 
 6. **Open up the admin area** (for an editorial team without a terminal): only once the first account exists, otherwise a stranger could register first. In `bausteine/strapi/nginx.conf`, replace the first block with the block “Verwaltung freigeben” (open up the admin area), without `#`; in `bausteine/strapi/cms/config/server.ts`, switch on the line `url: '/cms'`; into the logbook, to the harbour. Then the admin area is at `https://{name}.aufwind.sh/cms/admin`. The person invites the editorial team there (Settings → Users, role Editor or Author). Everyone sets their own password.
 7. **Entries appear** as soon as they're published in the admin area. A new build isn't needed for that.
 
+## 7. One entrance for everything?
+
+**The picture:** the reception desk in a building with several offices. Anyone who wants to get in signs in once; each office only learns who's coming and with which role. The entrance is a small service in front of the site. Signed in is whoever PocketBase knows (recipe `mitglieder`); there's no second login.
+
+These rules decide whether it's needed, in this order:
+
+1. **Never with Light,** and never without a server of your own: the entrance is a program that runs on the server.
+2. **Not needed with one building block where PocketBase's rules are enough:** for example only the recipe `mitglieder` (messages only for approved members) or only `buchungen`. Then go without an entrance.
+3. **Needed when two or more parts must know who's signed in** (for example protected pages under `/intern/` and the messages from PocketBase, or a small program of your own next to it), **or when roles apply across parts** (the committee sees `/vorstand/` and may do more in PocketBase).
+
+The answer goes into `docs/betrieb.md`, on the line `Eingang:`, with the reason (skill `betrieb`). The site's doors (`docs/tueren.txt`: open, only after signing in, never) become the parts in `bausteine/eingang/eingang.json`.
+
+**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle, up to 66 MB under full load (measured on 31.10.2026 on a Mac, not yet on the server); every call to a protected part asks PocketBase, which costs about half a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
+
+**Building it in,** locally first like every building block (section 4), step by step in `bausteine/eingang/README.md`:
+
+1. PocketBase with the recipe `mitglieder` is built in. Fetch `bausteine/eingang`, `pb_hooks/*` to `bausteine/pocketbase/pb_hooks/`, `pb_migrations/2_eingang.js` to `bausteine/pocketbase/pb_migrations/`.
+2. In `eingang.json`, enter the site's address (`ursprung`) and the parts: name, target, paths, access `offen` (open), `angemeldet` (signed in) or `rolle:<name>`. Protected pages live in their own folders (`seite/intern/`).
+3. In `mitglieder.html`, set `const EINGANG = true;`: signing in then applies to all parts, with a cookie.
+4. `bun bausteine/eingang/test.ts` reports “Alles grün”, then `bun bausteine/pocketbase/lokal.ts --eingang`: the person opens a protected page without signing in, signs in, comes back and signs out again.
+5. At launch: in `compose.yaml` under `include:`, the line `- bausteine/eingang/compose.yaml`, and for the service `webseite`, delete the lines `ports:` and `- "80:80"`, otherwise people could get round the entrance. Then check every door from outside: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` gives 401, `/_/` gives 404, the home page 200.
+
+**What it can't do:** behind the entrance, “My bookings” (recipe `buchungen`) only works through the tunnel, because the entrance blocks the admin area's sign-in from outside. Signing out applies to one device; signing out everywhere means setting a new password.
+
 ## Stumbling blocks
 
 - **Admin area opened up before the first account exists:** First create the account through the tunnel, then open it up. Only open it up if others without a terminal need it.
-- **One building block too many:** Every part wants looking after and updating. Better one that runs well.
-- **Updates:** The versions are in the `Dockerfile` (PocketBase) and in `package.json` (Strapi). Take a photo before every update.
+- **One building block too many:** Every part wants looking after and updating. Better one that runs well. An entrance without a second part is one too many.
+- **Straight onto the server:** a building block that wasn't green locally, and that the person hasn't clicked through themselves, doesn't go onto the server.
+- **Updates:** The versions are in the `Dockerfile` (PocketBase, entrance) and in `package.json` (Strapi). Take a photo before every update.
 - **Data:** It lives in volumes on the server and is included in the daily photos. `docker compose down -v` deletes it; never do that without a photo and without a yes from the person.
 
 ## Final message
