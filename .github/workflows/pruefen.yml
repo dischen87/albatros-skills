@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      - run: git fetch --no-tags --depth=1 origin +refs/heads/main:refs/remotes/origin/main   # pruefen.ts: Version höher als auf main
       - run: bun run pruefen
       - run: npx -y @anthropic-ai/claude-code plugin validate .
   einbau:                     # baut Albatros so ein, wie EINRICHTEN.md es der KI vorgibt
