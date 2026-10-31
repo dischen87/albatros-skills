@@ -1,6 +1,6 @@
 ---
 name: git-logbuch
-description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (dem Git-Dienst von Albatros, code.aufwind.sh). Holt das Repo aus dem Hafen, führt durch die ersten Einträge (Commit) mit guten Notizen, schickt sie in den Hafen (Push) und prüft, dass die Kopie auf dem Albatros-Server in ~/projekt ankommt. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «Hafen», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
+description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (dem Git-Dienst von Albatros, code.aufwind.sh). Holt das Repo aus dem Hafen oder legt es auf dem Computer an, bevor es einen Hafen gibt (git init, später den Hafen als origin verbinden), führt durch die ersten Einträge (Commit) mit guten Notizen, schickt sie in den Hafen (Push) und prüft, dass die Kopie auf dem Albatros-Server in ~/projekt ankommt. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «Hafen», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
 metadata:
   stand: 0.2.0
 ---
@@ -45,7 +45,7 @@ Auf jedem Schiff gibt es ein Logbuch. Jeder Eintrag sagt: wer, wann, was und war
 
 ### 2. Das Logbuch holen
 
-Albatros hat dein Logbuch im Hafen schon angelegt, mit der Vorlage darin. Die Adresse nennt `konto_status`:
+Gibt es schon ein Logbuch auf diesem Computer (auf dem Weg Webseite entsteht es beim Bau, Skill `webseite-bauen`), holst du nichts: Es wird mit dem Hafen verbunden (Abschnitt «Logbuch ohne Hafen»). Sonst gilt: Albatros hat dein Logbuch im Hafen schon angelegt, mit der Vorlage darin. Die Adresse nennt `konto_status`:
 
 ```bash
 git clone git@aufwind.sh:{name}/projekt.git
@@ -56,7 +56,7 @@ Das Logbuch ist privat: Nur du siehst es. Danach die `.gitignore` prüfen, minde
 
 ### 3. Der erste Eintrag
 
-Die Person ändert selbst etwas Kleines, z. B. eine Zeile im `README.md`. Du öffnest ihr die Datei (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) und nennst genau die Zeile und den neuen Text. Traut sie sich das nicht zu oder ändert sich nichts, machst du es selbst und zeigst ihr die Änderung mit `git diff`. Der erste Eintrag bleibt klein, auch wenn die Person schon Inhalte nennt: Auf dem Weg Webseite entsteht die Seite erst mit `webseite-planen` und `webseite-bauen`, mit Plan, Prüfung und Freigabe. Ihre Inhalte merkst du dir für den Grundriss. Dann zusammen:
+Die Person ändert selbst etwas Kleines, z. B. eine Zeile im `README.md`. Du öffnest ihr die Datei (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) und nennst genau die Zeile und den neuen Text. Traut sie sich das nicht zu oder ändert sich nichts, machst du es selbst und zeigst ihr die Änderung mit `git diff`. Der erste Eintrag bleibt klein, auch wenn die Person schon Inhalte nennt: Auf dem Weg Webseite entsteht die Seite erst im festen Ablauf, mit Plan, Entwurf, Bau und Freigabe. Ihre Inhalte merkst du dir für den Grundriss. Dann zusammen:
 
 ```bash
 git status                     # Was hat sich geändert?
@@ -85,6 +85,32 @@ Fehlen die neuen Einträge, holst du sie von Hand: `ssh {name}@aufwind.sh 'git -
 ### 5. Mission prüfen
 
 `mission_pruefen` mit `flugschule-04-git-logbuch`. Die Prüfung schaut, ob das Logbuch mindestens zwei Einträge auf `main` hat: mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen.
+
+## Logbuch ohne Hafen
+
+Ein Logbuch braucht keinen Hafen, um anzufangen. Auf dem Weg Webseite entsteht es beim Bau auf dem Computer (Skill `webseite-bauen`), lange bevor die Seite einen Wohnort hat:
+
+```bash
+git init -b main                         # einmal, im Projektordner
+git add .gitignore docs design           # die eigenen Dateien und Ordner mit Namen
+git commit -m "Entwurf freigegeben: Plan, Konzept, Entwurf"
+```
+
+Solange es keinen Hafen gibt, liegt das Logbuch nur auf diesem Computer. Fällt er ins Wasser, ist es weg: Dann braucht es eine zweite Kopie, zum Beispiel ein privates Repo (Skill `betrieb`, Sicherung).
+
+**Später den Hafen verbinden,** beim Live schalten (Skill `lancieren`): ohne neu zu klonen und ohne Dateien zu kopieren, sonst gehen die Einträge vom Bau verloren.
+
+- **Hafen von Albatros:** Dort liegt seit dem Wohnort die Vorlage, ein Eintrag mit eigenem Anfang. Du verbindest den Hafen als `origin` und nimmst die Vorlage einmal ins Logbuch auf. Wo beide dieselbe Datei haben, bleibt die eigene (`-X ours`):
+  ```bash
+  git remote add origin git@aufwind.sh:{name}/projekt.git
+  git fetch origin
+  git merge origin/main --allow-unrelated-histories -X ours -m "Vorlage aus dem Hafen übernommen"
+  git push -u origin main
+  ```
+  Gibt es schon ein `origin` (`git remote -v`), nimmst du für den Hafen einen anderen Namen, zum Beispiel `hafen`.
+- **Ein leeres Repo bei GitHub** (Wohnort «selbst»): `gh repo create <repo> --private --source . --remote origin --push`. Da ist nichts zusammenzuführen.
+
+Auch hier gilt: nie `git push --force`. Wird der Push abgelehnt, zuerst zusammenführen wie oben.
 
 ## Wenn es hakt
 

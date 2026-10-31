@@ -1,9 +1,9 @@
 ---
 name: git-logbuch
-description: "Explains Git to someone with no background using the picture of the logbook on board and the copy in the harbour (the Albatros Git service, code.aufwind.sh). Fetches the repo from the harbour, guides them through their first entries (commits) with good notes, sends them to the harbour (push) and checks that the copy arrives on the Albatros server in ~/projekt. Rules: only on main, add only your own files one by one, never force-push. Use this skill for “Git”, “GitHub”, “harbour”, “commit”, “push”, “pull”, “repo”, “what's a repository?”, “save my changes”, “back up my work”, “push rejected”, “merge conflict”, and before you commit anything for the person."
+description: "Explains Git to someone with no background using the picture of the logbook on board and the copy in the harbour (the Albatros Git service, code.aufwind.sh). Fetches the repo from the harbour or creates it on the computer before there is a harbour (git init, later connecting the harbour as origin), guides them through their first entries (commits) with good notes, sends them to the harbour (push) and checks that the copy arrives on the Albatros server in ~/projekt. Rules: only on main, add only your own files one by one, never force-push. Use this skill for “Git”, “GitHub”, “harbour”, “commit”, “push”, “pull”, “repo”, “what's a repository?”, “save my changes”, “back up my work”, “push rejected”, “merge conflict”, and before you commit anything for the person."
 metadata:
   stand: 0.2.0
-  quelle: '37805921dff9'
+  quelle: '6ac493bbafdb'
 ---
 
 # Git: the logbook on board, with a copy in the harbour
@@ -47,7 +47,7 @@ Every ship has a logbook. Every entry says: who, when, what and why. When someth
 
 ### 2. Fetch the logbook
 
-Albatros has already created your logbook in the harbour, with the template in it. `konto_status` gives the address:
+If there's already a logbook on this computer (on the website path it begins when building, skill `webseite-bauen`), you don't fetch anything: it gets connected to the harbour (part “Logbuch ohne Hafen”). Otherwise: Albatros has already created your logbook in the harbour, with the template in it. `konto_status` gives the address:
 
 ```bash
 git clone git@aufwind.sh:{name}/projekt.git
@@ -58,7 +58,7 @@ The logbook is private: only you can see it. Then check the `.gitignore`, with a
 
 ### 3. The first entry
 
-The person changes something small themselves, e.g. one line in `README.md`. You open the file for them (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) and name the exact line and the new text. If they don’t feel up to it or nothing changes, you do it yourself and show them the change with `git diff`. The first entry stays small, even if the person already gives you content: on the website path the site only comes with `webseite-planen` and `webseite-bauen`, with plan, checks and sign-off. Keep their content for the floor plan. Then together:
+The person changes something small themselves, e.g. one line in `README.md`. You open the file for them (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) and name the exact line and the new text. If they don’t feel up to it or nothing changes, you do it yourself and show them the change with `git diff`. The first entry stays small, even if the person already gives you content: on the website path the site only comes in the fixed order, with plan, draft, build and release. Keep their content for the floor plan. Then together:
 
 ```bash
 git status                     # What has changed?
@@ -89,6 +89,32 @@ If the new entries are missing, fetch them by hand: `ssh {name}@aufwind.sh 'git 
 ### 5. Check the mission
 
 `mission_pruefen` with `flugschule-04-git-logbuch`. The check looks at whether the logbook has at least two entries on `main`: with Pilot in `~/projekt` on the server, with Light in the harbour.
+
+## Logbuch ohne Hafen (the logbook without a harbour)
+
+A logbook doesn't need a harbour to get started. On the website path it begins when building, on the computer (skill `webseite-bauen`), long before the site has a place to live:
+
+```bash
+git init -b main                         # once, in the project folder
+git add .gitignore docs design           # your own files and folders, by name
+git commit -m "Draft approved: plan, concept, draft"
+```
+
+As long as there's no harbour, the logbook only exists on this computer. If that falls into the water, it's gone: then a second copy is needed, for example a private repository (skill `betrieb`, backup).
+
+**Connecting the harbour later,** when going live (skill `lancieren`): without cloning again and without copying files, otherwise the entries from building are lost.
+
+- **The Albatros harbour:** since the place was chosen, it holds the template, one entry with a beginning of its own. You connect the harbour as `origin` and take the template into the logbook once. Where both have the same file, your own stays (`-X ours`):
+  ```bash
+  git remote add origin git@aufwind.sh:{name}/projekt.git
+  git fetch origin
+  git merge origin/main --allow-unrelated-histories -X ours -m "Template from the harbour taken in"
+  git push -u origin main
+  ```
+  If there's already an `origin` (`git remote -v`), you use another name for the harbour, for example `hafen`.
+- **An empty repository on GitHub** (hosting it yourself): `gh repo create <repo> --private --source . --remote origin --push`. There's nothing to merge there.
+
+Here too: never `git push --force`. If the push is rejected, merge first as above.
 
 ## When it gets stuck
 

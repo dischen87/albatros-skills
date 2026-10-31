@@ -1,6 +1,6 @@
 ---
 name: landung
-description: 'Plant und begleitet den Umzug eines Projekts von Albatros auf einen eigenen Server, erklärt mit dem Bild vom Umzug ins eigene Haus: Umzugsliste, Server mieten und einrichten (SSH nur mit Schlüssel, Firewall, Updates, Caddy für HTTPS), Logbuch zu GitHub mitnehmen, Fliessband dort mit eigenem Schlüssel per SSH auf das neue Ziel umstellen, Daten und Geheimnisse mitnehmen, testen, Adresse im DNS umstellen oder eine bei Albatros gekaufte Domain mit dem Auth-Code aus domain_mitnehmen zu einem neuen Registrar umziehen, Sicherungen selbst übernehmen. Nutze den Skill bei «eigener Server», «umziehen», «weg von Albatros», «Hetzner», «VPS», «selber hosten», «Landung», «was brauche ich für einen eigenen Server».'
+description: 'Plant und begleitet den Umzug eines Projekts von Albatros auf einen eigenen Server, erklärt mit dem Bild vom Umzug ins eigene Haus: Umzugsliste, Server mieten und einrichten (SSH nur mit Schlüssel, Firewall, Updates, Caddy für HTTPS), Logbuch zu GitHub mitnehmen, Fliessband dort mit eigenem Schlüssel, Daten und Geheimnisse mitnehmen, testen, Adresse im DNS umstellen oder eine bei Albatros gekaufte Domain mit dem Auth-Code aus domain_mitnehmen umziehen, Sicherungen selbst übernehmen. Dazu der Weg direkt vom Computer ins Netz, ohne Hafen von Albatros: Logbuch, GitHub, ein Anbieter für statische Seiten oder ein eigener Server. Nutze den Skill bei «eigener Server», «umziehen», «weg von Albatros», «ohne Albatros», «selber hosten», «Hetzner», «VPS», «GitHub Pages», «Netlify», «Landung».'
 metadata:
   stand: 0.2.0
 ---
@@ -13,6 +13,8 @@ Bei Albatros wohnst du in einer Wohnung mit Hauswart: Er macht die Haustür zu, 
 
 Der Umzug ist kein Neubau. Dein Projekt ist schon in Kisten verpackt, die überall passen: das Logbuch (Git), die Bauanleitung (`Dockerfile`, `compose.yaml`) und das Fliessband (Workflow). Du packst den Rest dazu, ziehst um und meldest deine Adresse um. Nur der Hafen gehört zum Haus von Albatros: Dein Logbuch bekommt einen neuen Hafen, zum Beispiel GitHub.
 
+Wer gar nie bei Albatros eingezogen ist, baut gleich auf dem eigenen Grundstück: Die Kisten (das Logbuch und der gebaute Ordner `seite/`) stehen schon auf dem Computer bereit (Abschnitt «Direkt vom Computer ins Netz»).
+
 **So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
 
 ## So sprichst du
@@ -22,7 +24,19 @@ Der Umzug ist kein Neubau. Dein Projekt ist schon in Kisten verpackt, die übera
 - Server mieten und bezahlen macht die Person selbst beim Anbieter.
 - Das alte Zuhause wird erst abgeschaltet, wenn das neue nachweislich läuft.
 
-## Ablauf
+## Direkt vom Computer ins Netz
+
+Wohnt die Seite von Anfang an selbst (Skill `lancieren`, Wohnort «selbst»), gibt es nichts umzuziehen. Das Logbuch liegt auf dem Computer (Skill `git-logbuch`, Abschnitt «Logbuch ohne Hafen»), die freigegebene Seite gebaut in `seite/`. Ein Hafen von Albatros kommt nicht vor.
+
+1. **Eine Kopie des Logbuchs ausserhalb des Computers:** meist GitHub. Die Person legt das Konto selbst an und meldet sich mit `gh auth login` im Browser an. Dann `gh repo create <repo> --private --source . --remote origin --push`. Öffentlich (`--public`) nur, wenn sie weiss, dass dann auch `docs/` mit Plan und Konzept für alle lesbar ist.
+2. **Eine Seite ohne Baustein** braucht keinen Server: GitHub Pages, Cloudflare Pages oder Netlify liefern den Ordner `seite/` aus. Wie du sie einrichtest und das erste Mal hochlädst (mit dem Fliessband für GitHub Pages), steht im Skill `lancieren`, Teil 2, «Selbst, mit GitHub» und «Selbst, ohne Repo». Bedingungen und Grenzen der Gratis-Angebote liest du mit der Person auf deren Preisseite.
+3. **Eine Seite mit Baustein** braucht einen eigenen Server: Dann gelten die Schritte 3 bis 5 unten (Das neue Haus, Logbuch und Fliessband, Daten und Geheimnisse). Beim Logbuch fällt das Umbenennen weg, es gibt nur `origin` bei GitHub. Die Bauanleitung (`Dockerfile`, `compose.yaml`, `nginx.conf`) und das Fliessband holst du aus dem Ordner `vorlage/` von albatros-skills.
+4. **Eine eigene Domain** kauft die Person bei einem Registrar ihrer Wahl, mit eigenem Konto. Die Einträge im Telefonbuch (DNS) nimmst du genau aus der Anleitung des Anbieters, nie aus dem Gedächtnis: bei GitHub Pages unter Settings, Pages, «Custom domain», bei Netlify unter «Domain management», bei Cloudflare Pages unter «Custom domains», beim eigenen Server A und AAAA auf seine Adresse. Das Zertifikat (das Schloss-Symbol im Browser) holen der Anbieter oder Caddy selbst. Einträge für E-Mail (MX) fasst du nie an. Prüfen wie im Skill `domain`, Schritt 6: `dig +short <domain>`, dann `https://<domain>` im Browser.
+5. **Was die Person selbst übernimmt:** Überwachung und Sicherung, wie in `docs/betrieb.md` festgehalten (Skill `betrieb`), mit eigenem Server dazu die Updates.
+
+Die Missionen von Albatros, die einen Server oder den Hafen prüfen, kann Albatros dann nicht prüfen. Die Schritte auf der Insel meldest du trotzdem mit `schritt_melden`.
+
+## Ablauf: Umzug von Albatros
 
 ### 1. Lohnt sich der Umzug?
 
@@ -161,7 +175,7 @@ Eine Woche beobachten. Läuft alles, das Abo bei Albatros anpassen oder kündige
 
 ### 8. Mission prüfen
 
-`docs/landung.md` ins Logbuch und über das Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-10-landung`. Die Prüfung schaut, ob die Umzugsliste `docs/landung.md` im Projekt liegt (mit Pilot auf dem Albatros-Server, mit Light im Hafen). Am besten schreibt die Person die Liste, solange sie noch bei Albatros wohnt.
+`docs/landung.md` ins Logbuch und über das Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-10-landung`. Die Prüfung schaut, ob die Umzugsliste `docs/landung.md` im Projekt liegt (mit Pilot auf dem Albatros-Server, mit Light im Hafen). Am besten schreibt die Person die Liste, solange sie noch bei Albatros wohnt. Wohnt die Seite von Anfang an selbst, gibt es für Albatros nichts zu prüfen.
 
 ## Stolpersteine
 

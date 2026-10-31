@@ -1,9 +1,9 @@
 ---
 name: landung
-description: "Plans and guides the move of a project from Albatros to an own server, explained with the picture of moving into your own house: moving checklist, renting and setting up a server (SSH with keys only, firewall, updates, Caddy for HTTPS), taking the logbook to GitHub, switching the conveyor belt there to the new target over SSH with its own key, taking data and secrets along, testing, switching the address in DNS or moving a domain bought through Albatros to a new registrar with the auth code from domain_mitnehmen, and taking over backups yourself. Use this skill for “my own server”, “move my site”, “leave Albatros”, “Hetzner”, “VPS”, “self-host”, “landing”, “what do I need for my own server”."
+description: "Plans and guides the move of a project from Albatros to an own server, explained with the picture of moving into your own house: moving checklist, renting and setting up a server (SSH with keys only, firewall, updates, Caddy for HTTPS), taking the logbook to GitHub, the conveyor belt there with its own key, taking data and secrets along, testing, switching the address in DNS or moving a domain bought through Albatros with the auth code from domain_mitnehmen, and taking over backups yourself. Plus the way straight from the computer to the web, without the Albatros harbour: logbook, GitHub, a provider for static sites or your own server. Use this skill for “my own server”, “move my site”, “leave Albatros”, “without Albatros”, “self-host”, “Hetzner”, “VPS”, “GitHub Pages”, “Netlify”, “landing”."
 metadata:
   stand: 0.2.0
-  quelle: '53bf9c40474d'
+  quelle: 'b8aa3d9b69ff'
 ---
 
 # Landing: moving into your own house
@@ -13,6 +13,8 @@ metadata:
 At Albatros you live in a flat with a caretaker: they lock the front door, change the locks and take a photo of the flat every night. In your own house you do that yourself.
 
 The move isn't a new build. Your project is already packed in boxes that fit anywhere: the logbook (Git), the building instructions (`Dockerfile`, `compose.yaml`) and the conveyor belt (workflow). You pack the rest, move and change your address. Only the harbour belongs to the Albatros house: your logbook gets a new harbour, for example GitHub.
+
+Anyone who never moved in with Albatros builds straight on their own plot: the boxes (the logbook and the built folder `seite/`) are already waiting on the computer (part “Direkt vom Computer ins Netz”, straight from the computer to the web).
 
 **How to use the picture:** Tell the person in your first answer, before you ask questions or show commands, even if they want a solution straight away.
 
@@ -24,7 +26,19 @@ The move isn't a new build. Your project is already packed in boxes that fit any
 - The old home only gets switched off once the new one is proven to work.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 
-## Steps
+## Direkt vom Computer ins Netz (straight from the computer to the web)
+
+If the site is hosted by the person themselves from the start (skill `lancieren`, “hosting it yourself”), there's nothing to move. The logbook is on the computer (skill `git-logbuch`, part “Logbuch ohne Hafen”), the released site built in `seite/`. No Albatros harbour is involved.
+
+1. **A copy of the logbook outside the computer:** usually GitHub. The person creates the account themselves and signs in with `gh auth login` in the browser. Then `gh repo create <repo> --private --source . --remote origin --push`. Public (`--public`) only if they know that `docs/` with the plan and the concept is then readable by everyone.
+2. **A site without a building block** needs no server: GitHub Pages, Cloudflare Pages or Netlify deliver the folder `seite/`. How to set them up and upload the first time (with the conveyor belt for GitHub Pages) is in the skill `lancieren`, part 2, “Selbst, mit GitHub” and “Selbst, ohne Repo”. You read the terms and limits of the free offers with the person on their pricing page.
+3. **A site with a building block** needs its own server: then steps 3 to 5 below apply (the new house, logbook and conveyor belt, data and secrets). For the logbook there's nothing to rename, there's only `origin` on GitHub. The building instructions (`Dockerfile`, `compose.yaml`, `nginx.conf`) and the conveyor belt you take from the folder `vorlage/` in albatros-skills.
+4. **Your own domain** the person buys from a registrar of their choice, with their own account. You take the entries for the phone book (DNS) exactly from the provider's instructions, never from memory: for GitHub Pages under Settings, Pages, “Custom domain”, for Netlify under “Domain management”, for Cloudflare Pages under “Custom domains”, for your own server A and AAAA pointing at its address. The certificate (the padlock in the browser) is fetched by the provider or by Caddy itself. You never touch the email entries (MX). Check as in the skill `domain`, step 6: `dig +short <domain>`, then `https://<domain>` in the browser.
+5. **What the person takes over themselves:** monitoring and backup, as noted in `docs/betrieb.md` (skill `betrieb`), and with their own server also the updates.
+
+Albatros can't check the Albatros missions that look at a server or the harbour. You still report the steps on the island with `schritt_melden`.
+
+## Steps: moving away from Albatros
 
 ### 1. Is the move worth it?
 
@@ -163,7 +177,7 @@ Watch it for a week. If everything runs, adjust or cancel the plan at Albatros (
 
 ### 8. Check the mission
 
-`docs/landung.md` into the logbook and over the conveyor belt (skills `git-logbuch`, `pipeline`), then `mission_pruefen` with `flugschule-10-landung`. The check looks at whether the moving checklist `docs/landung.md` is in the project (with Pilot on the Albatros server, with Light in the harbour). Ideally, the person writes the checklist while they still live at Albatros.
+`docs/landung.md` into the logbook and over the conveyor belt (skills `git-logbuch`, `pipeline`), then `mission_pruefen` with `flugschule-10-landung`. The check looks at whether the moving checklist `docs/landung.md` is in the project (with Pilot on the Albatros server, with Light in the harbour). Ideally, the person writes the checklist while they still live at Albatros. If the site was hosted by the person from the start, there's nothing for Albatros to check.
 
 ## Stumbling blocks
 

@@ -1,9 +1,9 @@
 ---
 name: git-logbuch
-description: "Explique Git à une personne sans connaissances préalables avec l'image du journal de bord à bord et de sa copie au port (le service Git d'Albatros, code.aufwind.sh). Récupère le repo au port, accompagne les premières entrées (commit) avec de bonnes notes, les envoie au port (push) et vérifie que la copie arrive sur le serveur Albatros dans ~/projekt. Règles : seulement sur main, ajouter seulement ses propres fichiers, un par un, jamais de force-push. Utilise ce skill pour « Git », « GitHub », « port », « commit », « push », « pull », « repo », « c'est quoi un repository ? », « sauvegarder mes modifications », « mon push est refusé », « conflit », et avant de faire un commit pour la personne."
+description: "Explique Git à une personne sans connaissances préalables avec l'image du journal de bord à bord et de sa copie au port (le service Git d'Albatros, code.aufwind.sh). Récupère le repo au port ou le crée sur l'ordinateur avant qu'il y ait un port (git init, plus tard relier le port comme origin), accompagne les premières entrées (commit) avec de bonnes notes, les envoie au port (push) et vérifie que la copie arrive sur le serveur Albatros dans ~/projekt. Règles : seulement sur main, ajouter seulement ses propres fichiers, un par un, jamais de force-push. Utilise ce skill pour « Git », « GitHub », « port », « commit », « push », « pull », « repo », « c'est quoi un repository ? », « sauvegarder mes modifications », « mon push est refusé », « conflit », et avant de faire un commit pour la personne."
 metadata:
   stand: 0.2.0
-  quelle: '37805921dff9'
+  quelle: '6ac493bbafdb'
 ---
 
 # Git : le journal de bord à bord, avec une copie au port
@@ -47,7 +47,7 @@ Sur chaque bateau, il y a un journal de bord. Chaque entrée dit : qui, quand,
 
 ### 2. Récupérer le journal de bord
 
-Albatros a déjà créé ton journal de bord au port, avec le modèle dedans. `konto_status` donne l'adresse :
+S'il y a déjà un journal de bord sur cet ordinateur (sur le parcours site web, il naît à la construction, skill `webseite-bauen`), tu ne récupères rien : il est relié au port (partie « Logbuch ohne Hafen »). Sinon : Albatros a déjà créé ton journal de bord au port, avec le modèle dedans. `konto_status` donne l'adresse :
 
 ```bash
 git clone git@aufwind.sh:{name}/projekt.git
@@ -58,7 +58,7 @@ Le journal de bord est privé : toi seul le vois. Ensuite, vérifier le `.giti
 
 ### 3. La première entrée
 
-La personne modifie elle-même quelque chose de petit, p. ex. une ligne dans `README.md`. Tu lui ouvres le fichier (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) et tu lui indiques exactement la ligne et le nouveau texte. Si elle n’ose pas ou si rien ne change, tu le fais toi-même et tu lui montres la modification avec `git diff`. La première entrée reste petite, même si la personne donne déjà des contenus : sur le chemin Site web, le site ne naît qu’avec `webseite-planen` et `webseite-bauen`, avec plan, contrôle et validation. Tu gardes ses contenus pour le plan. Puis ensemble :
+La personne modifie elle-même quelque chose de petit, p. ex. une ligne dans `README.md`. Tu lui ouvres le fichier (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) et tu lui indiques exactement la ligne et le nouveau texte. Si elle n’ose pas ou si rien ne change, tu le fais toi-même et tu lui montres la modification avec `git diff`. La première entrée reste petite, même si la personne donne déjà des contenus : sur le chemin Site web, le site ne naît que dans le déroulement fixe, avec plan, ébauche, construction et validation. Tu gardes ses contenus pour le plan. Puis ensemble :
 
 ```bash
 git status                     # Qu'est-ce qui a changé ?
@@ -87,6 +87,32 @@ S'il manque les nouvelles entrées, tu les récupères à la main : `ssh {name
 ### 5. Vérifier la mission
 
 `mission_pruefen` avec `flugschule-04-git-logbuch`. La vérification regarde si le journal de bord a au moins deux entrées sur `main` : avec Pilot dans `~/projekt` sur le serveur, avec Light au port.
+
+## Logbuch ohne Hafen (le journal de bord sans port)
+
+Un journal de bord n'a pas besoin d'un port pour commencer. Sur le parcours site web, il naît à la construction, sur l'ordinateur (skill `webseite-bauen`), bien avant que le site ait un domicile :
+
+```bash
+git init -b main                         # une fois, dans le dossier du projet
+git add .gitignore docs design           # ses propres fichiers et dossiers, nommés
+git commit -m "Ébauche autorisée : plan, concept, ébauche"
+```
+
+Tant qu'il n'y a pas de port, le journal de bord n'existe que sur cet ordinateur. S'il tombe à l'eau, il est perdu : il faut alors une deuxième copie, par exemple un dépôt privé (skill `betrieb`, sauvegarde).
+
+**Relier le port plus tard,** à la mise en ligne (skill `lancieren`) : sans cloner à nouveau et sans copier de fichiers, sinon les entrées de la construction sont perdues.
+
+- **Port d'Albatros :** depuis le domicile, il contient le modèle, une entrée avec son propre début. Tu relies le port comme `origin` et tu reprends le modèle une fois dans le journal de bord. Là où les deux ont le même fichier, c'est le sien qui reste (`-X ours`) :
+  ```bash
+  git remote add origin git@aufwind.sh:{name}/projekt.git
+  git fetch origin
+  git merge origin/main --allow-unrelated-histories -X ours -m "Modèle du port repris"
+  git push -u origin main
+  ```
+  S'il y a déjà un `origin` (`git remote -v`), tu prends un autre nom pour le port, par exemple `hafen`.
+- **Un dépôt vide chez GitHub** (domicile « par toi-même ») : `gh repo create <depot> --private --source . --remote origin --push`. Là, il n'y a rien à fusionner.
+
+Ici aussi : jamais `git push --force`. Si le push est refusé, d'abord fusionner comme plus haut.
 
 ## Quand ça coince
 
