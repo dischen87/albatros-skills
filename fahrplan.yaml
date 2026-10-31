@@ -1,0 +1,315 @@
+# Fahrplan: der feste Ablauf von Albatros, Phase P1 bis P13, für den Weg Webseite und den Weg Geschäft.
+#
+# Diese Datei ist die einzige Quelle für Phasen, Skills und Abschnitte je Phase, Ergebnisse, Pflichtfragen, Ja-Momente und
+# Insel-Schritte (Stand 31.10.2026, Plan albatros/docs/plan-fahrplan.md).
+# - scripts/pruefen.ts prüft sie gegen schema/fahrplan.schema.json und gegen Skills, Methoden und Missionen.
+# - albatros erzeugt daraus packages/kit/src/fahrplan.ts (am Pin in albatros/inhalte.lock); flugschule, mcp und web importieren nur
+#   das Erzeugte. lage gibt die offenen Pflichtfragen der aktuellen Phase in der Sprache der Person an die KI weiter.
+# - scripts/gute-antwort.ts macht daraus plugins/albatros/evals/GUTE-ANTWORT.md, die Grundlage der Evals.
+# Ändern nur mit Datum und Grund im Abschnitt «Änderungen» von GUTE-ANTWORT.md.
+#
+# Pflichtfrage:
+#   antwortet: person      die Person beantwortet sie immer selbst, auch im Modus machen
+#              annahme_ok  die KI schlägt einen Standard vor und trägt ihn als [Annahme] ein; die Person bestätigt alle
+#                          Annahmen einer Phase in einer einzigen Nachricht
+#              ki          die KI klärt es selbst (Recherche, Messung) und zeigt das Ergebnis
+#   ablage:    Datei und Zeilenanfang im Projekt der Person
+#   frage, warum: je Sprache (de, fr, it, en); die KI formuliert in ihren Worten, der Inhalt bleibt
+
+version: 2
+stand: 2026-10-31
+gratis_bis: P10          # muss mit GRATIS.bisPhase in albatros/services/konto/src/stufen.ts übereinstimmen (Vertragstest)
+fragen_je_phase: 5       # höchstens so viele Fragen an die Person je Phase; der Rest als [Annahme] in einer Bestätigung
+fragen_je_nachricht: 2   # höchstens so viele Fragen in einer Nachricht
+
+ja_momente:              # die drei Freigaben; alles andere ist eine Wahl oder eine Annahme
+  - { phase: P4, frage: plan-bestaetigt }
+  - { phase: P8, frage: freigabe-entwurf }
+  - { phase: P10, frage: freigabe }
+
+modus:
+  standard: machen
+  quelle: 'docs/projekt.md#Modus:'   # gilt je Projekt; der Modus im Konto ist nur die Vorgabe für neue Projekte
+  machen: >-
+    Die KI nutzt das Know-how und macht die Arbeit, mit einem Satz Erklärung und Bild je Schritt. Pflichtfragen mit
+    antwortet: person stellt sie trotzdem, den Rest trägt sie als [Annahme] ein. Lernmomente bietet sie an, drängt sie nicht auf.
+  lernen: >-
+    Die KI erklärt jeden Schritt mit Bild und Warum, lässt die Person die Lernmomente selbst tippen, stellt am Ende der Phase die
+    Kontrollfrage der Lektion und meldet «verstanden» (verstanden_melden) erst nach der Antwort der Person.
+
+phasen:
+  - id: P1
+    titel: Idee verstehen
+    etappe: abheben
+    bild: Die Bordkarte, auf der steht, wohin die Reise geht
+    skill: webseite-planen
+    abschnitt: Idee
+    methoden: { geschaeft: [ideen-check] }
+    ergebnis:
+      - datei: docs/projekt.md
+        zeilen: ['Projektname:', 'In einem Satz:', 'Für wen:', 'Hauptsache:', 'Erfolg:', 'Bestehende Seite:', 'Modus:', 'Stand:', 'Nächster Schritt:']
+      - datei: AGENTS.md
+      - datei: design/skizze.html
+    insel: [idee]
+    lernmomente: ['Warum ein Projekt einen Namen braucht, bevor es etwas gibt', 'Eine Hauptsache statt fünf']
+    ausgaenge: { geschaeft: [weiter, anpassen, stoppen] }
+    pflichtfragen:
+      - { id: projektname, bereich: ablauf, antwortet: person, ablage: 'docs/projekt.md#Projektname:', frage: { de: 'Wie soll dein Projekt heissen? Ein Arbeitsname reicht, er darf auch willkürlich sein.' }, warum: { de: 'Mit einem Namen können wir ab jetzt auf alles verweisen.' } }
+      - { id: satz, bereich: struktur, antwortet: person, ablage: 'docs/projekt.md#In einem Satz:', frage: { de: 'Worum geht es, in einem Satz?' }, warum: { de: 'Was sich nicht in einem Satz sagen lässt, versteht auch kein Besucher.' } }
+      - { id: fuer-wen, bereich: struktur, antwortet: person, ablage: 'docs/projekt.md#Für wen:', frage: { de: 'Für wen ist es gedacht?' }, warum: { de: 'Für wen bestimmt Sprache, Bilder und Aufbau.' } }
+      - { id: hauptsache, bereich: struktur, antwortet: person, ablage: 'docs/projekt.md#Hauptsache:', frage: { de: 'Was sollen Besucher vor allem tun?' }, warum: { de: 'Eine Seite mit einer Hauptsache wirkt; eine mit fünf verwirrt.' } }
+      - { id: bestehend, bereich: ablauf, antwortet: person, ablage: 'docs/projekt.md#Bestehende Seite:', frage: { de: 'Gibt es schon eine Webseite? Wenn ja, die Adresse.' }, warum: { de: 'Dann beginnen wir mit einer Bestandsaufnahme, damit nichts verloren geht.' } }
+      - { id: erfolg, bereich: release, antwortet: annahme_ok, ablage: 'docs/projekt.md#Erfolg:', frage: { de: 'Woran merkst du in drei Monaten, dass es funktioniert?' }, warum: { de: 'Ohne Erfolgsmass weiss niemand, ob die Seite etwas bringt.' } }
+      - { id: modus, bereich: ablauf, antwortet: annahme_ok, ablage: 'docs/projekt.md#Modus:', frage: { de: 'Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen?' }, warum: { de: 'Machen geht schneller, lernen bleibt. Du kannst jederzeit wechseln.' } }
+    gate: 'docs/projekt.md hat alle Zeilen; Projektname nicht leer; die Skizze der Startseite ist geöffnet worden.'
+
+  - id: P2
+    titel: Konzept und Research
+    etappe: abheben
+    bild: Die Reiseführer lesen, bevor man losfliegt
+    skill: webseite-planen
+    abschnitt: Research
+    methoden: { geschaeft: [zielgruppe, angebot-und-preis] }
+    varianten: { modernisieren: { skill: webseite-modernisieren, abschnitt: Bestandsaufnahme } }
+    ergebnis:
+      - datei: docs/recherche.md
+        zeilen: ['Vorbilder:', 'Übliche Seiten und Funktionen:', 'Übernehmen:', 'Vermeiden:', 'Pflichten:', 'Inhalte vorhanden:', 'Suchbegriffe:']
+    insel: [recherche]
+    lernmomente: ['Abgucken ist erlaubt, kopieren nicht']
+    pflichtfragen:
+      - { id: vorbilder, bereich: design, antwortet: annahme_ok, ablage: 'docs/recherche.md#Vorbilder:', frage: { de: 'Kennst du Seiten, die dir gefallen? Ich suche zusätzlich bis zu drei vergleichbare in deiner Region und Branche.' }, warum: { de: 'Vorbilder zeigen, was Besucher erwarten.' } }
+      - { id: funktionen-ueblich, bereich: struktur, antwortet: ki, ablage: 'docs/recherche.md#Übliche Seiten und Funktionen:', frage: { de: 'Was bieten vergleichbare Seiten an?' }, warum: { de: 'Was alle haben, erwarten Besucher auch bei dir.' } }
+      - { id: uebernehmen-vermeiden, bereich: design, antwortet: annahme_ok, ablage: 'docs/recherche.md#Übernehmen:', frage: { de: 'Was übernehmen wir, was machen wir bewusst anders?' }, warum: { de: 'So wird deine Seite vertraut und trotzdem deine.' } }
+      - { id: pflichten, bereich: release, antwortet: ki, ablage: 'docs/recherche.md#Pflichten:', frage: { de: 'Welche Pflichten gelten (Impressum, Datenschutz, Bildrechte, Cookies)?' }, warum: { de: 'Was Pflicht ist, gehört von Anfang an in den Plan.' } }
+      - { id: inhalte-vorhanden, bereich: struktur, antwortet: person, ablage: 'docs/recherche.md#Inhalte vorhanden:', frage: { de: 'Welche Texte, Fotos und welches Logo hast du schon?' }, warum: { de: 'Fehlende Inhalte sind der häufigste Grund, warum Seiten nie fertig werden.' } }
+      - { id: suchbegriffe, bereich: release, antwortet: annahme_ok, ablage: 'docs/recherche.md#Suchbegriffe:', frage: { de: 'Mit welchen Worten würde dich jemand suchen?' }, warum: { de: 'Daraus entstehen Titel und Texte, die man findet.' } }
+    gate: 'Bis zu drei Vorbilder mit Adresse, jede Adresse von der KI aufgerufen und erreichbar; weniger nur mit Grund; ohne Netz nennt die Person sie. Keine erfundenen Adressen.'
+
+  - id: P3
+    titel: Plan
+    etappe: abheben
+    bild: Der Grundriss des Hauses
+    skill: webseite-planen
+    abschnitt: Grundriss
+    methoden: { geschaeft: [landingpage] }
+    ergebnis:
+      - datei: docs/plan.md
+        zeilen: ['Projektname:', 'Seiten:', 'Funktionen:', 'Zugang:', 'Sprachen:', 'Setup:', 'Testing:', 'Release:', 'Pflege:', 'Stand:']
+    insel: [plan]
+    lernmomente: ['Warum jede Seite gepflegt werden muss']
+    pflichtfragen:
+      - { id: funktionen, bereich: struktur, antwortet: person, ablage: 'docs/plan.md#Funktionen:', frage: { de: 'Was sollen Besucher tun können: anfragen, buchen, sich anmelden, bezahlen?' }, warum: { de: 'Jede Funktion braucht einen Ablauf mit Bestätigung und Fehlerfall.' } }
+      - { id: zugang, bereich: struktur, antwortet: person, ablage: 'docs/plan.md#Zugang:', frage: { de: 'Gibt es Bereiche nur für bestimmte Leute? Wer darf was sehen und ändern?' }, warum: { de: 'Wer darf was, entscheidet über Login und Bausteine.' } }
+      - { id: sprachen, bereich: struktur, antwortet: person, ablage: 'docs/plan.md#Sprachen:', frage: { de: 'In welchen Sprachen?' }, warum: { de: 'Jede Sprache verdoppelt die Texte.' } }
+      - { id: release, bereich: release, antwortet: person, ablage: 'docs/plan.md#Release:', frage: { de: 'Bis wann soll es online sein? Gibt es einen Anlass?' }, warum: { de: 'Ein Datum macht aus einem Wunsch einen Plan.' } }
+      - { id: pflege, bereich: release, antwortet: person, ablage: 'docs/plan.md#Pflege:', frage: { de: 'Wer ändert später Texte und Termine, und wie oft?' }, warum: { de: 'Davon hängt ab, ob es ein System zur Inhaltspflege braucht.' } }
+      - { id: seiten, bereich: struktur, antwortet: annahme_ok, ablage: 'docs/plan.md#Seiten:', frage: { de: 'Welche Seiten braucht es? Für den ersten Flug höchstens fünf bis sieben, Impressum und Datenschutz zählen mit.' }, warum: { de: 'Jede Seite muss gepflegt werden.' } }
+      - { id: setup, bereich: setup, antwortet: annahme_ok, ablage: 'docs/plan.md#Setup:', frage: { de: 'Reicht eine Seite ohne eigene Dienste, oder braucht es einen Baustein (Anmeldung, Buchung, Login)?' }, warum: { de: 'Davon hängt ab, wo die Seite später wohnt und was es kostet.' } }
+      - { id: testing, bereich: testing, antwortet: annahme_ok, ablage: 'docs/plan.md#Testing:', frage: { de: 'Woran erkennen wir, dass es fertig ist?' }, warum: { de: 'Abnahmekriterien vor dem Bau verhindern Streit nach dem Bau.' } }
+    gate: 'docs/plan.md hat alle Zeilen; offene Punkte stehen als [offen], nichts erfunden.'
+
+  - id: P4
+    titel: Plan prüfen
+    etappe: abheben
+    bild: Die zweite Meinung vom Statiker, bevor gebaut wird
+    skill: webseite-planen
+    abschnitt: Plan prüfen
+    varianten: { modernisieren: { zusatz: 'Keine Funktion der alten Seite geht ohne Entscheid verloren (docs/bestand.md).' } }
+    ergebnis:
+      - datei: docs/plan-pruefung.md
+        zeilen: ['Geprüft am:', 'Zweite Meinung:']
+      - datei: docs/plan.md
+        zeilen: ['Bestätigt:']
+    insel: [plan-geprueft]
+    lernmomente: ['Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten']
+    pflichtfragen:
+      - { id: zweite-meinung, bereich: ablauf, antwortet: ki, ablage: 'docs/plan-pruefung.md#Zweite Meinung:', frage: { de: 'Was spricht gegen diesen Plan? Prüfung in frischem Kontext, der nur docs/ liest, gegen die feste Prüfliste.' }, warum: { de: 'Eine zweite Meinung ohne die Vorgeschichte findet, was die erste übersieht.' } }
+      - { id: plan-bestaetigt, bereich: ablauf, antwortet: person, ablage: 'docs/plan.md#Bestätigt:', frage: { de: 'Ich habe die Punkte mit Risiko oder offen markiert. Ist der Plan so final, oder ändern wir etwas?' }, warum: { de: 'Erst ein bestätigter Plan wird gestaltet.' } }
+    pruefliste:   # jeder Punkt: ok, Risiko oder offen, mit Stelle im Plan; keine Quote
+      - Genau eine Hauptsache, und jede Seite dient ihr
+      - Höchstens fünf bis sieben Seiten für den ersten Flug
+      - Jede Funktion hat einen Ablauf mit Bestätigung, Fehler und leerem Zustand
+      - Die Inhalte sind vorhanden, oder es ist klar, wer sie bis wann liefert
+      - Es ist geklärt, wer was darf, und ob es dafür einen Baustein braucht
+      - Impressum, Datenschutz und Bildrechte sind eingeplant
+      - Das Erfolgsmass ist eine Zahl oder ein beobachtbares Ereignis
+      - Es ist klar, was es nach dem Lancieren kostet und wer es bezahlt
+      - Das grösste Risiko ist benannt, und was für den ersten Flug wegfällt
+      - Das Datum passt zum Umfang
+    zweite_meinung:   # frischer Kontext je KI; sonst ein neues Gespräch mit «Lies nur docs/ und prüfe gegen die Liste»
+      claude-code: 'Subagent oder claude -p im Projektordner'
+      codex: 'codex exec im Projektordner'
+      gemini-cli: 'gemini -p im Projektordner'
+      cursor: 'neuer Agent-Chat oder agent -p im Projektordner'
+    gate: 'Jeder Punkt der Prüfliste ist ok, Risiko oder offen mit Stelle; plan.md hat «Bestätigt: <Datum>» erst nach dem Ja der Person.'
+
+  - id: P5
+    titel: Design- und Marketing-Konzept
+    etappe: abheben
+    bild: Der Charakter des Hauses, bevor Farben gewählt werden
+    skill: konzept
+    methoden: { geschaeft: [marke] }
+    ergebnis:
+      - datei: docs/konzept.md
+        zeilen: ['Name:', 'Kern:', 'Ton:', 'Charakter:', 'Maskottchen:', 'Muss bleiben:', 'Bildsprache:']
+    insel: [konzept]
+    lernmomente: ['Charakter vor Farben']
+    pflichtfragen:
+      - { id: name, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Name:', frage: { de: 'Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen?' }, warum: { de: 'Der Name steht auf jeder Seite und später in der Adresse.' } }
+      - { id: ton, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Ton:', frage: { de: 'Du oder Sie, und wie soll die Sprache klingen?' }, warum: { de: 'Der Ton macht aus Texten eine Stimme.' } }
+      - { id: charakter, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Charakter:', frage: { de: 'Welche drei Wörter beschreiben, wie es wirken soll?' }, warum: { de: 'Aus dem Charakter entstehen die Richtungen, nicht aus Lieblingsfarben.' } }
+      - { id: maskottchen, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Maskottchen:', frage: { de: 'Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später.' }, warum: { de: 'Eine Figur macht eine Seite unverwechselbar, braucht aber in jedem Bild Pflege.' } }
+      - { id: muss-bleiben, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Muss bleiben:', frage: { de: 'Gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen?' }, warum: { de: 'Was bleiben muss, ist der Rahmen für alle Richtungen.' } }
+      - { id: kern, bereich: design, antwortet: annahme_ok, ablage: 'docs/konzept.md#Kern:', frage: { de: 'Was versprichst du, und warum gerade du? (drei Sätze)' }, warum: { de: 'Der Kern ist der Massstab für jeden Text und jedes Bild.' } }
+      - { id: bildsprache, bereich: design, antwortet: annahme_ok, ablage: 'docs/konzept.md#Bildsprache:', frage: { de: 'Fotos, Illustrationen, Icons oder eine Mischung?' }, warum: { de: 'Eine Seite ohne Bild wirkt wie eine Vorlage.' } }
+    gate: 'docs/konzept.md hat alle Zeilen; Maskottchen ist ja, nein oder später. Bilder mit den Bild-Werkzeugen nur nach Nennung des Preises und Ja der Person.'
+
+  - id: P6
+    titel: Designsystem mit Beispiel
+    etappe: abheben
+    bild: Die Materialmuster, ausgelegt auf einem Musterblatt
+    skill: gestaltung
+    ergebnis:
+      - datei: design/mockup.html
+      - datei: design/tokens.css
+      - datei: design/musterblatt.html
+      - datei: docs/designsystem.md
+        zeilen: ['Richtung:', 'Farben:', 'Schriften:', 'Abstände:', 'Komponenten:', 'Maskottchen:']
+    insel: [mockup, entwuerfe]
+    lernmomente: ['Warum Farben und Schriften nur an einem Ort stehen']
+    pflichtfragen:
+      - { id: reihenfolge, bereich: struktur, antwortet: person, ablage: 'docs/designsystem.md#Richtung:', frage: { de: 'Stimmt die Reihenfolge auf der grauen Skizze?' }, warum: { de: 'Aufbau vor Aussehen.' } }
+      - { id: richtung, bereich: design, antwortet: person, ablage: 'docs/designsystem.md#Richtung:', frage: { de: 'Welche der drei Richtungen, oder welche Mischung?' }, warum: { de: 'Drei klar verschiedene Richtungen zeigen, was möglich ist.' } }
+      - { id: musterblatt, bereich: design, antwortet: person, ablage: 'docs/designsystem.md#Richtung:', frage: { de: 'Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?' }, warum: { de: 'Was im Musterblatt stimmt, stimmt auf jeder Seite.' } }
+      - { id: dunkel, bereich: design, antwortet: annahme_ok, ablage: 'docs/designsystem.md#Farben:', frage: { de: 'Auch eine dunkle Fassung?' }, warum: { de: 'Viele Handys zeigen nachts dunkel.' } }
+    gate: 'tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen.'
+
+  - id: P7
+    titel: Ganze Webseite entwerfen
+    etappe: abheben
+    bild: Das begehbare Modell des Hauses, bevor der Rohbau beginnt
+    skill: entwurf
+    ergebnis:
+      - datei: design/entwurf/index.html
+      - datei: docs/entwurf.md
+        zeilen: ['Werkstatt:', 'Seiten:', 'Rückmeldungen:']
+    insel: [entwurf]
+    lernmomente: ['Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau']
+    pflichtfragen:
+      - { id: werkstatt, bereich: setup, antwortet: ki, ablage: 'docs/entwurf.md#Werkstatt:', frage: { de: 'Sind Node, npm und Git da (Prüfung im Terminal ohne Node: command -v, unter Windows where)?' }, warum: { de: 'Ab hier helfen Prüfskripte; wer ohne Werkzeug baut, sucht Fehler am falschen Ort.' } }
+      - { id: texte, bereich: struktur, antwortet: annahme_ok, ablage: 'docs/entwurf.md#Seiten:', frage: { de: 'Welche Texte kommen auf jede Seite? Fehlende stehen als [Platzhalter] da.' }, warum: { de: 'Ein Entwurf mit echten Texten zeigt, ob die Seite trägt.' } }
+      - { id: zustaende, bereich: struktur, antwortet: ki, ablage: 'docs/entwurf.md#Seiten:', frage: { de: 'Wie sehen Bestätigung, Fehler und leere Zustände jeder Funktion aus?' }, warum: { de: 'Gute Seiten fallen bei Fehlern nicht auseinander.' } }
+      - { id: durchklicken, bereich: design, antwortet: person, ablage: 'docs/entwurf.md#Rückmeldungen:', frage: { de: 'Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört?' }, warum: { de: 'Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau.' } }
+    gate: 'design/entwurf hat eine Seite je Seite aus plan.md (ausser Impressum und Datenschutz), aus der gewählten Richtung weitergeführt; alle Links führen auf vorhandene Seiten; nur var(--…) aus design/tokens.css; entwurf-pruefen.mjs ist grün oder die KI hat dasselbe von Hand geprüft.'
+
+  - id: P8
+    titel: Freigabe zum Bauen
+    etappe: abheben
+    bild: Die Unterschrift unter das Modell
+    skill: entwurf
+    abschnitt: Freigabe
+    ergebnis:
+      - datei: docs/entwurf.md
+        zeilen: ['Freigegeben zum Bauen:']
+    insel: [entwurf-freigegeben]
+    pflichtfragen:
+      - { id: freigabe-entwurf, bereich: ablauf, antwortet: person, ablage: 'docs/entwurf.md#Freigegeben zum Bauen:', frage: { de: 'Wollen wir das so bauen?' }, warum: { de: 'Gebaut wird nur, was du gesehen und freigegeben hast.' } }
+    gate: 'Zeile «Freigegeben zum Bauen: <Datum>» mit dem Wortlaut der Person; «sieht gut aus» ohne Ja zum Bauen reicht nicht. Ohne diese Zeile baut webseite-bauen nicht (pruefen.mjs --vor-bau).'
+
+  - id: P9
+    titel: Lokal bauen und prüfen
+    etappe: fliegen
+    bild: Der Rohbau in der eigenen Werkstatt
+    skill: webseite-bauen
+    ergebnis:
+      - datei: docs/stack.md
+      - datei: docs/prd.md
+        zeilen: ['Abgeleitet aus:']
+      - datei: docs/tueren.txt
+      - datei: docs/pruefung/messwerte.json
+    insel: [prd, lokal, pruefung]
+    lernmomente: ['Was ein Logbuch-Eintrag ist (git commit)']
+    pflichtfragen:
+      - { id: stack, bereich: setup, antwortet: annahme_ok, ablage: 'docs/stack.md', frage: { de: 'Bauweise: statisch mit Astro, oder mit Baustein?' }, warum: { de: 'So wenig wie möglich, so viel wie nötig.' } }
+      - { id: tueren, bereich: testing, antwortet: annahme_ok, ablage: 'docs/tueren.txt', frage: { de: 'Welche Adressen sind offen, welche nur mit Anmeldung, welche nie?' }, warum: { de: 'Jede Tür wird vor dem Lancieren geprüft.' } }
+    gate: 'Das PRD ist aus dem freigegebenen Entwurf abgeleitet (keine eigene Abnahme); Markup und Klassen kommen aus design/entwurf; pruefen.mjs ohne Rot; lokales Logbuch mit einem Eintrag je Schritt.'
+
+  - id: P10
+    titel: Lokal ansehen und freigeben
+    etappe: fliegen
+    bild: Die Begehung des fertigen Rohbaus
+    skill: webseite-bauen
+    abschnitt: Freigabe
+    ergebnis:
+      - datei: docs/prd.md
+        zeilen: ['Lokal gesehen:', 'Vergleich mit Entwurf:', 'Freigegeben:']
+    insel: [freigabe]
+    lernmomente: ['Einen Text selbst ändern und lokal sehen (Pflicht im Modus lernen, sonst Angebot)']
+    pflichtfragen:
+      - { id: freigabe, bereich: release, antwortet: person, ablage: 'docs/prd.md#Freigegeben:', frage: { de: 'Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?' }, warum: { de: 'Ohne Freigabe geht nichts ins Netz; diese Freigabe gilt für den Livegang.' } }
+    gate: 'Vergleich Bau gegen Entwurf je Seite (Überschriften, Menü, Abschnitte) ohne offene Abweichung; «Freigegeben: <Datum>» mit dem Wortlaut der Person.'
+
+  - id: P11
+    titel: Wohnort einrichten
+    etappe: fliegen
+    bild: Entscheiden, wo das Haus steht, und den Schlüssel holen
+    skill: lancieren
+    ergebnis:
+      - datei: docs/lancieren.md
+        zeilen: ['Wohnort:', 'Grund:', 'Adresse:']
+    insel: [wohnort]
+    lernmomente: ['Was ein SSH-Schlüssel ist (Schloss und Schlüssel)']
+    pflichtfragen:
+      - { id: wohnort, bereich: release, antwortet: person, ablage: 'docs/lancieren.md#Wohnort:', frage: { de: 'Wo soll deine Seite wohnen: bei Albatros (Light ohne Baustein, Pilot mit eigenem Server) oder selbst?' }, warum: { de: 'Beides geht; die Wahl hängt von Bausteinen, Kosten und Lust aufs Selbermachen ab.' } }
+    gate: 'Preise nur aus konto_status; upgrade_link gibt den Link erst mit bestaetigt: true nach der Wahl der Person. Online ist höchstens die Vorlage; die freigegebene Seite geht erst in P13 ins Netz.'
+
+  - id: P12
+    titel: Betrieb vorbereiten
+    etappe: landen
+    bild: Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen
+    skill: betrieb
+    ergebnis:
+      - datei: docs/betrieb.md
+        zeilen: ['Rückmeldungen:', 'Überwachung:', 'Sicherung:', 'Eingang:', 'Statistik:']
+    insel: [betrieb]
+    lernmomente: ['Zurück auf gestern']
+    pflichtfragen:
+      - { id: rueckmeldungen, bereich: release, antwortet: person, ablage: 'docs/betrieb.md#Rückmeldungen:', frage: { de: 'Wie melden sich Besucher bei dir, und wer liest es wie oft?' }, warum: { de: 'Eine Rückmeldung, die niemand liest, ist schlimmer als keine.' } }
+      - { id: eingang, bereich: setup, antwortet: person, ablage: 'docs/betrieb.md#Eingang:', frage: { de: 'Gibt es mehrere Teile, die wissen müssen, wer angemeldet ist?' }, warum: { de: 'Dann prüft ein Eingang an einer Stelle, wer was darf (Baustein eingang, nur mit eigenem Server).' } }
+      - { id: statistik, bereich: release, antwortet: person, ablage: 'docs/betrieb.md#Statistik:', frage: { de: 'Willst du zählen, wer kommt (mit Einwilligung)?' }, warum: { de: 'Ohne Zahlen bleibt das Erfolgsmass eine Vermutung.' } }
+      - { id: ueberwachung, bereich: release, antwortet: annahme_ok, ablage: 'docs/betrieb.md#Überwachung:', frage: { de: 'Wer erfährt es, wenn die Seite nicht antwortet?' }, warum: { de: 'Besser du merkst es als deine Kundschaft.' } }
+      - { id: sicherung, bereich: setup, antwortet: ki, ablage: 'docs/betrieb.md#Sicherung:', frage: { de: 'Wie kommst du auf gestern zurück?' }, warum: { de: 'Snapshots bei Pilot, eine Sicherung bei «selbst».' } }
+    gate: 'docs/betrieb.md hat alle Zeilen; ein Eingang nur bei erfüllten Kriterien und nur mit eigenem Server.'
+
+  - id: P13
+    titel: Live schalten
+    etappe: landen
+    bild: Die Eröffnung mit Band vor der Tür
+    skill: lancieren
+    abschnitt: Live schalten
+    methoden: { geschaeft: [go-live-check] }
+    varianten: { modernisieren: { zusatz: 'Domain umstellen mit Umleitungen für alte Adressen; MX-Einträge nie anfassen.' } }
+    ergebnis:
+      - datei: docs/live.md
+        zeilen: ['Live seit:', 'Adresse:', 'Geprüft:', 'Angekündigt:']
+    insel: [hafen, fliessband, live, domain]
+    pflichtfragen:
+      - { id: adresse, bereich: release, antwortet: person, ablage: 'docs/live.md#Adresse:', frage: { de: 'Eigene Adresse (Domain) jetzt, später oder nie?' }, warum: { de: 'Eine eigene Domain kostet pro Jahr und ist freiwillig.' } }
+      - { id: ankuendigung, bereich: release, antwortet: person, ablage: 'docs/live.md#Angekündigt:', frage: { de: 'Wem sagst du es zuerst?' }, warum: { de: 'Der erste Fan kommt nicht von selbst.' } }
+      - { id: pruefung-live, bereich: testing, antwortet: ki, ablage: 'docs/live.md#Geprüft:', frage: { de: 'Ist die Seite unter ihrer Adresse ohne Rot (pruefen.mjs --live)?' }, warum: { de: 'Live ist erst, was von aussen geprüft ist.' } }
+    gate: 'Push nur mit «Freigegeben:» aus P10; pruefen.mjs --live ohne Rot; Impressum und Datenschutz erreichbar.'
+
+# Nach dem Livegang (kein eigener Platz auf der Insel)
+nach_live:
+  aendern:
+    skill: webseite-aendern
+    klein: [lokal ändern, lokal zeigen, Freigabe, Push]
+    gross: [Nachtrag in docs/plan.md, Entwurf der geänderten Seiten, Freigabe zum Bauen, bauen, lokal zeigen, Freigabe, Push]
+  landen: { geschaeft: [sichtbar-in-ki-antworten, marketing-kanaele, verkauf, kundenstimmen, feedback-und-tickets, funktionen-sichtbar-machen, bezahlte-werbung, zahlen] }
+
+# Insel-Schritte in ihrer Reihenfolge. Die zehn alten Schlüssel behalten Bedeutung und Reihenfolge
+# (mockup < entwuerfe < prd < lokal < pruefung < freigabe < hafen < fliessband < live < domain); neue kommen dazwischen.
+# flugschule speichert den Schlüssel, nicht den Index, und geht nur vorwärts. Jeder Schritt gehört zu genau einer Phase.
+insel:
+  [idee, recherche, plan, plan-geprueft, konzept, mockup, entwuerfe, entwurf, entwurf-freigegeben,
+   prd, lokal, pruefung, freigabe, wohnort, betrieb, hafen, fliessband, live, domain]
