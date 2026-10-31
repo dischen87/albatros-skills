@@ -1,7 +1,7 @@
 // Test des Rezepts mitglieder gegen ein echtes PocketBase (Version aus dem Dockerfile), mit einer Mail-Attrappe auf diesem Computer.
 //   bun bausteine/pocketbase/rezepte/mitglieder/test.ts      (lädt PocketBase einmal nach ~/.cache, prüft die Prüfsumme)
 // Ist das Rezept eingebaut (bausteine/pocketbase/pb_hooks/mitglieder.pb.js), prüft er die eingebauten Dateien, also genau das, was
-// ins Netz geht. Sonst das Rezept selbst. Die Seiten (mitglieder.html, bestaetigen.html, passwort.html) prüft er nicht.
+// ins Netz geht. Sonst das Rezept selbst. Von den Seiten prüft er nur weiter() aus mitglieder.html (wohin es nach dem Anmelden geht).
 import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -117,6 +117,28 @@ try {
 
   // Keine Mail führt auf die Verwaltung, alle auf die eigene Adresse
   pruefe(!mails.some((m) => m.includes('/_/')) && mails.every((m) => !m.includes('Acme')), `Keine Mail verweist auf /_/ oder nennt «Acme» (${mails.length} Mails)`);
+
+  // Türen ohne Anmeldung, wie sie im Skill bausteine stehen: Listen mit Regel geben Gästen 200 mit leerer Liste, nicht 401 oder 403
+  const tueren = await Promise.all(['/collections/users/records', '/collections/mitteilungen/records'].map((p) => fetch(`${api}${p}`)));
+  const leer = await Promise.all(tueren.map((r) => r.json() as Promise<{ totalItems?: number }>));
+  pruefe(tueren.every((r) => r.status === 200) && leer.every((j) => j.totalItems === 0), `Ohne Anmeldung: users und mitteilungen 200 mit leerer Liste (${tueren.map((r) => r.status)})`);
+
+  // Nach dem Anmelden zurück (?weiter=…), nie auf eine fremde Seite. weiter() kommt aus mitglieder.html und läuft mit einem location wie im
+  // Browser: assign löst nach WHATWG URL auf (Tab und Zeilenumbruch fallen weg, «\» gilt wie «/», «/.//x» wird zu «//x»).
+  const html = await Bun.file(join(hier, 'seite', 'mitglieder.html')).text();
+  const quelle = /function weiter\(\) \{[\s\S]*?\n  \}/.exec(html)?.[0] ?? '';
+  const SEITE = 'https://verein.example/mitglieder.html';
+  const wohin = (abfrage: string) => {
+    let ziel: string | null = null;
+    const location = { origin: 'https://verein.example', href: SEITE + abfrage, search: abfrage, assign: (u: string) => { ziel = new URL(u, SEITE).href; } };
+    try { return new Function('location', `${quelle}; return weiter();`)(location) ? ziel : null; } catch { return 'Fehler'; }
+  };
+  const fremd = ['/%09/boese.example', '/%0A/boese.example', '/%0D/boese.example/anmelden', '/%09%5Cboese.example', '//boese.example', '/%5Cboese.example',
+    '/.//boese.example', '/%2e//boese.example', '/..//boese.example', 'https://boese.example', 'javascript:alert(1)', '%zz'];
+  const ziele = fremd.map((w) => wohin(`?weiter=${w}`));
+  const daneben = fremd.filter((_, i) => ziele[i] !== null && !ziele[i]!.startsWith('https://verein.example/'));
+  pruefe(quelle && !daneben.length && wohin('?weiter=%2Fintern%2Fliste.html%3Fx%3D1') === 'https://verein.example/intern/liste.html?x=1',
+    `Nach dem Anmelden weiter nur auf die eigene Seite (${fremd.length} Tricks${daneben.length ? `, fremd: ${daneben.join(' ')}` : ' abgewehrt'}), /intern/liste.html?x=1 geht`);
 } finally {
   server.kill();
   smtp.stop(true);
