@@ -138,14 +138,18 @@ async function main() {
     return { antworten: { ...basis.antworten, 'GET /cockpit/insel': insel }, eingabe };
   }
 
-  // Flugbuch mit der aktuellen Mission, wie flugschule es mission_holen liefert (Kopf und Text aus missionen/<weg>/<nr>-<slug>.md)
+  // Flugbuch mit der aktuellen Mission, wie flugschule es mission_holen mit FAHRPLAN liefert (Kopf und Text aus missionen/<weg>/<nr>-<slug>.md,
+  // dazu Phase und Kontrollfragen aus dem Kopf); mission_holen fragt es mit der Sprache aus GET /cockpit/ich an
   async function flugbuch(m: { id: string; erledigt: number }): Promise<Antwort> {
     const [weg, nr, ...rest] = m.id.split('-');
     const roh = await Bun.file(`${wurzel}missionen/${weg}/${nr}-${rest.join('-')}.md`).text();
     const teile = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(roh);
     if (!teile) throw new Error(`${m.id}: Mission ohne Kopf`);
     const k = Bun.YAML.parse(teile[1]!) as Record<string, unknown>;
-    const aktuell = { id: k.id, weg: k.weg, stufe: k.stufe, titel: k.titel, bild: k.bild, skill: k.skill, dauer: k.dauer, pruefung: k.pruefung, text: teile[2]!.trim() };
+    const aktuell = {
+      id: k.id, weg: k.weg, stufe: k.stufe, titel: k.titel, bild: k.bild, skill: k.skill, dauer: k.dauer, pruefung: k.pruefung, text: teile[2]!.trim(),
+      phase: k.phase ?? null, verstehen: k.verstehen ?? [],
+    };
     return { status: 200, body: { aktuell, erledigt: [], fortschritt: { erledigt: m.erledigt, gesamt: 12 } } };
   }
 
@@ -168,7 +172,10 @@ async function main() {
     const z = await zustandFuer(fall, f);
     const lage = await werkzeug(z, 'lage', z.eingabe);
     // Die weiteren Werkzeuge sehen dazu die aktuelle Mission; lage bleibt genau wie in lage-attrappen.ts
-    const mit: Zustand = f.mission ? { ...z, antworten: { ...z.antworten, 'GET /cockpit/flugbuch': await flugbuch(f.mission) } } : z;
+    const ich = z.antworten['GET /cockpit/ich']?.body;
+    const sprache = typeof ich === 'object' && ich !== null && 'sprache' in ich && typeof ich.sprache === 'string' ? ich.sprache : 'de';
+    const buch = f.mission ? await flugbuch(f.mission) : null;
+    const mit: Zustand = buch ? { ...z, antworten: { ...z.antworten, 'GET /cockpit/flugbuch': buch, [`GET /cockpit/flugbuch?sprache=${sprache}`]: buch } } : z;
     soll.set(`${EVALS}${fall}/mocks/albatros/lage.md`, attrappe(lage.text, lage.fehler));
     for (const [name, args] of Object.entries({ ...f.werkzeuge, ...(f.mission ? { mission_holen: {} } : {}) })) {
       const w = await werkzeug(mit, name, args);

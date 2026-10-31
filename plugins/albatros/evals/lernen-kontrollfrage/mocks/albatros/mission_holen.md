@@ -2,7 +2,7 @@
 type: fixed
 ---
 
-Aktuelle Mission: flugschule-13-plan-pruefen (Die zweite Meinung zum Plan). Bild: Die zweite Meinung vom Statiker, bevor gebaut wird. Skill: webseite-planen. Dauer etwa 20 Minuten. Prüfung: [{"typ":"insel","schritt":"plan-geprueft"}]. Fortschritt: 3 von 12.
+Aktuelle Mission: flugschule-13-plan-pruefen (Die zweite Meinung zum Plan). Phase: P4. Bild: Die zweite Meinung vom Statiker, bevor gebaut wird. Skill: webseite-planen. Dauer etwa 20 Minuten. Prüfung: [{"typ":"insel","schritt":"plan-geprueft"}]. Fortschritt: 3 von 12.
 
 ## Worum es geht
 
@@ -28,3 +28,9 @@ Modernisierst du eine bestehende Seite, prüft die zweite Meinung auch, dass kei
 
 - in `docs/plan.md` deine Bestätigung mit Datum steht
 - und auf deiner Insel der Schritt «Plan geprüft» erreicht ist.
+
+Kontrollfragen der Lektion (im Modus lernen am Ende der Phase; die Antwort nicht vorsagen, die Person antwortet in eigenen Worten, danach verstanden_melden mit mission flugschule-13-plan-pruefen und art kontrollfrage):
+1. Warum prüft deine KI deinen Plan in einem frischen Gespräch?
+   Kern einer guten Antwort: Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten. Ein frischer Blick ohne die Vorgeschichte findet, was der erste übersehen hat.
+2. Was heisst es, wenn ein Punkt der Prüfliste «Risiko» ist?
+   Kern einer guten Antwort: Der Plan geht so, aber an dieser Stelle kann es schiefgehen. Du entscheidest bewusst, ob ihr es ändert oder das Risiko tragt.

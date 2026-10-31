@@ -42,8 +42,8 @@
       ]
      }
     },
-    "anliegen": {
-     "description": "Ein Anliegen, das ein Mensch bei Albatros sehen muss (Datenpanne, Rechnung, Konto, Fehler bei Albatros), in den Worten der Person, ohne Passwörter oder Zugangsdaten.",
+    "anfrage": {
+     "description": "Worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten; nur, wenn die Person der Erfassung zugestimmt hat. Dient dazu, die Skills zu verbessern; niemand antwortet darauf. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), geht mit coach_fragen und anliegen.",
      "type": "string",
      "maxLength": 300
     },
@@ -298,7 +298,7 @@
  },
  {
   "name": "mission_holen",
-  "description": "Gibt die nächste offene Mission auf dem Weg der Person: Titel, Bild, passender Skill, Prüfung und Anleitung. {name} im Text steht für den Servernamen.",
+  "description": "Gibt die nächste offene Mission nach dem Fahrplan: Titel, Bild, Phase, passender Skill, Prüfung, Anleitung und die Kontrollfragen der Lektion mit dem Kern einer guten Antwort (im Modus lernen am Ende der Phase stellen). Titel, Text und Fragen in der Sprache der Person. {name} im Text steht für den Servernamen.",
   "inputSchema": {
    "type": "object",
    "properties": {}
