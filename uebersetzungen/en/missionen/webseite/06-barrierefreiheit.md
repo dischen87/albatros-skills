@@ -1,6 +1,7 @@
 ---
 titel: A ramp next to the stairs
 bild: Ramp next to the stairs
+phase: P9
 ---
 
 ## What it's about
@@ -23,4 +24,5 @@ Stairs work well for many people, but for some they're a wall. A ramp next to th
 
 ## Done when
 
-- the check report `docs/barrierefreiheit.md` is in your project.
+- the check report `docs/barrierefreiheit.md` is in your project
+- and the “Checks” step is reached on your island.

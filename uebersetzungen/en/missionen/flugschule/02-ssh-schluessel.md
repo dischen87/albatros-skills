@@ -1,6 +1,7 @@
 ---
 titel: Your house key for the server
 bild: House key and lock
+phase: P11
 ---
 
 ## What it's about

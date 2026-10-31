@@ -1,6 +1,7 @@
 ---
 titel: So customers find what you offer
 bild: Only what's labelled on the shelf gets sold
+phase: P13
 ---
 
 ## What it's about

@@ -1,6 +1,8 @@
 ---
 titel: Moving into your own house
 bild: A move with packed boxes and a new address
+phase: P13
+optional: true
 ---
 
 ## What it's about

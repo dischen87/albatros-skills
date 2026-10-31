@@ -1,6 +1,7 @@
 ---
 titel: Est-ce que tu apparais dans les réponses des IA ?
 bild: Le guichet d'information de la gare indique l'endroit qui a l'affiche la plus précise
+phase: P13
 ---
 
 ## De quoi il s'agit

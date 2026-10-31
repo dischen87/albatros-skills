@@ -1,6 +1,7 @@
 ---
 titel: D'abord les fondations, ensuite la façade
 bild: Réparer les fondations, puis peindre avec le nuancier
+phase: P6
 ---
 
 ## De quoi il s'agit
@@ -19,10 +20,10 @@ Une nouvelle couche de peinture sur des portes qui coincent ne fait qu'embellir 
 1. Vérifier et noter les constats avec des preuves.
 2. Décider et réparer l'utilisation.
 3. Regarder trois directions avec les mêmes pages et en choisir une.
-4. Fixer le nuancier et transformer toutes les pages.
-5. Regarder des photos sur le natel et sur l'ordinateur, puis donner le feu vert.
+4. Fixer le nuancier et le montrer sur une planche d'échantillons : couleurs, polices, boutons et champs.
+5. Regarder la planche d'échantillons sur le natel et sur l'ordinateur.
 
 ## Réussi quand
 
-- ta décision figure dans `docs/gestaltung/richtungen.md`
-- et ton site répond.
+- tu as choisi une direction et vu la planche d'échantillons
+- et l'étape « Ébauches » est atteinte sur ton île.

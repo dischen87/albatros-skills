@@ -1,6 +1,7 @@
 ---
 titel: Breaking things allowed
 bild: The daily photo of the whole flat
+phase: P12
 ---
 
 ## What it's about

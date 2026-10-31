@@ -1,6 +1,7 @@
 ---
 titel: Ton idée en vaut-elle la peine ?
 bild: La manche à air montre d'où vient vraiment le vent, pas d'où tu aimerais qu'il vienne
+phase: P1
 ---
 
 ## De quoi il s'agit
@@ -26,4 +27,5 @@ Les conversations elles-mêmes prennent quelques jours. Le temps indiqué plus h
 
 ## Réussi quand
 
-- le fichier `docs/ideen-check.md` avec tes hypothèses, tes conversations et ta décision se trouve dans ton projet.
+- le fichier `docs/ideen-check.md` avec tes hypothèses, tes conversations et ta décision se trouve dans ton projet
+- et l'étape « Idée » est atteinte sur ton île.

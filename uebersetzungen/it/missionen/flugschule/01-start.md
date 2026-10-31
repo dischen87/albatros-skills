@@ -1,6 +1,7 @@
 ---
 titel: Salire a bordo
 bild: Prendere la carta d'imbarco e salire
+phase: P11
 ---
 
 ## Di cosa si tratta

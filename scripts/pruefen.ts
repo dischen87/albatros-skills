@@ -6,8 +6,17 @@ import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 
+type Mission = {
+  id: string;
+  weg: string;
+  phase: string;
+  optional?: boolean;
+  skill: string;
+  pruefung: { typ: string; schritt?: string }[];
+  verstehen?: { frage: string; kern: string }[];
+};
 const wurzel = new URL('..', import.meta.url).pathname;
-const pruefeMission = new Ajv({ allErrors: true }).compile(schema);
+const pruefeMission = new Ajv({ allErrors: true }).compile<Mission>(schema);
 const fehler: string[] = [];
 const NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 // Methoden des Wegs Geschäft liegen im privaten Repo albatros-methoden; geprüft wird nur, wo es daneben liegt (nicht in CI)
@@ -87,19 +96,38 @@ if (fahrplan) {
   if (alt.some((i, n) => i < 0 || (n > 0 && i <= alt[n - 1]!))) f(`insel: die zehn alten Schritte fehlen oder stehen nicht in alter Reihenfolge (${ALTE_INSEL.join(' < ')})`);
 }
 
+// Missionen gegen den Fahrplan: Das Schema nennt Phasen und Insel-Schritte selbst (für Leser ohne fahrplan.yaml), dieselben wie dort
+const inselPhase = new Map(fahrplan?.phasen.flatMap((p) => p.insel.map((s) => [s, p.id] as const)));
+const nummer = (phase: string) => Number(phase.slice(1));
+if (fahrplan && schema.properties.phase.enum.join() !== fahrplan.phasen.map((p) => p.id).join())
+  fehler.push('schema/mission.schema.json: phase muss genau die Phasen aus fahrplan.yaml nennen');
+if (fahrplan && schema.$defs.insel.properties.schritt.enum.join() !== fahrplan.insel.join())
+  fehler.push('schema/mission.schema.json: insel.schritt muss genau die Liste insel aus fahrplan.yaml sein');
+
 const wege = new Set<string>();
+const deutsch = new Map<string, Mission>();
 for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
   const [, weg, name] = datei.split('/');
   const k = await kopfdaten(datei);
   if (!k) continue;
   wege.add(weg);
-  if (!pruefeMission(k))
+  const gueltig = pruefeMission(k);
+  if (!gueltig)
     for (const e of pruefeMission.errors!) fehler.push(`${datei}: ${e.instancePath || '/'} ${e.message}`);
   if (k.id !== `${weg}-${name.replace(/\.md$/, '')}`) fehler.push(`${datei}: id muss «${weg}-${name.replace(/\.md$/, '')}» sein`);
   if (k.weg !== weg) fehler.push(`${datei}: weg muss «${weg}» sein`);
   if (k.abo !== 'pilot' && k.pruefung?.some((p: any) => p.typ === 'docker' || p.typ === 'workflow'))
     fehler.push(`${datei}: Prüfung mit docker oder workflow braucht abo: pilot`);
   if (weg === 'geschaeft' ? methodeFehlt(k.skill) : !skills.has(k.skill)) fehler.push(`${datei}: Skill «${k.skill}» gibt es nicht`);
+  if (!gueltig) continue;
+  deutsch.set(datei, k);
+  if (!fahrplan) continue;
+  // Der Insel-Schritt gehört zur Phase der Mission; bis gratis_bis arbeitet die Person nur auf ihrem Computer, ohne Server und Hafen
+  for (const p of k.pruefung)
+    if (p.typ === 'insel' && inselPhase.get(p.schritt ?? '') !== k.phase)
+      fehler.push(`${datei}: Insel-Schritt «${p.schritt}» gehört zu ${inselPhase.get(p.schritt ?? '')}, nicht zur Phase ${k.phase}`);
+  if (nummer(k.phase) <= nummer(fahrplan.gratis_bis) && k.pruefung.some((p) => p.typ !== 'insel'))
+    fehler.push(`${datei}: Phase ${k.phase} liegt bis gratis_bis (${fahrplan.gratis_bis}), dort prüft eine Mission nur mit typ: insel`);
 }
 for (const weg of ['flugschule', 'webseite', 'geschaeft'])
   if (!wege.has(weg)) fehler.push(`missionen/${weg}: keine Missionen`);
@@ -117,6 +145,24 @@ for (const s of ['fr', 'it', 'en']) {
     if (!(await uebersetzt(`uebersetzungen/${s}/${datei}`))) fehler.push(`uebersetzungen/${s}/${datei} fehlt`);
   }
 }
+// Kopf einer übersetzten Mission: titel, bild und verstehen übersetzt, phase und optional gleich wie Deutsch; alles andere kommt aus der
+// deutschen Mission. titel und bild in den Längen, die flugschule (uebersetzungen.ts) annimmt.
+const IM_KOPF = new Set(['titel', 'bild', 'phase', 'optional', 'verstehen']);
+const laenge = (x: unknown, min: number, max: number) => typeof x === 'string' && x.trim().length >= min && x.length <= max;
+for (const [datei, de] of deutsch)
+  for (const s of ['fr', 'it', 'en']) {
+    const pfad = `uebersetzungen/${s}/${datei}`;
+    if (!(await uebersetzt(pfad))) continue;
+    const k = await kopfdaten(pfad);
+    if (!k) continue;
+    for (const feld of Object.keys(k)) if (!IM_KOPF.has(feld)) fehler.push(`${pfad}: ${feld} gehört nicht in den Kopf (kommt aus ${datei})`);
+    if (!laenge(k.titel, 3, 80) || !laenge(k.bild, 3, 200)) fehler.push(`${pfad}: titel (3 bis 80 Zeichen) und bild (3 bis 200) nötig`);
+    if (k.phase !== de.phase) fehler.push(`${pfad}: phase muss ${de.phase} sein wie in ${datei}`);
+    if ((k.optional ?? false) !== (de.optional ?? false)) fehler.push(`${pfad}: optional muss gleich sein wie in ${datei}`);
+    const v: unknown[] = Array.isArray(k.verstehen) ? k.verstehen : [];
+    const ok = (x: unknown) => typeof x === 'object' && x !== null && 'frage' in x && 'kern' in x && laenge(x.frage, 10, 300) && laenge(x.kern, 10, 400);
+    if (v.length !== (de.verstehen?.length ?? 0) || !v.every(ok)) fehler.push(`${pfad}: verstehen braucht ${de.verstehen?.length ?? 0} übersetzte Einträge mit frage und kern wie ${datei}`);
+  }
 
 // Übersetzte Vorlage: flotte legt uebersetzungen/<sprache>/vorlage über vorlage/. YAML muss gleich gebaut sein wie das deutsche,
 // nur Kommentare, name: und Texte in "…" dürfen anders sein. Sonst liefe das Fliessband in einer Sprache mit alten Befehlen.

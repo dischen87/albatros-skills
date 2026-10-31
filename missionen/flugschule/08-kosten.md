@@ -2,12 +2,13 @@
 id: flugschule-08-kosten
 weg: flugschule
 stufe: fliegen
+phase: P11
 titel: Dein Haushaltsbuch
 bild: Haushaltsbuch mit Miete, Nebenkosten und Anschaffungen
 dauer: 20
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/kosten.md
+  - typ: insel
+    schritt: wohnort
 skill: kosten
 video: null
 ---
@@ -31,4 +32,5 @@ Wer alles aufschreibt, erlebt keine Überraschung auf der Rechnung. Du machst ei
 
 ## Geschafft, wenn
 
-- in deinem Projekt die Datei `docs/kosten.md` liegt.
+- in deinem Projekt das Haushaltsbuch `docs/kosten.md` liegt
+- und du damit deinen Wohnort gewählt hast: Auf deiner Insel ist der Schritt «Wohnort» erreicht.

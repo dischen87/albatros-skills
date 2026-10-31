@@ -2,14 +2,13 @@
 id: webseite-03-inhalte
 weg: webseite
 stufe: abheben
+phase: P7
 titel: Die Ware ins Schaufenster
 bild: Ware im Schaufenster
 dauer: 60
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/inhalte.md
-  - typ: http
-    url: https://{name}.aufwind.sh
+  - typ: insel
+    schritt: entwurf
 skill: inhalte
 video: null
 ---
@@ -31,9 +30,9 @@ Gestaltung ist das Licht im Schaufenster, die Inhalte sind die Ware. Ohne Ware v
 2. Die drei Sätze für die Startseite schreiben.
 3. Die übrigen Seiten füllen, Entwürfe überarbeiten, Fakten prüfen.
 4. Fotos auswählen, verkleinern, beschreiben.
-5. Alles auf die Seite bringen und am Handy anschauen.
+5. Alles in den Entwurf deiner Seite bringen und am Handy anschauen.
 
 ## Geschafft, wenn
 
 - die Inhaltsliste `docs/inhalte.md` in deinem Projekt liegt
-- und deine Seite unter `https://{name}.aufwind.sh` antwortet.
+- und auf deiner Insel der Schritt «Entwurf» erreicht ist: Deine ganze Seite ist mit echten Texten zum Durchklicken da.

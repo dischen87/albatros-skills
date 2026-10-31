@@ -1,6 +1,7 @@
 ---
 titel: Is your idea worth it?
 bild: The windsock shows where the wind is really coming from, not where you'd like it to come from
+phase: P1
 ---
 
 ## What it's about
@@ -26,4 +27,5 @@ The conversations themselves take a few days. The time above is the work with yo
 
 ## Done when
 
-- the file `docs/ideen-check.md` with your assumptions, conversations and your decision is in your project.
+- the file `docs/ideen-check.md` with your assumptions, conversations and your decision is in your project
+- and the “Idea” step is reached on your island.

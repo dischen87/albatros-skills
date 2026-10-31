@@ -1,6 +1,7 @@
 ---
 titel: Don't leave the key under the doormat
 bild: Key ring, windows and locks in your own house
+phase: P12
 ---
 
 ## What it's about

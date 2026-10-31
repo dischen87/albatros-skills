@@ -1,6 +1,7 @@
 ---
 titel: A tour of your server
 bild: A tour of your new flat
+phase: P11
 ---
 
 ## What it's about

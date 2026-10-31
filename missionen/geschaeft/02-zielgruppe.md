@@ -2,12 +2,13 @@
 id: geschaeft-02-zielgruppe
 weg: geschaeft
 stufe: abheben
+phase: P2
 titel: Für wen ist dein Angebot?
 bild: Ein Porträt statt einer Menschenmenge
 dauer: 45
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/zielgruppe.md
+  - typ: insel
+    schritt: recherche
 skill: zielgruppe
 video: zielgruppe-in-60-sekunden
 ---
@@ -33,4 +34,5 @@ Auf einem Foto einer Menschenmenge erkennt sich niemand. Ein Porträt zeigt eine
 
 ## Geschafft, wenn
 
-- die Datei `docs/zielgruppe.md` mit deinem Porträt in deinem Projekt liegt.
+- die Datei `docs/zielgruppe.md` mit deinem Porträt in deinem Projekt liegt
+- und auf deiner Insel der Schritt «Recherche» erreicht ist.

@@ -1,6 +1,7 @@
 ---
 titel: Getting onto the city map
 bild: Signposts and city map
+phase: P13
 ---
 
 ## What it's about

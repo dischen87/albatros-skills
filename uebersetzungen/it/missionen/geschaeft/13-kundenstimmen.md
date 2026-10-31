@@ -1,6 +1,7 @@
 ---
 titel: Cosa dice davvero la tua clientela
 bild: Il casellario della posta, ogni lettera in una sola casella
+phase: P13
 ---
 
 ## Di cosa si tratta

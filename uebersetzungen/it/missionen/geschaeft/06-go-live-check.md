@@ -1,6 +1,7 @@
 ---
 titel: Prima del decollo, un giro attorno all'aereo
 bild: Il controllo prima del volo sull'aereo vero, con la scatola nera accesa
+phase: P13
 ---
 
 ## Di cosa si tratta

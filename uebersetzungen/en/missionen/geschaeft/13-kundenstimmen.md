@@ -1,6 +1,7 @@
 ---
 titel: What your customers really say
 bild: The sorting frame at the post office, every letter in exactly one pigeonhole
+phase: P13
 ---
 
 ## What it's about

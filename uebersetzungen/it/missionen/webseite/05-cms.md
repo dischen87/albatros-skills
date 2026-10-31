@@ -1,6 +1,8 @@
 ---
 titel: Una bacheca per i tuoi contenuti
 bild: Bacheca nel corridoio
+phase: P12
+optional: true
 ---
 
 ## Di cosa si tratta

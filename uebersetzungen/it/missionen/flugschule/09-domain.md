@@ -1,6 +1,8 @@
 ---
 titel: Un indirizzo tutto tuo
 bild: Indirizzo nell'elenco telefonico
+phase: P13
+optional: true
 ---
 
 ## Di cosa si tratta

@@ -1,6 +1,7 @@
 ---
 titel: Monter à bord
 bild: Prendre sa carte d'embarquement et monter à bord
+phase: P11
 ---
 
 ## De quoi il s'agit

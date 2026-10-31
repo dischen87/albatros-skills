@@ -2,6 +2,7 @@
 id: geschaeft-06-go-live-check
 weg: geschaeft
 stufe: fliegen
+phase: P13
 titel: Vor dem Start einmal ums Flugzeug
 bild: Die Vorflugkontrolle am echten Flugzeug, mit laufendem Flugschreiber
 dauer: 90

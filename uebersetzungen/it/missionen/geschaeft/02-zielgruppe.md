@@ -1,6 +1,7 @@
 ---
 titel: Per chi è la tua offerta?
 bild: Un ritratto invece di una folla
+phase: P2
 ---
 
 ## Di cosa si tratta
@@ -24,4 +25,5 @@ In una foto di una folla nessuno si riconosce. Un ritratto mostra una persona co
 
 ## Ce l'hai fatta quando
 
-- il file `docs/zielgruppe.md` con il tuo ritratto è nel tuo progetto.
+- il file `docs/zielgruppe.md` con il tuo ritratto è nel tuo progetto
+- e sulla tua isola è raggiunto il passo «Ricerca».

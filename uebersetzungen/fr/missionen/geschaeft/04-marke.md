@@ -1,6 +1,7 @@
 ---
 titel: Comment tu t'appelles, et à quoi on te reconnaît ?
 bild: Une enseigne qu'on lit en passant, qu'on retient et qu'on retrouve
+phase: P5
 ---
 
 ## De quoi il s'agit
@@ -24,4 +25,5 @@ Ta marque est ton enseigne dans une ruelle animée. Elle comprend le nom, les co
 
 ## Réussi quand
 
-- le fichier `docs/marke.md` avec le cœur, le ton, le nom, les vérifications et l'apparence se trouve dans ton projet.
+- le fichier `docs/marke.md` avec le cœur, le ton, le nom, les vérifications et l'apparence se trouve dans ton projet
+- et l'étape « Concept » est atteinte sur ton île.

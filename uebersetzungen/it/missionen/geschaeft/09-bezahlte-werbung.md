@@ -1,6 +1,7 @@
 ---
 titel: Testare la pubblicità senza bruciare soldi
 bild: Un distributore di volantini davanti al negozio, con una busta piena di soldi che a un certo punto è vuota
+phase: P13
 ---
 
 ## Di cosa si tratta

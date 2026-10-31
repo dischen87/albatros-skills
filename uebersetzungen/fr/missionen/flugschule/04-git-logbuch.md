@@ -1,6 +1,7 @@
 ---
 titel: Ton journal de bord avec Git
 bild: Le journal de bord à bord, avec une copie au port
+phase: P13
 ---
 
 ## De quoi il s'agit

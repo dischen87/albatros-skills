@@ -1,6 +1,8 @@
 ---
 titel: Trasloco in una casa propria
 bild: Trasloco con scatoloni pronti e nuovo indirizzo
+phase: P13
+optional: true
 ---
 
 ## Di cosa si tratta

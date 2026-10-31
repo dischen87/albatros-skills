@@ -1,6 +1,7 @@
 ---
 titel: Your logbook with Git
 bild: The logbook on board, with a copy in the harbour
+phase: P13
 ---
 
 ## What it's about

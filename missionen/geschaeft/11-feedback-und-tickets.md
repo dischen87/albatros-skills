@@ -2,6 +2,7 @@
 id: geschaeft-11-feedback-und-tickets
 weg: geschaeft
 stufe: landen
+phase: P13
 titel: Rückmeldungen, die ankommen
 bild: Ein Paket ist erst zugestellt, wenn es vor der Haustür steht
 dauer: 60

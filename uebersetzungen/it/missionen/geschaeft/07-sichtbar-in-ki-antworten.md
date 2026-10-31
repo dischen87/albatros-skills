@@ -1,6 +1,7 @@
 ---
 titel: Compari nelle risposte dell'IA?
 bild: Lo sportello informazioni in stazione indica il posto con l'avviso più preciso
+phase: P13
 ---
 
 ## Di cosa si tratta

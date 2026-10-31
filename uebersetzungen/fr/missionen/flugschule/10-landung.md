@@ -1,6 +1,8 @@
 ---
 titel: Déménager dans ta propre maison
 bild: Déménagement avec des cartons faits et une nouvelle adresse
+phase: P13
+optional: true
 ---
 
 ## De quoi il s'agit

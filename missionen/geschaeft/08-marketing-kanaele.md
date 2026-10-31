@@ -2,6 +2,7 @@
 id: geschaeft-08-marketing-kanaele
 weg: geschaeft
 stufe: landen
+phase: P13
 titel: Durch welche Tür kommt deine Kundschaft?
 bild: Ein Laden mit vielen Türen, an jeder ein Zählwerk, an jedem Link ein Anhänger
 dauer: 60

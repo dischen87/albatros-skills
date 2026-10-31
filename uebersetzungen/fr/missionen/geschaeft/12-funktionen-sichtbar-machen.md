@@ -1,6 +1,7 @@
 ---
 titel: Pour que les clients trouvent ce que tu proposes
 bild: On ne vend que ce qui est sur l'étagère, avec une étiquette
+phase: P13
 ---
 
 ## De quoi il s'agit

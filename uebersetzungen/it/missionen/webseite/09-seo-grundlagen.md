@@ -1,6 +1,7 @@
 ---
 titel: Finire sulla pianta della città
 bild: Cartelli stradali e pianta della città
+phase: P13
 ---
 
 ## Di cosa si tratta

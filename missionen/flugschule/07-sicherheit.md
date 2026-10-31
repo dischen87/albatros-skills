@@ -2,6 +2,7 @@
 id: flugschule-07-sicherheit
 weg: flugschule
 stufe: fliegen
+phase: P12
 titel: Den Schlüssel nicht unter die Fussmatte
 bild: Schlüsselbund, Fenster und Schlösser im eigenen Haus
 dauer: 30

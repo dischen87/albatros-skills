@@ -1,6 +1,7 @@
 ---
 titel: Perché i clienti trovino quello che offri
 bild: Si vende solo quello che è sullo scaffale con il cartellino
+phase: P13
 ---
 
 ## Di cosa si tratta

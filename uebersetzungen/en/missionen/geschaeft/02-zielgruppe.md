@@ -1,6 +1,7 @@
 ---
 titel: Who is your offer for?
 bild: A portrait instead of a crowd
+phase: P2
 ---
 
 ## What it's about
@@ -24,4 +25,5 @@ Nobody recognises themselves in a photo of a crowd. A portrait shows one person 
 
 ## Done when
 
-- the file `docs/zielgruppe.md` with your portrait is in your project.
+- the file `docs/zielgruppe.md` with your portrait is in your project
+- and the “Research” step is reached on your island.

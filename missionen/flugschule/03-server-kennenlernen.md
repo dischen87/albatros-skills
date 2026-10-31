@@ -2,6 +2,7 @@
 id: flugschule-03-server-kennenlernen
 weg: flugschule
 stufe: fliegen
+phase: P11
 titel: Rundgang durch deinen Server
 bild: Rundgang durch die neue Wohnung
 dauer: 30

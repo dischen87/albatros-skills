@@ -2,6 +2,7 @@
 id: geschaeft-12-funktionen-sichtbar-machen
 weg: geschaeft
 stufe: landen
+phase: P13
 titel: Damit Kunden finden, was du anbietest
 bild: Verkauft wird nur, was angeschrieben im Regal steht
 dauer: 90

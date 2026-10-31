@@ -2,6 +2,8 @@
 id: webseite-05-cms
 weg: webseite
 stufe: fliegen
+phase: P12
+optional: true
 titel: Eine Pinnwand für deine Inhalte
 bild: Pinnwand im Flur
 dauer: 60

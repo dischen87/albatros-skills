@@ -1,6 +1,7 @@
 ---
 titel: Qu'est-ce que tu proposes, et combien ça coûte ?
 bild: Le prix habite une pièce entre le sol et le plafond
+phase: P2
 ---
 
 ## De quoi il s'agit
@@ -24,4 +25,5 @@ Le sol, ce sont tes coûts par vente : en dessous, tu perds de l'argent. Le pl
 
 ## Réussi quand
 
-- le fichier `docs/angebot.md` avec ton offre, ton calcul et ton prix se trouve dans ton projet.
+- le fichier `docs/angebot.md` avec ton offre, ton calcul et ton prix se trouve dans ton projet
+- et l'étape « Recherche » est atteinte sur ton île.

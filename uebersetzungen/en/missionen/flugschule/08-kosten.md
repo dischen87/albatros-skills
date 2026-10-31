@@ -1,6 +1,7 @@
 ---
 titel: Your household budget book
 bild: Household budget book with rent, utility bills and purchases
+phase: P11
 ---
 
 ## What it's about
@@ -22,4 +23,5 @@ If you write everything down, the bill never comes as a surprise. You keep an ho
 
 ## Done when
 
-- the file `docs/kosten.md` is in your project.
+- the household budget book `docs/kosten.md` is in your project
+- and you've used it to choose where your site lives: the “Where it lives” step is reached on your island.

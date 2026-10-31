@@ -1,6 +1,7 @@
 ---
 titel: I pochi numeri che contano
 bild: Un negozio sulla strada con passanti, vetrina, porta e cassa
+phase: P13
 ---
 
 ## Di cosa si tratta

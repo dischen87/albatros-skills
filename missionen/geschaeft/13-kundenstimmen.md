@@ -2,6 +2,7 @@
 id: geschaeft-13-kundenstimmen
 weg: geschaeft
 stufe: landen
+phase: P13
 titel: Was deine Kundschaft wirklich sagt
 bild: Der Sortierkasten in der Post, jeder Brief in genau ein Fach
 dauer: 75

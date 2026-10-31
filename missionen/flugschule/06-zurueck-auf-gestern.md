@@ -2,6 +2,7 @@
 id: flugschule-06-zurueck-auf-gestern
 weg: flugschule
 stufe: fliegen
+phase: P12
 titel: Kaputt machen erlaubt
 bild: Das tägliche Foto der ganzen Wohnung
 dauer: 20

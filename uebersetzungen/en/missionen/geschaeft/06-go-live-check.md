@@ -1,6 +1,7 @@
 ---
 titel: One walk round the plane before take-off
 bild: The pre-flight check on the real plane, with the flight recorder running
+phase: P13
 ---
 
 ## What it's about

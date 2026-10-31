@@ -1,6 +1,8 @@
 ---
 titel: Your own address
 bild: Address in the phone book
+phase: P13
+optional: true
 ---
 
 ## What it's about

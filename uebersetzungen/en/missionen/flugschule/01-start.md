@@ -1,6 +1,7 @@
 ---
 titel: Going on board
 bild: Get your boarding pass and board
+phase: P11
 ---
 
 ## What it's about

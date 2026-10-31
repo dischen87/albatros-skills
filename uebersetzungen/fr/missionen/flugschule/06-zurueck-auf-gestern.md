@@ -1,6 +1,7 @@
 ---
 titel: Le droit de tout casser
 bild: La photo quotidienne de tout l'appartement
+phase: P12
 ---
 
 ## De quoi il s'agit

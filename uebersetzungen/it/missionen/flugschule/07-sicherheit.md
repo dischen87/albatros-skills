@@ -1,6 +1,7 @@
 ---
 titel: La chiave non sotto lo zerbino
 bild: Mazzo di chiavi, finestre e serrature nella tua casa
+phase: P12
 ---
 
 ## Di cosa si tratta

@@ -1,6 +1,7 @@
 ---
 titel: Segnalazioni che arrivano a destinazione
 bild: Un pacco è consegnato solo quando è davanti alla porta di casa
+phase: P13
 ---
 
 ## Di cosa si tratta

@@ -2,10 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://albatros.build/schema/mission.schema.json",
   "title": "Albatros-Mission (Kopfdaten)",
-  "description": "Kopfdaten einer Mission in missionen/<weg>/<nr>-<slug>.md. Die Website macht daraus Lernseiten, der Dienst flugschule prüft damit den Fortschritt über die Prüf-API von flotte (POST /server/:id/pruefen). Platzhalter in Texten: {name} = Name des Servers der Person (anna → anna.aufwind.sh), {domain} = ihre eigene Domain. Pfade auf dem Server beginnen mit ~/ (Heimordner des Benutzers pilot); das Projekt liegt in ~/projekt.",
+  "description": "Kopfdaten einer Mission in missionen/<weg>/<nr>-<slug>.md. Die Website macht daraus Lernseiten, der Dienst flugschule prüft damit den Fortschritt über die Prüf-API von flotte (POST /server/:id/pruefen), Prüfungen vom Typ insel selbst. Platzhalter in Texten: {name} = Name des Servers der Person (anna → anna.aufwind.sh), {domain} = ihre eigene Domain. Pfade auf dem Server beginnen mit ~/ (Heimordner des Benutzers pilot); das Projekt liegt in ~/projekt.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "weg", "stufe", "titel", "bild", "dauer", "pruefung", "skill"],
+  "required": ["id", "weg", "stufe", "phase", "titel", "bild", "dauer", "pruefung", "skill"],
   "properties": {
     "id": {
       "description": "<weg>-<nr>-<slug>, gleich wie der Dateiname.",
@@ -16,6 +16,29 @@
     "stufe": {
       "description": "abheben = Idee und Produkt; fliegen = Setup und live gehen; landen = der erste Fan (sichtbar werden, erste Kundinnen und Kunden gewinnen).",
       "enum": ["abheben", "fliegen", "landen"]
+    },
+    "phase": {
+      "description": "Phase im Fahrplan (fahrplan.yaml), in der das Thema gebraucht wird und die Prüfung bestehbar ist. Bis gratis_bis (P10) arbeitet die Person nur auf ihrem Computer: Dort prüfen Missionen nur mit typ: insel.",
+      "enum": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13"]
+    },
+    "optional": {
+      "description": "true: freiwillig. Die Mission wird angeboten, hält den Fahrplan aber nicht auf. Fehlt das Feld, gehört sie zum Weg ihrer Phase.",
+      "type": "boolean"
+    },
+    "verstehen": {
+      "description": "Kontrollfragen der Lektion, je mit der Kernaussage, die eine gute Antwort der Person enthält. Im Modus lernen stellt die KI sie am Ende der Phase.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["frage", "kern"],
+        "properties": {
+          "frage": { "type": "string", "minLength": 10, "maxLength": 300 },
+          "kern": { "type": "string", "minLength": 10, "maxLength": 400 }
+        }
+      }
     },
     "titel": { "type": "string", "minLength": 3, "maxLength": 80 },
     "bild": {
@@ -35,12 +58,13 @@
           { "$ref": "#/$defs/datei" },
           { "$ref": "#/$defs/git" },
           { "$ref": "#/$defs/workflow" },
-          { "$ref": "#/$defs/docker" }
+          { "$ref": "#/$defs/docker" },
+          { "$ref": "#/$defs/insel" }
         ]
       }
     },
     "abo": {
-      "description": "Kleinstes Abo, mit dem die Mission geht. Fehlt das Feld, geht sie ab Light: Dann prüft flotte Dateien (~/projekt/…) im Repo im Hafen statt auf dem Server. pilot heisst: braucht den eigenen Server (Docker, Fliessband, Snapshots, SSH auf den Server). Mit Gratis lassen sich Missionen nur lesen.",
+      "description": "Kleinstes Abo, mit dem die Mission geht. Fehlt das Feld, geht sie ab Light: Dann prüft flotte Dateien (~/projekt/…) im Repo im Hafen statt auf dem Server. pilot heisst: braucht den eigenen Server (Docker, Fliessband, Snapshots, SSH auf den Server). Mit Gratis lassen sich Missionen nur lesen, ausser ihre Prüfungen sind alle vom Typ insel (die braucht weder Server noch Hafen).",
       "enum": ["light", "pilot"]
     },
     "skill": {
@@ -109,6 +133,18 @@
       "properties": {
         "typ": { "const": "docker" },
         "container": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$" }
+      }
+    },
+    "insel": {
+      "description": "Auf der Insel im Cockpit steht ein Projekt der Person mindestens bei diesem Schritt (Reihenfolge wie insel in fahrplan.yaml; die KI meldet Schritte mit schritt_melden). flugschule prüft das selbst, ohne Server und Hafen; der Schritt gehört zur Phase der Mission.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["typ", "schritt"],
+      "properties": {
+        "typ": { "const": "insel" },
+        "schritt": {
+          "enum": ["idee", "recherche", "plan", "plan-geprueft", "konzept", "mockup", "entwuerfe", "entwurf", "entwurf-freigegeben", "prd", "lokal", "pruefung", "freigabe", "wohnort", "betrieb", "hafen", "fliessband", "live", "domain"]
+        }
       }
     }
   }

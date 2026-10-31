@@ -1,6 +1,7 @@
 ---
 titel: Par quelle porte ta clientèle entre-t-elle ?
 bild: Un magasin avec beaucoup de portes, un compteur à chacune, une étiquette à chaque lien
+phase: P13
 ---
 
 ## De quoi il s'agit

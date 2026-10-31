@@ -1,6 +1,7 @@
 ---
 titel: One page, one offer, one button
 bild: A notice on the noticeboard with tear-off slips
+phase: P3
 ---
 
 ## What it's about
@@ -18,11 +19,11 @@ On the noticeboard at the supermarket, you understand a good notice as you walk 
 
 1. With your AI, you settle the one action visitors should take.
 2. Together you plan the page from top to bottom and write the texts in your customers' words.
-3. Your AI builds the page, and every completed action is counted.
-4. You show the first screen to a few people from your target group for five seconds and improve whatever is unclear.
-5. The page goes live, and you check it together at the real address.
+3. You settle which completed action gets counted. The page gets built later, once you've approved the draft.
+4. You show a sketch of the first screen to a few people from your target group for five seconds and improve whatever is unclear.
+5. You write down the plan and the test result. The page only goes live after your release.
 
 ## Done when
 
-- your page answers at `https://{name}.aufwind.sh` and
-- the file `docs/landingpage.md` with your plan and the test result is in your project.
+- the file `docs/landingpage.md` with your plan and the test result is in your project
+- and the “Plan” step is reached on your island.

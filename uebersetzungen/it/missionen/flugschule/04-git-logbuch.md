@@ -1,6 +1,7 @@
 ---
 titel: Il tuo diario di bordo con Git
 bild: Il diario di bordo sulla nave, con una copia al porto
+phase: P13
 ---
 
 ## Di cosa si tratta

@@ -1,6 +1,7 @@
 ---
 titel: Pas de clé sous le paillasson
 bild: Trousseau de clés, fenêtres et serrures dans ta propre maison
+phase: P12
 ---
 
 ## De quoi il s'agit

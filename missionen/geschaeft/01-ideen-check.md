@@ -2,12 +2,13 @@
 id: geschaeft-01-ideen-check
 weg: geschaeft
 stufe: abheben
+phase: P1
 titel: Lohnt sich deine Idee?
 bild: Der Windsack zeigt, woher der Wind wirklich weht, nicht woher du ihn gern hättest
 dauer: 60
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/ideen-check.md
+  - typ: insel
+    schritt: idee
 skill: ideen-check
 video: ideen-check-in-60-sekunden
 ---
@@ -35,4 +36,5 @@ Die Gespräche selbst brauchen ein paar Tage. Die Zeit oben ist die Arbeit mit d
 
 ## Geschafft, wenn
 
-- die Datei `docs/ideen-check.md` mit deinen Annahmen, Gesprächen und deinem Entscheid in deinem Projekt liegt.
+- die Datei `docs/ideen-check.md` mit deinen Annahmen, Gesprächen und deinem Entscheid in deinem Projekt liegt
+- und auf deiner Insel der Schritt «Idee» erreicht ist.

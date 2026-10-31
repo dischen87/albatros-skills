@@ -1,6 +1,7 @@
 ---
 titel: Giro del tuo server
 bild: Giro del nuovo appartamento
+phase: P11
 ---
 
 ## Di cosa si tratta

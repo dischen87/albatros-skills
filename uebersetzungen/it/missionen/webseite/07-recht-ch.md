@@ -1,6 +1,7 @@
 ---
 titel: Targhetta del campanello e regolamento della casa
 bild: Targhetta del campanello e regolamento della casa
+phase: P9
 ---
 
 ## Di cosa si tratta
@@ -23,4 +24,5 @@ L'impressum è la targhetta del tuo campanello: chi abita qui? La dichiarazione 
 
 ## Ce l'hai fatta quando
 
-- `https://{name}.aufwind.sh/impressum` e `https://{name}.aufwind.sh/datenschutz` rispondono.
+- le tue pagine `/impressum` e `/datenschutz` funzionano sul tuo computer e sono collegate a piè di ogni pagina
+- e sulla tua isola è raggiunto il passo «Verifica». Alla messa online la tua IA controlla di nuovo le due pagine dall'esterno.

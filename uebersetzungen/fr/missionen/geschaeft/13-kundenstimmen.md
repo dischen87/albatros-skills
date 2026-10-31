@@ -1,6 +1,7 @@
 ---
 titel: Ce que ta clientèle dit vraiment
 bild: Le casier de tri à la poste, chaque lettre dans un seul compartiment
+phase: P13
 ---
 
 ## De quoi il s'agit

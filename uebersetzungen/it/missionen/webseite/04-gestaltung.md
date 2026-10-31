@@ -1,6 +1,7 @@
 ---
 titel: Prima le fondamenta, poi la facciata
 bild: Riparare le fondamenta, poi dipingere con la mazzetta dei colori
+phase: P6
 ---
 
 ## Di cosa si tratta
@@ -19,10 +20,10 @@ Una mano di colore nuovo sopra porte che si inceppano rende solo più belli gli 
 1. Verifichi e annoti i riscontri con le prove.
 2. Decidi e ripari quello che rende difficile l'uso.
 3. Guardi tre direzioni con le stesse pagine e ne scegli una.
-4. Fissi la mazzetta dei colori e rifai tutte le pagine.
-5. Guardi le foto sul cellulare e sul computer, poi dai il via libera.
+4. Fissi la mazzetta dei colori e la mostri su una tavola dei campioni: colori, caratteri, pulsanti e campi.
+5. Guardi la tavola dei campioni sul cellulare e sul computer.
 
 ## Ce l'hai fatta quando
 
-- in `docs/gestaltung/richtungen.md` c'è la tua decisione
-- e il tuo sito risponde.
+- hai scelto una direzione e visto la tavola dei campioni
+- e sulla tua isola è raggiunto il passo «Bozze».

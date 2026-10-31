@@ -1,6 +1,7 @@
 ---
 titel: Doorbell nameplate and house rules
 bild: Doorbell nameplate and house rules
+phase: P9
 ---
 
 ## What it's about
@@ -23,4 +24,5 @@ The legal notice (Impressum) is your doorbell nameplate: who lives here? The pri
 
 ## Done when
 
-- `https://{name}.aufwind.sh/impressum` and `https://{name}.aufwind.sh/datenschutz` answer.
+- your `/impressum` and `/datenschutz` pages work on your computer and are linked in the footer of every page
+- and the “Checks” step is reached on your island. When you go live, your AI checks both pages again from outside.

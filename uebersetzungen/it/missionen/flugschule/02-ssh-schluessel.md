@@ -1,6 +1,7 @@
 ---
 titel: La tua chiave di casa per il server
 bild: Chiave di casa e serratura
+phase: P11
 ---
 
 ## Di cosa si tratta

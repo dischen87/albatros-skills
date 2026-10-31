@@ -1,6 +1,8 @@
 ---
 titel: La liste de bâtons à la porte du magasin
 bild: Liste de bâtons à la porte du magasin
+phase: P13
+optional: true
 ---
 
 ## De quoi il s'agit

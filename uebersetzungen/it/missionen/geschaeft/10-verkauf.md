@@ -1,6 +1,7 @@
 ---
 titel: E-mail benvenute
 bild: La brava postina suona solo quando ha qualcosa per te
+phase: P13
 ---
 
 ## Di cosa si tratta

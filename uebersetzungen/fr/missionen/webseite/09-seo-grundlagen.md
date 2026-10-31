@@ -1,6 +1,7 @@
 ---
 titel: Figurer sur le plan de la ville
 bild: Panneaux indicateurs et plan de la ville
+phase: P13
 ---
 
 ## De quoi il s'agit

@@ -1,6 +1,7 @@
 ---
 titel: Rompere è permesso
 bild: La foto quotidiana di tutto l'appartamento
+phase: P12
 ---
 
 ## Di cosa si tratta

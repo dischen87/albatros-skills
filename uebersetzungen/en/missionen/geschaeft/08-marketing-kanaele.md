@@ -1,6 +1,7 @@
 ---
 titel: Which door do your customers come through?
 bild: A shop with many doors, a counter on each one, a tag on every link
+phase: P13
 ---
 
 ## What it's about

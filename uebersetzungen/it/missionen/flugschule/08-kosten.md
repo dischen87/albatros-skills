@@ -1,6 +1,7 @@
 ---
 titel: Il tuo libro dei conti di casa
 bild: Libro dei conti di casa con affitto, spese accessorie e acquisti
+phase: P11
 ---
 
 ## Di cosa si tratta
@@ -22,4 +23,5 @@ Chi annota tutto non ha sorprese in fattura. Fai un libro dei conti di casa ones
 
 ## Ce l'hai fatta quando
 
-- nel tuo progetto c'è il file `docs/kosten.md`.
+- nel tuo progetto c'è il libro dei conti di casa `docs/kosten.md`
+- e con esso hai scelto dove abita il tuo sito: sulla tua isola è raggiunto il passo «Domicilio».

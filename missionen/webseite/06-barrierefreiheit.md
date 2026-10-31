@@ -2,12 +2,13 @@
 id: webseite-06-barrierefreiheit
 weg: webseite
 stufe: fliegen
+phase: P9
 titel: Eine Rampe neben der Treppe
 bild: Rampe neben der Treppe
 dauer: 45
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/barrierefreiheit.md
+  - typ: insel
+    schritt: pruefung
 skill: barrierefreiheit
 video: null
 ---
@@ -32,4 +33,5 @@ Eine Treppe ist für viele gut, für manche eine Mauer. Eine Rampe daneben hilft
 
 ## Geschafft, wenn
 
-- in deinem Projekt das Prüfprotokoll `docs/barrierefreiheit.md` liegt.
+- in deinem Projekt das Prüfprotokoll `docs/barrierefreiheit.md` liegt
+- und auf deiner Insel der Schritt «Prüfung» erreicht ist.

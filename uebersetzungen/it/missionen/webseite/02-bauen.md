@@ -1,6 +1,7 @@
 ---
-titel: Dalla pianta al sito in rete
+titel: Dalla pianta al sito finito
 bild: Il progetto firmato, poi la costruzione
+phase: P10
 ---
 
 ## Di cosa si tratta
@@ -14,7 +15,7 @@ Una casa nasce in un ordine fisso: schizzo, campioni dei materiali, progetto fir
 - che cos'è un progetto (PRD) con criteri di collaudo e perché lo approvi prima di costruire
 - come quattro verifiche (sicurezza, percorsi e accesso, aspetto, codice e velocità) collaudano un sito
 - guardare il tuo sito prima sul tuo computer
-- come una voce del diario di bordo arriva in rete passando dal porto
+- perché solo la tua approvazione apre la strada verso la rete
 
 ## Come procedi
 
@@ -22,9 +23,8 @@ Una casa nasce in un ordine fisso: schizzo, campioni dei materiali, progetto fir
 2. Scrive il progetto con l'elenco di ciò che verrà verificato alla fine. Lo leggi e dici di sì o cosa manca ancora.
 3. Costruisce il sito e te lo mostra nel browser, in larghezza telefonino e computer.
 4. Verifica il sito in quattro ambiti e ti mostra i rapporti con un semaforo.
-5. Approvi il sito. Solo allora manda tutto nel porto, e poco dopo il tuo sito è in rete al tuo indirizzo.
+5. Approvi il sito. In rete va solo dopo, alla messa online, mai senza la tua approvazione.
 
 ## Ce l'hai fatta quando
 
-- in `docs/prd.md` del tuo progetto c'è l'approvazione (`Freigegeben:`, la parola resta in tedesco) e
-- il tuo sito risponde all'indirizzo `https://{name}.aufwind.sh`.
+- sulla tua isola è raggiunto il passo «Approvazione». La tua IA lo segnala solo quando in `docs/prd.md` c'è la tua approvazione (`Freigegeben:`, la parola resta in tedesco).

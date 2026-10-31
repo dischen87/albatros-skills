@@ -2,6 +2,8 @@
 id: flugschule-10-landung
 weg: flugschule
 stufe: fliegen
+phase: P13
+optional: true
 titel: Umzug ins eigene Haus
 bild: Umzug mit gepackten Kisten und neuer Adresse
 dauer: 120

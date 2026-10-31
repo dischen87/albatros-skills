@@ -2,6 +2,7 @@
 id: webseite-09-seo-grundlagen
 weg: webseite
 stufe: landen
+phase: P13
 titel: Auf den Stadtplan kommen
 bild: Wegweiser und Stadtplan
 dauer: 45

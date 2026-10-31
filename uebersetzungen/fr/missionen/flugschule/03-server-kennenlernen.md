@@ -1,6 +1,7 @@
 ---
 titel: Visite de ton serveur
 bild: Visite du nouvel appartement
+phase: P11
 ---
 
 ## De quoi il s'agit

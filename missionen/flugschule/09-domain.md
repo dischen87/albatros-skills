@@ -2,6 +2,8 @@
 id: flugschule-09-domain
 weg: flugschule
 stufe: fliegen
+phase: P13
+optional: true
 titel: Deine eigene Adresse
 bild: Adresse im Telefonbuch
 dauer: 45

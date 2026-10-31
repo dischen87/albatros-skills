@@ -1,6 +1,7 @@
 ---
 titel: Come ti chiami, e da cosa ti si riconosce?
 bild: Un'insegna che si legge passando, si ricorda e si ritrova
+phase: P5
 ---
 
 ## Di cosa si tratta
@@ -24,4 +25,5 @@ Il tuo marchio è la tua insegna in un vicolo animato. Ne fanno parte il nome, i
 
 ## Ce l'hai fatta quando
 
-- il file `docs/marke.md` con nocciolo, tono, nome, verifiche e aspetto è nel tuo progetto.
+- il file `docs/marke.md` con nocciolo, tono, nome, verifiche e aspetto è nel tuo progetto
+- e sulla tua isola è raggiunto il passo «Concetto».

@@ -1,6 +1,7 @@
 ---
-titel: Du plan au site sur Internet
+titel: Du plan au site terminé
 bild: Le plan signé, puis la construction
+phase: P10
 ---
 
 ## De quoi il s'agit
@@ -14,7 +15,7 @@ Une maison se construit dans un ordre fixe : esquisse, échantillons de matér
 - ce qu'est un plan de construction (PRD) avec critères de réception et pourquoi tu le valides avant la construction
 - comment quatre vérifications (sécurité, parcours et accès, apparence, code et vitesse) réceptionnent un site
 - regarder ton site d'abord sur ton propre ordinateur
-- comment une entrée du journal de bord arrive sur Internet en passant par le port
+- pourquoi seule ta validation ouvre le chemin vers Internet
 
 ## Comment t'y prendre
 
@@ -22,9 +23,8 @@ Une maison se construit dans un ordre fixe : esquisse, échantillons de matér
 2. Elle écrit le plan de construction avec la liste de ce qui sera vérifié à la fin. Tu le lis et tu dis oui ou ce qui manque encore.
 3. Elle construit le site et te le montre dans le navigateur web, en largeur natel et en largeur ordinateur.
 4. Elle vérifie le site dans quatre domaines et te montre les rapports avec un feu tricolore.
-5. Tu valides le site. Ensuite seulement, elle envoie tout au port, et peu après ton site est en ligne à ton adresse.
+5. Tu valides le site. Il ne va sur Internet qu'ensuite, lors de la mise en ligne, jamais sans ta validation.
 
 ## Réussi quand
 
-- la validation figure dans `docs/prd.md` de ton projet (`Freigegeben:`, le mot reste en allemand) et
-- ton site répond à l'adresse `https://{name}.aufwind.sh`.
+- l'étape « Validation » est atteinte sur ton île. Ton IA ne l'annonce que lorsque ta validation figure dans `docs/prd.md` (`Freigegeben:`, le mot reste en allemand).

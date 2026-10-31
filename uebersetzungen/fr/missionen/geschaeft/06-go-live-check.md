@@ -1,6 +1,7 @@
 ---
 titel: Avant le départ, un tour de l'avion
 bild: La visite prévol sur le vrai avion, avec l'enregistreur de vol en marche
+phase: P13
 ---
 
 ## De quoi il s'agit

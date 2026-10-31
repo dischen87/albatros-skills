@@ -1,6 +1,7 @@
 ---
 titel: Pour qui est ton offre ?
 bild: Un portrait plutôt qu'une foule
+phase: P2
 ---
 
 ## De quoi il s'agit
@@ -24,4 +25,5 @@ Sur la photo d'une foule, personne ne se reconnaît. Un portrait montre une pers
 
 ## Réussi quand
 
-- le fichier `docs/zielgruppe.md` avec ton portrait se trouve dans ton projet.
+- le fichier `docs/zielgruppe.md` avec ton portrait se trouve dans ton projet
+- et l'étape « Recherche » est atteinte sur ton île.

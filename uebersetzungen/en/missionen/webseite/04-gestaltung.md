@@ -1,6 +1,7 @@
 ---
 titel: First the foundations, then the facade
 bild: Repair the foundations, then paint with the colour fan
+phase: P6
 ---
 
 ## What it's about
@@ -19,10 +20,10 @@ New paint over sticking doors only makes the faults look prettier. That's why yo
 1. Check, and write down findings with evidence.
 2. Decide, and repair how the page works.
 3. Look at three directions on the same pages and choose one.
-4. Settle the colour fan and rebuild all pages.
-5. Look at photos on your phone and on your computer, then sign off.
+4. Settle the colour fan and show it on a sample sheet: colours, fonts, buttons and fields.
+5. Look at the sample sheet on your phone and on your computer.
 
 ## Done when
 
-- your decision is in `docs/gestaltung/richtungen.md`
-- and your page answers.
+- you've chosen a direction and seen the sample sheet
+- and the “Drafts” step is reached on your island.

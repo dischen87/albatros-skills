@@ -1,6 +1,7 @@
 ---
 titel: Les quelques chiffres qui comptent
 bild: Un magasin dans la rue, avec les passants, la vitrine, la porte et la caisse
+phase: P13
 ---
 
 ## De quoi il s'agit

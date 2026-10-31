@@ -1,6 +1,7 @@
 ---
 titel: La plaque de sonnette et le règlement de maison
 bild: Plaque de sonnette et règlement de maison
+phase: P9
 ---
 
 ## De quoi il s'agit
@@ -23,4 +24,5 @@ Les mentions légales (impressum) sont ta plaque de sonnette : qui habite ici�
 
 ## Réussi quand
 
-- `https://{name}.aufwind.sh/impressum` et `https://{name}.aufwind.sh/datenschutz` répondent.
+- tes pages `/impressum` et `/datenschutz` fonctionnent sur ton ordinateur et sont liées en pied de chaque page
+- et l'étape « Vérification » est atteinte sur ton île. Lors de la mise en ligne, ton IA vérifie encore les deux pages de l'extérieur.

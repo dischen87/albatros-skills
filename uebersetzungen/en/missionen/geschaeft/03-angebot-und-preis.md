@@ -1,6 +1,7 @@
 ---
 titel: What are you offering, and what does it cost?
 bild: The price lives in a room between floor and ceiling
+phase: P2
 ---
 
 ## What it's about
@@ -24,4 +25,5 @@ The floor is your cost per sale; below it you lose money. The ceiling is what yo
 
 ## Done when
 
-- the file `docs/angebot.md` with your offer, calculation and price is in your project.
+- the file `docs/angebot.md` with your offer, calculation and price is in your project
+- and the “Research” step is reached on your island.

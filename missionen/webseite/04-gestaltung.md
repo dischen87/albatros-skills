@@ -2,15 +2,13 @@
 id: webseite-04-gestaltung
 weg: webseite
 stufe: abheben
+phase: P6
 titel: Erst das Fundament, dann die Fassade
 bild: Fundament reparieren, dann mit dem Farbfächer streichen
 dauer: 120
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/gestaltung/richtungen.md
-    enthaelt: "Entscheid:"
-  - typ: http
-    url: https://{name}.aufwind.sh
+  - typ: insel
+    schritt: entwuerfe
 skill: gestaltung
 video: tokens-in-60-sekunden
 ---
@@ -31,10 +29,10 @@ Neue Farbe über klemmenden Türen macht die Fehler nur schöner. Darum prüfst 
 1. Prüfen und Befunde mit Belegen aufschreiben.
 2. Entscheiden und die Bedienung reparieren.
 3. Drei Richtungen mit denselben Seiten anschauen und eine wählen.
-4. Den Farbfächer festlegen und alle Seiten umbauen.
-5. Fotos am Handy und am Computer anschauen, dann freigeben.
+4. Den Farbfächer festlegen und auf einem Musterblatt zeigen: Farben, Schriften, Knöpfe und Felder.
+5. Das Musterblatt am Handy und am Computer anschauen.
 
 ## Geschafft, wenn
 
-- in `docs/gestaltung/richtungen.md` dein Entscheid steht
-- und deine Seite antwortet.
+- du eine Richtung gewählt und das Musterblatt gesehen hast
+- und auf deiner Insel der Schritt «Entwürfe» erreicht ist.

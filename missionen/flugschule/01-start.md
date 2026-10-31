@@ -2,6 +2,7 @@
 id: flugschule-01-start
 weg: flugschule
 stufe: abheben
+phase: P11
 titel: An Bord gehen
 bild: Bordkarte holen und einsteigen
 dauer: 20

@@ -1,6 +1,7 @@
 ---
 titel: Ton cahier de comptes
 bild: Cahier de comptes avec loyer, charges et achats
+phase: P11
 ---
 
 ## De quoi il s'agit
@@ -22,4 +23,5 @@ Qui note tout n'a pas de mauvaise surprise sur la facture. Tu fais un cahier de 
 
 ## Réussi quand
 
-- le fichier `docs/kosten.md` se trouve dans ton projet.
+- le cahier de comptes `docs/kosten.md` se trouve dans ton projet
+- et tu as choisi avec lui où ton site habite : l'étape « Domicile » est atteinte sur ton île.

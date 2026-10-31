@@ -1,6 +1,8 @@
 ---
 titel: The tally sheet at the shop door
 bild: Tally sheet at the shop door
+phase: P13
+optional: true
 ---
 
 ## What it's about

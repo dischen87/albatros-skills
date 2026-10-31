@@ -1,6 +1,7 @@
 ---
 titel: Goods in the shop window
 bild: Goods in the shop window
+phase: P7
 ---
 
 ## What it's about
@@ -20,9 +21,9 @@ Design is the light in the shop window; the content is the goods. Without goods,
 2. Write the three sentences for the home page.
 3. Fill the other pages, rework drafts, check facts.
 4. Choose photos, shrink them, describe them.
-5. Put everything on the page and look at it on your phone.
+5. Put everything into the draft of your page and look at it on your phone.
 
 ## Done when
 
 - the content list `docs/inhalte.md` is in your project
-- and your page answers at `https://{name}.aufwind.sh`.
+- and the “Draft” step is reached on your island: your whole page is there with real texts to click through.

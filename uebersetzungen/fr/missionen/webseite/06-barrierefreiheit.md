@@ -1,6 +1,7 @@
 ---
 titel: Une rampe à côté de l'escalier
 bild: Rampe à côté de l'escalier
+phase: P9
 ---
 
 ## De quoi il s'agit
@@ -23,4 +24,5 @@ Un escalier convient à beaucoup de gens, mais pour certains, c'est un mur. Une 
 
 ## Réussi quand
 
-- le protocole de vérification `docs/barrierefreiheit.md` se trouve dans ton projet.
+- le protocole de vérification `docs/barrierefreiheit.md` se trouve dans ton projet
+- et l'étape « Vérification » est atteinte sur ton île.

@@ -1,6 +1,7 @@
 ---
 titel: Una rampa accanto alla scala
 bild: Rampa accanto alla scala
+phase: P9
 ---
 
 ## Di cosa si tratta
@@ -23,4 +24,5 @@ Una scala va bene per molti, per alcuni è un muro. Una rampa accanto li aiuta, 
 
 ## Ce l'hai fatta quando
 
-- nel tuo progetto c'è il verbale di verifica `docs/barrierefreiheit.md`.
+- nel tuo progetto c'è il verbale di verifica `docs/barrierefreiheit.md`
+- e sulla tua isola è raggiunto il passo «Verifica».

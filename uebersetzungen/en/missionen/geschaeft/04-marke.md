@@ -1,6 +1,7 @@
 ---
 titel: What's your name, and how do people recognise you?
 bild: A shop sign people read in passing, remember and find again
+phase: P5
 ---
 
 ## What it's about
@@ -24,4 +25,5 @@ Your brand is your shop sign in a busy lane. It includes the name, the colours, 
 
 ## Done when
 
-- the file `docs/marke.md` with core, tone, name, checks and look is in your project.
+- the file `docs/marke.md` with core, tone, name, checks and look is in your project
+- and the “Concept” step is reached on your island.

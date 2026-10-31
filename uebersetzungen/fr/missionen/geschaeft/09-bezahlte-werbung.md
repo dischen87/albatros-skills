@@ -1,6 +1,7 @@
 ---
 titel: Tester la publicité sans brûler d'argent
 bild: Quelqu'un qui distribue des flyers devant le magasin, avec une enveloppe d'argent qui finit par être vide
+phase: P13
 ---
 
 ## De quoi il s'agit

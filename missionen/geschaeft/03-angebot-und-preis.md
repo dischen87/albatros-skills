@@ -2,12 +2,13 @@
 id: geschaeft-03-angebot-und-preis
 weg: geschaeft
 stufe: abheben
+phase: P2
 titel: Was bietest du an, und was kostet es?
 bild: Der Preis wohnt in einem Zimmer zwischen Boden und Decke
 dauer: 60
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/angebot.md
+  - typ: insel
+    schritt: recherche
 skill: angebot-und-preis
 video: angebot-und-preis-in-60-sekunden
 ---
@@ -33,4 +34,5 @@ Der Boden sind deine Kosten pro Verkauf, darunter verlierst du Geld. Die Decke i
 
 ## Geschafft, wenn
 
-- die Datei `docs/angebot.md` mit Angebot, Rechnung und Preis in deinem Projekt liegt.
+- die Datei `docs/angebot.md` mit Angebot, Rechnung und Preis in deinem Projekt liegt
+- und auf deiner Insel der Schritt «Recherche» erreicht ist.

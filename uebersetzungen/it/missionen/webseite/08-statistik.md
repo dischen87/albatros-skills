@@ -1,6 +1,8 @@
 ---
 titel: Il foglio delle tacche alla porta del negozio
 bild: Foglio delle tacche alla porta del negozio
+phase: P13
+optional: true
 ---
 
 ## Di cosa si tratta

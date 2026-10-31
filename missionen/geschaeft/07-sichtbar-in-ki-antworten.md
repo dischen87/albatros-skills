@@ -2,6 +2,7 @@
 id: geschaeft-07-sichtbar-in-ki-antworten
 weg: geschaeft
 stufe: landen
+phase: P13
 titel: Kommst du in KI-Antworten vor?
 bild: Die Auskunft am Bahnhof nennt die Stelle mit dem genausten Aushang
 dauer: 60

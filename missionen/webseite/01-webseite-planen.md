@@ -2,12 +2,13 @@
 id: webseite-01-webseite-planen
 weg: webseite
 stufe: abheben
+phase: P3
 titel: Der Grundriss deiner Webseite
 bild: Grundriss vor dem Hausbau
 dauer: 30
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/plan.md
+  - typ: insel
+    schritt: plan
 skill: webseite-planen
 video: null
 ---
@@ -28,8 +29,8 @@ Niemand baut ein Haus ohne Grundriss. Bevor deine KI eine Zeile baut, klärt ihr
 1. Deine KI stellt dir acht Fragen, eine nach der anderen.
 2. Ihr schreibt die Antworten als Grundriss auf.
 3. Du liest den Plan und sagst, ob er stimmt.
-4. Der Plan kommt ins Logbuch und auf den Server.
+4. Deine KI meldet den Schritt «Plan» auf deiner Insel. Der Plan bleibt auf deinem Computer, bis deine Seite live geht.
 
 ## Geschafft, wenn
 
-- in deinem Projekt die Datei `docs/plan.md` liegt.
+- auf deiner Insel der Schritt «Plan» erreicht ist. Deine KI meldet ihn, sobald `docs/plan.md` in deinem Projekt alle Zeilen hat.

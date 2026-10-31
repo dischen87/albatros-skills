@@ -1,6 +1,7 @@
 ---
 titel: Ta clé de la maison pour le serveur
 bild: Clé de la maison et serrure
+phase: P11
 ---
 
 ## De quoi il s'agit

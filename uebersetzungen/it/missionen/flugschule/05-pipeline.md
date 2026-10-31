@@ -1,6 +1,7 @@
 ---
 titel: Il nastro trasportatore per la tua pagina
 bild: Nastro trasportatore con controllo qualità
+phase: P13
 ---
 
 ## Di cosa si tratta

@@ -1,6 +1,7 @@
 ---
-titel: From floor plan to a page on the web
+titel: From floor plan to finished page
 bild: The signed building plan, then the building work
+phase: P10
 ---
 
 ## What it's about
@@ -14,7 +15,7 @@ A house goes up in a fixed order: sketch, material samples, signed building plan
 - what a building plan (PRD) with acceptance criteria is and why you approve it before anything is built
 - how four checks (security, flows and access, look, code and speed) inspect a page
 - to look at your page on your own computer first
-- how an entry in the logbook gets onto the web via the harbour
+- why only your release opens the way onto the web
 
 ## How you go about it
 
@@ -22,9 +23,8 @@ A house goes up in a fixed order: sketch, material samples, signed building plan
 2. It writes the building plan with the list of what gets checked at the end. You read it and say yes or what's still missing.
 3. It builds the page and shows it to you in the browser, at phone and at computer width.
 4. It checks the page in four areas and shows you the reports with a traffic light.
-5. You release the page. Only then does it send everything to the harbour, and shortly after your page is on the web at your address.
+5. You release the page. It only goes onto the web after that, when you go live, never without your release.
 
 ## Done when
 
-- the release is in your project's `docs/prd.md` (`Freigegeben:`, the word stays German) and
-- your page answers at `https://{name}.aufwind.sh`.
+- the “Release” step is reached on your island. Your AI only reports it once your release is in `docs/prd.md` (`Freigegeben:`, the word stays German).

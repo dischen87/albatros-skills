@@ -1,6 +1,7 @@
 ---
 titel: La marchandise dans la vitrine
 bild: Marchandise dans la vitrine
+phase: P7
 ---
 
 ## De quoi il s'agit
@@ -20,9 +21,9 @@ Le design, c'est la lumière dans la vitrine ; les contenus, c'est la marchand
 2. Écrire les trois phrases pour la page d'accueil.
 3. Remplir les autres pages, retravailler les brouillons, vérifier les faits.
 4. Choisir les photos, les réduire, les décrire.
-5. Tout mettre sur le site et le regarder sur ton natel.
+5. Tout mettre dans l'ébauche de ton site et la regarder sur ton natel.
 
 ## Réussi quand
 
 - la liste des contenus `docs/inhalte.md` se trouve dans ton projet
-- et ton site répond à l'adresse `https://{name}.aufwind.sh`.
+- et l'étape « Ébauche » est atteinte sur ton île : tout ton site est là, avec de vrais textes, à parcourir en cliquant.

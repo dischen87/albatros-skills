@@ -1,6 +1,7 @@
 ---
 titel: Test ads without burning money
 bild: A flyer distributor outside the shop, with an envelope full of money that runs out at some point
+phase: P13
 ---
 
 ## What it's about

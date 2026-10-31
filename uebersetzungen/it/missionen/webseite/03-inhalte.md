@@ -1,6 +1,7 @@
 ---
 titel: La merce in vetrina
 bild: Merce in vetrina
+phase: P7
 ---
 
 ## Di cosa si tratta
@@ -20,9 +21,9 @@ Il design è la luce nella vetrina, i contenuti sono la merce. Senza merce anche
 2. Scrivi le tre frasi per la pagina iniziale.
 3. Riempi le altre pagine, rielabori le bozze, verifichi i fatti.
 4. Scegli le foto, le rimpicciolisci, le descrivi.
-5. Metti tutto sul sito e lo guardi sul cellulare.
+5. Metti tutto nella bozza del tuo sito e la guardi sul cellulare.
 
 ## Ce l'hai fatta quando
 
 - la lista dei contenuti `docs/inhalte.md` è nel tuo progetto
-- e il tuo sito risponde su `https://{name}.aufwind.sh`.
+- e sulla tua isola è raggiunto il passo «Bozza»: tutto il tuo sito c'è, con testi veri, da sfogliare cliccando.

@@ -1,6 +1,8 @@
 ---
 titel: Ta propre adresse
 bild: Adresse dans l'annuaire
+phase: P13
+optional: true
 ---
 
 ## De quoi il s'agit

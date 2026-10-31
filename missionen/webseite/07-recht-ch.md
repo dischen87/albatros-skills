@@ -2,14 +2,13 @@
 id: webseite-07-recht-ch
 weg: webseite
 stufe: fliegen
+phase: P9
 titel: Klingelschild und Hausordnung
 bild: Klingelschild und Hausordnung
 dauer: 45
 pruefung:
-  - typ: http
-    url: https://{name}.aufwind.sh/impressum
-  - typ: http
-    url: https://{name}.aufwind.sh/datenschutz
+  - typ: insel
+    schritt: pruefung
 skill: recht-ch
 video: null
 ---
@@ -34,4 +33,5 @@ Das Impressum ist dein Klingelschild: Wer wohnt hier? Die Datenschutzerklärung 
 
 ## Geschafft, wenn
 
-- `https://{name}.aufwind.sh/impressum` und `https://{name}.aufwind.sh/datenschutz` antworten.
+- deine Seiten `/impressum` und `/datenschutz` auf deinem Computer laufen und im Fuss jeder Seite verlinkt sind
+- und auf deiner Insel der Schritt «Prüfung» erreicht ist. Beim Live schalten prüft deine KI beide Seiten noch einmal von aussen.

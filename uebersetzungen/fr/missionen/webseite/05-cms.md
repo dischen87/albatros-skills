@@ -1,6 +1,8 @@
 ---
 titel: Un tableau d'affichage pour tes contenus
 bild: Tableau d'affichage dans le couloir
+phase: P12
+optional: true
 ---
 
 ## De quoi il s'agit

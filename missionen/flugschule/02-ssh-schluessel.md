@@ -2,6 +2,7 @@
 id: flugschule-02-ssh-schluessel
 weg: flugschule
 stufe: fliegen
+phase: P11
 titel: Dein Hausschlüssel für den Server
 bild: Hausschlüssel und Schloss
 dauer: 20

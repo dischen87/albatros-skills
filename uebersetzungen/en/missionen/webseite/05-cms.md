@@ -1,6 +1,8 @@
 ---
 titel: A noticeboard for your content
 bild: Noticeboard in the hallway
+phase: P12
+optional: true
 ---
 
 ## What it's about

@@ -1,6 +1,7 @@
 ---
 titel: La tua idea vale la pena?
 bild: La manica a vento mostra da dove soffia davvero il vento, non da dove ti piacerebbe che soffiasse
+phase: P1
 ---
 
 ## Di cosa si tratta
@@ -26,4 +27,5 @@ Le conversazioni stesse richiedono qualche giorno. Il tempo indicato sopra è il
 
 ## Ce l'hai fatta quando
 
-- il file `docs/ideen-check.md` con le tue ipotesi, le conversazioni e la tua decisione è nel tuo progetto.
+- il file `docs/ideen-check.md` con le tue ipotesi, le conversazioni e la tua decisione è nel tuo progetto
+- e sulla tua isola è raggiunto il passo «Idea».

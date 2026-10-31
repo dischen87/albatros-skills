@@ -2,6 +2,8 @@
 id: webseite-08-statistik
 weg: webseite
 stufe: fliegen
+phase: P13
+optional: true
 titel: Die Strichliste an der Ladentür
 bild: Strichliste an der Ladentür
 dauer: 30

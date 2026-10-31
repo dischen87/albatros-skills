@@ -1,6 +1,7 @@
 ---
 titel: The few numbers that count
 bild: A shop on a street with passers-by, shop window, door and till
+phase: P13
 ---
 
 ## What it's about

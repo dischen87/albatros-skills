@@ -1,6 +1,7 @@
 ---
 titel: Cosa offri, e quanto costa?
 bild: Il prezzo abita in una stanza fra pavimento e soffitto
+phase: P2
 ---
 
 ## Di cosa si tratta
@@ -24,4 +25,5 @@ Il pavimento sono i tuoi costi per ogni vendita: sotto perdi soldi. Il soffitto 
 
 ## Ce l'hai fatta quando
 
-- il file `docs/angebot.md` con offerta, calcolo e prezzo è nel tuo progetto.
+- il file `docs/angebot.md` con offerta, calcolo e prezzo è nel tuo progetto
+- e sulla tua isola è raggiunto il passo «Ricerca».

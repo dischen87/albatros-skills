@@ -1,6 +1,7 @@
 ---
 titel: Da quale porta entra la tua clientela?
 bild: Un negozio con tante porte, a ognuna un contatore, a ogni link un'etichetta
+phase: P13
 ---
 
 ## Di cosa si tratta

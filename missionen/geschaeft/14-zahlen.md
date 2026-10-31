@@ -2,6 +2,7 @@
 id: geschaeft-14-zahlen
 weg: geschaeft
 stufe: landen
+phase: P13
 titel: Die wenigen Zahlen, die zählen
 bild: Ein Laden an der Strasse mit Passanten, Schaufenster, Tür und Kasse
 dauer: 60

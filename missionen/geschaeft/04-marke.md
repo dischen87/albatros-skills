@@ -2,12 +2,13 @@
 id: geschaeft-04-marke
 weg: geschaeft
 stufe: abheben
+phase: P5
 titel: Wie heisst du, und woran erkennt man dich?
 bild: Ein Ladenschild, das man im Vorbeigehen liest, sich merkt und wiederfindet
 dauer: 60
 pruefung:
-  - typ: datei
-    pfad: ~/projekt/docs/marke.md
+  - typ: insel
+    schritt: konzept
 skill: marke
 video: marke-in-60-sekunden
 ---
@@ -33,4 +34,5 @@ Deine Marke ist dein Ladenschild in einer belebten Gasse. Dazu gehören der Name
 
 ## Geschafft, wenn
 
-- die Datei `docs/marke.md` mit Kern, Ton, Name, Prüfungen und Aussehen in deinem Projekt liegt.
+- die Datei `docs/marke.md` mit Kern, Ton, Name, Prüfungen und Aussehen in deinem Projekt liegt
+- und auf deiner Insel der Schritt «Konzept» erreicht ist.

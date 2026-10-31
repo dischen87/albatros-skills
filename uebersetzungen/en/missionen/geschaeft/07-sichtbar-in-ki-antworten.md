@@ -1,6 +1,7 @@
 ---
 titel: Do you show up in AI answers?
 bild: The information desk at the station names the place with the most precise notice
+phase: P13
 ---
 
 ## What it's about
