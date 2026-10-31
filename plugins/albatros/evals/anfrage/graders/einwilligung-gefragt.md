@@ -3,4 +3,4 @@ type: regex
 flags: i
 ---
 
-darf albatros
+darf albatros[^?.!\n]{0,200}\?

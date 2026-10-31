@@ -3,4 +3,4 @@ type: regex
 flags: i
 ---
 
-reihenfolge[^?\n]{0,200}\?
+reihenfolge[^?.!\n]{0,200}\?

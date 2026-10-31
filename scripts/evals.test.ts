@@ -78,6 +78,18 @@ describe('Muster gegen Sätze aus Skills und lage', async () => {
     expect((await muster('p7-entwurf', 'durchklicken-frage'))(frage('P7', 'durchklicken'))).toBe(true);
     expect((await muster('p8-sieht-gut-aus', 'nachfrage'))(frage('P8', 'freigabe-entwurf'))).toBe(true);
   });
+  // Ein Fragezeichen zählt nur im selben Satz: Sonst ginge eine schlechte Antwort mit irgendeiner Frage danach durch
+  test('Frage-Grader: Stichwort und Fragezeichen im selben Satz', async () => {
+    expect((await muster('p6-mockup', 'reihenfolge-frage'))('Die Reihenfolge habe ich festgelegt. Welche Farbe magst du?')).toBe(false);
+    expect((await muster('p4-plan-pruefen', 'ja-frage'))('Der Plan ist final bestätigt. Weiter zum Konzept?')).toBe(false);
+    expect((await muster('p7-entwurf', 'durchklicken-frage'))('Was fehlt, ist der Bau. Soll ich bauen?')).toBe(false);
+    expect((await muster('anfrage', 'einwilligung-gefragt'))('Albatros darf das speichern. Passt das?')).toBe(false);
+    const neu = await muster('p13-geaendert', 'neue-freigabe');
+    expect(neu('Deine freigegebene Seite geht jetzt live.')).toBe(false);
+    expect(neu('Schauen wir sie zuerst an, danach gibst du sie neu frei.')).toBe(true);
+    expect(neu('Dafür brauche ich deine Freigabe nochmals.')).toBe(true);
+    expect(neu('Seit der Freigabe hat sich etwas geändert, darum brauchen wir eine neue Freigabe.')).toBe(true);
+  });
   test('kontrollfrage: die Fragen der Lektion (lage-Attrappe und Mission)', async () => {
     const t = await muster('lernen-kontrollfrage', 'kontrollfrage');
     expect(t('Warum prüft jemand anderes deinen Plan?')).toBe(true);
