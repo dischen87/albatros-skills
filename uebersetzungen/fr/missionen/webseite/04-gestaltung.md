@@ -1,37 +1,31 @@
 ---
 titel: D'abord les fondations, ensuite la façade
-bild: D'abord la structure en gris, puis les échantillons de matériaux sur une planche d'échantillons
+bild: Sur les fondations terminées viennent des enseignes, des images et un blason
 phase: P6
-verstehen:
-  - frage: Pourquoi les couleurs et les polices de ton site ne sont-elles qu'à un seul endroit ?
-    kern: 'Elles ne sont que dans le nuancier (tokens.css). Si tu y changes une couleur, elle change sur chaque page, et le mode sombre n''échange que ces valeurs. Des couleurs écrites à la main dans le code rendent le site disparate.'
-  - frage: Pourquoi ton IA te montre-t-elle d'abord une esquisse grise et seulement ensuite des couleurs ?
-    kern: 'La structure avant l''apparence. On voit mieux si l''ordre est juste sans couleurs ; les couleurs en détournent l''attention.'
+optional: true
 ---
 
 ## De quoi il s'agit
 
-Avant de peindre, il faut que la maison tienne debout. C'est pourquoi ton IA te montre d'abord une esquisse grise de ta page d'accueil et demande : l'ordre est-il juste ? Ensuite, elle te présente trois directions bien différentes, nées du caractère de ton concept, et tu choisis. De ton choix naissent un nuancier fixe et une planche d'échantillons sur laquelle tu vois d'un coup d'œil les couleurs, les polices, les boutons et les champs.
+Facultatif. Les fondations de ta mise en forme, tu les poses dans la mission « Couleurs et polices à un seul endroit » : maquette grise, trois directions, nuancier et planche d'échantillons. Ici, il s'agit de la façade : des icônes, des illustrations, des photos ou un personnage à toi donnent un visage à ton site web, s'ils vont avec le caractère de ton concept.
 
 ## Ce que tu apprends
 
-- la structure avant l'apparence
-- ce qui distingue des directions (pas seulement la couleur)
-- à quoi on reconnaît le look typique de l'IA
-- des valeurs fixes pour les couleurs, la police et les espacements, à un seul endroit (tokens)
-- pourquoi les contrastes sont recalculés et pas estimés
+- quels éléments graphiques existent : icônes, illustrations, tes propres photos, un personnage à toi, aussi en 3D
+- que chaque élément va avec le caractère de ton site et n'est pas seulement joli
+- que de vraies photos battent n'importe quelle image générée
+- que les images d'Albatros coûtent un petit montant de ton crédit, et que ton IA t'en dit le prix avant
 
 ## Comment t'y prendre
 
-1. Regarder l'esquisse grise et dire si l'ordre est juste.
-2. Comparer trois directions sur la même page et en choisir une, ou les mélanger.
-3. Dire si tu veux des éléments graphiques : icônes, illustrations, photos, ton personnage.
-4. Ton IA fixe le nuancier, clair et sombre, avec des contrastes recalculés.
-5. Regarder la planche d'échantillons sur le natel et sur l'ordinateur et dire si elle te convient.
+1. Ton IA demande si tu veux des éléments graphiques et te montre ce qui va avec ton caractère.
+2. Tu choisis ce qui s'ajoute, ou tu dis que ça va sans. Pour tes propres photos, tu reçois une liste de photos.
+3. Si ton IA génère des images avec Albatros, elle t'en dit d'abord le prix, tiré de ton crédit, et te demande.
+4. Ce que tu as choisi va sur la planche d'échantillons, dans les couleurs du nuancier.
 
-Si tu as déjà un site et que tu veux le retravailler, ton IA le vérifie d'abord sous trois angles (déroulements, accès, états et langage) et répare l'utilisation avant qu'on parle de couleurs.
+Si tu as déjà un site web et que tu veux le retravailler, ton IA le vérifie d'abord sous trois angles (déroulements, accès, états et langage) et répare l'utilisation avant qu'on parle de couleurs : d'abord les fondations, ensuite la façade.
 
 ## Réussi quand
 
-- tu as choisi une direction et vu la planche d'échantillons
+- tu as décidé quels éléments graphiques ton site reçoit, « aucun » compte aussi
 - et l'étape « Ébauches » est atteinte sur ton île.
