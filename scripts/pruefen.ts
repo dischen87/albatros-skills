@@ -46,6 +46,8 @@ for await (const datei of new Glob('plugins/*/skills/*/SKILL.md').scan(wurzel)) 
     fehler.push(`${datei}: name muss gleich wie der Ordner sein (klein, Bindestriche, höchstens 64 Zeichen)`);
   if (typeof k.description !== 'string' || !k.description.trim() || k.description.length > 1024)
     fehler.push(`${datei}: description fehlt oder ist länger als 1024 Zeichen`);
+  // Ohne Überschrift bricht flugschule (skills.ts) beim Laden ab
+  if (!/\n---\n[\s\S]*?^# \S/m.test(await Bun.file(wurzel + datei).text())) fehler.push(`${datei}: Überschrift «# …» fehlt`);
   skills.add(ordner);
 }
 
