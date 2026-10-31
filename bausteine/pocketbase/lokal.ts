@@ -42,8 +42,9 @@ if (args.includes('--eingang')) {
   const eingangPort = Number(wert('--eingang-port') ?? 8080);
   seitenAdresse = `http://localhost:${eingangPort}`;
   writeFileSync(join(tmp, 'eingang.json'), JSON.stringify({ ...konfig, ursprung: seitenAdresse }));
+  // EINGANG_HOST: nur auf diesem Computer, wie PocketBase oben; sonst öffnete jeder im selben WLAN die Seite und /api/ durch den Eingang
   prozesse.push(Bun.spawn([process.execPath, '--smol', join(ordner, 'eingang.ts')], {
-    env: { ...env, PORT: String(eingangPort), EINGANG_JSON: join(tmp, 'eingang.json'), VERTRAUTE_PROXYS: '' }, stdout: 'ignore', stderr: 'inherit',
+    env: { ...env, PORT: String(eingangPort), EINGANG_HOST: '127.0.0.1', EINGANG_JSON: join(tmp, 'eingang.json'), VERTRAUTE_PROXYS: '' }, stdout: 'ignore', stderr: 'inherit',
   }));
 }
 

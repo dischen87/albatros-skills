@@ -42,7 +42,7 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 4. In `eingang.json` `ursprung` setzen und die Teile aus `docs/tueren.txt` eintragen. Geschützte Seiten liegen in eigenen Ordnern (`seite/intern/`), damit der Pfad passt.
 5. In `mitglieder.html` `const EINGANG = true;` setzen: Die Seite meldet sich dann über den Eingang an (Cookie für alle Teile).
 6. In `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen. Port 80 hat jetzt der Eingang; sonst käme man an ihm vorbei.
-7. Lokal prüfen: `bun bausteine/eingang/test.ts` meldet «Alles grün» (eingebaut prüft er die Dateien in `bausteine/pocketbase`). Dann `bun bausteine/pocketbase/lokal.ts --eingang`: Die Seite läuft unter `http://localhost:8080` durch den Eingang, die Person klickt selbst (geschützte Seite ohne Anmeldung, anmelden, abmelden).
+7. Lokal prüfen: `bun bausteine/eingang/test.ts` meldet «Alles grün» (eingebaut prüft er die Dateien in `bausteine/pocketbase`). Dann `bun bausteine/pocketbase/lokal.ts --eingang`: Die Seite läuft unter `http://localhost:8080` durch den Eingang, nur auf diesem Computer (`EINGANG_HOST=127.0.0.1`, im selben WLAN sieht sie niemand), und die Person klickt selbst (geschützte Seite ohne Anmeldung, anmelden, abmelden).
 8. Erst beim Lancieren ins Logbuch und in den Hafen. Danach von aussen: `/intern/` ohne Anmeldung 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404, die Startseite 200.
 
 ## Was er tut

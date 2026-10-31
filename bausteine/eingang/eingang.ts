@@ -3,6 +3,8 @@
 // Nur Bun, keine Pakete. Muster: das Gateway von amouk (services/gateway).
 //   bun eingang.ts                 liest eingang.json daneben (oder die Datei in EINGANG_JSON)
 //   PORT                           Standard 8080
+//   EINGANG_HOST                   die Adresse, auf der er hört, lokal 127.0.0.1 (lokal.ts); leer: alle Adressen, wie im Container nötig
+//                                  (nicht HOSTNAME: Docker setzt es im Container auf die Container-ID)
 //   URSPRUNG                       ersetzt «ursprung» aus eingang.json, zum Beispiel lokal http://localhost:8080
 //   VERTRAUTE_PROXYS               Adressen oder Netze (10.0.0.0/8), deren X-Forwarded-For gilt; «*»: jede Verbindung kommt über einen
 //                                  Proxy, der X-Forwarded-For neu setzt (Albatros-Server: die Kante). Leer: die Adresse der Verbindung.
@@ -408,6 +410,7 @@ if (import.meta.main) {
     maxRequestBodySize: GRENZEN.koerperBytes,
     // Bun schliesst eine Verbindung sonst nach 10 s ohne Daten, auch wenn ein Teil noch arbeitet: Die eigene Grenze (504) muss zuerst greifen
     idleTimeout: Math.ceil(GRENZEN.teilMs / 1000) + 5,
+    hostname: process.env.EINGANG_HOST || undefined,
     fetch: (req, s) => behandle(req, s.requestIP(req)?.address ?? ''),
   });
   console.log(JSON.stringify({ zeit: new Date().toISOString(), start: true, port: server.port, teile: e.wert.teile.map((t) => `${t.name} ${t.zugang}`) }));

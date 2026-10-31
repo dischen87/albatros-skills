@@ -4,7 +4,7 @@
 // Ist der Eingang eingebaut (bausteine/pocketbase/pb_hooks/eingang.pb.js), prüft er die eingebauten Dateien von PocketBase, sonst die
 // Rezepte mitglieder und eingang. eingang.json prüft er nicht, er baut sich eigene Teile.
 import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { networkInterfaces, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { einstellen, mailAttrappe, pocketbase, wurzelVon } from '../pocketbase/programm.ts';
 import { GRENZEN } from './eingang.ts';
@@ -79,11 +79,12 @@ const teile = (pocketbaseZiel: string) => [
 
 // Der Eingang als eigener Prozess, wie im Container
 const prozesse: ReturnType<typeof Bun.spawn>[] = [];
+let lokal: ReturnType<typeof Bun.spawn> | null = null;
 async function starten(konfig: object, env: Record<string, string> = {}) {
   const port = 19000 + Math.floor(Math.random() * 1000);
   const datei = join(tmp, `eingang-${port}.json`);
   writeFileSync(datei, JSON.stringify(konfig));
-  const p = Bun.spawn([process.execPath, '--smol', join(hier, 'eingang.ts')], { env: { ...process.env, PORT: String(port), EINGANG_JSON: datei, VERTRAUTE_PROXYS: '', ...env }, stdout: 'pipe', stderr: 'pipe' });
+  const p = Bun.spawn([process.execPath, '--smol', join(hier, 'eingang.ts')], { env: { ...process.env, PORT: String(port), EINGANG_HOST: '127.0.0.1', EINGANG_JSON: datei, VERTRAUTE_PROXYS: '', ...env }, stdout: 'pipe', stderr: 'pipe' });
   prozesse.push(p);
   const zeilen: string[] = [];
   (async () => {
@@ -387,8 +388,29 @@ try {
     .map(async (x) => { const s = await starten(x); await s.p.exited; return { code: s.p.exitCode, text: await new Response(s.p.stderr as ReadableStream).text() }; }));
   pruefe(kaputt.every((x) => x.code === 1) && kaputt[0]!.text.includes('pocketbase') && kaputt[1]!.text.includes('statt NAME') && kaputt[2]!.text.includes('zwei Teilen'),
     'eingang.json ohne PocketBase, mit NAME oder mit einem Pfad für zwei Teile: startet nicht und sagt, was fehlt');
+
+  // Nur auf diesem Computer: Mit EINGANG_HOST=127.0.0.1 hört der Eingang nicht im Netz (WLAN im Café), und lokal.ts --eingang setzt das.
+  // Geprüft über die eigenen Netzadressen dieses Computers (ohne Netzadresse nur 127.0.0.1).
+  const netzAdressen = Object.values(networkInterfaces()).flat().filter((x) => x && !x.internal && (x.family === 'IPv4' || !x.address.startsWith('fe80')))
+    .map((x) => (x!.family === 'IPv4' ? x!.address : `[${x!.address}]`));
+  const imNetz = async (port: number) => (await Promise.all(netzAdressen.map((a) => fetch(`http://${a}:${port}/`, { signal: AbortSignal.timeout(2000) }).then(() => a, () => null)))).filter(Boolean);
+  const e6 = await starten(konfig(ziel));
+  const e6Netz = await imNetz(e6.port), e6Lokal = (await e6.holen('/verein/')).status;
+  const seiteLokal = mkdtempSync(join(tmp, 'seite-'));
+  writeFileSync(join(seiteLokal, 'index.html'), '<!doctype html><title>Probe</title><p>Probe</p>');
+  const pbLokal = 21000 + Math.floor(Math.random() * 1000), eingangLokal = 22000 + Math.floor(Math.random() * 1000);
+  lokal = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal], { stdout: 'pipe', stderr: 'pipe' });
+  const ausgabe = new Response(lokal.stdout as ReadableStream).text();
+  for (let i = 0; i < 100 && !(await fetch(`http://127.0.0.1:${eingangLokal}/`).then((r) => r.ok, () => false)); i++) await Bun.sleep(100);
+  const lokalNetz = await imNetz(eingangLokal), lokalHier = await fetch(`http://localhost:${eingangLokal}/`).then((r) => r.status, () => 0);
+  lokal.kill('SIGINT'); // lokal.ts beendet PocketBase und den Eingang selbst
+  await lokal.exited;
+  const lokalText = await ausgabe;
+  pruefe(e6Lokal === 200 && !e6Netz.length && lokalHier === 200 && !lokalNetz.length && lokalText.includes('nichts davon ist im Netz'),
+    `Lokal nur auf diesem Computer: Eingang mit EINGANG_HOST und lokal.ts --eingang über localhost ${lokalHier}, über ${netzAdressen.length} Netzadressen ${[...e6Netz, ...lokalNetz].length ? `erreichbar (${[...e6Netz, ...lokalNetz].length}×)` : 'nicht erreichbar'}`);
 } finally {
   for (const p of prozesse) p.kill();
+  lokal?.kill('SIGINT');
   server.kill();
   teil.stop(true);
   haengt.stop(true);
@@ -397,7 +419,7 @@ try {
   smtp.stop(true);
   const log = await new Response(server.stderr).text();
   if (fehler && log.trim()) console.log(log.slice(-2000));
-  await Promise.all([server.exited, ...prozesse.map((p) => p.exited)]);
+  await Promise.all([server.exited, ...prozesse.map((p) => p.exited), lokal?.exited]);
   rmSync(tmp, { recursive: true, force: true }); // die Daten dieses Laufs
 }
 console.log(fehler ? `\n${fehler} Prüfungen fehlgeschlagen` : '\nAlles grün');
