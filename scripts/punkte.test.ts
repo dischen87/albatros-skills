@@ -6,7 +6,9 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PERSONEN, rolle } from './durchspiel/personen.ts';
 import { ladeFahrplan, type Fahrplan } from './fahrplan.ts';
-import { beantwortet, belegt, bisAbschluss, datiert, fragen, freigabeZumBauen, markeVon, punkte, wert, wertPasst, wohnortVon, type Lauf } from './punkte.ts';
+import {
+  beantwortet, belegt, bisAbschluss, datiert, erledigtNachDateien, frageBelegt, fragen, freigabeZumBauen, jaBelegt, markeVon, punkte, wert, wertPasst, wohnortVon, type Lauf,
+} from './punkte.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const geladen = await ladeFahrplan(wurzel);
@@ -78,6 +80,21 @@ describe('Zeilen und Fragen', () => {
     expect(datiert(freigabeZumBauen('Freigegeben zum Bauen: 31.10.2026\nFreigegeben zum Bauen: [offen: Nachtrag]'))).toBe(false);
     expect(datiert(freigabeZumBauen('Früher freigegeben zum Bauen: 30.10.2026'))).toBe(false);
     expect(datiert(freigabeZumBauen('Freigegeben zum Bauen: <Datum>'))).toBe(false);
+  });
+  // Gegenprüfung 31.10.2026 (vert-04, steu-05): Ja-Momente wie albatros kit jaBelegt. Dieselbe Tabelle steht in albatros
+  // services/mcp/src/lage.test.ts (JA_FAELLE). Vorher las punkte die erste Zeile und nahm ein Datum mit Annahme dahinter.
+  test('Ja-Momente wie lage (Tabelle JA_FAELLE): Datum vorne, nie eine Annahme, die letzte Zeile zählt', () => {
+    const JA_FAELLE: [string[], boolean][] = [
+      [['Freigegeben: 31.10.2026, «Ja, so live»'], true], [['Freigegeben: 2026-10-31 «Ja»'], true], [['Freigegeben: 31. Oktober 2026, «Ja»'], true],
+      [['- **Freigegeben:** 31.10.2026, «Ja»'], true], [['> Freigegeben: 31.10.2026'], true], [['Freigegeben: **31.10.2026**, «Ja»'], true],
+      [['Freigegeben: [offen]', 'Freigegeben: 31.10.2026, «Ja»'], true], [['Freigegeben: noch nicht'], false], [['Freigegeben: [Annahme: passt]'], false],
+      [['Freigegeben: 31.10.2026 [Annahme: hat nicht widersprochen]'], false], [['Freigegeben: [hypothèse : oui]'], false],
+      [['Freigegeben: <TT.MM.JJJJ>, ‹<ihre Worte>›'], false], [['Freigegeben: 31.10., «Ja»'], false], [['Freigegeben: ja, am 31.10.2026'], false],
+      [['Freigegeben: 30.10.2026, «Ja»', 'Freigegeben: [offen: neue Rückmeldung]'], false], [['Freigegeben:'], false], [[], false],
+      [['Freigegeben zum Bauen: 31.10.2026'], false],
+    ];
+    for (const [zeilen, ja] of JA_FAELLE) expect([zeilen, jaBelegt(F, zeilen.join('\n'), 'Freigegeben:')]).toEqual([zeilen, ja]);
+    expect(jaBelegt(F, true, 'Freigegeben:')).toBe(false);
   });
   test('fragen zählt Fragezeichen am Satzende, nicht in Code oder Adressen', () => {
     expect(fragen('Wie heisst es? Für wen? Was sollen Besucher tun?')).toBe(3);
@@ -206,5 +223,44 @@ describe('Personas', () => {
   }
   test('mit --echt nur Personen mit erfundenen Inhalten, darunter musikverein (Workflow Durchspiel in albatros)', () => {
     expect(Object.values(PERSONEN).filter((p) => p.echt).map((p) => p.id)).toEqual(['musikverein']);
+  });
+});
+
+// Gegenprüfung 31.10.2026 (vert-02, weg-02, weg-03): Phasen nach den Dateien wie lage, lückenlos und mit jeder Ergebnisdatei; die Attrappe
+// des Durchspiels rechnet damit. Dieselben Fälle wie in albatros services/mcp/src/lage.test.ts.
+describe('Phasen nach Dateien wie lage', () => {
+  const PROJEKT = 'Projektname: Sonne\nIn einem Satz: Ferien\nFür wen: Familien\nHauptsache: Anfrage\nErfolg: [Annahme] zwei Anfragen\nBestehende Seite: keine\nModus: machen\nStand: P1\nNächster Schritt: P2';
+  const P1: Record<string, string | true> = { 'docs/projekt.md': PROJEKT, 'AGENTS.md': true, 'design/skizze.html': true };
+  const RECHERCHE = 'Vorbilder: a\nÜbliche Seiten und Funktionen: b\nÜbernehmen: c\nVermeiden: d\nPflichten: e\nInhalte vorhanden: f\nSuchbegriffe: g';
+  const PLAN = 'Projektname: Sonne\nSeiten: 5\nFunktionen: Anfrage\nZugang: alle\nSprachen: de\nSetup: statisch\nTesting: x\nRelease: Mai\nPflege: ich\nStand: P3';
+  const BIS_P8: Record<string, string | true> = {
+    ...P1, 'docs/recherche.md': RECHERCHE, 'docs/plan.md': `${PLAN}\nBestätigt: 31.10.2026, «Ja»`, 'docs/plan-pruefung.md': 'Geprüft am: 31.10.2026\nZweite Meinung: ok',
+    'docs/konzept.md': 'Name: Sonne\nKern: k\nTon: du\nCharakter: ruhig\nMaskottchen: nein\nMuss bleiben: nichts\nBildsprache: Fotos',
+    'docs/designsystem.md': 'Reihenfolge: bestätigt am 31.10.2026\nRichtung: klar\nFarben: Blau\nSchriften: Inter\nAbstände: 4\nKomponenten: Knopf\nMaskottchen: nein\nMusterblatt: gesehen am 31.10.2026, passt',
+    'design/mockup.html': true, 'design/tokens.css': true, 'design/musterblatt.html': true, 'design/entwurf/index.html': true,
+    'docs/entwurf.md': 'Werkstatt: Node\nSeiten: Start\nRückmeldungen: gut\nFreigegeben zum Bauen: 31.10.2026, «Ja»',
+  };
+  test('vert-02: jede Ergebnisdatei muss da sein (PRD da, messwerte.json fehlt: P9 bleibt; musterblatt.html fehlt: P6 bleibt)', () => {
+    expect([erledigtNachDateien(F, P1), erledigtNachDateien(F, { 'docs/projekt.md': PROJEKT })]).toEqual([1, 0]);
+    expect(erledigtNachDateien(F, BIS_P8)).toBe(8);
+    const prd = { ...BIS_P8, 'docs/stack.md': true, 'docs/prd.md': 'Abgeleitet aus: docs/entwurf.md' } as Record<string, string | true>;
+    expect(erledigtNachDateien(F, prd)).toBe(8);
+    expect(erledigtNachDateien(F, { ...prd, 'docs/tueren.txt': true, 'docs/pruefung/messwerte.json': true })).toBe(9);
+    const ohneMusterblatt = Object.fromEntries(Object.entries(BIS_P8).filter(([d]) => d !== 'design/musterblatt.html'));
+    expect(erledigtNachDateien(F, ohneMusterblatt)).toBe(5);
+  });
+  test('weg-02: lückenlos ab der Insel; spätere Dateien überspringen weder eine fehlende Phase noch einen Ja-Moment', () => {
+    expect(erledigtNachDateien(F, { ...P1, 'docs/plan.md': PLAN })).toBe(1); // P3 ohne P2
+    expect(erledigtNachDateien(F, { 'docs/plan.md': PLAN }, 2)).toBe(3);
+    expect(erledigtNachDateien(F, {}, 5)).toBe(5); // die Insel ist der Boden
+    const ohneJa = { ...BIS_P8, 'docs/plan.md': `${PLAN}\nBestätigt: [Annahme: passt so]` };
+    expect(erledigtNachDateien(F, ohneJa)).toBe(3);
+  });
+  test('weg-03: ein Plan ganz als [Annahme] bleibt in P3, offen sind die Fragen der Person', () => {
+    const annahmen = PLAN.split('\n').map((z, i) => (i > 0 && i < 9 ? z.replace(': ', ': [Annahme: ') + ']' : z)).join('\n');
+    const d = { ...P1, 'docs/recherche.md': RECHERCHE, 'docs/plan.md': annahmen };
+    expect(erledigtNachDateien(F, d)).toBe(2);
+    const p3 = F.phasen[2]!;
+    expect(p3.pflichtfragen.filter((q) => !frageBelegt(F, p3, q, d)).map((q) => q.id)).toEqual(['funktionen', 'zugang', 'sprachen', 'release', 'pflege']);
   });
 });
