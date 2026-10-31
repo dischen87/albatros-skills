@@ -1,10 +1,11 @@
-// Prüft die Kopfdaten aller Skills (Agent-Skills-Standard) und aller Missionen (schema/mission.schema.json) und den Fahrplan
-// (fahrplan.yaml gegen schema/fahrplan.schema.json, dazu was ein Schema nicht prüfen kann).
+// Prüft die Kopfdaten aller Skills (Agent-Skills-Standard) und aller Missionen (schema/mission.schema.json), den Fahrplan
+// (fahrplan.yaml gegen schema/fahrplan.schema.json, dazu was ein Schema nicht prüfen kann) und dass GUTE-ANTWORT.md erzeugt ist.
 import Ajv from 'ajv/dist/2020';
 import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
+import { guteAntwort, ZIEL } from './gute-antwort.ts';
 
 type Mission = {
   id: string;
@@ -94,6 +95,13 @@ if (fahrplan) {
   if (inPhasen.join() !== fahrplan.insel.join()) f(`insel muss genau phasen[].insel in derselben Reihenfolge sein (${inPhasen.join(', ')})`);
   const alt = ALTE_INSEL.map((s) => fahrplan.insel.indexOf(s));
   if (alt.some((i, n) => i < 0 || (n > 0 && i <= alt[n - 1]!))) f(`insel: die zehn alten Schritte fehlen oder stehen nicht in alter Reihenfolge (${ALTE_INSEL.join(' < ')})`);
+}
+
+// GUTE-ANTWORT.md ist aus fahrplan.yaml, den Köpfen der Eval-Fälle und KRITERIEN-LOG.md erzeugt und darf nicht davon abweichen
+if (fahrplan) {
+  const gut = await guteAntwort(wurzel, fahrplan);
+  if (!gut.ok) fehler.push(...gut.fehler);
+  else if ((await Bun.file(wurzel + ZIEL).text().catch(() => '')) !== gut.text) fehler.push(`${ZIEL}: nicht wie erzeugt, bun scripts/gute-antwort.ts ausführen`);
 }
 
 // Missionen gegen den Fahrplan: Das Schema nennt Phasen und Insel-Schritte selbst (für Leser ohne fahrplan.yaml), dieselben wie dort
