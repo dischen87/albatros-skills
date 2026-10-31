@@ -51,6 +51,7 @@ Lege der Person gesammelt vor, was sie entscheiden muss (mit deiner Empfehlung),
 - **Gesperrt** ist nie unsichtbar: 40 % Deckkraft, und daneben steht, warum.
 - **Felder:** 48 bis 52 px hoch, die Beschriftung steht darüber (nie nur ein Platzhalter im Feld), Hilfe oder Fehler darunter, mit Wort und nicht nur mit Farbe.
 - **Status** (frei, ausgebucht, bestätigt) immer als Wort und Form, nie nur als Farbe.
+- **Menü auf dem Handy:** Bei 390 px passt es auf eine Zeile, sonst wird es ein Knopf «Menü», der die Liste aufklappt (ohne JavaScript mit `<details>`). Ein Menüpunkt allein auf einer zweiten Zeile ist ein Fehler.
 
 ### 3. Drei Richtungen
 
@@ -70,13 +71,15 @@ KI-Seiten erkennt man an denselben Merkmalen. Prüf jeden Entwurf und die fertig
 - Verläufe in Lila und Blau, Glüh- und Glaseffekte.
 - Emoji als Icons.
 - Inter oder eine andere Standardschrift überall, alle Titel gleich laut.
-- Zentrierter Kopf mit Farbklecks dahinter und zwei Knöpfen nebeneinander.
-- Drei oder vier gleich grosse Karten nebeneinander, egal ob mit Icon, rund oder eckig. Das ist das häufigste KI-Merkmal: Ordne den Inhalt nach seiner Wichtigkeit, nicht in gleiche Kästchen.
+- Zentrierter Kopf: Titel, Satz und Knopf mittig in einer Farbfläche oder vor einem Farbklecks, mit einem oder zwei Knöpfen.
+- Gleich grosse Karten nebeneinander oder untereinander, egal ob mit Icon, rund oder eckig. Das ist das häufigste KI-Merkmal: Ordne den Inhalt nach seiner Wichtigkeit, nicht in gleiche Kästchen.
 - Stockbild-Look: lächelnde Menschen am Laptop, Berge von irgendwo.
 - Füllfloskeln: «Willkommen auf unserer Webseite», «Entdecken Sie», «Ihr Partner für», «mit Leidenschaft», «innovativ», «nahtlos».
 - Erfundene Zahlen, Bewertungen, Zitate oder Kundenlogos. Zeitversprechen wie «in 60 Sekunden».
 - Graue Schatten, zwei Arten von Tiefe nebeneinander (Schatten hier, Rahmen dort), gemischte Icon-Sätze.
 - Mehr als sechs Abschnitte auf der Startseite.
+
+Prüf nach dem Muster, nicht nach dem Wortlaut: Ein Knopf statt zwei oder Karten untereinander statt nebeneinander sind dasselbe Merkmal. Dafür schaust du die Fotos an, nicht nur den Code.
 
 Stattdessen: ein einziges Erkennungszeichen, sparsam eingesetzt (ein Strich unter einem Wort im Titel, ein Leuchtstift für höchstens ein Wort pro Abschnitt), echte Fotos des Ortes und der Menschen, eine Schrift mit Charakter passend zu den Eigenschaften, Farben aus Logo und Umgebung, ein Aufbau aus dem Inhalt (sind Termine die Hauptsache, stehen sie oben) und konkrete Sätze mit Namen, Zahlen und Orten. Im Code findest du Verläufe und Standardschriften mit `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji und Floskeln suchst du in den Texten, den Rest in den Fotos.
 
@@ -89,7 +92,7 @@ Eine Datei `tokens.css` mit CSS-Variablen: Farben für hell und dunkel, Schrifte
 - Dunkelmodus tauscht nur die Farb-Variablen aus (`@media (prefers-color-scheme: dark)`).
 - Ausserhalb von `tokens.css` steht keine Farbe und keine Schriftgrösse von Hand im Code.
 - **Schrift:** höchstens zwei Familien, eine Titelschrift mit Charakter und eine ruhige Textschrift, selbst gehostet (woff2, `font-display: swap`). Text 16 bis 17 px mit Zeilenhöhe 1,5, nichts unter 12 px. Grosse Titel mit Zeilenhöhe 1,0 bis 1,1 und leicht enger gesetzt (−0,01 bis −0,03 em), auf dem Handy mit `clamp()` kleiner. Fett (700) nur für die grössten Titel, sonst halbfett (600). Preise und Zeiten mit `font-variant-numeric: tabular-nums`.
-- **Abstände** nur aus einer Reihe: 4, 8, 12, 16, 24, 32, 48 px (für Abschnitte grösser). Inhalt höchstens etwa 1200 px breit, am Handy 16 px Rand.
+- **Abstände** nur aus einer Reihe: 4, 8, 12, 16, 24, 32, 48 px (für Abschnitte grösser). Inhalt höchstens etwa 1200 px breit, am Handy 16 px Rand. Auf dem Computer nutzen Kopf und Abschnitte diese Breite, schmal bleibt nur der Fliesstext (etwa 70 Zeichen pro Zeile).
 - **Rundungen:** drei Stufen nach Grösse (Feld, Karte, grosse Fläche), innen immer kleiner als aussen. Knöpfe entweder alle rund oder alle eckig.
 - **Tiefe:** eine Methode für die ganze Seite, entweder Fläche mit Schatten oder feine Linie ohne Schatten. Schatten in der Textfarbe getönt, nie grau, höchstens zwei Stufen. Der Grund ist leicht warm, Karten sind weiss.
 - **Bewegung:** Drücken 90 bis 100 ms, Wechsel 160 bis 200 ms, eine Bewegung pro Ereignis. Bei «weniger Bewegung» nur Überblenden.
@@ -105,6 +108,8 @@ Steht die Richtung, fragst du immer: «Möchtest du noch Gestaltungselemente daz
 - **Eigene Fotos:** eine Fotoliste, was die Person fotografieren soll (Ort, Menschen in Aktion, Details). Echte Fotos schlagen jedes erzeugte Bild.
 - **Ein Maskottchen:** eine Figur, die durch die Seite führt. Zuerst ein Blatt mit vier bis sechs Posen derselben Figur, je eine für einen Moment (Willkommen, Suchen, Erfolg, leer), dann Regeln, wann sie erscheint: nie bei Fehlern, Absagen oder heiklen Momenten, nie neben Fotos von Menschen, nie hinter Listen oder Formularen. Grösse: beim Willkommen höchstens die halbe Breite, sonst klein. Sie ist Schmuck (`alt=""`), der Satz daneben stimmt auch ohne sie. Bewegte Clips laden erst, wenn sie sichtbar sind, spielen höchstens 5 Sekunden und bleiben dann stehen (WCAG 2.2.2). Jedes Bild schaust du selbst an, auch vergrössert.
 - **3D:** ein Gegenstand oder die Figur als 3D-Modell, nur im Kopf der Startseite und erst ab Tablet-Breite. Zuerst steht ein Standbild, das 3D lädt erst, wenn der Kopf sichtbar ist. Auf dem Handy, ohne Grafikkarte oder bei «weniger Bewegung» bleibt das Standbild.
+
+**Schlicht heisst nicht ohne Bild.** Will die Person keine Icons, Illustrationen oder Figuren, schlägst du trotzdem ein echtes Foto für den Kopf der Startseite vor (der Ort, die Menschen in Aktion) und gibst ihr die Fotoliste. Ein Foto ist Inhalt, kein Schmuck. Hat sie noch keins, trägt der Kopf statt einer Farbfläche mit Titel das Wichtigste aus dem Inhalt (zum Beispiel den nächsten Termin gross), und die Fotoliste steht in `docs/gestaltung/richtungen.md` unter «Offen». Will sie auch keine Fotos, steht ihr Satz dort.
 
 Was die Person wählt, kommt in `docs/gestaltung/richtungen.md` und in den Farbfächer (Grössen, Abstände, Regeln).
 
@@ -136,7 +141,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Jedes Foto selbst anschauen und mit dem Entwurf vergleichen: Hat der Text auf dem Handy links und rechts Luft? Ist nichts abgeschnitten oder versetzt? Erst dann der Person zeigen. Nach ihrem Ja: Logbuch (Skill `git-logbuch`), Fliessband (Skill `pipeline`).
+Jedes Foto selbst anschauen und mit dem Entwurf vergleichen: Hat der Text auf dem Handy links und rechts Luft? Ist nichts abgeschnitten oder versetzt? Passt das Menü auf eine Zeile? Wirkt der Computer nicht leer, mit einer schmalen Spalte in der Mitte? Erst dann der Person zeigen. Nach ihrem Ja: Logbuch (Skill `git-logbuch`), Fliessband (Skill `pipeline`).
 
 ## Stolpersteine
 

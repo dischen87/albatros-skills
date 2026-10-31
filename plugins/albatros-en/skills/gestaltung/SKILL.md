@@ -52,6 +52,7 @@ Put everything the person has to decide in front of them in one go (with your re
 - **Disabled** is never invisible: 40 % opacity, with the reason written next to it.
 - **Fields:** 48 to 52 px high, the label sits above (never just a placeholder in the field), help or error below, in words and not just in colour.
 - **Status** (free, fully booked, confirmed) always as a word and a shape, never just as a colour.
+- **Menu on the phone:** at 390 px it fits on one line, otherwise it becomes a “Menu” button that opens the list (without JavaScript, with `<details>`). A menu item alone on a second line is a mistake.
 
 ### 3. Three directions
 
@@ -71,13 +72,15 @@ AI sites give themselves away with the same traits. Check every draft and the fi
 - Gradients in purple and blue, glow and glass effects.
 - Emoji as icons.
 - Inter or another default font everywhere, all headings equally loud.
-- A centred header with a blob of colour behind it and two buttons side by side.
-- Three or four cards of the same size side by side, with or without icons, rounded or square. This is the most common AI trait: arrange the content by how important it is, not in identical boxes.
+- A centred header: heading, sentence and button in the middle of a colour block or in front of a blob of colour, with one or two buttons.
+- Cards of the same size side by side or stacked, with or without icons, rounded or square. This is the most common AI trait: arrange the content by how important it is, not in identical boxes.
 - The stock photo look: smiling people at a laptop, mountains from anywhere.
 - Filler phrases: “Welcome to our website”, “Discover”, “Your partner for”, “with passion”, “innovative”, “seamless”.
 - Made-up numbers, reviews, quotes or customer logos. Time promises like “in 60 seconds”.
 - Grey shadows, two kinds of depth side by side (shadow here, border there), mixed icon sets.
 - More than six sections on the home page.
+
+Check for the pattern, not the wording: one button instead of two, or cards stacked instead of side by side, is the same trait. For this you look at the screenshots, not just the code.
 
 Instead: one single signature mark, used sparingly (a stroke under one word in the heading, a highlighter on at most one word per section), real photos of the place and the people, a font with character that suits the qualities, colours from the logo and surroundings, a structure that comes from the content (if dates are the main thing, they go at the top), and concrete sentences with names, numbers and places. In the code you find gradients and default fonts with `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji and filler phrases you look for in the texts, the rest in the screenshots.
 
@@ -90,7 +93,7 @@ One file `tokens.css` with CSS variables: colours for light and dark, fonts, fon
 - Dark mode only swaps the colour variables (`@media (prefers-color-scheme: dark)`).
 - Outside `tokens.css`, no colour and no font size is written into the code by hand.
 - **Type:** two families at most, a heading font with character and a calm body font, self-hosted (woff2, `font-display: swap`). Text 16 to 17 px with a line height of 1.5, nothing under 12 px. Big headings with a line height of 1.0 to 1.1 and set slightly tighter (−0.01 to −0.03 em), smaller on the phone with `clamp()`. Bold (700) only for the biggest headings, otherwise semi-bold (600). Prices and times with `font-variant-numeric: tabular-nums`.
-- **Spacing** only from one scale: 4, 8, 12, 16, 24, 32, 48 px (bigger for sections). Content at most about 1200 px wide, a 16 px margin on the phone.
+- **Spacing** only from one scale: 4, 8, 12, 16, 24, 32, 48 px (bigger for sections). Content at most about 1200 px wide, a 16 px margin on the phone. On a computer the header and sections use this width; only running text stays narrow (about 70 characters per line).
 - **Rounded corners:** three steps by size (field, card, large surface), always smaller inside than outside. Buttons either all round or all square.
 - **Depth:** one method for the whole site, either surfaces with a shadow or a fine line without a shadow. Shadows tinted in the text colour, never grey, two levels at most. The background is slightly warm, cards are white.
 - **Motion:** press 90 to 100 ms, transitions 160 to 200 ms, one movement per event. With “Reduce motion”, only cross-fades.
@@ -106,6 +109,8 @@ Once the direction is settled, you always ask: “Would you like any design elem
 - **Your own photos:** a photo list of what the person should photograph (the place, people in action, details). Real photos beat any generated picture.
 - **A mascot:** a character that guides people through the site. First a sheet with four to six poses of the same character, one for each moment (welcome, searching, success, empty), then rules for when it appears: never with errors, cancellations or delicate moments, never next to photos of people, never behind lists or forms. Size: at most half the width for the welcome, small otherwise. It's decoration (`alt=""`); the sentence next to it works without it too. Animated clips only load once they're visible, play for 5 seconds at most and then stop (WCAG 2.2.2). You look at every picture yourself, zoomed in too.
 - **3D:** an object or the character as a 3D model, only in the header of the home page and only from tablet width up. A still image comes first; the 3D only loads once the header is visible. On a phone, without a graphics card or with “Reduce motion”, the still image stays.
+
+**Plain doesn't mean without pictures.** If the person wants no icons, illustrations or characters, you still suggest a real photo for the header of the home page (the place, people in action) and give them the photo list. A photo is content, not decoration. If they don't have one yet, the header carries the most important content instead of a colour block with a heading (for example the next date, large), and the photo list goes into `docs/gestaltung/richtungen.md` under “Open”. If they don't want photos either, their sentence goes there.
 
 Whatever the person picks goes into `docs/gestaltung/richtungen.md` and into the colour fan (sizes, spacing, rules).
 
@@ -137,7 +142,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Look at every screenshot yourself and compare it with the draft: on the phone, does the text have room on the left and right? Is nothing cut off or out of place? Only then show it to the person. After their yes: logbook (skill `git-logbuch`), conveyor belt (skill `pipeline`).
+Look at every screenshot yourself and compare it with the draft: on the phone, does the text have room on the left and right? Is nothing cut off or out of place? Does the menu fit on one line? Does the computer view not look empty, with a narrow column in the middle? Only then show it to the person. After their yes: logbook (skill `git-logbuch`), conveyor belt (skill `pipeline`).
 
 ## Stumbling blocks
 

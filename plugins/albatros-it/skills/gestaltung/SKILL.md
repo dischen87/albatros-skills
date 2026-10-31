@@ -52,6 +52,7 @@ Presenta alla persona tutto insieme quello che deve decidere (con la tua raccoma
 - **Disattivato** non è mai invisibile: opacità al 40 %, e accanto c'è scritto perché.
 - **Campi:** alti da 48 a 52 px, l'etichetta sta sopra (mai solo un segnaposto nel campo), aiuto o errore sotto, con una parola e non solo con il colore.
 - **Stato** (libero, al completo, confermato) sempre come parola e forma, mai solo come colore.
+- **Menu sul telefonino:** a 390 px sta su una riga, altrimenti diventa un pulsante «Menu» che apre la lista (senza JavaScript con `<details>`). Una voce di menu da sola su una seconda riga è un errore.
 
 ### 3. Tre direzioni
 
@@ -71,13 +72,15 @@ I siti fatti con l'IA si riconoscono dagli stessi tratti. Controlla ogni bozza e
 - Sfumature in viola e blu, effetti luminosi e di vetro.
 - Emoji come icone.
 - Inter o un altro carattere standard dappertutto, tutti i titoli alla stessa voce.
-- Testata centrata con una macchia di colore dietro e due pulsanti uno accanto all'altro.
-- Tre o quattro schede della stessa grandezza una accanto all'altra, non importa se con icona, arrotondate o squadrate. È il tratto dell'IA più frequente: ordina il contenuto secondo la sua importanza, non in caselle uguali.
+- Testata centrata: titolo, frase e pulsante al centro di una superficie colorata o davanti a una macchia di colore, con uno o due pulsanti.
+- Schede della stessa grandezza una accanto all'altra o una sotto l'altra, non importa se con icona, arrotondate o squadrate. È il tratto dell'IA più frequente: ordina il contenuto secondo la sua importanza, non in caselle uguali.
 - Aspetto da immagini di repertorio: persone sorridenti al portatile, montagne di chissà dove.
 - Frasi fatte: «Benvenuti sul nostro sito», «Scopri», «Il vostro partner per», «con passione», «innovativo», «senza intoppi».
 - Numeri, recensioni, citazioni o loghi di clienti inventati. Promesse di tempo come «in 60 secondi».
 - Ombre grigie, due tipi di profondità uno accanto all'altro (ombra qui, bordo là), set di icone mescolati.
 - Più di sei sezioni sulla pagina iniziale.
+
+Controlla lo schema, non la formulazione: un pulsante invece di due o schede una sotto l'altra invece che affiancate sono lo stesso tratto. Per questo guardi le foto, non solo il codice.
 
 Invece: un unico segno distintivo, usato con parsimonia (una linea sotto una parola del titolo, un evidenziatore per al massimo una parola per sezione), foto vere del luogo e delle persone, un carattere tipografico con personalità, adatto alle caratteristiche, colori dal logo e dall'ambiente, una struttura che nasce dal contenuto (se gli appuntamenti sono la cosa principale, stanno in alto) e frasi concrete con nomi, numeri e luoghi. Nel codice trovi sfumature e caratteri standard con `grep -rnE "linear-gradient|radial-gradient|Inter" src`. Emoji e frasi fatte le cerchi nei testi, il resto nelle foto.
 
@@ -90,7 +93,7 @@ Un file `tokens.css` con variabili CSS: colori per chiaro e scuro, caratteri, di
 - La modalità scura scambia solo le variabili dei colori (`@media (prefers-color-scheme: dark)`).
 - Fuori da `tokens.css` nel codice non c'è nessun colore e nessuna dimensione di carattere scritta a mano.
 - **Caratteri:** al massimo due famiglie, un carattere per i titoli con personalità e un carattere tranquillo per il testo, ospitati in proprio (woff2, `font-display: swap`). Testo da 16 a 17 px con interlinea 1,5, niente sotto i 12 px. Titoli grandi con interlinea da 1,0 a 1,1 e un po' più stretti (da −0,01 a −0,03 em), sul telefonino più piccoli con `clamp()`. Grassetto (700) solo per i titoli più grandi, altrimenti semigrassetto (600). Prezzi e orari con `font-variant-numeric: tabular-nums`.
-- **Spaziature** solo da una serie: 4, 8, 12, 16, 24, 32, 48 px (più grandi per le sezioni). Contenuto largo al massimo circa 1200 px, sul telefonino 16 px di margine.
+- **Spaziature** solo da una serie: 4, 8, 12, 16, 24, 32, 48 px (più grandi per le sezioni). Contenuto largo al massimo circa 1200 px, sul telefonino 16 px di margine. Sul computer testata e sezioni usano questa larghezza, stretto resta solo il testo corrente (circa 70 caratteri per riga).
 - **Arrotondamenti:** tre livelli secondo la grandezza (campo, scheda, superficie grande), dentro sempre più piccoli che fuori. I pulsanti o tutti arrotondati o tutti squadrati.
 - **Profondità:** un solo metodo per tutto il sito, o superficie con ombra o linea sottile senza ombra. Ombre tinte del colore del testo, mai grigie, al massimo due livelli. Lo sfondo è leggermente caldo, le schede sono bianche.
 - **Movimento:** pressione da 90 a 100 ms, cambio da 160 a 200 ms, un movimento per evento. Con «Riduci movimento» solo dissolvenze.
@@ -106,6 +109,8 @@ Quando la direzione è decisa, chiedi sempre: «Vuoi aggiungere anche degli elem
 - **Foto proprie:** una lista di cosa deve fotografare la persona (il luogo, persone in azione, dettagli). Le foto vere battono qualsiasi immagine generata.
 - **Una mascotte:** una figura che accompagna attraverso il sito. Prima un foglio con quattro-sei pose della stessa figura, una per ogni momento (benvenuto, ricerca, successo, vuoto), poi le regole su quando compare: mai con errori, disdette o momenti delicati, mai accanto a foto di persone, mai dietro liste o moduli. Grandezza: per il benvenuto al massimo metà della larghezza, altrimenti piccola. È decorazione (`alt=""`), la frase accanto regge anche senza di lei. I clip animati si caricano solo quando sono visibili, durano al massimo 5 secondi e poi si fermano (WCAG 2.2.2). Ogni immagine la guardi tu stesso, anche ingrandita.
 - **3D:** un oggetto o la figura come modello 3D, solo nella testata della pagina iniziale e solo dalla larghezza di un tablet in su. Prima c'è un'immagine ferma, il 3D si carica solo quando la testata è visibile. Sul telefonino, senza scheda grafica o con «Riduci movimento» resta l'immagine ferma.
+
+**Sobrio non vuol dire senza immagini.** Se la persona non vuole icone, illustrazioni o figure, proponi comunque una foto vera per la testata della pagina iniziale (il luogo, persone in azione) e le dai la lista delle foto. Una foto è contenuto, non decorazione. Se non ne ha ancora, la testata porta la cosa più importante del contenuto invece di una superficie colorata con il titolo (per esempio il prossimo appuntamento in grande), e la lista delle foto sta in `docs/gestaltung/richtungen.md` sotto «Aperto». Se non vuole nemmeno foto, lì c'è la sua frase.
 
 Quello che sceglie la persona va in `docs/gestaltung/richtungen.md` e nella mazzetta dei colori (dimensioni, spaziature, regole).
 
@@ -137,7 +142,7 @@ npx playwright screenshot --viewport-size=375,812 --full-page https://{name}.auf
 npx playwright screenshot --viewport-size=1440,900 --full-page --color-scheme=dark https://{name}.aufwind.sh docs/gestaltung/fotos/start-1440-dunkel.png
 ```
 
-Guarda tu stesso ogni foto e confrontala con la bozza: sul telefonino il testo ha spazio a sinistra e a destra? Niente è tagliato o spostato? Solo dopo mostrala alla persona. Dopo il suo sì: diario di bordo (skill `git-logbuch`), nastro trasportatore (skill `pipeline`).
+Guarda tu stesso ogni foto e confrontala con la bozza: sul telefonino il testo ha spazio a sinistra e a destra? Niente è tagliato o spostato? Il menu sta su una riga? Il computer non sembra vuoto, con una colonna stretta al centro? Solo dopo mostrala alla persona. Dopo il suo sì: diario di bordo (skill `git-logbuch`), nastro trasportatore (skill `pipeline`).
 
 ## Trappole
 

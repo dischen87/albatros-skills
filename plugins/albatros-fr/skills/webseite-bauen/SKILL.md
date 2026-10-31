@@ -111,6 +111,7 @@ Le PRD, c'est le plan de construction sur une page, avec la liste de ce qu'on v�
 ### Accueil
 - [ ] Les trois premières phrases disent qui vous êtes, pour qui est le site et ce que les visiteurs doivent faire
 - [ ] Le bouton « … » mène à …
+- [ ] L'en-tête montre une vraie photo ou l'essentiel du contenu, pas seulement un titre et un bouton dans une surface de couleur (skill `gestaltung`, « Sobre ne veut pas dire sans image »)
 
 ### <chaque autre page>
 - [ ] …
@@ -123,7 +124,7 @@ Le PRD, c'est le plan de construction sur une page, avec la liste de ce qu'on v�
 
 ### Pour toutes les pages
 - [ ] Contenu comme dans le mandat, pas d'espace réservé sans nom clair
-- [ ] Natel (390 px de large) : rien de coupé, lisible sans zoom, au moins 16 px de marge à gauche et à droite, boutons d'au moins 44 px de haut
+- [ ] Natel (390 px de large) : rien de coupé, lisible sans zoom, au moins 16 px de marge à gauche et à droite, boutons d'au moins 44 px de haut, le menu sur une ligne ou en bouton « Menu »
 - [ ] Chaque page, aussi les pages des briques (par exemple pour réserver), a un en-tête, un menu et un pied de page avec l'impressum et la protection des données
 - [ ] Contraste : texte au moins 4,5 : 1, boutons et bordures au moins 3 : 1
 - [ ] Utilisable au clavier, le focus est visible

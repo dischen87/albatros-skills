@@ -111,6 +111,7 @@ The PRD is the building plan on one page, with the list of what gets checked at 
 ### Home
 - [ ] The first three sentences say who you are, who the site is for and what visitors should do
 - [ ] The button “…” leads to …
+- [ ] The header shows a real photo or the most important content, not just a heading and button in a colour block (skill `gestaltung`, “Plain doesn't mean without pictures”)
 
 ### <every other page>
 - [ ] …
@@ -123,7 +124,7 @@ The PRD is the building plan on one page, with the list of what gets checked at 
 
 ### For all pages
 - [ ] Content as in the brief, no placeholder without a clear label
-- [ ] Phone (390 px wide): nothing cut off, readable without zooming, at least 16 px of margin on the left and right, buttons at least 44 px high
+- [ ] Phone (390 px wide): nothing cut off, readable without zooming, at least 16 px of margin on the left and right, buttons at least 44 px high, the menu on one line or as a “Menu” button
 - [ ] Every page, including the building blocks' pages (for example for booking), has a header, menu and footer with the legal notice and privacy policy
 - [ ] Contrast: text at least 4.5 : 1, buttons and borders at least 3 : 1
 - [ ] Works with the keyboard, the focus is visible

@@ -111,6 +111,7 @@ Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collau
 ### Pagina iniziale
 - [ ] Nelle prime tre frasi c'è scritto chi siete, per chi è il sito e cosa devono fare i visitatori
 - [ ] Il pulsante «…» porta a …
+- [ ] Nella testata c'è una foto vera o la cosa più importante del contenuto, non solo titolo e pulsante in una superficie colorata (skill `gestaltung`, «Sobrio non vuol dire senza immagini»)
 
 ### <ogni altra pagina>
 - [ ] …
@@ -123,7 +124,7 @@ Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collau
 
 ### Per tutte le pagine
 - [ ] Contenuto come nell'incarico, nessun segnaposto senza un'indicazione chiara
-- [ ] Telefonino (largo 390 px): niente tagliato, leggibile senza zoom, a sinistra e a destra almeno 16 px di margine, pulsanti alti almeno 44 px
+- [ ] Telefonino (largo 390 px): niente tagliato, leggibile senza zoom, a sinistra e a destra almeno 16 px di margine, pulsanti alti almeno 44 px, il menu su una riga o come pulsante «Menu»
 - [ ] Ogni pagina, anche le pagine dei blocchi (per esempio per prenotare), ha testata, menu e piè di pagina con Impressum e protezione dei dati
 - [ ] Contrasto: testo almeno 4,5 : 1, pulsanti e bordi almeno 3 : 1
 - [ ] Si può usare con la tastiera, il focus è visibile

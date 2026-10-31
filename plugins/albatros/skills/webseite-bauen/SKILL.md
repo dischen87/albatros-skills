@@ -110,6 +110,7 @@ Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme gepr
 ### Start
 - [ ] In den ersten drei Sätzen steht, wer ihr seid, für wen die Seite ist und was Besucher tun sollen
 - [ ] Der Knopf «…» führt zu …
+- [ ] Im Kopf steht ein echtes Foto oder das Wichtigste aus dem Inhalt, nicht bloss Titel und Knopf in einer Farbfläche (Skill `gestaltung`, «Schlicht heisst nicht ohne Bild»)
 
 ### <jede weitere Seite>
 - [ ] …
@@ -122,7 +123,7 @@ Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme gepr
 
 ### Für alle Seiten
 - [ ] Inhalt wie im Auftrag, kein Platzhalter ohne klare Beschriftung
-- [ ] Handy (390 px breit): nichts abgeschnitten, ohne Zoom lesbar, links und rechts mindestens 16 px Rand, Knöpfe mindestens 44 px hoch
+- [ ] Handy (390 px breit): nichts abgeschnitten, ohne Zoom lesbar, links und rechts mindestens 16 px Rand, Knöpfe mindestens 44 px hoch, das Menü auf einer Zeile oder als Knopf «Menü»
 - [ ] Jede Seite, auch die Seiten der Bausteine (zum Beispiel zum Buchen), hat Kopf, Menü und Fuss mit Impressum und Datenschutz
 - [ ] Kontrast: Text mindestens 4,5 : 1, Knöpfe und Ränder mindestens 3 : 1
 - [ ] Mit der Tastatur bedienbar, der Fokus ist sichtbar
