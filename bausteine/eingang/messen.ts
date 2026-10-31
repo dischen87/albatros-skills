@@ -4,7 +4,7 @@
 // Die Hälfte der Anfragen geht an einen offenen Teil, die Hälfte an einen geschützten (jede fragt PocketBase, wer angemeldet ist).
 // Die Anfragen kommen von --adressen verschiedenen Adressen (X-Forwarded-For hinter einem vertrauten Proxy), ohne Grenze.
 // --smol startet den Eingang mit «bun --smol» (kleinerer Speicher, häufiger aufräumen).
-import { cpSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pocketbase, wurzelVon } from '../pocketbase/programm.ts';
@@ -79,4 +79,6 @@ try {
   eingang.kill();
   server.kill();
   teil.stop(true);
+  await Promise.all([eingang.exited, server.exited]);
+  rmSync(tmp, { recursive: true, force: true }); // PocketBase protokolliert jede Anfrage, das sind rund 30 MB je Lauf
 }

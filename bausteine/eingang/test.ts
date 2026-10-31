@@ -3,7 +3,7 @@
 //   bun bausteine/eingang/test.ts      (lädt PocketBase einmal nach ~/.cache, prüft die Prüfsumme)
 // Ist der Eingang eingebaut (bausteine/pocketbase/pb_hooks/eingang.pb.js), prüft er die eingebauten Dateien von PocketBase, sonst die
 // Rezepte mitglieder und eingang. eingang.json prüft er nicht, er baut sich eigene Teile.
-import { cpSync, existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { einstellen, mailAttrappe, pocketbase, wurzelVon } from '../pocketbase/programm.ts';
@@ -241,6 +241,8 @@ try {
   smtp.stop(true);
   const log = await new Response(server.stderr).text();
   if (fehler && log.trim()) console.log(log.slice(-2000));
+  await Promise.all([server.exited, ...prozesse.map((p) => p.exited)]);
+  rmSync(tmp, { recursive: true, force: true }); // die Daten dieses Laufs
 }
 console.log(fehler ? `\n${fehler} Prüfungen fehlgeschlagen` : '\nAlles grün');
 process.exit(fehler ? 1 : 0);
