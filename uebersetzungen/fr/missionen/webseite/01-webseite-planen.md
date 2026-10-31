@@ -2,6 +2,11 @@
 titel: Le plan de ton site web
 bild: Le plan avant de construire la maison
 phase: P3
+verstehen:
+  - frage: Pourquoi commences-tu avec peu de pages ?
+    kern: Chaque page doit être entretenue, car les textes, les dates et les images vieillissent. Peu de pages justes valent mieux que beaucoup que personne ne met à jour ; c'est pourquoi cinq à sept au maximum pour le premier vol.
+  - frage: De quoi chaque fonction de ton site a-t-elle besoin, par exemple un formulaire ?
+    kern: D'un déroulement avec confirmation et cas d'erreur. Qui envoie quelque chose voit que c'est arrivé et sait quoi faire si ça ne marche pas.
 ---
 
 ## De quoi il s'agit

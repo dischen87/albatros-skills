@@ -11,6 +11,11 @@ pruefung:
     schritt: plan
 skill: landingpage
 video: landingpage-in-60-sekunden
+verstehen:
+  - frage: Warum muss auch eine einzige Seite gepflegt werden?
+    kern: Angebot, Preise, Daten und Belege ändern sich. Eine Seite mit altem Preis oder abgelaufenem Datum kostet Vertrauen; darum steht im Plan, wer sie nachführt und wie oft.
+  - frage: Was gehört ins erste Bild deiner Startseite, das man ohne Scrollen sieht?
+    kern: Was du anbietest, für wen, und der eine Knopf, der das Ergebnis in Alltagswörtern sagt, zum Beispiel «Platz anfragen». Wer das nicht in fünf Sekunden versteht, geht wieder.
 ---
 
 ## Worum es geht

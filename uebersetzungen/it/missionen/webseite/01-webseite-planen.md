@@ -2,6 +2,11 @@
 titel: La pianta del tuo sito web
 bild: La pianta prima di costruire la casa
 phase: P3
+verstehen:
+  - frage: Perché parti con poche pagine?
+    kern: Ogni pagina va curata, perché testi, appuntamenti e immagini invecchiano. Poche pagine giuste sono meglio di tante che nessuno aggiorna; per questo al massimo da cinque a sette per il primo volo.
+  - frage: Di che cosa ha bisogno ogni funzione del tuo sito, per esempio un modulo?
+    kern: Di uno svolgimento con conferma e caso di errore. Chi invia qualcosa vede che è arrivato e sa che cosa fare se non funziona.
 ---
 
 ## Di cosa si tratta

@@ -2,6 +2,11 @@
 titel: Une page, une offre, un bouton
 bild: Une annonce au tableau d'affichage, avec des languettes à arracher
 phase: P3
+verstehen:
+  - frage: Pourquoi même une seule page doit-elle être entretenue ?
+    kern: L'offre, les prix, les dates et les preuves changent. Une page avec un ancien prix ou une date dépassée coûte de la confiance ; c'est pourquoi le plan dit qui la met à jour et à quelle fréquence.
+  - frage: Qu'est-ce qui va dans la première image de ta page d'accueil, celle qu'on voit sans faire défiler ?
+    kern: Ce que tu proposes, pour qui, et le seul bouton qui dit le résultat avec des mots de tous les jours, par exemple « Demander une place ». Qui ne le comprend pas en cinq secondes repart.
 ---
 
 ## De quoi il s'agit
