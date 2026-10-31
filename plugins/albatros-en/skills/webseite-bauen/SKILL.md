@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: 'c7313a0c5be0'
+  quelle: 'acb53511503d'
 ---
 
 # Building the website: the shell in your own workshop
@@ -68,7 +68,7 @@ mkdir -p scripts && cp <folder of this skill>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Ends with 0:** there's the line `Freigegeben zum Bauen: <date>` in `docs/entwurf.md`, the draft in `design/entwurf/` and the tokens in `design/tokens.css`. Carry on with step 1.
+- **Ends with 0:** there's the line `Freigegeben zum Bauen: <DD.MM.YYYY>, …` in `docs/entwurf.md`, the draft in `design/entwurf/` and the tokens in `design/tokens.css`. Carry on with step 1.
 - **Ends with 2:** the output (in German) says what's missing. Tell the person in one sentence and go back there: without the approval to build, to the skill `entwurf` (part “Freigabe”, the approval); without a draft, to the skill `entwurf`; without tokens, to the skill `gestaltung`. You never write the line `Freigegeben zum Bauen:` yourself, not even “just quickly”: it only exists after the person's yes to the draft.
 
 ### 1. Workshop and logbook
@@ -76,10 +76,12 @@ node scripts/pruefen.mjs --vor-bau
 **The workshop, once more:** Node, npm and Git have to be there, even if they already were for the draft:
 
 ```bash
-command -v node npm git        # Windows: where node npm git
+command -v node npm git        # Windows in PowerShell: where.exe node npm git
 ```
 
 If something is missing, you help install it as in the skill `entwurf` (the workshop) and check again.
+
+**With a building block** (`Setup:` in `docs/plan.md` names one, or `Baustein:` in `docs/stack.md`) you also need Bun: it runs the building block and its tests on this computer (step 4). Check it with `command -v bun` (Windows in PowerShell `where.exe bun`). If it's missing, the person installs it themselves: on a Mac and on Linux in the terminal `curl -fsSL https://bun.com/install | bash`, on Windows in PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. Then open a new terminal and check with `bun --version`.
 
 **The logbook on the computer:** every step gets an entry (commit), with a note in one sentence. That way the person can leaf back at any time. No harbour is needed for that: the logbook lives in the project folder and only gets connected when going live (skill `git-logbuch`, part “Logbuch ohne Hafen”, the logbook without a harbour).
 
@@ -184,15 +186,15 @@ Derived from docs/plan.md (Testing:) and the draft; approved with the draft.
 ```
 # path          expected status without signing in (from “Access” in docs/prd.md)
 /               200
-/impressum      200
-/datenschutz    200
+/legal-notice   200
+/privacy        200
 /verwaltung     404     # never public
 /.env           404
 /.git/config    404 403
 /docs/plan.md   404     # working documents don't belong on the web
 ```
 
-With a building block, its doors are added, for example `/mitglieder 302` or `/api/collections/users/records 401 403`: what it answers without signing in is in the skill `bausteine`.
+With a building block, its doors are added. If there's an entrance in front (skill `bausteine`, part “Ein Eingang für alles?”), these are for example `/intern/ 401`, `/_/ 404` and `/api/collections/_SUPERUSERS/auth-methods 404`: protected pages ask for a sign-in, and the admin sign-in stays closed from outside. PocketBase lists (for example `/api/collections/users/records`) answer guests with 200 and an empty list, not 401 or 403; if you put a list like that into `docs/tueren.txt`, then with 200.
 
 **One message for the assumptions:** show the person the PRD in three or four sentences, open the file and put the way of building and the doors to them as assumptions, for example: “I'm building with Astro, without a building block, and only home, offer, enquiry, legal notice and privacy policy are open. Is that right?” After their yes, you remove `[Annahme: …]`, make the logbook entry (`git add docs && git commit -m "PRD from the draft, way of building and doors"`), report `prd` and build.
 
@@ -270,7 +272,7 @@ Then you go through the acceptance criteria in `docs/prd.md`: you tick off the o
 
 Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you make the logbook entry (`git add docs web seite && git commit -m "Check: four reports, nothing red"`) and report `pruefung`.
 
-### 6. Release: the walk-through (`schritt: freigabe`)
+### 6. Release (Freigabe): the walk-through (`schritt: freigabe`)
 
 Now the person walks through their house themselves. They decide whether it may go online like this.
 
@@ -287,7 +289,7 @@ Now the person walks through their house themselves. They decide whether it may 
    Vergleich mit Entwurf: <date>, no open difference (pruefen.mjs --vergleich; discussed: …)
    ```
 5. **The question:** “You've seen your site on your computer, at phone width and at computer width. Do you release it?” Add what's still open (from the reports), and that this release counts for going live: exactly this site goes online, no more and no less.
-6. **Only after their clear yes** do you write underneath `Freigegeben: <date> (“<their words>”)`. “Looks good” without a yes to the release isn't enough. Then the logbook entry, with a marker (tag) on exactly this state:
+6. **Only after their clear yes** do you write underneath `Freigegeben: <DD.MM.YYYY>, “<their words>”`, for example `Freigegeben: 31.10.2026, “Yes, put it live like this”`. The date comes first, as numbers: without a date, with `[Annahme: …]` or with “not yet”, the line doesn't count as a yes, neither for `lage` nor for the skill `lancieren`. “Looks good” without a yes to the release isn't enough. Then the logbook entry, with a marker (tag) on exactly this state:
    ```bash
    git add docs/prd.md && git commit -m "Site released" && git tag -f freigegeben
    ```

@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.2.0
-  quelle: 'c7313a0c5be0'
+  quelle: 'acb53511503d'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -68,7 +68,7 @@ mkdir -p scripts && cp <dossier de ce skill>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Se termine par 0 :** il y a la ligne `Freigegeben zum Bauen: <date>` dans `docs/entwurf.md`, l'ébauche dans `design/entwurf/` et les tokens dans `design/tokens.css`. On continue avec l'étape 1.
+- **Se termine par 0 :** il y a la ligne `Freigegeben zum Bauen: <JJ.MM.AAAA>, …` dans `docs/entwurf.md`, l'ébauche dans `design/entwurf/` et les tokens dans `design/tokens.css`. On continue avec l'étape 1.
 - **Se termine par 2 :** la sortie (en allemand) dit ce qui manque. Dis-le à la personne en une phrase et retourne là-bas : sans autorisation de construire, au skill `entwurf` (partie « Freigabe », la validation) ; sans ébauche, au skill `entwurf` ; sans tokens, au skill `gestaltung`. La ligne `Freigegeben zum Bauen:`, tu ne l'écris jamais toi-même, même pas « vite fait » : elle n'existe qu'après le oui de la personne à l'ébauche.
 
 ### 1. Atelier et journal de bord
@@ -76,10 +76,12 @@ node scripts/pruefen.mjs --vor-bau
 **L'atelier, encore une fois :** Node, npm et Git doivent être là, même s'ils l'étaient déjà pour l'ébauche :
 
 ```bash
-command -v node npm git        # Windows : where node npm git
+command -v node npm git        # Windows dans PowerShell : where.exe node npm git
 ```
 
 S'il manque quelque chose, tu aides à l'installer comme dans le skill `entwurf` (l'atelier) et tu vérifies à nouveau.
+
+**Avec une brique** (`Setup:` dans `docs/plan.md` en nomme une, ou `Baustein:` dans `docs/stack.md`), il faut aussi Bun : c'est avec lui que la brique et ses tests tournent sur cet ordinateur (étape 4). Vérifie-le avec `command -v bun` (Windows dans PowerShell `where.exe bun`). S'il manque, la personne l'installe elle-même : sur Mac et Linux dans le terminal `curl -fsSL https://bun.com/install | bash`, sous Windows dans PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. Ensuite, ouvrir un nouveau terminal et contrôler avec `bun --version`.
 
 **Le journal de bord sur l'ordinateur :** chaque étape reçoit une entrée (commit), avec une note en une phrase. Ainsi, la personne peut feuilleter en arrière à tout moment. Pas besoin de port pour ça : le journal de bord est dans le dossier du projet, il ne sera relié qu'à la mise en ligne (skill `git-logbuch`, partie « Logbuch ohne Hafen », le journal de bord sans port).
 
@@ -184,15 +186,15 @@ Tirés de docs/plan.md (Testing:) et de l'ébauche ; validés avec l'ébauche.
 ```
 # chemin        statut attendu sans connexion (tiré de « Accès » dans docs/prd.md)
 /               200
-/impressum      200
-/datenschutz    200
+/mentions-legales        200
+/protection-des-donnees  200
 /verwaltung     404     # jamais public
 /.env           404
 /.git/config    404 403
 /docs/plan.md   404     # les documents de travail ne vont pas en ligne
 ```
 
-Avec une brique, ses portes s'ajoutent, par exemple `/mitglieder 302` ou `/api/collections/users/records 401 403` : ce qu'elle répond sans connexion figure dans le skill `bausteine`.
+Avec une brique, ses portes s'ajoutent. S'il y a une entrée devant (skill `bausteine`, partie « Ein Eingang für alles? »), ce sont par exemple `/intern/ 401`, `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : les pages protégées demandent une connexion, et la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase (par exemple `/api/collections/users/records`) répondent aux visiteurs 200 avec une liste vide, pas 401 ni 403 ; si tu mets une telle liste dans `docs/tueren.txt`, c'est avec 200.
 
 **Un message pour les hypothèses :** montre le PRD à la personne en trois ou quatre phrases, ouvre le fichier et présente le mode de construction et les portes comme hypothèses, par exemple : « Je construis avec Astro, sans brique, et seules l'accueil, l'offre, la demande, les mentions légales et la protection des données sont ouvertes. C'est juste ? » Après son oui, tu enlèves `[Annahme: …]`, tu fais l'entrée dans le journal de bord (`git add docs && git commit -m "PRD tiré de l'ébauche, mode de construction et portes"`), tu annonces `prd` et tu construis.
 
@@ -270,7 +272,7 @@ Ensuite, tu passes en revue les critères d'acceptation de `docs/prd.md` : tu 
 
 Rouge veut dire : corriger, reconstruire, revérifier, jusqu'à ce que plus rien ne soit rouge. Jaune seulement avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même. Quand les quatre rapports sont dans `docs/pruefung/` et que plus rien n'est rouge, tu fais l'entrée dans le journal de bord (`git add docs web seite && git commit -m "Vérification : quatre rapports, rien de rouge"`) et tu annonces `pruefung`.
 
-### 6. Validation : la visite (`schritt: freigabe`)
+### 6. Validation (Freigabe) : la visite (`schritt: freigabe`)
 
 Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut aller en ligne ainsi.
 
@@ -287,7 +289,7 @@ Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut
    Vergleich mit Entwurf: <date>, aucun écart ouvert (pruefen.mjs --vergleich ; discuté : …)
    ```
 5. **La question :** « Tu as vu ton site sur ton ordinateur, en largeur natel et en largeur ordinateur. Tu le valides ? » Ajoute ce qui est encore ouvert (tiré des rapports), et que cette validation vaut pour la mise en ligne : c'est exactement ce site qui ira en ligne, ni plus ni moins.
-6. **Seulement après son oui explicite,** tu écris en dessous `Freigegeben: <date> (« <ses mots> »)`. « Ça a l'air bien » sans oui à la validation ne suffit pas. Ensuite, l'entrée dans le journal de bord, avec un repère (tag) exactement à cet état :
+6. **Seulement après son oui explicite,** tu écris en dessous `Freigegeben: <JJ.MM.AAAA>, « <ses mots> »`, par exemple `Freigegeben: 31.10.2026, « Oui, en ligne comme ça »`. La date vient devant, en chiffres : sans date, avec `[Annahme: …]` ou avec « pas encore », la ligne ne compte pas comme un oui, ni pour `lage` ni pour le skill `lancieren`. « Ça a l'air bien » sans oui à la validation ne suffit pas. Ensuite, l'entrée dans le journal de bord, avec un repère (tag) exactement à cet état :
    ```bash
    git add docs/prd.md && git commit -m "Site validé" && git tag -f freigegeben
    ```
