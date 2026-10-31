@@ -1,12 +1,12 @@
 /// <reference path="../pb_data/types.d.ts" />
-// Mitgliederbereich: Mitteilungen sehen nur angemeldete Mitglieder. Schreiben kann die Verwaltung (Tunnel, http://localhost:8090/_/).
-// Die Mitglieder selbst liegen in der Sammlung users, die PocketBase schon mitbringt.
+// Mitgliederbereich: die Sammlung für Mitteilungen. Schreiben kann die Verwaltung (Tunnel, http://localhost:8090/_/).
+// Lesen dürfen nur freigegebene Mitglieder; diese Regel setzt 2_mitteilungen_freigabe.js, bis dahin ist die Sammlung zu.
 migrate((app) => {
   app.save(new Collection({
     type: "base",
     name: "mitteilungen",
-    listRule: "@request.auth.collectionName = 'users'",   // nur angemeldete Mitglieder
-    viewRule: "@request.auth.collectionName = 'users'",
+    listRule: null,
+    viewRule: null,
     createRule: null,
     updateRule: null,
     deleteRule: null,

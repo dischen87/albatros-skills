@@ -1,0 +1,17 @@
+# Baustein eingang: eine Tür für alle Teile. Einbauen (README.md daneben):
+#   1. In compose.yaml im Projekt unter include: die Zeile - bausteine/eingang/compose.yaml (PocketBase mit Rezept mitglieder ist schon drin)
+#   2. Beim Dienst webseite die Zeilen ports: und - "80:80" löschen. Port 80 hat jetzt der Eingang; sonst käme man an ihm vorbei.
+services:
+  eingang:
+    container_name: eingang
+    build: .
+    restart: unless-stopped
+    environment:
+      VERTRAUTE_PROXYS: "*"             # Albatros-Server: Port 80 erreicht nur die Kante, sie setzt X-Forwarded-For neu
+    mem_limit: 128m
+    ports:
+      - "80:8080"
+    healthcheck:                        # kommt eine Antwort durch den Eingang (auch 401 oder 404 heisst: er läuft)?
+      test: ["CMD", "bun", "-e", "const r = await fetch('http://127.0.0.1:8080/', { redirect: 'manual' }); process.exit(r.status < 500 ? 0 : 1)"]
+      interval: 10s
+      retries: 6

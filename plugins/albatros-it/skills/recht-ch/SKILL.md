@@ -1,9 +1,9 @@
 ---
 name: recht-ch
-description: "Mette in regola dal punto di vista legale un piccolo sito web svizzero, spiegato a persone senza conoscenze tecniche con l'immagine della targhetta del campanello e del regolamento della casa: impressum (art. 3 cpv. 1 lett. s LCSl), dichiarazione sulla protezione dei dati secondo la nLPD (obbligo d'informare, art. 19), cookie (art. 45c LTC), quando si aggiunge il RGPD (GDPR) dell'UE, diritti sulle immagini, e-mail pubblicitarie solo con consenso. Non è una consulenza legale. Usa lo skill con «impressum», «protezione dei dati», «privacy», «dichiarazione sulla protezione dei dati», «informativa sulla privacy», «LPD», «nLPD», «GDPR», «banner dei cookie», «mi serve per legge?», «cosa deve esserci sul mio sito», «modulo di contatto e privacy»."
+description: "Mette in regola dal punto di vista legale un piccolo sito web svizzero, spiegato a persone senza conoscenze tecniche con l'immagine della targhetta del campanello e del regolamento della casa: impressum (art. 3 cpv. 1 lett. s LCSl), dichiarazione sulla protezione dei dati secondo la nLPD (obbligo d'informare, art. 19), cookie (art. 45c LTC), accesso con login (cookie, registri, termini), quando si aggiunge il RGPD (GDPR) dell'UE, diritti sulle immagini, e-mail pubblicitarie solo con consenso. Non è una consulenza legale. Usa lo skill con «impressum», «protezione dei dati», «privacy», «dichiarazione sulla protezione dei dati», «informativa sulla privacy», «LPD», «nLPD», «GDPR», «banner dei cookie», «mi serve per legge?», «cosa deve esserci sul mio sito», «modulo di contatto e privacy», «login e privacy»."
 metadata:
   stand: 0.2.0
-  quelle: '1410b2c1e356'
+  quelle: 'd709bb4002f0'
 ---
 
 # Diritto CH: targhetta del campanello e regolamento della casa
@@ -63,15 +63,25 @@ Se il sito si rivolge anche a persone nell'UE, può valere in più il RGPD (GDPR
 - Pubblico dell'UE: per i cookie non necessari (statistiche, pubblicità) serve prima un consenso. Allora un banner con un «Rifiuta» di pari valore.
 - La cosa più semplice: nessun cookie inutile. Le statistiche dello skill `statistik` funzionano senza cookie. Integra i caratteri in locale invece che da server di terzi.
 
-### 5. E-mail pubblicitarie
+### 5. Accesso e ingresso
+
+Vale quando il sito ha un accesso (ricetta `mitglieder`, blocco `eingang`, skill `bausteine`).
+
+- **Il cookie dell'accesso** (`__Host-sitzung`, vale 5 giorni, illeggibile per gli script nel browser) serve perché una persona resti connessa. L'art. 45c LTC chiede anche per questo l'informazione: che viene impostato, a che scopo, e come rifiutarlo (senza questo cookie l'accesso non funziona). Basta una frase nella dichiarazione sulla protezione dei dati. Per questo cookie non servono né banner né consenso, nemmeno per i visitatori dell'UE: lì i cookie strettamente necessari sono esenti dal consenso (art. 5 par. 3 della direttiva ePrivacy).
+- **Registri:** PocketBase registra ogni accesso con l'indirizzo IP e cancella le voci dopo 5 giorni (amministrazione → Settings → Logs). L'ingresso scrive una riga per accesso, senza indirizzo IP, senza cookie e senza identificativo della persona. Entrambi vanno, con il termine, nella dichiarazione sulla protezione dei dati.
+- **Termini:** un account resta finché la persona o l'amministrazione lo cancella. Le richieste che l'amministrazione non abilita, le cancella al più tardi dopo 30 giorni (proposta; da annotare in `docs/betrieb.md`). L'accesso termina dopo 5 giorni o uscendo su questo dispositivo.
+- **Frase per la dichiarazione sulla protezione dei dati** della persona (da adattare, non riprendere nulla che sul sito non c'è):
+  > Area membri: per l'accesso salviamo nome, indirizzo e-mail, password (solo come impronta illeggibile) e se l'amministrazione ha abilitato l'account, finché l'account viene cancellato. All'accesso impostiamo un cookie necessario («__Host-sitzung», 5 giorni) perché l'accesso resti attivo; senza questo cookie l'accesso non è possibile. Il nostro server registra gli accessi con l'indirizzo IP per 5 giorni.
+
+### 6. E-mail pubblicitarie
 
 Pubblicità per e-mail solo con consenso preventivo (art. 3 cpv. 1 lett. o LCSl). Eccezione: la propria clientela, a cui al momento dell'acquisto è stata indicata la possibilità di rifiutare, per offerte proprie simili. In ogni e-mail: il mittente giusto e un link di disiscrizione semplice e gratuito. Iscrizione alla newsletter con e-mail di conferma (double opt-in), così il consenso è dimostrato.
 
-### 6. Immagini e testi
+### 7. Immagini e testi
 
 Solo immagini proprie o con licenza. Persone riconoscibili solo con il loro consenso. Vedi lo skill `inhalte`.
 
-### 7. Costruire le pagine e collegarle
+### 8. Costruire le pagine e collegarle
 
 Impressum e protezione dei dati come pagine a sé, raggiungibili da ogni pagina nel piè di pagina. Diario di bordo e nastro trasportatore (skill `git-logbuch`, `pipeline`). In `docs/plan.md` annota: «Verificare la dichiarazione sulla protezione dei dati quando si aggiunge un nuovo servizio.»
 

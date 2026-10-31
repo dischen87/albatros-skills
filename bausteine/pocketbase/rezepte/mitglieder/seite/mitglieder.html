@@ -3,61 +3,173 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
   <title>Mitglieder</title>
-  <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.28.1/dist/pocketbase.umd.js"></script>
+  <style>
+    /* Nur das Nötigste, damit die Seite allein brauchbar ist. Beim Einbau die Variablen auf die Tokens der Seite setzen (tokens.css). */
+    :root { --text: #1d2433; --leise: #5b6475; --linie: #d5d9e0; --flaeche: #fff; --grund: #f6f5f2; --aktion: #1f5f8b; --fehler: #b42318; --ok: #1e7a46; }
+    body { margin: 0; background: var(--grund); color: var(--text); font: 17px/1.5 system-ui, sans-serif; }
+    main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: clamp(28px, 4vw + 12px, 40px); line-height: 1.1; margin: 0 0 8px; }
+    h2 { font-size: 20px; margin: 32px 0 8px; }
+    .leise { color: var(--leise); }
+    .karte { background: var(--flaeche); border: 1px solid var(--linie); border-radius: 16px; padding: 16px; margin: 12px 0; }
+    button { min-height: 48px; padding: 0 20px; border-radius: 12px; border: 0; background: var(--aktion); color: #fff; font: 600 17px/1 system-ui, sans-serif; cursor: pointer; margin-top: 16px; }
+    button.zweit { background: var(--flaeche); color: var(--aktion); border: 1.5px solid var(--aktion); }
+    button.link { background: none; color: var(--aktion); padding: 0; min-height: 44px; text-decoration: underline; font-weight: 400; margin: 0; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible { outline: 3px solid var(--aktion); outline-offset: 2px; }
+    label { display: block; font-weight: 600; margin: 16px 0 4px; }
+    input { box-sizing: border-box; width: 100%; min-height: 48px; padding: 10px 12px; border: 1.5px solid var(--linie); border-radius: 12px; font: inherit; background: #fff; }
+    .fehler { color: var(--fehler); font-weight: 600; }
+    .ok { color: var(--ok); font-weight: 600; }
+    [hidden] { display: none !important; }
+  </style>
 </head>
 <body>
+<main>
   <h1>Mitglieder</h1>
-  <form id="login">
-    <label>E-Mail <input name="email" type="email" required autocomplete="email"></label>
-    <label>Passwort <input name="passwort" type="password" required minlength="8" autocomplete="current-password"></label>
-    <button name="was" value="anmelden">Anmelden</button>
-    <button name="was" value="registrieren">Neu registrieren</button>
-  </form>
-  <section id="bereich" hidden>
-    <p>Angemeldet als <span id="wer"></span>. <button id="abmelden">Abmelden</button></p>
-    <div id="mitteilungen"></div>
+  <p id="laedt">Einen Moment …</p>
+
+  <!-- Nicht angemeldet: anmelden, Passwort vergessen, Anfrage stellen -->
+  <section id="draussen" hidden>
+    <form id="anmelden">
+      <label for="email">E-Mail</label>
+      <input id="email" name="email" type="email" required autocomplete="email">
+      <label for="passwort">Passwort</label>
+      <input id="passwort" name="passwort" type="password" required autocomplete="current-password">
+      <p id="anmeldefehler" class="fehler" role="alert" hidden></p>
+      <button id="anmeldeknopf">Anmelden</button>
+    </form>
+    <button class="link" type="button" id="vergessen-auf">Passwort vergessen?</button>
+    <form id="vergessen" class="karte" hidden>
+      <label for="vergessen-email">Deine E-Mail</label>
+      <input id="vergessen-email" name="email" type="email" required autocomplete="email">
+      <p id="vergessen-antwort" role="status"></p>
+      <button class="zweit">Link für ein neues Passwort schicken</button>
+    </form>
+
+    <h2>Noch nicht dabei?</h2>
+    <p>Stell eine Anfrage. Du bestätigst deine E-Mail-Adresse, dann schaltet dich die Verwaltung frei.</p>
+    <form id="anfrage">
+      <label for="name">Dein Name</label>
+      <input id="name" name="name" required maxlength="100" autocomplete="name">
+      <label for="anfrage-email">Deine E-Mail</label>
+      <input id="anfrage-email" name="email" type="email" required autocomplete="email">
+      <label for="anfrage-passwort">Passwort (mindestens 8 Zeichen)</label>
+      <input id="anfrage-passwort" name="passwort" type="password" required minlength="8" autocomplete="new-password">
+      <p id="anfrage-antwort" role="status"></p>
+      <button class="zweit" id="anfrageknopf">Anfrage senden</button>
+    </form>
   </section>
-  <p id="meldung" role="status"></p>
-  <script>
-    const pb = new PocketBase('/');
-    const $ = (id) => document.getElementById(id);
 
-    async function zeigen() {
-      const drin = pb.authStore.isValid;
-      $('login').hidden = drin;
-      $('bereich').hidden = !drin;
-      if (!drin) return;
-      $('wer').textContent = pb.authStore.record.email;
-      const liste = await pb.collection('mitteilungen').getFullList({ sort: '-created' });
-      $('mitteilungen').replaceChildren(...liste.map((m) => {
-        const a = document.createElement('article');
-        const h = document.createElement('h2');
-        h.textContent = m.titel;
-        const t = document.createElement('div');
-        t.innerHTML = m.text; // kommt nur aus der Verwaltung
-        a.append(h, t);
-        return a;
-      }));
+  <!-- Angemeldet: Stand der Anfrage oder die Mitteilungen -->
+  <section id="drin" hidden>
+    <p>Angemeldet als <b id="wer"></b>. <button class="link" type="button" id="abmelden">Abmelden</button></p>
+    <div id="stand" class="karte" hidden></div>
+    <div id="mitteilungen" aria-live="polite"></div>
+  </section>
+</main>
+<script>
+  // Spricht PocketBase über /api/ der eigenen Adresse an. Wer was sehen darf, prüft der Server (pb_migrations/2_mitteilungen_freigabe.js).
+  // EINGANG: Steht der Baustein eingang davor (bausteine/eingang), meldet sich die Seite über ihn an, mit einem Cookie für alle Teile.
+  // Sonst merkt sie sich die Anmeldung im Browser.
+  const EINGANG = false;
+  const $ = (id) => document.getElementById(id);
+  const text = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+  let token = null;
+  try { token = EINGANG ? null : localStorage.getItem('mitglied'); } catch {}
+  const merken = (t) => { token = t; try { t ? localStorage.setItem('mitglied', t) : localStorage.removeItem('mitglied'); } catch {} };
+
+  async function api(pfad, optionen = {}) {
+    const r = await fetch(`/api${pfad}`, { ...optionen, headers: { 'content-type': 'application/json', ...(token ? { authorization: token } : {}) } });
+    return { ok: r.ok, status: r.status, body: r.status === 204 ? {} : await r.json().catch(() => ({})) };
+  }
+  const post = (pfad, daten) => api(pfad, { method: 'POST', body: JSON.stringify(daten) });
+  const keinNetz = 'Keine Verbindung. Prüf dein Internet und versuch es nochmals.';
+  function melde(id, satz, ok) { $(id).textContent = satz; $(id).className = ok ? 'ok' : 'fehler'; $(id).hidden = false; }
+
+  // Nach dem Anmelden zurück auf die Seite, von der der Eingang hierher geschickt hat (nur Seiten der eigenen Adresse)
+  function weiter() {
+    const w = new URLSearchParams(location.search).get('weiter');
+    if (w && w.startsWith('/') && !w.startsWith('//') && !w.startsWith('/\\')) { location.assign(w); return true; }
+    return false;
+  }
+
+  async function zeigen() {
+    $('laedt').hidden = false;
+    // Das eigene Konto: die Regel für users zeigt jeder Person nur sich selbst
+    const r = await api('/collections/users/records?perPage=1').catch(() => null);
+    const ich = r?.ok ? r.body.items?.[0] : null;
+    $('laedt').hidden = true;
+    if (!ich) { if (r?.ok || r?.status === 401) merken(null); $('draussen').hidden = false; $('drin').hidden = true; if (!r) melde('anmeldefehler', keinNetz); return; }
+    $('draussen').hidden = true;
+    $('drin').hidden = false;
+    $('wer').textContent = ich.email;
+    $('stand').hidden = ich.verified && ich.freigegeben;
+    if (!ich.verified) {
+      $('stand').innerHTML = '<p>Bitte bestätige zuerst deine E-Mail-Adresse mit dem Link aus unserer Mail. Keine Mail bekommen? Schau auch im Spam-Ordner nach.</p>'
+        + '<button class="zweit" type="button" id="nochmals">Mail nochmals schicken</button><p id="nochmals-antwort" role="status"></p>';
+      $('nochmals').onclick = async () => {
+        const a = await post('/collections/users/request-verification', { email: ich.email }).catch(() => null);
+        melde('nochmals-antwort', a?.ok ? 'Die Mail ist unterwegs.' : a ? 'Das hat nicht geklappt. Versuch es in einer Minute nochmals.' : keinNetz, a?.ok);
+      };
+      return;
     }
+    if (!ich.freigegeben) {
+      $('stand').innerHTML = '<p>Danke, deine Adresse ist bestätigt. Deine Anfrage liegt jetzt bei der Verwaltung. Sobald sie dich freischaltet, bekommst du eine Mail.</p>';
+      return;
+    }
+    const m = await api('/collections/mitteilungen/records?sort=-created&perPage=50').catch(() => null);
+    if (!m?.ok) { $('mitteilungen').innerHTML = '<p class="fehler">Die Mitteilungen lassen sich gerade nicht laden. Versuch es später nochmals.</p>'; return; }
+    if (!m.body.items.length) { $('mitteilungen').innerHTML = '<p class="leise">Noch keine Mitteilungen.</p>'; return; }
+    $('mitteilungen').innerHTML = m.body.items.map((x) => `<article class="karte"><h2>${text(x.titel)}</h2>`
+      + `<p class="leise">${new Date(x.created.replace(' ', 'T')).toLocaleDateString('de-CH', { timeZone: 'Europe/Zurich', day: 'numeric', month: 'long', year: 'numeric' })}</p>`
+      + `<div>${x.text}</div></article>`).join(''); // text kommt nur aus der Verwaltung
+  }
 
-    $('login').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const f = new FormData(e.target);
-      const email = f.get('email'), passwort = f.get('passwort');
-      try {
-        if (e.submitter.value === 'registrieren') {
-          await pb.collection('users').create({ email, password: passwort, passwordConfirm: passwort });
-        }
-        await pb.collection('users').authWithPassword(email, passwort);
-        $('meldung').textContent = '';
-        await zeigen();
-      } catch {
-        $('meldung').textContent = 'Das hat nicht geklappt. Prüf E-Mail und Passwort (mindestens 8 Zeichen).';
-      }
-    });
-    $('abmelden').addEventListener('click', () => { pb.authStore.clear(); zeigen(); });
+  $('anmelden').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('anmeldeknopf').disabled = true;
+    $('anmeldefehler').hidden = true;
+    const email = $('email').value, passwort = $('passwort').value;
+    const r = await (EINGANG ? post('/eingang/anmelden', { email, passwort }) : post('/collections/users/auth-with-password', { identity: email, password: passwort })).catch(() => null);
+    $('anmeldeknopf').disabled = false;
+    if (!r) return melde('anmeldefehler', keinNetz);
+    if (r.status === 429) return melde('anmeldefehler', 'Zu viele Versuche. Warte bitte eine Minute.');
+    if (!r.ok) return melde('anmeldefehler', 'E-Mail oder Passwort stimmt nicht.');
+    if (!EINGANG) merken(r.body.token);
+    $('passwort').value = '';
+    if (!weiter()) zeigen();
+  });
+
+  $('vergessen-auf').onclick = () => { $('vergessen').hidden = false; $('vergessen-email').value = $('email').value; $('vergessen-email').focus(); };
+  $('vergessen').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const r = await post('/collections/users/request-password-reset', { email: $('vergessen-email').value }).catch(() => null);
+    melde('vergessen-antwort', r?.ok ? 'Gibt es ein Konto mit dieser Adresse, kommt gleich eine Mail mit einem Link. Er gilt 30 Minuten.'
+      : r ? 'Das hat nicht geklappt. Versuch es in einer Minute nochmals.' : keinNetz, r?.ok);
+  });
+
+  $('anfrage').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('anfrageknopf').disabled = true;
+    const f = new FormData(e.target);
+    const r = await post('/collections/users/records', { name: f.get('name'), email: f.get('email'), password: f.get('passwort'), passwordConfirm: f.get('passwort') }).catch(() => null);
+    $('anfrageknopf').disabled = false;
+    if (r?.ok) { e.target.reset(); return melde('anfrage-antwort', 'Danke! Wir haben dir eine Mail geschickt. Bestätige darin deine Adresse, dann schaltet dich die Verwaltung frei.', true); }
+    const feld = r?.body?.data ?? {};
+    melde('anfrage-antwort', !r ? keinNetz : feld.email?.code === 'validation_not_unique' ? 'Mit dieser Adresse gibt es schon ein Konto. Melde dich oben an oder nutze «Passwort vergessen?».'
+      : feld.email ? 'Prüf bitte deine E-Mail-Adresse.' : feld.password ? 'Das Passwort braucht mindestens 8 Zeichen.' : 'Das hat nicht geklappt. Versuch es nochmals.');
+  });
+
+  $('abmelden').onclick = async () => {
+    if (EINGANG) await post('/eingang/abmelden', {}).catch(() => null);
+    merken(null);
+    $('mitteilungen').innerHTML = '';
     zeigen();
-  </script>
+  };
+  zeigen();
+</script>
 </body>
 </html>

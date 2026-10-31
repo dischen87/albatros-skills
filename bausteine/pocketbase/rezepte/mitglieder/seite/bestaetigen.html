@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>E-Mail-Adresse bestätigen</title>
+  <style>
+    /* Nur das Nötigste, damit die Seite allein brauchbar ist. Beim Einbau die Variablen auf die Tokens der Seite setzen (tokens.css). */
+    :root { --text: #1d2433; --leise: #5b6475; --grund: #f6f5f2; --aktion: #1f5f8b; --fehler: #b42318; --ok: #1e7a46; }
+    body { margin: 0; background: var(--grund); color: var(--text); font: 17px/1.5 system-ui, sans-serif; }
+    main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: clamp(28px, 4vw + 12px, 40px); line-height: 1.1; margin: 0 0 16px; }
+    button { min-height: 48px; padding: 0 20px; border-radius: 12px; border: 0; background: var(--aktion); color: #fff; font: 600 17px/1 system-ui, sans-serif; cursor: pointer; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--aktion); outline-offset: 2px; }
+    .fehler { color: var(--fehler); font-weight: 600; }
+    .ok { color: var(--ok); font-weight: 600; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>E-Mail-Adresse bestätigen</h1>
+  <p id="bitte">Ein Klick, dann weiss die Verwaltung, dass die Adresse dir gehört.</p>
+  <button id="knopf">E-Mail-Adresse bestätigen</button>
+  <p id="antwort" role="status" hidden></p>
+</main>
+<script>
+  // Link aus der Mail: bestaetigen.html?token=… (Vorlage in pb_migrations/2_mitteilungen_freigabe.js). Bestätigt wird erst mit dem
+  // Klick, damit Programme, die Links in Mails vorab öffnen, nichts auslösen.
+  const MITGLIEDERSEITE = '/mitglieder.html';
+  const $ = (id) => document.getElementById(id);
+  const token = new URLSearchParams(location.search).get('token');
+  history.replaceState(null, '', location.pathname); // der Schlüssel bleibt nicht im Verlauf
+  const melde = (html, ok) => { $('antwort').innerHTML = html; $('antwort').className = ok ? 'ok' : 'fehler'; $('antwort').hidden = false; };
+  if (!token) {
+    $('knopf').hidden = true;
+    $('bitte').hidden = true;
+    melde(`Dieser Link ist unvollständig. Öffne ihn direkt aus der Mail, oder fordere im <a href="${MITGLIEDERSEITE}">Mitgliederbereich</a> eine neue Mail an.`);
+  }
+  $('knopf').onclick = async () => {
+    $('knopf').disabled = true;
+    const r = await fetch('/api/collections/users/confirm-verification', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token }) }).catch(() => null);
+    if (!r) { $('knopf').disabled = false; return melde('Keine Verbindung. Prüf dein Internet und versuch es nochmals.'); }
+    $('knopf').hidden = true;
+    $('bitte').hidden = true;
+    if (r.ok) melde(`Danke, deine Adresse ist bestätigt. Sobald die Verwaltung dich freischaltet, bekommst du eine Mail. <a href="${MITGLIEDERSEITE}">Zum Mitgliederbereich</a>`, true);
+    else melde(`Dieser Link ist abgelaufen (er gilt 3 Tage) oder wurde schon benutzt. Melde dich im <a href="${MITGLIEDERSEITE}">Mitgliederbereich</a> an, dort kannst du eine neue Mail anfordern.`);
+  };
+</script>
+</body>
+</html>

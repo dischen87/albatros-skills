@@ -16,6 +16,20 @@ jobs:
       - run: bun run pruefen
       - run: bun test   # scripts/*.test.ts: entwurf-pruefen.mjs gegen die Testseiten gut und schlecht (mit Node aus dem Runner)
       - run: npx -y @anthropic-ai/claude-code plugin validate .
+  bausteine:                  # Tests der Rezepte und des Eingangs gegen ein echtes PocketBase (bausteine/README.md)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2    # wie im Dockerfile des Eingangs
+      - uses: actions/cache@v4  # PocketBase in der Version aus dem Dockerfile; programm.ts prüft die Prüfsumme beim Laden
+        with:
+          path: ~/.cache/albatros-pocketbase
+          key: pocketbase-${{ runner.os }}-${{ hashFiles('bausteine/pocketbase/Dockerfile') }}
+      - run: bun bausteine/pocketbase/rezepte/buchungen/test.ts
+      - run: bun bausteine/pocketbase/rezepte/mitglieder/test.ts
+      - run: bun bausteine/eingang/test.ts
   einbau:                     # baut Albatros so ein, wie EINRICHTEN.md es der KI vorgibt
     runs-on: ubuntu-latest
     steps:

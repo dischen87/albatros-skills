@@ -1,6 +1,6 @@
 ---
 name: recht-ch
-description: 'Bringt eine kleine Schweizer Webseite rechtlich in Ordnung, erklärt für Menschen ohne Vorwissen mit dem Bild von Klingelschild und Hausordnung: Impressum (UWG Art. 3 Abs. 1 lit. s), Datenschutzerklärung nach revDSG (Informationspflicht Art. 19), Cookies (Art. 45c FMG), wann die DSGVO der EU dazukommt, Bildrechte, Werbemails nur mit Einwilligung. Keine Rechtsberatung. Nutze den Skill bei «Impressum», «Datenschutz», «Datenschutzerklärung», «DSG», «DSGVO», «Cookie-Banner», «brauche ich das rechtlich», «was muss auf meine Webseite», «Kontaktformular Datenschutz».'
+description: 'Bringt eine kleine Schweizer Webseite rechtlich in Ordnung, erklärt für Menschen ohne Vorwissen mit dem Bild von Klingelschild und Hausordnung: Impressum (UWG Art. 3 Abs. 1 lit. s), Datenschutzerklärung nach revDSG (Informationspflicht Art. 19), Cookies (Art. 45c FMG), Anmeldung mit Login (Cookie, Protokolle, Fristen), wann die DSGVO der EU dazukommt, Bildrechte, Werbemails nur mit Einwilligung. Keine Rechtsberatung. Nutze den Skill bei «Impressum», «Datenschutz», «Datenschutzerklärung», «DSG», «DSGVO», «Cookie-Banner», «brauche ich das rechtlich», «was muss auf meine Webseite», «Kontaktformular Datenschutz», «Login Datenschutz».'
 metadata:
   stand: 0.2.0
 ---
@@ -61,15 +61,25 @@ Richtet sich die Seite auch an Menschen in der EU, kann zusätzlich die DSGVO ge
 - EU-Publikum: Für Cookies, die nicht nötig sind (Statistik, Werbung), braucht es vorher eine Einwilligung. Dann ein Banner mit gleichwertigem «Ablehnen».
 - Am einfachsten: keine unnötigen Cookies. Die Statistik aus dem Skill `statistik` läuft ohne Cookies. Schriften lokal einbinden statt von fremden Servern.
 
-### 5. Werbemails
+### 5. Anmeldung und Eingang
+
+Gilt, wenn die Seite ein Login hat (Rezept `mitglieder`, Baustein `eingang`, Skill `bausteine`).
+
+- **Das Cookie für die Anmeldung** (`__Host-sitzung`, gilt 5 Tage, für Skripte im Browser nicht lesbar) ist nötig, damit jemand angemeldet bleibt. Art. 45c FMG verlangt auch dafür die Information: dass es gesetzt wird, wofür, und wie man es ablehnen kann (ohne dieses Cookie geht die Anmeldung nicht). Ein Satz in der Datenschutzerklärung reicht. Einen Banner oder eine Einwilligung braucht es dafür nicht, auch nicht für Besucher aus der EU: Unbedingt nötige Cookies sind dort von der Einwilligung ausgenommen (Art. 5 Abs. 3 ePrivacy-Richtlinie).
+- **Protokolle:** PocketBase protokolliert jeden Zugriff mit IP-Adresse und löscht die Einträge nach 5 Tagen (Verwaltung → Settings → Logs). Der Eingang schreibt je Zugriff eine Zeile ohne IP-Adresse, ohne Cookie und ohne Kennung der Person. Beides gehört mit der Frist in die Datenschutzerklärung.
+- **Fristen:** Ein Konto bleibt, bis die Person es löscht oder die Verwaltung es löscht. Anfragen, die die Verwaltung nicht freischaltet, löscht sie nach spätestens 30 Tagen (Vorschlag; in `docs/betrieb.md` festhalten). Die Anmeldung endet nach 5 Tagen oder beim Abmelden auf diesem Gerät.
+- **Zeile für die Datenschutzerklärung** der Person (anpassen, nichts übernehmen, was es auf der Seite nicht gibt):
+  > Mitgliederbereich: Für die Anmeldung speichern wir Name, E-Mail-Adresse, Passwort (nur als nicht lesbarer Prüfwert) und ob die Verwaltung das Konto freigeschaltet hat, bis das Konto gelöscht wird. Beim Anmelden setzen wir ein notwendiges Cookie («__Host-sitzung», 5 Tage), damit die Anmeldung bestehen bleibt; ohne dieses Cookie ist keine Anmeldung möglich. Unser Server protokolliert Zugriffe mit IP-Adresse während 5 Tagen.
+
+### 6. Werbemails
 
 Werbung per E-Mail nur mit vorheriger Einwilligung (UWG Art. 3 Abs. 1 lit. o). Ausnahme: eigene Kundschaft, die beim Kauf auf die Ablehnungsmöglichkeit hingewiesen wurde, für eigene ähnliche Angebote. In jeder Mail: richtiger Absender und ein einfacher, kostenloser Abmeldelink. Newsletter-Anmeldung mit Bestätigungsmail (Double-Opt-in), damit die Einwilligung belegt ist.
 
-### 6. Bilder und Texte
+### 7. Bilder und Texte
 
 Nur eigene oder lizenzierte Bilder. Erkennbare Personen nur mit Einverständnis. Siehe Skill `inhalte`.
 
-### 7. Seiten bauen und verlinken
+### 8. Seiten bauen und verlinken
 
 Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar. Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`). In `docs/plan.md` notieren: «Datenschutzerklärung prüfen, wenn ein neuer Dienst dazukommt.»
 

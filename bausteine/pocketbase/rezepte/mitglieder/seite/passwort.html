@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>Neues Passwort</title>
+  <style>
+    /* Nur das Nötigste, damit die Seite allein brauchbar ist. Beim Einbau die Variablen auf die Tokens der Seite setzen (tokens.css). */
+    :root { --text: #1d2433; --leise: #5b6475; --linie: #d5d9e0; --grund: #f6f5f2; --aktion: #1f5f8b; --fehler: #b42318; --ok: #1e7a46; }
+    body { margin: 0; background: var(--grund); color: var(--text); font: 17px/1.5 system-ui, sans-serif; }
+    main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: clamp(28px, 4vw + 12px, 40px); line-height: 1.1; margin: 0 0 16px; }
+    label { display: block; font-weight: 600; margin: 16px 0 4px; }
+    input { box-sizing: border-box; width: 100%; min-height: 48px; padding: 10px 12px; border: 1.5px solid var(--linie); border-radius: 12px; font: inherit; background: #fff; }
+    button { min-height: 48px; padding: 0 20px; border-radius: 12px; border: 0; background: var(--aktion); color: #fff; font: 600 17px/1 system-ui, sans-serif; cursor: pointer; margin-top: 16px; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--aktion); outline-offset: 2px; }
+    .fehler { color: var(--fehler); font-weight: 600; }
+    .ok { color: var(--ok); font-weight: 600; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Neues Passwort</h1>
+  <form id="neu" novalidate>
+    <label for="passwort">Neues Passwort (mindestens 8 Zeichen)</label>
+    <input id="passwort" type="password" required minlength="8" autocomplete="new-password">
+    <label for="nochmals">Nochmals, zur Sicherheit</label>
+    <input id="nochmals" type="password" required minlength="8" autocomplete="new-password">
+    <button id="knopf">Passwort speichern</button>
+  </form>
+  <p id="antwort" role="status" hidden></p>
+</main>
+<script>
+  // Link aus der Mail «Neues Passwort festlegen»: passwort.html?token=… (Vorlage in pb_migrations/2_mitteilungen_freigabe.js)
+  const MITGLIEDERSEITE = '/mitglieder.html';
+  const $ = (id) => document.getElementById(id);
+  const token = new URLSearchParams(location.search).get('token');
+  history.replaceState(null, '', location.pathname); // der Schlüssel bleibt nicht im Verlauf
+  const melde = (html, ok) => { $('antwort').innerHTML = html; $('antwort').className = ok ? 'ok' : 'fehler'; $('antwort').hidden = false; };
+  const neuAnfordern = `Fordere im <a href="${MITGLIEDERSEITE}">Mitgliederbereich</a> unter «Passwort vergessen?» einen neuen Link an.`;
+  if (!token) { $('neu').hidden = true; melde(`Dieser Link ist unvollständig. Öffne ihn direkt aus der Mail. ${neuAnfordern}`); }
+  $('neu').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = $('passwort').value;
+    if (pw.length < 8) return melde('Das Passwort braucht mindestens 8 Zeichen.');
+    if (pw !== $('nochmals').value) return melde('Die beiden Passwörter sind nicht gleich.');
+    $('knopf').disabled = true;
+    const r = await fetch('/api/collections/users/confirm-password-reset', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token, password: pw, passwordConfirm: pw }),
+    }).catch(() => null);
+    $('knopf').disabled = false;
+    if (!r) return melde('Keine Verbindung. Prüf dein Internet und versuch es nochmals.');
+    if (r.ok) { $('neu').hidden = true; return melde(`Dein Passwort ist geändert. <a href="${MITGLIEDERSEITE}">Jetzt anmelden</a>`, true); }
+    const b = await r.json().catch(() => ({}));
+    melde(b.data?.password ? 'Dieses Passwort geht nicht. Nimm mindestens 8 Zeichen.' : `Dieser Link ist abgelaufen (er gilt 30 Minuten) oder wurde schon benutzt. ${neuAnfordern}`);
+  });
+</script>
+</body>
+</html>
