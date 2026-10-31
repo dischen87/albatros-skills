@@ -51,7 +51,7 @@ Bevor du `lage` aufrufst, schaust du im Projektordner nach, was schon da ist: `d
 - `projekt`: beim ersten Projekt der Person weglassen (wie bei `schritt_melden`); nur für ein weiteres Projekt dessen kurzer Name.
 - `anfrage`: nur, wenn die letzte Antwort von `lage` die Zeile `Anfragen: erlaubt.` hatte; dann bei jedem Aufruf. Darin steht, worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten, höchstens 300 Zeichen. Fehlt die Zeile, lässt du das Feld weg, auch wenn die Person bei «Lücken melden» Ja gesagt hat: Jenes Ja gilt nur für Lücken. Ob Albatros ihre Anfragen speichern darf, entscheidet die Person selbst im Cockpit (https://albatros.build/cockpit/daten); du fragst sie nicht im Chat danach und setzt es nie für sie. Niemand antwortet auf eine Anfrage; Albatros sieht daran nur, wobei Leute Hilfe brauchen. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), gehört nicht hierhin: Das geht mit `coach_fragen` und `anliegen` an das Team (Abschnitt «Lücken melden»).
 
-Gibt es noch kein Projekt, rufst du `lage` nur mit `skills_stand` auf. Antwortet `lage` mit «Ungültige Angaben», rufst du es einmal ohne Angaben auf.
+Gibt es noch kein Projekt, rufst du `lage` nur mit `skills_stand` auf. Antwortet `lage` mit «Ungültige Angaben», rufst du es einmal nur mit `docs/projekt.md`, `docs/ideen-check.md` und den Dateien der Phase auf, die jetzt dran ist; kommt die Meldung wieder, einmal ohne Angaben.
 
 Die Antwort hat diese Teile:
 

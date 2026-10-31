@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principal d'Albatros : l'aiguilleur du ciel. Demande avec l'outil lage l'état réel de la personne (phase du plan de vol, questions obligatoires ouvertes, abonnement, page ou serveur, mission), puis suit exactement le skill et la section à faire maintenant ; après chaque étape réussie, il redemande. Montre le plan de vol en trois grandes étapes (décoller, voler, atterrir), pose lui-même les questions obligatoires, clarifie apprendre ou faire et signale les lacunes du savoir-faire. Sans connexion, il montre les trois grandes étapes avec la prochaine étape et, sur demande, la bibliothèque ouverte. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je veux apprendre moi-même », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? »), le skill spécialisé a la priorité."
 metadata:
   stand: 0.2.0
-  quelle: '704df5978a4f'
+  quelle: 'fed4e9bfd8ee'
 ---
 
 # Aiguilleur du ciel : la bonne chose au bon moment
@@ -53,7 +53,7 @@ Avant d'appeler `lage`, tu regardes dans le dossier du projet ce qui existe déj
 - `projekt` : à laisser de côté pour le premier projet de la personne (comme pour `schritt_melden`) ; seulement pour un autre projet, son nom court.
 - `anfrage` (demande) : seulement si la dernière réponse de `lage` avait la ligne `Anfragen: erlaubt.` (demandes autorisées) ; alors, à chaque appel. Tu y mets ce que la personne te demande en ce moment, reformulé en une phrase, sans noms, adresses e-mail, adresses ni données d'accès, au plus 300 caractères. Si la ligne manque, tu laisses le champ de côté, même si la personne a dit oui dans « Signaler les lacunes » : ce oui-là ne vaut que pour les lacunes. Qu'Albatros puisse enregistrer ses demandes ou non, c'est la personne qui le décide elle-même dans le cockpit (https://albatros.build/fr/cockpit/daten) ; tu ne le lui demandes pas dans le chat et tu ne le règles jamais à sa place. Personne ne répond à une demande ; Albatros y voit seulement pour quoi les gens ont besoin d'aide. Ce qu'un être humain doit voir (facture, compte, fuite de données, erreur chez Albatros) n'a rien à faire ici : ça va à l'équipe avec `coach_fragen` et `anliegen` (section « Signaler les lacunes »).
 
-S'il n'y a pas encore de projet, tu appelles `lage` seulement avec `skills_stand`. Si `lage` répond « Ungültige Angaben » (données non valables), tu l'appelles une fois sans indications.
+S'il n'y a pas encore de projet, tu appelles `lage` seulement avec `skills_stand`. Si `lage` répond « Ungültige Angaben » (données non valables), tu l'appelles une fois seulement avec `docs/projekt.md`, `docs/ideen-check.md` et les fichiers de la phase qui est à faire maintenant ; si le message revient, une fois sans indications.
 
 La réponse a ces parties (en allemand) :
 

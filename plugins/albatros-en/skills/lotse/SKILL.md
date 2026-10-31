@@ -3,7 +3,7 @@ name: lotse
 description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server, mission), then follows exactly the skill and section that are up now; after every step they finish, it asks again. Shows the flight plan in three stages (take off, fly, land), asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and, on request, the open library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”), the matching topic skill comes first."
 metadata:
   stand: 0.2.0
-  quelle: '704df5978a4f'
+  quelle: 'fed4e9bfd8ee'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -53,7 +53,7 @@ Before you call `lage`, look in the project folder to see what's already there: 
 - `projekt`: leave it out for the person's first project (as with `schritt_melden`); only for another project, its short name.
 - `anfrage` (request): only if `lage`'s last answer had the line `Anfragen: erlaubt.` (requests allowed); then with every call. It says what the person is asking you for right now, reworded in one sentence, without names, email addresses, addresses or access details, at most 300 characters. If the line is missing, leave the field out, even if the person said yes under “Reporting gaps”: that yes only counts for gaps. Whether Albatros may store their requests is something the person decides themselves in the cockpit (https://albatros.build/en/cockpit/daten); you don't ask them about it in the chat and you never set it for them. Nobody answers a request; it only shows Albatros what people need help with. Anything a human has to see (a bill, the account, a data breach, a mistake at Albatros) doesn't go here: it goes to the team with `coach_fragen` and `anliegen` (section “Reporting gaps”).
 
-If there's no project yet, call `lage` with just `skills_stand`. If `lage` answers “Ungültige Angaben” (invalid details), call it once without any details.
+If there's no project yet, call `lage` with just `skills_stand`. If `lage` answers “Ungültige Angaben” (invalid details), call it once with just `docs/projekt.md`, `docs/ideen-check.md` and the files of the phase that's up now; if the message comes back, once without any details.
 
 Its answer has these parts (the labels come in German):
 
