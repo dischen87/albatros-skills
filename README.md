@@ -87,53 +87,66 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 ## Aufbau
 
 ```
-.claude-plugin/marketplace.json     Marktplatz «albatros» mit einem Plugin
+.claude-plugin/marketplace.json     Marktplatz «albatros» mit vier Plugins: albatros (Deutsch), albatros-fr, albatros-it, albatros-en
 plugins/albatros/
   .claude-plugin/plugin.json
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
   skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
+  skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
+  skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9, P10, P13): vier Bereiche, --vor-bau, --tueren, --vergleich, --live
   evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
   evals/GUTE-ANTWORT.md             was eine gute Antwort je Phase enthält, erzeugt aus fahrplan.yaml (scripts/gute-antwort.ts)
   evals/KRITERIEN-LOG.md            jede Änderung an Kriterien mit Datum, Fall und Grund
+plugins/albatros-fr/, -it/, -en/    dieselben Skills übersetzt (Kennungen deutsch); metadata.quelle nennt den deutschen Text
 fahrplan.yaml                       der Ablauf P1 bis P13: Skills, Pflichtfragen, Ergebnisse, Ja-Momente, Gates, Insel-Schritte
 missionen/<weg>/<nr>-<slug>.md      41 Missionen: flugschule 18, webseite 9, geschaeft 14
+uebersetzungen/<sprache>/           Missionen, Vorlage und Texte für den Server auf Französisch, Italienisch und Englisch
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
 schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
-vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, Dockerfile, compose.yaml, Fliessband
-scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, auch dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt
+vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband
+bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
+scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts)
+scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht)
+scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens), je mit erwartet.json: bun scripts/testseiten/test.ts
+scripts/gute-antwort.ts             erzeugt evals/GUTE-ANTWORT.md
+scripts/einbau-test.sh              Einbau nach EINRICHTEN.md in einem leeren Home
+scripts/durchspiel.ts               Durchspiel-Test (Abschnitt «Durchspiel-Test»)
 ```
 
 ## Skills
 
-| Weg | Skill | Bild |
+Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran ist (aus `fahrplan.yaml` und den Missionen).
+
+| Wann | Skill | Bild |
 |---|---|---|
-| alle | `lotse` | der Fluglotse im Turm: sagt, was jetzt dran ist |
-| Flugschule | `start` | Bordkarte holen und einsteigen |
-| | `ssh-schluessel` | Hausschlüssel und Schloss |
-| | `server-kennenlernen` | Rundgang durch die neue Wohnung |
-| | `git-logbuch` | Logbuch an Bord, Kopie im Hafen |
-| | `pipeline` | Fliessband mit Qualitätskontrolle |
-| | `zurueck-auf-gestern` | das tägliche Foto der ganzen Wohnung |
-| | `sicherheit` | den Schlüssel nicht unter die Fussmatte |
-| | `kosten` | Haushaltsbuch |
-| | `domain` | Adresse im Telefonbuch |
-| | `landung` | Umzug ins eigene Haus |
-| Webseite | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite |
-| | `webseite-planen` | Grundriss |
-| | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden (Platzhalter) |
-| | `entwurf` | das begehbare Modell, bevor der Rohbau beginnt (Platzhalter) |
-| | `lancieren` | wo das Haus steht, und die Eröffnung mit Band (Platzhalter) |
-| | `betrieb` | Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen (Platzhalter) |
-| | `webseite-bauen` | die kleine Fabrik: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live; misst mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder) |
-| | `inhalte` | Ware im Schaufenster |
-| | `gestaltung` | erst das Fundament, dann die Fassade |
-| | `cms` | Pinnwand im Flur |
-| | `bausteine` | Fertigteile beim Hausbau |
-| | `seo-grundlagen` | Wegweiser und Stadtplan |
-| | `barrierefreiheit` | Rampe neben der Treppe |
-| | `recht-ch` | Klingelschild und Hausordnung |
-| | `statistik` | Strichliste an der Ladentür |
+| immer | `lotse` | der Fluglotse im Turm: sagt nach dem echten Stand, was jetzt dran ist |
+| Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, dann los mit der Idee |
+| P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss, Plan prüfen) |
+| P2, P4, P13 | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite, keine Funktion geht ohne Entscheid verloren, Umleitungen beim Livegang |
+| P5 | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden; Maskottchen ja, nein oder später |
+| P6 | `gestaltung` | erst das Fundament, dann die Fassade: graues Mockup, drei Richtungen, Farbfächer (Tokens) und Musterblatt |
+| P7, P8 | `entwurf` | das begehbare Modell, bevor der Rohbau beginnt, und die Unterschrift darunter (Freigabe zum Bauen); prüft mit `entwurf-pruefen.mjs` |
+| P7 | `inhalte` | Ware im Schaufenster |
+| P9, P10 | `webseite-bauen` | der Rohbau in der eigenen Werkstatt: PRD aus dem freigegebenen Entwurf, bauen, vier Prüfungen und die Türen mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder), Vergleich mit dem Entwurf, Freigabe; ins Netz geht nichts |
+| P9, P13 | `git-logbuch` | Logbuch an Bord, Kopie im Hafen |
+| P9 | `barrierefreiheit` | Rampe neben der Treppe |
+| P9 | `recht-ch` | Klingelschild und Hausordnung |
+| P9, P13 | `bausteine` | Fertigteile beim Hausbau: zuerst auf dem Computer, auf den Server beim Lancieren; ein Eingang mit einem Login für mehrere Teile |
+| P11, P13 | `lancieren` | Wohnort und Eröffnung: Light, Pilot oder selbst, dann nur die freigegebene Seite ins Netz, von aussen geprüft |
+| P11 | `kosten` | Haushaltsbuch |
+| P11 | `ssh-schluessel` | Hausschlüssel und Schloss |
+| P11 | `server-kennenlernen` | Rundgang durch die neue Wohnung (Pilot) |
+| P12 | `betrieb` | Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen |
+| P12 | `sicherheit` | den Schlüssel nicht unter die Fussmatte |
+| P12 | `zurueck-auf-gestern` | das tägliche Foto der ganzen Wohnung |
+| P12, freiwillig | `cms` | Pinnwand im Flur |
+| P13 | `pipeline` | Fliessband mit Qualitätskontrolle |
+| P13 | `seo-grundlagen` | Wegweiser und Stadtplan |
+| P13, freiwillig | `domain` | Adresse im Telefonbuch |
+| P13, freiwillig | `statistik` | Strichliste an der Ladentür |
+| P13, freiwillig | `landung` | Umzug ins eigene Haus |
+| nach dem Livegang | `webseite-aendern` | ein Umbau im bewohnten Haus: klein (lokal, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe, bauen) |
 
 Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er gebraucht wird, und zuerst mit seinem Bild.
 
@@ -170,7 +183,7 @@ Die Prüftypen passen zur Prüf-API von flotte (`POST /server/:id/pruefen`); `in
 | `git` | `pfad`, `min_commits` (1), `branch` (`main`) | der Ordner ein Repo mit so vielen Einträgen ist |
 | `workflow` | `datei` (`.github/workflows/…`) | der letzte Lauf im Repo der Person im Hafen (Forgejo) grün ist |
 | `docker` | `container` | der Container läuft |
-| `insel` | `schritt` (Schlüssel aus `insel` in `fahrplan.yaml`) | ein Projekt der Person auf der Insel mindestens bei diesem Schritt steht |
+| `insel` | `schritt` (Schlüssel aus `insel` in `fahrplan.yaml`) | das Hauptprojekt der Person (`projekt`, das Projekt ohne eigenen Namen bei `schritt_melden`) auf der Insel mindestens bei diesem Schritt steht; weitere Projekte zählen nicht |
 
 Bis P10 (`gratis_bis`) liegt alles nur auf dem Computer der Person: Dort prüfen Missionen nur mit `insel`, und der Schritt gehört zur Phase der Mission (`pruefen.ts` prüft beides).
 
@@ -182,7 +195,12 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 
 ```bash
 bun install
-bun run pruefen                       # Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md
+bun run pruefen                       # Skills, Missionen, Fahrplan, Version, GUTE-ANTWORT.md, Vorlage und Befehle zum Aktualisieren
+bun test                              # scripts/*.test.ts: Abgleiche von pruefen.ts, entwurf-pruefen.mjs gegen die Testseiten (CI: Job pruefen)
+bun scripts/testseiten/test.ts        # pruefen.mjs gegen die Testseiten; --vergleich lädt beim ersten Mal Playwright und Chromium (nicht in CI)
+bun bausteine/pocketbase/rezepte/buchungen/test.ts   # Rezepte und Eingang gegen ein echtes PocketBase (CI: Job bausteine)
+bun bausteine/pocketbase/rezepte/mitglieder/test.ts
+bun bausteine/eingang/test.ts
 bun scripts/gute-antwort.ts           # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, phase: in Evals oder KRITERIEN-LOG.md
 claude plugin validate .              # Marktplatz und Plugin
 QUELLE=$PWD bash scripts/einbau-test.sh   # Einbau nach EINRICHTEN.md in leerem Home (CI: Job einbau)
