@@ -719,7 +719,7 @@ phasen:
         warum:
           de: 'Gebaut wird nur, was du gesehen und freigegeben hast.'
           fr: 'On ne construit que ce que tu as vu et autorisé.'
-          it: 'Si costruisce solo ciò che hai visto e approvato.'
+          it: 'Si costruisce solo ciò a cui hai dato il via libera, dopo averlo visto.'
           en: 'Only what you''ve seen and approved gets built.'
     gate: 'Zeile «Freigegeben zum Bauen: <Datum>» mit dem Wortlaut der Person; «sieht gut aus» ohne Ja zum Bauen reicht nicht. Ohne diese Zeile baut webseite-bauen nicht (pruefen.mjs --vor-bau).'
 
@@ -785,13 +785,13 @@ phasen:
         ablage: 'docs/prd.md#Freigegeben:'
         frage:
           de: 'Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?'
-          fr: 'Tu as vu ton site sur ton ordinateur, en largeur natel et en largeur ordinateur. Tu donnes ton autorisation ?'
-          it: 'Hai visto il tuo sito sul tuo computer, in larghezza telefonino e computer. Dai il via libera?'
+          fr: 'Tu as vu ton site sur ton ordinateur, en largeur natel et en largeur ordinateur. Tu le valides ?'
+          it: 'Hai visto il tuo sito sul tuo computer, in larghezza telefonino e computer. Lo approvi?'
           en: 'You''ve seen your site on your computer, at phone width and at computer width. Do you release it?'
         warum:
           de: 'Ohne Freigabe geht nichts ins Netz; diese Freigabe gilt für den Livegang.'
-          fr: 'Sans autorisation, rien ne va en ligne ; cette autorisation vaut pour la mise en ligne.'
-          it: 'Senza via libera niente va online; questo via libera vale per la messa online.'
+          fr: 'Sans validation, rien ne va en ligne ; cette validation vaut pour la mise en ligne.'
+          it: 'Senza approvazione niente va online; quest''approvazione vale per la messa online.'
           en: 'Without a release nothing goes online; this release counts for going live.'
     gate: 'Vergleich Bau gegen Entwurf je Seite (Überschriften, Menü, Abschnitte) ohne offene Abweichung; «Freigegeben: <Datum>» mit dem Wortlaut der Person.'
 

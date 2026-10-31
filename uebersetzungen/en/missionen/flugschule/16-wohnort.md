@@ -4,7 +4,7 @@ bild: Deciding where the house stands, and fetching the key
 phase: P11
 verstehen:
   - frage: 'What''s the difference between Light, Pilot and hosting it yourself?'
-    kern: Light is a site without its own services, and every approved change is online straight away. Pilot is your own server for sites with building blocks like sign-up or login. Hosting it yourself, you put everything online on your own.
+    kern: Light is a site without its own services, and every released change is online straight away. Pilot is your own server for sites with building blocks like sign-up or login. Hosting it yourself, you put everything online on your own.
   - frage: What is an SSH key, in one sentence?
     kern: 'A house key and a lock: the house key stays on your computer, the lock goes onto the server or into the harbour, and only someone with the matching key gets in.'
   - frage: Is your site on the web after this step?

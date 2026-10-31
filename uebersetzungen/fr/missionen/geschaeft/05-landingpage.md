@@ -21,7 +21,7 @@ Au tableau d'affichage du supermarché, on comprend une bonne annonce en passant
 2. Vous planifiez la page de haut en bas et vous écrivez les textes avec les mots de ta clientèle.
 3. Vous fixez quelle action aboutie sera comptée. La page sera construite plus tard, après ton autorisation de l'ébauche.
 4. Tu montres une esquisse de la première image pendant cinq secondes à quelques personnes de ton groupe cible et tu améliores ce qui n'est pas clair.
-5. Vous notez le plan et le résultat du test. La page ne sera mise en ligne qu'après ton autorisation.
+5. Vous notez le plan et le résultat du test. La page ne sera mise en ligne qu'après ta validation.
 
 ## Réussi quand
 

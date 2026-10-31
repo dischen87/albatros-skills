@@ -19,7 +19,7 @@ Sulla bacheca degli annunci al supermercato, un buon annuncio si capisce passand
 
 1. Con la tua IA stabilisci l'unica azione che i visitatori devono fare.
 2. Pianificate la pagina dall'alto in basso e scrivete i testi con le parole della tua clientela.
-3. Stabilite quale azione conclusa verrà contata. La pagina sarà costruita più tardi, dopo che avrai approvato la bozza.
+3. Stabilite quale azione conclusa verrà contata. La pagina sarà costruita più tardi, dopo che avrai dato il via libera alla bozza.
 4. Mostri uno schizzo della prima schermata ad alcune persone del tuo pubblico per cinque secondi e migliori quello che non è chiaro.
 5. Annotate il piano e il risultato del test. La pagina va online solo dopo la tua approvazione.
 

@@ -4,11 +4,11 @@ bild: Décider où la maison se trouve, et aller chercher la clé
 phase: P11
 verstehen:
   - frage: 'Qu''est-ce qui distingue Light, Pilot et « par toi-même » ?'
-    kern: 'Light est un site sans services propres, et chaque changement autorisé est tout de suite en ligne. Pilot est un serveur à toi pour les sites avec des briques comme l''inscription ou la connexion. Par toi-même, tu mets tout en ligne toi-même.'
+    kern: 'Light est un site sans services propres, et chaque changement validé est tout de suite en ligne. Pilot est un serveur à toi pour les sites avec des briques comme l''inscription ou la connexion. Par toi-même, tu mets tout en ligne toi-même.'
   - frage: 'Qu''est-ce qu''une clé SSH, en une phrase ?'
     kern: 'La clé de la maison et la serrure : la clé de la maison reste sur ton ordinateur, la serrure va sur le serveur ou au port, et seul qui a la bonne clé peut entrer.'
   - frage: Ton site est-il déjà en ligne après cette étape ?
-    kern: 'Non. En ligne, il y a tout au plus le modèle. Ton site autorisé ne va en ligne qu''au moment de la mise en ligne.'
+    kern: 'Non. En ligne, il y a tout au plus le modèle. Ton site validé ne va en ligne qu''au moment de la mise en ligne.'
 ---
 
 ## De quoi il s'agit
