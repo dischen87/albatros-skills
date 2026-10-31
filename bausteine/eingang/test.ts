@@ -399,7 +399,9 @@ try {
   const seiteLokal = mkdtempSync(join(tmp, 'seite-'));
   writeFileSync(join(seiteLokal, 'index.html'), '<!doctype html><title>Probe</title><p>Probe</p>');
   const pbLokal = 21000 + Math.floor(Math.random() * 1000), eingangLokal = 22000 + Math.floor(Math.random() * 1000);
-  lokal = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal], { stdout: 'pipe', stderr: 'pipe' });
+  // TMPDIR: lokal.ts legt seinen Ordner (Daten von PocketBase) dann in den Ordner dieses Tests, und der wird am Ende gelöscht
+  lokal = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal],
+    { env: { ...process.env, TMPDIR: tmp }, stdout: 'pipe', stderr: 'pipe' });
   const ausgabe = new Response(lokal.stdout as ReadableStream).text();
   for (let i = 0; i < 100 && !(await fetch(`http://127.0.0.1:${eingangLokal}/`).then((r) => r.ok, () => false)); i++) await Bun.sleep(100);
   const lokalNetz = await imNetz(eingangLokal), lokalHier = await fetch(`http://localhost:${eingangLokal}/`).then((r) => r.status, () => 0);
