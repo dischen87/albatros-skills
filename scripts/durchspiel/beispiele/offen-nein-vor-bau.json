@@ -1,0 +1,45 @@
+{
+ "fall": "nein-vor-bau",
+ "bis": "P1",
+ "ordner": "eierkiste",
+ "erwartet": { "exit": 2 },
+ "nachrichten": [
+  { "wer": "Person", "text": "Ich hätte gern eine Webseite für unseren Hofladen." },
+  { "wer": "KI", "text": "Schön! Wir kreisen zuerst das Ziel auf der Karte ein, bevor wir losfliegen. Ich habe dir deine Insel geöffnet.\n\nWie soll dein Projekt heissen? Und worum geht es, in einem Satz?" },
+  { "wer": "Person", "text": "Eierkiste. Frische Eier, Gemüse und Most direkt vom Hof, Selbstbedienung." },
+  { "wer": "KI", "text": "Danke, das klingt nach einem Laden, den man gern besucht.\n\nFür wen ist die Seite gedacht? Und was sollen Besucher vor allem tun?" },
+  { "wer": "Person", "text": "Familien aus der Umgebung, die regional einkaufen wollen. Vorbeikommen: Öffnungszeiten und Weg zum Hof finden." },
+  { "wer": "KI", "text": "Gut, dann ist die Hauptsache klar: vorbeikommen.\n\nGibt es schon eine Webseite?" },
+  { "wer": "Person", "text": "Nein, es gibt keine Webseite." },
+  { "wer": "KI", "text": "Ich habe docs/projekt.md angelegt und dir die graue Skizze der Startseite geöffnet: oben die Öffnungszeiten und der Weg zum Hof, darunter das Angebot.\n\nZwei Annahmen habe ich eingetragen: Erfolg sind zwanzig neue Kundinnen und Kunden im ersten Monat, und ich mache die Arbeit und erkläre dir jeden Schritt in einem Satz. Stimmt das so?" },
+  { "wer": "Person", "text": "Ja, das stimmt so." },
+  { "wer": "KI", "text": "Danke. Die Idee steht, und dein Haus auf der Insel ist gewachsen. Als Nächstes schauen wir uns vergleichbare Seiten an." }
+ ],
+ "aufrufe": [
+  { "runde": 0, "werkzeug": "konto_status", "argumente": {} },
+  { "runde": 0, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0" } },
+  { "runde": 0, "werkzeug": "weg_waehlen", "argumente": { "weg": "webseite" } },
+  { "runde": 3, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0", "modus": "machen", "belege": [
+   { "datei": "docs/projekt.md", "zeilen": ["Projektname: Eierkiste", "Modus: machen"] }, { "datei": "AGENTS.md", "zeilen": [] }, { "datei": "design/skizze.html", "zeilen": [] } ] } },
+  { "runde": 4, "werkzeug": "schritt_melden", "argumente": { "schritt": "idee", "titel": "Eierkiste", "sprache": "de" } },
+  { "runde": 4, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0", "modus": "machen", "belege": [
+   { "datei": "docs/projekt.md", "zeilen": ["Projektname: Eierkiste", "Modus: machen"] }, { "datei": "AGENTS.md", "zeilen": [] }, { "datei": "design/skizze.html", "zeilen": [] } ] } }
+ ],
+ "geoeffnet": [
+  { "runde": 0, "ziel": "https://albatros.build/cockpit/insel" },
+  { "runde": 3, "ziel": "design/skizze.html" }
+ ],
+ "zustaende": [
+  { "runde": 0, "dateien": {}, "gebaut": false },
+  { "runde": 1, "dateien": {}, "gebaut": false },
+  { "runde": 2, "dateien": {}, "gebaut": false },
+  { "runde": 3, "gebaut": false, "dateien": {
+   "AGENTS.md": "# Hinweise für die KI\n\nLies zuerst docs/projekt.md, dann ruf lage auf (Albatros).\n",
+   "design/skizze.html": true,
+   "docs/projekt.md": "# Eierkiste\n\nProjektname: Eierkiste\nIn einem Satz: Frische Eier, Gemüse und Most direkt vom Hof, Selbstbedienung\nFür wen: Familien aus der Umgebung, die regional einkaufen wollen\nHauptsache: vorbeikommen (Öffnungszeiten und Weg zum Hof)\nErfolg: [Annahme: zwanzig neue Kundinnen und Kunden im ersten Monat]\nBestehende Seite: keine\nModus: [Annahme: machen]\nWeg: Webseite\nStand: 31.10.2026, Idee steht\nNächster Schritt: Research: vergleichbare Seiten anschauen\n" } },
+  { "runde": 4, "gebaut": false, "dateien": {
+   "AGENTS.md": "# Hinweise für die KI\n\nLies zuerst docs/projekt.md, dann ruf lage auf (Albatros).\n",
+   "design/skizze.html": true,
+   "docs/projekt.md": "# Eierkiste\n\nProjektname: Eierkiste\nIn einem Satz: Frische Eier, Gemüse und Most direkt vom Hof, Selbstbedienung\nFür wen: Familien aus der Umgebung, die regional einkaufen wollen\nHauptsache: vorbeikommen (Öffnungszeiten und Weg zum Hof)\nErfolg: zwanzig neue Kundinnen und Kunden im ersten Monat\nBestehende Seite: keine\nModus: machen\nWeg: Webseite\nStand: 31.10.2026, Idee steht\nNächster Schritt: Research: vergleichbare Seiten anschauen\n" } }
+ ]
+}

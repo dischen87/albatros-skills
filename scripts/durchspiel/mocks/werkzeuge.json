@@ -1,10 +1,61 @@
 [
  {
   "name": "lage",
-  "description": "Zuerst aufrufen. Liest den echten Stand der Person (Weg, Abo, Schlüssel, Server oder Seite, Fliessband, Domains, Mission) und sagt, welcher Skill jetzt dran ist (als Slug, z. B. pipeline; beim Weg Geschäft der Name der Methode), mit Grund, höchstens zwei Hinweisen und was danach kommt. Nach jedem geschafften Schritt erneut aufrufen. Hauptskill: lotse.",
+  "description": "Zuerst aufrufen, mit skills_stand und belege. Liest den echten Stand der Person (Konto, Insel, Server oder Seite) und deine Belege und sagt nach dem Fahrplan (P1 bis P13), welcher Skill und Abschnitt jetzt dran ist (beim Weg Geschäft zuerst die Methoden der Phase), mit Grund, den offenen Pflichtfragen der Phase in der Sprache der Person, dem Ergebnis der Phase und dem Modus. Störungen kommen zuerst. Nach jedem geschafften Schritt erneut aufrufen. Hauptskill: lotse.",
   "inputSchema": {
    "type": "object",
-   "properties": {}
+   "properties": {
+    "skills_stand": {
+     "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin), damit lage merkt, wenn sie veraltet sind.",
+     "type": "string",
+     "maxLength": 20
+    },
+    "projekt": {
+     "description": "Projekt, um das es geht (wie bei schritt_melden); ohne Angabe projekt, das Repo im Hafen.",
+     "type": "string",
+     "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+    },
+    "belege": {
+     "description": "Zeilen aus den Dateien des Projekts, die lage als Ergebnis der Phase nennt (z. B. docs/projekt.md mit «Projektname: …»), höchstens 20 Dateien. Daran erkennt lage, welche Pflichtfragen noch offen sind.",
+     "maxItems": 20,
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "datei": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+       },
+       "zeilen": {
+        "maxItems": 50,
+        "type": "array",
+        "items": {
+         "type": "string",
+         "maxLength": 300
+        }
+       }
+      },
+      "required": [
+       "datei",
+       "zeilen"
+      ]
+     }
+    },
+    "anliegen": {
+     "description": "Ein Anliegen, das ein Mensch bei Albatros sehen muss (Datenpanne, Rechnung, Konto, Fehler bei Albatros), in den Worten der Person, ohne Passwörter oder Zugangsdaten.",
+     "type": "string",
+     "maxLength": 300
+    },
+    "modus": {
+     "description": "Modus des Projekts aus docs/projekt.md (Zeile «Modus:»).",
+     "type": "string",
+     "enum": [
+      "lernen",
+      "machen"
+     ]
+    }
+   }
   }
  },
  {
@@ -47,6 +98,10 @@
       "light",
       "pilot"
      ]
+    },
+    "bestaetigt": {
+     "description": "true erst, wenn die Person in Phase P11 den Wohnort bei Albatros gewählt hat und das Abo will; vorher gibt es den Link nur so.",
+     "type": "boolean"
     }
    }
   }
@@ -266,7 +321,7 @@
  },
  {
   "name": "methode",
-  "description": "Holt eine Methode für den Weg Geschäft (z. B. ideen-check, zielgruppe, angebot-und-preis). Ohne name: Liste aller Methoden. Nur für Mitglieder; die KI folgt danach der Anleitung der Methode.",
+  "description": "Holt eine Methode für den Weg Geschäft (z. B. ideen-check, zielgruppe, angebot-und-preis). Ohne name: Liste aller Methoden, mit denen, die ohne Abo gehen. Die Methoden bis zur Seite auf dem Computer gibt es ohne Abo, die übrigen mit Abo; die KI folgt danach der Anleitung der Methode.",
   "inputSchema": {
    "type": "object",
    "properties": {
@@ -278,12 +333,28 @@
  },
  {
   "name": "coach_fragen",
-  "description": "Stellt dem Albatros-Coach eine Frage. Er kennt Weg, Server und Mission der Person. Für Rechnung, Konto, Missbrauch oder Fehler an Albatros gibt er die Frage an das Team weiter; die Antwort kommt dann per Mail.",
+  "description": "Stellt dem Albatros-Coach eine Frage. Er kennt Weg, Server und Mission der Person. Für Rechnung, Konto, Missbrauch oder Fehler an Albatros gibt er die Frage an das Team weiter; die Antwort kommt dann per Mail. Für eine Pflichtmeldung (Datenpanne, Rechnung, Konto, Fehler bei Albatros) mit anliegen: Dann geht sie direkt an das Team, auch ohne Abo.",
   "inputSchema": {
    "type": "object",
    "properties": {
     "frage": {
      "type": "string"
+    },
+    "skill": {
+     "description": "Slug des Skills, mit dem du gerade arbeitest, z. B. webseite-planen.",
+     "type": "string",
+     "maxLength": 64,
+     "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "anliegen": {
+     "description": "Nur für Pflichtmeldungen an einen Menschen: datenpanne, rechnung, konto oder fehler_albatros. Dann antwortet nicht der Coach, sondern das Team per Mail, auch ohne Abo.",
+     "type": "string",
+     "enum": [
+      "datenpanne",
+      "rechnung",
+      "konto",
+      "fehler_albatros"
+     ]
     }
    },
    "required": [
@@ -362,19 +433,28 @@
  },
  {
   "name": "schritt_melden",
-  "description": "Meldet, dass ein Projekt der Person einen Schritt weiter ist; auf ihrer Insel im Cockpit wächst dann das Gebäude. Schritte in dieser Reihenfolge: mockup (Grundriss), entwuerfe (Bauprofile), prd (Plan unterschrieben), lokal (Rohbau), pruefung (Abnahme, erst wenn die vier Berichte in docs/pruefung/ liegen), freigabe (Schlüsselübergabe, erst nach dem ausdrücklichen Ja der Person, «Freigegeben:» in docs/prd.md), hafen (Logbuch im Hafen), fliessband (Kran), live (Licht an), domain (Fahne mit eigener Adresse). Nur vorwärts: Ein früherer oder derselbe Schritt ändert nichts. hafen, fliessband, live und domain sieht Albatros auch selbst. Gibt die Adresse der Insel zurück: beim Start einmal im Browser öffnen, sie lädt danach selbst nach.",
+  "description": "Meldet, dass ein Projekt der Person einen Schritt weiter ist; auf ihrer Insel im Cockpit wächst dann das Gebäude. Schritte nach dem Fahrplan in dieser Reihenfolge: idee (P1), recherche (P2), plan (P3), plan-geprueft (P4), konzept (P5), mockup, entwuerfe (P6), entwurf (P7), entwurf-freigegeben (P8), prd, lokal, pruefung (P9), freigabe (P10), wohnort (P11), betrieb (P12), hafen, fliessband, live, domain (P13). Erst nach dem ausdrücklichen Ja der Person: plan-geprueft, entwurf-freigegeben, freigabe. Nur vorwärts: Ein früherer oder derselbe Schritt ändert nichts. hafen, fliessband, live und domain sieht Albatros auch selbst. Das Hauptprojekt heisst ab P1 projekt; titel ist sein Name, wie ihn die Person nennt (Zeile «Projektname:» in docs/projekt.md). Gibt die Adresse der Insel zurück: beim Start einmal im Browser öffnen, sie lädt danach selbst nach.",
   "inputSchema": {
    "type": "object",
    "properties": {
     "schritt": {
      "type": "string",
      "enum": [
+      "idee",
+      "recherche",
+      "plan",
+      "plan-geprueft",
+      "konzept",
       "mockup",
       "entwuerfe",
+      "entwurf",
+      "entwurf-freigegeben",
       "prd",
       "lokal",
       "pruefung",
       "freigabe",
+      "wohnort",
+      "betrieb",
       "hafen",
       "fliessband",
       "live",
@@ -385,6 +465,13 @@
      "description": "Ohne Angabe: projekt, das Repo im Hafen (git@aufwind.sh:<name>/projekt.git). Für ein Projekt, das nur auf dem Computer liegt, ein kurzer Name, z. B. baeckerei. Höchstens sechs Projekte.",
      "type": "string",
      "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+    },
+    "titel": {
+     "description": "Name des Projekts, wie die Person es nennt (Projektname aus docs/projekt.md), höchstens 80 Zeichen; erscheint auf der Insel.",
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 80,
+     "pattern": "^[^\\u0000-\\u001f]*$"
     },
     "sprache": {
      "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
@@ -399,6 +486,146 @@
    },
    "required": [
     "schritt"
+   ]
+  }
+ },
+ {
+  "name": "modus_waehlen",
+  "description": "Speichert, ob die Person lernen oder machen will, als Vorgabe für neue Projekte: machen (du machst die Arbeit und erklärst jeden Schritt in einem Satz mit Bild) oder lernen (du erklärst jeden Schritt mit Bild und Warum, die Person tippt die Lernmomente selbst). Im Projekt gilt die Zeile «Modus:» in docs/projekt.md; trag den Modus auch dort ein. Jederzeit änderbar.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "modus": {
+     "type": "string",
+     "enum": [
+      "lernen",
+      "machen"
+     ]
+    }
+   },
+   "required": [
+    "modus"
+   ]
+  }
+ },
+ {
+  "name": "verstanden_melden",
+  "description": "Meldet, dass die Person den Lernmoment einer Mission verstanden hat, erst nach ihrer eigenen Antwort oder Handlung, nie an ihrer Stelle: selbst (sie hat den Schritt selbst gemacht), kontrollfrage (sie hat die Kontrollfrage der Lektion richtig beantwortet) oder wiederholung (sie konnte es später nochmals). mission: die ID wie in mission_holen, z. B. webseite-01-webseite-planen. Die Antwort sagt, wann die Lektion zur Wiederholung fällig ist.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "mission": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 100
+    },
+    "art": {
+     "type": "string",
+     "enum": [
+      "selbst",
+      "kontrollfrage",
+      "wiederholung"
+     ]
+    }
+   },
+   "required": [
+    "mission",
+    "art"
+   ]
+  }
+ },
+ {
+  "name": "skill_holen",
+  "description": "Holt einen Albatros-Skill in der aktuellen Fassung vom Server, wenn lage einen Skill nennt, den deine Kopie des Plugins nicht hat oder nur älter (lage sagt es). slug wie in lage, z. B. webseite-planen. Folge danach der Anleitung im Text.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "slug": {
+     "type": "string",
+     "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "sprache": {
+     "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en; ohne Angabe Deutsch. Fehlt die Übersetzung, kommt der Skill auf Deutsch.",
+     "type": "string",
+     "enum": [
+      "de",
+      "fr",
+      "it",
+      "en"
+     ]
+    }
+   },
+   "required": [
+    "slug"
+   ]
+  }
+ },
+ {
+  "name": "luecke_melden",
+  "description": "Meldet eine Lücke im Know-how von Albatros, damit die Skills besser werden: eine Frage der Person, die kein Skill abdeckt (nicht_abgedeckt), eine Antwort, bei der du raten musstest (geraten), ein unklarer oder falscher Skill (skill_unklar, skill_falsch), ein fehlendes Werkzeug (werkzeug_fehlt) oder ein Fehler bei Albatros (fehler_bei_albatros). frage: allgemein und in eigenen Worten, ohne Namen, E-Mail-Adressen, Adressen, Passwörter oder andere Angaben zur Person; solche Meldungen lehnt Albatros ab. Nur mit dem Einverständnis der Person (einverstanden). Eine Antwort gibt es darauf nicht; für Hilfe ist coach_fragen da.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "frage": {
+     "type": "string",
+     "minLength": 10,
+     "maxLength": 500,
+     "description": "Die Frage oder Lücke, allgemein formuliert, 10 bis 500 Zeichen."
+    },
+    "art": {
+     "type": "string",
+     "enum": [
+      "nicht_abgedeckt",
+      "geraten",
+      "skill_unklar",
+      "skill_falsch",
+      "werkzeug_fehlt",
+      "fehler_bei_albatros"
+     ]
+    },
+    "skill": {
+     "description": "Slug des Skills, um den es geht, z. B. webseite-planen.",
+     "type": "string",
+     "maxLength": 64,
+     "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "phase": {
+     "description": "Phase des Fahrplans, in der die Person gerade ist (P1 bis P13), wie lage sie nennt.",
+     "type": "string",
+     "enum": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8",
+      "P9",
+      "P10",
+      "P11",
+      "P12",
+      "P13"
+     ]
+    },
+    "kontext": {
+     "description": "Was du schon versucht hast, in einem Satz, ohne Angaben zur Person.",
+     "type": "string",
+     "maxLength": 300
+    },
+    "skills_stand": {
+     "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin).",
+     "type": "string",
+     "maxLength": 20
+    },
+    "einverstanden": {
+     "description": "Antwort der Person auf die Frage, ob Albatros ihre Meldungen mit ihrem Konto speichern darf: true bei Ja, false bei Nein (dann speichert Albatros nichts mehr von ihr). Ohne Angabe fragt Albatros zuerst nach und nennt den Satz dafür.",
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "frage",
+    "art"
    ]
   }
  }
