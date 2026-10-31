@@ -1,6 +1,6 @@
 # Albatros Skills
 
-Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich nach einem festen Fahrplan von der Idee bis zur Seite im Netz und fragt von sich aus, was sie wissen muss. Bis deine Seite auf deinem Computer fertig und freigegeben ist, kostet Albatros nichts; ins Netz geht sie mit Light, mit Pilot (ein echter eigener Server) oder selbst. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind; im Modus «lernen» machst du die wichtigen Schritte selbst. Dein Logbuch (Git) liegt bei Albatros im Hafen, `code.aufwind.sh`. Ein GitHub-Konto brauchst du nur, wenn deine Seite selbst wohnt (zum Beispiel auf GitHub Pages) oder du in ein eigenes Haus umziehst.
+Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich nach einem festen Fahrplan von der Idee bis zur Seite im Netz und fragt von sich aus, was sie wissen muss. Bis deine Seite auf deinem Computer fertig und freigegeben ist, kostet Albatros nichts; ins Netz geht sie mit Light, mit Pilot (ein echter eigener Server) oder selbst. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind; im Modus «lernen» machst du die wichtigen Schritte selbst. Dein Logbuch (Git) liegt zuerst nur auf deinem Computer; beim Live schalten kommt es zu Albatros in den Hafen, `code.aufwind.sh`. Ein GitHub-Konto brauchst du nur, wenn deine Seite selbst wohnt (zum Beispiel auf GitHub Pages) oder du in ein eigenes Haus umziehst.
 
 Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen:
 
@@ -71,7 +71,7 @@ Die Skills liegen als Kopie auf dem Computer der Person. Ist die Kopie älter al
 | Gemini CLI | `npx skills update -g -y`, dann Gemini CLI neu starten |
 | Cursor | `npx skills update -g -y`, dann Cursor neu starten |
 
-albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`; die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
+albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`: In den Befehlen für Claude Code und Codex steht dann dieser Name statt `albatros@albatros`, der Marktplatz heisst immer `albatros`, und `npx skills update -g -y` gilt für alle Sprachen. Die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
 
 ## Sprachen
 
@@ -96,8 +96,9 @@ plugins/albatros/
   skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
   skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
   skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9, P10, P13): vier Bereiche, --vor-bau, --tueren, --vergleich, --live
-  evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
-  evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
+  evals/<name>/                     mindestens ein Eval-Fall pro Skill und je Phase (claude plugin eval, Abschnitt «Evals»)
+  evals/_projekt/                   Gerüst Sonnenhof für die Fälle (projekt.sh, bis P1 … P12) und die Anleitung des Servers
+  evals/mocks/albatros/             Attrappen der Albatros-Werkzeuge für die Evals; _tools.json ist die echte Werkzeugliste
   evals/GUTE-ANTWORT.md             was eine gute Antwort je Phase enthält, erzeugt aus fahrplan.yaml (scripts/gute-antwort.ts)
   evals/KRITERIEN-LOG.md            jede Änderung an Kriterien mit Datum, Fall und Grund
 plugins/albatros-fr/, -it/, -en/    dieselben Skills übersetzt (Kennungen deutsch); metadata.quelle nennt den deutschen Text
@@ -109,7 +110,9 @@ schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
 vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband
 bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
 scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts)
-scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht)
+scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche), evals.test.ts (Grader ohne Modell), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe), verlauf.test.ts
+scripts/attrappen.ts                erzeugt die Attrappen der Evals mit dem echten mcp von albatros (--pruefen vergleicht nur)
+scripts/bewertung.ts                Grader ohne Modell wie in plugin eval, mit Beispielen je Fall in scripts/evals-beispiele.ts
 scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens), je mit erwartet.json: bun scripts/testseiten/test.ts
 scripts/gute-antwort.ts             erzeugt evals/GUTE-ANTWORT.md
 scripts/einbau-test.sh              Einbau nach EINRICHTEN.md in einem leeren Home
@@ -197,27 +200,53 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 
 ```bash
 bun install
-bun run pruefen                       # Skills, Missionen, Fahrplan, Version, GUTE-ANTWORT.md, Vorlage und Befehle zum Aktualisieren
-bun test                              # scripts/*.test.ts: Abgleiche von pruefen.ts, entwurf-pruefen.mjs gegen die Testseiten (CI: Job pruefen)
+bun run pruefen                       # Skills, Missionen, Fahrplan, Version, GUTE-ANTWORT.md, KRITERIEN-LOG.md, Vorlage und Befehle zum Aktualisieren
+bun test                              # scripts/*.test.ts: Abgleiche von pruefen.ts, Grader der Evals ohne Modell, entwurf-pruefen.mjs gegen die
+                                      # Testseiten, Punkte, Trockenläufe und Verlauf des Durchspiels (CI: Job pruefen)
 bun scripts/testseiten/test.ts        # pruefen.mjs gegen die Testseiten; --vergleich lädt beim ersten Mal Playwright und Chromium (nicht in CI)
 bun bausteine/pocketbase/rezepte/buchungen/test.ts   # Rezepte und Eingang gegen ein echtes PocketBase (CI: Job bausteine)
 bun bausteine/pocketbase/rezepte/mitglieder/test.ts
 bun bausteine/eingang/test.ts
-bun scripts/gute-antwort.ts           # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, phase: in Evals oder KRITERIEN-LOG.md
-claude plugin validate .              # Marktplatz und Plugin
+claude plugin validate .              # Marktplatz
+for p in albatros albatros-fr albatros-it albatros-en; do claude plugin validate plugins/$p; done   # jedes Plugin
 QUELLE=$PWD bash scripts/einbau-test.sh   # Einbau nach EINRICHTEN.md in leerem Home (CI: Job einbau)
-claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Write \
-  --model sonnet --judge-model sonnet --runs 3 --threshold 0.8 -j 4
 ```
 
-- Jeder Fall läuft dreimal. Ein Fall besteht, wenn sein Schnitt mindestens 0,8 ist: ein kleiner Ausrutscher in drei Läufen ist erlaubt, ein Fehler in jedem Lauf nicht. Der Judge ist Sonnet, weil Haiku bei deutschen Texten mit mehreren Kriterien zu stark schwankt.
-- Pro Fall prüft ein LLM-Grader die letzte Chat-Antwort (`kriterien.md` oder `antwort.md`). Schreibt der Skill eine Datei, prüft ein zweiter Grader ihren Inhalt (`focus: {source: file, path: …}`). `focus: files` zeigt nur Dateinamen und `focus: trace` nur Rohdaten, beide taugen nicht.
-- Was eine gute Antwort je Phase enthält, steht in `evals/GUTE-ANTWORT.md` (aus `fahrplan.yaml` erzeugt). Ein Fall nennt seine Phase im Kopf seiner `prompt.md` (`phase: P3` oder `phase: [P3, P4]`); jede Änderung an Kriterien kommt mit Datum, Fall und Grund in `evals/KRITERIEN-LOG.md`.
 - Version: Ändert sich etwas unter `plugins/*/skills`, steigt die Version in allen `plugin.json` und in `.claude-plugin/marketplace.json` gegenüber `origin/main`; jede `SKILL.md` trägt sie als `metadata.stand`. Eine Übersetzung nennt in `metadata.quelle` den deutschen Text, nach dem sie übersetzt ist (`grep -v '^  stand: ' <deutsche SKILL.md> | shasum -a 256 | cut -c1-12`); ändert sich der deutsche Text, meldet `pruefen.ts` die Übersetzung als veraltet, bis sie nachgeführt und `quelle` neu gesetzt ist.
 
+## Evals
+
+Ein Eval-Fall prüft, was die KI mit den Skills tut: ein Satz der Person (`prompt.md`), auf Wunsch ein Projektordner aus dem Gerüst (`scaffold.sh`), die Antworten der Albatros-Werkzeuge aus Attrappen und die Grader in `graders/`. Die Fälle liegen in `plugins/albatros/evals/<fall>/`, nur auf Deutsch, und laufen mit `claude plugin eval` (gemessen mit Claude Code 2.1.309; 2.1.118 kennt den Befehl noch nicht). In CI laufen sie nicht.
+
+**Ohne Modell und ohne Kosten:**
+
+```bash
+claude plugin eval plugins/albatros --tag fahrplan --scaffold --allow-tools Write Edit --ablation none \
+  --max-cost-usd 0 --no-publish --trust-plugin --output-dir <ordner> --report <ordner>/bericht.html
+bun test                                                   # Grader ohne Modell: je Fall ein gutes und mindestens ein schlechtes Beispiel
+ALBATROS=<albatros-ordner> bun scripts/attrappen.ts --pruefen   # Attrappen wie aus dem echten mcp erzeugt? Schreibt nichts, Exit 1 bei Abweichung
+bun scripts/gute-antwort.ts                                # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, an den Tags oder am KRITERIEN-LOG.md
+```
+
+Mit `--max-cost-usd 0` lädt `plugin eval` alle Fälle mit ihren Attrappen und meldet Lade-Fehler und Warnungen (etwa ein Grader, der mit den erlaubten Werkzeugen nie bestehen kann), startet aber keinen Lauf: Exit 2 mit «cost ceiling $0 hit» und $0.00 ist hier das gute Ergebnis. `bun test` prüft in `scripts/evals.test.ts` die Grader ohne Modell (`regex`, `tool_used`, `file_exists`, nachgebaut in `scripts/bewertung.ts`) mit den Beispielen aus `scripts/evals-beispiele.ts`: Jeder lässt das gute Beispiel durch und erkennt ein schlechtes. Der Vergleich der Attrappen mit dem echten mcp läuft dort nur mit `ALBATROS=<albatros-ordner>`, sonst wird er übersprungen.
+
+**Mit Modell** (kostet; die Attrappen gelten weiter, der echte Server von Albatros wird nie gerufen):
+
+```bash
+claude plugin eval plugins/albatros --tag fahrplan --scaffold --allow-tools Write Edit --ablation none \
+  --model sonnet --judge-model sonnet --runs 3 --threshold 0.8 -j 4 --no-publish
+```
+
+- **Auswahl:** `--tag fahrplan` sind die Fälle je Phase P1 bis P13 und die Personen, die nicht mitspielen; `--tag kern` die älteren Kernfälle; `--tag P3` eine Phase; `--case <name>` ein Fall.
+- **Attrappen:** `--mocks record` ist der Standard und startet den MCP-Server von Albatros nie. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/` und je Fall aus `<fall>/mocks/albatros/`; `_tools.json` ist die echte Werkzeugliste (FAHRPLAN und ERFASSUNG an), `_projekt/anleitung.txt` die Anleitung des Servers. `ALBATROS=<albatros-ordner> bun scripts/attrappen.ts` erzeugt sie mit dem echten mcp von albatros (ohne `ALBATROS`: `../albatros`), ohne einen Dienst aufzurufen; welcher Fall welchen Zustand bekommt, steht dort in `FAELLE`.
+- **`--no-publish` immer:** Ohne den Schalter lädt `plugin eval` den Bericht mit Prompts und Antworten auf claude.ai hoch, wenn das Konto es kann. Mit `--output-dir` und `--report` bleiben Ergebnisse und Bericht ausserhalb des Repos, sonst liegen sie in `plugins/albatros/evals/results/` (nicht im Git).
+- **Schalter:** `--scaffold` lässt `scaffold.sh` den Projektordner anlegen (Gerüst Sonnenhof aus `_projekt/projekt.sh`); `--allow-tools Write Edit` braucht jeder Fall, der Dateien schreibt; `--ablation none` lässt den Vergleichslauf ohne Plugin weg; `--trust-plugin` beantwortet die Frage beim ersten Lauf (nur für dieses Repo).
+- **Bestehen:** Jeder Fall läuft dreimal (`--runs 3`) und besteht, wenn sein Schnitt mindestens 0,8 ist: ein Ausrutscher in drei Läufen ist erlaubt, ein Fehler in jedem Lauf nicht. Entschieden wird nach dem Aggregat, nie nach einem einzelnen Urteil. Der Judge ist Sonnet, weil Haiku (Standard) bei deutschen Texten mit mehreren Kriterien zu stark schwankt.
+- **Grader:** Was ohne Modell geht (Pflichtzeilen, Werkzeugaufrufe, höchstens zwei Fragen, kein ß), prüfen Grader ohne Modell. Ein `llm`-Grader prüft nur, wie die KI es der Person sagt (`kriterien.md`, `antwort.md` oder `sprache.md`, die letzte Chat-Antwort). Den Inhalt einer Datei prüft ein Grader mit `focus: {source: file, path: …}`; `focus: files` zeigt nur Dateinamen und `focus: trace` nur Rohdaten, beide taugen nicht.
+- **`evals/GUTE-ANTWORT.md`** sagt je Phase, was eine gute Antwort enthält, und nennt die Fälle dazu. `scripts/gute-antwort.ts` erzeugt sie aus `fahrplan.yaml`, den Tags der Fälle und `KRITERIEN-LOG.md`, nie von Hand. Die Phase eines Falls steht als Tag in seiner `prompt.md` (`tags: [fahrplan, P3]`); einen Kopf `phase:` lädt `plugin eval` nicht («unknown frontmatter key»).
+- **`evals/KRITERIEN-LOG.md`:** Jede Änderung an Kriterien (Grader, und in `fahrplan.yaml` Pflichtfragen, Ergebnisse, Ja-Momente und Gates) kommt als neue Zeile unten dazu: Datum (JJJJ-MM-TT), Fall, Änderung und Grund. Kriterien ändern sich nur, um richtige Ergebnisse anzunehmen, nie, um einen Fehler festzuschreiben. `bun run pruefen` prüft Form und Reihenfolge.
 - Der Fall `ssh-schluessel-lokal` (Tag `bash`) lässt die KI den Schlüssel wirklich mit `ssh-keygen` erzeugen. Er braucht `--allow-tools Bash` und eine Maschine, auf der Claude Code Bash in Evals erlaubt.
-- Die Evals rufen nie den echten MCP-Server. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/`.
-- Der Fall `webseite-aendern-termin` legt mit `case.yaml` und `scaffold.sh` eine fertige Seite (docs/, Termine als Daten) in den Arbeitsordner. Er läuft nur mit `--scaffold` und `--allow-tools Write,Edit`. Die Fälle `webseite-bauen-prd` und `webseite-bauen-pruefung` prüfen Tech-Stack, PRD mit Abnahmekriterien und die vier Berichte aus Messwerten, ohne Bash.
+- Der Fall `webseite-aendern-termin` legt mit `case.yaml` und `scaffold.sh` eine fertige Seite (docs/, Termine als Daten) in den Arbeitsordner. Er läuft nur mit `--scaffold` und `--allow-tools Write Edit`. Die Fälle `webseite-bauen-prd` und `webseite-bauen-pruefung` prüfen Tech-Stack, das aus dem Entwurf abgeleitete PRD mit den Türen und die vier Berichte aus Messwerten, ohne Bash.
 - Evals mit Bash laufen auf diesem Mac nicht (der Docker-Ordner enthält einen symbolischen Link). Die Fälle `modernisieren-*` lesen die Seite darum mit WebFetch, mit 15 Minuten Zeit pro Lauf.
 
 ### Durchspiel-Test
@@ -237,9 +266,10 @@ Ein Durchlauf mit zwei KIs nach dem Fahrplan (`fahrplan.yaml`, P1 bis P13), erg�
 **Ohne Modell und ohne Kosten prüfen** (kein Netz, kein Port, kein Konto):
 
 ```bash
-bun test                                                                              # Punkte, Trockenlauf und Verlauf
+bun test                                                                              # Punkte, Trockenläufe und Verlauf
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/gut-lernen.json        # Exit 0
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/schlecht-gratis.json   # Exit 1
+bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/offen-nein-vor-bau.json --ergebnis <ordner>   # Exit 2, Ergebnis ausserhalb des Repos
 bun scripts/punkte.ts <ergebnis-ordner>                                               # Punkte eines Laufs neu rechnen (lauf.json)
 bun scripts/verlauf.ts                                                                # Trend je Fall
 ```
