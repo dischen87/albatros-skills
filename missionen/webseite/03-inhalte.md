@@ -15,20 +15,21 @@ video: null
 
 ## Worum es geht
 
-Gestaltung ist das Licht im Schaufenster, die Inhalte sind die Ware. Ohne Ware verkauft auch das schönste Fenster nichts. Du schreibst mit deiner KI Texte, die nach dir klingen, und wählst Bilder, die du verwenden darfst.
+Gestaltung ist das Licht im Schaufenster, die Inhalte sind die Ware. Ohne Ware verkauft auch das schönste Fenster nichts. Du schreibst mit deiner KI Texte, die nach dir klingen, für den Entwurf deiner ganzen Seite, und wählst Bilder, die du verwenden darfst.
 
 ## Was du lernst
 
 - die Startseite in drei Sätzen: was, für wen, was jetzt
 - kurze Texte für Menschen, die am Handy lesen
 - KI-Entwürfe in deine eigene Stimme zu bringen
+- warum fehlende Texte als [Platzhalter] sichtbar bleiben, statt erfunden zu werden
 - Bildrechte, Recht am eigenen Bild und die richtige Bildgrösse
 
 ## So gehst du vor
 
-1. Aus dem Grundriss eine Inhaltsliste machen.
-2. Die drei Sätze für die Startseite schreiben.
-3. Die übrigen Seiten füllen, Entwürfe überarbeiten, Fakten prüfen.
+1. Aus dem Grundriss eine Inhaltsliste machen, mit der Fotoliste aus deinem Konzept.
+2. Die drei Sätze für die Startseite schreiben, im Ton aus deinem Konzept.
+3. Die übrigen Seiten füllen, Entwürfe überarbeiten, Fakten prüfen. Was noch fehlt, steht als [Platzhalter] da, mit wer und bis wann.
 4. Fotos auswählen, verkleinern, beschreiben.
 5. Alles in den Entwurf deiner Seite bringen und am Handy anschauen.
 

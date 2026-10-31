@@ -6,20 +6,21 @@ phase: P7
 
 ## What it's about
 
-Design is the light in the shop window; the content is the goods. Without goods, even the most beautiful window sells nothing. With your AI, you write texts that sound like you and choose pictures you're allowed to use.
+Design is the light in the shop window; the content is the goods. Without goods, even the most beautiful window sells nothing. With your AI, you write texts that sound like you, for the draft of your whole site, and choose pictures you're allowed to use.
 
 ## What you'll learn
 
 - the home page in three sentences: what, for whom, what now
 - short texts for people reading on their phones
 - to bring AI drafts into your own voice
+- why missing texts stay visible as [placeholder] instead of being made up
 - image rights, the right to your own image and the right picture size
 
 ## How you go about it
 
-1. Turn the floor plan into a content list.
-2. Write the three sentences for the home page.
-3. Fill the other pages, rework drafts, check facts.
+1. Turn the floor plan into a content list, with the photo list from your concept.
+2. Write the three sentences for the home page, in the tone from your concept.
+3. Fill the other pages, rework drafts, check facts. Anything still missing shows as [placeholder], with who and by when.
 4. Choose photos, shrink them, describe them.
 5. Put everything into the draft of your page and look at it on your phone.
 
