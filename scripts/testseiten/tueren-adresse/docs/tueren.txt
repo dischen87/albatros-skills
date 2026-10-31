@@ -1,0 +1,6 @@
+# Gegen einen laufenden Baustein (hier eine Attrappe aus test.ts)
+/               200
+/impressum      200     # die Attrappe leitet auf /impressum/ um, wie viele Server
+/mitglieder     302     # ohne Anmeldung weiter zur Anmeldeseite
+/verwaltung     401 403
+/geheim         404

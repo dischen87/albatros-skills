@@ -1,0 +1,5 @@
+{
+ "befehl": ["--vor-bau"],
+ "exit": 0,
+ "ausgabe": ["Freigegeben zum Bauen: 31.10.2026 («Ja, so bauen»)", "Entwurf mit 1 Seite in design/entwurf/", "Es darf gebaut werden"]
+}

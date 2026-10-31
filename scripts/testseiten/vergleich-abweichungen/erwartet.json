@@ -1,0 +1,29 @@
+{
+ "befehl": [
+  "--vergleich"
+ ],
+ "exit": 0,
+ "ausgabe": [
+  "Vergleich mit dem Entwurf, 4 Seiten im Entwurf, 5 im Bau"
+ ],
+ "messwerte": "vergleich.json",
+ "ampel": {
+  "vergleich": "gelb"
+ },
+ "punkte": [
+  "/: Menüpunkt geändert: Entwurf Nr. 3 «Platz anfragen» → /anfrage, Bau Nr. 3 «Anfrage» → /anfrage",
+  "/: Überschrift fehlt im Bau: Entwurf Nr. 3 h2 «Wer kocht»",
+  "/: Abschnitt fehlt im Bau: Entwurf Nr. 3 «team»",
+  "/angebot: Überschrift geändert: Entwurf Nr. 3 h2 «Preise», Bau Nr. 3 h2 «Kosten»",
+  "/angebot: Menüpunkt geändert: Entwurf Nr. 3 «Platz anfragen» → /anfrage, Bau Nr. 3 «Anfrage» → /anfrage",
+  "/anfrage: Seite aus dem Entwurf fehlt im Bau (design/entwurf/anfrage.html)",
+  "/kurse: Seite aus dem Entwurf fehlt im Bau (design/entwurf/kurse/index.html)",
+  "Seiten im Bau, die nicht im Entwurf stehen: /blog"
+ ],
+ "nicht": [
+  "/impressum",
+  "/datenschutz",
+  "Abschnitt geändert",
+  "/: Überschrift geändert"
+ ]
+}

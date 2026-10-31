@@ -1,0 +1,8 @@
+{
+ "befehl": ["--tueren", "{attrappe}"],
+ "exit": 1,
+ "ausgabe": ["Türen unter http://127.0.0.1:"],
+ "messwerte": "tueren.json",
+ "ampel": { "tueren": "rot" },
+ "punkte": ["/: 200, erwartet 200", "/impressum: 200, erwartet 200", "/mitglieder: 302, erwartet 302", "/verwaltung: 403, erwartet 401 oder 403", "/geheim: 200, erwartet 404"]
+}

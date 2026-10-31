@@ -1,0 +1,5 @@
+{
+ "befehl": ["--tueren"],
+ "exit": 2,
+ "ausgabe": ["je Zeile ein Pfad und der erwartete Status ohne Anmeldung", "Zeile 2 nicht lesbar: Verwaltung nur für mich", "Zeile 3 nicht lesbar: /mitglieder     nur mit Anmeldung"]
+}

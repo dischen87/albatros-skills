@@ -1,0 +1,6 @@
+{
+ "befehl": ["--vor-bau"],
+ "exit": 2,
+ "ausgabe": ["docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>»", "design/tokens.css fehlt: Farben, Schriften und Abstände kommen aus dem Designsystem (Skill gestaltung)."],
+ "nicht": ["design/entwurf/index.html fehlt", "Es darf gebaut werden"]
+}

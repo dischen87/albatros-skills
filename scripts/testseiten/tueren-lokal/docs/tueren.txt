@@ -1,0 +1,7 @@
+# Pfad          erwarteter Status ohne Anmeldung
+/               200
+/impressum      200
+/datenschutz/   200
+/verwaltung     404     # nie öffentlich: die Verwaltung gehört nicht in seite/
+/.env           404
+/docs/plan.md   404     # Arbeitsdokumente bleiben draussen

@@ -1,0 +1,6 @@
+{
+ "befehl": ["--vor-bau"],
+ "exit": 2,
+ "ausgabe": ["design/entwurf/index.html fehlt: gebaut wird aus dem Entwurf (Skill entwurf)."],
+ "nicht": ["keine Zeile «Freigegeben zum Bauen", "design/tokens.css fehlt", "Es darf gebaut werden"]
+}

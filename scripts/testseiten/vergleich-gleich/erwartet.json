@@ -1,0 +1,9 @@
+{
+ "befehl": ["--vergleich"],
+ "exit": 0,
+ "ausgabe": ["Vergleich mit dem Entwurf, 2 Seiten im Entwurf, 4 im Bau"],
+ "messwerte": "vergleich.json",
+ "ampel": { "vergleich": "grün" },
+ "punkte": ["/: Überschriften, Menü und Abschnitte wie im Entwurf", "/kontakt: Überschriften, Menü und Abschnitte wie im Entwurf"],
+ "nicht": ["fehlt im Bau", "nicht im Entwurf", "geändert"]
+}

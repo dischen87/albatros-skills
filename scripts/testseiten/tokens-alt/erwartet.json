@@ -1,0 +1,7 @@
+{
+ "befehl": ["--nur", "aussehen"],
+ "exit": 0,
+ "messwerte": "messwerte.json",
+ "punkte": ["web/src/styles/tokens.css ist eingebunden (2 von 2 Werten in seite/)"],
+ "nicht": ["design/tokens.css", "Zwei tokens.css", "nicht eingebunden"]
+}
