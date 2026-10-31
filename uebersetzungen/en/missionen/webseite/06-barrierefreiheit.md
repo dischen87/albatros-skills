@@ -2,6 +2,9 @@
 titel: A ramp next to the stairs
 bild: Ramp next to the stairs
 phase: P9
+verstehen:
+  - frage: Who does a ramp next to the stairs help on your site?
+    kern: Everyone who sees poorly, doesn't use a mouse or has the site read aloud. But enough contrast, descriptions for pictures and working with the keyboard make the site easier for everyone.
 ---
 
 ## What it's about

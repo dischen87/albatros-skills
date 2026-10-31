@@ -2,6 +2,11 @@
 titel: Una pagina, un'offerta, un pulsante
 bild: Un annuncio sulla bacheca con i foglietti da strappare
 phase: P3
+verstehen:
+  - frage: Perché anche una sola pagina va curata?
+    kern: Offerta, prezzi, date e prove cambiano. Una pagina con un prezzo vecchio o una data scaduta costa fiducia; per questo nel piano c'è chi la aggiorna e quanto spesso.
+  - frage: Che cosa va nella prima schermata della tua pagina iniziale, quella che si vede senza scorrere?
+    kern: Che cosa offri, per chi, e l'unico pulsante che dice il risultato con parole di tutti i giorni, per esempio «Chiedi un posto». Chi non lo capisce in cinque secondi se ne va.
 ---
 
 ## Di cosa si tratta

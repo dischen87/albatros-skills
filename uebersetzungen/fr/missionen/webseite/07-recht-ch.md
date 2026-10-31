@@ -2,6 +2,9 @@
 titel: La plaque de sonnette et le règlement de maison
 bild: Plaque de sonnette et règlement de maison
 phase: P9
+verstehen:
+  - frage: Que dit la plaque de sonnette de ton site (mentions légales), et que dit le règlement de maison (protection des données) ?
+    kern: Les mentions légales disent qui se trouve derrière le site et comment joindre cette personne. La déclaration de protection des données dit aux visiteurs quelles données le site collecte sur eux, à quoi elles servent et où elles vont.
 ---
 
 ## De quoi il s'agit

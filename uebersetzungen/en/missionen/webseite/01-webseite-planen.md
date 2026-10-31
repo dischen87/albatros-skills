@@ -2,6 +2,11 @@
 titel: The floor plan of your website
 bild: A floor plan before building the house
 phase: P3
+verstehen:
+  - frage: Why do you start with only a few pages?
+    kern: Every page has to be looked after, because texts, dates and pictures go out of date. A few pages that are right beat many that nobody keeps up to date; that's why five to seven at most for the first flight.
+  - frage: What does every feature on your site need, for example a form?
+    kern: A flow with a confirmation and a case for when something goes wrong. Whoever sends something sees that it arrived and knows what to do if it doesn't work.
 ---
 
 ## What it's about

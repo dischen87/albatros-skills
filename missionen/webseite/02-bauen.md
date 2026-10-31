@@ -3,43 +3,35 @@ id: webseite-02-bauen
 weg: webseite
 stufe: fliegen
 phase: P10
+optional: true
 titel: Deine Seite auf deinem Computer
 bild: Der Rohbau in der eigenen Werkstatt, dann die Begehung
-dauer: 180
+dauer: 30
 pruefung:
   - typ: insel
     schritt: freigabe
 skill: webseite-bauen
 video: null
-verstehen:
-  - frage: Was ist ein Eintrag im Logbuch (Commit)?
-    kern: Ein Eintrag hält einen fertigen Schritt fest, mit einer Notiz, was und warum. Zu jedem Eintrag kannst du später zurück.
-  - frage: Warum siehst du deine Seite zuerst auf deinem Computer, bevor sie ins Netz geht?
-    kern: Auf dem eigenen Computer vergleichst und änderst du in Ruhe, ohne dass jemand eine halbfertige Seite sieht. Ins Netz geht nur, was du freigegeben hast.
 ---
 
 ## Worum es geht
 
-Dein Entwurf ist das begehbare Modell deiner Seite, und du hast ihn zum Bauen freigegeben. Jetzt baut deine KI daraus die echte Seite auf deinem eigenen Computer, mit denselben Seiten, Menüs und Abschnitten wie im Modell. Ein Logbuch hält jeden Schritt fest. Vier Prüfungen nehmen den Rohbau ab, dann gehst du selbst hindurch, auf dem Handy und am Computer, und gibst ihn frei. Bis hierher ist alles gratis, und ins Netz geht noch nichts.
+Freiwillig. Bauen, ansehen und freigeben lernst du in den Missionen «Jeder Schritt ein Eintrag im Logbuch» und «Einen Text selbst ändern». Hier übst du, was auf dem Weg Webseite nach dem Livegang oft dran ist: eine Liste selbst nachführen, zum Beispiel Termine. Auf deinem Computer geht das in Ruhe, bevor etwas ins Netz geht.
 
 ## Was du lernst
 
-- was ein Eintrag im Logbuch ist (Commit) und warum jeder Schritt einen bekommt
-- wie aus deinem Entwurf eine echte Seite wird, ohne dass sich etwas verschiebt
-- wie vier Prüfungen (Sicherheit, Abläufe und Zugang, Aussehen, Code und Tempo) eine Seite abnehmen, und welche Türen ohne Anmeldung zu bleiben
-- deine Seite auf deinem Computer anzuschauen und mit dem Entwurf zu vergleichen
-- einen Text selbst zu ändern und die Änderung gleich zu sehen
-- warum erst deine Freigabe den Weg ins Netz öffnet
+- wo Listen wie Termine in deiner Seite stehen (im Ordner `web/src/data/`)
+- etwas in einer Liste selbst zu ergänzen oder zu ändern und es gleich zu sehen
+- warum ein alter Termin auf der Seite Vertrauen kostet
 
 ## So gehst du vor
 
-1. Deine KI prüft, dass dein Entwurf zum Bauen freigegeben ist, und legt das Logbuch an.
-2. Sie schreibt die Bauweise und den Bauplan (PRD) aus deinem Entwurf und schlägt vor, welche Adressen ohne Anmeldung offen sind. Du bestätigst beides in einer Nachricht.
-3. Sie baut die Seite und prüft sie in vier Bereichen. Die Berichte mit Ampel zeigt sie dir.
-4. Du schaust deine Seite auf deinem Computer an, auf dem Handy und am Computer. Deine KI vergleicht jede Seite mit dem Entwurf und zeigt dir jede Abweichung.
-5. Wenn du willst, änderst du selbst einen Text und siehst ihn gleich. Im Modus lernen gehört das dazu.
-6. Du gibst die Seite frei. Ins Netz geht sie danach beim Live schalten, nie ohne deine Freigabe.
+1. Deine KI zeigt dir, welche Listen deine Seite hat und in welcher Datei sie stehen. Hat sie keine, änderst du einen weiteren Text.
+2. Du trägst etwas Neues ein, zum Beispiel einen Termin, und speicherst.
+3. Deine KI baut neu, du lädst die Vorschau auf deinem Computer neu und siehst es gleich.
+4. Du entscheidest: behalten, dann kommt ein Eintrag ins Logbuch, oder zurück zum alten Stand.
 
 ## Geschafft, wenn
 
-- auf deiner Insel der Schritt «Freigabe» erreicht ist. Deine KI meldet ihn erst, wenn in `docs/prd.md` deine Freigabe steht (`Freigegeben:`).
+- du eine Liste deiner Seite selbst geändert und auf deinem Computer gesehen hast
+- und auf deiner Insel der Schritt «Freigabe» erreicht ist.

@@ -11,6 +11,9 @@ pruefung:
     schritt: pruefung
 skill: barrierefreiheit
 video: null
+verstehen:
+  - frage: Wem hilft eine Rampe neben der Treppe auf deiner Seite?
+    kern: Allen, die schlecht sehen, keine Maus benutzen oder sich die Seite vorlesen lassen. Genug Kontrast, Beschreibungen für Bilder und Bedienung mit der Tastatur machen die Seite aber für alle leichter.
 ---
 
 ## Worum es geht

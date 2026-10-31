@@ -3,44 +3,38 @@ id: webseite-04-gestaltung
 weg: webseite
 stufe: abheben
 phase: P6
+optional: true
 titel: Erst das Fundament, dann die Fassade
-bild: Zuerst der Aufbau in Grau, dann die Materialmuster auf einem Musterblatt
-dauer: 120
+bild: Auf das fertige Fundament kommen Schilder, Bilder und ein Wappen
+dauer: 45
 pruefung:
   - typ: insel
     schritt: entwuerfe
 skill: gestaltung
-video: tokens-in-60-sekunden
-verstehen:
-  - frage: Warum stehen Farben und Schriften deiner Seite nur an einem Ort?
-    kern: Sie stehen nur im Farbfächer (tokens.css). Änderst du dort eine Farbe, ändert sie sich auf jeder Seite, und der Dunkelmodus tauscht nur diese Werte aus. Farben von Hand im Code machen die Seite uneinheitlich.
-  - frage: Warum zeigt dir deine KI zuerst eine graue Skizze und erst dann Farben?
-    kern: Aufbau vor Aussehen. Ob die Reihenfolge stimmt, sieht man ohne Farben besser; Farben lenken davon ab.
+video: null
 ---
 
 ## Worum es geht
 
-Bevor gestrichen wird, muss das Haus stehen. Darum zeigt dir deine KI zuerst eine graue Skizze deiner Startseite und fragt: Stimmt die Reihenfolge? Danach legt sie dir drei klar verschiedene Richtungen vor, die aus dem Charakter deines Konzepts entstehen, und du wählst. Aus deiner Wahl entstehen ein fester Farbfächer und ein Musterblatt, auf dem du Farben, Schriften, Knöpfe und Felder auf einen Blick siehst.
+Freiwillig. Das Fundament deiner Gestaltung legst du in der Mission «Farben und Schriften an einem Ort»: graues Mockup, drei Richtungen, Farbfächer und Musterblatt. Hier geht es um die Fassade: Icons, Illustrationen, Fotos oder eine eigene Figur geben deiner Webseite ein Gesicht, wenn sie zum Charakter aus deinem Konzept passen.
 
 ## Was du lernst
 
-- Aufbau vor Aussehen
-- was Richtungen unterscheidet (nicht nur die Farbe)
-- woran man den typischen KI-Look erkennt
-- feste Werte für Farben, Schrift und Abstände an einem Ort (Tokens)
-- warum Kontraste nachgerechnet und nicht geschätzt werden
+- welche Gestaltungselemente es gibt: Icons, Illustrationen, eigene Fotos, eine eigene Figur, auch in 3D
+- dass jedes Element zum Charakter deiner Seite passt und nicht nur hübsch ist
+- dass echte Fotos jedes erzeugte Bild schlagen
+- dass Bilder von Albatros einen kleinen Betrag aus deinem Guthaben kosten und deine KI den Preis vorher nennt
 
 ## So gehst du vor
 
-1. Die graue Skizze anschauen und sagen, ob die Reihenfolge stimmt.
-2. Drei Richtungen auf derselben Seite vergleichen und eine wählen oder mischen.
-3. Sagen, ob du Gestaltungselemente willst: Icons, Illustrationen, Fotos, deine Figur.
-4. Deine KI legt den Farbfächer fest, hell und dunkel, mit nachgerechneten Kontrasten.
-5. Das Musterblatt am Handy und am Computer anschauen und sagen, ob es passt.
+1. Deine KI fragt, ob du Gestaltungselemente willst, und zeigt dir, was zu deinem Charakter passt.
+2. Du wählst, was dazukommt, oder sagst, dass es ohne geht. Für eigene Fotos bekommst du eine Fotoliste.
+3. Erzeugt deine KI Bilder mit Albatros, nennt sie zuerst den Preis aus deinem Guthaben und fragt dich.
+4. Was du gewählt hast, kommt aufs Musterblatt, in den Farben aus dem Farbfächer.
 
-Hast du schon eine Seite und willst sie überarbeiten, prüft deine KI sie zuerst aus drei Blickwinkeln (Abläufe, Zugang, Zustände und Sprache) und repariert die Bedienung, bevor es um Farben geht.
+Hast du schon eine Webseite und willst sie überarbeiten, prüft deine KI sie zuerst aus drei Blickwinkeln (Abläufe, Zugang, Zustände und Sprache) und repariert die Bedienung, bevor es um Farben geht: erst das Fundament, dann die Fassade.
 
 ## Geschafft, wenn
 
-- du eine Richtung gewählt und das Musterblatt gesehen hast
+- du entschieden hast, welche Gestaltungselemente deine Seite bekommt, auch «keine» zählt
 - und auf deiner Insel der Schritt «Entwürfe» erreicht ist.

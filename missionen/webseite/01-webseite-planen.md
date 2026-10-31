@@ -11,6 +11,11 @@ pruefung:
     schritt: plan
 skill: webseite-planen
 video: null
+verstehen:
+  - frage: Warum startest du mit wenigen Seiten?
+    kern: Jede Seite muss gepflegt werden, denn Texte, Termine und Bilder veralten. Wenige Seiten, die stimmen, sind besser als viele, die niemand nachführt; darum höchstens fünf bis sieben für den ersten Flug.
+  - frage: Was braucht jede Funktion deiner Seite, zum Beispiel ein Formular?
+    kern: Einen Ablauf mit Bestätigung und Fehlerfall. Wer etwas abschickt, sieht, dass es angekommen ist, und weiss, was zu tun ist, wenn es nicht klappt.
 ---
 
 ## Worum es geht

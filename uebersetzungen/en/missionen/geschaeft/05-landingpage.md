@@ -2,6 +2,11 @@
 titel: One page, one offer, one button
 bild: A notice on the noticeboard with tear-off slips
 phase: P3
+verstehen:
+  - frage: Why does even a single page need looking after?
+    kern: Offer, prices, dates and proof change. A page with an old price or an expired date costs trust; that's why the plan says who keeps it up to date and how often.
+  - frage: What belongs in the first screen of your home page, the one you see without scrolling?
+    kern: What you offer, for whom, and the one button that states the result in everyday words, for example “Ask for a place”. Anyone who doesn't get that in five seconds leaves.
 ---
 
 ## What it's about

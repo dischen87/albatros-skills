@@ -2,6 +2,9 @@
 titel: Targhetta del campanello e regolamento della casa
 bild: Targhetta del campanello e regolamento della casa
 phase: P9
+verstehen:
+  - frage: Che cosa dice la targhetta del campanello del tuo sito (impressum), e che cosa il regolamento della casa (protezione dei dati)?
+    kern: L'impressum dice chi c'è dietro il sito e come raggiungere questa persona. La dichiarazione sulla protezione dei dati dice ai visitatori quali dati il sito raccoglie su di loro, a che cosa servono e dove vanno.
 ---
 
 ## Di cosa si tratta

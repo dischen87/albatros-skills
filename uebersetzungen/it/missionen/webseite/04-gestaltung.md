@@ -1,37 +1,31 @@
 ---
 titel: Prima le fondamenta, poi la facciata
-bild: Prima la struttura in grigio, poi i campioni dei materiali su una tavola dei campioni
+bild: Sulle fondamenta finite arrivano insegne, immagini e uno stemma
 phase: P6
-verstehen:
-  - frage: Perché colori e caratteri del tuo sito stanno in un solo posto?
-    kern: 'Stanno solo nella mazzetta dei colori (tokens.css). Se lì cambi un colore, cambia su ogni pagina, e la modalità scura scambia solo questi valori. Colori scritti a mano nel codice rendono il sito disomogeneo.'
-  - frage: Perché la tua IA ti mostra prima uno schizzo grigio e solo dopo i colori?
-    kern: 'Prima la struttura, poi l''aspetto. Se l''ordine è giusto si vede meglio senza colori; i colori distraggono.'
+optional: true
 ---
 
 ## Di cosa si tratta
 
-Prima di dipingere, la casa deve stare in piedi. Per questo la tua IA ti mostra prima uno schizzo grigio della tua pagina iniziale e chiede: l'ordine è giusto? Poi ti presenta tre direzioni chiaramente diverse, nate dal carattere del tuo concetto, e tu scegli. Dalla tua scelta nascono una mazzetta dei colori fissa e una tavola dei campioni su cui vedi a colpo d'occhio colori, caratteri, pulsanti e campi.
+Facoltativa. Le fondamenta del tuo aspetto le posi nella missione «Colori e caratteri in un solo posto»: mockup grigio, tre direzioni, mazzetta dei colori e tavola dei campioni. Qui si tratta della facciata: icone, illustrazioni, foto o un tuo personaggio danno un volto al tuo sito web, se vanno d'accordo con il carattere del tuo concetto.
 
 ## Cosa impari
 
-- prima la struttura, poi l'aspetto
-- cosa distingue le direzioni (non solo il colore)
-- da che cosa si riconosce il tipico aspetto da IA
-- valori fissi per colori, caratteri e spaziature in un solo posto (token)
-- perché i contrasti si ricalcolano e non si stimano
+- quali elementi grafici esistono: icone, illustrazioni, foto tue, un tuo personaggio, anche in 3D
+- che ogni elemento va d'accordo con il carattere del tuo sito e non è solo carino
+- che le foto vere battono qualsiasi immagine generata
+- che le immagini di Albatros costano un piccolo importo dal tuo credito, e che la tua IA te ne dice prima il prezzo
 
 ## Come procedi
 
-1. Guardi lo schizzo grigio e dici se l'ordine è giusto.
-2. Confronti tre direzioni sulla stessa pagina e ne scegli una, o le combini.
-3. Dici se vuoi elementi grafici: icone, illustrazioni, foto, il tuo personaggio.
-4. La tua IA fissa la mazzetta dei colori, chiara e scura, con contrasti ricalcolati.
-5. Guardi la tavola dei campioni sul cellulare e sul computer e dici se va bene.
+1. La tua IA ti chiede se vuoi elementi grafici e ti mostra che cosa va d'accordo con il tuo carattere.
+2. Scegli che cosa si aggiunge, o dici che va bene senza. Per le tue foto ricevi una lista di foto.
+3. Se la tua IA genera immagini con Albatros, ti dice prima il prezzo, preso dal tuo credito, e ti chiede.
+4. Quello che hai scelto va sulla tavola dei campioni, nei colori della mazzetta.
 
-Se hai già un sito e vuoi rifarlo, la tua IA lo controlla prima da tre punti di vista (percorsi, accesso, stati e linguaggio) e ripara l'uso prima che si parli di colori.
+Se hai già un sito web e vuoi rifarlo, la tua IA lo controlla prima da tre punti di vista (percorsi, accesso, stati e linguaggio) e ripara l'uso prima che si parli di colori: prima le fondamenta, poi la facciata.
 
 ## Ce l'hai fatta quando
 
-- hai scelto una direzione e visto la tavola dei campioni
+- hai deciso quali elementi grafici riceve il tuo sito, anche «nessuno» conta
 - e sulla tua isola è raggiunto il passo «Bozze».

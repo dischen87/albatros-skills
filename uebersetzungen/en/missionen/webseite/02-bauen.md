@@ -2,35 +2,27 @@
 titel: Your site on your own computer
 bild: The shell in your own workshop, then the walk-through
 phase: P10
-verstehen:
-  - frage: What is an entry in the logbook (a commit)?
-    kern: An entry records a finished step, with a note saying what and why. You can go back to any entry later.
-  - frage: Why do you see your site on your own computer first, before it goes online?
-    kern: On your own computer you compare and change things in peace, without anyone seeing a half-finished site. Only what you've released goes online.
+optional: true
 ---
 
 ## What it's about
 
-Your draft is the walk-through model of your site, and you've approved it for building. Now your AI builds the real site from it on your own computer, with the same pages, menus and sections as the model. A logbook records every step. Four checks inspect the shell, then you walk through it yourself, on a phone and on a computer, and release it. Up to here everything is free, and nothing goes online yet.
+Optional. You learn building, looking and releasing in the missions “Every step an entry in the logbook” and “Changing a text yourself”. Here you practise what often comes up on the website path after going live: keeping a list up to date yourself, for example dates. On your computer you can do that in peace, before anything goes online.
 
 ## What you'll learn
 
-- what an entry in the logbook (a commit) is, and why every step gets one
-- how your draft turns into a real site without anything shifting
-- how four checks (security, flows and access, looks, code and speed) inspect a site, and which doors stay closed without signing in
-- looking at your site on your own computer and comparing it with the draft
-- changing a text yourself and seeing the change straight away
-- why only your release opens the way onto the web
+- where lists such as dates live in your site (in the folder `web/src/data/`)
+- adding or changing something in a list yourself and seeing it straight away
+- why an out-of-date event on the site costs trust
 
 ## How you go about it
 
-1. Your AI checks that your draft is approved for building, and opens the logbook.
-2. It writes the way of building and the building plan (PRD) from your draft, and suggests which addresses are open without signing in. You confirm both in one message.
-3. It builds the site and checks it in four areas. It shows you the reports with their traffic lights.
-4. You look at your site on your computer, at phone width and at computer width. Your AI compares every page with the draft and shows you every difference.
-5. If you like, you change a text yourself and see it straight away. In learning mode, that's part of it.
-6. You release the site. It only goes onto the web after that, when going live, never without your release.
+1. Your AI shows you which lists your site has and which file they're in. If it has none, you change another text.
+2. You add something new, for example a date, and save it.
+3. Your AI builds again, you reload the preview on your computer and see it straight away.
+4. You decide: keep it, and an entry goes into the logbook, or go back to the earlier version.
 
 ## Done when
 
-- the step “Release” is reached on your island. Your AI only reports it once your release is in `docs/prd.md` (`Freigegeben:`, the word stays German).
+- you've changed a list on your site yourself and seen it on your computer
+- and the “Release” step is reached on your island.

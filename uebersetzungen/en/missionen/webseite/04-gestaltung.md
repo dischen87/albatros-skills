@@ -1,37 +1,31 @@
 ---
 titel: First the foundations, then the facade
-bild: First the layout in grey, then the material samples on a sample sheet
+bild: Signs, pictures and a coat of arms go up on the finished foundations
 phase: P6
-verstehen:
-  - frage: 'Why do your site''s colours and fonts live in one place only?'
-    kern: 'They only live in the colour fan (tokens.css). Change a colour there and it changes on every page, and dark mode only swaps these values. Colours written into the code by hand make the site inconsistent.'
-  - frage: Why does your AI show you a grey sketch first and only then colours?
-    kern: 'Structure before looks. You see whether the order is right better without colours; colours distract from it.'
+optional: true
 ---
 
 ## What it's about
 
-Before anything gets painted, the house has to stand. That's why your AI first shows you a grey sketch of your home page and asks: is the order right? Then it puts three clearly different directions in front of you, grown from the character in your concept, and you choose. Your choice turns into a fixed colour fan and a sample sheet where you see colours, fonts, buttons and fields at a glance.
+Optional. You lay the foundations of your design in the mission “Colours and fonts in one place”: grey mockup, three directions, colour fan and sample sheet. This one is about the facade: icons, illustrations, photos or a character of your own give your website a face, as long as they fit the character from your concept.
 
 ## What you'll learn
 
-- structure before looks
-- what sets directions apart (not just the colour)
-- how to spot the typical AI look
-- fixed values for colours, type and spacing in one place (tokens)
-- why contrasts get recalculated rather than estimated
+- which design elements there are: icons, illustrations, your own photos, a character of your own, in 3D too
+- that every element fits your site's character rather than just looking nice
+- that real photos beat any generated picture
+- that pictures from Albatros cost a small amount from your credit, and your AI tells you the price first
 
 ## How you go about it
 
-1. Look at the grey sketch and say whether the order is right.
-2. Compare three directions on the same page and choose one, or mix them.
-3. Say whether you want design elements: icons, illustrations, photos, your mascot.
-4. Your AI settles the colour fan, light and dark, with recalculated contrasts.
-5. Look at the sample sheet on your phone and on your computer and say whether it works.
+1. Your AI asks whether you want design elements and shows you what fits your character.
+2. You choose what gets added, or say it works without. For your own photos you get a photo list.
+3. If your AI creates pictures with Albatros, it first tells you the price from your credit and asks you.
+4. Whatever you've chosen goes onto the sample sheet, in the colours from the colour fan.
 
-If you already have a site and want to rework it, your AI first checks it from three angles (flows, access, states and language) and repairs how it works before colours come up.
+If you already have a website and want to rework it, your AI first checks it from three angles (flows, access, states and language) and repairs how it works before colours come up: first the foundations, then the facade.
 
 ## Done when
 
-- you've chosen a direction and seen the sample sheet
+- you've decided which design elements your site gets, “none” counts too
 - and the “Drafts” step is reached on your island.
