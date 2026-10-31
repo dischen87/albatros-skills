@@ -13,6 +13,7 @@ type Mission = {
   weg: string;
   phase: string;
   optional?: boolean;
+  abo?: 'light' | 'pilot';
   skill: string;
   pruefung: { typ: string; schritt?: string }[];
   verstehen?: { frage: string; kern: string }[];
