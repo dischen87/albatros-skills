@@ -43,7 +43,10 @@ export const FAELLE: Record<string, Fall> = {
   'gratis-bis-lokal': { insel: 'recherche', werkzeuge: { konto_status: {}, upgrade_link: { stufe: 'light' } } },
   'lernen-kontrollfrage': { zustand: 'gratis-p4', mission: { id: 'flugschule-13-plan-pruefen', erledigt: 3 } },
   'lernen-verstanden': { insel: 'plan-geprueft', mission: { id: 'flugschule-14-konzept', erledigt: 4 } },
-  'anfrage': { insel: 'recherche' },
+  'luecke-ohne-skill': { insel: 'recherche' },
+  // Gegenprüfung 31.10.2026 (vert-12): statt der alten Texte von Hand («Skill `start`, Schritt 5» bzw. «Schritt 3») das echte lage
+  'start-sprache': { zustand: 'light-ohne-seite-fr', werkzeuge: { konto_status: {} } },
+  'start-bauen': { zustand: 'gratis-ohne-weg', werkzeuge: { konto_status: {}, upgrade_link: { stufe: 'light' } } },
 };
 
 // Was konto für Preise und Abo antwortet (in den Zuständen der Attrappen fehlt es, weil lage es nicht braucht)

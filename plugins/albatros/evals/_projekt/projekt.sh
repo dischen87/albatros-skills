@@ -391,12 +391,14 @@ EOF
 # Designsystem: Sonnenhof Merligen
 Stand: 28.10.2026
 
-Richtung: weich · Reihenfolge bestätigt am 28.10.2026 · Musterblatt gesehen am 28.10.2026
+Reihenfolge: bestätigt am 28.10.2026
+Richtung: weich
 Farben: Aktion Seeblau, Grund warmes Weiss, Text fast Schwarz, Fehler Rot; hell und dunkel; Kontraste in design/tokens.css
 Schriften: Titel Georgia, Text Systemschrift, beide ohne fremde Server
 Abstände: Reihe 4, 8, 12, 16, 24, 32 und 48 px; Seitenrand 16 px
 Komponenten: Knopf, Link, Feld mit Hilfe und Fehler, Meldung, Karte, Kopf mit Menü, Fuss
 Maskottchen: nein (docs/konzept.md)
+Musterblatt: gesehen am 28.10.2026, passt
 
 ## Richtung
 KI-Merkmale geprüft: weich ok, klar ok, kräftig: Karten gleich gross, umgebaut
