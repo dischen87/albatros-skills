@@ -25,6 +25,7 @@ Bei dir startet das Band, sobald du einen Eintrag in den Hafen schickst (Skill `
 - Du-Form. Geh die Workflow-Datei mit der Person Station für Station durch, bevor sie läuft.
 - Das Fliessband braucht keinen Schlüssel und kein Geheimnis von der Person: Der Arbeiter wohnt schon auf ihrem Server. Ihr Hausschlüssel gehört nie ins Fliessband.
 - Ist das Band rot: Ursache beheben, nie die Prüfung abschalten.
+- **Nicht vor dem Live schalten (P13).** Das Band richtest du erst ein, wenn die Person ihre Seite freigegeben hat (`Freigegeben:` mit Datum in `docs/prd.md`) und ihr sie live schaltet (Skill `lancieren`, Abschnitt «Live schalten»). Das gilt auf beiden Wegen, auch wenn eine Methode des Wegs Geschäft vorher vom Fliessband spricht: Bis dahin bleibt alles auf dem Computer, und nichts geht in den Hafen (Skill `git-logbuch`, Abschnitt «Logbuch ohne Hafen»). Fragt die Person früher danach, erklärst du das Bild und sagst, wann es dran ist. Ein Band, das schon läuft, weil die Seite schon im Netz ist, betreust du jederzeit (Abschnitt «Wenn das Band rot ist»).
 
 ## Ablauf
 
@@ -32,7 +33,7 @@ Bei dir startet das Band, sobald du einen Eintrag in den Hafen schickst (Skill `
 
 **Mit Light** gibt es kein Fliessband: Albatros stellt nach jedem Push den Ordner `seite/` aus `main` direkt aus, ohne Bau und ohne Prüfung. Erklär das Bild trotzdem. Das Band mit Qualitätskontrolle gehört zu Pilot; gewählt wird das beim Wohnort (Skill `lancieren`). Die Datei `deploy.yml` aus der Vorlage schläft bei Light. Beim Wechsel zu Pilot schaltet Albatros das Band ein und lässt es gleich einmal laufen, damit der eigene Server die Seite ausliefert. Die Mission `flugschule-05-pipeline` gehört zu Pilot.
 
-**Mit Pilot:** `konto_status` nennt den Namen des Servers, die Adresse des Hafens (`git@aufwind.sh:{name}/projekt.git`) und ob der Arbeiter bereit ist. Frag die Person nicht danach. Die Vorlage von Albatros bringt `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` schon mit; auf dem Weg Webseite kommen sie beim Live schalten ins Logbuch, wenn es mit dem Hafen verbunden wird (Skill `lancieren`, Teil 2). Lies sie mit der Person und vergleiche mit dem Kern unten. Fehlen sie, legst du sie an, auch wenn der Ordner noch leer ist, und sagst danach, was noch fehlt (Logbuch im Hafen, Inhalt der Seite).
+**Mit Pilot:** `konto_status` nennt den Namen des Servers, die Adresse des Hafens (`git@aufwind.sh:{name}/projekt.git`) und ob der Arbeiter bereit ist. Frag die Person nicht danach. Die Vorlage von Albatros bringt `.github/workflows/deploy.yml`, `compose.yaml` und `Dockerfile` schon mit; auf beiden Wegen kommen sie beim Live schalten ins Logbuch, wenn es mit dem Hafen verbunden wird (Skill `lancieren`, Teil 2). Lies sie mit der Person und vergleiche mit dem Kern unten. Fehlen sie, legst du sie an, auch wenn der Ordner noch leer ist, und sagst danach, was noch fehlt (Logbuch im Hafen, Inhalt der Seite).
 
 Der Webserver-Container heisst `webseite` und hört im Server auf Port 80. Albatros leitet `https://{name}.aufwind.sh` dorthin. Auf einem frischen Server belegt die Begrüssungsseite (Dienst `willkommen`) Port 80. Das Fliessband schaltet sie vor dem ersten Start ab. Startest du einmal von Hand, zuerst `sudo systemctl disable --now willkommen`.
 
@@ -110,7 +111,7 @@ Station für Station erklären. Auf dem Server wird nichts von Hand geändert: D
 
 ### 3. Erste Fahrt
 
-Auf dem Weg Webseite fährt das Band zum ersten Mal beim Live schalten, mit der freigegebenen Seite (Skill `lancieren`, Teil 2).
+Auf beiden Wegen fährt das Band zum ersten Mal beim Live schalten, mit der freigegebenen Seite (Skill `lancieren`, Teil 2).
 
 1. Eintrag ins Logbuch, Push (Skill `git-logbuch`).
 2. Zuschauen im Browser: `https://code.aufwind.sh/{name}/projekt/actions`.

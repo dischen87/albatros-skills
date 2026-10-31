@@ -3,7 +3,7 @@ name: pipeline
 description: "Spiega la CI/CD a una persona senza conoscenze tecniche con l'immagine del nastro trasportatore con controllo qualità e lo configura: un workflow nel porto di Albatros (Forgejo, code.aufwind.sh) parte a ogni push su main. L'operaio (runner) sul proprio server costruisce la pagina, la consegna con un controllo di salute, la verifica dall'indirizzo pubblico e altrimenti torna all'ultima versione buona. Usa lo skill con «pipeline», «CI/CD», «GitHub Actions», «Forgejo Actions», «workflow», «runner», «pubblicare in automatico», «fare il deploy», «come arriva la mia modifica sul server?», «il nastro è rosso», «il deploy non è andato a buon fine», «deploy fallito»."
 metadata:
   stand: 0.2.0
-  quelle: '4148e0142beb'
+  quelle: '9afeadd99f65'
 ---
 
 # Pipeline: il nastro trasportatore con controllo qualità
@@ -27,6 +27,7 @@ Da te il nastro parte appena mandi una voce al porto (skill `git-logbuch`). L'op
 - Dai del tu. Percorri con la persona il file del workflow stazione per stazione, prima che giri.
 - Il nastro trasportatore non ha bisogno di nessuna chiave e di nessun segreto della persona: l'operaio abita già sul suo server. La sua chiave di casa non va mai nel nastro trasportatore.
 - Se il nastro è rosso: elimina la causa, non spegnere mai la verifica.
+- **Non prima della messa online (P13).** Il nastro lo installi solo quando la persona ha approvato il suo sito (`Freigegeben:` con la data in `docs/prd.md`) e lo mettete online (skill `lancieren`, parte 2, la messa online). Vale per entrambi i percorsi, anche se un metodo del percorso attività parla prima del nastro trasportatore: fino ad allora tutto resta sul computer e niente va nel porto (skill `git-logbuch`, parte «Logbuch ohne Hafen»). Se la persona lo chiede prima, spieghi l'immagine e dici quando sarà il momento. Un nastro che gira già perché il sito è già in rete lo curi in qualsiasi momento (parte «Quando il nastro è rosso»).
 
 ## Procedura
 
@@ -34,7 +35,7 @@ Da te il nastro parte appena mandi una voce al porto (skill `git-logbuch`). L'op
 
 **Con Light** non c'è nessun nastro trasportatore: dopo ogni push Albatros mette in vetrina direttamente la cartella `seite/` da `main`, senza costruire e senza verifica. Spiega comunque l'immagine. Il nastro con controllo qualità fa parte di Pilot; si sceglie con il domicilio (skill `lancieren`). Il file `deploy.yml` del modello dorme con Light. Al passaggio a Pilot, Albatros accende il nastro e lo fa girare subito una volta, così è il proprio server a consegnare la pagina. La missione `flugschule-05-pipeline` fa parte di Pilot.
 
-**Con Pilot:** `konto_status` indica il nome del server, l'indirizzo del porto (`git@aufwind.sh:{name}/projekt.git`) e se l'operaio è pronto. Non chiederlo alla persona. Il modello di Albatros porta già con sé `.github/workflows/deploy.yml`, `compose.yaml` e `Dockerfile`; sul percorso sito web arrivano nel diario di bordo alla messa online, quando viene collegato al porto (skill `lancieren`, parte 2). Leggili con la persona e confrontali con il nucleo qui sotto. Se mancano li crei tu, anche se la cartella è ancora vuota, e poi dici cosa manca ancora (diario di bordo nel porto, contenuto della pagina).
+**Con Pilot:** `konto_status` indica il nome del server, l'indirizzo del porto (`git@aufwind.sh:{name}/projekt.git`) e se l'operaio è pronto. Non chiederlo alla persona. Il modello di Albatros porta già con sé `.github/workflows/deploy.yml`, `compose.yaml` e `Dockerfile`; su entrambi i percorsi arrivano nel diario di bordo alla messa online, quando viene collegato al porto (skill `lancieren`, parte 2). Leggili con la persona e confrontali con il nucleo qui sotto. Se mancano li crei tu, anche se la cartella è ancora vuota, e poi dici cosa manca ancora (diario di bordo nel porto, contenuto della pagina).
 
 Il container del server web si chiama `webseite` e nel server ascolta sulla porta 80. Albatros indirizza lì `https://{name}.aufwind.sh`. Su un server appena creato la pagina di benvenuto (servizio `willkommen`) occupa la porta 80. Il nastro trasportatore la spegne prima del primo avvio. Se una volta avvii a mano, prima `sudo systemctl disable --now willkommen`.
 
@@ -112,7 +113,7 @@ Spiega stazione per stazione. Sul server non si cambia niente a mano: lo stato v
 
 ### 3. Il primo giro
 
-Sul percorso sito web il nastro gira per la prima volta alla messa online, con il sito approvato (skill `lancieren`, parte 2).
+Su entrambi i percorsi il nastro gira per la prima volta alla messa online, con il sito approvato (skill `lancieren`, parte 2).
 
 1. Voce nel diario di bordo, push (skill `git-logbuch`).
 2. Guardare nel browser: `https://code.aufwind.sh/{name}/projekt/actions`.
@@ -126,7 +127,7 @@ La persona inserisce apposta un errore che fa fallire la costruzione (p. es. un 
 
 `mission_pruefen` con `flugschule-05-pipeline`. La verifica controlla se l'ultimo giro di `deploy.yml` nel porto è verde, se il container `webseite` gira e se la pagina risponde.
 
-## Quando il nastro è rosso
+## Quando il nastro è rosso (Wenn das Band rot ist)
 
 - **Quale stazione?** Nel browser, alla voce «Actions», apri il giro rosso. La persona copia le ultime righe nella chat. Sul server guardi tu stesso: `ssh {name}@aufwind.sh 'cd ~/projekt && git log --oneline -1 && docker compose ps && docker compose logs --tail 30'`. Leggete insieme e nomina la causa in una frase.
 - **Il giro aspetta e non parte:** nessun operaio lo prende in carico. Nel file c'è esattamente `runs-on: albatros`? `konto_status` mostra se l'operaio è pronto. Altrimenti `coach_fragen`.

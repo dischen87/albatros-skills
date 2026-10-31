@@ -46,12 +46,12 @@ Jedes Projekt folgt demselben Fahrplan. Der Person zeigst du ihn in drei Etappen
 Bevor du `lage` aufrufst, schaust du im Projektordner nach, was schon da ist: `docs/projekt.md` und die anderen Ergebnisdateien in `docs/` (zum Beispiel `recherche.md`, `plan.md`, `plan-pruefung.md`). Dann ruf das Werkzeug `lage` von Albatros auf, mit diesen Angaben:
 
 - `skills_stand`: der Wert von `stand` unter `metadata` oben in dieser Datei. Daran merkt Albatros, ob deine Skills veraltet sind.
-- `belege`: je Ergebnisdatei, die es gibt, die Zeilen, die am Zeilenanfang mit einem Namen und Doppelpunkt beginnen (`Projektname: …`, `Vorbilder: …`), wörtlich; höchstens 20 Dateien, je höchstens 50 Zeilen mit höchstens 300 Zeichen. Für Dateien ohne solche Zeilen (`AGENTS.md`, `design/skizze.html`) gibst du nur den Namen mit einer leeren Liste mit. Nennt `lage` Dateien, die du nicht mitgegeben hast, liest du sie und gibst sie beim nächsten Aufruf mit.
+- `belege`: je Ergebnisdatei, die es gibt, die Zeilen, die am Zeilenanfang mit einem Namen und Doppelpunkt beginnen (`Projektname: …`, `Vorbilder: …`), wörtlich; höchstens 30 Dateien, je höchstens 50 Zeilen mit höchstens 300 Zeichen. Die Reihenfolge: zuerst `docs/projekt.md` und `docs/ideen-check.md` (Weg Geschäft: daran sieht `lage` den Entscheid), dann die Dateien der Phase, die jetzt dran ist (`lage` nennt sie unter «Ergebnis»), dann die Ergebnisse früherer Phasen. Sind es mehr als 30, lässt du am Ende weg, was `lage` nie als Ergebnis genannt hat. Für Dateien ohne solche Zeilen (`AGENTS.md`, `design/skizze.html`) gibst du nur den Namen mit einer leeren Liste mit. Nennt `lage` Dateien, die du nicht mitgegeben hast, liest du sie und gibst sie beim nächsten Aufruf mit.
 - `modus`: aus der Zeile `Modus:` in `docs/projekt.md`, also `machen` oder `lernen`.
 - `projekt`: beim ersten Projekt der Person weglassen (wie bei `schritt_melden`); nur für ein weiteres Projekt dessen kurzer Name.
-- `anfrage`, nur mit Einwilligung zur Erfassung (die Person hat zugestimmt, siehe «Lücken melden», oder `lage` meldet es so): worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten, höchstens 300 Zeichen. Sonst lässt du das Feld weg. Niemand antwortet darauf; Albatros sieht daran nur, wobei Leute Hilfe brauchen. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), gehört nicht hierhin: Das geht mit `coach_fragen` und `anliegen` an das Team (Abschnitt «Lücken melden»).
+- `anfrage`: nur, wenn die letzte Antwort von `lage` die Zeile `Anfragen: erlaubt.` hatte; dann bei jedem Aufruf. Darin steht, worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten, höchstens 300 Zeichen. Fehlt die Zeile, lässt du das Feld weg, auch wenn die Person bei «Lücken melden» Ja gesagt hat: Jenes Ja gilt nur für Lücken. Ob Albatros ihre Anfragen speichern darf, entscheidet die Person selbst im Cockpit (https://albatros.build/cockpit/daten); du fragst sie nicht im Chat danach und setzt es nie für sie. Niemand antwortet auf eine Anfrage; Albatros sieht daran nur, wobei Leute Hilfe brauchen. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), gehört nicht hierhin: Das geht mit `coach_fragen` und `anliegen` an das Team (Abschnitt «Lücken melden»).
 
-Gibt es noch kein Projekt, rufst du `lage` nur mit `skills_stand` auf. Antwortet `lage` mit «Ungültige Angaben», rufst du es einmal ohne Angaben auf.
+Gibt es noch kein Projekt, rufst du `lage` nur mit `skills_stand` auf. Antwortet `lage` mit «Ungültige Angaben», rufst du es einmal nur mit `docs/projekt.md`, `docs/ideen-check.md` und den Dateien der Phase auf, die jetzt dran ist; kommt die Meldung wieder, einmal ohne Angaben.
 
 Die Antwort hat diese Teile:
 
@@ -61,6 +61,8 @@ Die Antwort hat diese Teile:
 - **Hinweis:** höchstens zwei Dinge, die die Person wissen sollte.
 - **Danach:** was als Nächstes kommt.
 - **Stand:** kurz, wo die Person steht.
+- `Anfragen: erlaubt.`, nur wenn die Person im Cockpit zugestimmt hat: Dann gibst du `anfrage` mit (oben).
+- `Hinweis zur Erfassung:`, solange die Person zur Erfassung noch nichts entschieden hat: was Albatros speichert und wo sie es ansehen und widersprechen kann. Diesen Hinweis sagst du ihr einmal im Gespräch, in ihrer Sprache, vollständig und mit der Adresse; danach nicht bei jedem Aufruf wieder.
 
 Lies den Stand genau so, wie er dasteht. «Arbeiter am Fliessband bereit» heisst: Der Arbeiter wartet auf Arbeit. Ob das Fliessband schon eingerichtet ist, sagt die Mission.
 
@@ -96,7 +98,7 @@ Jede Antwort kommt in die Datei und Zeile, die `lage` nennt, am Zeilenanfang mit
 
 ### 4. Nach jedem geschafften Schritt neu fragen
 
-Ist ein Schritt geschafft (ein Abschnitt fertig, eine Mission bestanden, ein Fehler behoben), meldest du ihn mit `schritt_melden`, wie es der Skill sagt, und führst `Stand:` und `Nächster Schritt:` in `docs/projekt.md` nach. Dann ruf `lage` erneut auf, bevor du den nächsten Schritt vorschlägst. Der Stand hat sich geändert, und erst das Radar weiss, was jetzt dran ist. Frag die Person kurz, ob sie gleich weitermachen will.
+Ist ein Schritt geschafft (ein Abschnitt fertig, eine Mission bestanden, ein Fehler behoben), meldest du ihn mit `schritt_melden`, wie es der Skill sagt, und führst `Stand:` und `Nächster Schritt:` in `docs/projekt.md` nach. Steht in `docs/projekt.md` die Zeile `Projektname:`, gibst du bei jedem `schritt_melden` ihren Wert als `titel` mit, damit die Insel das Haus mit dem Namen des Projekts zeigt statt «projekt». Dann ruf `lage` erneut auf, bevor du den nächsten Schritt vorschlägst. Der Stand hat sich geändert, und erst das Radar weiss, was jetzt dran ist. Frag die Person kurz, ob sie gleich weitermachen will.
 
 Nennt `lage` zweimal hintereinander denselben Schritt, obwohl ihr ihn eben gemacht habt: Meist fehlt noch eine Zeile in den Belegen oder die Prüfung der Mission (`mission_pruefen`). Prüf beides, dann wieder `lage`.
 
@@ -147,9 +149,10 @@ Albatros wird besser, wenn du meldest, wo das Know-how fehlt. Dafür gibt es das
 
 - `frage`: allgemein und umformuliert, in deinen Worten, 10 bis 500 Zeichen. Nie Namen, E-Mail-Adressen, Adressen, Telefonnummern, Passwörter oder andere Zugangsdaten. Nie Inhalte aus einer Datenbank, aus Logs oder aus `.env`. Also «Wie verbinde ich eine Domain, deren Anbieter keine eigenen Einträge erlaubt?» statt dem, was die Person wörtlich geschrieben hat.
 - Dazu `art`, `skill` (die Kennung, um die es geht), `phase` (wie `lage` sie nennt), `kontext` (was du schon versucht hast, ein Satz, ohne Angaben zur Person) und `skills_stand`.
-- **Beim ersten Mal** rufst du `luecke_melden` ohne `einverstanden` auf. Die Antwort enthält einen Satz für die Person: Sag ihn ihr so, wie er dasteht. Nur nach ihrem Ja rufst du nochmals auf, mit `einverstanden: true`. Sagt sie Nein, meldest du nichts und machst weiter.
+- **Beim ersten Mal** rufst du `luecke_melden` ohne `einverstanden` auf. Die Antwort enthält einen Satz für die Person: Sag ihn ihr so, wie er dasteht. Nur nach ihrem Ja rufst du nochmals auf, mit `einverstanden: true`. Sagt sie Nein, meldest du nichts und machst weiter. Dieses Ja gilt nur für Lücken, nie für `anfrage` bei `lage`.
 - Auf eine Lücke kommt keine Antwort. Hilfe für die Person gibt der Coach (`coach_fragen`).
 - **Was ein Mensch sehen muss, ist nie eine Lücke:** Eine Datenpanne (fremde Daten sichtbar, ein Zugang verraten, Daten verloren) geht mit `coach_fragen` und `anliegen: datenpanne` sofort an das Team, ebenso eine Frage zur Rechnung (`rechnung`) oder zum Konto (`konto`) und ein Fehler bei Albatros, den ein Mensch beheben muss (`fehler_albatros`).
+- **Antwortet `coach_fragen` darauf mit 403** (in der Stufe der Person gibt es keinen Coach, zum Beispiel «Der Coach gehört zum Abo»), oder fehlt das Werkzeug: Dann schreibt die Person selbst eine Mail an hallo@albatros.build, bei einer Datenpanne sofort. Du nennst ihr die Adresse und was hineingehört: worum es geht (Datenpanne, Rechnung, Konto oder Fehler bei Albatros), was seit wann passiert, die Fehlermeldung wörtlich, die Adresse der Seite oder der Name des Servers, was ihr schon versucht habt, und die E-Mail-Adresse, mit der sie bei Albatros angemeldet ist. Nie Passwörter, Kartennummern, private Schlüssel oder Inhalte aus `.env`; fremde Daten, die sie gesehen hat, beschreibt sie nur («Ich sehe die Anmeldungen einer anderen Person») und kopiert sie nicht hinein. Auf Wunsch schreibst du ihr den Text vor; abschicken tut sie ihn selbst.
 - Fehlt `luecke_melden`, geht es ohne weiter.
 
 ## Ohne Anmeldung

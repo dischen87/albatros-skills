@@ -3,7 +3,7 @@ name: webseite-modernisieren
 description: "Modernizza un sito web esistente (associazione, negozio, studio, vecchio sito Jimdo, Wix o WordPress) per una persona senza conoscenze tecniche, come variante del piano di volo. Comincia subito, senza domande, con l'inventario: tutte le pagine, ogni funzione (moduli, iscrizioni, appuntamenti, PDF, prezzi, gallerie, mappe, lingue) e tutti i contenuti, con foto del vecchio sito in docs/bestand.md. Dopo chiede solo quello che sa solo la persona, soprattutto cosa deve restare, e porta attraverso la pianta e la verifica del piano (nessuna funzione va persa senza decisione) al nuovo sito; alla messa online il dominio trasloca con reindirizzamenti, l'e-mail resta intatta. Usa lo skill con «Modernizza …», «il nostro sito è datato», «rinnovare il sito web», «relaunch», «via da Jimdo, Wix o WordPress», «rifare il vecchio sito», e subito quando qualcuno manda solo l'indirizzo di un sito web (https://…), senza altre parole."
 metadata:
   stand: 0.2.0
-  quelle: '2485342c6924'
+  quelle: '8efafe8b2bdf'
 ---
 
 # Modernizzare il sito web: ristrutturare una casa vecchia
@@ -103,7 +103,7 @@ Di' con parole semplici cosa hai trovato, in breve e con numeri: quante pagine, 
 
 Chi cura il sito lo chiedi più tardi, nella pianta. Il resto dell'idea lo proponi dal vecchio sito, e la persona lo conferma in un solo messaggio: nome del progetto (di solito il nome del vecchio sito), in una frase, per chi, cosa principale, successo e modo (fare). Poi scrivi come nello skill `webseite-planen`, sezione Idea (passi da 4 a 6): `docs/projekt.md` con `Bestehende Seite: <indirizzo>`, `AGENTS.md` con `CLAUDE.md` e `GEMINI.md`, e lo schizzo grigio `design/skizze.html` della nuova pagina iniziale, in cui c'è già quello che deve restare. Aprilo nel browser.
 
-Poi `schritt_melden` con `idee` e `mission_pruefen` con `flugschule-11-idee`.
+Poi `schritt_melden` con `idee` e `titel`, il valore della riga `Projektname:` in `docs/projekt.md`, e dopo `mission_pruefen` con `flugschule-11-idee`.
 
 ## La ricerca dall'inventario
 
@@ -146,7 +146,7 @@ Il dominio attuale del vecchio sito (per esempio `curling-wil.ch`) resta com'è 
 - **Reindirizzamenti:** ogni vecchio indirizzo di `docs/bestand.md` che sul nuovo sito non esiste più riceve un reindirizzamento alla nuova pagina adatta, così i link di altri e i risultati su Google non finiscono nel vuoto. Con un server tuo si fa nel server web (`nginx.conf`, `return 301`), altrimenti con una piccola pagina al vecchio indirizzo che rimanda avanti. Dopo controlla una volta ogni vecchio indirizzo.
 - **L'e-mail non si tocca mai:** il dominio resta presso il suo fornitore e lì continua a costare all'anno. Le voci per l'e-mail (MX) non le tocchi mai, altrimenti non arriva più nessuna e-mail.
 
-## Diritti
+## Diritti (Rechte)
 
 Testi, foto e loghi del vecchio sito appartengono a qualcuno, di solito all'associazione o all'attività, a volte a una fotografa. Chi modernizza un sito che non è suo ha bisogno del permesso di chi lo gestisce, prima che qualcosa venga pubblicato. I file scaricati sono una copia di lavoro da guardare. Le foto con persone riconoscibili hanno bisogno del loro consenso. Prima di pubblicare chiedi quindi: «I testi e le immagini sono vostri, o avete il permesso, per esempio dal comitato?»
 

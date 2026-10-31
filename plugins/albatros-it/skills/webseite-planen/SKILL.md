@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Pianifica con una persona senza conoscenze tecniche il suo sito web prima del design e della costruzione, in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md e uno schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, contenuti esistenti, docs/recherche.md), pianta (pagine, funzioni, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere in un contesto nuovo, docs/plan-pruefung.md, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill con «voglio un sito web», «pianificare un sito web», «da dove comincio», «cosa mi serve per un sito web», «quali pagine mi servono», «sitemap», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione sul percorso sito web."
 metadata:
   stand: 0.2.0
-  quelle: '085eb225aa62'
+  quelle: 'd76aaac88f86'
 ---
 
 # Pianificare il sito web: la pianta
@@ -45,7 +45,7 @@ Se la persona vuole subito il piano intero, scrivi in una volta i file che manca
 ## Dopo ogni sezione
 
 1. Aggiornare in `docs/projekt.md` le righe `Stand:` (stato) e `Nächster Schritt:` (prossimo passo).
-2. `schritt_melden` con il passo della tabella qui sopra e `sprache: it`. Per il primo progetto della persona lasci fuori `projekt`: più tardi diventa il diario di bordo nel porto. Solo per un altro progetto dai un nome breve di lettere minuscole, cifre e «-». Di' alla persona in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi) o «unbekannt» (sconosciuto), o se manca, si continua senza isola.
+2. `schritt_melden` con il passo della tabella qui sopra, `titel` (il valore della riga `Projektname:` in `docs/projekt.md`, come la persona chiama il suo progetto) e `sprache: it`. Con `titel` l'isola mostra la casa con questo nome invece di «projekt». Per il primo progetto della persona lasci fuori `projekt`: più tardi diventa il diario di bordo nel porto. Solo per un altro progetto dai un nome breve di lettere minuscole, cifre e «-». Di' alla persona in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi) o «unbekannt» (sconosciuto), o se manca, si continua senza isola.
 3. Verificare la missione della sezione (qui sotto, «Verificare la missione»), poi richiamare `lage` (skill `lotse`) e seguire quello che tocca adesso.
 
 Se la persona ha un account e la sua isola non è ancora aperta in questa conversazione, la apri una volta: `open https://albatros.build/it/cockpit/insel` (Linux `xdg-open`, Windows `start`). Lì a ogni passo cresce una casa.
@@ -133,7 +133,7 @@ Se la persona ha un account e la sua isola non è ancora aperta in questa conver
 
 **Momenti di apprendimento:** perché un progetto ha bisogno di un nome prima che esista qualcosa. Una sola cosa principale invece di cinque.
 
-**Ce l'hai fatta quando** `docs/projekt.md` ha tutte le righe, il nome del progetto non è vuoto, `AGENTS.md` è nel progetto e lo schizzo è stato aperto; sul percorso attività c'è in più `Entscheid: weiter` o `Entscheid: stoppen`. Poi `schritt_melden` con `idee`.
+**Ce l'hai fatta quando** `docs/projekt.md` ha tutte le righe, il nome del progetto non è vuoto, `AGENTS.md` è nel progetto e lo schizzo è stato aperto; sul percorso attività c'è in più `Entscheid: weiter` o `Entscheid: stoppen`. Poi `schritt_melden` con `idee` e `titel`, il valore della riga `Projektname:` (per esempio `titel: Mensa Wipkingen`).
 
 ## Ricerca (Research)
 
@@ -275,7 +275,7 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
 - **Decisioni tecniche troppo presto:** per il piano basta lo standard qui sopra. Un blocco o un sistema per i contenuti arriva solo quando una funzione ne ha davvero bisogno.
 - **Logo e colori per primi:** carattere e aspetto vengono dopo il piano confermato. Una bella pagina vuota non aiuta nessuno.
 
-## Verificare la missione
+## Verificare la missione (Mission prüfen)
 
 Dopo `schritt_melden` verifichi la missione della sezione con `mission_pruefen`. È superata appena il passo c'è sull'isola:
 

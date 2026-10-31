@@ -3,7 +3,7 @@ name: pipeline
 description: "Explains CI/CD to someone with no background using the picture of the conveyor belt with quality control, and sets it up: a workflow in the Albatros harbour (Forgejo, code.aufwind.sh) starts on every push to main. The worker (runner) on their own server builds the site, delivers it with a health check, checks it through the public address and otherwise jumps back to the last good version. Use this skill for “pipeline”, “CI/CD”, “GitHub Actions”, “Forgejo Actions”, “workflow”, “runner”, “deploy automatically”, “deploying”, “how does my change get onto the server?”, “the conveyor belt is red”, “my build is failing”, “deploy failed”."
 metadata:
   stand: 0.2.0
-  quelle: '4148e0142beb'
+  quelle: '9afeadd99f65'
 ---
 
 # Pipeline: the conveyor belt with quality control
@@ -27,6 +27,7 @@ For you, the belt starts as soon as you send an entry to the harbour (skill `git
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - The conveyor belt doesn't need a key or a secret from the person: the worker already lives on their server. Their house key never belongs on the conveyor belt.
 - If the belt is red: fix the cause, never switch off the check.
+- **Not before going live (P13).** Only set up the belt once the person has released their site (`Freigegeben:` with the date in `docs/prd.md`) and you're taking it live (skill `lancieren`, part 2, going live). That goes for both paths, even if a method on the business path mentions the conveyor belt earlier: until then everything stays on the computer and nothing goes to the harbour (skill `git-logbuch`, part “Logbuch ohne Hafen”). If the person asks earlier, explain the picture and say when it'll be time. A belt that's already running because the site is already online, you look after at any time (part “When the belt is red”).
 
 ## Steps
 
@@ -34,7 +35,7 @@ For you, the belt starts as soon as you send an entry to the harbour (skill `git
 
 **With Light** there's no conveyor belt: after every push, Albatros puts the folder `seite/` from `main` straight on display, with no build and no check. Explain the picture anyway. The belt with quality control belongs to Pilot; it's chosen together with where the site lives (skill `lancieren`). The file `deploy.yml` from the template sleeps on Light. When switching to Pilot, Albatros turns the belt on and runs it once straight away, so that your own server delivers the site. The mission `flugschule-05-pipeline` belongs to Pilot.
 
-**With Pilot:** `konto_status` gives the name of the server, the address of the harbour (`git@aufwind.sh:{name}/projekt.git`) and whether the worker is ready. Don't ask the person for these. The Albatros template already brings `.github/workflows/deploy.yml`, `compose.yaml` and `Dockerfile`; on the website path they come into the logbook when going live, once it's connected to the harbour (skill `lancieren`, part 2). Read them with the person and compare them with the core below. If they're missing, create them, even if the folder is still empty, and then say what's still missing (logbook in the harbour, content of the site).
+**With Pilot:** `konto_status` gives the name of the server, the address of the harbour (`git@aufwind.sh:{name}/projekt.git`) and whether the worker is ready. Don't ask the person for these. The Albatros template already brings `.github/workflows/deploy.yml`, `compose.yaml` and `Dockerfile`; on both paths they come into the logbook when going live, once it's connected to the harbour (skill `lancieren`, part 2). Read them with the person and compare them with the core below. If they're missing, create them, even if the folder is still empty, and then say what's still missing (logbook in the harbour, content of the site).
 
 The web server container is called `webseite` and listens on port 80 inside the server. Albatros routes `https://{name}.aufwind.sh` there. On a fresh server the welcome page (service `willkommen`) takes up port 80. The conveyor belt switches it off before the first start. If you start by hand once, first run `sudo systemctl disable --now willkommen`.
 
@@ -114,7 +115,7 @@ Explain it station by station. Nothing on the server gets changed by hand: the s
 
 ### 3. First run
 
-On the website path the belt runs for the first time when going live, with the released site (skill `lancieren`, part 2).
+On both paths the belt runs for the first time when going live, with the released site (skill `lancieren`, part 2).
 
 1. Make an entry in the logbook and push (skill `git-logbuch`).
 2. Watch in the browser: `https://code.aufwind.sh/{name}/projekt/actions`.
@@ -128,7 +129,7 @@ The person deliberately puts in a mistake that makes the build fail (e.g. a typo
 
 `mission_pruefen` with `flugschule-05-pipeline`. The check looks at whether the last run of `deploy.yml` in the harbour is green, the container `webseite` is running and the site answers.
 
-## When the belt is red
+## When the belt is red (Wenn das Band rot ist)
 
 - **Which station?** In the browser, open the red run under “Actions”. The person copies the last lines into the chat. On the server you look yourself: `ssh {name}@aufwind.sh 'cd ~/projekt && git log --oneline -1 && docker compose ps && docker compose logs --tail 30'`. Read it together, and name the cause in one sentence.
 - **The run is waiting and doesn't start:** no worker is picking it up. Does the file say exactly `runs-on: albatros`? `konto_status` shows whether the worker is ready. Otherwise `coach_fragen`.
