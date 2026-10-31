@@ -23,9 +23,9 @@ Avant de construire une maison, une ingénieure en statique regarde le plan. Ell
 ## Comment t'y prendre
 
 1. Ton IA demande le deuxième avis dans une nouvelle conversation, qui ne lit que `docs/`.
-2. Chaque point de la liste de contrôle reçoit ok, risque ou ouvert, avec l'endroit dans le plan.
-3. Ton IA te montre les points marqués risque ou ouvert.
-4. Tu décides : laisser ainsi ou changer. Ce n'est qu'après ton oui que le plan est marqué comme confirmé, avec la date.
+2. Chaque point de la liste de contrôle reçoit ok, risque ou ouvert, avec l'endroit dans le plan. Le résultat se trouve dans `docs/plan-pruefung.md`.
+3. Ton IA te montre les points marqués risque ou ouvert, chacun avec une proposition.
+4. Tu décides : laisser ainsi ou changer. C'est l'un des trois moments de ton parcours où le oui ne vient que de toi. Ce n'est qu'après ton oui que le plan est marqué comme confirmé, avec la date.
 
 Si tu modernises un site existant, le deuxième avis vérifie aussi qu'aucune fonction de l'ancien site ne se perd sans décision.
 

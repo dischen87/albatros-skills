@@ -22,11 +22,11 @@ Anyone flying to a country they don't know reads the travel guide first: what pe
 
 ## How you go about it
 
-1. You name sites you like. Your AI looks for up to three comparable ones and opens every address. No made-up addresses.
+1. Without asking first, your AI looks for up to three comparable sites in your region and line of business and opens every address. If you know sites you like yourself, they're added. No made-up addresses.
 2. Together you write down what's usual, what you'll adopt and what you'll deliberately do differently.
 3. Your AI works out which obligations apply to your site.
 4. You say which texts, photos and which logo you already have.
-5. Everything goes into `docs/recherche.md`, including the words someone would use to search for you.
+5. Everything goes into `docs/recherche.md`, including the words someone would use to search for you. Your AI explains the result to you in five lines.
 
 On the business path, your target group plus offer and price are added. If you're modernising an existing site, this step is the inventory: what does the old site have that must stay?
 

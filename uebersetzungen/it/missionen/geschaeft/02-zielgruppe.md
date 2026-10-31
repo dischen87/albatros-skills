@@ -6,7 +6,7 @@ phase: P2
 
 ## Di cosa si tratta
 
-In una foto di una folla nessuno si riconosce. Un ritratto mostra una persona con tanta precisione che altri dicono: «Ma sono io!» Dipingi un ritratto delle persone per cui è fatta la tua offerta, partendo da modelli reali invece che dalla fantasia.
+In una foto di una folla nessuno si riconosce. Un ritratto mostra una persona con tanta precisione che altri dicono: «Ma sono io!» Dipingi un ritratto delle persone per cui è fatta la tua offerta, partendo da modelli reali invece che dalla fantasia. Tocca a questo quando la verifica della tua idea dice «andare avanti»; fa parte della ricerca per il tuo piano.
 
 ## Cosa impari
 
@@ -20,7 +20,7 @@ In una foto di una folla nessuno si riconosce. Un ritratto mostra una persona co
 1. Prendi quello che sai già dalle tue conversazioni.
 2. Con tre domande la tua IA restringe «tutti» a un gruppo.
 3. Insieme dipingete il ritratto: il momento in cui compare il problema, cosa fanno oggi queste persone e cosa le infastidisce.
-4. Raccogli frasi testuali e scrivi chi non ne fa parte.
+4. Raccogli frasi testuali e scrivi chi non ne fa parte. Da queste frasi nascono le parole di ricerca in `docs/recherche.md`.
 5. Una breve controprova mostra se il ritratto colpisce persone vere.
 
 ## Ce l'hai fatta quando

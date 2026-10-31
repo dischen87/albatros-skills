@@ -19,7 +19,7 @@ Il pavimento sono i tuoi costi per ogni vendita: sotto perdi soldi. Il soffitto 
 
 1. Descrivi con la tua IA la tua offerta più piccola.
 2. Calcolate il pavimento: materiale, commissioni, il tuo tempo e una parte dei tuoi costi fissi.
-3. Stimate il soffitto: cosa fa oggi la clientela, e quanto le costa?
+3. Stimate il soffitto: cosa fa oggi la clientela, e quanto le costa? La tua IA cerca offerte simili e apre ogni indirizzo; le tre migliori diventano i modelli in `docs/recherche.md`.
 4. Fissi un prezzo e lo dici a persone vere del tuo pubblico.
 5. Verifichi se per te scatta l'obbligo dell'IVA, e annoti tutto in `docs/angebot.md`.
 

@@ -6,7 +6,7 @@ phase: P2
 
 ## De quoi il s'agit
 
-Sur la photo d'une foule, personne ne se reconnaît. Un portrait montre une personne si précisément que d'autres disent : « Mais c'est moi ! » Tu peins le portrait des personnes pour qui ton offre est faite, d'après de vrais modèles plutôt que d'imagination.
+Sur la photo d'une foule, personne ne se reconnaît. Un portrait montre une personne si précisément que d'autres disent : « Mais c'est moi ! » Tu peins le portrait des personnes pour qui ton offre est faite, d'après de vrais modèles plutôt que d'imagination. C'est le moment quand ta vérification de l'idée dit « continuer » ; ça fait partie de la recherche pour ton plan.
 
 ## Ce que tu apprends
 
@@ -20,7 +20,7 @@ Sur la photo d'une foule, personne ne se reconnaît. Un portrait montre une pers
 1. Tu pars de ce que tu sais déjà grâce à tes conversations.
 2. Avec trois questions, ton IA resserre « tout le monde » en un groupe précis.
 3. Ensemble, vous peignez le portrait : le moment où le problème apparaît, ce que ces personnes font aujourd'hui et ce qui les dérange.
-4. Tu rassembles des phrases mot pour mot et tu notes qui n'en fait pas partie.
+4. Tu rassembles des phrases mot pour mot et tu notes qui n'en fait pas partie. Ces phrases deviennent les mots de recherche dans `docs/recherche.md`.
 5. Une courte contre-épreuve montre si le portrait correspond à de vraies personnes.
 
 ## Réussi quand

@@ -19,7 +19,7 @@ Le sol, ce sont tes coûts par vente : en dessous, tu perds de l'argent. Le pl
 
 1. Avec ton IA, tu décris ta plus petite offre.
 2. Vous calculez le sol : matériel, frais, ton temps et une part de tes coûts fixes.
-3. Vous estimez le plafond : que fait ta clientèle aujourd'hui, et combien ça lui coûte ?
+3. Vous estimez le plafond : que fait ta clientèle aujourd'hui, et combien ça lui coûte ? Ton IA cherche des offres comparables et ouvre chaque adresse ; les trois meilleures deviennent les modèles dans `docs/recherche.md`.
 4. Tu fixes un prix et tu l'annonces à de vraies personnes de ton groupe cible.
 5. Tu vérifies si la TVA devient obligatoire pour toi, et tu notes tout dans `docs/angebot.md`.
 

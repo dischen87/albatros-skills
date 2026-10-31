@@ -6,7 +6,7 @@ phase: P1
 
 ## De quoi il s'agit
 
-Avant de décoller, la pilote regarde la manche à air. Elle montre d'où vient vraiment le vent. Les compliments de tes amis ne sont pas du vent. Le vrai vent, c'est ce que les gens font déjà aujourd'hui, et ce qu'ils paient, pour résoudre leur problème. C'est à ça que tu mesures ton idée, avant d'y mettre du temps et de l'argent.
+Avant de décoller, la pilote regarde la manche à air. Elle montre d'où vient vraiment le vent. Les compliments de tes amis ne sont pas du vent. Le vrai vent, c'est ce que les gens font déjà aujourd'hui, et ce qu'ils paient, pour résoudre leur problème. C'est à ça que tu mesures ton idée, avant d'y mettre du temps et de l'argent. Avant ça, ton projet a déjà un nom et une première esquisse (mission « Où va le voyage »).
 
 ## Ce que tu apprends
 
@@ -21,11 +21,11 @@ Avant de décoller, la pilote regarde la manche à air. Elle montre d'où vient 
 2. Tu cherches quelques personnes qui ont le problème et tu as avec elles de courtes conversations sur leur quotidien. Ton IA prépare les questions.
 3. Ton IA t'aide à trier les réponses : qu'est-ce qui est du vrai vent, qu'est-ce qui n'est que de la politesse ?
 4. S'il y a du vent, tu rassembles une petite preuve, par exemple une précommande ou une inscription sur une liste d'attente.
-5. Tu décides et tu notes tout dans `docs/ideen-check.md`.
+5. Tu décides : continuer, adapter ou arrêter. Ton IA note tout dans `docs/ideen-check.md`. Tant que des conversations manquent, il y a là un devoir avec une date, et on ne continue qu'après.
 
-Les conversations elles-mêmes prennent quelques jours. Le temps indiqué plus haut, c'est le travail avec ton IA.
+Les conversations elles-mêmes prennent quelques jours. Le temps indiqué plus haut, c'est le travail avec ton IA. Même « arrêter », c'est réussi : tu as regardé honnêtement et tu as économisé des mois.
 
 ## Réussi quand
 
-- le fichier `docs/ideen-check.md` avec tes hypothèses, tes conversations et ta décision se trouve dans ton projet
+- le fichier `docs/ideen-check.md` avec tes hypothèses, tes conversations et ta décision « continuer » ou « arrêter » se trouve dans ton projet
 - et l'étape « Idée » est atteinte sur ton île.

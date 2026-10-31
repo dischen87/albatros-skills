@@ -6,7 +6,7 @@ phase: P3
 
 ## Di cosa si tratta
 
-Sulla bacheca degli annunci al supermercato, un buon annuncio si capisce passando, e se fa al caso tuo strappi un foglietto. La tua landing page è un annuncio così in rete: una pagina, un'offerta, un'azione. E dai foglietti mancanti vedi se funziona.
+Sulla bacheca degli annunci al supermercato, un buon annuncio si capisce passando, e se fa al caso tuo strappi un foglietto. La tua landing page è un annuncio così in rete: una pagina, un'offerta, un'azione. E dai foglietti mancanti vedi se funziona. In questo passo la pianifichi: il suo progetto finisce nella tua pianta.
 
 ## Cosa impari
 
@@ -18,12 +18,12 @@ Sulla bacheca degli annunci al supermercato, un buon annuncio si capisce passand
 ## Come procedi
 
 1. Con la tua IA stabilisci l'unica azione che i visitatori devono fare.
-2. Pianificate la pagina dall'alto in basso e scrivete i testi con le parole della tua clientela.
-3. Stabilite quale azione conclusa verrà contata. La pagina sarà costruita più tardi, dopo che avrai dato il via libera alla bozza.
-4. Mostri uno schizzo della prima schermata ad alcune persone del tuo pubblico per cinque secondi e migliori quello che non è chiaro.
-5. Annotate il piano e il risultato del test. La pagina va online solo dopo la tua approvazione.
+2. Pianificate la pagina iniziale dall'alto in basso e scrivete i testi con le parole della tua clientela.
+3. Stabilite quale azione conclusa verrà contata e da cosa capite che la pagina è finita.
+4. Pianificate il test di cinque secondi: appena c'è la bozza da sfogliare cliccando, mostri la prima schermata ad alcune persone del tuo pubblico per cinque secondi e migliori quello che non è chiaro.
+5. Tutto va nel tuo piano `docs/plan.md`. La pagina si costruisce solo dopo che hai dato il via libera alla bozza.
 
 ## Ce l'hai fatta quando
 
-- il file `docs/landingpage.md` con il tuo piano e il risultato del test è nel tuo progetto
+- in `docs/plan.md` ci sono il progetto della tua pagina iniziale dall'alto in basso e il collaudo
 - e sulla tua isola è raggiunto il passo «Piano».

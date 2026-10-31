@@ -1,6 +1,6 @@
 ---
 titel: Where the journey is going
-bild: The boarding pass that says where the journey is going
+bild: Circling the destination on the map before you take off
 phase: P1
 verstehen:
   - frage: Why does your project get a name before anything exists?
@@ -11,7 +11,7 @@ verstehen:
 
 ## What it's about
 
-A boarding pass says where the journey is going before anyone gets on board. Without a destination, no pilot knows which route to fly. Your project starts the same way: your AI asks you for a name, your idea in one sentence, who it's for and what visitors should do above all. Then it draws a first sketch of your home page.
+Before a pilot takes off, she circles the destination on the map. Without a destination, she doesn't know which route to fly. Your project starts the same way: your AI suggests a name or asks you for one, and it wants to know what it's about in one sentence, who it's for and what visitors should do above all. Then it draws a first, grey sketch of your home page.
 
 ## What you'll learn
 
@@ -22,12 +22,13 @@ A boarding pass says where the journey is going before anyone gets on board. Wit
 
 ## How you go about it
 
-1. You give your project a name. A working name is enough.
+1. You give your project a name. A working name is enough, and it can be completely arbitrary.
 2. You answer your AI's questions, two at most at a time. Whatever it can suggest itself, it writes down as an assumption, and you confirm all assumptions together.
 3. You say whether your AI should just do the work or whether you want to learn the important steps yourself. You can switch at any time.
-4. Your AI writes everything into `docs/projekt.md` and opens the sketch of your home page in the browser.
+4. If there's already a website, your AI starts with an inventory of the old site, so nothing gets lost.
+5. Your AI writes everything into `docs/projekt.md` and puts a note for every AI into the project (`AGENTS.md`), so a new conversation knows where you are too. Then it opens the sketch of your home page in the browser.
 
-On the business path, you also check whether your idea is worth it: carry on, adjust or stop.
+On the business path, you then check whether your idea is worth it: carry on, adjust or stop.
 
 ## Done when
 

@@ -22,11 +22,11 @@ Chi vola in un paese che non conosce legge prima la guida di viaggio: che cosa c
 
 ## Come procedi
 
-1. Nomini siti che ti piacciono. La tua IA ne cerca fino a tre simili e apre ogni indirizzo. Niente indirizzi inventati.
+1. Senza fare domande, la tua IA cerca fino a tre siti simili nella tua regione e nel tuo settore e apre ogni indirizzo. Se conosci già siti che ti piacciono, si aggiungono. Niente indirizzi inventati.
 2. Annotate che cosa è abituale, che cosa riprendete e che cosa fate apposta in modo diverso.
 3. La tua IA chiarisce quali obblighi valgono per il tuo sito.
 4. Dici quali testi, quali foto e quale logo hai già.
-5. Tutto va in `docs/recherche.md`, anche le parole con cui qualcuno ti cercherebbe.
+5. Tutto va in `docs/recherche.md`, anche le parole con cui qualcuno ti cercherebbe. La tua IA ti spiega il risultato in cinque righe.
 
 Sul percorso attività si aggiungono pubblico, offerta e prezzo. Se modernizzi un sito esistente, questo passo è l'inventario: che cosa ha il vecchio sito che deve restare?
 

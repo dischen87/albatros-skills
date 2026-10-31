@@ -6,7 +6,7 @@ phase: P1
 
 ## What it's about
 
-Before a pilot takes off, she looks at the windsock. It shows where the wind is really coming from. Compliments from friends aren't wind. Real wind is what people already do and pay for today to solve their problem. That's what you test your idea against before you put time and money into it.
+Before a pilot takes off, she looks at the windsock. It shows where the wind is really coming from. Compliments from friends aren't wind. Real wind is what people already do and pay for today to solve their problem. That's what you test your idea against before you put time and money into it. Before that, your project already has a name and a first sketch (mission “Where the journey is going”).
 
 ## What you'll learn
 
@@ -21,11 +21,11 @@ Before a pilot takes off, she looks at the windsock. It shows where the wind is 
 2. You find a few people who have the problem and have short conversations about their everyday life. Your AI prepares the questions.
 3. Your AI helps you sort the answers: what's real wind, and what's just politeness?
 4. If there's wind, you collect a small piece of proof, for example a pre-order or a name on a waiting list.
-5. You decide and record everything in `docs/ideen-check.md`.
+5. You decide: keep going, adjust or stop. Your AI records everything in `docs/ideen-check.md`. As long as conversations are missing, it holds a piece of homework with a date, and things only move on after that.
 
-The conversations themselves take a few days. The time above is the work with your AI.
+The conversations themselves take a few days. The time above is the work with your AI. Even “stop” counts as done: you looked honestly and saved yourself months.
 
 ## Done when
 
-- the file `docs/ideen-check.md` with your assumptions, conversations and your decision is in your project
+- the file `docs/ideen-check.md` with your assumptions, conversations and your decision “keep going” or “stop” is in your project
 - and the “Idea” step is reached on your island.
