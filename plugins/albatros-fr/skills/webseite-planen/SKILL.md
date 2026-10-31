@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web avant le design et la construction, en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md et une esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, contenus existants, docs/recherche.md), plan de la maison (pages, fonctions, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis dans un contexte neuf, docs/plan-pruefung.md, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction sur le parcours site web."
 metadata:
   stand: 0.2.0
-  quelle: '085eb225aa62'
+  quelle: 'd76aaac88f86'
 ---
 
 # Planifier le site web : le plan de la maison
@@ -45,7 +45,7 @@ Si la personne veut tout de suite le plan complet, tu écris d'un coup les fichi
 ## Après chaque section
 
 1. Mettre à jour les lignes `Stand:` (état) et `Nächster Schritt:` (prochaine étape) dans `docs/projekt.md`.
-2. `schritt_melden` avec l'étape du tableau plus haut et `sprache: fr`. Pour le premier projet de la personne, tu laisses `projekt` de côté : il deviendra plus tard le journal de bord au port. Seulement pour un autre projet, tu donnes un nom court en minuscules, chiffres et « - ». Dis à la personne en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables) ou « unbekannt » (inconnu), ou s'il manque, on continue sans l'île.
+2. `schritt_melden` avec l'étape du tableau plus haut, `titel` (la valeur de la ligne `Projektname:` dans `docs/projekt.md`, comme la personne appelle son projet) et `sprache: fr`. Avec `titel`, l'île montre la maison avec ce nom au lieu de « projekt ». Pour le premier projet de la personne, tu laisses `projekt` de côté : il deviendra plus tard le journal de bord au port. Seulement pour un autre projet, tu donnes un nom court en minuscules, chiffres et « - ». Dis à la personne en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables) ou « unbekannt » (inconnu), ou s'il manque, on continue sans l'île.
 3. Vérifier la mission de la section (plus bas, « Vérifier la mission »), puis rappeler `lage` (skill `lotse`) et suivre ce qui est à faire maintenant.
 
 Si la personne a un compte et que son île n'est pas encore ouverte dans cette conversation, tu l'ouvres une fois : `open https://albatros.build/fr/cockpit/insel` (Linux `xdg-open`, Windows `start`). Une maison y grandit à chaque étape.
@@ -133,7 +133,7 @@ Si la personne a un compte et que son île n'est pas encore ouverte dans cette c
 
 **Moments d'apprentissage :** pourquoi un projet a besoin d'un nom avant que quelque chose existe. Une seule chose principale au lieu de cinq.
 
-**Réussi quand** `docs/projekt.md` a toutes ses lignes, que le nom du projet n'est pas vide, que `AGENTS.md` est dans le projet et que l'esquisse a été ouverte ; sur le parcours entreprise, il y a en plus `Entscheid: weiter` ou `Entscheid: stoppen`. Ensuite `schritt_melden` avec `idee`.
+**Réussi quand** `docs/projekt.md` a toutes ses lignes, que le nom du projet n'est pas vide, que `AGENTS.md` est dans le projet et que l'esquisse a été ouverte ; sur le parcours entreprise, il y a en plus `Entscheid: weiter` ou `Entscheid: stoppen`. Ensuite `schritt_melden` avec `idee` et `titel`, la valeur de la ligne `Projektname:` (par exemple `titel: Cantine Wipkingen`).
 
 ## Recherche (Research)
 
@@ -275,7 +275,7 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
 - **Des choix techniques trop tôt :** pour le plan, le standard plus haut suffit. Une brique ou un système pour les contenus ne vient que lorsqu'une fonction en a vraiment besoin.
 - **Logo et couleurs en premier :** le caractère et la mise en forme viennent après le plan confirmé. Une belle page vide n'aide personne.
 
-## Vérifier la mission
+## Vérifier la mission (Mission prüfen)
 
 Après `schritt_melden`, tu vérifies la mission de la section avec `mission_pruefen`. Elle est réussie dès que l'étape est sur l'île :
 

@@ -3,7 +3,7 @@ name: start
 description: "Avvia Albatros per una persona senza conoscenze tecniche: collega la sua IA ad Albatros (accesso dal browser), chiede se vuole un sito web o un'attività, chiarisce imparare o fare e porta subito alla prima sezione del piano di volo, l'idea con il nome del progetto e un primo schizzo. Finché il sito non c'è sul proprio computer, Albatros non costa niente; abbonamento, chiave e sito in rete arrivano solo con lo skill lancieren. Usa lo skill con /albatros-it:start, «avvia Albatros», «voglio un sito web», «voglio fare un sito», «ho un'idea imprenditoriale», «ho un'idea per un'attività», «da dove comincio?», «sono nuovo qui», «quanto costa Albatros?», «mi serve un server?», e quando qualcuno nomina Albatros ma non è ancora collegato o non ha ancora scelto un percorso."
 metadata:
   stand: 0.2.0
-  quelle: '4e2fa06a9b75'
+  quelle: 'ffff386d3bb3'
 ---
 
 # Start: salire a bordo
@@ -85,7 +85,7 @@ Da qui ti accompagna lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `alba
 - **La persona ha paura di rompere qualcosa:** fino all'approvazione tutto sta solo sul suo computer, niente è in rete, e ogni passo si può cambiare. Più tardi il diario di bordo annota ogni stato, e con Pilot tutto il server viene fotografato ogni giorno («ritorno a ieri»).
 - **Nessuna conoscenza del terminale:** Non fa niente. Il terminale è come un citofono: si digita una frase in una lingua semplice, e il computer risponde.
 - **Domande che hanno anche altri** («Voi come fate?»): la community su https://community.albatros.build. È per i membri, l'accesso funziona con l'account Albatros.
-- **Domande personali a cui non sai rispondere** (fattura, account, abusi): strumento `coach_fragen`. Se nemmeno il Coach può aiutare, la domanda arriva a una persona, e la risposta arriva per e-mail.
+- **Domande personali a cui non sai rispondere** (fattura, account, abusi): strumento `coach_fragen`. Se nemmeno il Coach può aiutare, la domanda arriva a una persona, e la risposta arriva per e-mail. Se `coach_fragen` risponde con 403 perché nel livello della persona non c'è il Coach, lei scrive da sé a hallo@albatros.build; cosa va nell'e-mail e cosa mai, lo trovi nello skill `lotse`, sezione «Segnalare le lacune».
 - **Una domanda che nessuno skill copre:** skill `lotse`, sezione «Segnalare le lacune».
 
 ## Messaggio finale

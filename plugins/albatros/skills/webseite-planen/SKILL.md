@@ -43,7 +43,7 @@ Will die Person gleich den ganzen Plan, schreibst du die fehlenden Dateien in ei
 ## Nach jedem Abschnitt
 
 1. In `docs/projekt.md` die Zeilen `Stand:` und `Nächster Schritt:` nachführen.
-2. `schritt_melden` mit dem Schritt aus der Tabelle oben und `sprache` (die Sprache des Gesprächs). `projekt` lässt du beim ersten Projekt der Person weg: Daraus wird später das Logbuch im Hafen. Nur für ein weiteres Projekt gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit. Sag der Person in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben» oder «unbekannt», oder fehlt es, geht es ohne Insel weiter.
+2. `schritt_melden` mit dem Schritt aus der Tabelle oben, `titel` (der Wert der Zeile `Projektname:` in `docs/projekt.md`, so wie die Person ihr Projekt nennt) und `sprache` (die Sprache des Gesprächs). Mit `titel` zeigt die Insel das Haus mit diesem Namen statt «projekt». `projekt` lässt du beim ersten Projekt der Person weg: Daraus wird später das Logbuch im Hafen. Nur für ein weiteres Projekt gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit. Sag der Person in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben» oder «unbekannt», oder fehlt es, geht es ohne Insel weiter.
 3. Die Mission des Abschnitts prüfen (unten, «Mission prüfen»), dann `lage` erneut aufrufen (Skill `lotse`) und dem folgen, was jetzt dran ist.
 
 Hat die Person ein Konto und ist ihre Insel in diesem Gespräch noch nicht offen, öffnest du sie einmal: `open https://albatros.build/cockpit/insel` (mit Sprachpräfix wie `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). Dort wächst mit jedem Schritt ein Haus.
@@ -131,7 +131,7 @@ Hat die Person ein Konto und ist ihre Insel in diesem Gespräch noch nicht offen
 
 **Lernmomente:** Warum ein Projekt einen Namen braucht, bevor es etwas gibt. Eine Hauptsache statt fünf.
 
-**Geschafft, wenn** `docs/projekt.md` alle Zeilen hat, der Projektname nicht leer ist, `AGENTS.md` im Projekt liegt und die Skizze geöffnet wurde; auf dem Weg Geschäft steht dazu `Entscheid: weiter` oder `Entscheid: stoppen`. Dann `schritt_melden` mit `idee`.
+**Geschafft, wenn** `docs/projekt.md` alle Zeilen hat, der Projektname nicht leer ist, `AGENTS.md` im Projekt liegt und die Skizze geöffnet wurde; auf dem Weg Geschäft steht dazu `Entscheid: weiter` oder `Entscheid: stoppen`. Dann `schritt_melden` mit `idee` und `titel`, dem Wert der Zeile `Projektname:` (zum Beispiel `titel: Mittagstisch Wipkingen`).
 
 ## Research
 

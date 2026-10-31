@@ -3,7 +3,7 @@ name: start
 description: "Starts Albatros for someone with no technical background: connects their AI to Albatros (sign-in in the browser), asks whether they want a website or a business, sorts out learn or do, and leads straight into the first section of the flight plan, the idea with a project name and a first sketch. Until the site exists on their own computer, Albatros costs nothing; subscription, key and the site on the web only come with the skill lancieren. Use this skill on /albatros-en:start, “start Albatros”, “I want a website”, “I've got a business idea”, “how do I get started?”, “I'm new here”, “how much does Albatros cost?”, “do I need a server?”, and whenever someone mentions Albatros but isn't connected yet or hasn't chosen a path."
 metadata:
   stand: 0.2.0
-  quelle: '4e2fa06a9b75'
+  quelle: 'ffff386d3bb3'
 ---
 
 # Start: going on board
@@ -85,7 +85,7 @@ From here the skill `lotse` goes along with you (`../lotse/SKILL.md`, in Claude 
 - **The person is afraid of breaking something:** until the release, everything is only on their computer, nothing is online, and every step can be changed. Later the logbook records every state, and with Pilot the whole server is photographed every day (“back to yesterday”).
 - **No terminal knowledge:** No problem. The terminal is like an intercom: you type a sentence in a simple language, and the computer answers.
 - **Questions other people have too** (“How do you all do this?”): the community at https://community.albatros.build. It's for members; you sign in with your Albatros account.
-- **Personal questions you can't answer** (invoice, account, misuse): tool `coach_fragen`. If the coach can't help either, the question goes to a human, and the answer comes by email.
+- **Personal questions you can't answer** (invoice, account, misuse): tool `coach_fragen`. If the coach can't help either, the question goes to a human, and the answer comes by email. If `coach_fragen` answers 403 because there's no coach in the person's plan, they write to hallo@albatros.build themselves; what goes in the email and what never does is in the skill `lotse`, section “Reporting gaps”.
 - **A question no skill covers:** skill `lotse`, section “Reporting gaps”.
 
 ## Final message

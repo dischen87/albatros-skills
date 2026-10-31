@@ -83,7 +83,7 @@ Ab hier begleitet dich der Skill `lotse` (`../lotse/SKILL.md`, in Claude Code `a
 - **Die Person hat Angst, etwas kaputt zu machen:** Bis zur Freigabe liegt alles nur auf ihrem Computer, nichts ist im Netz, und jeder Schritt lässt sich ändern. Später hält das Logbuch jeden Stand fest, und mit Pilot wird der ganze Server jeden Tag fotografiert («Zurück auf gestern»).
 - **Kein Terminal-Wissen:** Macht nichts. Das Terminal ist wie eine Gegensprechanlage: Man tippt einen Satz in einer einfachen Sprache, und der Computer antwortet.
 - **Fragen, die andere auch haben** («Wie macht ihr das?»): die Community unter https://community.albatros.build. Sie ist für Mitglieder, die Anmeldung läuft mit dem Albatros-Konto.
-- **Persönliche Fragen, die du nicht beantworten kannst** (Rechnung, Konto, Missbrauch): Werkzeug `coach_fragen`. Kann der Coach auch nicht helfen, landet die Frage bei einem Menschen, und die Antwort kommt per Mail.
+- **Persönliche Fragen, die du nicht beantworten kannst** (Rechnung, Konto, Missbrauch): Werkzeug `coach_fragen`. Kann der Coach auch nicht helfen, landet die Frage bei einem Menschen, und die Antwort kommt per Mail. Antwortet `coach_fragen` mit 403, weil es in der Stufe der Person keinen Coach gibt, schreibt sie selbst an hallo@albatros.build; was in die Mail gehört und was nie, steht im Skill `lotse`, Abschnitt «Lücken melden».
 - **Eine Frage, die kein Skill abdeckt:** Skill `lotse`, Abschnitt «Lücken melden».
 
 ## Schlussnachricht

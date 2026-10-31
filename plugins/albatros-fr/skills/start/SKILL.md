@@ -3,7 +3,7 @@ name: start
 description: "Lance Albatros pour une personne sans connaissances techniques : relie son IA à Albatros (connexion dans le navigateur web), demande si elle veut un site web ou une entreprise, clarifie apprendre ou faire et mène tout de suite à la première section du plan de vol, l'idée avec le nom du projet et une première esquisse. Jusqu'à ce que le site existe sur son propre ordinateur, Albatros ne coûte rien ; abonnement, clé et site sur Internet ne viennent qu'avec le skill lancieren. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « combien coûte Albatros ? », « est-ce que j'ai besoin d'un serveur ? », et quand quelqu'un parle d'Albatros mais n'est pas encore connecté ou n'a pas encore choisi de parcours."
 metadata:
   stand: 0.2.0
-  quelle: '4e2fa06a9b75'
+  quelle: 'ffff386d3bb3'
 ---
 
 # Start : monter à bord
@@ -85,7 +85,7 @@ Sans autres questions, tu continues tout de suite avec le skill `webseite-planen
 - **La personne a peur de casser quelque chose :** jusqu'à la validation, tout est seulement sur son ordinateur, rien n'est sur Internet, et chaque étape peut être changée. Plus tard, le journal de bord garde chaque état, et avec Pilot, tout le serveur est photographié chaque jour (« retour à hier »).
 - **Aucune connaissance du terminal :** pas grave. Le terminal, c'est comme un interphone : on tape une phrase dans une langue simple, et l'ordinateur répond.
 - **Questions que d'autres se posent aussi** (« Comment vous faites ça ? ») : la communauté sur https://community.albatros.build. Elle est réservée aux membres, la connexion se fait avec le compte Albatros.
-- **Questions personnelles auxquelles tu ne peux pas répondre** (facture, compte, abus) : outil `coach_fragen`. Si le coach ne peut pas aider non plus, la question arrive chez un humain, et la réponse vient par e-mail.
+- **Questions personnelles auxquelles tu ne peux pas répondre** (facture, compte, abus) : outil `coach_fragen`. Si le coach ne peut pas aider non plus, la question arrive chez un humain, et la réponse vient par e-mail. Si `coach_fragen` répond 403 parce qu'il n'y a pas de coach dans le niveau de la personne, elle écrit elle-même à hallo@albatros.build ; ce qui doit figurer dans l'e-mail et ce qui n'y va jamais, c'est dans le skill `lotse`, section « Signaler les lacunes ».
 - **Une question qu'aucun skill ne couvre :** skill `lotse`, section « Signaler les lacunes ».
 
 ## Message final
