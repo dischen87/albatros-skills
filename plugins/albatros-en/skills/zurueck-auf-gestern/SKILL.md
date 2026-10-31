@@ -3,7 +3,7 @@ name: zurueck-auf-gestern
 description: "Explains snapshots using the picture of the daily photo of the whole flat, takes a photo of its own before risky changes and brings the server back with “back to yesterday”. Includes the exercise “break it on purpose and repair it”. Use this skill for “snapshot”, “backup”, “I deleted something”, “my site is broken”, “my server isn't working any more”, “undo”, “roll back”, “back to yesterday”, and before you rebuild anything big on the server."
 metadata:
   stand: 0.2.0
-  quelle: '29cd8368b213'
+  quelle: '00e9b5ea8832'
 ---
 
 # Back to yesterday: the photo of the whole flat
@@ -18,7 +18,9 @@ Important: anything added after the photo is gone afterwards. That's why the log
 
 **How to use the picture:** Tell the person in your first answer, before you ask questions or show commands, even if they want a solution straight away.
 
-**Photos of the server only come with Pilot.** With Light there's no server, so going back works through the logbook: `git log --oneline` shows the entries, `git revert <eintrag>` (the entry) undoes an entry as a new entry, then `git push`. Shortly afterwards the old page is online again. Never `git push --force`.
+**Photos of the server only come with Pilot.** With Light there's no server, so going back works through the logbook: `git log --oneline` shows the entries, `git revert <eintrag>` (the entry) undoes an entry as a new entry, then `git push`. Shortly afterwards the old page is online again. Never `git push --force`. If the person hosts the site themselves, the same goes with the logbook; with their own server, their own backups count as well (skill `landung`).
+
+**When:** how to get back to yesterday is worked out and tried once while preparing to run the site (skill `betrieb`, phase P12), before the site goes live.
 
 ## How you talk
 
@@ -45,7 +47,7 @@ Your own photos: at most five, and they expire after 30 days. Names starting wit
 This exercise is the mission. It takes away the fear of mistakes.
 
 1. Take a photo: `snapshot` with the name `vor-der-uebung` (before the exercise).
-2. Open the site in the browser: `https://{name}.aufwind.sh`. It's running.
+2. Open the site in the browser: `https://{name}.aufwind.sh`. It's running (before going live, it's the Albatros template).
 3. Break it (the person types it themselves):
    ```bash
    ssh {name}@aufwind.sh 'docker rm -f webseite'

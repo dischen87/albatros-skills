@@ -1,9 +1,9 @@
 ---
 name: domain
-description: "Finds, buys or connects an own domain (e.g. meinladen.ch) for the site or server at Albatros, with Light as with Pilot. Explains domain and DNS with the picture of an address in the phone book, suggests names, uses domain_suchen to search what's free and buys through Albatros with domain_kaufen (the person is the owner and only enters their details on the payment page). A domain the person already has gets connected with domain_verbinden: DNS records, the TXT proof _albatros and a check, until the site shows the padlock in the browser. Use this skill for “my own domain”, “my own address”, “buy a .ch”, “which domain is free”, “search for a domain”, “DNS”, “A record”, “CNAME”, “TXT record”, “my domain doesn't point to my site”, “certificate”, “https isn't working”."
+description: "Finds, buys or connects an own domain (e.g. meinladen.ch) for the site or server at Albatros, with Light as with Pilot; optional, when going live (P13). Explains domain and DNS with the picture of an address in the phone book, suggests names, uses domain_suchen to search what's free and buys through Albatros with domain_kaufen (the person is the owner and only enters their details on the payment page). A domain the person already has gets connected with domain_verbinden: DNS records, the TXT proof _albatros and a check, until the site shows the padlock in the browser. Use this skill for “my own domain”, “my own address”, “buy a .ch”, “which domain is free”, “search for a domain”, “DNS”, “A record”, “CNAME”, “TXT record”, “my domain doesn't point to my site”, “certificate”, “https isn't working”."
 metadata:
   stand: 0.2.0
-  quelle: '1b79f693976b'
+  quelle: '7222e3d428b9'
 ---
 
 # Domain: your address in the phone book
@@ -24,13 +24,14 @@ Your site can already be reached at `{name}.aufwind.sh`. With an own domain, it 
 - **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
 - Casual “you”, short sentences, no jargon. Say “entry in the phone book” instead of “DNS record” until the person sees the words in their registrar's interface. Then use both.
 - The person only enters their name, address, phone number and payment details on the payment page, never in the chat.
+- **Optional, and only when going live:** your own domain belongs to going live (skill `lancieren`, part 2), once the released site is on the web. Now, later or never is the person's decision. Before that you don't push it on them; searching for free names is fine at any time.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 
 ## Steps
 
 ### 1. Is the plan right?
 
-Own domains come with Light and with Pilot, not with Free. Check with `konto_status`. If the person is on Free, explain the difference and get the link with `upgrade_link` (level `light`). Don't push anything. Searching works with every plan. Buying and connecting work as soon as the site (Light) or the server (Pilot) is up. The domain costs extra, per year, on top of the plan.
+Own domains come with Light and with Pilot, not with Free. Check with `konto_status` and read the line `Wohnort:` in `docs/lancieren.md`. If the person is on Free, there are two cases: if they haven't chosen where the site lives yet, the skill `lancieren` (part 1) comes first, and that's where, only after their choice, they get the link to a plan. If they host the site themselves, they buy the domain from a registrar of their choice and connect it at the provider (skill `landung`, part “Direkt vom Computer ins Netz”). Don't push anything. Searching works with every plan. Buying and connecting work as soon as the site (Light) or the server (Pilot) is up. The domain costs extra, per year, on top of the plan.
 
 ### 2. Does the person already have an address?
 
@@ -76,7 +77,7 @@ If the answers match the values from step 4, call `domain_verbinden` again. Alba
 
 ### 7. Check the mission
 
-Open `https://<domain>` with the person. Then `mission_pruefen` with `flugschule-09-domain`.
+Open `https://<domain>` with the person. Once the site shows there with the padlock, you report `schritt_melden` with `domain` (Albatros sees it by itself too), check it again from outside (`node scripts/pruefen.mjs --live https://<domain>`) and write the domain into `docs/live.md` under `Adresse:`. Then `mission_pruefen` with `flugschule-09-domain`.
 
 ## When it gets stuck
 

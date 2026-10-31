@@ -1,30 +1,36 @@
 ---
-titel: From floor plan to finished page
-bild: The signed building plan, then the building work
+titel: Your site on your own computer
+bild: The shell in your own workshop, then the walk-through
 phase: P10
+verstehen:
+  - frage: What is an entry in the logbook (a commit)?
+    kern: An entry records a finished step, with a note saying what and why. You can go back to any entry later.
+  - frage: Why do you see your site on your own computer first, before it goes online?
+    kern: On your own computer you compare and change things in peace, without anyone seeing a half-finished site. Only what you've released goes online.
 ---
 
 ## What it's about
 
-A house goes up in a fixed order: sketch, material samples, signed building plan, building work, inspection by experts, moving in. Your AI builds your page the same way, like a small factory: every step has a result, the building only starts after you've signed the plan, and the page only goes on the web once the checks are done and you've released it. On your island in the cockpit, your house grows with every step.
+Your draft is the walk-through model of your site, and you've approved it for building. Now your AI builds the real site from it on your own computer, with the same pages, menus and sections as the model. A logbook records every step. Four checks inspect the shell, then you walk through it yourself, on a phone and on a computer, and release it. Up to here everything is free, and nothing goes online yet.
 
 ## What you'll learn
 
-- to look at a sketch (mockup) and drafts and choose
-- what a design system is and why colours and fonts live in one place only
-- what a building plan (PRD) with acceptance criteria is and why you approve it before anything is built
-- how four checks (security, flows and access, look, code and speed) inspect a page
-- to look at your page on your own computer first
+- what an entry in the logbook (a commit) is, and why every step gets one
+- how your draft turns into a real site without anything shifting
+- how four checks (security, flows and access, looks, code and speed) inspect a site, and which doors stay closed without signing in
+- looking at your site on your own computer and comparing it with the draft
+- changing a text yourself and seeing the change straight away
 - why only your release opens the way onto the web
 
 ## How you go about it
 
-1. Your AI shows you a sketch of the home page and then two or three drafts. You pick one, and the design system comes from it.
-2. It writes the building plan with the list of what gets checked at the end. You read it and say yes or what's still missing.
-3. It builds the page and shows it to you in the browser, at phone and at computer width.
-4. It checks the page in four areas and shows you the reports with a traffic light.
-5. You release the page. It only goes onto the web after that, when you go live, never without your release.
+1. Your AI checks that your draft is approved for building, and opens the logbook.
+2. It writes the way of building and the building plan (PRD) from your draft, and suggests which addresses are open without signing in. You confirm both in one message.
+3. It builds the site and checks it in four areas. It shows you the reports with their traffic lights.
+4. You look at your site on your computer, at phone width and at computer width. Your AI compares every page with the draft and shows you every difference.
+5. If you like, you change a text yourself and see it straight away. In learning mode, that's part of it.
+6. You release the site. It only goes onto the web after that, when going live, never without your release.
 
 ## Done when
 
-- the “Release” step is reached on your island. Your AI only reports it once your release is in `docs/prd.md` (`Freigegeben:`, the word stays German).
+- the step “Release” is reached on your island. Your AI only reports it once your release is in `docs/prd.md` (`Freigegeben:`, the word stays German).

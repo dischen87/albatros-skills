@@ -1,9 +1,9 @@
 ---
 name: domain
-description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin.ch) pour le site ou le serveur chez Albatros, avec Light comme avec Pilot. Explique le domaine et le DNS avec l'image de l'adresse et de l'annuaire, propose des noms, cherche avec domain_suchen ce qui est libre et achète via Albatros avec domain_kaufen (la personne est titulaire, elle ne donne ses coordonnées que sur la page de paiement). Un domaine que la personne a déjà, le skill le relie avec domain_verbinden : entrées DNS, preuve TXT _albatros et contrôle, jusqu'à ce que le site s'affiche avec le cadenas dans le navigateur web. Utilise ce skill pour « propre domaine », « mon adresse », « acheter un .ch », « quel domaine est libre ? », « chercher un domaine », « DNS », « entrée A », « CNAME », « entrée TXT », « mon domaine ne pointe pas sur mon site », « certificat », « https ne marche pas »."
+description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin.ch) pour le site ou le serveur chez Albatros, avec Light comme avec Pilot ; facultatif, à la mise en ligne (P13). Explique le domaine et le DNS avec l'image de l'adresse et de l'annuaire, propose des noms, cherche avec domain_suchen ce qui est libre et achète via Albatros avec domain_kaufen (la personne est titulaire, elle ne donne ses coordonnées que sur la page de paiement). Un domaine que la personne a déjà, le skill le relie avec domain_verbinden : entrées DNS, preuve TXT _albatros et contrôle, jusqu'à ce que le site s'affiche avec le cadenas dans le navigateur web. Utilise ce skill pour « propre domaine », « mon adresse », « acheter un .ch », « quel domaine est libre ? », « chercher un domaine », « DNS », « entrée A », « CNAME », « entrée TXT », « mon domaine ne pointe pas sur mon site », « certificat », « https ne marche pas »."
 metadata:
   stand: 0.2.0
-  quelle: '1b79f693976b'
+  quelle: '7222e3d428b9'
 ---
 
 # Domaine : ton adresse dans l'annuaire
@@ -25,12 +25,13 @@ Ton site est déjà joignable sous `{name}.aufwind.sh`. Avec un propre domaine, 
 - **Ne pas seulement poser des questions :** S'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec les hypothèses marquées (`[Hypothèse : …]`). Ne demande ce qui manque qu'à la fin.
 - Tutoiement, phrases courtes, pas de jargon. « Entrée dans l'annuaire » au lieu de « DNS record », jusqu'à ce que la personne voie les mots dans l'interface de son registraire. Ensuite tu donnes les deux.
 - Le nom, l'adresse, le téléphone et les données de paiement, la personne ne les saisit que sur la page de paiement, jamais dans le chat.
+- **Facultatif, et seulement à la mise en ligne :** un propre domaine fait partie de la mise en ligne (skill `lancieren`, partie 2), quand le site validé est en ligne. Maintenant, plus tard ou jamais, c'est la personne qui décide. Avant, tu ne le lui imposes pas ; chercher des noms libres, elle peut le faire à tout moment.
 
 ## Déroulement
 
 ### 1. L'abonnement convient-il ?
 
-Les propres domaines existent avec Light et avec Pilot, pas avec Gratuit. Vérifie avec `konto_status`. Si la personne a Gratuit, explique la différence et va chercher le lien avec `upgrade_link` (niveau `light`). N'impose rien. Chercher est possible avec chaque abonnement. Acheter et relier sont possibles dès que le site (Light) ou le serveur (Pilot) existe. Le domaine coûte à part, par an, en plus de l'abonnement.
+Les propres domaines existent avec Light et avec Pilot, pas avec Gratuit. Vérifie avec `konto_status` et lis dans `docs/lancieren.md` la ligne `Wohnort:`. Si la personne a Gratuit, il y a deux cas : si le domicile n'est pas encore choisi, le skill `lancieren` (partie 1) vient d'abord, et c'est là, seulement après son choix, qu'il y a le lien vers l'abonnement. Si le site habite « par toi-même », elle achète le domaine chez un registraire de son choix et le relie chez le fournisseur (skill `landung`, partie « Direkt vom Computer ins Netz »). N'impose rien. Chercher est possible avec chaque abonnement. Acheter et relier sont possibles dès que le site (Light) ou le serveur (Pilot) existe. Le domaine coûte à part, par an, en plus de l'abonnement.
 
 ### 2. La personne a-t-elle déjà une adresse ?
 
@@ -76,7 +77,7 @@ Si les réponses correspondent aux valeurs de l'étape 4, appelle encore une foi
 
 ### 7. Contrôler la mission
 
-Ouvre `https://<domain>` avec la personne. Ensuite `mission_pruefen` avec `flugschule-09-domain`.
+Ouvre `https://<domain>` avec la personne. Quand le site s'y affiche avec le cadenas, tu annonces `schritt_melden` avec `domain` (Albatros le voit aussi tout seul), tu le revérifies de l'extérieur (`node scripts/pruefen.mjs --live https://<domain>`) et tu inscris le domaine dans `docs/live.md` sous `Adresse:`. Ensuite `mission_pruefen` avec `flugschule-09-domain`.
 
 ## Quand ça coince
 

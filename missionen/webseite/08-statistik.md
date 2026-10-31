@@ -30,12 +30,12 @@ Eine Ladenbesitzerin zählt an der Tür nur, was vorher auf ihrer Liste steht, u
 
 ## So gehst du vor
 
-1. Einen kleinen Ereignis-Plan schreiben.
+1. Einen kleinen Ereignis-Plan schreiben. Ob du zählst, hast du beim Betrieb entschieden (`docs/betrieb.md`).
 2. Ein PostHog-Projekt mit Standort EU anlegen.
-3. Den Einbau auf der Seite machen, mit cookieloser Einstellung.
+3. Den Einbau auf der Seite machen, mit cookieloser Einstellung, auf deinem Computer ansehen und freigeben. Ins Netz geht er wie jede Änderung erst nach deiner Freigabe.
 4. Das Ziel-Ereignis nach dem Erfolg auslösen und testen.
 
 ## Geschafft, wenn
 
 - der Ereignis-Plan `docs/statistik.md` in deinem Projekt liegt
-- und deine Seite den PostHog-Einbau enthält.
+- und deine Seite den PostHog-Einbau enthält. Wohnt deine Seite selbst, kann Albatros das nicht prüfen.

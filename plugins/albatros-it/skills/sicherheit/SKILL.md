@@ -3,7 +3,7 @@ name: sicherheit
 description: "Con una persona senza conoscenze tecniche rende sicuro il suo progetto, con l'immagine della casa con mazzo di chiavi, cassaforte, finestre e serrature: i segreti mai nel diario di bordo (Git), ma in .env sul server (e, se il nastro trasportatore ne ha bisogno, nella cassaforte del porto); chiavi pubblicate per sbaglio da rigenerare subito; una chiave per ogni scopo; aperte solo le porte necessarie; aggiornamenti. Usa lo skill con «sicurezza», «password nel codice», «chiave API», «API key», «.env», «secret», «ho caricato una chiave su GitHub», «il mio sito è sicuro?», «mi hanno hackerato», «aggiornamenti», «firewall», e prima che un nuovo segreto entri nel progetto."
 metadata:
   stand: 0.2.0
-  quelle: 'b5f2e84f617a'
+  quelle: '51d4dfe6fcfe'
 ---
 
 # Sicurezza: la chiave non sotto lo zerbino
@@ -82,7 +82,7 @@ Su Albatros la piattaforma si occupa della porta di casa (firewall, protezione c
 
 ### 7. Verifica la missione
 
-Diario di bordo e nastro trasportatore (skill `git-logbuch`, `pipeline`), poi `mission_pruefen` con `flugschule-07-sicherheit`. La verifica controlla se `.gitignore` nel progetto contiene `.env` (con Pilot in `~/projekt` sul server, con Light nel porto).
+Una voce nel diario di bordo (skill `git-logbuch`); nel porto arriva con il prossimo push, sul percorso sito web alla messa online (skill `lancieren`). Poi `mission_pruefen` con `flugschule-07-sicherheit`. La verifica controlla se `.gitignore` nel progetto contiene `.env` (con Pilot in `~/projekt` sul server, con Light nel porto). Se il sito abita da te, Albatros non lo può controllare.
 
 ## Se è successo qualcosa
 

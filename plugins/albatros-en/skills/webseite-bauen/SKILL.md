@@ -1,192 +1,253 @@
 ---
 name: webseite-bauen
-description: 'Builds a website with a person who has no prior knowledge, like in a small software factory, in nine fixed steps, each with a result in docs/: brief, mockup, design system, tech stack (Astro, little JavaScript), PRD with acceptance criteria, building locally, four checks with a report and a traffic light (security, flows and access, looks, code and speed, measured with pruefen.mjs), release by the person, then harbour, conveyor belt and the site on the web with a final check. Opens the island in the cockpit and reports the steps with schritt_melden. Use this skill as soon as building starts on the website path: after webseite-planen, after the inventory from webseite-modernisieren, for “build me the site”, “mockup”, “draft”, “design system”, “tech stack”, “PRD”, “acceptance criteria”, “check before publishing”, “let me see it locally”, “what happens after the plan?”.'
+description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: 'b737eb0fb17c'
+  quelle: 'c7313a0c5be0'
 ---
 
-# Build your website: the little factory
+# Building the website: the shell in your own workshop
 
 ## The picture
 
-A house goes up in a fixed order: brief, sketch, material samples, building method, building plan with a signature, shell of the house, inspection by experts, handing over the keys, moving in. Nobody pours the foundations before the family has signed the plan, and nobody moves in before the experts have inspected the house. A software factory works just the same way: every step has a result you can look at, and at the end experts check before anything goes out. On the island in the cockpit, the house grows along with it.
+The draft is the walk-through model, and the person has approved it. Now, in their own workshop, on their computer, the shell of the house goes up from it: with the same rooms, doors and windows as the model. Experts inspect it, then the person walks through it themselves, on a phone and on a computer (the walk-through), and releases it. A logbook records every step of the work. Nothing goes online yet: where the house will stand, they decide afterwards, at launch.
 
-**How to use the picture:** One sentence about the picture in your first answer. With every new step, one sentence with its picture (in the table below), what comes out of it and what it's for. That way the person understands why this step is needed.
+**How to use the picture:** One sentence about the picture in your first answer. With every new step, one sentence with its picture (in the table below), what comes out of it and what it's for.
 
 ## How you talk
 
-- The order is fixed. You don't skip a step, you don't build anything before the PRD is signed off, and you don't send anything to the harbour before the release. With Light, sending it to the harbour already means publishing it.
-- You suggest the next step and do it after a quick yes. The person never has to know what comes next.
-- Casual “you”, everyday language. You explain technical words (PRD, tokens, Lighthouse) the first time, with their picture.
-- Websites stay static, without services of their own. A building block (skill `bausteine`) only comes in if the person really needs it.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
-- Whatever the person should see (island, mockup, drafts, preview, reports, harbour, finished site), you open yourself in the browser: `open <address or file>` (Linux `xdg-open`, Windows `start`). Just naming the address isn't enough.
+- The line starts in files under `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) stay German: `lage` and the checks look for them exactly like that. What comes after the colon you write in English.
+- The order is fixed. Building starts only once `pruefen.mjs --vor-bau` finds the approval to build, and only what's in the draft gets built. If something should be different from the draft, you tell the person before you build it.
+- In this skill nothing goes online and nothing goes to a harbour. Everything stays on the person's computer and costs nothing at Albatros.
+- You suggest the next step and do it. The person never has to know what comes next.
+- The mode is in `docs/projekt.md` (line `Modus:`): with `machen` (doing), you do the work and explain each step in one sentence with a picture, and you offer the learning moments. With `lernen` (learning), you explain each step with a picture and the why, and the person does the learning moments themselves.
+- At most two questions per message. Whatever you can suggest yourself (way of building, doors), you write down as `[Annahme: …]` (assumption) and get all assumptions confirmed in a single message.
+- Casual “you”, everyday language. You explain technical words (PRD, tokens, Lighthouse) the first time, with their picture.
+- Whatever the person should see (island, preview, screenshots, reports, draft and build side by side), you open yourself: `open <address or file>` (Linux `xdg-open`, Windows `start`). Just naming the address isn't enough.
 
-## The nine steps at a glance
+## The steps at a glance
 
 | Step | Picture | Result | Island |
 |---|---|---|---|
-| 1. Brief | the brief for the building firm | `docs/plan.md` or `docs/bestand.md` | |
-| 2. Mockup | the sketch on paper | `docs/mockup.html` | `mockup` |
-| 3. Design system | the material samples | `docs/designsystem.md`, `web/src/styles/tokens.css` | `entwuerfe` |
-| 4. Tech stack | the building method | `docs/stack.md` | |
-| 5. PRD with acceptance criteria | the building plan with a signature | `docs/prd.md` with `Signed off:` | `prd` |
-| 6. Build | the shell of the house | `web/`, `seite/` | `lokal` |
-| 7. Check | the inspection by experts | `docs/pruefung/` with four reports | `pruefung` |
-| 8. Release | handing over the keys | `Freigegeben:` in `docs/prd.md` | `freigabe` |
-| 9. Harbour, conveyor belt, live | moving in | site on the web, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
+| 0. Before building | a look at the signature under the model | `pruefen.mjs --vor-bau` ends with 0 | |
+| 1. Workshop and logbook | setting up the workbench, opening the logbook | logbook with the first entry | |
+| 2. Way of building | how it's built: wood or stone | `docs/stack.md` | |
+| 3. PRD with access and doors | the building plan, derived from the model | `docs/prd.md` with `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
+| 4. Build | the shell | `web/`, `seite/` | `lokal` |
+| 5. Check | inspection by experts | `docs/pruefung/` with four reports, doors checked | `pruefung` |
+| 6. Release | walking through the finished shell | `Lokal gesehen:`, `Vergleich mit Entwurf:` and `Freigegeben:` in `docs/prd.md` | `freigabe` |
 
-Whatever is in the “Result” column has to be there at the end of the step. If it's missing, the step isn't done.
+Steps 0 to 5 are phase P9, step 6 is P10. Whatever is in the “Result” column has to be there at the end of the step. Every step ends with an entry in the logbook.
 
 ## The island
 
-Right at the start, you open the person's island in the browser. At `https://albatros.build/en/cockpit/insel` there's a house for every project, and it grows with every step. Without a prefix (`/cockpit/insel`) the island is in German; for French, Italian and English the prefix goes in front, for example `/fr/cockpit/insel`:
+If the island isn't open yet, you open it in the browser right at the start. At `https://albatros.build/en/cockpit/insel` there's a house for every project that grows with every step. For French, Italian and English, the language prefix comes first (`/fr`, `/it`, `/en`); without a prefix it's the German version:
 
 ```bash
-open https://albatros.build/en/cockpit/insel        # macOS; Linux: xdg-open, Windows: start
+open https://albatros.build/en/cockpit/insel     # macOS; Linux: xdg-open, Windows: start
 ```
 
-The island reloads by itself; opening it once is enough.
+The island reloads by itself, opening it once is enough.
 
-After every finished step with an entry in the “Island” column, you call the Albatros tool `schritt_melden`, with `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) and `sprache` (the language of the conversation, here `en`). Normally you leave out `projekt`: then the logbook in the harbour counts (`git@aufwind.sh:<name>/projekt.git`), even if it's only created later. Only for a further project that just sits on the computer do you pass a short name made of lower-case letters, digits and “-”. The answer names the step and the address of the island. Tell the person in one sentence that their house has grown.
+After every step that's done and has an entry in the “Island” column, you call the Albatros tool `schritt_melden`, with `schritt` (`prd`, `lokal`, `pruefung`, `freigabe`) and `sprache` (the language of the conversation, here `en`). Normally you leave out `projekt`: then the project that will later sit in the harbour counts, even if today it's only on the computer. Only for another project do you pass a short name made of lower-case letters, digits and “-”, always the same one. The answer names the step and the island's address. Tell the person in one sentence that their house has grown.
 
-- The island only goes forwards. If you report a step that's already there, nothing changes. The answer says so, and you don't try again.
-- Albatros also sees `hafen`, `fliessband`, `live` and `domain` by itself. Report them anyway as soon as they're done.
-- If it answers “Ungültige Angaben”, the step or the name was misspelled: correct it and call it once more.
-- If the tool is missing or answers “unbekannt” (unknown), carry on without the island.
+- The island only moves forward. If you report a step that's already there, nothing changes. The answer says so, and you don't try again.
+- If it answers “Ungültige Angaben” (invalid input), the step or the name was misspelled: fix it and call it once more.
+- If the tool is missing, the person isn't signed in or it answers “unbekannt” (unknown), you carry on without the island.
 
 ## The steps
 
-### 1. Brief
+### 0. Before building: is the draft approved?
 
-No brief, no building. The brief is the floor plan `docs/plan.md` (skill `webseite-planen`) or, for an existing site, the inventory `docs/bestand.md` (skill `webseite-modernisieren`). If both are missing, you go there first. Read the brief and tell the person in three sentences what gets built, for whom, and how they'll be able to tell it's working.
+The check script `pruefen.mjs` lives in this skill. Copy it into the project, then it checks whether building may start:
 
-### 2. Mockup (`schritt: mockup`)
+```bash
+mkdir -p scripts && cp <folder of this skill>/pruefen.mjs scripts/
+# folder unknown: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
+node scripts/pruefen.mjs --vor-bau
+```
 
-Quick and rough, in greyscale: the home page and the most important subpage as one HTML file `docs/mockup.html`, with real headings and the content from the brief. It shows the structure and the order, no colours and no pictures yet (grey boxes). Open it in the browser and only ask: “Is the order right?”
+- **Ends with 0:** there's the line `Freigegeben zum Bauen: <date>` in `docs/entwurf.md`, the draft in `design/entwurf/` and the tokens in `design/tokens.css`. Carry on with step 1.
+- **Ends with 2:** the output (in German) says what's missing. Tell the person in one sentence and go back there: without the approval to build, to the skill `entwurf` (part “Freigabe”, the approval); without a draft, to the skill `entwurf`; without tokens, to the skill `gestaltung`. You never write the line `Freigegeben zum Bauen:` yourself, not even “just quickly”: it only exists after the person's yes to the draft.
 
-### 3. Design system (`schritt: entwuerfe`)
+### 1. Workshop and logbook
 
-Follow the skill `gestaltung`, sections “Three directions”, “Don't look like AI”, “The colour fan (tokens)” and “Design elements”. First you ask about the character, not about colours. Then you put two or three clearly different drafts on the mockup, as HTML in `docs/gestaltung/entwuerfe/`, and open them. The person picks a direction or a mix, then you report `entwuerfe`.
+**The workshop, once more:** Node, npm and Git have to be there, even if they already were for the draft:
 
-The chosen direction turns into the design system, the material samples for the whole house:
+```bash
+command -v node npm git        # Windows: where node npm git
+```
 
-- `web/src/styles/tokens.css`: colours for light and dark, fonts, font sizes, spacing, rounded corners and shadows as CSS variables, with the contrast values as comments.
-- `docs/designsystem.md` on one page, easy for people to read: the direction and its qualities; every colour with its token name, purpose and contrast; fonts and sizes; spacing and rounded corners; the components (button, link, header, footer, card, form field and whatever else the site needs), each with its purpose and the tokens it uses; the design elements.
+If something is missing, you help install it as in the skill `entwurf` (the workshop) and check again.
 
-Colours, fonts, spacing, rounded corners and components are set only there. The code of the pages only uses `var(--…)` and the components. If a value is missing, it goes into the design system first.
+**The logbook on the computer:** every step gets an entry (commit), with a note in one sentence. That way the person can leaf back at any time. No harbour is needed for that: the logbook lives in the project folder and only gets connected when going live (skill `git-logbuch`, part “Logbuch ohne Hafen”, the logbook without a harbour).
 
-### 4. Tech stack
+- If the project folder has no logbook yet (no `.git` folder), you create one: `git init -b main`.
+- Name and address for the logbook missing (`git config user.name` stays empty)? Then you ask the person and set both as in the skill `git-logbuch`, step 1.
+- `.gitignore` in the project folder, at least:
+  ```
+  node_modules/
+  .env
+  .env.*
+  !.env.example
+  .DS_Store
+  docs/pruefung/fotos/
+  docs/pruefung/vorher/
+  ```
+- The first entry records what has come out so far. First show what goes in, then write the entry:
+  ```bash
+  git status
+  git add .gitignore AGENTS.md docs design scripts       # only the ones that exist
+  git diff --cached --stat
+  git commit -m "Draft approved: plan, concept, draft"
+  ```
+- Rules as in the skill `git-logbuch`: only `main`, only your own files and folders, by name (never `git add .` or `git add -A`), never `--force`.
 
-You decide the building method before anything gets built, and write it in `docs/stack.md`:
+**Learning moment “what a logbook entry is”:** one sentence with the picture of the logbook. In `lernen` mode, the person types the `git commit` command for the first entry themselves; afterwards you report `verstanden_melden` (mission `webseite-02-bauen`, kind `selbst`). In `machen` mode, you offer it.
+
+### 2. Way of building (`docs/stack.md`)
+
+The way of building follows from `docs/plan.md`, line `Setup:`. You suggest it and write it down as an assumption in `docs/stack.md`:
 
 ```markdown
 # Tech stack
 
-**Decision:** Astro, static
-**Why:** … (one or two sentences, from the brief)
+**Decision:** [Annahme: Astro, static]
+**Why:** … (one or two sentences, from docs/plan.md)
 **JavaScript:** only where needed, at most 50 KB per page
-**Delivered:** the folder seite/ (Light: straight from the harbour; Pilot: over the conveyor belt)
+**Building block:** none (or: which one, skill bausteine; it will need its own server later)
+**Delivered:** the folder seite/; where it lives, the person decides at launch
 **Not chosen:** … (for example a React app or WordPress), because …
 ```
 
-The standard is Astro: it builds fast, simple HTML pages without JavaScript that Albatros can deliver directly. Another framework only if the person clearly asks for it or a feature from the brief needs it. Then “Why” names the feature and why Astro isn't enough for it. “Modern” or “well known” is not a reason. A sign-up list, a login or an editing window are no reason for another framework, but for a building block (skill `bausteine`, with Pilot). Tell the person in one sentence what's chosen and why.
+The default is Astro: it builds fast, simple HTML pages without JavaScript. Another framework only if the person explicitly wants it or a feature from the plan needs it. Then “Why” names the feature and why Astro isn't enough for it. “Modern” or “well known” isn't a reason. A sign-up list, a login or an editing window aren't a reason for another framework, but for a building block (skill `bausteine`).
 
-### 5. PRD with acceptance criteria (`schritt: prd`)
+The person confirms the way of building together with the doors (step 3), in one message.
 
-The PRD is the building plan on one page, with the list of what gets checked at the inspection. Write `docs/prd.md`:
+### 3. PRD with access and doors (`schritt: prd`)
+
+The PRD is the building plan on one page. It's derived from the approved draft: the person already signed with the draft, which is why the PRD doesn't get a sign-off of its own. To write it, read `docs/projekt.md`, `docs/plan.md`, `docs/konzept.md`, `docs/designsystem.md`, `docs/entwurf.md` and every page in `design/entwurf/`. Write `docs/prd.md`:
 
 ```markdown
-# PRD: <name of the site>
+# PRD: <project name>
 
-**Who it's for and why:** … (from the brief)
-**Pages:** Home, …, Legal notice, Privacy policy
-**Features:** every feature with its decision (for an existing site, all of them from docs/bestand.md)
-**Design:** direction <name>, see docs/designsystem.md
+Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <date from docs/entwurf.md>)
+
+**For whom and what for:** … (from docs/projekt.md)
+**Pages:** as in the draft: home, …, plus legal notice and privacy policy
+**Features:** each with its flow, confirmation, error and empty state, as shown in the draft (for an existing site, every feature from docs/bestand.md with its decision)
+**Design:** design/tokens.css and docs/designsystem.md; markup and classes from design/entwurf/
 **Tech stack:** see docs/stack.md
-**Hosting:** Light (page from the harbour, without a server of your own) or Pilot (your own server)
-**Domain:** name.aufwind.sh, later your own domain (with Light or Pilot)
-**Not included:** …
+**Not included:** … (from docs/plan.md: what's left out for the first flight)
+
+## Access (who may do what)
+
+| Who | sees | changes |
+|---|---|---|
+| all visitors | home, …, legal notice, privacy policy | nothing |
+| <role from docs/plan.md, line Zugang:> | … | … |
+
+The doors are listed in docs/tueren.txt and checked with pruefen.mjs --tueren.
 
 ## Acceptance criteria
 
-### Home
-- [ ] The first three sentences say who you are, who the site is for and what visitors should do
-- [ ] The button “…” leads to …
-- [ ] The header shows a real photo or the most important content, not just a heading and button in a colour block (skill `gestaltung`, “Plain doesn't mean without pictures”)
+Derived from docs/plan.md (Testing:) and the draft; approved with the draft.
 
-### <every other page>
+### Home
+- [ ] Headings, menu and sections as in design/entwurf/index.html (pruefen.mjs --vergleich)
+- [ ] The first three sentences say who you are, who the site is for and what visitors should do
+- [ ] The header shows a real photo or the most important content, not just a title and a button on a coloured area (skill gestaltung, “Schlicht heisst nicht ohne Bild”)
+
+### <every other page from design/entwurf/>
+- [ ] Headings, menu and sections as in design/entwurf/<page>.html
 - [ ] …
 
 ### <every feature, for example a form or bookings>
-- [ ] Sending works, missing required fields are pointed out clearly, the message arrives at <address>
-- [ ] Every list shows whether it's loading, empty (one sentence and a button) or has an error (with “Try again”, never disguised as an empty list)
-- [ ] After sending, a confirmation page: what happened, the number, what comes next, how to undo it
-- [ ] The button names the result (“Book a place”, not “Submit”) and is disabled while sending
+- [ ] Sending works, missing required fields say so clearly, the message arrives at <address>
+- [ ] Every list shows whether it's loading, empty (a sentence and a button) or has an error (with “Try again”, never disguised as an empty list)
+- [ ] After sending, a confirmation: what happened, what comes next, how to undo it
+- [ ] The button says the result (“Book a place”, not “Send”) and is locked while sending
 
 ### For all pages
-- [ ] Content as in the brief, no placeholder without a clear label
-- [ ] Phone (390 px wide): nothing cut off, readable without zooming, at least 16 px of margin on the left and right, buttons at least 44 px high, the menu on one line or as a “Menu” button
-- [ ] Every page, including the building blocks' pages (for example for booking), has a header, menu and footer with the legal notice and privacy policy
+- [ ] Content as in the draft, no placeholder without a clear label
+- [ ] Phone (390 px wide): nothing cut off, readable without zooming, at least 16 px margin left and right, buttons at least 44 px high, the menu on one line or as a “Menu” button
+- [ ] Every page, including the building blocks' pages, has a header, menu and footer with legal notice and privacy policy
 - [ ] Contrast: text at least 4.5 : 1, buttons and borders at least 3 : 1
-- [ ] Works with the keyboard, the focus is visible
-- [ ] Legal notice and privacy policy are there and linked on every page
-- [ ] Speed: Lighthouse at least 90 in Performance, Accessibility, Best Practices and SEO; at most 50 KB of JavaScript per page; pictures under 500 KB
-- [ ] No secrets in the code, no .env on the web
-
-Signed off: <date> by <name>
+- [ ] Usable with the keyboard, the focus is visible
+- [ ] Speed: Lighthouse at least 90 in performance, accessibility, best practices and SEO; at most 50 KB of JavaScript per page; pictures under 500 KB
+- [ ] Every door in docs/tueren.txt answers as expected; no secrets in the code, no .env on the web
 ```
 
-**Build features like the pros do.** Whatever visitors do (book, sign up, order, enquire), you build by these rules, even if the person doesn't ask for it:
+**The doors:** from the “Access” table comes `docs/tueren.txt`, one path per line with the status it must answer with when nobody is signed in. 200 means open, 404 “doesn't exist”, 401 or 403 “only when signed in”, 302 “on to the sign-in”. Several numbers on one line mean “one of these”; after `#` comes a comment:
 
-- **Three doors:** public pages without a login; a page for guests via a link with a secret code, without an account (for example “Cancel booking”); the admin area only for the person, never linked.
-- **One source per truth:** offers, prices, deadlines and opening hours live in one place. The page, form, email and terms all read from there.
-- **One word per thing,** the same on the site, in the email and in the admin area. An enquiry isn't a booking. The words are in `docs/designsystem.md`.
-- **Check on the server, never only in the browser:** places, deadlines and status are worked out by the server. For bookings there's the tested recipe `buchungen` (skill `bausteine`), instead of reinventing it.
+```
+# path          expected status without signing in (from “Access” in docs/prd.md)
+/               200
+/impressum      200
+/datenschutz    200
+/verwaltung     404     # never public
+/.env           404
+/.git/config    404 403
+/docs/plan.md   404     # working documents don't belong on the web
+```
+
+With a building block, its doors are added, for example `/mitglieder 302` or `/api/collections/users/records 401 403`: what it answers without signing in is in the skill `bausteine`.
+
+**One message for the assumptions:** show the person the PRD in three or four sentences, open the file and put the way of building and the doors to them as assumptions, for example: “I'm building with Astro, without a building block, and only home, offer, enquiry, legal notice and privacy policy are open. Is that right?” After their yes, you remove `[Annahme: …]`, make the logbook entry (`git add docs && git commit -m "PRD from the draft, way of building and doors"`), report `prd` and build.
+
+**Build features like the pros.** Whatever visitors do (book, sign up, order, enquire), you build by these rules, even if the person doesn't ask:
+
+- **Three doors:** public pages without a login; a page for guests via a link with a secret code, without an account (for example “cancel booking”); the admin area only for the person, never linked.
+- **One source per truth:** offers, prices, deadlines and opening hours live in one place. Page, form, email and terms all read from there.
+- **One word per thing,** the same on the page, in the email and in the admin area. An enquiry isn't a booking. The words are listed in `docs/designsystem.md`.
+- **Check on the server, never only in the browser:** places, deadlines and status are calculated by the server. For bookings there's the tested recipe `buchungen` (skill `bausteine`), instead of reinventing it.
 - **Honest errors:** if a service doesn't answer, that's an error with “Try again”, never “no dates”.
 - **Swiss format:** “CHF 1'250.–”, “Tue, 3 Nov 2026, 18:00–19:15”, times in `Europe/Zurich`.
-- **Phone first:** at 390 px no sideways scrolling, the main action is visible without scrolling, a form asks one thing per step (“Step 2 of 3”).
+- **Phone first:** at 390 px no sideways scrolling, the main action visible without scrolling, a form asks one thing per step (“Step 2 of 3”).
 
-Every criterion has to be checkable: you can see or measure whether it's true. “Nice” or “modern” is not a criterion. Instead, write how you can tell. Show the person a short version of the PRD in the chat and open the file. Only after their yes do you fill in `Signed off:` with the date and name, report `prd` and build.
+Every criterion has to be checkable: you can see or measure whether it's true. “Nice” or “modern” isn't a criterion.
 
-### 6. Build (`schritt: lokal`)
+### 4. Build (`schritt: lokal`)
 
 ```bash
 npm create astro@latest web -- --template minimal --install --no-git --skip-houston --yes
 ```
 
-- In `web/astro.config.mjs`: `outDir: '../seite'`. Albatros delivers the folder `seite/`, with Light directly and with Pilot over the conveyor belt.
-- `tokens.css` from step 3 sits in `web/src/styles/` and is included in every layout. You build the components from `docs/designsystem.md` first, then the pages out of them.
-- **Data first:** Whatever the person named in the plan (classes with times and places, prices, opening hours), you collect now, before you build. A “we've got that” in the plan isn't enough: ask for the text, the list or a photo of it.
-- Lists like dates, tournaments or sponsors sit as data in `web/src/data/*.json`, and the pages read them. Documents and pictures go into `web/public/`, pictures made smaller.
+- In `web/astro.config.mjs`: `outDir: '../seite'`. Building goes into the folder `seite/`, which is what the place where the site lives will deliver later.
+- **Tokens in one place:** the layout (for example `web/src/layouts/Seite.astro`) includes `design/tokens.css` directly, first of all: `import '../../../design/tokens.css';`. You never copy the file into `web/`: two copies drift apart. If a value is missing, it goes into `design/tokens.css` and `docs/designsystem.md` first.
+- **Markup and classes from the draft:** every page in `design/entwurf/` becomes a page in `web/src/pages/`, with the same markup and the same classes. Whatever is the same on several pages (header, menu, footer, cards, form fields) becomes a component in `web/src/components/`. The style sheets the draft includes (except `tokens.css`) go unchanged into `web/src/styles/` and into the layout right after the tokens; styles from a `<style>` on a draft page go into the matching page or component. Scripts that only pretend in the draft (a form that sends nothing, a menu inserted by a script) you replace with the real thing.
+- **Legal notice and privacy policy** aren't in the draft: you build them now in the same layout (skill `recht-ch`).
+- **Data first:** whatever the person named in the plan (courses with times and places, prices, opening hours), you get now, before you build. “We've got that” isn't enough: ask for the text, the list or a photo of it.
+- Lists such as dates, tournaments or sponsors are data in `web/src/data/*.json`, and the pages read them. Documents and pictures go into `web/public/`, pictures made smaller. If they come from an existing site, the skill `webseite-modernisieren` applies, part “Rechte” (rights).
 - The icon in the browser tab (`web/public/favicon.svg` and `favicon.ico`) is Astro's “A”: replace it with the logo or a mark taken from it.
-- If material is missing (for example the sponsor logos), there's a clearly labelled placeholder, never a different picture under the wrong name.
-- Build and open the preview:
+- If material is missing (for example the sponsors' logos), there's a clearly labelled placeholder as in the draft, never another picture under a false name.
+- Build and start the preview:
   ```bash
-  cd web && npm run build && npx astro preview --open
+  (cd web && npm run build && npx astro preview --background)
+  open http://localhost:4321
   ```
-- **With a building block** (bookings, sign-up list, login), you start `bun bausteine/pocketbase/lokal.ts` instead of the preview: only then do forms and bookings really work, on the person's computer.
-- Once the preview is running, report `lokal` before you show the site to the person and wait for their answer.
+  The preview keeps running in the background and shows the new state after every `npm run build`, until you stop it with `(cd web && npx astro preview stop)`.
+- **With a building block** (bookings, sign-up list, login) you start `bun bausteine/pocketbase/lokal.ts` (address `http://localhost:8090`) instead of the preview: only then do forms and bookings really work, on the person's computer.
+- Once the preview is running, you make the logbook entry (`git add web seite && git commit -m "Shell: all pages from the draft"`; `web/.gitignore` leaves out `web/node_modules`) and report `lokal` before you show the site to the person.
 
-### 7. Check (`schritt: pruefung`)
+### 5. Check (`schritt: pruefung`)
 
-Four experts inspect the building, and each one writes a report with a traffic light. The script `pruefen.mjs` in this skill measures whatever can be measured. Copy it into the project and run it:
+Four experts inspect the shell, and each one writes a report with a traffic light. `pruefen.mjs` measures whatever can be measured, and it also checks the doors:
 
 ```bash
-mkdir -p scripts && cp <folder of this skill>/pruefen.mjs scripts/
-# folder unknown: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
 (cd web && npm run build) && node scripts/pruefen.mjs
+node scripts/pruefen.mjs --tueren                               # with a building block: --tueren http://localhost:8090, while lokal.ts runs
 ```
 
-The first time, it downloads the tools (Playwright, axe-core, Lighthouse, about 200 MB) and takes a few minutes. Tell the person beforehand. It writes `docs/pruefung/messwerte.json` and screenshots of every page at 390 and 1440 px into `docs/pruefung/fotos/`.
+The first time, the script downloads the tools (Playwright, axe-core, Lighthouse, about 200 MB) and takes a few minutes. Tell the person beforehand. It writes `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` and screenshots of every page at 390 and 1440 px into `docs/pruefung/fotos/`. Its messages are in German: you pass them on in English.
 
 After that you write four reports, one page each, in the person's language:
 
-- `docs/pruefung/sicherheit.md` (security and the law): secrets in the code, `npm audit`, no `.env` in `seite/`, legal notice and privacy policy there and complete (skill `recht-ch`), which outside services and cookies the site uses.
+- `docs/pruefung/sicherheit.md` (security and the law): secrets in the code, `npm audit`, no `.env` in `seite/`, every door from `docs/tueren.txt` with its status, legal notice and privacy policy there and complete (skill `recht-ch`), which outside services and cookies the site uses.
 - `docs/pruefung/ablaeufe.md` (flows and access): the accessibility rules (WCAG 2.2 AA, axe) on every page, dead links, every form tried out once yourself, the home page gone through with the keyboard (Tab), the flows from the PRD step by step.
-  - **Green only with proof.** For every feature with a building block, the test's output (“Alles grün”) and a screenshot of a real test booking or a real entry on this computer go into the report. If something didn't work, the traffic light is yellow or red. Never write “walked through” if you haven't done it.
-- `docs/pruefung/aussehen.md` (looks): only values from `tokens.css`, design system followed, every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`. If `pruefen.mjs` marks the phone menu or identical cards on the home page red, you rework the layout before going on. With the yellow “no photo in the first screen”, the most important content goes large in the header, and the person gets the photo list.
+  - **Green only with proof.** For every feature with a building block, the test's output (“Alles grün”, all green) and a screenshot of a real test booking or a real entry on this computer go into the report. If something didn't work, the traffic light is yellow or red. Never write “walked through” if you haven't done it.
+- `docs/pruefung/aussehen.md` (looks): `design/tokens.css` is included, only its values in the code, design system followed, every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`. If `pruefen.mjs` marks the phone menu or identical cards on the home page red, you rework the layout before going on. With the yellow “no photo in the first screen”, the most important content goes large in the header, and the person gets the photo list.
 - `docs/pruefung/code.md` (code and speed): Lighthouse in the four areas, JavaScript per page, picture sizes, and which acceptance criteria are met.
 
 ```markdown
@@ -196,7 +257,7 @@ After that you write four reports, one page each, in the person's language:
 **In plain words:** two or three sentences on what this means for visitors
 
 ## Checked
-- … (a measured value from messwerte.json, or what you tried out yourself)
+- … (a measured value from messwerte.json or tueren.json, or what you tried out yourself)
 
 ## Fixed
 - …
@@ -207,74 +268,54 @@ After that you write four reports, one page each, in the person's language:
 
 Then you go through the acceptance criteria in `docs/prd.md`: you tick off the ones that are met (`- [x]`) and note briefly where or how they were checked. Whatever isn't met stays open, with a reason.
 
-Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you report `pruefung`.
+Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you make the logbook entry (`git add docs web seite && git commit -m "Check: four reports, nothing red"`) and report `pruefung`.
 
-### 8. Release (`schritt: freigabe`)
+### 6. Release: the walk-through (`schritt: freigabe`)
 
-Handing over the keys: the person decides whether the site may go out. Show them the four traffic lights in one sentence each, open the reports and the preview, and say what's still open. Also say: with Light, the next step is publishing, and then the site is visible to everyone. Ask: “May the site go on the web like this?”
+Now the person walks through their house themselves. They decide whether it may go online like this.
 
-Only after their clear yes do you write the line `Freigegeben: <date> by <name>` under `Signed off:` in `docs/prd.md`. (“Freigegeben” means released; keep the word `Freigegeben:` exactly as it is, because the mission check looks for it.) Then you report `freigabe`. If they want to change something, it's back to step 6 and then through the check again.
+1. **Show it locally, on a phone and on a computer.** Build, start the preview (step 4) and go through every page with the person: on the computer in the preview (`open http://localhost:4321`), for the phone the 390 px screenshots (`open docs/pruefung/fotos/start-390.png` and the others). If they want to see it on their real phone and it's on the same Wi-Fi: stop the preview and start it again with `(cd web && npx astro preview --host --background)`, then they open the address shown under “Network” on the phone.
+2. **Comparison with the draft.** What got built is what the person saw in the model; you check that page by page:
+   ```bash
+   node scripts/pruefen.mjs --vergleich
+   ```
+   For every page it compares headings, menu items and sections with `design/entwurf/` and marks every difference yellow, with its place (page, what, number in the draft and in the build). For every difference you open both side by side (`open design/entwurf/<page>.html` and `open http://localhost:4321/<page>/`). If it's a mistake in the build, you build it as in the draft and compare again. If it's intended (for example a real text instead of `[placeholder]`), you tell the person, and they decide. You only move on once no difference is left open.
+3. **Learning moment “changing a text yourself and seeing it locally”.** In `lernen` mode it's a must, in `machen` mode you offer it in one sentence. The person opens a page's file in a text editor (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; lists such as dates are in `web/src/data/`), changes a sentence and saves. You build again (`(cd web && npm run build)`), they reload the preview and see their change. Then they decide: keep it (logbook entry, `pruefen.mjs` again, nothing red) or go back with `git restore <file>`. If they did it themselves, you report `verstanden_melden` (mission `webseite-02-bauen`, kind `selbst`).
+4. **What was seen goes into `docs/prd.md`,** under the acceptance criteria (line starts in German):
+   ```
+   Lokal gesehen: <date>, on a phone (390 px screenshots) and on a computer (preview)
+   Vergleich mit Entwurf: <date>, no open difference (pruefen.mjs --vergleich; discussed: …)
+   ```
+5. **The question:** “You've seen your site on your computer, at phone width and at computer width. Do you release it?” Add what's still open (from the reports), and that this release counts for going live: exactly this site goes online, no more and no less.
+6. **Only after their clear yes** do you write underneath `Freigegeben: <date> (“<their words>”)`. “Looks good” without a yes to the release isn't enough. Then the logbook entry, with a marker (tag) on exactly this state:
+   ```bash
+   git add docs/prd.md && git commit -m "Site released" && git tag -f freigegeben
+   ```
+   When going live, the tag `freigegeben` shows whether anything about the site has changed since.
+7. Report `freigabe`. In `lernen` mode you now ask the check questions of the mission `webseite-02-bauen` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
-### 9. Harbour, conveyor belt and live (`schritt: hafen`, `fliessband`, `live`)
+If the person wants to change something before the release: a text, a picture or a date goes back to step 4, then the check and the walk-through again. A new page or a new feature is an addition: first in `docs/plan.md`, then a draft of the changed pages and a new approval to build (skill `entwurf`), and only then is it built.
 
-The Albatros harbour (`code.aufwind.sh`) is the person's training repository: their code lives there, private. If that still needs an account, a plan and a key, follow the skill `start` from step 3 now. Then you fetch the logbook and put the new site in it (skill `git-logbuch`):
+Next comes the skill `lancieren`: where should the site live? Call `lage` if the tool is there, and follow it.
 
-```bash
-git clone git@aufwind.sh:{name}/projekt.git logbuch
-cp -R web docs seite scripts logbuch/        # without web/node_modules, web/.gitignore leaves that out
-echo "docs/bestand/dateien/" >> logbuch/.gitignore   # the working copy of the old site stays out
-cd logbuch && git add .gitignore web docs seite scripts && git commit -m "Neue Seite: <Richtung>" && git push
-```
+## Pitfalls
 
-Write the commit note in the person's language, e.g. “New site: <direction>”.
-
-After that you open the harbour in the browser, so the person can see that their code is there, and report `hafen`:
-
-```bash
-open https://code.aufwind.sh/{name}/projekt
-```
-
-**Conveyor belt:** A simple conveyor belt, nothing special (skill `pipeline`). With Light you don't need one: whatever is on `main` in `seite/` in the harbour, Albatros shows about a minute later. With Pilot, the conveyor belt from `.github/workflows/deploy.yml` delivers the site to the server.
-
-**Live:** The site is at `https://{name}.aufwind.sh`, with Light without a server of your own, with Pilot on your own server.
-
-**You check yourself, the person never waits.** Instead of “have another look in a few minutes”, you check yourself after the push until your new site is there, for three minutes at most. The address already answers before that (with the template or the welcome page). So you wait for your site's title, as it stands in `seite/index.html` between `<title>` and `</title>`:
-
-```bash
-for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<your site's title>" && echo "The site is there" && break; sleep 15; done
-```
-
-- **It's there:** Check the site on the web once more (title, legal notice and privacy policy, Lighthouse). Done means visible:
-  ```bash
-  node scripts/pruefen.mjs --live https://{name}.aufwind.sh
-  ```
-  If nothing is red there, report `fliessband` and `live`, open the address with the person (`open https://{name}.aufwind.sh`) and compare it with the screenshots from step 7.
-- **With a building block, “live” doesn't mean “done” yet:** Only once the data is in (for example the classes) and a test booking on the web has brought its email to the person's own address (skill `bausteine`) do you tell the person they can share the link. Until then, say honestly what's still missing.
-- **Still not there after three minutes:** ask `konto_status`. With Light it says whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour, because nothing was built before the push or `seite/` is in `.gitignore`. With Pilot you look in the harbour under “Actions” to see where the conveyor belt stopped (skill `pipeline`). Fix it, new entry, push, check again. Only if it still doesn't work do you tell the person what you checked and ask the coach (`coach_fragen`).
-
-If the person then wants something different (“there’s still … missing”, a date, a text), you load the skill `webseite-aendern` and follow it. The site is released and online, so every change needs its criterion in the PRD, a before and after, and a new release before the push.
-
-Your own domain comes along with the skill `domain`, with Light as with Pilot, and then you report `domain`.
-
-Only what belongs to the person, or what they have permission for, gets published (skill `webseite-modernisieren`, section “Rights”).
-
-## Stumbling blocks
-
-- Building before the PRD: then you make the wrong site look nice.
-- Into the harbour before the release: with Light, that already means publishing.
-- Acceptance criteria you can't check (“nice”, “modern”): write how you can see or measure it.
-- Another framework “because it's modern”: the reason is what the person wants or a feature, otherwise Astro.
-- Three drafts that only differ in colour: not a real choice.
-- Colours, spacing or font sizes by hand in the code: then the design system breaks.
+- Building without `pruefen.mjs --vor-bau`, or writing the line `Freigegeben zum Bauen:` yourself: then you're building what nobody approved.
+- Inventing new markup instead of taking it from the draft: at the walk-through the person then sees something different from the model.
+- A second `tokens.css` in `web/`: then there are two truths, and one of them will soon be wrong.
+- Acceptance criteria that can't be checked (“nice”, “modern”): write how you can see or measure it.
+- Another framework “because it's modern”: the reason is the person's wish or a feature, otherwise Astro.
+- Colours, spacing or font sizes typed by hand in the code: that breaks the design system.
 - Reports without measured values, or “all green” without having looked at the screenshots.
-- Forgetting to build `seite/`: then the old site is sitting in the harbour. Before every push, `npm run build` in `web/`.
-- Making the person wait (“have a look later”): you check yourself until the site is there (step 9).
-- A step not reported: the house on the island stops growing. Report every step with an entry in the “Island” column as soon as it's done.
+- Forgetting to build `seite/`: then the preview shows the old state.
+- Sending anything to a harbour or publishing it: that doesn't belong in this skill, but to going live (skill `lancieren`).
+- The release without a walk-through on the phone, or with open differences from the draft.
+- A step not reported: the house on the island stays where it is.
 
-## Check the mission
+## Checking the mission
 
-`mission_pruefen` with `webseite-02-bauen` as soon as the page is on the web. The check looks at whether `docs/prd.md` contains the release (the line starting with `Freigegeben:`, a word that stays German because the check looks for it) and the page answers.
+`mission_pruefen` with `webseite-02-bauen`, as soon as `freigabe` is reported. The check looks on the island whether the project has reached at least the step “Freigabe” (release).
 
 ## Final message
 
-Your last message in this step starts with one sentence on the picture “the little factory” that sums up the core once more. Then: which of the nine steps is done and what came out of it, where the result is, what the person has to decide and which step comes next.
+Your last message in this step starts with a sentence on the picture “the shell in your own workshop” that says the core once more. After that: which step is done and what came out of it, where the result is, what the person has to decide and what comes next (after the release: where it lives, skill `lancieren`).

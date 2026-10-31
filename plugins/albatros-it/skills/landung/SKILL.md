@@ -1,9 +1,9 @@
 ---
 name: landung
-description: "Pianifica e accompagna il trasloco di un progetto da Albatros a un server proprio, spiegato con l'immagine del trasloco in una casa propria: lista del trasloco, affittare e configurare il server (SSH solo con chiave, firewall, aggiornamenti, Caddy per HTTPS), portare il diario di bordo su GitHub, spostare lì il nastro trasportatore sulla nuova destinazione via SSH con una chiave propria, portare con sé dati e segreti, testare, cambiare l'indirizzo nel DNS oppure trasferire un dominio comprato tramite Albatros a un nuovo registrar con l'auth-code di domain_mitnehmen, occuparsi da sé dei backup. Usa lo skill con «server proprio», «traslocare», «andare via da Albatros», «Hetzner», «VPS», «hosting in proprio», «ospitare da solo», «atterraggio», «cosa mi serve per un server tutto mio?»."
+description: "Pianifica e accompagna il trasloco di un progetto da Albatros a un server proprio, spiegato con l'immagine del trasloco in una casa propria: lista del trasloco, affittare e configurare il server (SSH solo con chiave, firewall, aggiornamenti, Caddy per HTTPS), portare il diario di bordo su GitHub, spostare lì il nastro trasportatore con una chiave propria, portare con sé dati e segreti, testare, cambiare l'indirizzo nel DNS oppure trasferire un dominio comprato tramite Albatros con l'auth-code di domain_mitnehmen, occuparsi da sé dei backup. In più la strada direttamente dal computer in rete, senza porto di Albatros: diario di bordo, GitHub, un fornitore per siti statici o un server proprio. Usa lo skill con «server proprio», «traslocare», «andare via da Albatros», «senza Albatros», «ospitare da solo», «Hetzner», «VPS», «GitHub Pages», «Netlify», «atterraggio»."
 metadata:
   stand: 0.2.0
-  quelle: '53bf9c40474d'
+  quelle: 'b8aa3d9b69ff'
 ---
 
 # Atterraggio: trasloco in una casa propria
@@ -13,6 +13,8 @@ metadata:
 Da Albatros abiti in un appartamento con il custode: chiude il portone, cambia le serrature e ogni notte fotografa l'appartamento. In una casa propria lo fai tu.
 
 Il trasloco non è una costruzione nuova. Il tuo progetto è già imballato in scatole che vanno bene dappertutto: il diario di bordo (Git), le istruzioni di montaggio (`Dockerfile`, `compose.yaml`) e il nastro trasportatore (workflow). Aggiungi il resto, traslochi e comunichi il nuovo indirizzo. Solo il porto appartiene alla casa di Albatros: il tuo diario di bordo riceve un nuovo porto, per esempio GitHub.
+
+Chi non è mai entrato da Albatros costruisce subito sul proprio terreno: le scatole (il diario di bordo e la cartella costruita `seite/`) sono già pronte sul computer (parte «Direkt vom Computer ins Netz», direttamente dal computer in rete).
 
 **Come usi l'immagine:** dilla alla persona nella tua prima risposta, prima di fare domande o mostrare comandi, anche se vuole subito una soluzione.
 
@@ -24,7 +26,19 @@ Il trasloco non è una costruzione nuova. Il tuo progetto è già imballato in s
 - Affittare e pagare il server lo fa la persona stessa presso il fornitore.
 - La vecchia casa si spegne solo quando quella nuova funziona in modo dimostrato.
 
-## Procedura
+## Direkt vom Computer ins Netz (direttamente dal computer in rete)
+
+Se il sito abita da te fin dall'inizio (skill `lancieren`, domicilio «da te»), non c'è niente da traslocare. Il diario di bordo sta sul computer (skill `git-logbuch`, parte «Logbuch ohne Hafen»), il sito approvato costruito in `seite/`. Un porto di Albatros non c'entra.
+
+1. **Una copia del diario di bordo fuori dal computer:** di solito GitHub. La persona apre il conto da sé e fa l'accesso con `gh auth login` nel browser. Poi `gh repo create <repo> --private --source . --remote origin --push`. Pubblico (`--public`) solo se sa che allora anche `docs/` con piano e concetto è leggibile da tutti.
+2. **Un sito senza blocchi** non ha bisogno di un server: GitHub Pages, Cloudflare Pages o Netlify consegnano la cartella `seite/`. Come prepararli e caricare la prima volta (con il nastro trasportatore per GitHub Pages) sta nello skill `lancieren`, parte 2, «Selbst, mit GitHub» e «Selbst, ohne Repo». Condizioni e limiti delle offerte gratuite li leggi con la persona sulla loro pagina dei prezzi.
+3. **Un sito con un blocco** ha bisogno di un server proprio: allora valgono i passi da 3 a 5 qui sotto (la casa nuova, diario di bordo e nastro trasportatore, dati e segreti). Per il diario di bordo non c'è niente da rinominare, c'è solo `origin` su GitHub. Le istruzioni di montaggio (`Dockerfile`, `compose.yaml`, `nginx.conf`) e il nastro trasportatore li prendi dalla cartella `vorlage/` di albatros-skills.
+4. **Un dominio proprio** la persona lo compra presso un registrar a sua scelta, con un conto suo. Le voci nell'elenco telefonico (DNS) le prendi esattamente dalle istruzioni del fornitore, mai a memoria: su GitHub Pages sotto Settings, Pages, «Custom domain», su Netlify sotto «Domain management», su Cloudflare Pages sotto «Custom domains», per un server proprio A e AAAA sul suo indirizzo. Il certificato (il lucchetto nel browser) lo prendono da soli il fornitore o Caddy. Le voci per l'e-mail (MX) non le tocchi mai. Controllo come nello skill `domain`, passo 6: `dig +short <dominio>`, poi `https://<dominio>` nel browser.
+5. **Quello che la persona si assume da sé:** sorveglianza e copia di sicurezza, come annotate in `docs/betrieb.md` (skill `betrieb`), con un server proprio in più gli aggiornamenti.
+
+Le missioni di Albatros che controllano un server o il porto, Albatros allora non le può controllare. I passi sull'isola li segnali comunque con `schritt_melden`.
+
+## Procedura: trasloco da Albatros
 
 ### 1. Il trasloco conviene?
 
@@ -163,7 +177,7 @@ Osservare per una settimana. Se va tutto, adattare o disdire l'abbonamento ad Al
 
 ### 8. Verifica la missione
 
-`docs/landung.md` nel diario di bordo e con il nastro trasportatore (skill `git-logbuch`, `pipeline`), poi `mission_pruefen` con `flugschule-10-landung`. La verifica controlla se la lista del trasloco `docs/landung.md` si trova nel progetto (con Pilot sul server Albatros, con Light nel porto). La cosa migliore è che la persona scriva la lista mentre abita ancora da Albatros.
+`docs/landung.md` nel diario di bordo e con il nastro trasportatore (skill `git-logbuch`, `pipeline`), poi `mission_pruefen` con `flugschule-10-landung`. La verifica controlla se la lista del trasloco `docs/landung.md` si trova nel progetto (con Pilot sul server Albatros, con Light nel porto). La cosa migliore è che la persona scriva la lista mentre abita ancora da Albatros. Se il sito abita da te fin dall'inizio, per Albatros non c'è niente da controllare.
 
 ## Dove si inciampa
 

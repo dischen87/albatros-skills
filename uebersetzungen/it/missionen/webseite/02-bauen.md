@@ -1,29 +1,35 @@
 ---
-titel: Dalla pianta al sito finito
-bild: Il progetto firmato, poi la costruzione
+titel: Il tuo sito sul tuo computer
+bild: Il rustico nella tua officina, poi il sopralluogo
 phase: P10
+verstehen:
+  - frage: Che cos'è una voce nel diario di bordo (commit)?
+    kern: Una voce fissa un passo finito, con una nota su che cosa e perché. A ogni voce puoi tornare più tardi.
+  - frage: Perché vedi il tuo sito prima sul tuo computer, prima che vada online?
+    kern: Sul tuo computer confronti e cambi con calma, senza che nessuno veda un sito a metà. Online va solo quello che hai approvato.
 ---
 
 ## Di cosa si tratta
 
-Una casa nasce in un ordine fisso: schizzo, campioni dei materiali, progetto firmato, costruzione, collaudo da parte di specialisti, trasloco. La tua IA costruisce il tuo sito allo stesso modo, come in una piccola fabbrica: ogni passo ha un risultato, si costruisce solo dopo la tua firma sul progetto, e il sito va in rete solo quando le verifiche sono fatte e tu l'hai approvato. Sulla tua isola nel cockpit la tua casa cresce con ogni passo.
+La tua bozza è il modello del tuo sito in cui si può entrare, e le hai dato il via libera per costruire. Adesso la tua IA ne costruisce il sito vero sul tuo computer, con le stesse pagine, gli stessi menu e le stesse sezioni del modello. Un diario di bordo tiene ogni passo. Quattro controlli collaudano il rustico, poi ci passi tu, sul telefonino e sul computer, e lo approvi. Fin qui è tutto gratis, e niente va ancora online.
 
 ## Cosa impari
 
-- guardare uno schizzo (mockup) e delle bozze, e scegliere
-- che cos'è un sistema di design e perché colori e caratteri stanno in un solo posto
-- che cos'è un progetto (PRD) con criteri di collaudo e perché lo approvi prima di costruire
-- come quattro verifiche (sicurezza, percorsi e accesso, aspetto, codice e velocità) collaudano un sito
-- guardare il tuo sito prima sul tuo computer
+- che cos'è una voce nel diario di bordo (commit) e perché ogni passo ne riceve una
+- come la tua bozza diventa un sito vero, senza che niente si sposti
+- come quattro controlli (sicurezza, percorsi e accesso, aspetto, codice e velocità) collaudano un sito, e quali porte restano chiuse senza accesso
+- guardare il tuo sito sul tuo computer e confrontarlo con la bozza
+- cambiare da te un testo e vedere subito la modifica
 - perché solo la tua approvazione apre la strada verso la rete
 
 ## Come procedi
 
-1. La tua IA ti mostra uno schizzo della pagina iniziale e poi due o tre bozze. Ne scegli una, e da lì nasce il sistema di design.
-2. Scrive il progetto con l'elenco di ciò che verrà verificato alla fine. Lo leggi e dici di sì o cosa manca ancora.
-3. Costruisce il sito e te lo mostra nel browser, in larghezza telefonino e computer.
-4. Verifica il sito in quattro ambiti e ti mostra i rapporti con un semaforo.
-5. Approvi il sito. In rete va solo dopo, alla messa online, mai senza la tua approvazione.
+1. La tua IA controlla che la tua bozza abbia il via libera per costruire e apre il diario di bordo.
+2. Scrive il modo di costruzione e il progetto (PRD) dalla tua bozza e propone quali indirizzi sono aperti senza accesso. Confermi tutti e due in un solo messaggio.
+3. Costruisce il sito e lo controlla in quattro ambiti. Ti mostra i rapporti con il semaforo.
+4. Guardi il tuo sito sul tuo computer, in larghezza telefonino e computer. La tua IA confronta ogni pagina con la bozza e ti mostra ogni differenza.
+5. Se vuoi, cambi da te un testo e lo vedi subito. Nel modo imparare fa parte del percorso.
+6. Approvi il sito. Va in rete solo dopo, alla messa online, mai senza la tua approvazione.
 
 ## Ce l'hai fatta quando
 

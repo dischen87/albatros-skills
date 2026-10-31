@@ -27,8 +27,8 @@ Your house is planned, built and signed off. Now it needs a place to stand. Alba
 1. Your AI shows you the options, with the prices from your account.
 2. You choose where your site lives. Your AI writes your choice and the reason into `docs/lancieren.md`.
 3. With Albatros, your AI only opens the payment page after you've chosen. You type your card details only there, never in the chat.
-4. You make your house key (SSH key) if the place where your site lives needs one.
-5. Your AI checks the new address. At first the template is there; your site only arrives when you go live.
+4. You make your house key (SSH key) if the place where your site lives needs one. When hosting it yourself, you create the account with the provider yourself.
+5. With Albatros, your AI checks the new address. At first the template is there; your site only arrives when you go live.
 
 ## Done when
 

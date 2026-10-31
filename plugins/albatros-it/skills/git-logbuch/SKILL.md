@@ -1,9 +1,9 @@
 ---
 name: git-logbuch
-description: "Spiega Git a una persona senza conoscenze con l'immagine del diario di bordo sulla nave e della copia nel porto (il servizio Git di Albatros, code.aufwind.sh). Prende il repo dal porto, accompagna nelle prime voci (commit) con buone note, le manda al porto (push) e verifica che la copia arrivi sul server Albatros in ~/projekt. Regole: solo su main, solo i propri file aggiunti uno per uno, mai force-push. Usa lo skill con «Git», «GitHub», «porto», «commit», «push», «pull», «repo», «cos'è un repository?», «voglio salvare le mie modifiche», «il push è stato rifiutato», «conflitto», e prima di fare un commit per la persona."
+description: "Spiega Git a una persona senza conoscenze con l'immagine del diario di bordo sulla nave e della copia nel porto (il servizio Git di Albatros, code.aufwind.sh). Prende il repo dal porto o lo crea sul computer prima che ci sia un porto (git init, più tardi collegare il porto come origin), accompagna nelle prime voci (commit) con buone note, le manda al porto (push) e verifica che la copia arrivi sul server Albatros in ~/projekt. Regole: solo su main, solo i propri file aggiunti uno per uno, mai force-push. Usa lo skill con «Git», «GitHub», «porto», «commit», «push», «pull», «repo», «cos'è un repository?», «voglio salvare le mie modifiche», «il push è stato rifiutato», «conflitto», e prima di fare un commit per la persona."
 metadata:
   stand: 0.2.0
-  quelle: '37805921dff9'
+  quelle: '6ac493bbafdb'
 ---
 
 # Git: il diario di bordo sulla nave, con una copia nel porto
@@ -47,7 +47,7 @@ Su ogni nave c'è un diario di bordo. Ogni voce dice: chi, quando, cosa e perch�
 
 ### 2. Prendere il diario di bordo
 
-Albatros ha già creato il tuo diario di bordo nel porto, con dentro il modello. L'indirizzo lo indica `konto_status`:
+Se c'è già un diario di bordo su questo computer (sul percorso sito web nasce con la costruzione, skill `webseite-bauen`), non prendi niente: viene collegato al porto (parte «Logbuch ohne Hafen»). Altrimenti: Albatros ha già creato il tuo diario di bordo nel porto, con dentro il modello. L'indirizzo lo indica `konto_status`:
 
 ```bash
 git clone git@aufwind.sh:{name}/projekt.git
@@ -58,7 +58,7 @@ Il diario di bordo è privato: lo vedi solo tu. Poi controlla il `.gitignore`, a
 
 ### 3. La prima voce
 
-La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Le apri tu il file (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) e le indichi esattamente la riga e il nuovo testo. Se non se la sente o non cambia nulla, lo fai tu e le mostri la modifica con `git diff`. La prima voce resta piccola, anche se la persona dà già dei contenuti: sul percorso sito web il sito nasce solo con `webseite-planen` e `webseite-bauen`, con piano, verifica e approvazione. I suoi contenuti li tieni per la pianta. Poi insieme:
+La persona cambia da sé qualcosa di piccolo, p. es. una riga nel `README.md`. Le apri tu il file (`open -e README.md`, Linux `xdg-open`, Windows `notepad`) e le indichi esattamente la riga e il nuovo testo. Se non se la sente o non cambia nulla, lo fai tu e le mostri la modifica con `git diff`. La prima voce resta piccola, anche se la persona dà già dei contenuti: sul percorso sito web il sito nasce solo nello svolgimento fisso, con piano, bozza, costruzione e approvazione. I suoi contenuti li tieni per la pianta. Poi insieme:
 
 ```bash
 git status                     # Cosa è cambiato?
@@ -87,6 +87,32 @@ Se mancano le nuove voci, le prendi a mano: `ssh {name}@aufwind.sh 'git -C ~/pro
 ### 5. Verifica la missione
 
 `mission_pruefen` con `flugschule-04-git-logbuch`. La verifica guarda se il diario di bordo ha almeno due voci su `main`: con Pilot in `~/projekt` sul server, con Light nel porto.
+
+## Logbuch ohne Hafen (il diario di bordo senza porto)
+
+Un diario di bordo non ha bisogno di un porto per cominciare. Sul percorso sito web nasce con la costruzione, sul computer (skill `webseite-bauen`), molto prima che il sito abbia un domicilio:
+
+```bash
+git init -b main                         # una volta, nella cartella del progetto
+git add .gitignore docs design           # i propri file e cartelle, con il nome
+git commit -m "Bozza approvata: piano, concetto, bozza"
+```
+
+Finché non c'è un porto, il diario di bordo c'è solo su questo computer. Se cade in acqua, è perso: serve allora una seconda copia, per esempio un repository privato (skill `betrieb`, copia di sicurezza).
+
+**Collegare il porto più tardi,** alla messa online (skill `lancieren`): senza clonare di nuovo e senza copiare file, altrimenti le voci della costruzione vanno perse.
+
+- **Porto di Albatros:** dal domicilio contiene il modello, una voce con un suo inizio. Colleghi il porto come `origin` e riprendi il modello una volta nel diario di bordo. Dove entrambi hanno lo stesso file, resta il proprio (`-X ours`):
+  ```bash
+  git remote add origin git@aufwind.sh:{name}/projekt.git
+  git fetch origin
+  git merge origin/main --allow-unrelated-histories -X ours -m "Modello dal porto ripreso"
+  git push -u origin main
+  ```
+  Se c'è già un `origin` (`git remote -v`), per il porto prendi un altro nome, per esempio `hafen`.
+- **Un repository vuoto su GitHub** (domicilio «da te»): `gh repo create <repo> --private --source . --remote origin --push`. Lì non c'è niente da unire.
+
+Anche qui: mai `git push --force`. Se il push viene rifiutato, prima unire come sopra.
 
 ## Se qualcosa si inceppa
 

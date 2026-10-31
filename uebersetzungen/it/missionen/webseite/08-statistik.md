@@ -18,12 +18,12 @@ Una negoziante alla porta conta solo quello che è già sulla sua lista, e solo 
 
 ## Come procedi
 
-1. Scrivi un piccolo piano degli eventi.
+1. Scrivi un piccolo piano degli eventi. Se contare, l'hai deciso preparando la gestione (`docs/betrieb.md`).
 2. Crei un progetto PostHog con sede nell'UE.
-3. Fai l'integrazione sul sito, con l'impostazione senza cookie.
+3. Fai l'integrazione sul sito, con l'impostazione senza cookie, la guardi sul tuo computer e la approvi. Come ogni modifica, va online solo dopo la tua approvazione.
 4. Fai scattare l'evento obiettivo dopo il successo e lo testi.
 
 ## Ce l'hai fatta quando
 
 - il piano degli eventi `docs/statistik.md` è nel tuo progetto
-- e il tuo sito contiene l'integrazione di PostHog.
+- e il tuo sito contiene l'integrazione di PostHog. Se il tuo sito abita da te, Albatros non lo può controllare.

@@ -3,7 +3,7 @@ name: pipeline
 description: "Explique le CI/CD à une personne sans connaissances préalables avec l'image du tapis roulant avec contrôle qualité, et le met en place : un workflow au port d'Albatros (Forgejo, code.aufwind.sh) démarre à chaque push sur main. L'ouvrier (runner) sur son propre serveur construit la page, la livre avec un contrôle de santé, la vérifie par l'adresse publique et revient sinon à la dernière bonne version. Utilise ce skill pour « pipeline », « CI/CD », « GitHub Actions », « Forgejo Actions », « workflow », « runner », « livrer automatiquement », « déployer », « comment ma modification arrive sur le serveur ? », « le tapis roulant est rouge », « le déploiement a échoué »."
 metadata:
   stand: 0.2.0
-  quelle: 'c4476789bb24'
+  quelle: '4148e0142beb'
 ---
 
 # Pipeline : le tapis roulant avec contrôle qualité
@@ -32,9 +32,9 @@ Chez toi, le tapis démarre dès que tu envoies une entrée au port (skill `git-
 
 ### 1. Ce qui est déjà là
 
-**Avec Light**, il n'y a pas de tapis roulant : après chaque push, Albatros publie directement le dossier `seite/` de `main`, sans construction et sans contrôle. Explique quand même l'image. Le tapis avec contrôle qualité fait partie de Pilot (`upgrade_link`, niveau `pilot`). Le fichier `deploy.yml` du modèle dort avec Light. Au passage à Pilot, Albatros met le tapis en marche et le fait tourner une fois tout de suite, pour que le propre serveur livre la page. La mission `flugschule-05-pipeline` fait partie de Pilot.
+**Avec Light**, il n'y a pas de tapis roulant : après chaque push, Albatros publie directement le dossier `seite/` de `main`, sans construction et sans contrôle. Explique quand même l'image. Le tapis avec contrôle qualité fait partie de Pilot ; on le choisit avec le domicile (skill `lancieren`). Le fichier `deploy.yml` du modèle dort avec Light. Au passage à Pilot, Albatros met le tapis en marche et le fait tourner une fois tout de suite, pour que le propre serveur livre la page. La mission `flugschule-05-pipeline` fait partie de Pilot.
 
-**Avec Pilot :** `konto_status` donne le nom du serveur, l'adresse du port (`git@aufwind.sh:{name}/projekt.git`) et indique si l'ouvrier est prêt. Ne le demande pas à la personne. Le modèle d'Albatros contient déjà `.github/workflows/deploy.yml`, `compose.yaml` et `Dockerfile` : lis-les avec la personne et compare avec l'essentiel ci-dessous. Dans le modèle, les commentaires et les messages sont en allemand ; ci-dessous, les commentaires sont traduits. Les noms des étapes et les messages restent tels quels, pour que le fichier corresponde au modèle ; traduis-les pour la personne. S'ils manquent, tu les crées, même si le dossier est encore vide, et tu dis ensuite ce qui manque encore (journal de bord au port, contenu de la page).
+**Avec Pilot :** `konto_status` donne le nom du serveur, l'adresse du port (`git@aufwind.sh:{name}/projekt.git`) et indique si l'ouvrier est prêt. Ne le demande pas à la personne. Le modèle d'Albatros contient déjà `.github/workflows/deploy.yml`, `compose.yaml` et `Dockerfile` ; sur le parcours site web, ils arrivent dans le journal de bord à la mise en ligne, quand celui-ci est relié au port (skill `lancieren`, partie 2). Lis-les avec la personne et compare avec l'essentiel ci-dessous. Dans le modèle, les commentaires et les messages sont en allemand ; ci-dessous, les commentaires sont traduits. Les noms des étapes et les messages restent tels quels, pour que le fichier corresponde au modèle ; traduis-les pour la personne. S'ils manquent, tu les crées, même si le dossier est encore vide, et tu dis ensuite ce qui manque encore (journal de bord au port, contenu de la page).
 
 Le conteneur du serveur web s'appelle `webseite` et écoute dans le serveur sur le port 80. Albatros dirige `https://{name}.aufwind.sh` vers lui. Sur un serveur tout neuf, la page d'accueil (service `willkommen`) occupe le port 80. Le tapis roulant la désactive avant le premier démarrage. Si tu démarres une fois à la main, d'abord `sudo systemctl disable --now willkommen`.
 
@@ -111,6 +111,8 @@ jobs:
 Explique poste par poste. Sur le serveur, on ne modifie rien à la main : l'état vient toujours du journal de bord. Le fichier `.env` sur le serveur n'est pas touché (skill `sicherheit`). Si une étape a quand même besoin d'un secret, il va dans le coffre-fort du port (dans le repo sous Paramètres, Actions, Secrets) et, dans le workflow, n'entre dans la commande que par `env:`, jamais directement comme `${{ secrets.… }}` dans une ligne `run`.
 
 ### 3. Premier trajet
+
+Sur le parcours site web, le tapis roule pour la première fois à la mise en ligne, avec le site validé (skill `lancieren`, partie 2).
 
 1. Entrée dans le journal de bord, push (skill `git-logbuch`).
 2. Regarder dans le navigateur web : `https://code.aufwind.sh/{name}/projekt/actions`.

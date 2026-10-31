@@ -17,12 +17,13 @@ Un moteur de recherche est un plan de la ville qu'un coursier redessine chaque j
 
 ## Comment t'y prendre
 
-1. Noter cinq phrases de recherche de ton public cible.
+1. Reprendre les termes de recherche de ta recherche (`docs/recherche.md`) et les compléter en cinq phrases de recherche de ton public cible.
 2. Donner à chaque page un titre, une description et un titre principal.
 3. Créer le plan des lieux et le règlement de maison pour le coursier.
 4. Vérifier le temps de chargement sur le natel.
-5. Avec ton propre domaine : inscrire le site auprès du moteur de recherche.
+5. Regarder les changements sur ton ordinateur et les valider. Comme chaque changement, ils ne vont en ligne qu'après ta validation.
+6. Avec ton propre domaine : inscrire le site auprès du moteur de recherche.
 
 ## Réussi quand
 
-- `https://{name}.aufwind.sh/sitemap.xml` et `https://{name}.aufwind.sh/robots.txt` répondent.
+- `https://{name}.aufwind.sh/sitemap.xml` et `https://{name}.aufwind.sh/robots.txt` répondent. Si ton site habite par toi-même, Albatros ne peut pas le vérifier.

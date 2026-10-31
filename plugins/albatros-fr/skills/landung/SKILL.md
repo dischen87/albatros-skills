@@ -1,9 +1,9 @@
 ---
 name: landung
-description: "Planifie et accompagne le déménagement d'un projet d'Albatros vers un propre serveur, expliqué avec l'image du déménagement dans sa propre maison : liste de déménagement, louer et installer le serveur (SSH seulement avec clé, pare-feu, mises à jour, Caddy pour HTTPS), emporter le journal de bord sur GitHub, y régler le tapis roulant avec sa propre clé par SSH sur la nouvelle destination, emporter les données et les secrets, tester, changer l'adresse dans le DNS ou faire déménager un domaine acheté chez Albatros vers un nouveau registraire avec l'auth-code de domain_mitnehmen, reprendre soi-même les sauvegardes. Utilise ce skill pour « propre serveur », « déménager », « quitter Albatros », « Hetzner », « VPS », « héberger moi-même », « atterrissage », « de quoi j'ai besoin pour un propre serveur ? »."
+description: "Planifie et accompagne le déménagement d'un projet d'Albatros vers un propre serveur, expliqué avec l'image du déménagement dans sa propre maison : liste de déménagement, louer et installer le serveur (SSH seulement avec clé, pare-feu, mises à jour, Caddy pour HTTPS), emporter le journal de bord sur GitHub, y régler le tapis roulant avec sa propre clé, emporter les données et les secrets, tester, changer l'adresse dans le DNS ou faire déménager un domaine acheté chez Albatros avec l'auth-code de domain_mitnehmen, reprendre soi-même les sauvegardes. En plus, le chemin directement de l'ordinateur sur Internet, sans port d'Albatros : journal de bord, GitHub, un fournisseur pour sites statiques ou un propre serveur. Utilise ce skill pour « propre serveur », « déménager », « quitter Albatros », « sans Albatros », « héberger moi-même », « Hetzner », « VPS », « GitHub Pages », « Netlify », « atterrissage »."
 metadata:
   stand: 0.2.0
-  quelle: '53bf9c40474d'
+  quelle: 'b8aa3d9b69ff'
 ---
 
 # Atterrissage : déménager dans ta propre maison
@@ -13,6 +13,8 @@ metadata:
 Chez Albatros, tu habites un appartement avec un concierge : il ferme la porte d'entrée, change les serrures et photographie l'appartement chaque nuit. Dans ta propre maison, tu fais tout ça toi-même.
 
 Le déménagement n'est pas une construction neuve. Ton projet est déjà emballé dans des cartons qui vont partout : le journal de bord (Git), la notice de montage (`Dockerfile`, `compose.yaml`) et le tapis roulant (workflow). Tu ajoutes le reste, tu déménages et tu annonces ta nouvelle adresse. Seul le port appartient à la maison d'Albatros : ton journal de bord reçoit un nouveau port, par exemple GitHub.
+
+Qui n'a jamais emménagé chez Albatros construit directement sur son propre terrain : les cartons (le journal de bord et le dossier construit `seite/`) sont déjà prêts sur l'ordinateur (partie « Direkt vom Computer ins Netz », directement de l'ordinateur sur Internet).
 
 **Comment utiliser l'image :** Dis-la à la personne dans ta première réponse, avant de poser des questions ou de montrer des commandes, même si elle veut tout de suite une solution.
 
@@ -24,7 +26,19 @@ Le déménagement n'est pas une construction neuve. Ton projet est déjà emball
 - Louer et payer le serveur, la personne le fait elle-même chez le fournisseur.
 - L'ancien chez-soi n'est éteint que quand le nouveau tourne, preuve à l'appui.
 
-## Déroulement
+## Direkt vom Computer ins Netz (directement de l'ordinateur sur Internet)
+
+Si le site habite dès le début par soi-même (skill `lancieren`, domicile « par toi-même »), il n'y a rien à déménager. Le journal de bord est sur l'ordinateur (skill `git-logbuch`, partie « Logbuch ohne Hafen »), le site validé construit dans `seite/`. Aucun port d'Albatros n'intervient.
+
+1. **Une copie du journal de bord hors de l'ordinateur :** en général GitHub. La personne crée le compte elle-même et se connecte avec `gh auth login` dans le navigateur. Ensuite `gh repo create <depot> --private --source . --remote origin --push`. Public (`--public`) seulement si elle sait qu'alors `docs/` avec le plan et le concept est lisible par tout le monde.
+2. **Un site sans brique** n'a pas besoin de serveur : GitHub Pages, Cloudflare Pages ou Netlify livrent le dossier `seite/`. Comment les installer et téléverser la première fois (avec le tapis roulant pour GitHub Pages) figure dans le skill `lancieren`, partie 2, « Selbst, mit GitHub » et « Selbst, ohne Repo ». Les conditions et limites des offres gratuites, tu les lis avec la personne sur leur page de prix.
+3. **Un site avec une brique** a besoin d'un propre serveur : alors les étapes 3 à 5 ci-dessous s'appliquent (la nouvelle maison, journal de bord et tapis roulant, données et secrets). Pour le journal de bord, il n'y a rien à renommer, il n'y a qu'`origin` chez GitHub. La notice de montage (`Dockerfile`, `compose.yaml`, `nginx.conf`) et le tapis roulant, tu les prends dans le dossier `vorlage/` d'albatros-skills.
+4. **Un propre domaine,** la personne l'achète chez un registraire de son choix, avec son propre compte. Les entrées dans l'annuaire (DNS), tu les prends exactement dans la notice du fournisseur, jamais de mémoire : chez GitHub Pages sous Settings, Pages, « Custom domain », chez Netlify sous « Domain management », chez Cloudflare Pages sous « Custom domains », pour un propre serveur A et AAAA sur son adresse. Le certificat (le cadenas dans le navigateur), le fournisseur ou Caddy le récupèrent eux-mêmes. Les entrées pour l'e-mail (MX), tu n'y touches jamais. Contrôle comme dans le skill `domain`, étape 6 : `dig +short <domaine>`, puis `https://<domaine>` dans le navigateur.
+5. **Ce que la personne reprend elle-même :** surveillance et sauvegarde, comme notées dans `docs/betrieb.md` (skill `betrieb`), avec un propre serveur en plus les mises à jour.
+
+Les missions d'Albatros qui vérifient un serveur ou le port, Albatros ne peut alors pas les vérifier. Les étapes sur l'île, tu les annonces quand même avec `schritt_melden`.
+
+## Déroulement : déménager depuis Albatros
 
 ### 1. Le déménagement vaut-il la peine ?
 
@@ -163,7 +177,7 @@ Observer pendant une semaine. Si tout tourne, adapter ou résilier l'abonnement 
 
 ### 8. Contrôler la mission
 
-`docs/landung.md` dans le journal de bord et par le tapis roulant (skills `git-logbuch`, `pipeline`), puis `mission_pruefen` avec `flugschule-10-landung`. Le contrôle vérifie si la liste de déménagement `docs/landung.md` se trouve dans le projet (avec Pilot sur le serveur Albatros, avec Light dans le port). Le mieux, c'est que la personne écrive la liste tant qu'elle habite encore chez Albatros.
+`docs/landung.md` dans le journal de bord et par le tapis roulant (skills `git-logbuch`, `pipeline`), puis `mission_pruefen` avec `flugschule-10-landung`. Le contrôle vérifie si la liste de déménagement `docs/landung.md` se trouve dans le projet (avec Pilot sur le serveur Albatros, avec Light dans le port). Le mieux, c'est que la personne écrive la liste tant qu'elle habite encore chez Albatros. Si le site habite dès le début par soi-même, il n'y a rien à vérifier pour Albatros.
 
 ## Pièges
 

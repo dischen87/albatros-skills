@@ -1,9 +1,9 @@
 ---
 name: domain
-description: "Trova, compra o collega un dominio proprio (p. es. mionegozio.ch) per la pagina o il server su Albatros, con Light come con Pilot. Spiega dominio e DNS con l'immagine dell'indirizzo e dell'elenco telefonico, propone nomi, cerca con domain_suchen cosa è libero e compra tramite Albatros con domain_kaufen (la persona è titolare, i suoi dati li inserisce solo sulla pagina di pagamento). Un dominio che la persona ha già, lo skill lo collega con domain_verbinden: voci DNS, prova TXT _albatros e verifica, finché la pagina compare nel browser con il lucchetto. Usa lo skill con «dominio proprio», «il mio indirizzo», «comprare un .ch», «quale dominio è libero?», «cercare un dominio», «DNS», «record A», «CNAME», «record TXT», «il dominio non punta alla mia pagina», «certificato», «https non funziona»."
+description: "Trova, compra o collega un dominio proprio (p. es. mionegozio.ch) per la pagina o il server su Albatros, con Light come con Pilot; facoltativo, alla messa online (P13). Spiega dominio e DNS con l'immagine dell'indirizzo e dell'elenco telefonico, propone nomi, cerca con domain_suchen cosa è libero e compra tramite Albatros con domain_kaufen (la persona è titolare, i suoi dati li inserisce solo sulla pagina di pagamento). Un dominio che la persona ha già, lo skill lo collega con domain_verbinden: voci DNS, prova TXT _albatros e verifica, finché la pagina compare nel browser con il lucchetto. Usa lo skill con «dominio proprio», «il mio indirizzo», «comprare un .ch», «quale dominio è libero?», «cercare un dominio», «DNS», «record A», «CNAME», «record TXT», «il dominio non punta alla mia pagina», «certificato», «https non funziona»."
 metadata:
   stand: 0.2.0
-  quelle: '1b79f693976b'
+  quelle: '7222e3d428b9'
 ---
 
 # Dominio: il tuo indirizzo nell'elenco telefonico
@@ -25,12 +25,13 @@ La tua pagina è già raggiungibile su `{name}.aufwind.sh`. Con un dominio propr
 - **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
 - Dai del tu, frasi brevi, niente gergo tecnico. «Voce nell'elenco telefonico» invece di «record DNS», finché la persona non vede le parole nell'interfaccia del suo registrar. Allora le dici tutte e due.
 - Nome, indirizzo, telefono e dati di pagamento la persona li inserisce solo sulla pagina di pagamento, mai nella chat.
+- **Facoltativo, e solo alla messa online:** un dominio proprio fa parte della messa online (skill `lancieren`, parte 2), quando il sito approvato è in rete. Adesso, più tardi o mai, lo decide la persona. Prima non glielo imponi; cercare nomi liberi può farlo in qualsiasi momento.
 
 ## Procedura
 
 ### 1. L'abbonamento va bene?
 
-I domini propri ci sono con Light e con Pilot, non con Gratis. Verifica con `konto_status`. Se la persona ha Gratis, spiega la differenza e prendi il link con `upgrade_link` (livello `light`). Non imporre niente. Cercare si può con ogni abbonamento. Comprare e collegare si può appena c'è la pagina (Light) o il server (Pilot). Il dominio costa a parte, all'anno, in più dell'abbonamento.
+I domini propri ci sono con Light e con Pilot, non con Gratis. Verifica con `konto_status` e leggi in `docs/lancieren.md` la riga `Wohnort:`. Se la persona ha Gratis, ci sono due casi: se il domicilio non è ancora scelto, prima viene lo skill `lancieren` (parte 1), ed è lì, solo dopo la sua scelta, che c'è il link all'abbonamento. Se il sito abita «da te», compra il dominio presso un registrar a sua scelta e lo collega presso il fornitore (skill `landung`, parte «Direkt vom Computer ins Netz»). Non imporre niente. Cercare si può con ogni abbonamento. Comprare e collegare si può appena c'è la pagina (Light) o il server (Pilot). Il dominio costa a parte, all'anno, in più dell'abbonamento.
 
 ### 2. La persona ha già un indirizzo?
 
@@ -76,7 +77,7 @@ Se le risposte corrispondono ai valori del passo 4, chiama di nuovo `domain_verb
 
 ### 7. Verifica la missione
 
-Apri `https://<domain>` con la persona. Poi `mission_pruefen` con `flugschule-09-domain`.
+Apri `https://<domain>` con la persona. Quando il sito compare lì con il lucchetto, segnali `schritt_melden` con `domain` (Albatros lo vede anche da solo), lo ricontrolli dall'esterno (`node scripts/pruefen.mjs --live https://<domain>`) e scrivi il dominio in `docs/live.md` sotto `Adresse:`. Poi `mission_pruefen` con `flugschule-09-domain`.
 
 ## Se qualcosa si inceppa
 

@@ -1,27 +1,30 @@
 ---
-titel: Going on board
-bild: Get your boarding pass and board
+titel: Fetching your place at Albatros
+bild: Fetching the key for where your site lives
 phase: P11
 ---
 
 ## What it's about
 
-You tell your AI in the terminal what you want to build: a website or a business. Together you get your boarding pass (your Albatros account), and it brings you on board. At the end you have your own server, and a first page is online under your name.
+Your site is built and released, so far entirely on your computer and for free. If it's to live with Albatros, now you fetch the key for it: the plan (Light or Pilot), your house key and your address at `{name}.aufwind.sh`. At first, the Albatros template is what shows there. Your own site only moves in when you go live.
 
 ## What you'll learn
 
-- how your AI in the terminal talks to Albatros
-- why a server only appears once you've added a payment method
-- that passwords and cards belong in the browser only, never in the chat
+- why everything was free up to the release, and why a place on the web costs something
+- that your AI only opens the payment page after you've chosen
+- that passwords and cards only go into the browser, never into the chat
+- why your address shows the template first
 
 ## How you go about it
 
-1. In your terminal, run `/albatros-en:start` (Claude Code) or tell your AI: “Start Albatros”.
-2. Sign in or sign up in the browser.
-3. Choose your path: website or business.
-4. Add a payment method.
-5. Make your house key (next mission) and let the server appear.
+1. You decide with your AI where your site lives (mission “Where your site lives”).
+2. If you choose Albatros, your AI opens the payment page for Light or Pilot. You only enter your card there.
+3. You make your house key (SSH key), if you don't have one yet.
+4. Your AI sets up your site (Light) or your server (Pilot) under your name.
+5. You open your new address together: the template is there.
+
+If you host your site yourself, this mission doesn't apply to you: Albatros can't check your address.
 
 ## Done when
 
-- `https://{name}.aufwind.sh` shows your welcome page in the browser.
+- `https://{name}.aufwind.sh` shows the template or your welcome page in the browser.

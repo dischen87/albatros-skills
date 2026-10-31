@@ -3,7 +3,7 @@ name: sicherheit
 description: "Sécurise le projet d'une personne sans connaissances préalables, avec l'image de la maison avec son trousseau, son coffre-fort, ses fenêtres et ses serrures : jamais de secrets dans le journal de bord (Git), mais dans .env sur le serveur (et, si le tapis roulant en a besoin, dans le coffre-fort du port) ; régénérer tout de suite une clé publiée par erreur ; une clé par usage ; seulement les portes nécessaires ouvertes ; mises à jour. Utilise ce skill pour « sécurité », « mot de passe dans le code », « clé API », « .env », « secret », « j'ai mis une clé sur GitHub », « mon site est-il sûr ? », « je me suis fait pirater », « mises à jour », « pare-feu », et avant qu'un nouveau secret entre dans le projet."
 metadata:
   stand: 0.2.0
-  quelle: 'b5f2e84f617a'
+  quelle: '51d4dfe6fcfe'
 ---
 
 # Sécurité : pas de clé sous le paillasson
@@ -82,7 +82,7 @@ Sur Albatros, la plateforme s'occupe de la porte d'entrée (pare-feu, protection
 
 ### 7. Contrôler la mission
 
-Journal de bord et tapis roulant (skills `git-logbuch`, `pipeline`), puis `mission_pruefen` avec `flugschule-07-sicherheit`. Le contrôle vérifie si `.gitignore` contient `.env` dans le projet (avec Pilot dans `~/projekt` sur le serveur, avec Light dans le port).
+Une entrée dans le journal de bord (skill `git-logbuch`) ; elle arrive au port avec le prochain push, sur le parcours site web à la mise en ligne (skill `lancieren`). Puis `mission_pruefen` avec `flugschule-07-sicherheit`. Le contrôle vérifie si `.gitignore` contient `.env` dans le projet (avec Pilot dans `~/projekt` sur le serveur, avec Light dans le port). Si le site habite par soi-même, Albatros ne peut pas le vérifier.
 
 ## Si quelque chose est arrivé
 

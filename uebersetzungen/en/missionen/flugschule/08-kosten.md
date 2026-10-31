@@ -17,7 +17,7 @@ If you write everything down, the bill never comes as a surprise. You keep an ho
 ## How you go about it
 
 1. Collect all the items with your AI.
-2. Look up the current prices with the providers.
+2. Look up the prices: your AI names the Albatros ones from your account, the others are on the providers' pricing pages.
 3. Mark the traps and set caps.
 4. Write the household budget book into the project and set a date for the next review.
 

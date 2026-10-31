@@ -36,8 +36,8 @@ Dein Haus ist geplant, gebaut und abgenommen. Jetzt braucht es einen Ort, an dem
 1. Deine KI zeigt dir die Möglichkeiten, mit den Preisen aus deinem Konto.
 2. Du wählst, wo deine Seite wohnt. Deine KI schreibt die Wahl mit Grund in `docs/lancieren.md`.
 3. Bei Albatros öffnet deine KI die Seite zum Bezahlen erst nach deiner Wahl. Kartendaten tippst du nur dort, nie im Chat.
-4. Du machst deinen Hausschlüssel (SSH-Schlüssel), wenn dein Wohnort einen braucht.
-5. Deine KI prüft die neue Adresse. Dort steht zuerst die Vorlage, deine Seite kommt erst beim Live schalten.
+4. Du machst deinen Hausschlüssel (SSH-Schlüssel), wenn dein Wohnort einen braucht. Bei «selbst» legst du das Konto beim Anbieter selbst an.
+5. Bei Albatros prüft deine KI die neue Adresse. Dort steht zuerst die Vorlage, deine Seite kommt erst beim Live schalten.
 
 ## Geschafft, wenn
 

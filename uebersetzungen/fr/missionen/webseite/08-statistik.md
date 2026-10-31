@@ -18,12 +18,12 @@ optional: true
 
 ## Comment t'y prendre
 
-1. Écrire un petit plan des événements.
+1. Écrire un petit plan des événements. Si tu comptes, tu l'as décidé en préparant l'exploitation (`docs/betrieb.md`).
 2. Créer un projet PostHog avec l'emplacement EU.
-3. Faire l'intégration sur le site, avec un réglage sans cookies.
+3. Faire l'intégration sur le site, avec un réglage sans cookies, la regarder sur ton ordinateur et la valider. Comme chaque changement, elle ne va en ligne qu'après ta validation.
 4. Déclencher l'événement cible après le succès, et tester.
 
 ## Réussi quand
 
 - le plan des événements `docs/statistik.md` se trouve dans ton projet
-- et ton site contient l'intégration de PostHog.
+- et ton site contient l'intégration de PostHog. Si ton site habite par toi-même, Albatros ne peut pas le vérifier.

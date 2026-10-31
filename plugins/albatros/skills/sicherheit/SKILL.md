@@ -80,7 +80,7 @@ Auf Albatros kümmert sich die Plattform um die Haustür (Firewall, Schutz gegen
 
 ### 7. Mission prüfen
 
-Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`), dann `mission_pruefen` mit `flugschule-07-sicherheit`. Die Prüfung schaut, ob `.gitignore` im Projekt `.env` enthält (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
+Ein Eintrag ins Logbuch (Skill `git-logbuch`); in den Hafen kommt er mit dem nächsten Push, auf dem Weg Webseite beim Live schalten (Skill `lancieren`). Dann `mission_pruefen` mit `flugschule-07-sicherheit`. Die Prüfung schaut, ob `.gitignore` im Projekt `.env` enthält (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen). Wohnt die Seite selbst, kann Albatros das nicht prüfen.
 
 ## Wenn etwas passiert ist
 

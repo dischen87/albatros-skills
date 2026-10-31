@@ -1,0 +1,3 @@
+/               200
+Verwaltung nur für mich
+/mitglieder     nur mit Anmeldung

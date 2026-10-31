@@ -26,7 +26,7 @@ Wer alles aufschreibt, erlebt keine Überraschung auf der Rechnung. Du machst ei
 ## So gehst du vor
 
 1. Mit deiner KI alle Posten sammeln.
-2. Die aktuellen Preise bei den Anbietern nachschauen.
+2. Die Preise nachschauen: die von Albatros nennt deine KI aus deinem Konto, die anderen stehen auf den Preisseiten der Anbieter.
 3. Fallen markieren und Deckel setzen.
 4. Das Haushaltsbuch ins Projekt schreiben und ein Datum für die nächste Überprüfung festlegen.
 

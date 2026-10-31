@@ -1,6 +1,6 @@
 ---
 name: domain
-description: 'Findet, kauft oder verbindet eine eigene Domain (z. B. meinladen.ch) für die Seite oder den Server bei Albatros, mit Light wie mit Pilot. Erklärt Domain und DNS mit dem Bild von Adresse und Telefonbuch, schlägt Namen vor, sucht mit domain_suchen, was frei ist, und kauft über Albatros mit domain_kaufen (die Person ist Inhaberin, ihre Angaben gibt sie nur auf der Zahlungsseite ein). Eine Domain, die die Person schon hat, verbindet der Skill mit domain_verbinden: DNS-Einträge, TXT-Beweis _albatros und Prüfung, bis die Seite mit Schloss im Browser erscheint. Nutze den Skill bei «eigene Domain», «meine Adresse», «.ch kaufen», «welche Domain ist frei», «Domain suchen», «DNS», «A-Eintrag», «CNAME», «TXT-Eintrag», «Domain zeigt nicht auf meine Seite», «Zertifikat», «https geht nicht».'
+description: 'Findet, kauft oder verbindet eine eigene Domain (z. B. meinladen.ch) für die Seite oder den Server bei Albatros, mit Light wie mit Pilot; freiwillig, beim Live schalten (P13). Erklärt Domain und DNS mit dem Bild von Adresse und Telefonbuch, schlägt Namen vor, sucht mit domain_suchen, was frei ist, und kauft über Albatros mit domain_kaufen (die Person ist Inhaberin, ihre Angaben gibt sie nur auf der Zahlungsseite ein). Eine Domain, die die Person schon hat, verbindet der Skill mit domain_verbinden: DNS-Einträge, TXT-Beweis _albatros und Prüfung, bis die Seite mit Schloss im Browser erscheint. Nutze den Skill bei «eigene Domain», «meine Adresse», «.ch kaufen», «welche Domain ist frei», «Domain suchen», «DNS», «A-Eintrag», «CNAME», «TXT-Eintrag», «Domain zeigt nicht auf meine Seite», «Zertifikat», «https geht nicht».'
 metadata:
   stand: 0.2.0
 ---
@@ -23,12 +23,13 @@ Deine Seite ist schon unter `{name}.aufwind.sh` erreichbar. Mit einer eigenen Do
 - **Nicht nur fragen:** Fehlt das Projekt oder eine Angabe, gib trotzdem die konkreten Schritte oder schreib die Datei als Entwurf mit markierten Annahmen (`[Annahme: …]`). Frag erst am Schluss nach dem, was fehlt.
 - Du-Form, kurze Sätze, kein Fachjargon. «Eintrag im Telefonbuch» statt «DNS Record», bis die Person die Wörter in der Oberfläche ihres Registrars sieht. Dann nennst du beide.
 - Name, Adresse, Telefon und Zahlungsangaben gibt die Person nur auf der Zahlungsseite ein, nie im Chat.
+- **Freiwillig, und erst beim Live schalten:** Eine eigene Domain gehört zum Live schalten (Skill `lancieren`, Teil 2), wenn die freigegebene Seite im Netz ist. Ob jetzt, später oder nie, entscheidet die Person. Vorher drängst du sie nicht auf; nach freien Namen suchen darf sie jederzeit.
 
 ## Ablauf
 
 ### 1. Passt das Abo?
 
-Eigene Domains gibt es mit Light und mit Pilot, nicht mit Gratis. Prüf mit `konto_status`. Hat die Person Gratis, erklär den Unterschied und hol mit `upgrade_link` (Stufe `light`) den Link. Nichts aufdrängen. Suchen geht mit jedem Abo. Kaufen und verbinden gehen, sobald die Seite (Light) oder der Server (Pilot) steht. Die Domain kostet separat pro Jahr, zusätzlich zum Abo.
+Eigene Domains gibt es mit Light und mit Pilot, nicht mit Gratis. Prüf mit `konto_status` und lies in `docs/lancieren.md` die Zeile `Wohnort:`. Hat die Person Gratis, gibt es zwei Fälle: Ist der Wohnort noch nicht gewählt, kommt zuerst der Skill `lancieren` (Teil 1), dort und nur nach ihrer Wahl gibt es den Link zum Abo. Wohnt die Seite «selbst», kauft sie die Domain bei einem Registrar ihrer Wahl und verbindet sie beim Anbieter (Skill `landung`, Abschnitt «Direkt vom Computer ins Netz»). Nichts aufdrängen. Suchen geht mit jedem Abo. Kaufen und verbinden gehen, sobald die Seite (Light) oder der Server (Pilot) steht. Die Domain kostet separat pro Jahr, zusätzlich zum Abo.
 
 ### 2. Hat die Person schon eine Adresse?
 
@@ -74,7 +75,7 @@ Stimmen die Antworten mit den Werten aus Schritt 4 überein, ruf `domain_verbind
 
 ### 7. Mission prüfen
 
-Öffne `https://<domain>` mit der Person. Dann `mission_pruefen` mit `flugschule-09-domain`.
+Öffne `https://<domain>` mit der Person. Steht die Seite dort mit dem Schloss-Symbol, meldest du `schritt_melden` mit `domain` (Albatros sieht es auch selbst), prüfst sie nochmals von aussen (`node scripts/pruefen.mjs --live https://<domain>`) und trägst die Domain in `docs/live.md` unter `Adresse:` ein. Dann `mission_pruefen` mit `flugschule-09-domain`.
 
 ## Wenn es hakt
 

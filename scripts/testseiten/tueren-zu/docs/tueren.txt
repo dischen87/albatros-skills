@@ -1,0 +1,6 @@
+# Seite ohne Baustein: alles Öffentliche antwortet, der Rest nie
+/               200
+/impressum/     200
+/datenschutz    200
+/verwaltung     404
+/.git/config    404 403

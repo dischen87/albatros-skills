@@ -35,7 +35,7 @@ Bei einer Eröffnung hängt ein Band vor der Tür. Erst wenn alles bereit ist, w
 ## So gehst du vor
 
 1. Deine KI prüft, dass in `docs/prd.md` deine Freigabe steht. Ohne sie geht nichts los.
-2. Sie schickt deine Seite in den Hafen. Mit Light ist sie damit im Netz, mit Pilot liefert das Fliessband sie aus.
+2. Sie schickt deine Seite in den Hafen. Mit Light ist sie damit im Netz, mit Pilot liefert das Fliessband sie aus. Wohnt sie selbst, geht sie zu deinem Anbieter.
 3. Sie prüft deine Seite unter ihrer Adresse von aussen, auch Impressum und Datenschutz.
 4. Du entscheidest, ob du eine eigene Adresse willst: jetzt, später oder nie.
 5. Du sagst, wem du es zuerst erzählst. Deine KI hält alles in `docs/live.md` fest.

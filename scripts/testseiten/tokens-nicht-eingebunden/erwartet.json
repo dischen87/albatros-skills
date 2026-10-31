@@ -1,0 +1,8 @@
+{
+ "befehl": ["--nur", "aussehen"],
+ "exit": 1,
+ "messwerte": "messwerte.json",
+ "ampel": { "aussehen": "rot" },
+ "punkte": ["design/tokens.css ist nicht eingebunden: im Layout importieren und neu bauen"],
+ "nicht": ["ist eingebunden (", "Zwei tokens.css"]
+}

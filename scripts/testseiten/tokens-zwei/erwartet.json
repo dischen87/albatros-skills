@@ -1,0 +1,8 @@
+{
+ "befehl": ["--nur", "aussehen"],
+ "exit": 0,
+ "messwerte": "messwerte.json",
+ "ampel": { "aussehen": "gelb" },
+ "punkte": ["design/tokens.css ist eingebunden (2 von 2 Werten in seite/)", "Zwei tokens.css: web/src/styles/tokens.css entfernen, es gilt nur design/tokens.css"],
+ "nicht": ["nicht eingebunden"]
+}

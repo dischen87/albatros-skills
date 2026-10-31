@@ -1,0 +1,8 @@
+{
+ "befehl": ["--tueren"],
+ "exit": 1,
+ "ausgabe": ["Türen lokal (seite/), 6 Türen", "/verwaltung: 200, erwartet 404"],
+ "messwerte": "tueren.json",
+ "ampel": { "tueren": "rot" },
+ "punkte": ["/: 200, erwartet 200", "/impressum: 200, erwartet 200", "/datenschutz/: 200, erwartet 200", "/verwaltung: 200, erwartet 404", "/.env: 404, erwartet 404", "/docs/plan.md: 404, erwartet 404"]
+}

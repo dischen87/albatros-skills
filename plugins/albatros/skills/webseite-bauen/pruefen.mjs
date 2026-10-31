@@ -1,33 +1,160 @@
 #!/usr/bin/env node
-// Prüfung vor der Freigabe (Skill webseite-bauen, Schritt 7): misst die gebaute Seite wie die vier Prüfungen einer Software-Fabrik
-// und schreibt die Messwerte nach docs/pruefung/messwerte.json. Die Berichte in einfachen Worten schreibt danach die KI.
-//   node scripts/pruefen.mjs                      die gebaute Seite aus seite/, über einen kleinen Server auf diesem Computer
-//   node scripts/pruefen.mjs --live <adresse>     dieselbe Prüfung gegen die Seite im Netz, dazu Titel wie in seite/index.html
-//   --nur sicherheit,ablaeufe,aussehen,code       nur diese Bereiche
-//   --aus <ordner>                                Messwerte und Fotos dorthin statt nach docs/pruefung (für den Durchspiel)
-// Aufruf im Projektordner (mit seite/, meist auch web/ und docs/). Beim ersten Mal lädt das Skript Playwright, axe-core (dieselben
-// Regeln wie pa11y) und Lighthouse nach ~/.cache/albatros-pruefen und Chromium dazu. Zeigt nie Werte von Geheimnissen.
-// Ende mit 1, wenn ein Bereich rot ist, sonst 0.
+// Prüfungen des Skills webseite-bauen auf dem Computer der Person. Misst die gebaute Seite wie die vier Prüfungen einer Software-Fabrik
+// und schreibt die Messwerte nach docs/pruefung/; die Berichte in einfachen Worten schreibt danach die KI.
+//   node scripts/pruefen.mjs --vor-bau              vor dem Bau: Ende mit 2 ohne «Freigegeben zum Bauen: <Datum>» in docs/entwurf.md,
+//                                                    ohne design/entwurf/index.html oder ohne design/tokens.css
+//   node scripts/pruefen.mjs                        die gebaute Seite aus seite/, über einen kleinen Server auf diesem Computer
+//   node scripts/pruefen.mjs --tueren [<adresse>]   die Türen aus docs/tueren.txt (je Zeile Pfad und erwarteter Status ohne Anmeldung):
+//                                                    lokal aus seite/, oder unter <adresse> (Baustein auf diesem Computer, Seite im Netz)
+//   node scripts/pruefen.mjs --vergleich            jede gebaute Seite gegen ihren Entwurf in design/entwurf/: Überschriften, Menüpunkte
+//                                                    und Abschnitte; jede Abweichung gelb, mit Stelle
+//   node scripts/pruefen.mjs --live <adresse>       dieselbe Prüfung gegen die Seite im Netz, dazu Titel wie in seite/index.html
+//   --nur sicherheit,ablaeufe,aussehen,code         nur diese Bereiche
+//   --aus <ordner>                                  Messwerte und Fotos dorthin statt nach docs/pruefung (für Durchspiel und Tests)
+// Aufruf im Projektordner (mit seite/, meist auch web/, design/ und docs/). Beim ersten Mal lädt das Skript Playwright, axe-core (dieselben
+// Regeln wie pa11y) und Lighthouse nach ~/.cache/albatros-pruefen und Chromium dazu; --vor-bau und --tueren brauchen sie nicht. Zeigt nie
+// Werte von Geheimnissen. Ende mit 1, wenn ein Bereich rot ist, mit 2, wenn etwas fehlt, was die Prüfung braucht, sonst mit 0.
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import { homedir } from 'node:os';
-import { extname, join, relative, sep } from 'node:path';
+import { extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const args = process.argv.slice(2);
 const wert = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
 const LIVE = wert('--live')?.replace(/\/$/, '');
 const NUR = new Set((wert('--nur') ?? 'sicherheit,ablaeufe,aussehen,code').split(','));
+// --tueren ohne Adresse prüft lokal, was in seite/ liegt
+const TUEREN = !args.includes('--tueren') ? null : /^https?:\/\//.test(wert('--tueren') ?? '') ? wert('--tueren').replace(/\/$/, '') : 'lokal';
+const VERGLEICH = args.includes('--vergleich');
 const WURZEL = process.cwd();
 const SEITE = join(WURZEL, 'seite');
-const AUS = wert('--aus') ?? join(WURZEL, 'docs', 'pruefung');
+const ENTWURF = join(WURZEL, 'design', 'entwurf');
+const AUS = resolve(wert('--aus') ?? join(WURZEL, 'docs', 'pruefung'));
 const SELBST = fileURLToPath(import.meta.url);
 const WIN = process.platform === 'win32';
-if (!LIVE && !existsSync(join(SEITE, 'index.html'))) {
-  console.error('seite/index.html fehlt: zuerst in web/ «npm run build» (outDir ../seite).');
-  process.exit(2);
+const fehlt = (...texte) => { console.error(texte.join('\n')); process.exit(2); };
+
+const alle = (d) => (existsSync(d) ? readdirSync(d, { withFileTypes: true }) : [])
+  .flatMap((e) => (['node_modules', '.git', '.astro', '.cache'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
+const rel = (f) => relative(WURZEL, f).split(sep).join('/');
+
+// ---------- Vor dem Bau: gebaut wird nur ein Entwurf mit Freigabe zum Bauen (Skill entwurf); es zählt die letzte solche Zeile ----------
+if (args.includes('--vor-bau')) {
+  const md = join(WURZEL, 'docs', 'entwurf.md');
+  const zeilen = existsSync(md) ? readFileSync(md, 'utf8').split('\n').map((z) => z.replace(/^[\s>*-]*/, '')).filter((z) => z.startsWith('Freigegeben zum Bauen:')) : [];
+  const freigabe = zeilen.at(-1)?.slice('Freigegeben zum Bauen:'.length).replace(/\*/g, '').trim() ?? '';
+  // Ein Datum steht vorne (31.10.2026, 2026-10-31, 31. Oktober 2026); leer, «[offen …]» oder «<Datum>» ist keine Freigabe
+  const datiert = /^\d{1,4}[./\- ]/.test(freigabe) && /\b(19|20)\d\d\b/.test(freigabe);
+  const luecken = [
+    !existsSync(md) ? 'docs/entwurf.md fehlt: zuerst die ganze Seite entwerfen und freigeben lassen (Skill entwurf).'
+      : !datiert && 'docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>». Gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).',
+    !existsSync(join(ENTWURF, 'index.html')) && 'design/entwurf/index.html fehlt: gebaut wird aus dem Entwurf (Skill entwurf).',
+    !existsSync(join(WURZEL, 'design', 'tokens.css')) && 'design/tokens.css fehlt: Farben, Schriften und Abstände kommen aus dem Designsystem (Skill gestaltung).',
+  ].filter(Boolean);
+  if (luecken.length) fehlt('Noch nicht bauen:', ...luecken.map((l) => `- ${l}`));
+  const n = alle(ENTWURF).filter((f) => f.endsWith('.html')).length;
+  console.log(`Freigegeben zum Bauen: ${freigabe}. Entwurf mit ${n} ${n === 1 ? 'Seite' : 'Seiten'} in design/entwurf/. Es darf gebaut werden.`);
+  process.exit(0);
+}
+
+const LOKAL = !LIVE && (!TUEREN || TUEREN === 'lokal');
+if (LOKAL && !existsSync(join(SEITE, 'index.html'))) fehlt('seite/index.html fehlt: zuerst in web/ «npm run build» (outDir ../seite).');
+if (VERGLEICH && !existsSync(join(ENTWURF, 'index.html'))) fehlt('design/entwurf/index.html fehlt: verglichen wird mit dem freigegebenen Entwurf (Skill entwurf).');
+
+// Wie Albatros ausliefert: /a → a, a.html oder a/index.html
+const datei = (wurzel, p) => {
+  let roh;
+  try { roh = decodeURIComponent(p.split(/[?#]/)[0]); } catch { return null; }
+  if (roh.split('/').includes('..')) return null;
+  for (const k of [roh, `${roh}.html`, join(roh, 'index.html')]) {
+    const f = join(wurzel, k);
+    if (existsSync(f) && statSync(f).isFile()) return f;
+  }
+  return null;
+};
+const pfad = (wurzel, f) => `/${relative(wurzel, f).split(sep).join('/')}`.replace(/(^|\/)index\.html$/, '$1').replace(/\.html$/, '');
+const seitenIn = (wurzel) => alle(wurzel).filter((f) => f.endsWith('.html') && !/(^|[/\\])404\.html$/.test(f)).map((f) => pfad(wurzel, f))
+  .sort((a, b) => a.split('/').length - b.split('/').length || a.localeCompare(b));
+const TYPEN = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2', '.woff': 'font/woff', '.pdf': 'application/pdf', '.txt': 'text/plain', '.xml': 'application/xml' };
+// Ein kleiner Server auf diesem Computer, der einen Ordner so ausliefert wie Albatros
+const statisch = async (wurzel) => {
+  const s = createServer((q, a) => {
+    const f = datei(wurzel, q.url ?? '/');
+    a.writeHead(f ? 200 : 404, { 'content-type': f ? (TYPEN[extname(f).toLowerCase()] ?? 'application/octet-stream') : 'text/plain' });
+    a.end(f ? readFileSync(f) : 'Nicht gefunden');
+  }).listen(0, '127.0.0.1');
+  await new Promise((r) => s.once('listening', r));
+  return { adresse: `http://127.0.0.1:${s.address().port}`, zu: () => s.close() };
+};
+const IMPRESSUM = /impressum|imprint|legal|mentions-legales|note-legali/i;
+const DATENSCHUTZ = /datenschutz|privacy|confidentialit|protezione/i;
+
+// Ergebnis: je Bereich eine Ampel (die schlechteste ihrer Punkte) und die Punkte
+// hinweis: etwas, das die KI selbst tun muss (Fotos anschauen, Formular ausprobieren); ändert die Ampel nicht
+const STUFE = { hinweis: -1, grün: 0, gelb: 1, rot: 2 };
+const NAMEN = { sicherheit: 'Sicherheit und Recht', ablaeufe: 'Abläufe und Zugang', aussehen: 'Aussehen', code: 'Code und Tempo', live: 'Im Netz',
+  tueren: 'Türen (wer darf was)', vergleich: 'Vergleich mit dem Entwurf' };
+const BEREICHE = TUEREN ? ['tueren'] : VERGLEICH ? ['vergleich']
+  : [...['sicherheit', 'ablaeufe', 'aussehen', 'code'].filter((k) => NUR.has(k)), ...(LIVE ? ['live'] : [])];
+const B = Object.fromEntries(BEREICHE.map((k) => [k, { ampel: 'grün', punkte: [] }]));
+const melde = (b, ampel, text, details) => {
+  if (!B[b]) return;
+  B[b].punkte.push(details?.length ? { ampel, text, details: details.slice(0, 20) } : { ampel, text });
+  if (STUFE[ampel] > STUFE[B[b].ampel]) B[b].ampel = ampel;
+};
+// Messwerte schreiben und die Ampeln zeigen; Ende mit 1, wenn ein Bereich rot ist
+const schluss = (name, titel, kopf) => {
+  mkdirSync(AUS, { recursive: true });
+  writeFileSync(join(AUS, name), `${JSON.stringify({ zeit: new Date().toISOString(), ...kopf, bereiche: B }, null, 1)}\n`);
+  console.log(`\n${titel}. Messwerte: ${AUS.startsWith(WURZEL) ? rel(join(AUS, name)) : join(AUS, name)}`);
+  for (const [k, b] of Object.entries(B)) {
+    console.log(`\n${b.ampel === 'grün' ? '🟢' : b.ampel === 'gelb' ? '🟡' : '🔴'} ${NAMEN[k]}: ${b.ampel}`);
+    for (const x of b.punkte.filter((y) => y.ampel !== 'grün' || b.punkte.length <= 4)) console.log(`   ${x.ampel.padEnd(7)} ${x.text}`);
+  }
+  process.exit(Object.values(B).some((b) => b.ampel === 'rot') ? 1 : 0);
+};
+
+// ---------- Türen: jede Adresse aus docs/tueren.txt antwortet ohne Anmeldung so, wie es im PRD unter «Zugang» steht ----------
+if (TUEREN) {
+  const liste = join(WURZEL, 'docs', 'tueren.txt');
+  const FORM = 'docs/tueren.txt: je Zeile ein Pfad und der erwartete Status ohne Anmeldung, zum Beispiel «/verwaltung 404» oder «/mitglieder 401 403»; Kommentare nach #.';
+  if (!existsSync(liste)) fehlt(`docs/tueren.txt fehlt. ${FORM}`);
+  const tueren = [];
+  const unlesbar = [];
+  readFileSync(liste, 'utf8').split('\n').forEach((z, i) => {
+    const t = z.replace(/#.*$/, '').trim();
+    if (!t) return;
+    const p = /^\/\S*/.exec(t)?.[0];
+    const soll = [...t.slice(p?.length ?? 0).matchAll(/\b[1-5]\d\d\b/g)].map((m) => Number(m[0]));
+    if (p && soll.length) tueren.push({ pfad: p, soll });
+    else unlesbar.push(`Zeile ${i + 1} nicht lesbar: ${t}`);
+  });
+  if (unlesbar.length || !tueren.length) fehlt(FORM, ...unlesbar);
+  const server = TUEREN === 'lokal' ? await statisch(SEITE) : null;
+  const basis = server?.adresse ?? TUEREN;
+  // Status ohne Anmeldung. Einer Umleitung auf dieselbe Adresse mit oder ohne «/» am Ende (/a → /a/) folgt sie, jede andere zählt selbst
+  const status = async (p) => {
+    let u = new URL(p, basis);
+    for (let schritt = 0; ; schritt++) {
+      const r = await fetch(u, { redirect: 'manual', signal: AbortSignal.timeout(10_000) }).catch(() => null);
+      if (!r) return 0;
+      await r.body?.cancel().catch(() => {});
+      const ziel = r.status >= 300 && r.status < 400 && r.headers.get('location') ? new URL(r.headers.get('location'), u) : null;
+      if (!ziel || ziel.origin !== u.origin || ziel.pathname.replace(/\/$/, '') !== u.pathname.replace(/\/$/, '') || schritt === 3) return r.status;
+      u = ziel;
+    }
+  };
+  for (const t of tueren) {
+    const ist = await status(t.pfad);
+    melde('tueren', t.soll.includes(ist) ? 'grün' : 'rot', `${t.pfad}: ${ist || 'keine Antwort'}, erwartet ${t.soll.join(' oder ')}`);
+  }
+  server?.zu();
+  schluss('tueren.json', `Türen ${server ? 'lokal (seite/)' : `unter ${basis}`}, ${tueren.length} Türen`, { adresse: server ? 'seite/ (lokal)' : basis });
 }
 
 // Werkzeuge einmal in einen eigenen Ordner, nie ins Projekt der Person
@@ -42,36 +169,86 @@ const { chromium } = createRequire(join(WERKZEUGE, 'package.json'))('playwright'
 if (!existsSync(chromium.executablePath())) execFileSync(process.execPath, [modul('playwright', 'cli.js'), 'install', 'chromium'], { stdio: 'inherit' });
 const AXE = readFileSync(modul('axe-core', 'axe.min.js'), 'utf8');
 
-// Ergebnis: je Bereich eine Ampel (die schlechteste ihrer Punkte) und die Punkte
-// hinweis: etwas, das die KI selbst tun muss (Fotos anschauen, Formular ausprobieren); ändert die Ampel nicht
-const STUFE = { hinweis: -1, grün: 0, gelb: 1, rot: 2 };
-const NAMEN = { sicherheit: 'Sicherheit und Recht', ablaeufe: 'Abläufe und Zugang', aussehen: 'Aussehen', code: 'Code und Tempo', live: 'Im Netz' };
-const B = Object.fromEntries([...NUR, ...(LIVE ? ['live'] : [])].filter((k) => NAMEN[k]).map((k) => [k, { ampel: 'grün', punkte: [] }]));
-const melde = (b, ampel, text, details) => {
-  if (!B[b]) return;
-  B[b].punkte.push(details?.length ? { ampel, text, details: details.slice(0, 20) } : { ampel, text });
-  if (STUFE[ampel] > STUFE[B[b].ampel]) B[b].ampel = ampel;
-};
-
-const alle = (d) => (existsSync(d) ? readdirSync(d, { withFileTypes: true }) : [])
-  .flatMap((e) => (['node_modules', '.git', '.astro', '.cache'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
-const rel = (f) => relative(WURZEL, f).split(sep).join('/');
-// Wie Albatros ausliefert: /a → a, a.html oder a/index.html
-const datei = (p) => {
-  const roh = decodeURIComponent(p.split(/[?#]/)[0]);
-  if (roh.split('/').includes('..')) return null;
-  for (const k of [roh, `${roh}.html`, join(roh, 'index.html')]) {
-    const f = join(SEITE, k);
-    if (existsSync(f) && statSync(f).isFile()) return f;
+// ---------- Vergleich mit dem Entwurf: was die Person im Entwurf freigegeben hat, steht auch im Bau ----------
+// Unterschiede zweier Listen über die längste gemeinsame Folge: je Lücke paarweise [Nr. und Text im Entwurf, Nr. und Text im Bau]
+const unterschiede = (a, b) => {
+  const gleich = (x, y) => x.toLowerCase() === y.toLowerCase();
+  const L = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let i = a.length - 1; i >= 0; i--) for (let j = b.length - 1; j >= 0; j--) L[i][j] = gleich(a[i], b[j]) ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const aus = [];
+  let [i, j, nurA, nurB] = [0, 0, [], []];
+  const paare = () => { for (let k = 0; k < Math.max(nurA.length, nurB.length); k++) aus.push([nurA[k], nurB[k]]); nurA = []; nurB = []; };
+  while (i < a.length || j < b.length) {
+    if (i < a.length && j < b.length && gleich(a[i], b[j])) { paare(); i++; j++; }
+    else if (j >= b.length || (i < a.length && L[i + 1][j] >= L[i][j + 1])) { nurA.push([i + 1, a[i]]); i++; }
+    else { nurB.push([j + 1, b[j]]); j++; }
   }
-  return null;
+  paare();
+  return aus;
 };
-const pfad = (f) => `/${relative(SEITE, f).split(sep).join('/')}`.replace(/(^|\/)index\.html$/, '$1').replace(/\.html$/, '');
-const SEITEN = alle(SEITE).filter((f) => f.endsWith('.html') && !/(^|[/\\])404\.html$/.test(f)).map(pfad)
-  .sort((a, b) => a.split('/').length - b.split('/').length || a.localeCompare(b));
+if (VERGLEICH) {
+  const [entwurf, bau] = [await statisch(ENTWURF), await statisch(SEITE)];
+  // Seiten gehören zusammen über ihren Pfad (/angebot.html im Entwurf, /angebot/ im Bau), sonst über den letzten Teil, wenn er eindeutig ist
+  const schluessel = (p) => (p === '/' ? '/' : p.replace(/\/$/, ''));
+  const imEntwurf = new Map(seitenIn(ENTWURF).map((p) => [schluessel(p), p]));
+  const imBau = new Map(seitenIn(SEITE).map((p) => [schluessel(p), p]));
+  const entwurfsDatei = (p) => rel(datei(ENTWURF, p) ?? ENTWURF);
+  const verglichen = new Set();
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    // Was die Person sieht, nach dem Laden (auch was ein Skript einfügt): Überschriften, Menü im Kopf, Abschnitte im Inhalt
+    const bauplan = async (url) => {
+      const r = await page.goto(url, { waitUntil: 'load', timeout: 30_000 }).catch(() => null);
+      if (r?.status() !== 200) return null;
+      return page.evaluate(() => {
+        const text = (e) => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+        const ziel = (a) => {
+          const u = new URL(a.getAttribute('href') ?? '', location.href);
+          return u.origin !== location.origin ? `${u.host}${u.pathname}` : `${u.pathname.replace(/(index)?\.html$/, '').replace(/(.)\/$/, '$1') || '/'}${u.hash}`;
+        };
+        const nav = document.querySelector('header nav') ?? document.querySelector('nav');
+        const inhalt = document.querySelector('main') ?? document.body;
+        return {
+          Überschrift: [...document.querySelectorAll('h1, h2, h3')].map((h) => `${h.tagName.toLowerCase()} «${text(h)}»`),
+          Menüpunkt: [...(nav?.querySelectorAll('a') ?? [])].map((a) => `«${text(a)}» → ${ziel(a)}`),
+          Abschnitt: [...inhalt.querySelectorAll('section')].filter((s) => !s.parentElement?.closest('section'))
+            .map((s) => `«${s.id || s.getAttribute('aria-label') || text(s.querySelector('h1, h2, h3')) || 'ohne Titel'}»`),
+        };
+      });
+    };
+    for (const [k, p] of imEntwurf) {
+      const gleichNamig = [...imBau.keys()].filter((x) => x.split('/').at(-1) === k.split('/').at(-1));
+      const kb = imBau.has(k) ? k : gleichNamig.length === 1 ? gleichNamig[0] : null;
+      if (!kb) { melde('vergleich', 'gelb', `${k}: Seite aus dem Entwurf fehlt im Bau (${entwurfsDatei(p)})`); continue; }
+      verglichen.add(kb);
+      const e = await bauplan(entwurf.adresse + p);
+      const b = await bauplan(bau.adresse + imBau.get(kb));
+      if (!e || !b) { melde('vergleich', 'rot', `${k}: ${e ? 'die gebaute Seite' : 'der Entwurf'} lässt sich nicht laden`); continue; }
+      const stelle = kb === k ? k : `${k} (im Bau ${kb})`;
+      let n = 0;
+      for (const art of Object.keys(e)) {
+        for (const [x, y] of unterschiede(e[art], b[art])) {
+          n++;
+          melde('vergleich', 'gelb', x && y ? `${stelle}: ${art} geändert: Entwurf Nr. ${x[0]} ${x[1]}, Bau Nr. ${y[0]} ${y[1]}`
+            : x ? `${stelle}: ${art} fehlt im Bau: Entwurf Nr. ${x[0]} ${x[1]}` : `${stelle}: ${art} nicht im Entwurf: Bau Nr. ${y[0]} ${y[1]}`);
+        }
+      }
+      if (!n) melde('vergleich', 'grün', `${stelle}: Überschriften, Menü und Abschnitte wie im Entwurf`);
+    }
+  } finally {
+    await browser.close();
+  }
+  // Impressum und Datenschutz gehören nicht in den Entwurf, alle anderen Seiten schon
+  const neu = [...imBau.keys()].filter((k) => !verglichen.has(k) && !IMPRESSUM.test(k) && !DATENSCHUTZ.test(k));
+  if (neu.length) melde('vergleich', 'gelb', `Seiten im Bau, die nicht im Entwurf stehen: ${neu.join(', ')}`, neu);
+  entwurf.zu();
+  bau.zu();
+  schluss('vergleich.json', `Vergleich mit dem Entwurf, ${imEntwurf.size} Seiten im Entwurf, ${imBau.size} im Bau`, { adresse: 'seite/ (lokal) gegen design/entwurf/' });
+}
+
+const SEITEN = seitenIn(SEITE);
 if (!SEITEN.length) SEITEN.push('/');
-const IMPRESSUM = /impressum|imprint|legal|mentions-legales|note-legali/i;
-const DATENSCHUTZ = /datenschutz|privacy|confidentialit|protezione/i;
 
 // ---------- Sicherheit und Recht ----------
 if (B.sicherheit) {
@@ -104,7 +281,7 @@ if (B.sicherheit) {
   }
 }
 
-// ---------- Aussehen (Code): nur Tokens, Hinweise auf KI-Look ----------
+// ---------- Aussehen (Code): Tokens aus design/tokens.css eingebunden, nur Tokens im Code, Hinweise auf KI-Look ----------
 const quellen = alle(join(WURZEL, 'web', 'src')).filter((f) => /\.(astro|css|scss|jsx|tsx|vue|svelte|html|md|mdx)$/.test(f));
 if (B.aussehen) {
   const vonHand = [];
@@ -115,7 +292,19 @@ if (B.aussehen) {
       if (/(linear|radial|conic)-gradient/.test(z)) verlaeufe.push(`${rel(f)}:${i + 1}`);
     });
   }
-  if (!quellen.some((f) => /tokens\.css$/.test(f))) melde('aussehen', 'rot', 'web/src/styles/tokens.css fehlt');
+  // Die Tokens stehen in design/tokens.css (Skill gestaltung); ältere Projekte haben sie noch in web/src/styles/tokens.css
+  const [NEU, ALT] = [join(WURZEL, 'design', 'tokens.css'), join(WURZEL, 'web', 'src', 'styles', 'tokens.css')];
+  const TOKENS = [NEU, ALT].find((f) => existsSync(f));
+  if (!TOKENS) melde('aussehen', 'rot', 'design/tokens.css fehlt (ältere Projekte: web/src/styles/tokens.css)');
+  else {
+    // Eingebunden heisst: Die Werte aus tokens.css stehen in der gebauten Seite (in einer CSS-Datei oder im <style> der Seite)
+    const namen = [...new Set([...readFileSync(TOKENS, 'utf8').matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]))];
+    const gebaut = alle(SEITE).filter((f) => /\.(css|html)$/.test(f)).map((f) => readFileSync(f, 'utf8')).join('\n');
+    const da = namen.filter((n) => gebaut.includes(`${n}:`));
+    melde('aussehen', da.length ? 'grün' : 'rot', da.length ? `${rel(TOKENS)} ist eingebunden (${da.length} von ${namen.length} Werten in seite/)`
+      : `${rel(TOKENS)} ist nicht eingebunden: im Layout importieren und neu bauen`);
+    if (TOKENS === NEU && existsSync(ALT)) melde('aussehen', 'gelb', 'Zwei tokens.css: web/src/styles/tokens.css entfernen, es gilt nur design/tokens.css');
+  }
   melde('aussehen', vonHand.length ? 'gelb' : 'grün', vonHand.length ? `Farben oder Schriftgrössen von Hand statt aus tokens.css: ${vonHand.length} Stellen` : 'Farben und Schriftgrössen nur aus tokens.css', vonHand);
   if (verlaeufe.length) melde('aussehen', 'gelb', `Verläufe (KI-Merkmal, mit den Fotos prüfen): ${verlaeufe.length}`, verlaeufe);
   const schriften = quellen.flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/font-family\s*:\s*([^;}\n]+)/g)].map((m) => m[1].trim()));
@@ -128,16 +317,8 @@ if (B.aussehen) {
 const FLOSKELN = /willkommen auf unserer|entdecken sie|ihr partner für|mit leidenschaft|innovativ|nahtlos|bienvenue sur notre|découvrez|votre partenaire|benvenuti sul nostro|scopri|il vostro partner|welcome to our website|discover|your partner for|seamless|cutting-edge|lorem ipsum/gi;
 const EMOJI = /\p{Extended_Pictographic}/u;
 const name = (p) => (p === '/' ? 'start' : p.replace(/^\/|\/$/g, '').replace(/\//g, '-'));
-const TYPEN = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml',
-  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon',
-  '.woff2': 'font/woff2', '.woff': 'font/woff', '.pdf': 'application/pdf', '.txt': 'text/plain', '.xml': 'application/xml' };
-const server = LIVE ? null : createServer((q, a) => {
-  const f = datei(q.url ?? '/');
-  a.writeHead(f ? 200 : 404, { 'content-type': f ? (TYPEN[extname(f).toLowerCase()] ?? 'application/octet-stream') : 'text/plain' });
-  a.end(f ? readFileSync(f) : 'Nicht gefunden');
-}).listen(0, '127.0.0.1');
-if (server) await new Promise((r) => server.once('listening', r));
-const BASIS = LIVE ?? `http://127.0.0.1:${server.address().port}`;
+const server = LIVE ? null : await statisch(SEITE);
+const BASIS = LIVE ?? server.adresse;
 const titel = {};
 
 const browser = await chromium.launch();
@@ -175,7 +356,7 @@ try {
         if (!z || /^(#|mailto:|tel:|javascript:|data:)/i.test(z)) continue;
         const u = new URL(z, BASIS + p);
         if (u.origin !== new URL(BASIS).origin || geprueft.has(u.pathname)) continue;
-        const ok = LIVE ? (await fetch(u, { method: 'HEAD', signal: AbortSignal.timeout(10_000) }).catch(() => null))?.ok ?? false : !!datei(u.pathname);
+        const ok = LIVE ? (await fetch(u, { method: 'HEAD', signal: AbortSignal.timeout(10_000) }).catch(() => null))?.ok ?? false : !!datei(SEITE, u.pathname);
         geprueft.set(u.pathname, ok);
         if (!ok) melde('ablaeufe', 'rot', `Toter Link auf ${p}: ${u.pathname}`);
       }
@@ -282,13 +463,6 @@ if (LIVE) {
     melde('live', p && titel[p] !== undefined ? 'grün' : 'rot', p ? `${n} im Netz: ${p}` : `${n} nicht gefunden`);
   }
 }
-server?.close();
+server?.zu();
 
-mkdirSync(AUS, { recursive: true });
-writeFileSync(join(AUS, LIVE ? 'messwerte-live.json' : 'messwerte.json'), `${JSON.stringify({ zeit: new Date().toISOString(), adresse: LIVE ?? 'seite/ (lokal)', seiten: SEITEN, bereiche: B }, null, 1)}\n`);
-console.log(`\nPrüfung ${LIVE ? `im Netz (${LIVE})` : 'lokal'}, ${SEITEN.length} Seiten. Messwerte: ${rel(join(AUS, LIVE ? 'messwerte-live.json' : 'messwerte.json'))}`);
-for (const [k, b] of Object.entries(B)) {
-  console.log(`\n${b.ampel === 'grün' ? '🟢' : b.ampel === 'gelb' ? '🟡' : '🔴'} ${NAMEN[k]}: ${b.ampel}`);
-  for (const x of b.punkte.filter((y) => y.ampel !== 'grün' || b.punkte.length <= 4)) console.log(`   ${x.ampel.padEnd(7)} ${x.text}`);
-}
-process.exit(Object.values(B).some((b) => b.ampel === 'rot') ? 1 : 0);
+schluss(LIVE ? 'messwerte-live.json' : 'messwerte.json', `Prüfung ${LIVE ? `im Netz (${LIVE})` : 'lokal'}, ${SEITEN.length} Seiten`, { adresse: LIVE ?? 'seite/ (lokal)', seiten: SEITEN });

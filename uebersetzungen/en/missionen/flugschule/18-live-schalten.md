@@ -26,7 +26,7 @@ At an opening, a ribbon hangs across the door. It only gets cut when everything 
 ## How you go about it
 
 1. Your AI checks that your release is in `docs/prd.md`. Without it, nothing goes.
-2. It sends your site to the harbour. With Light it's then on the web; with Pilot the conveyor belt delivers it.
+2. It sends your site to the harbour. With Light it's then on the web; with Pilot the conveyor belt delivers it. If you host it yourself, it goes to your provider.
 3. It checks your site from outside at its address, including the legal notice and privacy policy.
 4. You decide whether you want your own address: now, later or never.
 5. You say who you'll tell first. Your AI notes everything in `docs/live.md`.

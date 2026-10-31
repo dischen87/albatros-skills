@@ -1,0 +1,7 @@
+{
+ "befehl": ["--tueren"],
+ "exit": 0,
+ "messwerte": "tueren.json",
+ "ampel": { "tueren": "grün" },
+ "punkte": ["/verwaltung: 404, erwartet 404", "/.git/config: 404, erwartet 404 oder 403"]
+}
