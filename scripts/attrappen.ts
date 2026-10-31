@@ -33,6 +33,7 @@ export const FAELLE: Record<string, Fall> = {
   'p7-entwurf': { insel: 'entwuerfe' },
   'p8-sieht-gut-aus': { insel: 'entwurf' },
   'p8-ja': { insel: 'entwurf' },
+  'webseite-bauen-prd': { insel: 'entwurf-freigegeben' },
   'p10-freigabe': { insel: 'pruefung' },
   'p11-wohnort': { zustand: 'gratis-p10-freigegeben', werkzeuge: { konto_status: {}, upgrade_link: { stufe: 'light', bestaetigt: true } } },
   'p12-betrieb': { zustand: 'selbst-lanciert' },

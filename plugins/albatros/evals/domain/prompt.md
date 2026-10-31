@@ -1,6 +1,6 @@
 ---
 description: Person will gekaufte Domain verbinden
-tags: [kern, flugschule]
+tags: [kern, flugschule, P13]
 runs: 1
 max_turns: 15
 allowed_tools: [Read, Glob, Grep, Skill, Write]

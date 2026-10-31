@@ -1,6 +1,6 @@
 ---
 description: Person schreibt nur «Modernisiere <adresse>»; die KI legt ohne Rückfrage mit der Bestandsaufnahme los
-tags: [kern, webseite]
+tags: [kern, webseite, P2]
 runs: 1
 max_turns: 60
 timeout_seconds: 900
