@@ -45,7 +45,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Idee» · Insel `idee` ·
 
 **Lernmomente:** Warum ein Projekt einen Namen braucht, bevor es etwas gibt · Eine Hauptsache statt fünf
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p1-idee`
 
 ## P2 Konzept und Research
 
@@ -75,7 +75,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Research» · Insel `rech
 
 **Lernmomente:** Abgucken ist erlaubt, kopieren nicht
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p2-research`
 
 ## P3 Plan
 
@@ -106,7 +106,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Grundriss» · Insel `pla
 
 **Lernmomente:** Warum jede Seite gepflegt werden muss
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `gratis-bis-lokal`, `knapp`, `p3-grundriss`
 
 ## P4 Plan prüfen
 
@@ -152,7 +152,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Plan prüfen» · Insel `
 
 **Lernmomente:** Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `lernen-kontrollfrage`, `lernen-verstanden`, `p4-plan-pruefen`
 
 ## P5 Design- und Marketing-Konzept
 
@@ -182,7 +182,7 @@ Etappe abheben · Skill `konzept` · Insel `konzept` · Bild: Der Charakter des 
 
 **Lernmomente:** Charakter vor Farben
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p5-konzept`
 
 ## P6 Designsystem mit Beispiel
 
@@ -210,7 +210,7 @@ Etappe abheben · Skill `gestaltung` · Insel `mockup`, `entwuerfe` · Bild: Die
 
 **Lernmomente:** Warum Farben und Schriften nur an einem Ort stehen
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p6-mockup`
 
 ## P7 Ganze Webseite entwerfen
 
@@ -236,7 +236,7 @@ Etappe abheben · Skill `entwurf` · Insel `entwurf` · Bild: Das begehbare Mode
 
 **Lernmomente:** Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p7-entwurf`
 
 ## P8 Freigabe zum Bauen
 
@@ -256,7 +256,7 @@ Etappe abheben · Skill `entwurf`, Abschnitt «Freigabe» · Insel `entwurf-frei
 
 **Gate:** Zeile «Freigegeben zum Bauen: <Datum>» mit dem Wortlaut der Person; «sieht gut aus» ohne Ja zum Bauen reicht nicht. Ohne diese Zeile baut webseite-bauen nicht (pruefen.mjs --vor-bau).
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `nein-vor-bau`, `p8-ja`, `p8-sieht-gut-aus`
 
 ## P9 Lokal bauen und prüfen
 
@@ -304,7 +304,7 @@ Etappe fliegen · Skill `webseite-bauen`, Abschnitt «Freigabe» · Insel `freig
 
 **Lernmomente:** Einen Text selbst ändern und lokal sehen (Pflicht im Modus lernen, sonst Angebot)
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p10-freigabe`
 
 ## P11 Wohnort einrichten
 
@@ -326,7 +326,7 @@ Etappe fliegen · Skill `lancieren` · Insel `wohnort` · Bild: Entscheiden, wo 
 
 **Lernmomente:** Was ein SSH-Schlüssel ist (Schloss und Schlüssel)
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p11-wohnort`
 
 ## P12 Betrieb vorbereiten
 
@@ -352,7 +352,7 @@ Etappe landen · Skill `betrieb` · Insel `betrieb` · Bild: Briefkasten, Rauchm
 
 **Lernmomente:** Zurück auf gestern
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p12-betrieb`
 
 ## P13 Live schalten
 
@@ -377,7 +377,7 @@ Etappe landen · Skill `lancieren`, Abschnitt «Live schalten» · Insel `hafen`
 
 **Gate:** Push nur mit «Freigegeben:» aus P10; pruefen.mjs --live ohne Rot; Impressum und Datenschutz erreichbar.
 
-**Eval-Fälle:** noch kein Fall
+**Eval-Fälle:** `p13-geaendert`
 
 ## Nach dem Livegang
 
@@ -396,3 +396,5 @@ Aus `KRITERIEN-LOG.md`, ältester Eintrag zuerst.
 |---|---|---|---|
 | 2026-10-31 | alle | Fahrplan-Fassung 2: Phasen P1 bis P13 mit Pflichtfragen (wer antwortet), Ergebnissen mit Pflichtzeilen, Gates, drei Ja-Momenten (P4, P8, P10) und 19 Insel-Schritten; `GUTE-ANTWORT.md` wird daraus erzeugt. | Plan «Fahrplan und Lernschleife», Fassung 2 nach der Gegenprüfung (albatros/docs/plan-fahrplan.md): Was eine gute Antwort ist, soll an einer Stelle festgelegt und messbar sein, statt über 42 Grader verstreut. |
 | 2026-10-31 | alle | Die Phase eines Falls steht als Tag (P1 bis P13) in `tags` der `prompt.md`, nicht mehr im Kopf `phase:`; `scripts/gute-antwort.ts` liest die Tags und meldet einen Kopf `phase:` als Fehler. | Gemessen mit Claude Code 2.1.309 (`plugin eval` mit `--max-cost-usd 0`, ohne Modell): Ein Kopf `phase:` ergibt «unknown frontmatter key "phase"», der Fall lädt nicht. Tags sind erlaubt und filtern mit `--tag P3`. |
+| 2026-10-31 | alle | Messbedingung: Die Attrappe von Albatros zeigt die echte Werkzeugliste (`mocks/albatros/_tools.json`, tools/list mit FAHRPLAN und ERFASSUNG) und hat neu `modus_waehlen`, `verstanden_melden` und `luecke_melden`; `schritt_melden` antwortet im Format mit FAHRPLAN. Erzeugt mit `scripts/attrappen.ts` aus dem echten mcp. | Ohne `_tools.json` sah die KI im Eval nur Werkzeugnamen ohne Beschreibung und ohne Eingaben; die Skills 0.2.0 sind für den Server mit FAHRPLAN geschrieben. Läufe vor diesem Stand sind darum nicht gleichwertig vergleichbar. |
+| 2026-10-31 | p1-idee, p2-research, p3-grundriss, p4-plan-pruefen, p5-konzept, p6-mockup, p7-entwurf, p8-sieht-gut-aus, p8-ja, p10-freigabe, p11-wohnort, p12-betrieb, p13-geaendert, knapp, nein-vor-bau, gratis-bis-lokal, lernen-kontrollfrage, lernen-verstanden, anfrage | Neu (Tag `fahrplan`): je Phase mindestens ein Fall, dazu Personen, die nicht mitspielen. Grader ohne Modell für Pflichtzeilen, Antworten in ihrer Zeile, Annahmen, Werkzeugaufrufe (lage zuerst, richtiger Insel-Schritt, kein Schritt zu weit, kein `upgrade_link` mit `bestaetigt` vor P11), höchstens zwei Fragen und kein ß; ein llm-Grader nur für die Formulierung. lage aus `scripts/attrappen.ts`, Projekt Sonnenhof aus `_projekt/projekt.sh`. | Plan «Fahrplan und Lernschleife», Schnitt B5a: Was eine gute Antwort ist, soll je Phase messbar sein, ohne Modell, wo es geht (fahrplan.yaml: `ergebnis.zeilen`, `pflichtfragen`, `ja_momente`, `gratis_bis`, `fragen_je_nachricht`). |

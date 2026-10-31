@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: nein-vor-bau
+context:
+  scaffold_script: scaffold.sh
