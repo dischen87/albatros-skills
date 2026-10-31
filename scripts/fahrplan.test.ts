@@ -54,4 +54,15 @@ describe('fahrplan.yaml nach der Gegenprüfung', () => {
     phase(leer, 'P13').pflichtfragen[0]!.werte = [];
     expect(await lade(leer)).toContain('/phasen/12/pflichtfragen/0/werte must NOT have fewer than 1 items');
   });
+  // Gegenprobe Welle 5 (31.10.2026, weg-05): P1 ist auf dem Weg Geschäft erst mit «Entscheid: weiter» oder «stoppen» geschafft
+  test('ausgaenge.geschafft: Pflicht, und nur Ausgänge der Phase', async () => {
+    expect(phase(F, 'P1').ausgaenge).toEqual({ geschaeft: ['weiter', 'anpassen', 'stoppen'], geschafft: ['weiter', 'stoppen'], ablage: 'docs/ideen-check.md#Entscheid:' });
+    const ohne = kopie();
+    delete (phase(ohne, 'P1').ausgaenge as Partial<NonNullable<Fahrplan['phasen'][number]['ausgaenge']>>).geschafft;
+    expect(await lade(ohne)).toContain("/phasen/0/ausgaenge must have required property 'geschafft'");
+    const fremd = kopie();
+    phase(fremd, 'P1').ausgaenge!.geschafft = ['weiter', 'vielleicht'];
+    expect(vertragsFehler(fremd)).toEqual(['fahrplan.yaml: P1 ausgaenge.geschafft nennt vielleicht, das ist kein Ausgang der Phase (weiter, anpassen, stoppen)']);
+    expect(await lade(fremd)).toContain('das ist kein Ausgang der Phase');
+  });
 });

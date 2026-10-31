@@ -30,7 +30,7 @@ export type Phase = {
   insel: string[];
   insel_je_wohnort?: Record<Wohnort, string[]>;
   lernmomente?: string[];
-  ausgaenge?: { geschaeft: string[]; ablage: string };
+  ausgaenge?: { geschaeft: string[]; geschafft: string[]; ablage: string }; // geschafft: die Ausgänge, mit denen die Phase geschafft ist
   pflichtfragen: Pflichtfrage[];
   pruefliste?: string[];
   zweite_meinung?: Record<string, string>;
@@ -69,7 +69,7 @@ export async function ladeFahrplan(wurzel: string): Promise<{ ok: true; fahrplan
 }
 
 // Was das Schema an den Feldern vom 31.10.2026 nicht prüfen kann: Insel je Wohnort ist je eine Teilfolge der Insel-Schritte der Phase
-// (gleiche Reihenfolge), und kein Wort steht in zwei Marken
+// (gleiche Reihenfolge), die Ausgänge, mit denen eine Phase geschafft ist, sind Ausgänge dieser Phase, und kein Wort steht in zwei Marken
 export function vertragsFehler(f: Fahrplan): string[] {
   const fehler: string[] = [];
   for (const p of f.phasen) {
@@ -77,6 +77,8 @@ export function vertragsFehler(f: Fahrplan): string[] {
       const liste = p.insel_je_wohnort?.[w];
       if (liste && !teilfolge(liste, p.insel)) fehler.push(`fahrplan.yaml: ${p.id} insel_je_wohnort.${w} (${liste.join(', ')}) ist keine Teilfolge von insel (${p.insel.join(', ')})`);
     }
+    const fremd = p.ausgaenge?.geschafft.filter((a) => !p.ausgaenge!.geschaeft.includes(a)) ?? [];
+    if (fremd.length) fehler.push(`fahrplan.yaml: ${p.id} ausgaenge.geschafft nennt ${fremd.join(', ')}, das ist kein Ausgang der Phase (${p.ausgaenge!.geschaeft.join(', ')})`);
   }
   const gesehen = new Map<string, string>();
   for (const [marke, woerter] of Object.entries(f.marken)) {

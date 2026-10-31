@@ -116,12 +116,13 @@
       }
     },
     "ausgaenge": {
-      "description": "Wie die Phase auf dem Weg Geschäft enden kann, und die Zeile, in der die Methode der Phase den Ausgang festhält.",
+      "description": "Wie die Phase auf dem Weg Geschäft enden kann, mit welchen dieser Ausgänge sie geschafft ist (die übrigen halten sie, solange eine Methode der Phase zur Stufe gehört), und die Zeile, in der die Methode der Phase den Ausgang festhält.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["geschaeft", "ablage"],
+      "required": ["geschaeft", "geschafft", "ablage"],
       "properties": {
         "geschaeft": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/kennung" } },
+        "geschafft": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/kennung" } },
         "ablage": { "$ref": "#/$defs/ablage" }
       }
     },

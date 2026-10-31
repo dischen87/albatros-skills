@@ -59,7 +59,9 @@ function phase(p: Phase, f: Fahrplan, faelle: string[]): string {
   const kopf = [`Etappe ${p.etappe}`, `Skill ${code(p.skill)}${p.abschnitt ? `, Abschnitt «${p.abschnitt}»` : ''}`, `Insel ${p.insel.map(code).join(', ')}`, `Bild: ${p.bild}`];
   zeilen.push(kopf.join(' · '), '');
   if (p.methoden?.geschaeft) {
-    const ausgaenge = p.ausgaenge ? ` (Ausgänge: ${p.ausgaenge.geschaeft.join(', ')}, festgehalten in ${code(p.ausgaenge.ablage)})` : '';
+    const ausgaenge = p.ausgaenge
+      ? ` (Ausgänge: ${p.ausgaenge.geschaeft.join(', ')}, festgehalten in ${code(p.ausgaenge.ablage)}; die Phase ist erst mit ${oder(p.ausgaenge.geschafft)} geschafft)`
+      : '';
     zeilen.push(`- Weg Geschäft: ${p.methoden.geschaeft.map(code).join(', ')}, ${WANN[p.methoden.wann]}${ausgaenge}`);
   }
   const v = p.varianten?.modernisieren;

@@ -21,7 +21,9 @@
 # Phase:
 #   methoden:  Methoden des Wegs Geschäft (privates Repo albatros-methoden); wann sagt, ob sie vor den Schritten des Skills kommen
 #              (vor_skill) oder danach (nach_skill), so wie Skill und Methode es selbst beschreiben
-#   ausgaenge: wie die Phase auf dem Weg Geschäft enden kann; ablage ist die Zeile, in der die Methode der Phase den Ausgang festhält
+#   ausgaenge: wie die Phase auf dem Weg Geschäft enden kann; ablage ist die Zeile, in der die Methode der Phase den Ausgang festhält;
+#              geschafft sind die Ausgänge, mit denen die Phase geschafft ist. Gehört eine Methode der Phase zur Stufe, ist die Phase vorher
+#              nicht geschafft, auch wenn das Ergebnis des Skills steht (P1: Idee fertig, Entscheid fehlt, ist anpassen oder eine Hausaufgabe)
 #   insel_je_wohnort: (nur wo der Wohnort aus P11 die Schritte ändert) die Insel-Schritte, die die KI je Wohnort bis zum Abschluss
 #              meldet; weitere Schritte der Phase sind freiwillig (siehe wohnorte)
 
@@ -78,7 +80,8 @@ phasen:
       - datei: design/skizze.html
     insel: [idee]
     lernmomente: ['Warum ein Projekt einen Namen braucht, bevor es etwas gibt', 'Eine Hauptsache statt fünf']
-    ausgaenge: { geschaeft: [weiter, anpassen, stoppen], ablage: 'docs/ideen-check.md#Entscheid:' }
+    # geschafft wie webseite-planen (Idee, «Geschafft, wenn») und ideen-check («Mission prüfen»): erst mit weiter oder stoppen
+    ausgaenge: { geschaeft: [weiter, anpassen, stoppen], geschafft: [weiter, stoppen], ablage: 'docs/ideen-check.md#Entscheid:' }
     pflichtfragen:
       - id: projektname
         bereich: ablauf
