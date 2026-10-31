@@ -256,10 +256,13 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     if (!teil) return { res: json(404), teil: '-', pfad: protokoll };
     const pb = teil === e.pocketbase;
 
-    // Schreiben: nie aus fremden Seiten, und mit der Sitzung nur mit eigenem Ursprung (Schutz vor untergeschobenen Anfragen)
+    // Schreiben: nie aus fremden Seiten, und mit der Sitzung nur mit eigenem Ursprung (Schutz vor untergeschobenen Anfragen). Eigen ist
+    // die Adresse, an die die Anfrage ging (den Host setzt die Kante; eine fremde Seite kann keinen Origin schicken, der ihm gleicht), so
+    // gilt auch eine eigene Domain ohne Eintrag. Wie eigeneHerkunft in pb_hooks/eingang.js; die Liste ursprung bleibt für Ausnahmen.
     const cookie = cookieWert(req.headers.get('cookie'), COOKIE);
     const origin = req.headers.get('origin');
-    if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method) && (origin !== null ? !e.urspruenge.has(origin) : cookie !== null)) return { res: json(403), teil: teil.name, pfad: protokoll };
+    const eigen = origin !== null && (e.urspruenge.has(origin) || origin === `${proto}://${url.host}`);
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method) && (origin !== null ? !eigen : cookie !== null)) return { res: json(403), teil: teil.name, pfad: protokoll };
 
     const authorization = req.headers.get('authorization');
     let angemeldet: { id: string; rolle: string } | null = null;

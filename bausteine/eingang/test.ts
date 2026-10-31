@@ -214,6 +214,20 @@ try {
   pruefe(schicht2.every((r) => r.status === 404) && keineMail && tunnel.status === 200,
     `Zweite Schicht: PocketBase mit x-eingang-weg 404 für Verwaltung und Systemsammlungen, keine Mail (${schicht2.map((r) => r.status)}); über den Tunnel ohne den Kopf ${tunnel.status}`);
 
+  // Eigene Domain: Die Kante leitet sie an denselben Server, der Host bleibt. Der eigene Ursprung der Anfrage gilt beim Schreiben, auch
+  // ohne Eintrag in eingang.json; fremde Ursprünge und ein Ursprung, der nicht zum Host passt, weiterhin nicht.
+  const ueber = (host: string, origin: string, pfad: string, koerper: object) =>
+    e4.holen(pfad, { methode: 'POST', kopf: { host, origin, 'content-type': 'application/json', 'x-forwarded-for': neu() }, koerper: JSON.stringify(koerper) });
+  const annaKoerper = { email: 'anna@example.com', passwort: 'geheim-123' };
+  const domain = await Promise.all([ueber('www.meinverein.example', 'https://www.meinverein.example', '/api/eingang/anmelden', annaKoerper),
+    ueber('meinverein.example', 'https://meinverein.example', '/api/eingang/anmelden', annaKoerper),
+    ueber('www.meinverein.example', 'https://www.meinverein.example', '/api/collections/users/records', { name: 'Neu', email: 'neu@example.com', password: 'geheim-12345', passwordConfirm: 'geheim-12345' }),
+    ueber('www.meinverein.example', 'https://www.meinverein.example', '/api/collections/users/request-password-reset', { email: 'anna@example.com' })]);
+  const nichtDomain = await Promise.all([ueber('www.meinverein.example', 'https://boese.example', '/api/eingang/anmelden', annaKoerper),
+    ueber(ADRESSE, 'https://www.meinverein.example', '/api/eingang/anmelden', annaKoerper), ueber('www.meinverein.example', 'http://www.meinverein.example', '/api/eingang/anmelden', annaKoerper)]);
+  pruefe(domain.map((r) => r.status).join() === '204,204,200,204' && (domain[0]!.headers.get('set-cookie') ?? '').startsWith('__Host-sitzung=ey') && nichtDomain.every((r) => r.status === 403),
+    `Über die eigene Domain (Host und Origin gleich): anmelden, Anfrage stellen, Passwort vergessen gehen (${domain.map((r) => r.status)}); fremder Ursprung, anderer Host oder http: 403 (${nichtDomain.map((r) => r.status)})`);
+
   // Pfade mit Tricks: entschieden wird auf dem aufgelösten Pfad
   const tricks: [string, number][] = [['GET /verein/../api/settings', 404], ['GET /verein/../intern/seite.html', 401], ['GET /verein/%2e%2e/intern/seite.html', 401], ['GET /intern%2fseite.html', 400],
     ['GET /intern/seite%2ehtml', 400], ['GET //api/settings', 400], ['GET /verein/..%5c..%5capi/settings', 400], ['GET /intern/%00', 400], ['GET /intern/%zz', 400], ['GET /Intern/seite.html', 200]];
