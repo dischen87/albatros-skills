@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Changes a finished website with a person who has no prior knowledge, with their own AI, whether it's in the Albatros harbour or they host it themselves: fetch the logbook, read docs/ first (plan, design system, tech stack, PRD, where it lives), then small (text, date, picture: change locally, show before and after, release, push) or big (new page, feature, different look: addition to the plan, draft of the changed pages, approval to build, build and check, show, release, push), always within the existing design system, then check on the web. Use this skill for “change my site”, “new date”, “change a text”, “swap a picture”, “… is missing”, “new page”, “make the site …”, “something on the site is wrong”, and whenever something on a site that's online should be different."
 metadata:
   stand: 0.2.0
-  quelle: 'd29818fca42b'
+  quelle: 'b1185cbb28aa'
 ---
 
 # Change your website: renovating a house you live in
@@ -69,7 +69,7 @@ Tell the person in one sentence what it is and how it goes on.
    Zugang: … (does who may do what change? then docs/tueren.txt as well)
    ```
 2. **Draft of the changed pages** in `design/entwurf/`, within the existing design system, with real texts (skill `entwurf`). The person clicks through it, on a phone and on a computer.
-3. **Approval to build:** only after their yes does the line `Freigegeben zum Bauen: <date> (“<their words>”)` go into `docs/entwurf.md`, under a heading for the addition. Then `node scripts/pruefen.mjs --vor-bau` must end with 0.
+3. **Approval to build:** only after their yes does the line `Freigegeben zum Bauen: <DD.MM.YYYY>, “<their words>”` go into `docs/entwurf.md`, under a heading for the addition. The date comes first, as numbers; without a date, with `[Annahme: …]` or with “not yet”, it doesn't count as a yes. Then `node scripts/pruefen.mjs --vor-bau` must end with 0.
 4. **Build** as in the skill `webseite-bauen`, step 4: markup and classes from the draft, tokens only from `design/tokens.css`.
 
 ### 4. The wish in the PRD
@@ -84,7 +84,7 @@ At the very bottom of `docs/prd.md`, after the line `Freigegeben:` from the firs
 - [ ] Only values from the design system; the previous acceptance criteria still apply
 ```
 
-For a big wish, `Abgeleitet aus: docs/entwurf.md (Nachtrag <date>, Freigegeben zum Bauen: <date>)` goes above it: the criteria follow from the draft the person approved. For a small one, you show them in step 5 together with the result.
+For a big wish, `Abgeleitet aus: docs/entwurf.md (Nachtrag <DD.MM.YYYY>, Freigegeben zum Bauen: <DD.MM.YYYY>)` goes above it: the criteria follow from the draft the person approved. For a small one, you show them in step 5 together with the result.
 
 ### 5. Change, build, check, show before and after
 
@@ -105,7 +105,7 @@ Once nothing is red any more, the change goes into the logbook, with your own fi
 
 ### 6. Release
 
-Ask: “May this go on the web like this?” Only after the yes do you write `Freigegeben: <date> (“<their words>”)` under the wish, and make the logbook entry with the marker for the released state:
+Ask: “May this go on the web like this?” Only after the yes do you write `Freigegeben: <DD.MM.YYYY>, “<their words>”` under the wish, with the date first as numbers, and make the logbook entry with the marker for the released state:
 
 ```bash
 git add docs/prd.md && git commit -m "Released: <the wish in one sentence>" && git tag -f freigegeben
