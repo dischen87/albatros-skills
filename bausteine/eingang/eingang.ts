@@ -18,7 +18,7 @@ export const GRENZEN = {
   koerperBytes: 10 * 1024 * 1024,   // wie client_max_body_size in pocketbase/nginx.conf
   anfragenProMinute: 600,           // je Adresse; eine Seite mit Bildern braucht 20 bis 40 Anfragen
   anmeldenProMinute: 10,            // je Adresse, über den Eingang und auth-with-* zusammen; PocketBase selbst erlaubt 5 in 60 Sekunden (pb_migrations/2_eingang.js)
-  gleichzeitig: 20,                 // offene Anfragen je Adresse, bis die Antwort ganz durch ist, sonst 429 (Bun hält für alle zusammen 256 fetch)
+  gleichzeitig: 20,                 // offene Anfragen je Adresse, bis die Antwort ganz durch ist, sonst 429 (fetch für alle: Bun 256, Dockerfile 1024)
   pocketbaseMs: 2000,               // so lange darf die Prüfung der Anmeldung dauern, sonst 503
   teilMs: 60_000,                   // so lange darf ein Teil bis zur Antwort brauchen, sonst 504 (Bun.serve wartet darum länger, idleTimeout)
 };
