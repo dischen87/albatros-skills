@@ -6,8 +6,9 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { networkInterfaces, tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { connect } from 'node:net';
 import { einstellen, mailAttrappe, pocketbase, wurzelVon } from '../pocketbase/programm.ts';
-import { GRENZEN } from './eingang.ts';
+import { eingang, einstellungen, GRENZEN } from './eingang.ts';
 
 const hier = import.meta.dir, pb = wurzelVon(join(hier, '..', 'pocketbase'));
 const eingebaut = existsSync(join(pb, 'pb_hooks', 'eingang.pb.js'));
@@ -53,13 +54,32 @@ const teil = Bun.serve({
 });
 const haengt = Bun.serve({ hostname: '127.0.0.1', port: 0, fetch: () => new Promise<Response>(() => {}) }); // PocketBase, das nie antwortet
 // Ein Teil, der sich Zeit lässt: /langsam/<Sekunden> antwortet nach so vielen Sekunden, /langsam/halten erst, wenn der Test loslässt
+// (gezählt je Adresse, die der Eingang weitergibt), /langsam/strom sofort, aber der Körper endet erst, wenn der Test loslässt (ein
+// langsamer Download), /langsam/bild-<n> nach 20 ms mit 256 KB (gezählt, wie viele er gleichzeitig hat)
 let loslassen = () => {};
 let halten = new Promise<void>((r) => { loslassen = r; });
-let gehalten = 0, gehaltenHoechstens = 0;
+let gehalten = 0, gehaltenHoechstens = 0, bilderJetzt = 0, bilderHoechstens = 0;
+const gehaltenVon = new Map<string, number>();
+const BILD = new Uint8Array(256 * 1024).fill(66);
 const langsam = Bun.serve({
   hostname: '127.0.0.1', port: 0, idleTimeout: 255,
   async fetch(r) {
     const was = new URL(r.url).pathname.split('/').pop()!;
+    if (was.startsWith('bild-')) {
+      bilderHoechstens = Math.max(bilderHoechstens, ++bilderJetzt);
+      await Bun.sleep(20);
+      bilderJetzt--;
+      return new Response(BILD, { headers: { 'content-type': 'image/jpeg' } });
+    }
+    if (was === 'strom') {
+      return new Response(new ReadableStream({ async start(c) {
+        c.enqueue(new TextEncoder().encode('Anfang '));
+        await Promise.race([halten, Bun.sleep(30_000)]);
+        c.enqueue(new TextEncoder().encode('Ende'));
+        c.close();
+      } }));
+    }
+    if (was === 'halten') { const wer = r.headers.get('x-forwarded-for') ?? '?'; gehaltenVon.set(wer, (gehaltenVon.get(wer) ?? 0) + 1); }
     if (was !== 'halten') await Bun.sleep(Number(was) * 1000);
     else {
       gehaltenHoechstens = Math.max(gehaltenHoechstens, ++gehalten);
@@ -93,6 +113,10 @@ async function starten(konfig: object, env: Record<string, string> = {}) {
     for await (const c of p.stdout) { rest += dec.decode(c); const z = rest.split('\n'); rest = z.pop()!; zeilen.push(...z.filter(Boolean)); }
   })();
   for (let i = 0; i < 100 && !zeilen.some((z) => z.includes('"start":true')) && p.exitCode === null; i++) await Bun.sleep(50);
+  return { ...kunde(port), zeilen, p, port };
+}
+// Anfragen an den Eingang auf diesem Port
+function kunde(port: number) {
   const basis = `http://127.0.0.1:${port}`;
   const holen = (pfad: string, o: { methode?: string; kopf?: Record<string, string>; koerper?: BodyInit } = {}) =>
     fetch(basis + pfad, { method: o.methode ?? 'GET', headers: { host: ADRESSE, ...o.kopf }, body: o.koerper, redirect: 'manual' });
@@ -118,7 +142,21 @@ async function starten(konfig: object, env: Record<string, string> = {}) {
     } }).catch(() => fertig(0));
     return { status, zu: () => sock?.end() };
   };
-  return { holen, roh, offen, zeilen, p, port };
+  // Eine Seite mit vielen Bildern: alle zugleich von einer Adresse (wie die Kante bei HTTP/2: je Bild eine Verbindung), gelesen erst nach
+  // lesenNachMs (eine langsame Leitung); status und wie viele Bytes ankamen
+  const bilder = (anzahl: number, adresse: string, lesenNachMs: number) => Promise.all(Array.from({ length: anzahl }, (_, i) =>
+    new Promise<{ status: number; bytes: number }>((fertig) => {
+      let kopf = '', bytes = 0, status = 0;
+      const s = connect({ host: '127.0.0.1', port }, () => {
+        s.write(`GET /langsam/bild-${i}.jpg HTTP/1.1\r\nHost: ${ADRESSE}\r\nX-Forwarded-For: ${adresse}\r\nConnection: close\r\n\r\n`);
+        s.pause();
+        setTimeout(() => s.resume(), lesenNachMs);
+      });
+      s.on('data', (d: Buffer) => { bytes += d.length; if (!status) { kopf += d.toString('latin1', 0, 64); status = Number(/^HTTP\/1\.1 (\d{3})/.exec(kopf)?.[1] ?? 0); } });
+      s.on('close', () => fertig({ status, bytes }));
+      s.on('error', () => fertig({ status, bytes }));
+    })));
+  return { holen, roh, offen, bilder };
 }
 const konfig = (pocketbaseZiel: string) => ({ ursprung: EIGEN, anmeldeseite: '/mitglieder.html', teile: teile(pocketbaseZiel) });
 
@@ -295,9 +333,15 @@ try {
   pruefe(netz64.filter((r) => r.status === 400).length === 10 && netz64.filter((r) => r.status === 429).length === 2,
     `Raten über auth-with-password aus 12 Adressen eines /64: der Eingang lässt 10 je Minute durch, dann 429 (${zaehlung(netz64.map((r) => r.status))})`);
 
-  // Gleichzeitig offene Anfragen je Adresse (IPv6 je /64) sind begrenzt, darüber 429. Ohne Grenze belegte eine Adresse mit 300 langsamen
-  // Anfragen alle 256 Plätze, die Bun für fetch hat, und jede andere Besucherin wartete, auch auf die Startseite.
+  // Gleichzeitig offene Anfragen je Adresse (IPv6 je /64) sind begrenzt: GRENZEN.gleichzeitig beim Teil, weitere warten auf einen Platz
+  // (höchstens GRENZEN.wartend), darüber 429. Ohne Grenze belegte eine Adresse mit 300 langsamen Anfragen alle 256 Plätze, die Bun für
+  // fetch hat, und jede andere Besucherin wartete, auch auf die Startseite.
   const e5 = await starten(konfig(`http://127.0.0.1:${pbPort}`), { VERTRAUTE_PROXYS: '127.0.0.1' });
+  // Eine Seite mit vielen Bildern kommt über HTTP/2 an der Kante auf einmal, alle mit derselben Adresse. Sie darf keine 429 bekommen
+  // (bis 31.10.2026 bekamen 40 von 60 Bildern 429, gemessen von der Gegenprobe auch mit Chromium: Galerien verloren Bilder).
+  const seite = await e5.bilder(60, '203.0.113.65', 1000);
+  pruefe(seite.every((b) => b.status === 200 && b.bytes > BILD.length) && bilderHoechstens <= GRENZEN.gleichzeitig,
+    `Eine Seite mit 60 Bildern auf einmal von einer Adresse, langsam gelesen: alle ganz da (${zaehlung(seite.map((b) => b.status))}), beim Teil höchstens ${bilderHoechstens} zugleich`);
   const viele = Array.from({ length: 300 }, () => e5.offen('GET /langsam/halten', { 'X-Forwarded-For': '203.0.113.66' }));
   await Bun.sleep(1500);
   const sofort = await Promise.all(viele.map((v) => Promise.race([v.status, Bun.sleep(5).then(() => -1)])));
@@ -307,8 +351,11 @@ try {
   loslassen();
   const spaeter = await Promise.all(viele.map((v) => Promise.race([v.status, Bun.sleep(5000).then(() => 0)])));
   for (const v of viele) v.zu();
-  pruefe(beimTeil <= GRENZEN.gleichzeitig && sofort.filter((s) => s === 429).length === 300 - beimTeil && spaeter.filter((s) => s === 200).length === beimTeil && besucherin === 200 && besucherinMs < 2000,
-    `Eine Adresse mit 300 langsamen Anfragen: ${beimTeil} beim Teil (höchstens ${GRENZEN.gleichzeitig}), ${sofort.filter((s) => s === 429).length}× sofort 429; eine andere Besucherin bekommt die Startseite (${besucherin || 'keine Antwort'} nach ${(besucherinMs / 1000).toFixed(1)} s)`);
+  // Kriterium geändert am 31.10.2026: Bisher bekamen alle über GRENZEN.gleichzeitig sofort 429. Jetzt warten bis zu GRENZEN.wartend auf
+  // einen Platz (Seiten mit vielen Bildern, siehe oben) und bekommen nach dem Loslassen ihre Antwort; nur der Rest bekommt sofort 429.
+  const zuViel = sofort.filter((s) => s === 429).length, beantwortet = spaeter.filter((s) => s === 200).length;
+  pruefe(beimTeil === GRENZEN.gleichzeitig && zuViel === 300 - GRENZEN.gleichzeitig - GRENZEN.wartend && beantwortet === GRENZEN.gleichzeitig + GRENZEN.wartend && besucherin === 200 && besucherinMs < 2000,
+    `Eine Adresse mit 300 langsamen Anfragen: ${beimTeil} beim Teil (höchstens ${GRENZEN.gleichzeitig}), ${beantwortet - beimTeil} warten, ${zuViel}× sofort 429; eine andere Besucherin bekommt die Startseite (${besucherin || 'keine Antwort'} nach ${(besucherinMs / 1000).toFixed(1)} s)`);
   const wieder: number[] = [];
   for (let i = 0; i < 25; i++) { const r = await e5.holen('/verein/', { kopf: { 'x-forwarded-for': '203.0.113.66' } }); await r.text(); wieder.push(r.status); }
   halten = new Promise<void>((r) => { loslassen = r; });
@@ -320,9 +367,61 @@ try {
   loslassen();
   pruefe(wieder.every((s) => s === 200) && nachAbbruch.status === 200,
     `Die Plätze werden frei, wenn die Antwort durch ist (25 nacheinander: ${zaehlung(wieder)}) und wenn die Besucherin abbricht (${nachAbbruch.status})`);
+  // Wer auf einen Platz wartet und abbricht (Tab zu), kommt nie beim Teil an und belegt nichts mehr
+  halten = new Promise<void>((r) => { loslassen = r; });
+  const belegt = Array.from({ length: GRENZEN.gleichzeitig }, () => e5.offen('GET /langsam/halten', { 'X-Forwarded-For': '203.0.113.68' }));
+  await Bun.sleep(300);
+  const wartende = Array.from({ length: 10 }, () => e5.offen('GET /langsam/halten', { 'X-Forwarded-For': '203.0.113.68' }));
+  await Bun.sleep(300);
+  for (const v of wartende) v.zu();
+  await Bun.sleep(300);
+  loslassen();
+  const belegtFertig = await Promise.all(belegt.map((v) => Promise.race([v.status, Bun.sleep(5000).then(() => 0)])));
+  await Bun.sleep(300);
+  const nachWarten = await e5.holen('/verein/', { kopf: { 'x-forwarded-for': '203.0.113.68' } });
+  for (const v of belegt) v.zu();
+  pruefe(belegtFertig.every((s) => s === 200) && gehaltenVon.get('203.0.113.68') === GRENZEN.gleichzeitig && nachWarten.status === 200,
+    `Wer wartet und abbricht, kommt nie beim Teil an: dort ${gehaltenVon.get('203.0.113.68')} von ${GRENZEN.gleichzeitig + 10} Anfragen, danach geht es (${nachWarten.status})`);
   const echtzeit = await e5.holen('/api/realtime', { kopf: { accept: 'text/event-stream', 'x-forwarded-for': '198.51.100.78' } });
   await echtzeit.body?.cancel();
   pruefe(echtzeit.status === 404, `Echtzeit von PocketBase (/api/realtime): braucht kein Rezept, jede Verbindung bliebe offen, darum 404 (${echtzeit.status})`);
+
+  // Frist ab Ankunft (GRENZEN.teilMs, 60 s; hier 1,5 s über Optionen.grenzen, der Eingang läuft dafür in diesem Prozess): Wer bis dahin
+  // keinen Platz bekam, bekommt 429; braucht der Teil länger, 504. Beides vor Buns idleTimeout (eingang.ts, Bun.serve). Die Plätze halten
+  // je 20 langsame Downloads (/langsam/strom): Deren Antwort hat begonnen, für sie gilt die Frist nicht mehr. Dazu warten über alle
+  // Adressen zusammen höchstens GRENZEN.wartendAlle (hier 1): Ist das voll, gibt es sofort 429, auch für eine andere Adresse.
+  const kurz = einstellungen(konfig(`http://127.0.0.1:${pbPort}`));
+  if (!kurz.ok) throw new Error(kurz.fehler.join(', '));
+  const kurzBehandeln = eingang(kurz.wert, { vertraut: '127.0.0.1', grenzen: { teilMs: 1500, wartendAlle: 1 }, log: () => {} });
+  const e7 = Bun.serve({ hostname: '127.0.0.1', port: 0, fetch: (req, s) => kurzBehandeln(req, s.requestIP(req)?.address ?? '') });
+  const k7 = kunde(e7.port!);
+  halten = new Promise<void>((r) => { loslassen = r; });
+  const voll = ['203.0.113.69', '203.0.113.71'].flatMap((a) => Array.from({ length: GRENZEN.gleichzeitig }, () => k7.offen('GET /langsam/strom', { 'X-Forwarded-For': a })));
+  await Bun.sleep(300);
+  const t7 = performance.now();
+  const mitZeit = (s: Promise<number>) => s.then((status) => ({ status, ms: performance.now() - t7 }));
+  const ohnePlatzWarten = mitZeit(k7.roh('GET /langsam/strom', { 'X-Forwarded-For': '203.0.113.69' }));
+  const zuLangeWarten = mitZeit(k7.roh('GET /langsam/3', { 'X-Forwarded-For': '203.0.113.70' }));
+  await Bun.sleep(100);
+  const alleVoll = await mitZeit(k7.roh('GET /langsam/strom', { 'X-Forwarded-For': '203.0.113.71' }));
+  const [ohnePlatz, zuLange] = await Promise.all([ohnePlatzWarten, zuLangeWarten]);
+  const downloads = await Promise.all(voll.map((v) => Promise.race([v.status, Bun.sleep(100).then(() => 0)])));
+  loslassen();
+  for (const v of voll) v.zu();
+  // Danach sind wieder alle Plätze dieser Adresse frei, auch der, auf den die abgewiesene Anfrage gewartet hat: 20 neue zugleich beim Teil
+  await Bun.sleep(300);
+  halten = new Promise<void>((r) => { loslassen = r; });
+  const wiederVoll = Array.from({ length: GRENZEN.gleichzeitig }, () => k7.offen('GET /langsam/halten', { 'X-Forwarded-For': '203.0.113.69' }));
+  await Bun.sleep(300);
+  const wiederBeimTeil = gehaltenVon.get('203.0.113.69') ?? 0;
+  loslassen();
+  await Promise.all(wiederVoll.map((v) => Promise.race([v.status, Bun.sleep(2000)])));
+  for (const v of wiederVoll) v.zu();
+  e7.stop(true);
+  pruefe(downloads.every((s) => s === 200) && ohnePlatz.status === 429 && ohnePlatz.ms >= 1400 && zuLange.status === 504 && zuLange.ms >= 1400 && zuLange.ms < 2900 && wiederBeimTeil === GRENZEN.gleichzeitig,
+    `Frist ab Ankunft (im Test 1,5 s statt 60 s): ohne freien Platz 429 (${ohnePlatz.status} nach ${(ohnePlatz.ms / 1000).toFixed(1)} s), Teil zu langsam 504 (${zuLange.status} nach ${(zuLange.ms / 1000).toFixed(1)} s); danach wieder ${wiederBeimTeil} zugleich beim Teil`);
+  pruefe(alleVoll.status === 429 && alleVoll.ms - 100 < 500,
+    `Warten über alle Adressen begrenzt: Ist es voll, gibt es sofort 429, auch für eine andere Adresse (${alleVoll.status} nach ${((alleVoll.ms - 100) / 1000).toFixed(1)} s)`);
 
   // Pfade mit Tricks: entschieden wird auf dem aufgelösten Pfad
   const tricks: [string, number][] = [['GET /verein/../api/settings', 404], ['GET /verein/../intern/seite.html', 401], ['GET /verein/%2e%2e/intern/seite.html', 401], ['GET /intern%2fseite.html', 400],

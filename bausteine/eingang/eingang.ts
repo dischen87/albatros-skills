@@ -18,9 +18,12 @@ export const GRENZEN = {
   koerperBytes: 10 * 1024 * 1024,   // wie client_max_body_size in pocketbase/nginx.conf
   anfragenProMinute: 600,           // je Adresse; eine Seite mit Bildern braucht 20 bis 40 Anfragen
   anmeldenProMinute: 10,            // je Adresse, über den Eingang und auth-with-* zusammen; PocketBase selbst erlaubt 5 in 60 Sekunden (pb_migrations/2_eingang.js)
-  gleichzeitig: 20,                 // offene Anfragen je Adresse, bis die Antwort ganz durch ist, sonst 429 (fetch für alle: Bun 256, Dockerfile 1024)
+  gleichzeitig: 20,                 // offene Anfragen je Adresse beim Teil, bis die Antwort ganz durch ist (fetch für alle: Bun 256, Dockerfile 1024)
+  wartend: 100,                     // so viele weitere je Adresse warten auf einen dieser Plätze (eine Seite mit vielen Bildern), darüber 429
+  wartendAlle: 2000,                // und so viele über alle Adressen zusammen (gemessen rund 5 KB je wartende Anfrage, README), darüber 429
   pocketbaseMs: 2000,               // so lange darf die Prüfung der Anmeldung dauern, sonst 503
-  teilMs: 60_000,                   // so lange darf ein Teil bis zur Antwort brauchen, sonst 504 (Bun.serve wartet darum länger, idleTimeout)
+  teilMs: 60_000,                   // so lange darf eine Anfrage ab Ankunft bis zur Antwort brauchen, Warten auf einen Platz eingeschlossen, sonst
+                                    // 504 (oder 429, wenn sie bis dahin keinen Platz bekam). Bun.serve wartet darum länger (idleTimeout)
 };
 // Verwaltung und Interna von PocketBase sind von aussen nie erreichbar (404), dazu jede Punktdatei ausser /.well-known/. Auch die Echtzeit
 // (/api/realtime): Kein Rezept braucht sie, und jede Verbindung bliebe offen und hielte einen der Plätze für alle.
@@ -188,6 +191,47 @@ function zaehler(jetzt: () => number) {
 }
 const netzVon = (a: string) => (a.includes(':') ? `${a.split(':').slice(0, 4).join(':')}::/64` : a);
 
+// Plätze je Adresse (IPv6 je /64): Höchstens g.gleichzeitig Anfragen sind unterwegs zu PocketBase oder einem Teil, bis ihre Antwort ganz
+// durch ist. Weitere warten der Reihe nach, höchstens g.wartend je Adresse und g.wartendAlle zusammen: Eine Seite mit 60 Bildern kommt
+// über HTTP/2 an der Kante auf einmal und mit derselben Adresse, sie soll keine 429 bekommen. Wird ein Platz frei, geht er an die nächste
+// wartende Anfrage derselben Adresse. So belegt eine Adresse mit langsamen Anfragen höchstens ihre eigenen Plätze (wartende belegen keinen
+// Platz für fetch), und alle anderen kommen weiter durch.
+type Platz = { frei: () => void; beimKoerper: boolean };
+function plaetze(g: Pick<typeof GRENZEN, 'gleichzeitig' | 'wartend' | 'wartendAlle'>) {
+  const je = new Map<string, { laufend: number; warten: ((p: Platz) => void)[] }>();
+  let wartendAlle = 0;
+  const platz = (netz: string): Platz => {
+    let zurueck = false;
+    return { beimKoerper: false, frei: () => { // mehrmals schadet nicht
+      if (zurueck) return;
+      zurueck = true;
+      const a = je.get(netz)!;
+      const naechste = a.warten.shift();
+      if (naechste) naechste(platz(netz)); // der Platz geht weiter, laufend bleibt gleich
+      else if (--a.laufend === 0) je.delete(netz);
+    } };
+  };
+  // Ein Platz, sobald einer frei ist; 'voll', wenn schon zu viele warten oder bis zur Frist keiner frei wurde; null, wenn die Besucherin abbricht
+  return (netz: string, signal: AbortSignal, frist: number): Promise<Platz | 'voll' | null> => {
+    let a = je.get(netz);
+    if (!a) je.set(netz, (a = { laufend: 0, warten: [] }));
+    if (a.laufend < g.gleichzeitig) { a.laufend++; return Promise.resolve(platz(netz)); }
+    if (signal.aborted) return Promise.resolve(null);
+    if (a.warten.length >= g.wartend || wartendAlle >= g.wartendAlle) return Promise.resolve('voll');
+    const warten = a.warten;
+    wartendAlle++;
+    return new Promise((fertig) => {
+      const ende = () => { wartendAlle--; clearTimeout(uhr); signal.removeEventListener('abort', abbruch); };
+      const dran = (p: Platz) => { ende(); fertig(p); };
+      const weg = (grund: 'voll' | null) => { ende(); const i = warten.indexOf(dran); if (i >= 0) warten.splice(i, 1); fertig(grund); };
+      const abbruch = () => weg(null);
+      const uhr = setTimeout(() => weg('voll'), Math.max(0, frist - performance.now()));
+      signal.addEventListener('abort', abbruch, { once: true });
+      warten.push(dran);
+    });
+  };
+}
+
 const cookieWert = (kopf: string | null, name: string) => {
   for (const teil of (kopf ?? '').split(';')) {
     const i = teil.indexOf('=');
@@ -235,13 +279,16 @@ function durch(koerper: ReadableStream<Uint8Array>, frei: () => void) {
   });
 }
 
-export type Optionen = { vertraut?: string; anfragenProMinute?: number; jetzt?: () => number; log?: (zeile: string) => void };
+// grenzen: nur für den Test (kürzere Frist, weniger Wartende als in GRENZEN)
+export type Optionen = { vertraut?: string; anfragenProMinute?: number; grenzen?: Partial<Pick<typeof GRENZEN, 'teilMs' | 'wartendAlle'>>;
+  jetzt?: () => number; log?: (zeile: string) => void };
 
 export function eingang(e: Einstellungen, o: Optionen = {}) {
   const vertraut = netze(o.vertraut);
   if (!vertraut) throw new Error('VERTRAUTE_PROXYS: Adressen oder Netze wie 10.0.0.0/8, durch Kommas getrennt, oder *');
+  const g = { ...GRENZEN, ...o.grenzen };
   const zaehle = zaehler(o.jetzt ?? Date.now);
-  const laufend = new Map<string, number>(); // offene Anfragen je Adresse (IPv6 je /64); leer, sobald alle durch sind
+  const platzFuer = plaetze(g);
   const proMinute = o.anfragenProMinute ?? GRENZEN.anfragenProMinute;
   const log = o.log ?? ((z: string) => console.log(z));
   const [hauptUrsprung] = e.urspruenge;
@@ -265,6 +312,7 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
   }
 
   async function behandeln(req: Request, verbindung: string): Promise<{ res: Response; teil: string; pfad: string }> {
+    const frist = performance.now() + g.teilMs; // bis dahin beginnt die Antwort, Warten auf einen Platz eingeschlossen
     let kopfBytes = 0;
     req.headers.forEach((v, k) => { kopfBytes += k.length + v.length + 4; });
     if (kopfBytes > GRENZEN.kopfBytes) return { res: json(431), teil: '-', pfad: '-' };
@@ -289,34 +337,23 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     const eigen = origin !== null && (e.urspruenge.has(origin) || origin === `${proto}://${url.host}`);
     if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method) && (origin !== null ? !eigen : cookie !== null)) return { res: json(403), teil: teil.name, pfad: protokoll };
 
-    // Ab hier geht es ins Netz (Prüfung bei PocketBase, der Teil). Je Adresse höchstens GRENZEN.gleichzeitig offene Anfragen, bis die
-    // Antwort ganz durch ist; sonst belegte eine Adresse mit langsamen Anfragen alle Plätze, die Bun für fetch hat, und alle warteten.
-    const netz = netzVon(wer);
-    if ((laufend.get(netz) ?? 0) >= GRENZEN.gleichzeitig) return { res: json(429, { 'retry-after': '5' }), teil: teil.name, pfad: protokoll };
-    const platz = belegen(netz);
+    // Ab hier geht es ins Netz (Prüfung bei PocketBase, der Teil), mit einem der Plätze dieser Adresse (plaetze oben). Sonst belegte eine
+    // Adresse mit langsamen Anfragen alle Plätze, die Bun für fetch hat, und alle warteten. beimKoerper: Der Körper der Antwort gibt den
+    // Platz frei, wenn er durch ist; bricht die Besucherin ab, wird er sofort frei.
+    const platz = await platzFuer(netzVon(wer), req.signal, frist);
+    if (platz === 'voll') return { res: json(429, { 'retry-after': '5' }), teil: teil.name, pfad: protokoll };
+    if (platz === null) return { res: json(499), teil: teil.name, pfad: protokoll }; // die Besucherin ist weg (wie nginx: 499 nur im Protokoll)
     req.signal.addEventListener('abort', platz.frei, { once: true });
     try {
-      return await weiterleiten(req, url, wer, teil, pb, cookie, protokoll, platz);
+      if (req.signal.aborted) return { res: json(499), teil: teil.name, pfad: protokoll };
+      return await weiterleiten(req, url, wer, teil, pb, cookie, protokoll, platz, frist);
     } finally {
       if (!platz.beimKoerper) platz.frei();
     }
   }
 
-  // Einen Platz belegen. frei() gibt ihn zurück (mehrmals schadet nicht); beimKoerper: Der Körper der Antwort gibt ihn frei, wenn er durch ist
-  function belegen(netz: string) {
-    laufend.set(netz, (laufend.get(netz) ?? 0) + 1);
-    let zurueck = false;
-    const platz = { beimKoerper: false, frei: () => {
-      if (zurueck) return;
-      zurueck = true;
-      const n = (laufend.get(netz) ?? 1) - 1;
-      if (n > 0) laufend.set(netz, n); else laufend.delete(netz);
-    } };
-    return platz;
-  }
-
   async function weiterleiten(req: Request, url: URL, wer: string, teil: Teil, pb: boolean, cookie: string | null, protokoll: string,
-    platz: ReturnType<typeof belegen>): Promise<{ res: Response; teil: string; pfad: string }> {
+    platz: Platz, frist: number): Promise<{ res: Response; teil: string; pfad: string }> {
     const authorization = req.headers.get('authorization');
     let angemeldet: { id: string; rolle: string } | null = null;
     if (teil.zugang !== 'offen') {
@@ -350,7 +387,7 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     if (angemeldet) { kopf.set('x-eingang-benutzer', angemeldet.id); kopf.set('x-eingang-rolle', angemeldet.rolle); }
 
     const halt = new AbortController();
-    const uhr = setTimeout(() => halt.abort(new DOMException('Zeit abgelaufen', 'TimeoutError')), GRENZEN.teilMs);
+    const uhr = setTimeout(() => halt.abort(new DOMException('Zeit abgelaufen', 'TimeoutError')), Math.max(0, frist - performance.now()));
     req.signal.addEventListener('abort', () => halt.abort());
     let res: Response;
     try {
@@ -409,7 +446,8 @@ if (import.meta.main) {
   const server = Bun.serve({
     port: Number(process.env.PORT ?? 8080),
     maxRequestBodySize: GRENZEN.koerperBytes,
-    // Bun schliesst eine Verbindung sonst nach 10 s ohne Daten, auch wenn ein Teil noch arbeitet: Die eigene Grenze (504) muss zuerst greifen
+    // Bun schliesst eine Verbindung sonst nach 10 s ohne Daten, auch wenn ein Teil noch arbeitet oder die Anfrage auf einen Platz wartet:
+    // Die eigene Frist ab Ankunft (504, oder 429 ohne Platz) muss zuerst greifen
     idleTimeout: Math.ceil(GRENZEN.teilMs / 1000) + 5,
     hostname: process.env.EINGANG_HOST || undefined,
     fetch: (req, s) => behandle(req, s.requestIP(req)?.address ?? ''),

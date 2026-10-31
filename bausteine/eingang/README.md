@@ -11,8 +11,8 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 | `pb_hooks/eingang.pb.js`, `pb_hooks/eingang.js` | Anmelden mit Cookie in PocketBase: `POST /api/eingang/anmelden`, `POST /api/eingang/abmelden`, `GET /api/eingang/pruefen` |
 | `pb_migrations/2_eingang.js` | Grenze für das Anmelden: 5 Versuche je Adresse in 60 Sekunden, über den Eingang und über `auth-with-password` |
 | `Dockerfile`, `compose.yaml` | Container `eingang` auf Port 80 (Ausschnitt für `include:`) |
-| `test.ts` | 46 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
-| `messen.ts` | Arbeitsspeicher und Antwortzeiten: `bun bausteine/eingang/messen.ts --anfragen 200000 --smol`; mit gehaltenen Anfragen: `--gehalten 1100 --fetch-plaetze 1024` |
+| `test.ts` | 50 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
+| `messen.ts` | Arbeitsspeicher und Antwortzeiten: `bun bausteine/eingang/messen.ts --anfragen 200000 --smol`; mit gehaltenen Anfragen: `--gehalten 1100 --fetch-plaetze 1024` (wartende dazu: `--je-adresse 120`); Seiten mit vielen Bildern: `--bilder 60 --seiten 20 --fetch-plaetze 1024 --smol` |
 
 ## eingang.json
 
@@ -52,16 +52,16 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 - Zweite Schicht in PocketBase: Jede Anfrage an PocketBase bekommt vom Eingang den Kopf `x-eingang-weg: aussen`. Mit ihm gilt dort kein Konto der Verwaltung, keine Systemsammlung und nicht `/_/` (404, `pb_hooks/eingang.pb.js`). Über den Tunnel (ohne den Kopf) bleibt die Verwaltung, wie sie ist.
 - Entfernt alle eingehenden `x-eingang-*`, `x-forwarded-*`, `forwarded`, `x-real-ip` und jeden Kopf mit Unterstrich (`x_eingang_rolle` läsen Server nach WSGI oder CGI wie `x-eingang-rolle`, nginx verwirft sie ebenso); setzt `x-eingang-benutzer` (nur die Record-ID) und `x-eingang-rolle` für geschützte Teile, `x-forwarded-for` mit der geprüften Adresse für alle. Cookie und Authorization bekommt nur PocketBase. Antworten verlieren `x-eingang-*`, und eine Sitzung (`__Host-sitzung`, auch mit Leerzeichen oder Tab vor dem `=` und in anderer Schreibweise) darf nur PocketBase setzen.
 - Schreiben (alles ausser GET, HEAD, OPTIONS) aus einer fremden Seite: 403. Eigen ist ein `Origin` gleich der Adresse der Anfrage (Schema aus `ursprung`, Host von der Kante) oder einer aus `ursprung`. Mit Cookie nur mit eigenem `Origin` (fehlt er, 403). PocketBase prüft dasselbe noch einmal (zweite Schicht).
-- Geschützter Teil ohne Anmeldung: 401, im Browser eine kleine Seite mit dem Weg zur Anmeldung; falsche Rolle: 403. Antwortet PocketBase nicht innert 2 s: 503. Braucht ein Teil länger als 60 s bis zur Antwort: 504 (Bun.serve wartet darum 65 s, nicht 10 s wie sonst).
+- Geschützter Teil ohne Anmeldung: 401, im Browser eine kleine Seite mit dem Weg zur Anmeldung; falsche Rolle: 403. Antwortet PocketBase nicht innert 2 s: 503. Beginnt die Antwort nicht innert 60 s ab Ankunft der Anfrage (Warten auf einen Platz eingeschlossen): 504, oder 429, wenn die Anfrage bis dahin keinen Platz bekam (Bun.serve wartet darum 65 s, nicht 10 s wie sonst).
 - Hinter dem Login `Cache-Control: no-store`, `Vary: Cookie` und `X-Frame-Options: SAMEORIGIN`; überall `X-Content-Type-Options: nosniff`.
-- Grenzen je Adresse (IPv6 je /64): 600 Anfragen je Minute (`ANFRAGEN_PRO_MINUTE`), 10 Anmeldeversuche je Minute (über den Eingang und über `auth-with-*` von PocketBase zusammen), dazu 5 je Minute und Adresse in PocketBase (`/api/eingang/anmelden` und `users:auth`); Kopfzeilen bis 8 KB (sonst 431), Körper bis 10 MB (sonst 413, auch in Stücken); höchstens 20 offene Anfragen gleichzeitig, bis die Antwort ganz durch ist (sonst 429). So belegt eine Adresse mit langsamen Anfragen nicht alle Plätze für fetch zu den Teilen (im `Dockerfile` 1024 für alle zusammen, `BUN_CONFIG_MAX_HTTP_REQUESTS`). Die Adresse ist die der Verbindung, ausser sie steht in `VERTRAUTE_PROXYS` (Adressen oder Netze wie `10.0.0.0/8`); `*` heisst: Jede Verbindung kommt über einen Proxy, der `X-Forwarded-For` neu setzt. Auf einem Albatros-Server ist das die Kante (nur sie erreicht Port 80), darum steht in `compose.yaml` `*`.
+- Grenzen je Adresse (IPv6 je /64): 600 Anfragen je Minute (`ANFRAGEN_PRO_MINUTE`), 10 Anmeldeversuche je Minute (über den Eingang und über `auth-with-*` von PocketBase zusammen), dazu 5 je Minute und Adresse in PocketBase (`/api/eingang/anmelden` und `users:auth`); Kopfzeilen bis 8 KB (sonst 431), Körper bis 10 MB (sonst 413, auch in Stücken); höchstens 20 offene Anfragen gleichzeitig, bis die Antwort ganz durch ist. Weitere warten der Reihe nach auf einen dieser Plätze, höchstens 100 je Adresse und 2000 zusammen (sonst 429): Eine Seite mit vielen Bildern kommt über HTTP/2 an der Kante auf einmal und mit derselben Adresse, sie verliert so keine Bilder. So belegt eine Adresse mit langsamen Anfragen nicht alle Plätze für fetch zu den Teilen (im `Dockerfile` 1024 für alle zusammen, `BUN_CONFIG_MAX_HTTP_REQUESTS`); wer wartet, belegt keinen. Die Adresse ist die der Verbindung, ausser sie steht in `VERTRAUTE_PROXYS` (Adressen oder Netze wie `10.0.0.0/8`); `*` heisst: Jede Verbindung kommt über einen Proxy, der `X-Forwarded-For` neu setzt. Auf einem Albatros-Server ist das die Kante (nur sie erreicht Port 80), darum steht in `compose.yaml` `*`.
 - Protokolliert je Anfrage eine JSON-Zeile mit Zeit, Methode, Pfad ohne Kennungen (`/api/collections/mitteilungen/records/:id`), Teil, Status und Dauer. Nie Cookie, Token, Abfrage, Kopfzeilen oder Adressen.
 
 Das Cookie `__Host-sitzung` ist `HttpOnly`, `Secure`, `SameSite=Lax`, `Path=/`, ohne `Domain`, und gilt so lange wie das Token (5 Tage). Skripte im Browser lesen es nicht, und `auth-refresh` gilt mit ihm nicht, damit das Token nie in einer Antwort steht.
 
 ## Gemessen
 
-Am 31.10.2026 mit `messen.ts`, je Lage zwei Läufe, auf einem Mac (Apple M5 Pro, macOS, arm64), Bun 1.4.2 mit `--smol` wie im `Dockerfile`, vor einem echten PocketBase 0.40.5 (`GOMEMLIMIT=200MiB` wie in `pocketbase/compose.yaml`). Je 200 000 Anfragen, die Hälfte an einen geschützten Teil (jede mit Prüfung bei PocketBase), ohne Grenze je Minute. Gemessen mit der Grenze von 20 offenen Anfragen je Adresse. Auf dem Server (Linux) nicht gemessen.
+Am 31.10.2026 mit `messen.ts`, je Lage zwei Läufe, auf einem Mac (Apple M5 Pro, macOS, arm64), Bun 1.4.2 mit `--smol` wie im `Dockerfile`, vor einem echten PocketBase 0.40.5 (`GOMEMLIMIT=200MiB` wie in `pocketbase/compose.yaml`). Je 200 000 Anfragen, die Hälfte an einen geschützten Teil (jede mit Prüfung bei PocketBase), ohne Grenze je Minute. Gemessen mit der Grenze von 20 offenen Anfragen je Adresse; mit dem Warten auf einen Platz nachgemessen (je 100 000 Anfragen, zwei Läufe): 16 300–16 900 Anfragen je Sekunde und Spitze 53 MB, gleich wie ohne Warten (16 600–16 800, 54–56 MB). Auf dem Server (Linux) nicht gemessen.
 
 | Lage | Eingang (RSS) | offen: Median / 95 % | geschützt: Median / 95 % |
 |---|---|---|---|
@@ -71,7 +71,7 @@ Am 31.10.2026 mit `messen.ts`, je Lage zwei Läufe, auf einem Mac (Apple M5 Pro,
 | 50 gleichzeitig, von 60 000 Adressen | Spitze 67–69 MB | 2,1 / 4,1 ms | 2,9 / 5,1 ms |
 | 50 gleichzeitig, ohne `--smol` | Spitze 68–69 MB | 1,9–2,0 / 3,6–3,9 ms | 2,6–2,7 / 4,7–4,9 ms |
 
-Langsame Anfragen, die ein Teil festhält (`messen.ts --gehalten`, je 20 von einer Adresse), je ein Lauf:
+Langsame Anfragen, die ein Teil festhält (`messen.ts --gehalten`, je 20 von einer Adresse; mit `--je-adresse 120` warten je Adresse 100 weitere auf einen Platz), je ein Lauf:
 
 | Offen gehalten | Plätze für fetch | Eingang (RSS) | eine andere Besucherin |
 |---|---|---|---|
@@ -79,8 +79,24 @@ Langsame Anfragen, die ein Teil festhält (`messen.ts --gehalten`, je 20 von ein
 | 1000 von 50 Adressen | 1024 (wie im `Dockerfile`) | 45 MB | 200 sofort |
 | 1100 von 55 Adressen | 1024 | 47 MB | keine Antwort in 4 s |
 | 4200 von 210 Adressen | 4096 | 89 MB | keine Antwort in 4 s |
+| 2400 von 20 Adressen, je 120: 400 beim Teil, 2000 wartend | 1024 | 49 MB | 200 sofort |
+| 6000 von 50 Adressen, je 120: 1000 beim Teil, 2000 wartend, 3000× 429 | 1024 | 66 MB | 200 sofort |
+| 6600 von 55 Adressen, je 120 (zwei Läufe) | 1024 | 69 MB | keine Antwort in 4 s |
+
+Seiten mit vielen Bildern (`messen.ts --bilder`, je Bild 100 KB, alle Bilder einer Seite auf einmal von derselben Adresse, sofort gelesen, 1024 Plätze für fetch):
+
+| Lage | Antworten | Seite fertig (Median) | Eingang (RSS, Spitze) |
+|---|---|---|---|
+| 1 Seite mit 60 Bildern | 60× 200, beim Teil höchstens 20 zugleich | 0,03–0,04 s | 20,5 MB (wie im Leerlauf) |
+| 1 Seite mit 150 Bildern | 120× 200, 30× 429 (mehr als 20 + 100) | 0,05 s | 40–41 MB |
+| 5 Seiten mit je 120 Bildern | 600× 200 | 0,09 s | 52–54 MB |
+| 20 Seiten mit je 60 Bildern, sechs Läufe | 1200× 200 | 0,15–0,16 s | 86–129 MB |
+| ebenso mit dem Eingang von 0153999 (ohne Grenze, Körper direkt), drei Läufe | 1200× 200 | 0,15–0,17 s | 61–67 MB |
+| ebenso mit sofort 429 über 20 (Stand vor dem Warten), drei Läufe | 639–767× 200, der Rest 429 | 0,10–0,11 s | 75–88 MB |
 
 - Der Körper jeder Antwort geht durch einen Strom in JavaScript, damit der Platz erst frei wird, wenn er ganz durch ist. Das kostet: Vorher waren es 29 600 statt 16 000 Anfragen je Sekunde und im Median 1,2 statt 2,5 ms (offen), gemessen am selben Tag mit je 100 000 Anfragen. Für eine Vereinsseite (höchstens 600 Anfragen je Minute und Adresse) spielt das keine Rolle; dafür blockiert eine einzelne Adresse nicht mehr alle.
+- Ehrlich dazu: Mit vielen grossen Antworten zugleich kostet derselbe Strom Speicher. 20 Seiten mit je 60 Bildern in derselben Zehntelsekunde brachten den Eingang auf 86–129 MB statt 61–67 MB mit dem Körper direkt, also bis an `mem_limit` 128 MB (RSS auf dem Mac; ob der Container dabei neu startet, ist nicht gemessen). Andere Ströme (`type: 'direct'`, `TransformStream`, `highWaterMark: 0`) brachten nichts (105–125 MB). Eine Seite mit 60 Bildern allein braucht nichts zusätzlich.
+- Wer wartet, kostet rund 5 KB (gemessen ohne die Grenze für alle zusammen: 1000 beim Teil und 5000 wartend 69 MB, nur die 1000 beim Teil 46 MB). Darum warten höchstens 2000 zusammen, rund 10 MB.
 - Kein Leck: 100 000 und 200 000 Anfragen endeten auf derselben Höhe (55–57 MB). Was der Speicher einmal hatte, gibt Bun in 5 Sekunden nicht zurück (RSS bleibt auf der Spitze).
 - Die Prüfung bei PocketBase kostet je geschützte Anfrage knapp 1 ms (Median 3,4 statt 2,5 ms).
 - Die Liste der Adressen für die Grenzen ist auf 10 000 begrenzt; mit 20 000 kostete sie gemessen 40 MB mehr (Spitze 95 MB), darum die kleinere Zahl. `mem_limit` im Container: 128 MB.
@@ -93,16 +109,16 @@ Statt eines eigenen Dienstes könnte nginx im Container `webseite` die Tür sein
 
 | | Bun-Eingang | nginx `auth_request` |
 |---|---|---|
-| Speicher | 20 MB im Leerlauf, 56–69 MB unter Volllast (gemessen) | kein zusätzlicher Prozess; nginx in `webseite` braucht rund 10 MB (gemessen am 28.10.2026), der Zuschlag für `auth_request` ist geschätzt, nicht gemessen |
+| Speicher | 20 MB im Leerlauf, 56–69 MB unter Volllast mit kleinen Seiten, 93–129 MB mit 1200 Bildern à 100 KB auf einmal (gemessen) | kein zusätzlicher Prozess; nginx in `webseite` braucht rund 10 MB (gemessen am 28.10.2026), der Zuschlag für `auth_request` ist geschätzt, nicht gemessen |
 | Prüfung bei PocketBase | je Anfrage an einen geschützten Teil, knapp 1 ms (gemessen) | ebenso je Anfrage |
 | Fremde `x-eingang-*` | alle mit dem Präfix weg | nur einzeln mit `proxy_set_header … ""`; eine neue Kopfzeile ginge durch, bis jemand die Konfiguration nachführt |
 | Pfade | eine Funktion: aufgelöst, einmal dekodiert, Tricks abgelehnt, getestet | nginx löst selbst auf (`merge_slashes`, `..`, `%2F`); Entscheid über `location` mit Vorrangregeln (`=`, `^~`, Regex, Präfix), Fehler leicht und schwer zu sehen |
 | Ursprung beim Schreiben | Liste in `eingang.json` | `map $http_origin` und `if`, in `location` heikel |
 | 503 nach 2 s | so gebaut und getestet | `auth_request` meldet bei einem Fehler 500; 503 braucht `error_page`-Umwege |
 | Protokoll ohne Adressen | so gebaut und getestet | eigenes `log_format` ohne `$remote_addr` und mit `$uri` statt `$request_uri` |
-| Test | `test.ts` mit 46 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
+| Test | `test.ts` mit 50 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
 
-Fazit: nginx spart 20 bis 69 MB und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
+Fazit: nginx spart 20 bis 69 MB (mit vielen grossen Bildern auf einmal bis 129 MB) und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
 
 ## Grenzen
 
@@ -112,5 +128,6 @@ Fazit: nginx spart 20 bis 69 MB und einen Container. Der Bun-Eingang kostet dies
 - Abmelden löscht das Cookie in diesem Browser, widerruft die Sitzung aber nicht: Eine Kopie des Tokens bleibt gültig, bis es abläuft (5 Tage). Überall abmelden: ein neues Passwort setzen («Passwort vergessen?»). Widerrufen liesse sich beim Abmelden (neuer `tokenKey` des Mitglieds); dann wären alle Geräte dieses Mitglieds abgemeldet. Das ist nicht gebaut und noch nicht entschieden.
 - Die Mail «Neue Anmeldung» von PocketBase kommt bei der Anmeldung über den Eingang nicht, und die Anmeldung in zwei Schritten (MFA) geht über ihn nicht.
 - WebSockets gehen nicht durch, und die Echtzeit von PocketBase (`/api/realtime`, Server-Sent Events) sperrt er (404): Kein Rezept braucht sie, und jede Verbindung bliebe offen. Braucht ein eigener Teil sie, `/api/realtime` in `VERWALTUNG` (eingang.ts) streichen; sie zählt dann zu den 20 offenen Anfragen je Adresse.
-- Gegen viele Adressen zugleich hilft die Grenze je Adresse nicht: 52 Adressen mit je 20 langsamen Anfragen belegen alle 1024 Plätze für fetch, dann warten alle (gemessen mit `messen.ts --gehalten 1100 --fetch-plaetze 1024`). Mehr Plätze kosten Speicher: 4096 belegte brauchten 89 MB, zu nah an `mem_limit` 128 MB.
+- Gegen viele Adressen zugleich hilft die Grenze je Adresse nicht: 52 Adressen mit je 20 langsamen Anfragen belegen alle 1024 Plätze für fetch, dann warten alle (gemessen mit `messen.ts --gehalten 1100 --fetch-plaetze 1024`). Mehr Plätze kosten Speicher: 4096 belegte brauchten 89 MB, zu nah an `mem_limit` 128 MB. Sind die 2000 Wartenden über alle Adressen voll, bekommt auch eine Seite mit vielen Bildern wieder 429 für alles über 20.
+- Mehrere Menschen hinter einer Adresse (Schule, Büro, ein Handynetz) teilen sich die 20 Plätze, die 100 Wartenden und die 600 Anfragen je Minute. Mit schnellen Antworten merkt das niemand. Hält dort jemand Plätze mit langsamen Downloads, warten die anderen; wer 60 s keinen Platz bekommt, erhält 429.
 - Lokal mit `http://localhost` geprüft im Browser der Claude-App (Chromium); andere Browser nicht.

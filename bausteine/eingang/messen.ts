@@ -1,14 +1,18 @@
 // Arbeitsspeicher (RSS) und Antwortzeiten des Eingangs messen: im Leerlauf und unter Last, vor einem echten PocketBase (Rezepte
 // mitglieder und eingang) und einem Teil zum Schein, der eine kleine Seite liefert.
 //   bun bausteine/eingang/messen.ts [--anfragen 10000] [--gleichzeitig 50] [--adressen 1000] [--smol]
-//   bun bausteine/eingang/messen.ts --gehalten 1100 [--fetch-plaetze 1024] [--smol]
+//   bun bausteine/eingang/messen.ts --gehalten 1100 [--je-adresse 20] [--fetch-plaetze 1024] [--smol]
+//   bun bausteine/eingang/messen.ts --bilder 60 [--seiten 1] [--kb 100] [--fetch-plaetze 1024] [--smol]
 // Die Hälfte der Anfragen geht an einen offenen Teil, die Hälfte an einen geschützten (jede fragt PocketBase, wer angemeldet ist).
 // Die Anfragen kommen von --adressen verschiedenen Adressen (X-Forwarded-For hinter einem vertrauten Proxy), ohne Grenze.
 // --smol startet den Eingang mit «bun --smol» (kleinerer Speicher, häufiger aufräumen).
-// --gehalten N: statt Last N Anfragen, die ein langsamer Teil festhält, je 20 von einer Adresse (so viele lässt der Eingang je Adresse
-// offen). Misst den Speicher dabei und ob eine andere Besucherin noch durchkommt. --fetch-plaetze setzt BUN_CONFIG_MAX_HTTP_REQUESTS
-// (wie im Dockerfile; ohne: Standard von Bun, 256).
+// --gehalten N: statt Last N Anfragen, die ein langsamer Teil festhält, je --je-adresse von einer Adresse (Standard 20: so viele lässt
+// der Eingang je Adresse zum Teil; mit 120 warten je Adresse 100 weitere). Misst den Speicher dabei und ob eine andere Besucherin noch
+// durchkommt. --fetch-plaetze setzt BUN_CONFIG_MAX_HTTP_REQUESTS (wie im Dockerfile; ohne: Standard von Bun, 256).
+// --bilder B: --seiten Besucherinnen (je eine Adresse) laden zugleich eine Seite mit B Bildern à --kb KB, alle Bilder auf einmal (wie
+// über HTTP/2 an der Kante). Misst, ob alle ankommen, wie lange es dauert und wie viele der Teil gleichzeitig hat.
 import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { connect } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pocketbase, wurzelVon } from '../pocketbase/programm.ts';
@@ -16,7 +20,8 @@ import { pocketbase, wurzelVon } from '../pocketbase/programm.ts';
 const args = process.argv.slice(2);
 const wert = (n: string, d: number) => { const i = args.indexOf(n); return i >= 0 ? Number(args[i + 1]) : d; };
 const ANFRAGEN = wert('--anfragen', 10_000), GLEICHZEITIG = wert('--gleichzeitig', 50), ADRESSEN = wert('--adressen', 1000), SMOL = args.includes('--smol');
-const GEHALTEN = wert('--gehalten', 0), PLAETZE = wert('--fetch-plaetze', 0);
+const GEHALTEN = wert('--gehalten', 0), JE = wert('--je-adresse', 20), PLAETZE = wert('--fetch-plaetze', 0);
+const BILDER = wert('--bilder', 0), SEITEN = wert('--seiten', 1), KB = wert('--kb', 100);
 const hier = import.meta.dir, pb = wurzelVon(join(hier, '..', 'pocketbase'));
 const tmp = mkdtempSync(join(tmpdir(), 'eingang-messen-'));
 mkdirSync(join(tmp, 'pb_migrations')); mkdirSync(join(tmp, 'pb_hooks'));
@@ -29,10 +34,18 @@ Bun.spawnSync([programm, 'superuser', 'upsert', 'test@example.com', passwort, ..
 // PocketBase wie in pocketbase/compose.yaml: GOMEMLIMIT 200MiB
 const server = Bun.spawn([programm, 'serve', `--http=127.0.0.1:${pbPort}`, ...dirs], { env: { ...process.env, GOMEMLIMIT: '200MiB' }, stdout: 'ignore', stderr: 'ignore' });
 const seite = '<!doctype html><title>Verein</title>' + '<p>Text</p>'.repeat(150);
-let loslassen = () => {}, gehalten = 0;
+let loslassen = () => {}, gehalten = 0, bilderJetzt = 0, bilderHoechstens = 0;
 const halten = new Promise<void>((r) => { loslassen = r; });
+const bild = new Uint8Array(KB * 1024).fill(66);
 const teil = Bun.serve({ hostname: '127.0.0.1', port: 0, idleTimeout: 255, async fetch(r) {
-  if (new URL(r.url).pathname === '/halten') { gehalten++; await halten; gehalten--; }
+  const pfad = new URL(r.url).pathname;
+  if (pfad.startsWith('/bild/')) { // wie ein Webserver mit Dateien: 5 ms je Bild
+    bilderHoechstens = Math.max(bilderHoechstens, ++bilderJetzt);
+    await Bun.sleep(5);
+    bilderJetzt--;
+    return new Response(bild, { headers: { 'content-type': 'image/jpeg' } });
+  }
+  if (pfad === '/halten') { gehalten++; await halten; gehalten--; }
   return new Response(seite, { headers: { 'content-type': 'text/html; charset=utf-8' } });
 } });
 const port = 19000 + Math.floor(Math.random() * 1000), basis = `http://127.0.0.1:${port}`;
@@ -61,25 +74,53 @@ try {
   await Bun.sleep(2000);
   const leer = rss(eingang.pid), pbLeer = rss(server.pid);
   if (GEHALTEN) {
-    // Je 20 von einer Adresse: so viele lässt der Eingang je Adresse offen (GRENZEN.gleichzeitig)
+    // Je JE von einer Adresse: 20 lässt der Eingang je Adresse zum Teil (GRENZEN.gleichzeitig), weitere warten (GRENZEN.wartend)
     const offen: { end(): void }[] = [];
+    const antworten = new Map<number, number>();
     for (let i = 0; i < GEHALTEN; i++) {
-      const a = Math.floor(i / 20);
+      const a = Math.floor(i / JE);
+      let erste = true;
       Bun.connect({ hostname: '127.0.0.1', port, socket: {
         open(s) { offen.push(s); s.write(`GET /halten HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: 10.9.${(a >> 8) & 255}.${a & 255}\r\n\r\n`); },
-        data() {}, close() {}, error() {},
+        data(_s, d) { if (erste) { erste = false; const st = Number(/^HTTP\/1\.1 (\d{3})/.exec(d.toString())?.[1] ?? 0); antworten.set(st, (antworten.get(st) ?? 0) + 1); } },
+        close() {}, error() {},
       } }).catch(() => {});
     }
     await Bun.sleep(3000);
     const voll = rss(eingang.pid), t = performance.now();
     const besucherin = await Promise.race([fetch(`${basis}/`, { headers: { host: 'verein.example', 'x-forwarded-for': '198.51.100.7' } }).then((r) => r.status), Bun.sleep(4000).then(() => 0)]);
     const ms = performance.now() - t;
+    const beantwortet = [...antworten.values()].reduce((x, y) => x + y, 0);
     console.log(`Bun ${Bun.version}${SMOL ? ' --smol' : ''}, ${process.platform} ${process.arch}, ${new Date().toISOString().slice(0, 10)}, BUN_CONFIG_MAX_HTTP_REQUESTS ${PLAETZE || '256 (Standard)'}`);
-    console.log(`${GEHALTEN} gehaltene Anfragen von ${Math.ceil(GEHALTEN / 20)} Adressen: beim Teil ${gehalten}; Eingang RSS: Leerlauf ${mb(leer)}, mit allen offen ${mb(voll)}`);
+    console.log(`${GEHALTEN} gehaltene Anfragen von ${Math.ceil(GEHALTEN / JE)} Adressen (je ${JE}): beim Teil ${gehalten}, ohne Antwort ${GEHALTEN - beantwortet - gehalten} (warten)${beantwortet ? `, beantwortet ${[...antworten].map(([s, z]) => `${z}×${s}`).join(', ')}` : ''}; Eingang RSS: Leerlauf ${mb(leer)}, mit allen offen ${mb(voll)}`);
     console.log(`Andere Besucherin: ${besucherin || 'keine Antwort'} nach ${(ms / 1000).toFixed(1)} s`);
     loslassen();
     for (const s of offen) s.end();
     await Bun.sleep(500);
+  } else if (BILDER) {
+    // Jede Besucherin holt alle Bilder ihrer Seite auf einmal, je Bild eine Verbindung (wie die Kante), und liest sofort
+    let spitze = leer;
+    const uhr = setInterval(() => { spitze = Math.max(spitze, rss(eingang.pid)); }, 50);
+    const bildHolen = (n: number, adresse: string) => new Promise<{ status: number; bytes: number }>((fertig) => {
+      let kopf = '', bytes = 0, status = 0;
+      const s = connect({ host: '127.0.0.1', port }, () => s.write(`GET /bild/${n}.jpg HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: ${adresse}\r\nConnection: close\r\n\r\n`));
+      s.on('data', (d: Buffer) => { bytes += d.length; if (!status) { kopf += d.toString('latin1', 0, 64); status = Number(/^HTTP\/1\.1 (\d{3})/.exec(kopf)?.[1] ?? 0); } });
+      s.on('close', () => fertig({ status, bytes }));
+      s.on('error', () => fertig({ status, bytes }));
+    });
+    const t0 = performance.now();
+    const seiten = await Promise.all(Array.from({ length: SEITEN }, async (_, a) => {
+      const b = await Promise.all(Array.from({ length: BILDER }, (_, n) => bildHolen(n, `10.8.${(a >> 8) & 255}.${a & 255}`)));
+      return { b, ms: performance.now() - t0 };
+    }));
+    clearInterval(uhr);
+    const status = new Map<number, number>();
+    for (const x of seiten.flatMap((s) => s.b)) status.set(x.status, (status.get(x.status) ?? 0) + 1);
+    const ganz = seiten.flatMap((s) => s.b).filter((x) => x.status === 200 && x.bytes > bild.length).length;
+    const ms = seiten.map((s) => s.ms).sort((a, b) => a - b);
+    console.log(`Bun ${Bun.version}${SMOL ? ' --smol' : ''}, ${process.platform} ${process.arch}, ${new Date().toISOString().slice(0, 10)}, BUN_CONFIG_MAX_HTTP_REQUESTS ${PLAETZE || '256 (Standard)'}`);
+    console.log(`${SEITEN} Seiten mit je ${BILDER} Bildern à ${KB} KB zugleich: Status ${[...status].map(([s, z]) => `${z}×${s}`).join(', ')}, ganz angekommen ${ganz} von ${SEITEN * BILDER}; beim Teil höchstens ${bilderHoechstens} zugleich`);
+    console.log(`Seite fertig: Median ${(ms[Math.floor(ms.length / 2)]! / 1000).toFixed(2)} s, langsamste ${(ms.at(-1)! / 1000).toFixed(2)} s; Eingang RSS: Leerlauf ${mb(leer)}, Spitze ${mb(spitze)}`);
   } else {
     let spitze = leer, pbSpitze = pbLeer;
     const uhr = setInterval(() => { spitze = Math.max(spitze, rss(eingang.pid)); pbSpitze = Math.max(pbSpitze, rss(server.pid)); }, 100);
