@@ -283,10 +283,11 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
       angemeldet = ergebnis;
     }
 
-    // Weiter an den Teil: fremde x-eingang-* und Weiterleitungs-Köpfe weg; Cookie und Authorization bekommt nur PocketBase
+    // Weiter an den Teil: fremde x-eingang-* und Weiterleitungs-Köpfe weg; Cookie und Authorization bekommt nur PocketBase. Köpfe mit
+    // Unterstrich fallen ganz weg (wie bei nginx): Server nach WSGI oder CGI lesen x_eingang_rolle wie x-eingang-rolle.
     const kopf = new Headers();
     req.headers.forEach((v, k) => {
-      if (HOP.has(k) || k.startsWith('x-eingang-') || k.startsWith('x-forwarded-') || k === 'forwarded' || k === 'x-real-ip') return;
+      if (k.includes('_') || HOP.has(k) || k.startsWith('x-eingang-') || k.startsWith('x-forwarded-') || k === 'forwarded' || k === 'x-real-ip') return;
       if (!pb && (k === 'cookie' || k === 'authorization')) return;
       kopf.set(k, v);
     });
@@ -316,7 +317,8 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     const aus = new Headers();
     // content-length bleibt: Der Körper geht unverändert durch (auch komprimiert, decompress: false)
     res.headers.forEach((v, k) => { if ((!HOP.has(k) || k === 'content-length') && !k.startsWith('x-eingang-') && k !== 'set-cookie') aus.append(k, v); });
-    for (const c of res.headers.getSetCookie()) if (pb || !c.trimStart().startsWith(`${COOKIE}=`)) aus.append('set-cookie', c);
+    // Den Namen lesen wie der Browser: bis zum ersten «=», ohne Leerzeichen und Tab davor und danach (RFC 6265, 5.2)
+    for (const c of res.headers.getSetCookie()) if (pb || c.slice(0, Math.max(0, c.indexOf('='))).trim().toLowerCase() !== COOKIE.toLowerCase()) aus.append('set-cookie', c);
     if (!aus.has('x-content-type-options')) aus.set('x-content-type-options', 'nosniff');
     if (angemeldet || (pb && (cookie || authorization))) {
       aus.set('cache-control', 'no-store');

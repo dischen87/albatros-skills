@@ -42,6 +42,10 @@ const teil = Bun.serve({
     gesehen.push({ pfad: u.pathname + u.search, kopf: Object.fromEntries(r.headers), bytes });
     const h = new Headers({ 'content-type': 'application/json', 'x-eingang-rolle': 'verwaltung' });
     h.append('set-cookie', '__Host-sitzung=gefaelscht; Path=/; Secure; HttpOnly');
+    // Browser lesen den Namen ohne Leerzeichen und Tab vor dem «=» (RFC 6265, 5.2): das wäre ebenfalls die Sitzung
+    h.append('set-cookie', '__Host-sitzung =mit-leerzeichen; Path=/; Secure; HttpOnly');
+    h.append('set-cookie', '__Host-sitzung\t=mit-tab; Path=/; Secure; HttpOnly');
+    h.append('set-cookie', '__HOST-Sitzung=gross; Path=/; Secure; HttpOnly');
     h.append('set-cookie', 'sprache=de; Path=/');
     return new Response(JSON.stringify({ pfad: u.pathname }), { headers: h });
   },
@@ -128,7 +132,15 @@ try {
   pruefe(Object.keys(offen).every((x) => !x.startsWith('x-eingang-')) && !offen.cookie, 'Offener Teil: alle gefälschten x-eingang-* fallen weg, auch in anderer Schreibweise; kein Cookie');
   pruefe(offen['x-forwarded-for'] === '127.0.0.1', `X-Forwarded-For vom Browser zählt nicht (VERTRAUTE_PROXYS leer): der Teil bekommt die Adresse der Verbindung (${offen['x-forwarded-for']})`);
   const antwort = await holen('/verein/');
-  pruefe(!antwort.headers.get('x-eingang-rolle') && antwort.headers.getSetCookie().join() === 'sprache=de; Path=/', 'Antworten der Teile: x-eingang-* entfernt, eine Sitzung von einem Teil fällt weg, andere Cookies bleiben');
+  pruefe(!antwort.headers.get('x-eingang-rolle') && antwort.headers.getSetCookie().join() === 'sprache=de; Path=/',
+    `Antworten der Teile: x-eingang-* entfernt, eine Sitzung von einem Teil fällt weg (auch «__Host-sitzung =…», mit Tab oder in Grossbuchstaben), andere Cookies bleiben (${antwort.headers.getSetCookie().length} Set-Cookie)`);
+  // Köpfe mit Unterstrich: Server nach WSGI oder CGI (etwa Python) lesen x_eingang_rolle wie x-eingang-rolle. Der Eingang verwirft sie, wie nginx
+  await holen('/verein/', { kopf: { X_Eingang_Rolle: 'vorstand', X_Eingang_Benutzer: 'jemand', X_Forwarded_For: '6.6.6.6', X_Real_IP: '6.6.6.6' } });
+  const unterOffen = gesehen.at(-1)!.kopf;
+  await holen('/intern/seite.html', { kopf: { cookie, X_Eingang_Rolle: 'vorstand', X_Eingang_Benutzer: 'jemand' } });
+  const unterZu = gesehen.at(-1)!.kopf;
+  pruefe([unterOffen, unterZu].every((k) => Object.keys(k).every((x) => !x.includes('_'))) && !unterOffen['x-eingang-rolle'] && unterZu['x-eingang-rolle'] === 'mitglied' && unterZu['x-eingang-benutzer'] === anna.id,
+    `Köpfe mit Unterstrich (X_Eingang_Rolle, X_Forwarded_For) kommen bei keinem Teil an (${[...Object.keys(unterOffen), ...Object.keys(unterZu)].filter((x) => x.includes('_')).join(', ') || 'keiner'})`);
 
   // Rollen
   pruefe((await holen('/vorstand/protokoll.html', { kopf: { cookie } })).status === 403, 'Teil mit rolle:vorstand: für ein Mitglied 403');
