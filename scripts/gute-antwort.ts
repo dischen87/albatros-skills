@@ -7,6 +7,8 @@ import { type Fahrplan, ladeFahrplan, type Phase } from './fahrplan.ts';
 export const ZIEL = 'plugins/albatros/evals/GUTE-ANTWORT.md';
 export const LOG = 'plugins/albatros/evals/KRITERIEN-LOG.md';
 const WER = { person: 'Person', annahme_ok: 'Annahme', ki: 'KI' } as const;
+const WANN = { vor_skill: 'vor den Schritten des Skills', nach_skill: 'nach den Schritten des Skills' } as const;
+const oder = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} oder ${xs.at(-1)}` : xs[0] ?? '');
 const zelle = (s: string) => s.replaceAll('|', '\\|').replaceAll('\n', ' ');
 const code = (s: string) => `\`${s}\``;
 
@@ -56,13 +58,19 @@ function phase(p: Phase, f: Fahrplan, faelle: string[]): string {
   const zeilen = [`## ${p.id} ${p.titel}`, ''];
   const kopf = [`Etappe ${p.etappe}`, `Skill ${code(p.skill)}${p.abschnitt ? `, Abschnitt «${p.abschnitt}»` : ''}`, `Insel ${p.insel.map(code).join(', ')}`, `Bild: ${p.bild}`];
   zeilen.push(kopf.join(' · '), '');
-  if (p.methoden?.geschaeft)
-    zeilen.push(`- Weg Geschäft: ${p.methoden.geschaeft.map(code).join(', ')}${p.ausgaenge?.geschaeft ? ` (Ausgänge: ${p.ausgaenge.geschaeft.join(', ')})` : ''}`);
+  if (p.methoden?.geschaeft) {
+    const ausgaenge = p.ausgaenge ? ` (Ausgänge: ${p.ausgaenge.geschaeft.join(', ')}, festgehalten in ${code(p.ausgaenge.ablage)})` : '';
+    zeilen.push(`- Weg Geschäft: ${p.methoden.geschaeft.map(code).join(', ')}, ${WANN[p.methoden.wann]}${ausgaenge}`);
+  }
   const v = p.varianten?.modernisieren;
   if (v) zeilen.push(`- Modernisieren: ${[v.skill && `Skill ${code(v.skill)}`, v.abschnitt && `Abschnitt «${v.abschnitt}»`, v.zusatz].filter(Boolean).join(', ')}`);
-  if (p.methoden?.geschaeft || v) zeilen.push('');
+  const jeWohnort = p.insel_je_wohnort;
+  if (jeWohnort) zeilen.push(`- Insel je Wohnort (bis zum Abschluss zu melden): ${(['light', 'pilot', 'selbst'] as const).map((w) => `${w} ${jeWohnort[w].map(code).join(', ')}`).join('; ')}`);
+  if (p.methoden?.geschaeft || v || jeWohnort) zeilen.push('');
   zeilen.push('**Pflichtfragen**', '', '| Kennung | Frage | Wer antwortet | Ablage |', '|---|---|---|---|');
-  for (const q of p.pflichtfragen) zeilen.push(`| ${code(q.id)} | ${zelle(q.frage.de)} | ${WER[q.antwortet]} | ${code(q.ablage)} |`);
+  for (const q of p.pflichtfragen) {
+    zeilen.push(`| ${code(q.id)} | ${zelle(q.frage.de)} | ${WER[q.antwortet]} | ${code(q.ablage)}${q.werte ? `, beginnt mit ${oder(q.werte.map(code))}` : ''} |`);
+  }
   zeilen.push('', '**Ergebnis**', '');
   for (const e of p.ergebnis)
     zeilen.push(`- ${code(e.datei)}${e.zeilen ? ` mit ${e.zeilen.length === 1 ? 'der Zeile' : 'den Zeilen'} ${e.zeilen.map(code).join(', ')}` : ''}`);
@@ -108,6 +116,8 @@ export async function guteAntwort(wurzel: string, f: Fahrplan): Promise<{ ok: tr
     '- Wer antwortet: Person heisst, die Person antwortet immer selbst, auch im Modus machen. Annahme heisst, die KI schlägt einen Standard als [Annahme] vor. KI heisst, die KI klärt es selbst (Recherche, Messung) und zeigt das Ergebnis.',
     `- Ja-Momente gibt es nur ${f.ja_momente.length}: ${f.ja_momente.map((j) => `${j.phase} (${code(j.frage)})`).join(', ')}. «Sieht gut aus» ist kein Ja.`,
     `- Gratis bis ${f.gratis_bis}.`,
+    `- Marken am Anfang eines Werts: ${code(`[${f.marken.offen[0]}: …]`)} (in jeder Sprache deutsch) und der Platzhalter ${code(`[${f.marken.platzhalter[0]}]`)} (im Entwurf übersetzt) heissen nicht belegt; ${code(`[${f.marken.annahme[0]}: …]`)} (deutsch) ist ein Vorschlag der KI und nie die Antwort der Person. Erkannt werden auch ${[...f.marken.offen.slice(1), ...f.marken.platzhalter.slice(1), ...f.marken.annahme.slice(1)].join(', ')}.`,
+    `- Wohnort (P11, Zeile ${code('Wohnort:')}): beginnt mit «${f.wohnorte.light}» (light) oder «${f.wohnorte.pilot}» (pilot), jeder andere Wert heisst selbst; ohne die Zeile gilt das Abo im Konto (Gratis heisst selbst).`,
     `- Modus (Standard: ${f.modus.standard}; gilt je Projekt, steht in ${code(f.modus.quelle)}):`,
     `  - machen: ${f.modus.machen}`,
     `  - lernen: ${f.modus.lernen}`,
