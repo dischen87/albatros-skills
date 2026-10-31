@@ -10,4 +10,4 @@ Fertig, wenn: Das PRD ist aus dem freigegebenen Entwurf abgeleitet (keine eigene
 Hinweis: Bis zur fertigen Seite auf deinem Computer kostet Albatros nichts. Erst beim Wohnort wählst du: mit Albatros oder selbst.
 Modus: machen. Die KI nutzt das Know-how und macht die Arbeit, mit einem Satz Erklärung und Bild je Schritt. Pflichtfragen mit antwortet: person stellt sie trotzdem, den Rest trägt sie als [Annahme] ein. Lernmomente bietet sie an, drängt sie nicht auf.
 Danach: Phase P10 «Lokal ansehen und freigeben» mit Skill `webseite-bauen`, Abschnitt «Freigabe».
-Stand: Weg Webseite · Abo Gratis · Projekt projekt («Sonnenhof») auf der Insel bei «Entwurf freigegeben» · Phase P9 von 13 (geschafft nach Insel: bis P8, nach Belegen: bis P8).
+Stand: Weg Webseite · Abo Gratis · Projekt projekt («Sonnenhof») auf der Insel bei «Entwurf freigegeben» · Phase P9 von 13 (geschafft nach Insel: bis P8).

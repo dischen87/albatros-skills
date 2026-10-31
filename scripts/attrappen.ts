@@ -49,10 +49,13 @@ export const FAELLE: Record<string, Fall> = {
   'start-bauen': { zustand: 'gratis-ohne-weg', werkzeuge: { konto_status: {}, upgrade_link: { stufe: 'light' } } },
 };
 
-// Was konto für Preise und Abo antwortet (in den Zuständen der Attrappen fehlt es, weil lage es nicht braucht)
+// Was konto für Preise und Abo antwortet (in den Zuständen der Attrappen fehlt es, weil lage es nicht braucht). Dazu die Einwilligungen
+// (Welle 5, 31.10.2026: lage liest sie mit ERFASSUNG): Lücken ja, Anfragen nicht erteilt, also ohne «Hinweis zur Erfassung» und ohne
+// «Anfragen: erlaubt.», damit die Fälle das prüfen, wofür sie gebaut sind
 const KONTO_EXTRA: Record<string, Antwort> = {
   'GET /web/stufen': { status: 200, body: [{ stufe: 'gratis', leistung: { preisChfMonat: 0 } }, { stufe: 'light', leistung: { preisChfMonat: 15 } }, { stufe: 'pilot', leistung: { preisChfMonat: 40 } }] },
   'POST /cockpit/abo/checkout': { status: 200, body: { url: 'https://checkout.stripe.com/c/pay/cs_test_albatros_light' } },
+  'GET /cockpit/erfassung': { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } },
 };
 const SCHALTER_AN = { FAHRPLAN: true, ERFASSUNG: true };
 
@@ -66,6 +69,9 @@ async function main() {
   const mcp: Record<string, unknown> = await import(`${A}/services/mcp/src/app.ts`);
   const attrappen: Record<string, unknown> = await import(`${A}/services/mcp/scripts/lage-attrappen.ts`);
   const ZUSTAENDE = attrappen.ZUSTAENDE as Record<string, Zustand>;
+  // Wie viele Dateien lage als belege nimmt (seit 31.10.2026 alle Ergebnisdateien und der Ideen-Check mit Reserve, steu-09; vorher 20)
+  const lageModul: Record<string, unknown> = await import(`${A}/services/mcp/src/lage.ts`);
+  const BELEGE_HOECHSTENS = typeof lageModul.BELEGE_HOECHSTENS === 'number' ? lageModul.BELEGE_HOECHSTENS : 20;
   const createApp = mcp.createApp as (deps: Record<string, unknown>) => { request: (pfad: string, init: RequestInit) => Promise<Response> };
   const SKILLS_STAND = String(kit.SKILLS_STAND);
 
@@ -119,7 +125,7 @@ async function main() {
       for (const z of zeilen) if (z.length > 300) throw new Error(`${datei}: Zeile länger als 300 Zeichen, lage lehnt sie ab: ${z.slice(0, 60)}…`);
       liste.push({ datei, zeilen });
     }
-    return liste.slice(0, 20);
+    return liste.slice(0, BELEGE_HOECHSTENS);
   }
 
   async function zustandFuer(fall: string, f: Fall): Promise<Zustand> {
