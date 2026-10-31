@@ -602,8 +602,8 @@ phasen:
         ablage: 'docs/designsystem.md#Richtung:'
         frage:
           de: 'Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?'
-          fr: 'La planche d''échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le téléphone ?'
-          it: 'La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul cellulare?'
+          fr: 'La planche d''échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ?'
+          it: 'La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?'
           en: 'Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?'
         warum:
           de: 'Was im Musterblatt stimmt, stimmt auf jeder Seite.'
@@ -621,8 +621,8 @@ phasen:
           en: 'A dark version too?'
         warum:
           de: 'Viele Handys zeigen nachts dunkel.'
-          fr: 'Beaucoup de téléphones affichent en sombre la nuit.'
-          it: 'Molti cellulari di notte mostrano tutto scuro.'
+          fr: 'Beaucoup de natels affichent en sombre la nuit.'
+          it: 'Molti telefonini di notte mostrano tutto scuro.'
           en: 'Many phones switch to dark at night.'
     gate: 'tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen.'
 
@@ -686,8 +686,8 @@ phasen:
         ablage: 'docs/entwurf.md#Rückmeldungen:'
         frage:
           de: 'Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört?'
-          fr: 'Clique partout, sur le téléphone et sur l''ordinateur : qu''est-ce qui manque, qu''est-ce qui dérange ?'
-          it: 'Clicca dappertutto, sul cellulare e sul computer: che cosa manca, che cosa disturba?'
+          fr: 'Clique partout, sur le natel et sur l''ordinateur : qu''est-ce qui manque, qu''est-ce qui dérange ?'
+          it: 'Clicca dappertutto, sul telefonino e sul computer: che cosa manca, che cosa disturba?'
           en: 'Click your way through, on a phone and on a computer: what''s missing, what bothers you?'
         warum:
           de: 'Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau.'
@@ -785,9 +785,9 @@ phasen:
         ablage: 'docs/prd.md#Freigegeben:'
         frage:
           de: 'Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?'
-          fr: 'Tu as vu ton site sur ton ordinateur, en vue téléphone et en vue ordinateur. Tu donnes ton autorisation ?'
-          it: 'Hai visto il tuo sito sul tuo computer, in vista cellulare e in vista computer. Dai il via libera?'
-          en: 'You''ve seen your site on your computer, in phone view and in computer view. Do you release it?'
+          fr: 'Tu as vu ton site sur ton ordinateur, en largeur natel et en largeur ordinateur. Tu donnes ton autorisation ?'
+          it: 'Hai visto il tuo sito sul tuo computer, in larghezza telefonino e computer. Dai il via libera?'
+          en: 'You''ve seen your site on your computer, at phone width and at computer width. Do you release it?'
         warum:
           de: 'Ohne Freigabe geht nichts ins Netz; diese Freigabe gilt für den Livegang.'
           fr: 'Sans autorisation, rien ne va en ligne ; cette autorisation vaut pour la mise en ligne.'
