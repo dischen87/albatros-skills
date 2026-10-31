@@ -1,11 +1,225 @@
 ---
 name: lancieren
-description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti: prima scegliere e preparare dove abita (da Albatros con Light o Pilot, o da sé; prezzi solo da konto_status), più tardi la messa online: push del sito approvato, verifica dall'esterno, se lo desidera un dominio proprio, e a chi lo dice per primo. Il risultato sono docs/lancieren.md e docs/live.md. Usa questo skill dopo l'approvazione in webseite-bauen e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento»."
+description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, verifica dall'esterno (pruefen.mjs --live), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: 'f6e27f4bafd4'
+  quelle: 'dd7642456b2b'
 ---
 
-# Lanciare: dove abita e l'inaugurazione
+# Lanciare: il domicilio e l'inaugurazione
 
-Verrà scritto nel prossimo passo.
+## L'immagine
+
+La casa è costruita, collaudata e approvata. Adesso vengono due cose, in quest'ordine. Prima decidi dove sta e vai a prendere la chiave: il **domicilio**. Sul terreno c'è poi solo una casa campione (il modello di Albatros). Quando bucalettere e rilevatore di fumo sono appesi (skill `betrieb`), viene l'**inaugurazione** con il nastro davanti alla porta: entra esattamente la casa approvata, qualcuno controlla dalla strada che tutto vada bene, e i primi ospiti lo vengono a sapere.
+
+**Come usare l'immagine:** una frase sull'immagine nella tua prima risposta, e quale delle due parti tocca adesso.
+
+## Come parli
+
+- Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
+- Gli inizi di riga nei file di `docs/` (`Wohnort:`, `Grund:`, `Adresse:`, `Freigegeben:`, `Live seit:`, `Geprüft:`, `Angekündigt:`) restano in tedesco: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
+- I prezzi li dai solo da `konto_status` (Albatros) o dalla pagina dei prezzi di un fornitore che hai appena letto, mai a memoria. Se non l'hai letta, dici «sta sulla pagina dei prezzi».
+- Carte, password e chiavi private non vanno mai nella chat. Si paga sulla pagina di pagamento, i conti presso i fornitori li apre la persona stessa, nel browser.
+- Niente pressioni: «da te» è una buona scelta, se va bene. Consigli il domicilio più piccolo che basta, con una frase di motivo dal piano.
+- Online va solo il sito che la persona ha approvato (`Freigegeben:` in `docs/prd.md`), e solo nella seconda parte.
+- Al massimo due domande per messaggio. Quello che la persona deve vedere (pagina di pagamento, porto, sito online) lo apri tu: `open <indirizzo>` (Linux `xdg-open`, Windows `start`).
+- Nel modo `lernen` (riga `Modus:` in `docs/projekt.md`) la persona fa da sé la chiave SSH e il primo push; nel modo `machen` lo fai tu e lo spieghi in una frase.
+
+## Parte 1: il domicilio (fase P11, `schritt: wohnort`)
+
+### 1. Il sito è approvato?
+
+```bash
+grep -m1 '^Freigegeben: ' docs/prd.md        # Windows: findstr /b "Freigegeben:" docs\prd.md
+```
+
+Se la riga manca, lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione.
+
+### 2. La domanda, sempre la stessa
+
+Prima di chiedere, raccogli le basi: `konto_status` (abbonamento e prezzi di Light e Pilot), in `docs/plan.md` la riga `Setup:` e in `docs/stack.md` la riga del blocco. Poi mostri i tre domicili in una piccola tabella, con i prezzi da `konto_status`:
+
+| Domicilio | va bene se | costa | quello che fai tu |
+|---|---|---|---|
+| Albatros Light | il sito non ha bisogno di blocchi (testi, immagini, contatto per e-mail) | CHF … al mese | niente: quello che mandi nel porto è online poco dopo |
+| Albatros Pilot | gira un blocco (iscrizione, prenotazione, accesso) o vuoi un server tuo | CHF … al mese | poco: nastro trasportatore e foto quotidiane del server ci sono già |
+| da te | vuoi avere tutto in mano e hai tempo per la manutenzione | dal fornitore | conto, installazione, copia di sicurezza e sorveglianza |
+
+Aggiungi una frase di consiglio con un motivo da `docs/plan.md` (`Setup:`). Poi la domanda, da sola nel messaggio:
+
+> Dove deve abitare il tuo sito: da Albatros (Light senza blocchi, Pilot con il tuo server) o te ne occupi tu?
+
+Fin qui da Albatros era tutto gratis. Se la persona chiede perché adesso costa qualcosa, dici: un posto in rete ha bisogno di un computer che giri giorno e notte.
+
+### 3a. Da Albatros: Light o Pilot
+
+1. **L'abbonamento solo dopo la scelta:** quando la persona ha scelto Light o Pilot, prendi il link con `upgrade_link`, con `stufe` (`light` o `pilot`) e `bestaetigt: true`. Prima non chiami mai lo strumento. Dalle il link e aprilo: la carta la digita solo lì. Se c'è già un abbonamento, arriva il link al portale clienti (per esempio per passare da Light a Pilot). Poi `konto_status`, finché l'abbonamento è attivo.
+2. **Chiave di casa e serratura:** segui lo skill `ssh-schluessel`. Con Light la serratura apre il porto per il diario di bordo, con Pilot anche la porta del server. Momento di apprendimento: che cos'è una chiave SSH, con l'immagine di serratura e chiave. Nel modo `lernen` la persona crea da sé la chiave, poi segnali `verstanden_melden` (missione `flugschule-16-wohnort`, tipo `selbst`).
+3. **Il nome dell'indirizzo:** diventa parte di `https://<name>.aufwind.sh` (da 3 a 32 caratteri: minuscole, cifre, trattino). Proponilo partendo dal nome del progetto (`docs/projekt.md`, in `docs/konzept.md` la riga `Name:`) e chiedi se va bene.
+4. **Sito o server:** con Light `seite_erstellen`, con Pilot `server_erstellen`, ogni volta con `name`, la serratura (`schluessel`, solo il contenuto del file `.pub`) e `sprache` (la lingua della conversazione, qui `it`). Un server di solito ci mette uno o due minuti: chiedi con `konto_status` finché è pronto. Se il nome nella risposta è diverso, dillo subito.
+5. **Guardare:** apri `https://<name>.aufwind.sh` con la persona. Lì adesso c'è il modello di Albatros, non il suo sito. Dillo chiaramente: il suo sito approvato ci entra solo alla messa online.
+
+### 3b. Da te
+
+La persona mette online il sito da sé. Albatros per lei resta gratis (isola, skill); solo gli strumenti per server, porto e dominio fanno parte di un abbonamento. Come si fa dipende dal blocco:
+
+- **Senza blocchi (un sito statico):** ogni fornitore per siti statici consegna la cartella `seite/`. Tre strade diffuse, ognuna con un conto presso il fornitore, che la persona apre da sé:
+  - **GitHub Pages:** il diario di bordo va su GitHub, un piccolo nastro trasportatore lì consegna `seite/`. È gratis con un repository pubblico: allora tutti vedono anche `docs/` con piano e concetto. Per un repository privato serve un conto a pagamento su GitHub (pagina dei prezzi). Senza dominio proprio il sito sta sotto `https://<utente>.github.io/<repo>/`, cioè in una sottocartella: allora in `web/astro.config.mjs` servono `site: 'https://<utente>.github.io'` e `base: '/<repo>'`, altrimenti i link portano nel vuoto. Senza sottocartella si può con il repository `<utente>.github.io` o con un dominio proprio.
+  - **Cloudflare Pages** o **Netlify:** il diario di bordo può restare privato. O lo prendono da GitHub (cartella di uscita `seite`, nessun passo di costruzione, perché `seite/` è già costruita nel diario di bordo), o carichi `seite/` direttamente dal computer, senza alcun repository. L'indirizzo è allora `https://<name>.pages.dev` o `https://<name>.netlify.app`.
+  - Condizioni e limiti delle offerte gratuite cambiano: leggi la pagina dei prezzi del fornitore con la persona, prima che decida.
+- **Con un blocco:** un blocco ha bisogno di un server che giri giorno e notte. La persona affitta allora un server proprio e lo prepara con il modello di Albatros (`Dockerfile`, `compose.yaml` e `nginx.conf` dalla cartella `vorlage/` di albatros-skills, più Caddy per HTTPS). È il trasloco nella casa propria: skill `landung`.
+
+Aiuta nella scelta con tre domande: il diario di bordo può essere pubblico? Il sito ha bisogno di un blocco? Chi si occupa di copia di sicurezza e sorveglianza (skill `betrieb`)? Tutta la strada senza Albatros la descrive lo skill `landung`, parte «Direkt vom Computer ins Netz» (direttamente dal computer in rete). In questa parte la persona apre solo il conto e fa l'accesso; si carica solo alla messa online.
+
+### 4. `docs/lancieren.md`
+
+```markdown
+# Lanciare
+
+Wohnort: Albatros Light (oppure Albatros Pilot, oppure da te: Netlify)
+Grund: … (una frase, da docs/plan.md, riga Setup:, e dal desiderio della persona)
+Adresse: https://<name>.aufwind.sh
+Hafen: git@aufwind.sh:<name>/projekt.git (da te: il repository su GitHub, oppure «nessun repository, caricato dal computer»)
+Gewählt: <data>
+```
+
+Se da te l'indirizzo si sa solo dopo il primo caricamento, c'è `[offen: kommt beim Live schalten]` (aperto: arriva alla messa online). Poi la voce nel diario di bordo (`git add docs/lancieren.md && git commit -m "Domicilio: <domicilio>"`) e `schritt_melden` con `wohnort` e `sprache`. Se lo strumento manca o non conosce il passo, si va avanti senza isola.
+
+Si va avanti con lo skill `betrieb`: bucalettere, rilevatore di fumo e porta di casa, prima che arrivino gli ospiti.
+
+## Parte 2: la messa online (fase P13, `schritt: hafen`, `fliessband`, `live`, `domain`)
+
+Solo quando `docs/betrieb.md` ha tutte le righe (skill `betrieb`). Se manca, vai prima lì.
+
+### 1. Solo il sito approvato
+
+```bash
+grep -m1 '^Freigegeben: ' docs/prd.md                     # l'approvazione del sopralluogo
+git status --short seite web design                       # vuoto: niente di non salvato sul sito
+git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
+```
+
+- **Nessuna riga `Freigegeben:`:** niente va online. Ritorno allo skill `webseite-bauen`, passo 6.
+- **Cambiato dopo l'approvazione** (nessun output «Seite wie freigegeben», sito come approvato): la persona guarda il sito cambiato in locale e lo approva di nuovo (nuova riga `Freigegeben:`, `git tag -f freigegeben`). Solo dopo si va avanti.
+- **Nessun tag `freigegeben`** (progetti più vecchi): mostra il sito in locale alla persona e chiedi: «È esattamente il sito che hai approvato?» Dopo il sì metti il tag (`git tag freigegeben`).
+
+### 2. Nel porto o dal fornitore (`schritt: hafen`)
+
+**Da Albatros:** nel porto c'è dal domicilio il modello, una voce. Il diario di bordo sul computer ha un suo inizio. Colleghi i due, senza clonare di nuovo e senza copiare file (skill `git-logbuch`, parte «Logbuch ohne Hafen»):
+
+```bash
+git remote -v                                                    # c'è già un origin? allora il nome hafen invece di origin
+git remote add origin git@aufwind.sh:<name>/projekt.git          # indirizzo da docs/lancieren.md o da konto_status
+git fetch origin
+git merge origin/main --allow-unrelated-histories -X ours -m "Modello dal porto ripreso, il sito approvato resta"
+git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
+git push -u origin main
+```
+
+Dillo alla persona con l'immagine: il modello viene ripreso una volta nel diario di bordo. Dove entrambi hanno lo stesso file (`seite/index.html`, `.gitignore`), resta il suo. Si aggiungono i file che servono al nastro trasportatore di Pilot (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); con Light dormono. Se dopo l'unione non c'è «Seite unverändert» (sito invariato), non fai il push e guardi con `git diff freigegeben HEAD -- seite`. Poi apri il porto nel browser (`open https://code.aufwind.sh/<name>/projekt`) e segnali `hafen`.
+
+**Da te, con GitHub:** la persona fa l'accesso con `gh auth login` nel browser. Per GitHub Pages prima crei il nastro trasportatore, `.github/workflows/seite.yml`:
+
+```yaml
+name: Seite
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false            # non interrompere mai una consegna in corso
+jobs:
+  ausliefern:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: seite                  # la cartella costruita, così come è stata approvata
+      - id: pages
+        uses: actions/deploy-pages@v4
+```
+
+Poi portare il diario di bordo: `gh repo create <repo> --private --source . --remote origin --push` (per GitHub Pages senza conto a pagamento `--public`, dopo che la persona sa che allora anche `docs/` è pubblico). Per GitHub Pages la persona imposta sotto Settings, Pages la fonte su «GitHub Actions». Poi segnali `hafen`.
+
+**Da te, senza repository:** carichi `seite/` direttamente, dopo che la persona ha fatto l'accesso nel browser: `npx netlify-cli deploy --dir=seite --prod` o `npx wrangler pages deploy seite --project-name=<name>`. Il diario di bordo resta sul computer; la sua copia di sicurezza sta in `docs/betrieb.md`. Un porto allora non c'è, `hafen` non lo segnali.
+
+### 3. Nastro trasportatore (`schritt: fliessband`)
+
+- **Light:** non c'è: circa un minuto dopo il push Albatros mostra la cartella `seite/`.
+- **Pilot:** il push avvia il nastro trasportatore di `.github/workflows/deploy.yml`. Apri `https://code.aufwind.sh/<name>/projekt/actions` e guarda con la persona. Verde: segnalare `fliessband`. Rosso: skill `pipeline`, parte «Wenn das Band rot ist» (quando il nastro è rosso).
+- **Da te:** su GitHub Pages sotto «Actions», su Netlify e Cloudflare nella loro lista delle consegne. Verde: segnalare `fliessband`. Con il caricamento senza repository non c'è un nastro trasportatore.
+
+### 4. Controllare dall'esterno (`schritt: live`)
+
+**Guardi tu, la persona non aspetta mai.** L'indirizzo risponde già prima (con il modello). Perciò aspetti il titolo del sito, così come sta in `seite/index.html` tra `<title>` e `</title>`, al massimo tre minuti:
+
+```bash
+for i in $(seq 12); do curl -s <indirizzo> | grep -qF "<titolo del tuo sito>" && echo "Il sito c'è" && break; sleep 15; done
+node scripts/pruefen.mjs --live <indirizzo>
+node scripts/pruefen.mjs --tueren <indirizzo>
+```
+
+L'indirizzo sta in `docs/lancieren.md` (`Adresse:`). È online solo ciò che è stato controllato dall'esterno: se con `--live` (titolo come costruito, impressum e protezione dei dati raggiungibili, accessibilità, Lighthouse) e con `--tueren` niente è rosso, segnali `live`, apri l'indirizzo con la persona e confronti con le foto del controllo.
+
+- **Con un blocco «online» non vuol dire ancora «finito»:** solo quando i dati ci sono (per esempio i corsi) e una prenotazione di prova in rete ha portato la sua e-mail al proprio indirizzo (skill `bausteine`), dici alla persona che può condividere il link. Fino ad allora dici onestamente che cosa manca ancora.
+- **Dopo tre minuti non c'è ancora:** con Light `konto_status` mostra se l'ultimo stato è online o che cosa manca. Spesso nel porto manca `seite/index.html`, perché `seite/` sta in un `.gitignore`. Con Pilot guardi sotto «Actions» (skill `pipeline`), da te nella lista delle consegne del fornitore. Correggere, nuova voce, push, ricontrollare. Se la correzione cambia il sito stesso, prima lo mostri alla persona e ottieni di nuovo l'approvazione. Se ancora non va, dici che cosa hai controllato e chiedi al coach (`coach_fragen`).
+
+### 5. Un indirizzo tuo, facoltativo (`schritt: domain`)
+
+Chiedi: «Un indirizzo tuo (dominio) adesso, più tardi o mai?» Aggiungi: costa ogni anno ed è facoltativo. Adesso: da Albatros segui lo skill `domain`, da te lo colleghi presso il fornitore (skill `landung`, parte «Direkt vom Computer ins Netz»). Quando `https://<dominio>` mostra il sito con il lucchetto, segnali `domain` e ricontrolli con `pruefen.mjs --live https://<dominio>`.
+
+**Se il sito ne sostituisce uno esistente** (`docs/bestand.md`, skill `webseite-modernisieren`): il vecchio dominio punta poi sul nuovo sito. Ogni vecchio indirizzo di `docs/bestand.md` che non esiste più riceve un reindirizzamento al punto nuovo giusto (in Astro sotto `redirects` in `web/astro.config.mjs`). Le voci per l'e-mail (MX) non le tocchi mai.
+
+### 6. Percorso attività: il controllo prima del volo
+
+Sul percorso attività prendi con `methode` il metodo `go-live-check` e lo segui: legge l'indirizzo da `docs/lancieren.md` e scrive il suo risultato in `docs/live.md` sotto `Geprüft:`. Il metodo c'è con Light e Pilot. Se il sito abita «da te», senza abbonamento `methode` non lo dà, e la verifica tramite il server di Albatros non è possibile: dillo onestamente e passa con la persona il controllo del passo 4, più modulo, e-mail e cassa provati di persona.
+
+### 7. A chi lo dici per primo?
+
+Chiedi: «A chi lo dici per primo?» Il primo fan non arriva da solo. Aiuta con un breve testo che la persona manda da sé (per esempio a tre persone che ci tengono). Tu non mandi niente.
+
+### 8. `docs/live.md`
+
+```markdown
+# Online
+
+Live seit: <data>
+Adresse: https://… (il dominio proprio, appena è attivo)
+Geprüft: <data>, pruefen.mjs --live senza rosso, porte come previsto (docs/pruefung/messwerte-live.json)
+Angekündigt: <data>, <a chi>
+```
+
+Poi la voce nel diario di bordo, il push come sopra, e la missione. Nel modo `lernen` fai le domande di controllo della missione `flugschule-18-live-schalten` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
+
+Se dopo la persona vuole qualcosa di diverso, vale lo skill `webseite-aendern`: piccolo (cambiare in locale, mostrare, approvazione, push) o grande (aggiunta al piano, bozza, via libera per costruire, costruire, mostrare, approvazione, push).
+
+Online va solo ciò che appartiene alla persona o per cui ha il permesso (skill `webseite-modernisieren`, parte «Rechte»).
+
+## Trappole
+
+- `upgrade_link` prima della scelta della persona, o prezzi a memoria.
+- Al momento del domicilio fare già il push del proprio sito: con Light ogni push è subito online, e il sito sta allora in rete prima di bucalettere e rilevatore di fumo.
+- Clonare il diario di bordo dal porto e copiarci dentro il sito: le voci della costruzione vanno allora perse. Collegare invece di copiare.
+- `git push --force` per sovrascrivere il porto: mai. Unire come sopra.
+- Fare il push anche se il sito è cambiato dopo l'approvazione.
+- Dire «è online» senza aver controllato tu dall'esterno.
+- Un repository pubblico per GitHub Pages, senza dire alla persona che allora anche `docs/` è pubblico.
+
+## Verificare la missione
+
+- Dopo la parte 1: `mission_pruefen` con `flugschule-16-wohnort` (isola su «Wohnort»). Da Albatros anche `flugschule-01-start`: la verifica guarda se `https://<name>.aufwind.sh` risponde.
+- Dopo la parte 2: `mission_pruefen` con `flugschule-18-live-schalten` (isola su «Live»), da Albatros anche `flugschule-04-git-logbuch`, con Pilot `flugschule-05-pipeline`.
+
+## Messaggio finale
+
+Il tuo ultimo messaggio in questo passo comincia con una frase sull'immagine «il domicilio e l'inaugurazione», che ridice il nocciolo. Poi: che cosa è riuscito (domicilio scelto o sito online), dove sta il risultato (`docs/lancieren.md`, `docs/live.md`, l'indirizzo), che cosa è ancora aperto e che cosa viene dopo (dopo il domicilio lo skill `betrieb`, dopo la messa online i primi ospiti).
