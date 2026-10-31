@@ -9,7 +9,7 @@ dauer: 20
 pruefung:
   - typ: http
     url: https://{name}.aufwind.sh
-skill: start
+skill: lancieren
 video: albatros-in-60-sekunden
 ---
 
