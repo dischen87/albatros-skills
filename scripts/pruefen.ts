@@ -1,12 +1,19 @@
-// Prüft die Kopfdaten aller Skills (Agent-Skills-Standard) und aller Missionen (schema/mission.schema.json).
+// Prüft die Kopfdaten aller Skills (Agent-Skills-Standard) und aller Missionen (schema/mission.schema.json) und den Fahrplan
+// (fahrplan.yaml gegen schema/fahrplan.schema.json, dazu was ein Schema nicht prüfen kann).
 import Ajv from 'ajv/dist/2020';
 import { Glob } from 'bun';
+import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
+import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const pruefeMission = new Ajv({ allErrors: true }).compile(schema);
 const fehler: string[] = [];
 const NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+// Methoden des Wegs Geschäft liegen im privaten Repo albatros-methoden; geprüft wird nur, wo es daneben liegt (nicht in CI)
+const METHODEN = wurzel + '../albatros-methoden/skills/';
+const methodeFehlt = (name: string) => existsSync(METHODEN) && !existsSync(`${METHODEN}${name}/SKILL.md`);
+const skillFehlt = async (name: string) => !(await Bun.file(`${wurzel}plugins/albatros/skills/${name}/SKILL.md`).exists());
 
 async function kopfdaten(datei: string) {
   const m = (await Bun.file(wurzel + datei).text()).match(/^---\n([\s\S]*?)\n---\n\s*\S/);
@@ -41,6 +48,45 @@ for await (const datei of new Glob('plugins/*/skills/lotse/SKILL.md').scan(wurze
   }
 }
 
+// Fahrplan: nach dem Schema, was ein Schema nicht prüfen kann
+const plan = await ladeFahrplan(wurzel);
+if (!plan.ok) fehler.push(...plan.fehler);
+const fahrplan = plan.ok ? plan.fahrplan : null;
+if (fahrplan) {
+  const f = (text: string) => fehler.push(`fahrplan.yaml: ${text}`);
+  const ids = fahrplan.phasen.map((p) => p.id);
+  if (ids.join() !== ids.map((_, i) => `P${i + 1}`).join()) f(`Phasen müssen P1 bis P${ids.length} in dieser Reihenfolge sein, nicht ${ids.join(', ')}`);
+  if (!ids.includes(fahrplan.gratis_bis)) f(`gratis_bis: ${fahrplan.gratis_bis} ist keine Phase`);
+  const fragen = new Map<string, string>();
+  for (const p of fahrplan.phasen) {
+    for (const q of p.pflichtfragen) {
+      if (fragen.has(q.id)) f(`Pflichtfrage «${q.id}» gibt es in ${fragen.get(q.id)} und in ${p.id}`);
+      fragen.set(q.id, p.id);
+      // Die Antwort gehört in eine Datei (und Zeile) aus dem Ergebnis derselben Phase, sonst sieht das Gate sie nicht
+      const [datei, zeile] = q.ablage.split('#');
+      const e = p.ergebnis.find((x) => x.datei === datei);
+      if (!e) f(`${p.id} ${q.id}: ablage ${datei} steht nicht im Ergebnis der Phase`);
+      else if (zeile && !e.zeilen?.includes(zeile)) f(`${p.id} ${q.id}: Zeile «${zeile}» fehlt in den Zeilen von ${datei}`);
+    }
+    const person = p.pflichtfragen.filter((q) => q.antwortet === 'person').length;
+    if (person > fahrplan.fragen_je_phase) f(`${p.id}: ${person} Fragen an die Person, höchstens ${fahrplan.fragen_je_phase} (fragen_je_phase)`);
+    for (const skill of [p.skill, p.varianten?.modernisieren?.skill])
+      if (skill && (await skillFehlt(skill))) f(`${p.id}: Skill «${skill}» gibt es nicht in plugins/albatros/skills`);
+    for (const m of p.methoden?.geschaeft ?? []) if (methodeFehlt(m)) f(`${p.id}: Methode «${m}» gibt es nicht in albatros-methoden/skills`);
+  }
+  if (await skillFehlt(fahrplan.nach_live.aendern.skill)) f(`nach_live: Skill «${fahrplan.nach_live.aendern.skill}» gibt es nicht in plugins/albatros/skills`);
+  for (const m of fahrplan.nach_live.landen.geschaeft ?? []) if (methodeFehlt(m)) f(`nach_live: Methode «${m}» gibt es nicht in albatros-methoden/skills`);
+  for (const j of fahrplan.ja_momente) {
+    const q = fahrplan.phasen.find((p) => p.id === j.phase)?.pflichtfragen.find((x) => x.id === j.frage);
+    if (q?.antwortet !== 'person') f(`Ja-Moment ${j.phase} «${j.frage}»: braucht eine Pflichtfrage dieser Phase mit antwortet: person`);
+  }
+  // Jeder Insel-Schritt gehört zu genau einer Phase; die zehn alten behalten ihre Reihenfolge, neue kommen dazwischen
+  const inPhasen = fahrplan.phasen.flatMap((p) => p.insel);
+  if (inPhasen.join() !== fahrplan.insel.join()) f(`insel muss genau phasen[].insel in derselben Reihenfolge sein (${inPhasen.join(', ')})`);
+  const alt = ALTE_INSEL.map((s) => fahrplan.insel.indexOf(s));
+  if (alt.some((i, n) => i < 0 || (n > 0 && i <= alt[n - 1]!))) f(`insel: die zehn alten Schritte fehlen oder stehen nicht in alter Reihenfolge (${ALTE_INSEL.join(' < ')})`);
+}
+
 const wege = new Set<string>();
 for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
   const [, weg, name] = datei.split('/');
@@ -53,8 +99,7 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
   if (k.weg !== weg) fehler.push(`${datei}: weg muss «${weg}» sein`);
   if (k.abo !== 'pilot' && k.pruefung?.some((p: any) => p.typ === 'docker' || p.typ === 'workflow'))
     fehler.push(`${datei}: Prüfung mit docker oder workflow braucht abo: pilot`);
-  // ponytail: Methoden des Wegs geschaeft liegen im privaten Repo albatros-methoden und sind hier nicht prüfbar.
-  if (weg !== 'geschaeft' && !skills.has(k.skill)) fehler.push(`${datei}: Skill «${k.skill}» gibt es nicht`);
+  if (weg === 'geschaeft' ? methodeFehlt(k.skill) : !skills.has(k.skill)) fehler.push(`${datei}: Skill «${k.skill}» gibt es nicht`);
 }
 for (const weg of ['flugschule', 'webseite', 'geschaeft'])
   if (!wege.has(weg)) fehler.push(`missionen/${weg}: keine Missionen`);
@@ -92,4 +137,4 @@ if (fehler.length) {
   console.error(fehler.join('\n'));
   process.exit(1);
 }
-console.log(`${skills.size} Skills und alle Missionen in Ordnung.`);
+console.log(`${skills.size} Skills, alle Missionen und der Fahrplan (${fahrplan?.phasen.length} Phasen) in Ordnung.`);
