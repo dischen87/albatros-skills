@@ -7,7 +7,8 @@ Voici ton journal de bord, il se trouve au port. Quand tu envoies une modificati
 
 | Fichier | À quoi il sert |
 |---|---|
-| `seite/` | ta page, commence par `index.html` |
+| `seite/` | ta page, telle qu'elle est en ligne : d'abord ce modèle, à la mise en ligne la page que tu as construite et validée sur ton ordinateur |
+| `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | des indications pour ton IA (Claude Code, Codex, Gemini CLI ou Cursor) : où vous en êtes et ce qui s'applique |
 | `Dockerfile` | la recette de construction : un petit serveur web avec ta page (Pilot) |
 | `compose.yaml` | comment la page tourne sur le serveur (conteneur `webseite`, port 80, Pilot) |
 | `.github/workflows/deploy.yml` | le tapis roulant : construire, livrer, vérifier, revenir en arrière si besoin (Pilot) |
