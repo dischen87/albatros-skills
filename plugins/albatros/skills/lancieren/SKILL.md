@@ -27,10 +27,10 @@ Das Haus ist gebaut, abgenommen und freigegeben. Jetzt kommen zwei Dinge, in die
 ### 1. Ist die Seite freigegeben?
 
 ```bash
-grep -m1 '^Freigegeben: ' docs/prd.md        # Windows: findstr /b "Freigegeben:" docs\prd.md
+grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md        # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md
 ```
 
-Fehlt die Zeile, sagst du ehrlich: Zuerst kommt die Begehung mit Freigabe (Skill `webseite-bauen`, Schritt 6). Will die Person den Wohnort trotzdem schon wählen, geht das; einziehen wird die Seite erst nach der Freigabe.
+Zeigt das keine Zeile, ist die Seite noch nicht freigegeben: Die Zeile fehlt, oder vorne steht kein Datum (zum Beispiel `[Annahme: …]` oder «noch nicht»). Dann sagst du ehrlich: Zuerst kommt die Begehung mit Freigabe (Skill `webseite-bauen`, Schritt 6). Will die Person den Wohnort trotzdem schon wählen, geht das; einziehen wird die Seite erst nach der Freigabe. `docs/lancieren.md` schreibst du und `wohnort` meldest du aber erst nach der Freigabe: Sonst zählt der Fahrplan den Wohnort, und die Frage nach der Freigabe fällt weg.
 
 ### 2. Die Frage, immer dieselbe
 
@@ -74,6 +74,8 @@ Hilf bei der Wahl mit drei Fragen: Darf das Logbuch öffentlich sein? Braucht di
 
 ### 4. `docs/lancieren.md`
 
+Erst wenn die Seite freigegeben ist (Schritt 1):
+
 ```markdown
 # Lancieren
 
@@ -95,12 +97,12 @@ Erst wenn `docs/betrieb.md` alle Zeilen hat (Skill `betrieb`). Fehlt sie, gehst 
 ### 1. Nur die freigegebene Seite
 
 ```bash
-grep -m1 '^Freigegeben: ' docs/prd.md                     # die Freigabe aus der Begehung
+grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md            # die Freigabe aus der Begehung, mit Datum vorne
 git status --short seite web design                       # leer: nichts Ungespeichertes an der Seite
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
 
-- **Keine Zeile `Freigegeben:`:** Es geht nichts ins Netz. Zurück zum Skill `webseite-bauen`, Schritt 6.
+- **Keine Zeile `Freigegeben:` mit Datum vorne:** Es geht nichts ins Netz. Zurück zum Skill `webseite-bauen`, Schritt 6.
 - **Seit der Freigabe geändert** (keine Ausgabe «Seite wie freigegeben»): Die Person schaut sich die geänderte Seite lokal an und gibt sie neu frei (neue Zeile `Freigegeben:`, `git tag -f freigegeben`). Erst dann weiter.
 - **Kein Tag `freigegeben`** (ältere Projekte): Zeig der Person die Seite lokal und frag: «Ist das genau die Seite, die du freigegeben hast?» Nach dem Ja setzt du den Tag (`git tag freigegeben`).
 
@@ -118,7 +120,7 @@ git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
 
 Sag es der Person mit dem Bild: Die Vorlage wird einmal ins Logbuch aufgenommen. Wo beide dieselbe Datei haben (`seite/index.html`, `.gitignore`), bleibt ihre. Dazu kommen die Dateien, die das Fliessband von Pilot braucht (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); mit Light schlafen sie. Steht nach dem Zusammenführen nicht «Seite unverändert», pushst du nicht und schaust mit `git diff freigegeben HEAD -- seite` nach.
 
-**Mit Baustein (Pilot), vor dem Push:** Jetzt liegt die `compose.yaml` der Vorlage im Logbuch, und du hängst die Bausteine ein wie im Skill `bausteine`, Abschnitt 4 «Beim Lancieren, mit Pilot»: zuerst ein Foto des Servers (Werkzeug `snapshot`, Name `vor-baustein`), dann `include:` in `compose.yaml`. Steht in `docs/betrieb.md` `Eingang: ja`, kommt der Schritt **Eingang** dazu: die Zeile `- bausteine/eingang/compose.yaml` unter `include:`, und beim Dienst `webseite` fallen `ports:` und `- "80:80"` weg. Port 80 hat dann der Eingang, die Webseite ist nur noch hinter ihm erreichbar. Vorher muss `bun bausteine/eingang/test.ts` «Alles grün» melden. Ohne Login, oder mit `Eingang: nicht nötig`, bleibt `compose.yaml` wie in der Vorlage. Danach ein Eintrag ins Logbuch.
+**Mit Baustein (Pilot), vor dem Push:** Jetzt liegt die `compose.yaml` der Vorlage im Logbuch, und du hängst die Bausteine ein wie im Skill `bausteine`, Abschnitt 4 «Beim Lancieren, mit Pilot»: zuerst ein Foto des Servers (Werkzeug `snapshot`, Name `vor-baustein`), dann `include:` in `compose.yaml`. Steht in `docs/betrieb.md` `Eingang: ja` (`grep -E '^Eingang: ja' docs/betrieb.md` zeigt die Zeile), kommt der Schritt **Eingang** dazu: die Zeile `- bausteine/eingang/compose.yaml` unter `include:`, und beim Dienst `webseite` fallen `ports:` und `- "80:80"` weg. Port 80 hat dann der Eingang, die Webseite ist nur noch hinter ihm erreichbar. Vorher muss `bun bausteine/eingang/test.ts` «Alles grün» melden. Ohne Login, oder mit `Eingang: nicht nötig`, bleibt `compose.yaml` wie in der Vorlage. Danach ein Eintrag ins Logbuch.
 
 ```bash
 git push -u origin main
@@ -179,13 +181,15 @@ node scripts/pruefen.mjs --tueren <Adresse>
 
 Die Adresse steht in `docs/lancieren.md` (`Adresse:`). Live ist erst, was von aussen geprüft ist: Ist bei `--live` (Titel wie gebaut, Impressum und Datenschutz erreichbar, Zugang, Lighthouse) und bei `--tueren` nichts rot, meldest du `live`, öffnest die Adresse mit der Person und vergleichst mit den Fotos aus der Prüfung.
 
-- **Mit Eingang:** In `docs/tueren.txt` stehen die geschützten Pfade mit 401 (ohne Anmeldung) und `/_/` mit 404; stammt die Datei noch vom Bau ohne Eingang, passt du sie vor der Prüfung an. Erst wenn `--tueren` genau das zeigt und die Startseite 200 gibt, steht die Seite wirklich hinter dem Eingang.
+- **Mit Eingang:** In `docs/tueren.txt` stehen die geschützten Pfade mit 401 (ohne Anmeldung, zum Beispiel `/intern/ 401`), dazu `/_/ 404` und `/api/collections/_SUPERUSERS/auth-methods 404`: Die Anmeldung der Verwaltung bleibt von aussen zu. Listen von PocketBase geben Gästen 200 mit einer leeren Liste, nicht 401. Stammt die Datei noch vom Bau ohne Eingang, passt du sie vor der Prüfung an. Erst wenn `--tueren` genau das zeigt und die Startseite 200 gibt, steht die Seite wirklich hinter dem Eingang.
 - **Mit einem Baustein ist «live» noch nicht «fertig»:** Erst wenn die Daten drin sind (zum Beispiel die Kurse) und eine Testbuchung im Netz ihre Mail an die eigene Adresse gebracht hat (Skill `bausteine`), sagst du der Person, dass sie den Link teilen kann. Bis dahin sagst du ehrlich, was noch fehlt.
 - **Nach drei Minuten noch nicht da:** Mit Light zeigt `konto_status`, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil `seite/` in einer `.gitignore` steht. Mit Pilot schaust du unter «Actions» nach (Skill `pipeline`), bei «selbst» in der Liste der Auslieferungen des Anbieters. Beheben, neuer Eintrag, pushen, nochmals prüfen. Ändert die Behebung die Seite selbst, zeigst du sie der Person zuerst und holst die Freigabe neu. Geht es dann immer noch nicht, sagst du, was du geprüft hast, und fragst den Coach (`coach_fragen`).
 
 ### 5. Eine eigene Adresse, freiwillig (`schritt: domain`)
 
-Frag: «Eigene Adresse (Domain) jetzt, später oder nie?» Sag dazu: Sie kostet jedes Jahr und ist freiwillig. Jetzt: Bei Albatros folgst du dem Skill `domain`, bei «selbst» verbindest du sie beim Anbieter (Skill `landung`, Abschnitt «Direkt vom Computer ins Netz»). Zeigt `https://<domain>` die Seite mit dem Schloss-Symbol, meldest du `domain` und prüfst nochmals mit `pruefen.mjs --live https://<domain>`.
+Frag: «Eigene Adresse (Domain) jetzt, später oder nie?» Sag dazu: Sie kostet jedes Jahr und ist freiwillig. Ihre Antwort kommt gleich in `docs/live.md` (Vorlage in Schritt 8), in die Zeile `Eigene Domain:`: zuerst `jetzt`, `später` oder `nie`, danach auf Wunsch ein Satz, zum Beispiel `Eigene Domain: später, wenn der Vorstand den Namen beschlossen hat`. Jetzt: Bei Albatros folgst du dem Skill `domain`, bei «selbst» verbindest du sie beim Anbieter (Skill `landung`, Abschnitt «Direkt vom Computer ins Netz»). Zeigt `https://<domain>` die Seite mit dem Schloss-Symbol, meldest du `domain` und prüfst nochmals mit `pruefen.mjs --live https://<domain>`.
+
+**Mit Login** (ein Baustein mit Anmeldung, zum Beispiel ein Mitgliederbereich): Nach der Domain meldet sich die Person einmal über `https://<domain>` an, auf der Seite zum Anmelden. Klappt das, nimmt die Seite Anmeldungen und Formulare auch über die neue Adresse an. Kommt «E-Mail oder Passwort stimmt nicht», obwohl beides stimmt, oder geht ein Formular über die Domain nicht, fragst du den Coach (`coach_fragen`) und sagst, was du geprüft hast. Bis dahin meldet sich die Person über `https://<name>.aufwind.sh` an.
 
 **Ersetzt die Seite eine bestehende** (`docs/bestand.md`, Skill `webseite-modernisieren`): Die alte Domain zeigt danach auf die neue Seite. Jede alte Adresse aus `docs/bestand.md`, die es nicht mehr gibt, bekommt eine Umleitung auf die passende neue Stelle (in Astro unter `redirects` in `web/astro.config.mjs`). Die Einträge für E-Mail (MX) fasst du nie an.
 
@@ -203,12 +207,13 @@ Frag: «Wem sagst du es zuerst?» Der erste Fan kommt nicht von selbst. Hilf mit
 # Live
 
 Live seit: <Datum>
-Adresse: https://… (die eigene Domain, sobald sie aktiv ist)
+Adresse: https://… (die Adresse im Netz; mit eigener Domain diese, sobald sie aktiv ist)
+Eigene Domain: <jetzt | später | nie>, <ein Satz, wenn die Person einen sagt>
 Geprüft: <Datum>, pruefen.mjs --live ohne Rot, Türen wie erwartet (docs/pruefung/messwerte-live.json)
 Angekündigt: <Datum>, <wem>
 ```
 
-Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du die Kontrollfragen der Mission `flugschule-18-live-schalten` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
+Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du die Kontrollfragen der Mission `flugschule-18-live-schalten` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
 
 Wünscht die Person danach etwas anders, gilt der Skill `webseite-aendern`: klein (lokal ändern, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe zum Bauen, bauen, zeigen, Freigabe, Push).
 
@@ -218,6 +223,7 @@ Veröffentlicht wird nur, was der Person gehört oder wofür sie die Erlaubnis h
 
 - `upgrade_link` vor der Wahl der Person, oder Preise aus dem Gedächtnis.
 - Beim Wohnort schon die eigene Seite pushen: Mit Light ist jeder Push sofort online, und die Seite steht dann vor Briefkasten und Rauchmelder im Netz.
+- `wohnort` melden oder `docs/lancieren.md` schreiben, bevor die Seite freigegeben ist: Dann springt der Fahrplan über die Freigabe.
 - Das Logbuch aus dem Hafen klonen und die Seite hineinkopieren: Dann gehen die Einträge vom Bau verloren. Verbinden statt kopieren.
 - `git push --force`, um den Hafen zu überschreiben: nie. Zusammenführen wie oben.
 - Pushen, obwohl sich die Seite seit der Freigabe geändert hat.
