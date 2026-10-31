@@ -20,6 +20,9 @@ import type { Persona } from './durchspiel/personen.ts';
 // 2026-10-31  dritte Fassung (Gegenprüfung: vert-02, weg-02, weg-03, vert-04, steu-05): Ja-Momente mit der Regel von kit jaBelegt (letzte Zeile,
 //             Datum vorne, nie eine Annahme; vorher die erste Zeile), Phasen nach Dateien lückenlos und nur mit allen Ergebnisdateien, Fragen
 //             der Person ohne Annahme auch für die Phase. Gleiches Datum aus demselben Grund (verlauf.jsonl weiter leer).
+// 2026-10-31  vierte Fassung (Gegenprobe Welle 5, weg-05): Auf dem Weg Geschäft ist P1 nach Dateien und beim Melden von idee (insel-belegt)
+//             erst mit einem Ausgang aus ausgaenge.geschafft geschafft («Entscheid: weiter» oder «stoppen»), wie lage, webseite-planen und
+//             ideen-check. Gleiches Datum, verlauf.jsonl ist weiter leer.
 export const PUNKTE_STAND = '2026-10-31';
 
 export type Nachricht = { wer: 'Person' | 'KI'; text: string };
@@ -133,13 +136,51 @@ export const frageBelegt = (f: Fahrplan, p: Phase, q: Pflichtfrage, dateien: Rec
   const [datei, anfang] = q.ablage.split('#') as [string, string | undefined];
   return anfang ? zeileBelegt(f, p, [q], dateien[datei], anfang) : dateien[datei] !== undefined;
 };
+// Ausgang einer Phase (ausgaenge; P1 auf dem Weg Geschäft: «Entscheid:» des Ideen-Checks) wie albatros kit entscheidVon und ausgangGeschafft
+// (dieselbe Tabelle ENTSCHEID_FAELLE in punkte.test.ts und in albatros packages/kit/src/phasen.test.ts; Gegenprobe Welle 5, 31.10.2026, weg-05):
+// die erste Zeile mit einem Ausgang oder einer Hausaufgabe, Leerraum und >*- davor weg, Sternchen im Wert weg, der Ausgang ein Wort am Anfang
+export type Entscheid = { art: 'ausgang'; ausgang: string } | { art: 'hausaufgabe'; bis: string };
+const HAUSAUFGABE = /^Hausaufgabe offen bis (\d{1,2})\.(\d{1,2})\.(\d{4})(?!\d)/i;
+export const entscheidVon = (p: Phase, text: string | true | undefined): Entscheid | null => {
+  if (!p.ausgaenge || typeof text !== 'string') return null;
+  const zeile = p.ausgaenge.ablage.split('#')[1]!;
+  for (const x of text.split('\n')) {
+    const z = x.replace(/^[\s>*-]*/, '');
+    if (!z.startsWith(zeile)) continue;
+    const w = ohneFett(z.slice(zeile.length));
+    const ausgang = p.ausgaenge.geschaeft.find((a) => beginntMit([a]).test(w));
+    if (ausgang) return { art: 'ausgang', ausgang };
+    const h = HAUSAUFGABE.exec(w);
+    if (h) return { art: 'hausaufgabe', bis: `${h[1]}.${h[2]}.${h[3]}` };
+  }
+  return null;
+};
+// Geschafft nach dem Ausgang: ohne ausgaenge immer, sonst nur mit einem aus ausgaenge.geschafft (P1: weiter oder stoppen)
+export const ausgangGeschafft = (p: Phase, text: string | true | undefined): boolean => {
+  if (!p.ausgaenge) return true;
+  const e = entscheidVon(p, text);
+  return e?.art === 'ausgang' && p.ausgaenge.geschafft.includes(e.ausgang);
+};
+// Methoden ohne Abo: die der Phasen bis zur Gratis-Grenze (wie GRATIS.methoden in albatros services/konto/src/stufen.ts); null: alle
+export const freieMethoden = (f: Fahrplan, stufe: string | null | undefined): string[] | null =>
+  stufe === 'gratis' ? f.phasen.slice(0, phaseIndex(f, f.gratis_bis) + 1).flatMap((p) => p.methoden?.geschaeft ?? []) : null;
+// Für wen die Dateien zählen (Weg und Stufe der Persona). Wie lage (ausgangZaehlt): Auf dem Weg Geschäft hält der Ausgang die Phase, wenn
+// eine ihrer Methoden zur Stufe gehört; sonst führt der Skill allein durch die Phase
+export type Fuer = { weg?: string | null; stufe?: string | null };
+export const ausgangZaehlt = (f: Fahrplan, p: Phase, fuer: Fuer): boolean => {
+  const frei = freieMethoden(f, fuer.stufe);
+  return fuer.weg === 'geschaeft' && p.ausgaenge !== undefined && (p.methoden?.geschaeft ?? []).some((m) => !frei || frei.includes(m));
+};
 // Wie lage (erledigtNachBelegen): lückenlos ab ab (so viele Phasen belegt die Insel), eine Phase nur mit jeder Ergebnisdatei und jeder
-// Pflichtzeile belegt; die erste unvollständige hält an (Gegenprüfung 31.10.2026, vert-02, weg-02; vorher die höchste belegte Phase)
-export const phaseBelegt = (f: Fahrplan, p: Phase, dateien: Record<string, string | true>) => p.ergebnis.every((e) => dateien[e.datei] !== undefined
+// Pflichtzeile belegt und, wo der Ausgang zählt, mit einem Ausgang aus ausgaenge.geschafft; die erste unvollständige hält an (Gegenprüfung
+// 31.10.2026, vert-02, weg-02; vorher die höchste belegte Phase. Gegenprobe Welle 5, weg-05: vorher schloss die Idee P1 auch ohne Entscheid)
+const ergebnisBelegt = (f: Fahrplan, p: Phase, dateien: Record<string, string | true>) => p.ergebnis.every((e) => dateien[e.datei] !== undefined
   && (e.zeilen ?? []).every((z) => zeileBelegt(f, p, p.pflichtfragen.filter((q) => q.ablage === `${e.datei}#${z}`), dateien[e.datei], z)));
-export const erledigtNachDateien = (f: Fahrplan, dateien: Record<string, string | true>, ab = 0) => {
+export const phaseBelegt = (f: Fahrplan, p: Phase, dateien: Record<string, string | true>, fuer: Fuer = {}) =>
+  ergebnisBelegt(f, p, dateien) && (!ausgangZaehlt(f, p, fuer) || ausgangGeschafft(p, dateien[p.ausgaenge!.ablage.split('#')[0]!]));
+export const erledigtNachDateien = (f: Fahrplan, dateien: Record<string, string | true>, ab = 0, fuer: Fuer = {}) => {
   let n = ab;
-  while (n < f.phasen.length && phaseBelegt(f, f.phasen[n]!, dateien)) n++;
+  while (n < f.phasen.length && phaseBelegt(f, f.phasen[n]!, dateien, fuer)) n++;
   return n;
 };
 export const phaseIndex = (f: Fahrplan, id: string) => f.phasen.findIndex((p) => p.id === id);
@@ -205,7 +246,9 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
   const fehlt = soll.filter((s) => !gemeldet.has(s));
   liste.push(pruefung('insel', `Insel-Schritte ${ab} bis ${bis} gemeldet (Wohnort ${wohnort})`, soll.length - fehlt.length, soll.length, fehlt.length ? [`nicht gemeldet: ${fehlt.join(', ')}`] : []));
 
-  // Insel belegt: der Abschluss einer Phase erst mit ihren Ergebnisdateien (bei einem Ja-Moment mit Datum in der Zeile der Person)
+  // Insel belegt: der Abschluss einer Phase erst mit ihren Ergebnisdateien (bei einem Ja-Moment mit Datum in der Zeile der Person; auf dem Weg
+  // Geschäft P1 erst mit «Entscheid: weiter» oder «stoppen», seit der Gegenprobe Welle 5, weg-05)
+  const fuer: Fuer = { weg: persona.weg, stufe: persona.stufe };
   const belegFehler: string[] = [];
   let belegtOk = 0;
   for (const p of phasen) {
@@ -216,11 +259,13 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
     const ja = f.ja_momente.find((j) => j.phase === p.id);
     const jaZeile = ja ? p.pflichtfragen.find((q) => q.id === ja.frage)?.ablage.split('#') : undefined;
     const ohneJa = jaZeile && !jaBelegt(f, d[jaZeile[0]!], jaZeile[1]!) ? [`«${jaZeile[1]} <Datum>» in ${jaZeile[0]}`] : [];
-    if (fehlen.length || ohneJa.length) belegFehler.push(`${abschluss(f, p)} in Runde ${a.runde} ohne ${[...fehlen, ...ohneJa].join(', ')}`);
+    const [aDatei, aZeile] = p.ausgaenge?.ablage.split('#') ?? [];
+    const ohneAusgang = ausgangZaehlt(f, p, fuer) && !ausgangGeschafft(p, d[aDatei!]) ? [`${p.ausgaenge!.geschafft.map((x) => `«${aZeile} ${x}»`).join(' oder ')} in ${aDatei}`] : [];
+    if (fehlen.length || ohneJa.length || ohneAusgang.length) belegFehler.push(`${abschluss(f, p)} in Runde ${a.runde} ohne ${[...fehlen, ...ohneJa, ...ohneAusgang].join(', ')}`);
     else belegtOk++;
   }
   const gemeldeteAbschluesse = phasen.filter((p) => melden.some((x) => x.argumente.schritt === abschluss(f, p))).length;
-  if (gemeldeteAbschluesse) liste.push(pruefung('insel-belegt', 'Abschluss einer Phase erst mit ihren Ergebnissen (Ja-Momente mit Datum)', belegtOk, gemeldeteAbschluesse, belegFehler));
+  if (gemeldeteAbschluesse) liste.push(pruefung('insel-belegt', 'Abschluss einer Phase erst mit ihren Ergebnissen (Ja-Momente mit Datum, auf dem Weg Geschäft mit Ausgang)', belegtOk, gemeldeteAbschluesse, belegFehler));
 
   // Ergebnisdateien mit Pflichtzeilen am Ende
   const ergFehler: string[] = [];
@@ -352,7 +397,7 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
   const werkzeuge: Record<string, number> = {};
   for (const a of lauf.aufrufe) werkzeuge[a.werkzeug] = (werkzeuge[a.werkzeug] ?? 0) + 1;
   const nachInsel = erledigtNachInsel(f, melden.reduce<string | null>((h, a) => hoeher(f, h, a.argumente.schritt as string), null));
-  const nachDateien = erledigtNachDateien(f, ende);
+  const nachDateien = erledigtNachDateien(f, ende, 0, fuer);
 
   const erreicht = liste.reduce((s, p) => s + p.erreicht, 0);
   const moeglich = liste.reduce((s, p) => s + p.moeglich, 0);

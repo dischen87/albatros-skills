@@ -23,7 +23,9 @@ import { spawnSync } from 'node:child_process';
 import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
-import { bisAbschluss, erledigtNachDateien, erledigtNachInsel, frageBelegt, phaseIndex, wert, wohnortVon } from '../punkte.ts';
+import {
+  ausgangZaehlt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wohnortVon, type Fuer,
+} from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
 
 type Args = Record<string, unknown>;
@@ -76,9 +78,16 @@ const skill = (slug: string) => `Skill \`${slug}\``;
 const methodeText = (ms: string[]) => `${ms.map((m) => `Methode \`${m}\``).join(' und ')} (holen mit dem Werkzeug methode)`;
 const GRATIS_HINWEIS = 'Bis zur fertigen Seite auf deinem Computer kostet Albatros nichts. Erst beim Wohnort wählst du: mit Albatros oder selbst.';
 const gratisBis = phaseIndex(F, F.gratis_bis);
-// Methoden ohne Abo: die der Phasen bis zur Gratis-Grenze (wie GRATIS.methoden in albatros services/konto/src/stufen.ts)
-const freieMethoden = F.phasen.slice(0, gratisBis + 1).flatMap((p) => p.methoden?.geschaeft ?? []);
-const ENTSCHEID = /^Entscheid: (Hausaufgabe offen bis (\d{1,2}\.\d{1,2}\.\d{4})|weiter|anpassen|stoppen)/;
+// Methoden ohne Abo: die der Phasen bis zur Gratis-Grenze (punkte.ts freieMethoden, wie GRATIS.methoden in albatros services/konto/src/stufen.ts)
+const GRATIS_METHODEN = freieMethoden(F, 'gratis') ?? [];
+// Entscheid des Ideen-Checks wie lage (kit entscheidVon, hier aus punkte.ts): Datei und Zeile aus ausgaenge im Vertrag (P1)
+const MIT_AUSGANG = F.phasen.find((p) => p.ausgaenge)!;
+const AUSGANG_DATEI = MIT_AUSGANG.ausgaenge!.ablage.split('#')[0]!;
+// Was zum Ausgang fehlt, wie lage: «Entscheid: weiter» oder «Entscheid: stoppen» in docs/ideen-check.md
+const ausgangText = (p: Phase) => {
+  const [datei, zeile] = p.ausgaenge!.ablage.split('#') as [string, string];
+  return `${p.ausgaenge!.geschafft.map((x) => `«${zeile} ${x}»`).join(' oder ')} in ${datei}`;
+};
 const bisText = (n: number) => (n ? `bis ${F.phasen[n - 1]!.id}` : 'keine');
 const wer = (p: Phase, q: Pflichtfrage) => (q.antwortet === 'ki' ? 'klärst du selbst' : q.antwortet === 'annahme_ok' ? 'als [Annahme] vorschlagen'
   : F.ja_momente.some((j) => j.phase === p.id && j.frage === q.id) ? 'die Person antwortet; Ja-Moment: nur ihr ausdrückliches Ja zählt, mit Datum vorne' : 'die Person antwortet, eine [Annahme] zählt nicht');
@@ -120,11 +129,14 @@ function lage(a: Args): Antwort {
   const st = stufe();
   const modus = a.modus === 'lernen' || a.modus === 'machen' ? a.modus : (merk('modus') as 'lernen' | 'machen' | null) ?? F.modus.standard;
   const geschaeft = weg === 'geschaeft';
-  const e = geschaeft ? belege.filter((b) => b.datei === 'docs/ideen-check.md').flatMap((b) => b.zeilen).map((z) => ENTSCHEID.exec(z.trim().replace(/^[-*]\s+/, ''))).find(Boolean) ?? null : null;
-  const entscheid = e ? (e[2] ? 'hausaufgabe' : e[1]!) : null;
-  // Wie lage seit 31.10.2026 (vert-02, weg-02): die Insel ist der Boden, die Belege führen lückenlos von dort weiter
+  const e = geschaeft ? entscheidVon(MIT_AUSGANG, dateien[AUSGANG_DATEI]) : null;
+  const entscheid = e?.art === 'hausaufgabe' ? 'hausaufgabe' : (e?.ausgang ?? null);
+  // Wie lage seit 31.10.2026 (vert-02, weg-02): die Insel ist der Boden, die Belege führen lückenlos von dort weiter; auf dem Weg Geschäft hält
+  // der Ideen-Check P1, bis er weiter oder stoppen sagt (Gegenprobe Welle 5, weg-05)
+  const frei = freieMethoden(F, st);
+  const fuerWeg: Fuer = { weg, stufe: st };
   const nachInsel = erledigtNachInsel(F, insel());
-  const nachDateien = erledigtNachDateien(F, dateien, nachInsel);
+  const nachDateien = erledigtNachDateien(F, dateien, nachInsel, fuerWeg);
   const erledigt = entscheid === 'anpassen' ? 0 : nachDateien;
   const p = F.phasen[erledigt];
   const wohnort = wohnortVon(F, wert(dateien['docs/lancieren.md'], 'Wohnort:'), st);
@@ -132,7 +144,7 @@ function lage(a: Args): Antwort {
   const fuer = (q: Phase) => {
     const v = modernisieren ? q.varianten?.modernisieren : undefined;
     const abschnitt = v?.skill ? v.abschnitt : q.abschnitt;
-    return { zusatz: v?.zusatz, text: `${skill(v?.skill ?? q.skill)}${abschnitt ? `, Abschnitt «${abschnitt}»` : ''}` };
+    return { zusatz: v?.zusatz, abschnitt, text: `${skill(v?.skill ?? q.skill)}${abschnitt ? `, Abschnitt «${abschnitt}»` : ''}` };
   };
   const zeilen: string[] = [];
   const hinweise: string[] = [];
@@ -149,16 +161,19 @@ function lage(a: Args): Antwort {
   } else if (entscheid === 'stoppen') {
     [jetzt, grund] = ['nichts mehr', 'Dein Ideen-Check sagt «stoppen»: Die Idee trägt so nicht. Das ist geschafft, nicht gescheitert.'];
     danach = `Mit einer neuen Idee beginnt es wieder bei P1: ${methodeText(['ideen-check'])}`;
-  } else if (entscheid === 'hausaufgabe') {
-    [jetzt, grund] = [`warten bis ${e![2]}`, `Dein Ideen-Check hat eine Hausaufgabe offen bis ${e![2]}. Erst mit ihrem Ergebnis entscheidet ihr: weiter, anpassen oder stoppen.`];
+  } else if (e?.art === 'hausaufgabe') {
+    [jetzt, grund] = [`warten bis ${e.bis}`, `Dein Ideen-Check hat eine Hausaufgabe offen bis ${e.bis}. Erst mit ihrem Ergebnis entscheidet ihr: weiter, anpassen oder stoppen.`];
     danach = `${methodeText(['ideen-check'])} mit dem Ergebnis der Hausaufgabe`;
   } else if (p) {
     phaseDran = true;
     const f = fuer(p);
     const methoden = geschaeft ? (p.methoden?.geschaeft ?? []).filter((m) => !(m === 'ideen-check' && entscheid === 'weiter')) : [];
-    const mitAbo = st === 'gratis' ? methoden.filter((m) => !freieMethoden.includes(m)) : [];
-    jetzt = mitMethoden(p, f.text, methoden.filter((m) => !mitAbo.includes(m)));
-    grund = `${entscheid === 'anpassen' ? 'Dein Ideen-Check sagt «anpassen»: Idee schärfen, dann den Check wiederholen. ' : ''}Phase ${p.id} «${p.titel}» (Etappe ${p.etappe}), Bild: ${p.bild}.`;
+    const mitAbo = methoden.filter((m) => frei && !frei.includes(m));
+    const freie = methoden.filter((m) => !mitAbo.includes(m));
+    // Wie lage: nach dem Skill (nach_skill), sein Ergebnis steht, der Ausgang fehlt (P1: Idee fertig, kein Entscheid): nur noch die Methoden
+    const nurMethoden = p.methoden?.wann === 'nach_skill' && ausgangZaehlt(F, p, fuerWeg) && !entscheid && freie.length > 0 && phaseBelegt(F, p, dateien);
+    jetzt = nurMethoden ? methodeText(freie) : mitMethoden(p, f.text, freie);
+    grund = `${entscheid === 'anpassen' ? 'Dein Ideen-Check sagt «anpassen»: Idee schärfen, dann den Check wiederholen. ' : ''}${nurMethoden ? `Das Ergebnis von ${f.text}${f.abschnitt ? ',' : ''} steht; es fehlt ${ausgangText(p)}. ` : ''}Phase ${p.id} «${p.titel}» (Etappe ${p.etappe}), Bild: ${p.bild}.`;
     if (f.zusatz) hinweise.push(f.zusatz);
     if (mitAbo.length) hinweise.push(`${mitAbo.map((m) => `Die Methode \`${m}\``).join(' und ')} gehört zum Abo; ohne Abo führt ${f.text} allein durch die Phase.`);
     const q = F.phasen[erledigt + 1];
@@ -180,7 +195,8 @@ function lage(a: Args): Antwort {
     zeilen.push(`Ergebnis: ${p.ergebnis.map((x) => (x.zeilen?.length ? `${x.datei} mit ${x.zeilen.map((z) => `«${z}»`).join(', ')}` : x.datei)).join('; ')}.`);
     // In P13 je Wohnort (fahrplan.yaml: insel_je_wohnort), aus «Wohnort:» in den Belegen, sonst aus dem Abo der Attrappe
     const melden = bisAbschluss(F, p, wohnort);
-    zeilen.push(`Fertig, wenn: ${p.gate} Dann schritt_melden mit ${melden.map((x) => `«${x}»`).join(', ')}${melden.length > 1 ? ', je sobald geschafft' : ''}.`);
+    const ausgang = ausgangZaehlt(F, p, fuerWeg) ? ` Auf dem Weg Geschäft dazu ${ausgangText(p)}.` : '';
+    zeilen.push(`Fertig, wenn: ${p.gate}${ausgang} Dann schritt_melden mit ${melden.map((x) => `«${x}»`).join(', ')}${melden.length > 1 ? ', je sobald geschafft' : ''}.`);
     if (st === 'gratis' && erledigt <= gratisBis) zeilen.push(`Hinweis: ${GRATIS_HINWEIS}`);
     zeilen.push(`Modus: ${modus}. ${F.modus[modus]}`);
     if (modus === 'lernen') zeilen.push(...lektion(p, weg, st));
@@ -277,9 +293,9 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
   methode: (a) => {
     const vorhanden = existsSync(METHODEN) ? readdirSync(METHODEN).filter((n) => existsSync(join(METHODEN, n, 'SKILL.md'))).sort() : [];
     const gratis = stufe() === 'gratis';
-    const liste = vorhanden.map((n) => `- ${n}${gratis && !freieMethoden.includes(n) ? ' (mit Abo)' : ''}`).join('\n');
-    if (typeof a.name !== 'string' || !a.name) return { text: `Methoden für den Weg Geschäft:\n${liste || freieMethoden.map((n) => `- ${n}`).join('\n')}` };
-    if (gratis && !freieMethoden.includes(a.name)) return { text: `Die Methode ${a.name} gehört zum Abo. Ohne Abo gehen: ${freieMethoden.join(', ')}. Den Link zum Abo gibt upgrade_link, wenn die Person es will.` };
+    const liste = vorhanden.map((n) => `- ${n}${gratis && !GRATIS_METHODEN.includes(n) ? ' (mit Abo)' : ''}`).join('\n');
+    if (typeof a.name !== 'string' || !a.name) return { text: `Methoden für den Weg Geschäft:\n${liste || GRATIS_METHODEN.map((n) => `- ${n}`).join('\n')}` };
+    if (gratis && !GRATIS_METHODEN.includes(a.name)) return { text: `Die Methode ${a.name} gehört zum Abo. Ohne Abo gehen: ${GRATIS_METHODEN.join(', ')}. Den Link zum Abo gibt upgrade_link, wenn die Person es will.` };
     if (vorhanden.includes(a.name)) return { text: readFileSync(join(METHODEN, a.name, 'SKILL.md'), 'utf8').replace(/^---[\s\S]*?---\s*/, '').trim() };
     return vorhanden.length ? { fehler: true, text: `Die Methode ${a.name} gibt es nicht. Vorhanden:\n${liste}` }
       : { text: `Methode ${a.name}: Im Durchspiel ohne albatros-methoden (DURCHSPIEL_METHODEN) gibt es keinen Text. Arbeite mit dem, was lage und die Skills sagen.` };

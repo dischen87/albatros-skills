@@ -7,7 +7,8 @@ import { join } from 'node:path';
 import { PERSONEN, rolle } from './durchspiel/personen.ts';
 import { ladeFahrplan, type Fahrplan } from './fahrplan.ts';
 import {
-  beantwortet, belegt, bisAbschluss, datiert, erledigtNachDateien, frageBelegt, fragen, freigabeZumBauen, jaBelegt, markeVon, punkte, wert, wertPasst, wohnortVon, type Lauf,
+  ausgangGeschafft, beantwortet, belegt, bisAbschluss, datiert, entscheidVon, erledigtNachDateien, frageBelegt, fragen, freigabeZumBauen, freieMethoden, jaBelegt, markeVon,
+  punkte, wert, wertPasst, wohnortVon, type Lauf,
 } from './punkte.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
@@ -262,5 +263,49 @@ describe('Phasen nach Dateien wie lage', () => {
     expect(erledigtNachDateien(F, d)).toBe(2);
     const p3 = F.phasen[2]!;
     expect(p3.pflichtfragen.filter((q) => !frageBelegt(F, p3, q, d)).map((q) => q.id)).toEqual(['funktionen', 'zugang', 'sprachen', 'release', 'pflege']);
+  });
+  // Gegenprobe Welle 5 (31.10.2026, weg-05): Auf dem Weg Geschäft ist P1 erst mit «Entscheid: weiter» oder «stoppen» geschafft, wie lage.
+  // ENTSCHEID_FAELLE ist dieselbe Tabelle wie in albatros packages/kit/src/phasen.test.ts (entscheidVon, ausgangGeschafft).
+  const ENTSCHEID_FAELLE: [string[], string | null, boolean][] = [
+    [['Entscheid: weiter (31.10.2026), weil drei Vorbestellungen'], 'weiter', true],
+    [['# Ideen-Check: Mittagstisch', 'Stand: 31.10.2026', '- Entscheid: stoppen (31.10.2026), weil niemand das Problem kennt'], 'stoppen', true],
+    [['**Entscheid:** weiter'], 'weiter', true], [['> Entscheid: anpassen (1.11.2026), weil andere Kundschaft'], 'anpassen', false],
+    [['Entscheid: Weiter'], 'weiter', true], [['Entscheid: weiterhin unklar'], null, false], [['Entscheid:weiter'], 'weiter', true],
+    [['Entscheid: Hausaufgabe offen bis 1.12.2099: fünf Gespräche führen'], 'hausaufgabe bis 1.12.2099', false],
+    [['Entscheid: Hausaufgabe offen bis 31.1.2020'], 'hausaufgabe bis 31.1.2020', false],
+    [['Entscheid: [offen]'], null, false], [['Entscheid: [Annahme: weiter]'], null, false], [['Entscheid:'], null, false], [[], null, false],
+    [['Entscheid: [offen]', 'Entscheid: weiter (31.10.2026)'], 'weiter', true],
+    [['Entscheid: Hausaufgabe offen bis 1.12.2099: Gespräche', '## Verlauf', 'Entscheid: weiter'], 'hausaufgabe bis 1.12.2099', false],
+    [['## Verlauf', '- 12.10.2026: Hausaufgabe offen bis 14.11.2026: fünf Gespräche'], null, false],
+    [['Mein Entscheid: weiter'], null, false],
+  ];
+  test('weg-05: Entscheid wie kit (Tabelle ENTSCHEID_FAELLE), P1 auf dem Weg Geschäft erst mit weiter oder stoppen', () => {
+    const p1 = F.phasen[0]!;
+    const kurz = (t: string) => {
+      const e = entscheidVon(p1, t);
+      return e === null ? null : e.art === 'ausgang' ? e.ausgang : `hausaufgabe bis ${e.bis}`;
+    };
+    for (const [zeilen, entscheid, geschafft] of ENTSCHEID_FAELLE) expect([zeilen, kurz(zeilen.join('\n')), ausgangGeschafft(p1, zeilen.join('\n'))]).toEqual([zeilen, entscheid, geschafft]);
+    expect([entscheidVon(p1, true), ausgangGeschafft(F.phasen[1]!, undefined)]).toEqual([null, true]);
+    expect(p1.ausgaenge).toEqual({ geschaeft: ['weiter', 'anpassen', 'stoppen'], geschafft: ['weiter', 'stoppen'], ablage: 'docs/ideen-check.md#Entscheid:' });
+    // Phasen nach Dateien: Weg Webseite wie bisher, Weg Geschäft (Gratis und Light) erst mit weiter oder stoppen
+    const ic = (z: string) => ({ ...P1, 'docs/ideen-check.md': `# Ideen-Check: Sonne\nStand: 31.10.2026\n${z}` });
+    const geschaeft = { weg: 'geschaeft', stufe: 'gratis' };
+    expect([erledigtNachDateien(F, P1), erledigtNachDateien(F, P1, 0, { weg: 'webseite', stufe: 'gratis' }), erledigtNachDateien(F, P1, 0, geschaeft)]).toEqual([1, 1, 0]);
+    expect(['Entscheid: Hausaufgabe offen bis 1.12.2099: fünf Gespräche', 'Entscheid: anpassen (31.10.2026)', 'Entscheid: weiter (31.10.2026), weil', '- Entscheid: stoppen (31.10.2026)']
+      .map((z) => erledigtNachDateien(F, ic(z), 0, geschaeft))).toEqual([0, 0, 1, 1]);
+    expect(erledigtNachDateien(F, P1, 0, { weg: 'geschaeft', stufe: 'light' })).toBe(0);
+    expect(freieMethoden(F, 'gratis')).toEqual(['ideen-check', 'zielgruppe', 'angebot-und-preis', 'landingpage', 'marke']);
+  });
+  test('weg-05: idee auf dem Weg Geschäft erst mit dem Entscheid melden (insel-belegt), wie webseite-planen und ideen-check', () => {
+    const IDEE = { ...P1, 'docs/ideen-check.md': '# Ideen-Check: Znünibox\nEntscheid: Hausaufgabe offen bis 1.12.2099: fünf Gespräche' };
+    const l = (dateien: Record<string, string | true>) => lauf('geschaeft', ['Die Idee steht.'], {
+      aufrufe: [{ runde: 0, werkzeug: 'schritt_melden', argumente: { schritt: 'idee', titel: 'Znünibox' } }], zustaende: [{ runde: 0, dateien, gebaut: false }],
+    });
+    expect(pr(l(P1), 'insel-belegt', 'P1')).toMatchObject({ ok: false, beleg: ['idee in Runde 0 ohne «Entscheid: weiter» oder «Entscheid: stoppen» in docs/ideen-check.md'] });
+    expect(pr(l(IDEE), 'insel-belegt', 'P1')?.ok).toBe(false);
+    expect(pr(l({ ...P1, 'docs/ideen-check.md': 'Entscheid: weiter (31.10.2026), weil zwei Anzahlungen' }), 'insel-belegt', 'P1')?.ok).toBe(true);
+    // Weg Webseite: die Idee allein genügt
+    expect(pr({ ...l(P1), fall: 'knapp' }, 'insel-belegt', 'P1')?.ok).toBe(true);
   });
 });
