@@ -365,7 +365,8 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
 
     // Antwort: keine x-eingang-* nach aussen; die Sitzung setzt nur PocketBase; hinter dem Login nichts im Zwischenspeicher
     const aus = new Headers();
-    // content-length bleibt: Der Körper geht unverändert durch (auch komprimiert, decompress: false)
+    // content-length geht mit: Der Körper geht unverändert durch (auch komprimiert, decompress: false). Bun schickt ihn mit dieser Länge
+    // oder in Stücken (chunked), die Bytes sind dieselben (gemessen mit 3 MB und gzip).
     res.headers.forEach((v, k) => { if ((!HOP.has(k) || k === 'content-length') && !k.startsWith('x-eingang-') && k !== 'set-cookie') aus.append(k, v); });
     // Den Namen lesen wie der Browser: bis zum ersten «=», ohne Leerzeichen und Tab davor und danach (RFC 6265, 5.2)
     for (const c of res.headers.getSetCookie()) if (pb || c.slice(0, Math.max(0, c.indexOf('='))).trim().toLowerCase() !== COOKIE.toLowerCase()) aus.append('set-cookie', c);
