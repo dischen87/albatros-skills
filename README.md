@@ -1,20 +1,21 @@
 # Albatros Skills
 
-Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich zu einem echten eigenen Server. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind. Dein Logbuch (Git) liegt im Hafen von Albatros, `code.aufwind.sh`. Ein GitHub-Konto brauchst du erst, wenn du in ein eigenes Haus umziehst.
+Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich nach einem festen Fahrplan von der Idee bis zur Seite im Netz und fragt von sich aus, was sie wissen muss. Bis deine Seite auf deinem Computer fertig und freigegeben ist, kostet Albatros nichts; ins Netz geht sie mit Light, mit Pilot (ein echter eigener Server) oder selbst. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind; im Modus «lernen» machst du die wichtigen Schritte selbst. Dein Logbuch (Git) liegt bei Albatros im Hafen, `code.aufwind.sh`. Ein GitHub-Konto brauchst du nur, wenn deine Seite selbst wohnt (zum Beispiel auf GitHub Pages) oder du in ein eigenes Haus umziehst.
 
-Die drei Stufen jeder Mission:
+Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen. Jede Mission gehört zu einer Etappe (`stufe`) und zu einer Phase (`phase`):
 
-- **abheben:** Idee und Produkt
-- **fliegen:** Setup und live gehen
-- **landen:** der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen
+- **abheben:** Idee und Produkt, von der Idee über Research, Plan, Konzept und Musterblatt bis zum Entwurf der ganzen Seite (P1 bis P8)
+- **fliegen:** die Seite auf dem eigenen Computer bauen, prüfen und freigeben, dann den Wohnort wählen (P9 bis P11)
+- **landen:** Betrieb vorbereiten, live schalten und der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen (P12, P13 und danach)
 
 Dieses Repo enthält:
 
 - das **Plugin `albatros`** für Claude Code (Skills und die Verbindung zu Albatros über MCP),
 - die **Skills** der Flugschule und des Wegs Webseite, im [Agent-Skills-Standard](https://agentskills.io) (`SKILL.md`), damit sie auch in Codex, Gemini CLI und Cursor laufen,
 - die **Missionen** aller drei Wege als Markdown. Die Website macht daraus öffentliche Lernseiten, der Dienst flugschule prüft damit den Fortschritt,
-- die **Vorlage** für das Projekt-Repo der Lernenden (`vorlage/`): eine kleine Seite, `Dockerfile`, `compose.yaml` und das Fliessband,
-- die **Bausteine** (`bausteine/`): fertige, gemessene Teile für Seiten mit Pilot, PocketBase für Anmeldeliste, Login und Pinnwand, Strapi für ein grosses CMS. Auswahl und Einbau: Skill `bausteine`.
+- den **Fahrplan** (`fahrplan.yaml`): Phasen, Skills und Abschnitte, Pflichtfragen, Ergebnisse, Ja-Momente und Insel-Schritte; albatros erzeugt daraus, was `lage` braucht,
+- die **Vorlage** für das Projekt-Repo der Lernenden (`vorlage/`): eine kleine Seite, `AGENTS.md` mit `CLAUDE.md` und `GEMINI.md` (Hinweise für jede KI), `Dockerfile`, `compose.yaml` und das Fliessband,
+- die **Bausteine** (`bausteine/`): fertige, gemessene Teile für Seiten mit eigenem Server, PocketBase für Anmeldeliste, Buchungen, Login und Pinnwand, ein Eingang mit einem Login für mehrere Teile, Strapi für ein grosses CMS. Auswahl und Einbau: Skill `bausteine`.
 
 flotte legt mit der Vorlage für jeden neuen Server `{name}/projekt` im Hafen an und klont es nach `~/projekt`. flotte-1 holt die Vorlage beim Deploy von `albatros-flotte`. Nach einer Änderung an `vorlage/` also `gh workflow run "Deploy flotte-1" -R dischen87/albatros-flotte` starten. Danach gilt sie für neue Server. Bestehende Repos bleiben, wie sie sind.
 
@@ -24,11 +25,11 @@ Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`.
 
 Die Skills sind eine offene Bibliothek: Jede und jeder kann sie lesen und selbst den passenden wählen. Der spannende Teil ist, im richtigen Moment das Richtige zu tun. Das macht der Hauptskill **`lotse`**, wie der Fluglotse im Turm, der auf dem Radar sieht, wo jedes Flugzeug ist:
 
-1. Er ruft das Werkzeug `lage` auf. Es liest den echten Stand der Person bei Albatros (Abo, Schlüssel, Server oder Seite, Fliessband, Domain, Mission) und nennt den Skill, der jetzt dran ist, mit Grund und dem, was danach kommt.
-2. Er liest diesen Skill (`../<kennung>/SKILL.md` im selben Plugin, in Claude Code auch `albatros:<kennung>`) und folgt ihm. Beim Weg Geschäft holt er die Methode mit `methode`.
-3. Nach jedem geschafften Schritt fragt er `lage` erneut.
+1. Er ruft das Werkzeug `lage` auf, mit dem Stand seiner Skills und den Zeilen aus den Dateien des Projekts (`docs/projekt.md` und die anderen Ergebnisse). `lage` liest den echten Stand der Person bei Albatros (Phase im Fahrplan, Insel, Abo, Seite oder Server, Mission) und nennt den Skill und Abschnitt, der jetzt dran ist, mit Grund, den offenen Pflichtfragen der Phase und dem, was danach kommt.
+2. Er liest diesen Skill (`../<kennung>/SKILL.md` im selben Plugin, in Claude Code auch `albatros:<kennung>`) und folgt ihm. Fehlt der Skill oder ist er veraltet, holt er ihn mit `skill_holen`. Beim Weg Geschäft holt er die Methode mit `methode`.
+3. Nach jedem geschafften Schritt meldet er ihn (`schritt_melden`) und fragt `lage` erneut.
 
-Der Lotse funktioniert nur mit Anmeldung, denn nur dann kennt Albatros den Stand. Wann welcher Skill dran ist, entscheidet der MCP-Dienst, nicht dieses Repo. Ohne Anmeldung zeigt der Lotse die Bibliothek mit einer Zeile pro Skill und erklärt, wie die Anmeldung geht. Die Kennungen der Skills bleiben deutsch und stabil, auch in den Plugins für andere Sprachen.
+Den richtigen Schritt nach dem echten Stand gibt es nur mit Anmeldung, denn nur dann kennt Albatros den Stand. Wann welcher Skill dran ist, entscheidet der MCP-Dienst nach dem Fahrplan, nicht dieses Repo. Ohne Anmeldung zeigt der Lotse die drei Etappen mit dem nächsten Schritt aus dem Projektordner, auf Wunsch die Bibliothek mit einer Zeile pro Skill, und erklärt, wie die Anmeldung geht. Die Kennungen der Skills bleiben deutsch und stabil, auch in den Plugins für andere Sprachen.
 
 > Status: öffentlich ab dem Go-live von albatros.build (freigegeben am 28.10.2026). Lizenz: MIT, siehe [LICENSE](LICENSE).
 
@@ -56,6 +57,19 @@ Von Hand, für alle, die selbst tippen wollen:
 | Cursor | `npx skills add dischen87/albatros-skills -a cursor -g -y --skill '*'`, in `~/.cursor/mcp.json` unter `mcpServers` der Eintrag `"albatros": { "url": "https://mcp.albatros.build" }`, dann `agent mcp login albatros` oder im Editor unter MCP anmelden |
 
 Den Befehl `/albatros:start` gibt es nur in Claude Code. In Codex, Gemini CLI und Cursor sagt die Person «Starte Albatros», dann lädt die KI den Skill `start`. `npx skills` findet die Skills über `.claude-plugin/marketplace.json`, getestet mit `skills@1.7.4`.
+
+## Aktualisieren
+
+Die Skills liegen als Kopie auf dem Computer der Person. Ist die Kopie älter als der Fahrplan bei Albatros, meldet `lage` «Albatros aktualisieren» mit diesen Befehlen, und der Lotse holt die neuen Skills mit dem Ja der Person (Skill `lotse`, «Wenn deine Skills veraltet sind»). Bis dahin holt die KI den Skill, der jetzt dran ist, mit `skill_holen`.
+
+| KI | Befehle |
+|---|---|
+| Claude Code | `claude plugin marketplace update albatros` und `claude plugin update albatros@albatros`, dann tippt die Person `/reload-plugins` |
+| Codex | `codex plugin marketplace upgrade albatros` und `codex plugin add albatros@albatros`, dann ein neues Gespräch |
+| Gemini CLI | `npx skills update -g -y`, dann Gemini CLI neu starten |
+| Cursor | `npx skills update -g -y`, dann Cursor neu starten |
+
+albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`; die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
 
 ## Sprachen
 
