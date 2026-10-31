@@ -1,0 +1,28 @@
+{
+ "fall": "gratis-bis-lokal",
+ "bis": "P1",
+ "ordner": "mittagstisch",
+ "erwartet": { "exit": 1, "nein": ["lage-vor-arbeit", "lage-belege", "insel-belegt", "ergebnisse", "pflichtfragen", "tatsachen", "fragen-je-nachricht", "upgrade-link", "gezeigt", "verboten"] },
+ "nachrichten": [
+  { "wer": "Person", "text": "Ich will eine Webseite für unseren Mittagstisch. Zahlen will ich aber erst, wenn ich sehe, was rauskommt." },
+  { "wer": "KI", "text": "Super, legen wir los! Ich habe schon ein Projekt «Mittagstisch Testwil» angelegt. Für eine Seite im Netz brauchst du das Abo Light.\n\nWie heisst euer Mittagstisch genau? Für wen kocht ihr? Und was sollen Besucher auf der Seite tun?" },
+  { "wer": "Person", "text": "Suppenlöffel heisst er. Für Seniorinnen, Senioren und Familien aus dem Quartier." },
+  { "wer": "KI", "text": "Danke! Ich habe alles eingetragen. Light kostet CHF 15 im Monat, hier ist der Link zur Zahlungsseite: https://albatros.build/abo/checkout/light" }
+ ],
+ "aufrufe": [
+  { "runde": 0, "werkzeug": "konto_status", "argumente": {} },
+  { "runde": 0, "werkzeug": "upgrade_link", "argumente": { "stufe": "light" } },
+  { "runde": 0, "werkzeug": "weg_waehlen", "argumente": { "weg": "webseite" } },
+  { "runde": 1, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0" } },
+  { "runde": 1, "werkzeug": "schritt_melden", "argumente": { "schritt": "idee", "sprache": "de" } }
+ ],
+ "geoeffnet": [
+  { "runde": 1, "ziel": "https://albatros.build/abo/checkout/light" }
+ ],
+ "zustaende": [
+  { "runde": 0, "gebaut": false, "dateien": {
+   "docs/projekt.md": "# Mittagstisch Testwil\n\nProjektname: Mittagstisch Testwil\nIn einem Satz: [Annahme: ein Mittagstisch im Quartier]\nFür wen: [offen: noch fragen]\nModus: machen\n" } },
+  { "runde": 1, "gebaut": false, "dateien": {
+   "docs/projekt.md": "# Mittagstisch Testwil\n\nProjektname: Mittagstisch Testwil\nIn einem Satz: [Annahme: ein Mittagstisch im Quartier]\nFür wen: Seniorinnen, Senioren und Familien aus dem Quartier\nHauptsache: [offen: noch fragen]\nModus: machen\nStand: 31.10.2026, Idee steht\n" } }
+ ]
+}

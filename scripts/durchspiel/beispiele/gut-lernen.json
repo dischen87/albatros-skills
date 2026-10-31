@@ -1,0 +1,73 @@
+{
+ "fall": "lernen",
+ "bis": "P2",
+ "ordner": "blende-8",
+ "erwartet": { "exit": 0 },
+ "nachrichten": [
+  { "wer": "Person", "text": "Ich will lernen, wie man eine Webseite macht, für unseren Fotoclub." },
+  { "wer": "KI", "text": "Willkommen an Bord! Albatros ist eine Flugschule: Wir heben ab (Idee und Plan), fliegen (deine Seite entsteht auf deinem Computer) und landen (sie geht ins Netz). Bis die Seite auf deinem Computer steht, kostet Albatros nichts. Ich habe dir deine Insel geöffnet; dort wächst für dein Projekt ein Haus.\n\nWie soll dein Projekt heissen? Ein Arbeitsname reicht. Und soll ich die Arbeit machen und jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen?" },
+  { "wer": "Person", "text": "Blende 8. Ich will es lernen." },
+  { "wer": "KI", "text": "Gut, dann lernst du mit: Ich erkläre jeden Schritt mit einem Bild und dem Warum. Zuerst kreisen wir das Ziel auf der Karte ein, bevor wir losfliegen.\n\nWorum geht es bei eurem Fotoclub, in einem Satz? Und für wen ist er gedacht?" },
+  { "wer": "Person", "text": "Ein Fotoclub mit Ausflügen und Bildbesprechungen. Für Leute ab 16, die besser fotografieren wollen." },
+  { "wer": "KI", "text": "Danke, das ist ein klares Ziel. Eine Seite wirkt, wenn sie eine Hauptsache hat.\n\nWas sollen Besucher vor allem tun? Und gibt es schon eine Webseite?" },
+  { "wer": "Person", "text": "Einmal an einen Clubabend schnuppern kommen. Nein, eine Webseite gibt es noch nicht." },
+  { "wer": "KI", "text": "Ich habe docs/projekt.md angelegt und dir die graue Skizze deiner Startseite geöffnet: oben der Name, darunter der Knopf «Schnuppern kommen», dann die nächsten Clubabende.\n\nEine Annahme habe ich eingetragen: Erfolg sind drei Schnupperanfragen im Monat. Stimmt das so? Und eine Kontrollfrage zum Lernen: Warum bekommt dein Projekt einen Namen, bevor es irgendetwas gibt?" },
+  { "wer": "Person", "text": "Ja, stimmt. Mit einem Namen kann man ab dem ersten Tag auf alles verweisen." },
+  { "wer": "KI", "text": "Genau so. Ich habe es als verstanden notiert, und dein Haus auf der Insel ist gewachsen. Jetzt lesen wir die Reiseführer, bevor wir losfliegen: vergleichbare Seiten.\n\nWelche Texte, Fotos und welches Logo habt ihr schon? Und kennst du Seiten von Fotoclubs, die dir gefallen?" },
+  { "wer": "Person", "text": "Viele Fotos der Mitglieder, ein Logo gibt es nicht. Seiten kenne ich keine." },
+  { "wer": "KI", "text": "Ich habe drei vergleichbare Seiten angeschaut und in docs/recherche.md eingetragen, dazu die Pflichten (Impressum, Datenschutz, Bildrechte der Mitglieder). Vorbilder und Suchbegriffe stehen als Annahmen da.\n\nStimmen die Annahmen so? Und die Kontrollfrage: Was ist der Unterschied zwischen abgucken und kopieren?" },
+  { "wer": "Person", "text": "Ja, passt. Abgucken heisst lernen, was Besucher erwarten, und es auf unsere Art machen; kopieren heisst fremde Texte oder Bilder übernehmen." },
+  { "wer": "KI", "text": "Richtig, das ist der Kern. Ich habe es notiert, und der Research ist fertig. Als Nächstes zeichnen wir den Grundriss: welche Seiten es gibt und was Besucher dort tun können." }
+ ],
+ "aufrufe": [
+  { "runde": 0, "werkzeug": "konto_status", "argumente": {} },
+  { "runde": 0, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0" } },
+  { "runde": 0, "werkzeug": "weg_waehlen", "argumente": { "weg": "webseite" } },
+  { "runde": 1, "werkzeug": "modus_waehlen", "argumente": { "modus": "lernen" } },
+  { "runde": 3, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0", "modus": "lernen", "belege": [
+   { "datei": "docs/projekt.md", "zeilen": ["Projektname: Blende 8", "In einem Satz: Ein Fotoclub mit Ausflügen und Bildbesprechungen", "Für wen: Leute ab 16, die besser fotografieren wollen", "Hauptsache: einmal an einen Clubabend schnuppern kommen (Knopf: «Schnuppern kommen»)", "Erfolg: [Annahme: drei Schnupperanfragen im Monat]", "Bestehende Seite: keine", "Modus: lernen", "Weg: Webseite", "Stand: 31.10.2026, Idee steht", "Nächster Schritt: Research: vergleichbare Seiten anschauen"] },
+   { "datei": "AGENTS.md", "zeilen": [] },
+   { "datei": "design/skizze.html", "zeilen": [] } ] } },
+  { "runde": 4, "werkzeug": "verstanden_melden", "argumente": { "mission": "flugschule-11-idee", "art": "kontrollfrage" } },
+  { "runde": 4, "werkzeug": "schritt_melden", "argumente": { "schritt": "idee", "titel": "Blende 8", "sprache": "de" } },
+  { "runde": 4, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0", "modus": "lernen", "belege": [
+   { "datei": "docs/projekt.md", "zeilen": ["Projektname: Blende 8", "In einem Satz: Ein Fotoclub mit Ausflügen und Bildbesprechungen", "Für wen: Leute ab 16, die besser fotografieren wollen", "Hauptsache: einmal an einen Clubabend schnuppern kommen (Knopf: «Schnuppern kommen»)", "Erfolg: drei Schnupperanfragen im Monat", "Bestehende Seite: keine", "Modus: lernen", "Weg: Webseite", "Stand: 31.10.2026, Idee steht", "Nächster Schritt: Research: vergleichbare Seiten anschauen"] },
+   { "datei": "AGENTS.md", "zeilen": [] },
+   { "datei": "design/skizze.html", "zeilen": [] } ] } },
+  { "runde": 5, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0", "modus": "lernen", "belege": [
+   { "datei": "docs/projekt.md", "zeilen": ["Projektname: Blende 8", "Modus: lernen"] },
+   { "datei": "docs/recherche.md", "zeilen": ["Vorbilder: [Annahme: drei vergleichbare Fotoclubs aus der Region]", "Inhalte vorhanden: viele Fotos der Mitglieder, kein Logo"] } ] } },
+  { "runde": 6, "werkzeug": "verstanden_melden", "argumente": { "mission": "flugschule-12-recherche", "art": "kontrollfrage" } },
+  { "runde": 6, "werkzeug": "schritt_melden", "argumente": { "schritt": "recherche", "sprache": "de" } },
+  { "runde": 6, "werkzeug": "lage", "argumente": { "skills_stand": "0.2.0", "modus": "lernen", "belege": [
+   { "datei": "docs/projekt.md", "zeilen": ["Projektname: Blende 8", "Modus: lernen"] },
+   { "datei": "docs/recherche.md", "zeilen": ["Vorbilder: drei vergleichbare Fotoclubs aus der Region"] } ] } }
+ ],
+ "geoeffnet": [
+  { "runde": 0, "ziel": "https://albatros.build/cockpit/insel" },
+  { "runde": 3, "ziel": "design/skizze.html" }
+ ],
+ "zustaende": [
+  { "runde": 0, "dateien": {}, "gebaut": false },
+  { "runde": 1, "dateien": {}, "gebaut": false },
+  { "runde": 2, "dateien": {}, "gebaut": false },
+  { "runde": 3, "gebaut": false, "dateien": {
+   "AGENTS.md": "# Hinweise für die KI\n\nLies zuerst docs/projekt.md, dann ruf lage auf (Albatros).\n",
+   "design/skizze.html": true,
+   "docs/projekt.md": "# Blende 8\n\nProjektname: Blende 8\nIn einem Satz: Ein Fotoclub mit Ausflügen und Bildbesprechungen\nFür wen: Leute ab 16, die besser fotografieren wollen\nHauptsache: einmal an einen Clubabend schnuppern kommen (Knopf: «Schnuppern kommen»)\nErfolg: [Annahme: drei Schnupperanfragen im Monat]\nBestehende Seite: keine\nModus: lernen\nWeg: Webseite\nStand: 31.10.2026, Idee steht\nNächster Schritt: Research: vergleichbare Seiten anschauen\n" } },
+  { "runde": 4, "gebaut": false, "dateien": {
+   "AGENTS.md": "# Hinweise für die KI\n\nLies zuerst docs/projekt.md, dann ruf lage auf (Albatros).\n",
+   "design/skizze.html": true,
+   "docs/projekt.md": "# Blende 8\n\nProjektname: Blende 8\nIn einem Satz: Ein Fotoclub mit Ausflügen und Bildbesprechungen\nFür wen: Leute ab 16, die besser fotografieren wollen\nHauptsache: einmal an einen Clubabend schnuppern kommen (Knopf: «Schnuppern kommen»)\nErfolg: drei Schnupperanfragen im Monat\nBestehende Seite: keine\nModus: lernen\nWeg: Webseite\nStand: 31.10.2026, Idee steht\nNächster Schritt: Research: vergleichbare Seiten anschauen\n" } },
+  { "runde": 5, "gebaut": false, "dateien": {
+   "AGENTS.md": "# Hinweise für die KI\n\nLies zuerst docs/projekt.md, dann ruf lage auf (Albatros).\n",
+   "design/skizze.html": true,
+   "docs/projekt.md": "# Blende 8\n\nProjektname: Blende 8\nIn einem Satz: Ein Fotoclub mit Ausflügen und Bildbesprechungen\nFür wen: Leute ab 16, die besser fotografieren wollen\nHauptsache: einmal an einen Clubabend schnuppern kommen (Knopf: «Schnuppern kommen»)\nErfolg: drei Schnupperanfragen im Monat\nBestehende Seite: keine\nModus: lernen\nWeg: Webseite\nStand: 31.10.2026, Research läuft\nNächster Schritt: Annahmen der Recherche bestätigen\n",
+   "docs/recherche.md": "# Recherche\n\nVorbilder: [Annahme: drei vergleichbare Fotoclubs aus der Region, Adressen unten]\nÜbliche Seiten und Funktionen: Clubabende mit Datum, Galerie, Kontakt, Mitglied werden\nÜbernehmen: [Annahme: Galerie mit Bildern der Mitglieder, Daten der Clubabende gut sichtbar]\nVermeiden: lange Vereinsgeschichte auf der Startseite\nPflichten: Impressum, Datenschutz, Bildrechte der Mitglieder, keine Cookies ohne Grund\nInhalte vorhanden: viele Fotos der Mitglieder, kein Logo\nSuchbegriffe: [Annahme: Fotoclub Testwil, fotografieren lernen]\n" } },
+  { "runde": 6, "gebaut": false, "dateien": {
+   "AGENTS.md": "# Hinweise für die KI\n\nLies zuerst docs/projekt.md, dann ruf lage auf (Albatros).\n",
+   "design/skizze.html": true,
+   "docs/projekt.md": "# Blende 8\n\nProjektname: Blende 8\nIn einem Satz: Ein Fotoclub mit Ausflügen und Bildbesprechungen\nFür wen: Leute ab 16, die besser fotografieren wollen\nHauptsache: einmal an einen Clubabend schnuppern kommen (Knopf: «Schnuppern kommen»)\nErfolg: drei Schnupperanfragen im Monat\nBestehende Seite: keine\nModus: lernen\nWeg: Webseite\nStand: 31.10.2026, Research fertig\nNächster Schritt: Grundriss: Seiten und Funktionen\n",
+   "docs/recherche.md": "# Recherche\n\nVorbilder: drei vergleichbare Fotoclubs aus der Region, Adressen unten\nÜbliche Seiten und Funktionen: Clubabende mit Datum, Galerie, Kontakt, Mitglied werden\nÜbernehmen: Galerie mit Bildern der Mitglieder, Daten der Clubabende gut sichtbar\nVermeiden: lange Vereinsgeschichte auf der Startseite\nPflichten: Impressum, Datenschutz, Bildrechte der Mitglieder, keine Cookies ohne Grund\nInhalte vorhanden: viele Fotos der Mitglieder, kein Logo\nSuchbegriffe: Fotoclub Testwil, fotografieren lernen\n" } }
+ ]
+}
