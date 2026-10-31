@@ -1,9 +1,9 @@
 ---
 name: webseite-modernisieren
-description: "Modernizza un sito web esistente (associazione, negozio, studio, vecchio sito Jimdo, Wix o WordPress) per una persona senza conoscenze tecniche. Comincia subito, senza domande, con l'inventario: tutte le pagine, ogni funzione (moduli, iscrizioni, appuntamenti, PDF, prezzi, gallerie, mappe, lingue) e tutti i contenuti, con foto del vecchio sito in docs/bestand.md. Dopo chiede solo quello che sa solo la persona e porta, attraverso il piano e l'aspetto, al nuovo sito, senza che una funzione vada persa senza la sua decisione. Usa lo skill con «Modernizza …», «modernizza il nostro sito», «il nostro sito è datato», «rinnovare il sito web», «relaunch», «via da Jimdo, Wix o WordPress», «rifare il vecchio sito», e subito quando qualcuno manda solo l'indirizzo di un sito web (https://…), senza altre parole."
+description: "Modernizza un sito web esistente (associazione, negozio, studio, vecchio sito Jimdo, Wix o WordPress) per una persona senza conoscenze tecniche, come variante del piano di volo. Comincia subito, senza domande, con l'inventario: tutte le pagine, ogni funzione (moduli, iscrizioni, appuntamenti, PDF, prezzi, gallerie, mappe, lingue) e tutti i contenuti, con foto del vecchio sito in docs/bestand.md. Dopo chiede solo quello che sa solo la persona, soprattutto cosa deve restare, e porta attraverso la pianta e la verifica del piano (nessuna funzione va persa senza decisione) al nuovo sito; alla messa online il dominio trasloca con reindirizzamenti, l'e-mail resta intatta. Usa lo skill con «Modernizza …», «il nostro sito è datato», «rinnovare il sito web», «relaunch», «via da Jimdo, Wix o WordPress», «rifare il vecchio sito», e subito quando qualcuno manda solo l'indirizzo di un sito web (https://…), senza altre parole."
 metadata:
   stand: 0.2.0
-  quelle: 'e26fabf5d62a'
+  quelle: '2485342c6924'
 ---
 
 # Modernizzare il sito web: ristrutturare una casa vecchia
@@ -20,14 +20,27 @@ Una casa vecchia si ristruttura, non si abbatte. Prima qualcuno passa con taccui
 - La persona non deve mai sapere qual è il prossimo passo. Lo proponi tu e lo fai dopo un breve sì.
 - Dai del tu, lingua di tutti i giorni. Invece di «sitemap» dici «lista di tutte le pagine», invece di «backend del modulo» «dove vanno le richieste».
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
-- Chiedi solo quello che sa solo la persona. Tutto quello che c'è sul sito lo leggi tu.
+- Chiedi solo quello che sa solo la persona, al massimo due domande per messaggio. Tutto quello che c'è sul sito lo leggi tu e lo proponi come `[Annahme: …]` (ipotesi).
 - Non chiedere mai password, nemmeno l'accesso al vecchio sito. Quello che sta dietro un accesso lo annoti come «non visibile».
+- Imparare o fare, segnalare le lacune: come nello skill `lotse`.
 
-## Procedura
+## Il piano di volo quando si ristruttura
 
-### 1. Inventario, senza domande
+Modernizzare segue lo stesso piano di volo di un sito nuovo (skill `lotse`, «Il piano di volo in tre tappe»), con queste differenze:
 
-La cartella di lavoro è una cartella nuova nella cartella attuale, con il nome del sito (per esempio `curling-grindelwald`). Per l'inventario non servono né un account né un server. Chiama prima `konto_status`. Se mostra un account, apri per primissima cosa l'isola nel browser, con `open https://albatros.build/it/cockpit/insel` (skill `webseite-bauen`, sezione «L'isola»). Senza risposta o senza account si va avanti senza isola.
+| Sezione | Quando si ristruttura | Isola |
+|---|---|---|
+| Idea (Idee) | breve: cosa vuole il vecchio sito lo leggi tu; la persona dice cosa deve restare | `idee` |
+| Ricerca (Research) | l'inventario del vecchio sito (sezione «Inventario» qui sotto) | `recherche` |
+| Pianta, verificare il piano (Grundriss, Plan prüfen) | skill `webseite-planen`, in più: nessuna funzione va persa senza decisione | `plan`, `plan-geprueft` |
+| Carattere, bozza, costruzione | gli skill abituali, con l'inventario come incarico | |
+| Messa online | in più: il dominio trasloca con reindirizzamenti, le voci per l'e-mail (MX) restano intatte | |
+
+Siccome cominci subito, l'inventario viene per primo e l'idea breve dopo. Sull'isola segnali comunque prima `idee`, poi `recherche`. Fino all'approvazione tutto resta sul computer della persona e da Albatros non costa niente.
+
+## Inventario (Bestandsaufnahme)
+
+La cartella di lavoro è una cartella nuova nella cartella attuale, con il nome del sito (per esempio `curling-grindelwald`). Per l'inventario non servono né un account né un server. Chiama prima `konto_status`. Se mostra un account, apri per primissima cosa l'isola nel browser, con `open https://albatros.build/it/cockpit/insel` (Linux `xdg-open`, Windows `start`). Senza risposta o senza account si va avanti senza isola.
 
 1. **Leggere tutte le pagine.** Lo script `bestand.mjs` si trova nella cartella di questo skill (in Claude Code il percorso è indicato in alto come «Base directory for this skill»). Serve solo Node:
    ```bash
@@ -49,68 +62,89 @@ La cartella di lavoro è una cartella nuova nella cartella attuale, con il nome 
    - Immagini: gallerie (album, numero), loghi, sponsor con link.
    - Incorporamenti e sistemi esterni: mappa, video, sistema di prenotazione, negozio online, newsletter, social media, meteo, webcam (`einbettungen` e `fremdeDienste` in `bestand.json`).
    - Aree con accesso, lingue, Impressum e protezione dei dati, link ad altri siti.
+4. **Il piano dell'inventario `docs/bestand.md`:**
 
-### 2. Il piano dell'inventario `docs/bestand.md`
+   ```markdown
+   # Inventario: <nome del sito>
 
-```markdown
-# Inventario: <nome del sito>
+   **Indirizzo:** … · **rilevato il:** <data> · **costruito con:** <p. es. Jimdo> · **Pagine:** <numero> · **Lingue:** …
 
-**Indirizzo:** … · **rilevato il:** <data> · **costruito con:** <p. es. Jimdo> · **Pagine:** <numero> · **Lingue:** …
+   ## Pagine
+   | Pagina | Indirizzo | Cosa c'è sopra, in una frase | Stato | Foto |
+   |---|---|---|---|---|
 
-## Pagine
-| Pagina | Indirizzo | Cosa c'è sopra, in una frase | Stato | Foto |
-|---|---|---|---|---|
+   ## Funzioni
+   | Funzione | Dove | Come oggi | Deve restare? | Decisione |
+   |---|---|---|---|---|
+   | Modulo di contatto (nome, e-mail, messaggio) | /kontakt | modulo di Jimdo | sì | aperta |
 
-## Funzioni
-| Funzione | Dove | Come oggi | Deve restare? | Decisione |
-|---|---|---|---|---|
-| Modulo di contatto (nome, e-mail, messaggio) | /kontakt | modulo di Jimdo | sì | aperta |
+   ## Contenuti
+   Testi, immagini (numero, proprie o di altri), documenti, loghi, sponsor.
 
-## Contenuti
-Testi, immagini (numero, proprie o di altri), documenti, loghi, sponsor.
+   ## Cosa è superato
+   Ogni punto con una prova, per esempio «notizie del 2019 sulla pagina iniziale», «immagini sfocate sul telefonino», «libro degli ospiti pieno di pubblicità».
 
-## Cosa è superato
-Ogni punto con una prova, per esempio «notizie del 2019 sulla pagina iniziale», «immagini sfocate sul telefonino», «libro degli ospiti pieno di pubblicità».
+   ## Cosa deve restare
+   Quello che serve ai visitatori e quello che è buono.
 
-## Cosa deve restare
-Quello che serve ai visitatori e quello che è buono.
+   ## Domande aperte
+   ```
 
-## Domande aperte
-```
+   La colonna **Decisione** resta «aperta» finché la persona non ha deciso: «resta», «nuova come …» o «eliminata (decisa il <data>)». Nessuna funzione sparisce dal nuovo sito finché qui non c'è una decisione così.
 
-La colonna **Decisione** resta «aperta» finché la persona non ha deciso: «resta», «nuova come …» o «eliminata (decisa il <data>)». Nessuna funzione sparisce dal nuovo sito finché qui non c'è una decisione così.
+   `docs/bestand/dateien/` non va nel diario di bordo: è troppo grande e contiene diritti di altri. Inseriscila in `.gitignore`. Quello che ne serve al nuovo sito lo copi più tardi in modo mirato.
 
-`docs/bestand/dateien/` non va nel diario di bordo: è troppo grande e contiene diritti di altri. Inseriscila in `.gitignore`. Quello che ne serve al nuovo sito lo copi più tardi in modo mirato.
+## L'idea, in breve
 
-### 3. Riferire, poi solo tre domande
+Di' con parole semplici cosa hai trovato, in breve e con numeri: quante pagine, quali funzioni, cosa è superato, cosa è buono. Poi fai solo le due domande a cui può rispondere solo la persona:
 
-Di' con parole semplici cosa hai trovato, in breve e con numeri: quante pagine, quali funzioni, cosa è superato, cosa è buono. Poi fai solo le domande a cui può rispondere solo la persona, numerate in un unico messaggio:
+1. **Cosa deve restare?** Cosa è sacro: logo, colori, un testo, una pagina, una funzione?
+2. **Chi deve venire di più?** Ospiti, nuovi membri, sponsor, squadre per i tornei?
 
-1. **Chi cura il sito** oggi e in futuro, e quanto spesso cambia qualcosa?
-2. **Cosa è sacro?** Cosa deve restare esattamente così (logo, colori, un testo, una pagina, una funzione)?
-3. **Chi deve venire di più?** Ospiti, nuovi membri, sponsor, squadre per i tornei?
+Chi cura il sito lo chiedi più tardi, nella pianta. Il resto dell'idea lo proponi dal vecchio sito, e la persona lo conferma in un solo messaggio: nome del progetto (di solito il nome del vecchio sito), in una frase, per chi, cosa principale, successo e modo (fare). Poi scrivi come nello skill `webseite-planen`, sezione Idea (passi da 4 a 6): `docs/projekt.md` con `Bestehende Seite: <indirizzo>`, `AGENTS.md` con `CLAUDE.md` e `GEMINI.md`, e lo schizzo grigio `design/skizze.html` della nuova pagina iniziale, in cui c'è già quello che deve restare. Aprilo nel browser.
 
-Tutto il resto lo proponi tu, con le ipotesi segnate (`[Ipotesi: …]`), che la persona può correggere.
+Poi `schritt_melden` con `idee` e `mission_pruefen` con `flugschule-11-idee`.
 
-### 4. Dall'inventario al piano
+## La ricerca dall'inventario
 
-Segui lo skill `webseite-planen`. La maggior parte delle risposte c'è già nell'inventario: riprendile e lascia che la persona le confermi soltanto. Ogni funzione dell'inventario va nel piano, con una proposta:
+Quando si ristruttura la ricerca è già quasi fatta: l'inventario è la migliore guida di viaggio. Scrivi `docs/recherche.md` con le sette righe prese dall'inventario, ognuna a inizio riga, senza grassetto, con il nome tedesco (modello nello skill `webseite-planen`, sezione Ricerca):
 
-- Quello che ha bisogno solo di testi e file (appuntamenti, tornei, PDF, prezzi, sponsor, galleria) diventa una normale pagina statica, anche con più lingue (basta Light).
-- Moduli: spesso basta un link per l'e-mail. Se la lista delle iscrizioni deve essere salvata, è un blocco (skill `bausteine`, con Pilot).
+- `Vorbilder:` (modelli) il vecchio sito (aperto, con la data), più, se la persona lo desidera, fino a due siti simili, ognuno aperto e raggiungibile. Mai indirizzi inventati.
+- `Übliche Seiten und Funktionen:` quello che ha il vecchio sito (da `docs/bestand.md`).
+- `Übernehmen:` (riprendere) quello che deve restare. `Vermeiden:` (evitare) quello che è superato.
+- `Pflichten:` (obblighi) impressum, protezione dei dati, diritti sulle immagini e i diritti su testi e immagini del vecchio sito (qui sotto, «Diritti»).
+- `Inhalte vorhanden:` (contenuti esistenti) dall'inventario; quello che manca o è superato va sulla lista per lo skill `inhalte`.
+- `Suchbegriffe:` (parole di ricerca) come `[Annahme: …]`, dai titoli del vecchio sito.
+
+Spiega il risultato alla persona in cinque righe. Poi `schritt_melden` con `recherche` e `mission_pruefen` con `flugschule-12-recherche`.
+
+## Pianta e verifica del piano
+
+Segui lo skill `webseite-planen`, sezione Pianta (Grundriss). La maggior parte delle risposte c'è già nell'inventario: riprendile e lascia che la persona le confermi soltanto. Ogni funzione dell'inventario va nel piano, con una proposta:
+
+- Quello che ha bisogno solo di testi e file (appuntamenti, tornei, PDF, prezzi, sponsor, galleria) diventa un sito normale senza servizi propri, anche con più lingue.
+- Moduli: spesso basta un link per l'e-mail. Se la lista delle iscrizioni deve essere salvata, è un blocco (skill `bausteine`, più tardi con un server tuo).
 - Un libro degli ospiti pieno di pubblicità o un accesso che serviva solo alla vecchia tecnica possono sparire, ma solo con una decisione della persona.
-- I vecchi indirizzi a cui rimandano altri (bandi, classifiche, risultati su Google) restano uguali o ricevono un reindirizzamento.
+- I vecchi indirizzi a cui rimandano altri (bandi, classifiche, risultati su Google) restano uguali o ricevono un reindirizzamento alla messa online.
 
 Le decisioni le scrivi in `docs/bestand.md` (colonna Decisione) e in `docs/plan.md`.
 
-### 5. Costruire in otto passi
+Dopo viene la sezione «Verificare il piano» di `webseite-planen`, con un undicesimo punto per il secondo parere: **nessuna funzione del vecchio sito va persa senza decisione** (ogni riga in `docs/bestand.md` ha una decisione, e ognuna che resta c'è nel piano). Si va avanti solo dopo il sì della persona al piano.
 
-Da qui segui lo skill `webseite-bauen`, nel suo ordine fisso: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online. Il tuo incarico è `docs/bestand.md`. In più vale:
+## Carattere, bozza, costruzione
 
-- Il PRD elenca ogni funzione di `docs/bestand.md`, con la sua decisione. Nessuna sparisce in silenzio.
-- Per l'aspetto leggi anche le foto del vecchio sito: cosa è sacro (logo, colori)? Cosa sembra superato?
-- Dopo la costruzione in locale mostri prima e dopo uno accanto all'altro, pagina iniziale e sottopagina più importante, sul telefonino e sul desktop, con tre frasi su cosa è migliorato e cosa è rimasto uguale.
-- Il dominio attuale del vecchio sito (per esempio `curling-wil.ch`) resta com'è finché il nuovo sito è online su `{name}.aufwind.sh`. Solo allora lo fai puntare al nuovo sito con `domain_verbinden` (skill `domain`, passo 4), con Light come con Pilot. Il dominio resta presso il suo registrar e lì continua a costare all'anno. Le voci per l'e-mail (MX) non le tocchi.
+Poi si continua come per ogni sito nuovo, sezione dopo sezione con `lage`: il carattere (skill `konzept`), la tavola dei campioni (skill `gestaltung`), tutto il sito come bozza (skill `entwurf`), poi costruire, verificare e approvare sul computer (skill `webseite-bauen`). Il tuo incarico è `docs/plan.md` insieme a `docs/bestand.md`. In più vale:
+
+- Quello che deve restare (logo, colori, un testo) è la cornice per il carattere e l'aspetto. Guarda anche le foto del vecchio sito: cosa è sacro, cosa sembra superato?
+- La bozza, e più tardi il progetto di costruzione, elencano ogni funzione di `docs/bestand.md`, con la sua decisione. Nessuna sparisce in silenzio.
+- Dopo la costruzione mostri prima e dopo uno accanto all'altro, pagina iniziale e sottopagina più importante, sul telefonino e sul desktop, con tre frasi su cosa è migliorato e cosa è rimasto uguale.
+
+## Messa online: il dominio trasloca
+
+Il dominio attuale del vecchio sito (per esempio `curling-wil.ch`) resta com'è finché il nuovo sito è online (skill `lancieren`, sezione messa online). Solo allora lo fai puntare al nuovo sito (skill `domain`, con Albatros tramite `domain_verbinden`):
+
+- **Reindirizzamenti:** ogni vecchio indirizzo di `docs/bestand.md` che sul nuovo sito non esiste più riceve un reindirizzamento alla nuova pagina adatta, così i link di altri e i risultati su Google non finiscono nel vuoto. Con un server tuo si fa nel server web (`nginx.conf`, `return 301`), altrimenti con una piccola pagina al vecchio indirizzo che rimanda avanti. Dopo controlla una volta ogni vecchio indirizzo.
+- **L'e-mail non si tocca mai:** il dominio resta presso il suo fornitore e lì continua a costare all'anno. Le voci per l'e-mail (MX) non le tocchi mai, altrimenti non arriva più nessuna e-mail.
 
 ## Diritti
 
@@ -121,8 +155,8 @@ Testi, foto e loghi del vecchio sito appartengono a qualcuno, di solito all'asso
 - Una funzione va persa in silenzio: modulo sostituito da niente, classifiche che non si trovano più. Alla fine controlla ogni riga dell'inventario.
 - I vecchi indirizzi si rompono: bandi e classifiche sono spesso linkati da altri siti.
 - Riprendere una galleria con migliaia di immagini così com'è: meglio una scelta delle migliori, rimpicciolite, il resto resta nell'archivio.
-- Sembrare fatto dall'IA: leggi nello skill `gestaltung` la lista dei tratti tipici prima di costruire la prima pagina.
-- Riprendere il banner dei cookie della vecchia pagina: una pagina statica senza tracciamento e senza incorporamenti esterni non usa cookie e non ne ha bisogno. Basta l'informativa sulla privacy. Un banner serve solo se qualcosa richiede un consenso, per esempio una mappa di Google incorporata. Al posto della mappa basta spesso un link «Calcola percorso» con l'indirizzo, così la pagina resta senza banner.
+- Sembrare fatto dall'IA: leggi nello skill `gestaltung` la lista dei tratti tipici prima di progettare la prima pagina.
+- Riprendere il banner dei cookie della vecchia pagina: un sito senza tracciamento e senza incorporamenti esterni non usa cookie e non ne ha bisogno. Basta l'informativa sulla privacy. Un banner serve solo se qualcosa richiede un consenso, per esempio una mappa di Google incorporata. Al posto della mappa basta spesso un link «Calcola percorso» con l'indirizzo, così la pagina resta senza banner.
 
 ## Messaggio finale
 
