@@ -3,7 +3,7 @@ name: barrierefreiheit
 description: "Vérifie et améliore l'accessibilité d'un petit site web avec une personne sans connaissances préalables, selon les WCAG 2.2 AA en mots simples : contraste, taille du texte et zoom, descriptions d'images, utilisation au clavier, formulaires, lecture à voix haute, mouvement. Le résultat est un procès-verbal de contrôle dans docs/barrierefreiheit.md. Utilise ce skill quand on dit « accessibilité », « accessible », « accessibility », « a11y », « WCAG », « contraste », « texte alternatif », « lecteur d'écran », « lisible pour les personnes âgées », « utiliser au clavier »."
 metadata:
   stand: 0.2.0
-  quelle: '25b012463510'
+  quelle: '23d2636b7e7c'
 ---
 
 # Accessibilité : la rampe à côté de l'escalier
@@ -32,7 +32,7 @@ Pour les sites web, les rampes sont : assez de contraste, des descriptions pou
 La personne ouvre son site dans Chrome, clic droit, « Inspecter », onglet « Lighthouse », choisir seulement « Accessibilité », « Analyser le chargement de la page ». Ou tu vérifies dans le terminal :
 
 ```bash
-npx pa11y https://{name}.aufwind.sh
+npx pa11y http://localhost:4321          # l'aperçu sur l'ordinateur (skill webseite-bauen) ; si le site est déjà en ligne, son adresse tirée de docs/lancieren.md
 ```
 
 Les messages vont comme constats dans le procès-verbal. Ce que les outils ne voient pas : si l'ordre a du sens, si les textes sont compréhensibles, où l'on atterrit après un clic.
@@ -83,7 +83,7 @@ Les messages vont comme constats dans le procès-verbal. Ce que les outils ne vo
 |---|---|---|
 ```
 
-Ensuite réparer, les points critiques d'abord (tout ce qui exclut complètement une personne). Puis contrôler encore une fois et mettre à jour le procès-verbal. Journal de bord (skill `git-logbuch`), tapis roulant (skill `pipeline`).
+Ensuite réparer, les points critiques d'abord (tout ce qui exclut complètement une personne). Puis contrôler encore une fois et mettre à jour le procès-verbal. Une inscription dans le journal de bord (skill `git-logbuch`) ; en ligne, ça va avec tout le site à la mise en ligne (skill `lancieren`), et pour un site déjà en ligne avec le skill `webseite-aendern`.
 
 ## Bon à savoir
 
@@ -92,7 +92,7 @@ Ensuite réparer, les points critiques d'abord (tout ce qui exclut complètement
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-06-barrierefreiheit`. La vérification regarde si `docs/barrierefreiheit.md` se trouve dans le projet (avec Pilot dans `~/projekt` sur le serveur, avec Light dans le port).
+`mission_pruefen` avec `webseite-06-barrierefreiheit`. La vérification regarde sur l'île si le projet est au moins à l'étape « Prüfung » (vérification ; skill `webseite-bauen`, étape 5). Le procès-verbal `docs/barrierefreiheit.md` en fait partie, mais reste sur l'ordinateur de la personne ; la vérification ne le lit pas.
 
 ## Message final
 

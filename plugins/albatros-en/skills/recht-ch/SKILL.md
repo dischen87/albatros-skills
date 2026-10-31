@@ -3,7 +3,7 @@ name: recht-ch
 description: "Gets a small Swiss website legally in order, explained for people with no prior knowledge with the picture of the doorbell nameplate and house rules: legal notice (Impressum, UWG Art. 3 para. 1 let. s), privacy policy under the revised Swiss data protection act revDSG (duty to inform, Art. 19), cookies (Art. 45c FMG), logins (cookie, logs, retention), when the EU's GDPR comes in as well, picture rights, marketing emails only with consent. Not legal advice. Use this skill for “Impressum”, “legal notice”, “data protection”, “privacy policy”, “DSG”, “GDPR”, “DSGVO”, “cookie banner”, “do I legally need this”, “what has to be on my website”, “contact form and data protection”, “login and data protection”."
 metadata:
   stand: 0.2.0
-  quelle: 'd709bb4002f0'
+  quelle: '4dba3685a5f0'
 ---
 
 # Swiss law: doorbell nameplate and house rules
@@ -85,11 +85,11 @@ Only your own or licensed pictures. Recognisable people only with their permissi
 
 ### 8. Build and link the pages
 
-Legal notice and privacy policy as pages of their own, reachable from the footer of every page. Logbook and conveyor belt (skills `git-logbuch`, `pipeline`). Note in `docs/plan.md`: “Check the privacy policy whenever a new service is added.”
+Legal notice and privacy policy as pages of their own, reachable from the footer of every page. A logbook entry (skill `git-logbuch`); they go online with the whole site when going live (skill `lancieren`). Note in `docs/plan.md`: “Check the privacy policy whenever a new service is added.”
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-07-recht-ch`. The check looks at whether `https://{name}.aufwind.sh/impressum` and `/datenschutz` answer.
+`mission_pruefen` with `webseite-07-recht-ch`. The check looks on the island at whether the project is at least at the step “Prüfung” (the check; skill `webseite-bauen`, step 5): the legal notice and privacy policy run on the computer and are linked in the footer of every page. From outside you check both when going live (`pruefen.mjs --live`, skill `lancieren`).
 
 ## Final message
 

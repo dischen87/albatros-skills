@@ -3,7 +3,7 @@ name: barrierefreiheit
 description: "Controlla e migliora l'accessibilità di un piccolo sito web con una persona senza conoscenze tecniche, secondo le WCAG 2.2 AA spiegate con parole semplici: contrasto, dimensione del testo e zoom, descrizioni delle immagini, uso con la tastiera, moduli, lettura ad alta voce, movimento. Il risultato è un protocollo di controllo in docs/barrierefreiheit.md. Usa lo skill con «accessibilità», «accessibile», «senza barriere», «accessibility», «a11y», «WCAG», «contrasto», «testo alternativo», «alt text», «screen reader», «leggibile per le persone anziane», «usare con la tastiera»."
 metadata:
   stand: 0.2.0
-  quelle: '25b012463510'
+  quelle: '23d2636b7e7c'
 ---
 
 # Accessibilità: la rampa accanto alla scala
@@ -32,7 +32,7 @@ Nei siti web le rampe sono: abbastanza contrasto, descrizioni per le immagini, u
 La persona apre il suo sito in Chrome, clic destro, «Ispeziona», scheda «Lighthouse», sceglie solo «Accessibilità», «Analizza caricamento pagina». Oppure controlli tu nel terminale:
 
 ```bash
-npx pa11y https://{name}.aufwind.sh
+npx pa11y http://localhost:4321          # l'anteprima sul computer (skill webseite-bauen); se il sito è già online, il suo indirizzo da docs/lancieren.md
 ```
 
 Le segnalazioni vanno nel protocollo come osservazioni. Quello che gli strumenti non vedono: se l'ordine ha senso, se i testi sono comprensibili, dove si arriva dopo un clic.
@@ -83,7 +83,7 @@ Le segnalazioni vanno nel protocollo come osservazioni. Quello che gli strumenti
 |---|---|---|
 ```
 
-Poi ripara, prima i punti critici (tutto quello che esclude del tutto una persona). Dopo controlla di nuovo e aggiorna il protocollo. Diario di bordo (skill `git-logbuch`), nastro trasportatore (skill `pipeline`).
+Poi ripara, prima i punti critici (tutto quello che esclude del tutto una persona). Dopo controlla di nuovo e aggiorna il protocollo. Una voce nel diario di bordo (skill `git-logbuch`); online va con tutto il sito alla messa online (skill `lancieren`), e per un sito già online con lo skill `webseite-aendern`.
 
 ## Buono a sapersi
 
@@ -92,7 +92,7 @@ Poi ripara, prima i punti critici (tutto quello che esclude del tutto una person
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-06-barrierefreiheit`. La verifica controlla se `docs/barrierefreiheit.md` si trova nel progetto (con Pilot in `~/projekt` sul server, con Light nel porto).
+`mission_pruefen` con `webseite-06-barrierefreiheit`. La verifica controlla sull'isola se il progetto è almeno al passo «Prüfung» (verifica; skill `webseite-bauen`, passo 5). Il protocollo `docs/barrierefreiheit.md` ne fa parte, ma resta sul computer della persona; la verifica non lo legge.
 
 ## Messaggio finale
 

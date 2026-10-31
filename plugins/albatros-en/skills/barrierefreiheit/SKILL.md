@@ -3,7 +3,7 @@ name: barrierefreiheit
 description: "Checks and improves the accessibility of a small website with a person who has no prior knowledge, following WCAG 2.2 AA in plain words: contrast, text size and zoom, picture descriptions, using it with the keyboard, forms, screen readers, motion. The result is a check report in docs/barrierefreiheit.md. Use this skill for “accessibility”, “accessible”, “barrier-free”, “a11y”, “WCAG”, “contrast”, “alt text”, “screen reader”, “readable for older people”, “use it with the keyboard”."
 metadata:
   stand: 0.2.0
-  quelle: '25b012463510'
+  quelle: '23d2636b7e7c'
 ---
 
 # Accessibility: the ramp next to the stairs
@@ -32,7 +32,7 @@ On websites, the ramps are: enough contrast, descriptions for pictures, using it
 The person opens their site in Chrome, right-click, “Inspect”, the “Lighthouse” tab, choose only “Accessibility”, “Analyze page load”. Or you check in the terminal:
 
 ```bash
-npx pa11y https://{name}.aufwind.sh
+npx pa11y http://localhost:4321          # the preview on the computer (skill webseite-bauen); if the site is already live, its address from docs/lancieren.md
 ```
 
 The messages go into the report as findings. What the tools don't see: whether the order makes sense, whether texts are understandable, where you end up after a click.
@@ -83,7 +83,7 @@ The messages go into the report as findings. What the tools don't see: whether t
 |---|---|---|
 ```
 
-Then repair, critical points first (anything that shuts a person out completely). After that, check again and update the report. Logbook (skill `git-logbuch`), conveyor belt (skill `pipeline`).
+Then repair, critical points first (anything that shuts a person out completely). After that, check again and update the report. A logbook entry (skill `git-logbuch`); it goes online with the whole site when going live (skill `lancieren`), and for a site that's already live via the skill `webseite-aendern`.
 
 ## Good to know
 
@@ -92,7 +92,7 @@ Then repair, critical points first (anything that shuts a person out completely)
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-06-barrierefreiheit`. The check looks at whether `docs/barrierefreiheit.md` is in the project (with Pilot in `~/projekt` on the server, with Light in the harbour).
+`mission_pruefen` with `webseite-06-barrierefreiheit`. The check looks on the island at whether the project is at least at the step “Prüfung” (the check; skill `webseite-bauen`, step 5). The report `docs/barrierefreiheit.md` belongs to it but stays on the person's computer; the check doesn't read it.
 
 ## Final message
 

@@ -81,11 +81,11 @@ Nur eigene oder lizenzierte Bilder. Erkennbare Personen nur mit Einverständnis.
 
 ### 8. Seiten bauen und verlinken
 
-Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar. Logbuch und Fliessband (Skills `git-logbuch`, `pipeline`). In `docs/plan.md` notieren: «Datenschutzerklärung prüfen, wenn ein neuer Dienst dazukommt.»
+Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar. Ein Eintrag ins Logbuch (Skill `git-logbuch`); ins Netz kommen sie mit der ganzen Seite beim Live schalten (Skill `lancieren`). In `docs/plan.md` notieren: «Datenschutzerklärung prüfen, wenn ein neuer Dienst dazukommt.»
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-07-recht-ch`. Die Prüfung schaut, ob `https://{name}.aufwind.sh/impressum` und `/datenschutz` antworten.
+`mission_pruefen` mit `webseite-07-recht-ch`. Die Prüfung schaut auf der Insel, ob das Projekt mindestens beim Schritt «Prüfung» steht (Skill `webseite-bauen`, Schritt 5): Impressum und Datenschutz laufen auf dem Computer und sind im Fuss jeder Seite verlinkt. Von aussen prüfst du beide beim Live schalten (`pruefen.mjs --live`, Skill `lancieren`).
 
 ## Schlussnachricht
 
