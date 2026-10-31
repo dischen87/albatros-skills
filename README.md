@@ -77,13 +77,17 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 plugins/albatros/
   .claude-plugin/plugin.json
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
-  skills/<name>/SKILL.md            19 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
+  skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
   evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
-missionen/<weg>/<nr>-<slug>.md      33 Missionen: flugschule 10, webseite 9, geschaeft 14
+  evals/GUTE-ANTWORT.md             was eine gute Antwort je Phase enthält, erzeugt aus fahrplan.yaml (scripts/gute-antwort.ts)
+  evals/KRITERIEN-LOG.md            jede Änderung an Kriterien mit Datum, Fall und Grund
+fahrplan.yaml                       der Ablauf P1 bis P13: Skills, Pflichtfragen, Ergebnisse, Ja-Momente, Gates, Insel-Schritte
+missionen/<weg>/<nr>-<slug>.md      41 Missionen: flugschule 18, webseite 9, geschaeft 14
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
+schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
 vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, Dockerfile, compose.yaml, Fliessband
-scripts/pruefen.ts                  prüft Skills und Missionen, auch dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt
+scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, auch dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt
 ```
 
 ## Skills
@@ -103,6 +107,10 @@ scripts/pruefen.ts                  prüft Skills und Missionen, auch dass es je
 | | `landung` | Umzug ins eigene Haus |
 | Webseite | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite |
 | | `webseite-planen` | Grundriss |
+| | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden (Platzhalter) |
+| | `entwurf` | das begehbare Modell, bevor der Rohbau beginnt (Platzhalter) |
+| | `lancieren` | wo das Haus steht, und die Eröffnung mit Band (Platzhalter) |
+| | `betrieb` | Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen (Platzhalter) |
 | | `webseite-bauen` | die kleine Fabrik: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live; misst mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder) |
 | | `inhalte` | Ware im Schaufenster |
 | | `gestaltung` | erst das Fundament, dann die Fassade |
@@ -122,6 +130,8 @@ Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er 
 id: flugschule-02-ssh-schluessel     # <weg>-<nr>-<slug>, gleich wie der Dateiname
 weg: flugschule                      # flugschule | webseite | geschaeft
 stufe: fliegen                       # abheben (Idee, Produkt) | fliegen (Setup, live) | landen (erster Fan)
+phase: P11                           # Phase im Fahrplan: dort wird das Thema gebraucht und ist die Prüfung bestehbar
+optional: true                       # nur bei freiwilligen Missionen (domain, landung, cms, statistik)
 titel: Dein Hausschlüssel für den Server
 bild: Hausschlüssel und Schloss
 dauer: 20                            # Minuten
@@ -130,11 +140,14 @@ pruefung:
     pfad: ~/hallo.txt
 skill: ssh-schluessel                # bei geschaeft: Name der Methode
 video: ssh-in-60-sekunden            # oder null
+verstehen:                           # optional, 1 bis 3 Kontrollfragen der Lektion mit Kernaussage
+  - frage: Was ist ein SSH-Schlüssel, in einem Satz?
+    kern: Hausschlüssel und Schloss …
 ---
 ## Worum es geht · ## Was du lernst · ## So gehst du vor · ## Geschafft, wenn
 ```
 
-Die Prüftypen passen zur Prüf-API von flotte (`POST /server/:id/pruefen`):
+Die Prüftypen passen zur Prüf-API von flotte (`POST /server/:id/pruefen`); `insel` prüft flugschule selbst:
 
 | typ | Felder | besteht, wenn |
 |---|---|---|
@@ -143,6 +156,9 @@ Die Prüftypen passen zur Prüf-API von flotte (`POST /server/:id/pruefen`):
 | `git` | `pfad`, `min_commits` (1), `branch` (`main`) | der Ordner ein Repo mit so vielen Einträgen ist |
 | `workflow` | `datei` (`.github/workflows/…`) | der letzte Lauf im Repo der Person im Hafen (Forgejo) grün ist |
 | `docker` | `container` | der Container läuft |
+| `insel` | `schritt` (Schlüssel aus `insel` in `fahrplan.yaml`) | ein Projekt der Person auf der Insel mindestens bei diesem Schritt steht |
+
+Bis P10 (`gratis_bis`) liegt alles nur auf dem Computer der Person: Dort prüfen Missionen nur mit `insel`, und der Schritt gehört zur Phase der Mission (`pruefen.ts` prüft beides).
 
 Platzhalter: `{name}` (Server der Person, z. B. `anna` → `https://anna.aufwind.sh`), `{domain}` (ihre eigene Domain).
 
@@ -152,7 +168,8 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 
 ```bash
 bun install
-bun run pruefen                       # Kopfdaten aller Skills und Missionen gegen das Schema
+bun run pruefen                       # Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md
+bun scripts/gute-antwort.ts           # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, phase: in Evals oder KRITERIEN-LOG.md
 claude plugin validate .              # Marktplatz und Plugin
 QUELLE=$PWD bash scripts/einbau-test.sh   # Einbau nach EINRICHTEN.md in leerem Home (CI: Job einbau)
 claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Write \
@@ -161,6 +178,8 @@ claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Wri
 
 - Jeder Fall läuft dreimal. Ein Fall besteht, wenn sein Schnitt mindestens 0,8 ist: ein kleiner Ausrutscher in drei Läufen ist erlaubt, ein Fehler in jedem Lauf nicht. Der Judge ist Sonnet, weil Haiku bei deutschen Texten mit mehreren Kriterien zu stark schwankt.
 - Pro Fall prüft ein LLM-Grader die letzte Chat-Antwort (`kriterien.md` oder `antwort.md`). Schreibt der Skill eine Datei, prüft ein zweiter Grader ihren Inhalt (`focus: {source: file, path: …}`). `focus: files` zeigt nur Dateinamen und `focus: trace` nur Rohdaten, beide taugen nicht.
+- Was eine gute Antwort je Phase enthält, steht in `evals/GUTE-ANTWORT.md` (aus `fahrplan.yaml` erzeugt). Ein Fall nennt seine Phase im Kopf seiner `prompt.md` (`phase: P3` oder `phase: [P3, P4]`); jede Änderung an Kriterien kommt mit Datum, Fall und Grund in `evals/KRITERIEN-LOG.md`.
+- Version: Ändert sich etwas unter `plugins/*/skills`, steigt die Version in allen `plugin.json` und in `.claude-plugin/marketplace.json` gegenüber `origin/main`; jede `SKILL.md` trägt sie als `metadata.stand`. Eine Übersetzung nennt in `metadata.quelle` den deutschen Text, nach dem sie übersetzt ist (`grep -v '^  stand: ' <deutsche SKILL.md> | shasum -a 256 | cut -c1-12`); ändert sich der deutsche Text, meldet `pruefen.ts` die Übersetzung als veraltet, bis sie nachgeführt und `quelle` neu gesetzt ist.
 
 - Der Fall `ssh-schluessel-lokal` (Tag `bash`) lässt die KI den Schlüssel wirklich mit `ssh-keygen` erzeugen. Er braucht `--allow-tools Bash` und eine Maschine, auf der Claude Code Bash in Evals erlaubt.
 - Die Evals rufen nie den echten MCP-Server. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/`.

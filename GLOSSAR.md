@@ -5,7 +5,8 @@ Gleiche Begriffe überall: Skills, Missionen, Website, Videos. Wer übersetzt, n
 ## Wo die Übersetzungen liegen
 
 - **Skills:** je Sprache ein eigenes Plugin mit denselben Slugs: `plugins/albatros-fr/skills/<slug>/SKILL.md`, ebenso `albatros-it` und `albatros-en`, je mit `.claude-plugin/plugin.json` und `.mcp.json` wie `plugins/albatros`. Deutsch bleibt `plugins/albatros`. Name und Slug im Kopf bleiben deutsch, die `description` ist übersetzt.
-- **Missionen:** `uebersetzungen/<sprache>/missionen/<weg>/<gleicher Dateiname>.md`. Im Kopf nur `titel` und `bild`, darunter der übersetzte Text. Alles andere (Kennung, Stufe, Skill, Prüfung, Dauer) kommt aus der deutschen Mission.
+- **Missionen:** `uebersetzungen/<sprache>/missionen/<weg>/<gleicher Dateiname>.md`. Im Kopf `titel`, `bild` und, wo die deutsche Mission sie hat, `verstehen` (gleich viele Kontrollfragen) übersetzt, dazu `phase` und `optional` gleich wie Deutsch; darunter der übersetzte Text. Alles andere (Kennung, Stufe, Skill, Prüfung, Dauer) kommt aus der deutschen Mission. `bun run pruefen` prüft das.
+- **Stand der Skills:** Jede übersetzte `SKILL.md` nennt in `metadata.quelle` den deutschen Text, nach dem sie übersetzt ist (siehe README, «Prüfen»). Ändert sich der deutsche Text, gilt die Übersetzung als veraltet, bis sie nachgeführt ist.
 - **Projektvorlage und Server:** `uebersetzungen/<sprache>/vorlage/` (gleiche Pfade wie `vorlage/`) und `uebersetzungen/<sprache>/instanz/` (Bordbuch, Hinweise für die KI, Begrüssung; die deutschen liegen in albatros-flotte unter `src/instanz/`). flotte nimmt sie, wenn Server oder Seite mit `sprache` entstehen. YAML bleibt gleich gebaut wie das deutsche, nur Kommentare, `name:` und Texte in Anführungszeichen sind übersetzt (`bun run pruefen` prüft das).
 - Fehlt eine Übersetzung, zeigen Website und Lotse die deutsche Fassung.
 
@@ -66,6 +67,17 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | vom Grundriss zum fertigen Haus | du plan à la maison terminée | dalla pianta alla casa finita | from floor plan to finished house | Bild für `webseite-bauen` |
 | Mockup · Entwürfe · PRD | maquette · ébauches · PRD | mockup · bozze · PRD | mockup · drafts · PRD | Schritte 1, 2 und 4 von `webseite-bauen`; PRD = der Bauplan mit Unterschrift |
 | Insel (Cockpit) | île | isola | island | dort wächst pro Projekt ein Haus mit jedem Schritt |
+| Konzept (Skill `konzept`) | concept | concetto | concept | Charakter vor Farben |
+| Musterblatt | planche d'échantillons | tavola dei campioni | sample sheet | Farben, Schriften, Knöpfe und Felder auf einem Blatt |
+| Entwurf (ganze Seite zum Durchklicken, Skill `entwurf`) | ébauche | bozza | draft | das begehbare Modell vor dem Rohbau |
+| [Platzhalter] | [à compléter] | [da completare] | [placeholder] | fehlender Text im Entwurf |
+| Freigabe zum Bauen | autorisation de construire | via libera per costruire | approval to build | Ja zum Entwurf (P8) |
+| Freigabe (Ja zum Livegang) | validation | approvazione | release | `Freigegeben:` bleibt deutsch (P10) |
+| Wohnort (Skill `lancieren`) | domicile (où ton site habite) | domicilio (dove abita il sito) | where it lives | Light, Pilot oder selbst |
+| selbst (Wohnort ausserhalb von Albatros) | par toi-même | da te | hosting it yourself | |
+| Betrieb (Skill `betrieb`) | exploitation | gestione | running it | Rückmeldungen, Überwachung, Sicherung |
+| Live schalten | mise en ligne | messa online | going live | |
+| Annahme (`[Annahme]`) | hypothèse | ipotesi | assumption | Vorschlag der KI, den die Person bestätigt |
 | Guthaben | crédit | credito | credit | für Bilder, Freistellen und 3D (Selbstkosten plus 35 %) |
 | Charakter statt Farben | le caractère avant les couleurs | il carattere prima dei colori | character before colours | Gestaltung: zuerst Eigenschaften |
 | Verwaltung (Admin-Bereich) | administration | amministrazione | admin area | |
