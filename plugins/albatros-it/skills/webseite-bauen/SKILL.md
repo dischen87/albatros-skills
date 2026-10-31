@@ -1,202 +1,263 @@
 ---
 name: webseite-bauen
-description: 'Costruisce con una persona senza conoscenze tecniche il suo sito web come in una piccola fabbrica di software, in nove passi fissi, ognuno con un risultato in docs/: incarico, mockup, sistema di design, stack tecnologico (Astro, poco JavaScript), PRD con criteri di collaudo, costruire in locale, quattro controlli con rapporto e semaforo (sicurezza, percorsi e accesso, aspetto, codice e velocità, misurati con pruefen.mjs), via libera della persona, poi porto, nastro trasportatore e sito in rete con controllo finale. Apre l''isola nel cockpit e segnala i passi con schritt_melden. Usa lo skill appena sul percorso sito web si costruisce: dopo webseite-planen, dopo l''inventario di webseite-modernisieren, con «costruiscimi il sito», «mockup», «bozza», «sistema di design», «stack tecnologico», «tech stack», «PRD», «criteri di collaudo», «criteri di accettazione», «controllare prima di pubblicare», «guardarlo in locale», «come si va avanti dopo il piano?».'
+description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza approvata (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: 'b737eb0fb17c'
+  quelle: 'c7313a0c5be0'
 ---
 
-# Costruire il sito web: la piccola fabbrica
+# Costruire il sito web: il rustico nella tua officina
 
 ## L'immagine
 
-Una casa nasce in un ordine fisso: incarico, schizzo, campioni dei materiali, tipo di costruzione, progetto con la firma, costruzione grezza, collaudo degli esperti, consegna delle chiavi, trasloco. Nessuno getta le fondamenta prima che la famiglia abbia firmato il progetto, e nessuno ci va ad abitare prima che gli esperti abbiano fatto il collaudo. Una fabbrica di software lavora allo stesso modo: ogni passo ha un risultato che si può guardare, e alla fine gli esperti controllano, prima che qualcosa esca. Sull'isola nel cockpit la casa cresce con ogni passo.
+La bozza è il modello in cui si può entrare, e la persona l'ha approvato. Adesso, nella sua officina, cioè sul suo computer, ne nasce il rustico: con le stesse stanze, porte e finestre del modello. Degli esperti ne fanno il collaudo, poi la persona ci passa dentro di persona, sul telefonino e sul computer (il sopralluogo), e lo approva. Un diario di bordo tiene ogni passo di lavoro. Niente va ancora online: dove sta la casa, lo decide dopo, al lancio.
 
-**Come usi l'immagine:** Una frase sull'immagine nella tua prima risposta. A ogni nuovo passo una frase con la sua immagine (nella tabella qui sotto), cosa nasce e a cosa serve. Così la persona capisce perché questo passo è necessario.
+**Come usare l'immagine:** una frase sull'immagine nella tua prima risposta. A ogni nuovo passo, una frase con la sua immagine (nella tabella più sotto), che cosa nasce e a che cosa serve.
 
 ## Come parli
 
-- L'ordine è fisso. Non salti nessun passo, non costruisci niente prima che il PRD sia approvato e non mandi niente al porto prima del via libera. Con Light il push è già la pubblicazione.
-- Proponi tu il prossimo passo e lo fai dopo un breve sì. La persona non deve mai sapere cosa viene dopo.
+- Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
+- Gli inizi di riga nei file di `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restano in tedesco: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
+- L'ordine è fisso. Si costruisce solo quando `pruefen.mjs --vor-bau` trova il via libera per costruire, e solo ciò che sta nella bozza. Se qualcosa deve essere diverso dalla bozza, lo dici alla persona prima di costruirlo.
+- In questo skill niente va online e niente in un porto. Tutto resta sul computer della persona e da Albatros non costa niente.
+- Proponi il prossimo passo e lo fai. La persona non deve mai sapere che cosa viene dopo.
+- Il modo sta in `docs/projekt.md` (riga `Modus:`): con `machen` (fare) lavori tu e spieghi ogni passo in una frase con un'immagine, i momenti di apprendimento li offri. Con `lernen` (imparare) spieghi ogni passo con un'immagine e il perché, e la persona fa da sé i momenti di apprendimento.
+- Al massimo due domande per messaggio. Quello che puoi proporre tu (modo di costruzione, porte) lo scrivi come `[Annahme: …]` (ipotesi) e fai confermare tutte le ipotesi in un solo messaggio.
 - Dai del tu, lingua di tutti i giorni. Le parole tecniche (PRD, token, Lighthouse) le spieghi la prima volta con la loro immagine.
-- Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
-- I siti web restano statici, senza servizi propri. Un blocco (skill `bausteine`) si aggiunge solo se la persona ne ha davvero bisogno.
-- Quello che la persona deve vedere (isola, mockup, bozze, anteprima, rapporti, porto, sito finito) lo apri tu nel browser: `open <indirizzo o file>` (Linux `xdg-open`, Windows `start`). Dire solo l'indirizzo non basta.
+- Quello che la persona deve vedere (isola, anteprima, foto, rapporti, bozza e costruzione affiancate) lo apri tu: `open <indirizzo o file>` (Linux `xdg-open`, Windows `start`). Dire solo l'indirizzo non basta.
 
-## I nove passi in breve
+## I passi in breve
 
 | Passo | Immagine | Risultato | Isola |
 |---|---|---|---|
-| 1. Incarico | l'incarico all'impresa di costruzioni | `docs/plan.md` o `docs/bestand.md` | |
-| 2. Mockup | lo schizzo su carta | `docs/mockup.html` | `mockup` |
-| 3. Sistema di design | i campioni dei materiali | `docs/designsystem.md`, `web/src/styles/tokens.css` | `entwuerfe` |
-| 4. Stack tecnologico | il tipo di costruzione | `docs/stack.md` | |
-| 5. PRD con criteri di collaudo | il progetto con la firma | `docs/prd.md` con `Approvato:` | `prd` |
-| 6. Costruire | la costruzione grezza | `web/`, `seite/` | `lokal` |
-| 7. Controllare | il collaudo degli esperti | `docs/pruefung/` con quattro rapporti | `pruefung` |
-| 8. Via libera | la consegna delle chiavi | `Freigegeben:` in `docs/prd.md` | `freigabe` |
-| 9. Porto, nastro trasportatore, in rete | il trasloco | sito in rete, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
+| 0. Prima di costruire | lo sguardo sulla firma sotto il modello | `pruefen.mjs --vor-bau` finisce con 0 | |
+| 1. Officina e diario di bordo | preparare il banco, aprire il diario di bordo | diario di bordo con la prima voce | |
+| 2. Modo di costruzione | come si costruisce: legno o pietra | `docs/stack.md` | |
+| 3. PRD con accesso e porte | il progetto di costruzione, ricavato dal modello | `docs/prd.md` con `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
+| 4. Costruire | il rustico | `web/`, `seite/` | `lokal` |
+| 5. Controllare | il collaudo degli esperti | `docs/pruefung/` con quattro rapporti, porte controllate | `pruefung` |
+| 6. Approvazione | il sopralluogo del rustico finito | `Lokal gesehen:`, `Vergleich mit Entwurf:` e `Freigegeben:` in `docs/prd.md` | `freigabe` |
 
-Quello che sta nella colonna «Risultato» deve esserci alla fine del passo. Se manca, il passo non è riuscito.
+I passi da 0 a 5 sono la fase P9, il passo 6 è la P10. Quello che sta nella colonna «Risultato» deve esserci alla fine del passo. Ogni passo finisce con una voce nel diario di bordo.
 
 ## L'isola
 
-Subito all'inizio apri nel browser l'isola della persona. Su `https://albatros.build/it/cockpit/insel` c'è per ogni progetto una casa che cresce con ogni passo. Per francese, italiano e inglese davanti c'è il prefisso della lingua (`/fr/`, `/it/`, `/en/`), in tedesco l'indirizzo è senza prefisso (`https://albatros.build/cockpit/insel`):
+Se l'isola non è ancora aperta, la apri subito all'inizio nel browser. Sotto `https://albatros.build/it/cockpit/insel` c'è per ogni progetto una casa che cresce a ogni passo. Per francese, italiano e inglese davanti c'è il prefisso della lingua (`/fr`, `/it`, `/en`); senza prefisso è la versione tedesca:
 
 ```bash
 open https://albatros.build/it/cockpit/insel     # macOS; Linux: xdg-open, Windows: start
 ```
 
-L'isola si aggiorna da sola, basta aprirla una volta.
+L'isola si ricarica da sola, aprirla una volta basta.
 
-Dopo ogni passo riuscito che ha una voce nella colonna «Isola» chiami lo strumento `schritt_melden` di Albatros, con `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) e `sprache` (la lingua della conversazione). `projekt` di solito lo lasci via: allora vale il diario di bordo nel porto (`git@aufwind.sh:<name>/projekt.git`), anche se nasce solo più tardi. Solo per un altro progetto che sta soltanto sul computer passi un nome breve fatto di lettere minuscole, cifre e «-». La risposta indica il passo e l'indirizzo dell'isola. Di' alla persona in una frase che la sua casa è cresciuta.
+Dopo ogni passo riuscito che ha una voce nella colonna «Isola», chiami lo strumento `schritt_melden` di Albatros, con `schritt` (`prd`, `lokal`, `pruefung`, `freigabe`) e `sprache` (la lingua della conversazione, qui `it`). `projekt` normalmente lo lasci via: allora conta il progetto che più tardi starà nel porto, anche se oggi è solo sul computer. Solo per un altro progetto dai un nome breve fatto di minuscole, cifre e «-», sempre lo stesso. La risposta indica il passo e l'indirizzo dell'isola. Di' alla persona in una frase che la sua casa è cresciuta.
 
-- L'isola va solo avanti. Se segnali un passo che c'è già, non cambia niente. La risposta lo dice, e tu non riprovi.
-- `hafen`, `fliessband`, `live` e `domain` Albatros li vede anche da solo. Segnalali comunque, appena sono riusciti.
-- Se risponde «Ungültige Angaben», il passo o il nome era scritto male: correggi e richiamalo una volta.
-- Se lo strumento manca o risponde «unbekannt» (sconosciuto), si va avanti senza isola.
+- L'isola va solo avanti. Se segnali un passo che c'è già, non cambia niente. La risposta lo dice, non riprovi.
+- Se risponde «Ungültige Angaben» (dati non validi), il passo o il nome era scritto male: correggi e richiamalo una volta.
+- Se lo strumento manca, se la persona non è collegata o se risponde «unbekannt» (sconosciuto), si va avanti senza isola.
 
 ## I passi
 
-### 1. Incarico
+### 0. Prima di costruire: la bozza è approvata?
 
-Senza incarico non si costruisce. L'incarico è la pianta `docs/plan.md` (skill `webseite-planen`) o, per un sito esistente, l'inventario `docs/bestand.md` (skill `webseite-modernisieren`). Se mancano tutti e due, vai prima lì. Leggi l'incarico e di' alla persona in tre frasi cosa si costruisce, per chi e da cosa si accorgerà che funziona.
+Lo script di controllo `pruefen.mjs` si trova in questo skill. Copialo nel progetto, poi controlla se si può costruire:
 
-### 2. Mockup (`schritt: mockup`)
+```bash
+mkdir -p scripts && cp <cartella di questo skill>/pruefen.mjs scripts/
+# cartella sconosciuta: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
+node scripts/pruefen.mjs --vor-bau
+```
 
-Veloce e grezzo, in scala di grigi: la pagina iniziale e la sottopagina più importante in un unico file HTML `docs/mockup.html`, con titoli veri e il contenuto dell'incarico. Mostra la struttura e l'ordine, ancora niente colori e niente immagini (superfici grigie). Aprilo nel browser e chiedi solo: «L'ordine è giusto?»
+- **Finisce con 0:** c'è la riga `Freigegeben zum Bauen: <data>` in `docs/entwurf.md`, la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
+- **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza via libera per costruire allo skill `entwurf` (parte «Freigabe», l'approvazione), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. La riga `Freigegeben zum Bauen:` non la scrivi mai tu, nemmeno «al volo»: c'è solo dopo il sì della persona alla bozza.
 
-### 3. Sistema di design (`schritt: entwuerfe`)
+### 1. Officina e diario di bordo
 
-Segui lo skill `gestaltung`, sezioni «Tre direzioni», «Non sembrare fatto dall'IA», «La mazzetta dei colori (token)» ed «Elementi grafici». Prima chiedi del carattere, non dei colori. Poi presenti due o tre bozze chiaramente diverse sul mockup, come HTML in `docs/gestaltung/entwuerfe/`, e le apri. La persona sceglie una direzione o una combinazione, poi segnali `entwuerfe`.
+**L'officina, ancora una volta:** Node, npm e Git devono esserci, anche se c'erano già per la bozza:
 
-Dalla direzione scelta nasce il sistema di design, i campioni dei materiali per tutta la casa:
+```bash
+command -v node npm git        # Windows: where node npm git
+```
 
-- `web/src/styles/tokens.css`: colori per chiaro e scuro, caratteri, dimensioni dei caratteri, spaziature, arrotondamenti e ombre come variabili CSS, i valori di contrasto come commento.
-- `docs/designsystem.md` su una pagina, leggibile per le persone: direzione e caratteristiche; ogni colore con nome del token, scopo e contrasto; caratteri e dimensioni; spaziature e arrotondamenti; i componenti (pulsante, link, testata, piè di pagina, scheda, campo del modulo e quello che serve ancora al sito), ognuno con il suo scopo e i token che usa; gli elementi grafici.
+Se manca qualcosa, aiuti a installarlo come nello skill `entwurf` (l'officina) e controlli di nuovo.
 
-Colori, caratteri, spaziature, arrotondamenti e componenti stanno solo lì. Nel codice delle pagine ci sono solo `var(--…)` e i componenti. Se manca un valore, va prima nel sistema di design.
+**Il diario di bordo sul computer:** ogni passo riceve una voce (commit), con una nota in una frase. Così la persona può sfogliare all'indietro in qualsiasi momento. Per questo non serve un porto: il diario di bordo sta nella cartella del progetto, viene collegato solo alla messa online (skill `git-logbuch`, parte «Logbuch ohne Hafen», il diario di bordo senza porto).
 
-### 4. Stack tecnologico
+- Se la cartella del progetto non ha ancora un diario di bordo (nessuna cartella `.git`), lo crei: `git init -b main`.
+- Mancano nome e indirizzo per il diario di bordo (`git config user.name` resta vuoto)? Allora chiedi alla persona e imposti entrambi come nello skill `git-logbuch`, passo 1.
+- `.gitignore` nella cartella del progetto, almeno:
+  ```
+  node_modules/
+  .env
+  .env.*
+  !.env.example
+  .DS_Store
+  docs/pruefung/fotos/
+  docs/pruefung/vorher/
+  ```
+- La prima voce fissa quello che è nato finora. Prima mostrare che cosa entra, poi scriverla:
+  ```bash
+  git status
+  git add .gitignore AGENTS.md docs design scripts       # solo quello che c'è
+  git diff --cached --stat
+  git commit -m "Bozza approvata: piano, concetto, bozza"
+  ```
+- Regole come nello skill `git-logbuch`: solo `main`, solo i propri file e cartelle, con il nome (mai `git add .` né `git add -A`), mai `--force`.
 
-Il tipo di costruzione lo decidi tu prima di costruire e lo scrivi in `docs/stack.md`:
+**Momento di apprendimento «che cos'è una voce nel diario di bordo»:** una frase con l'immagine del diario di bordo. Nel modo `lernen` la persona digita lei stessa il comando `git commit` per la prima voce, poi segnali `verstanden_melden` (missione `webseite-02-bauen`, tipo `selbst`). Nel modo `machen` lo offri.
+
+### 2. Modo di costruzione (`docs/stack.md`)
+
+Il modo di costruzione segue da `docs/plan.md`, riga `Setup:`. Lo proponi e lo scrivi come ipotesi in `docs/stack.md`:
 
 ```markdown
 # Stack tecnologico
 
-**Decisione:** Astro, statico
-**Perché:** … (una o due frasi, dall'incarico)
+**Decisione:** [Annahme: Astro, statico]
+**Perché:** … (una o due frasi, da docs/plan.md)
 **JavaScript:** solo dove serve, al massimo 50 KB per pagina
-**Consegnato:** la cartella seite/ (Light: direttamente dal porto; Pilot: attraverso il nastro trasportatore)
+**Blocco:** nessuno (oppure: quale, skill bausteine; più tardi gli servirà un server proprio)
+**Consegnato:** la cartella seite/; dove abita, lo decide la persona al lancio
 **Non scelto:** … (per esempio un'app React o WordPress), perché …
 ```
 
-Di base si usa Astro: costruisce pagine HTML veloci e semplici, senza JavaScript, che Albatros può consegnare direttamente. Un altro framework solo se la persona lo vuole espressamente o se una funzione dell'incarico ne ha bisogno. Allora sotto «Perché» c'è la funzione e perché Astro non basta. «Moderno» o «conosciuto» non è un motivo. Una lista d'iscrizione, un login o una finestra per modificare i contenuti non sono un motivo per un altro framework, ma per un blocco (skill `bausteine`, con Pilot). Di' alla persona in una frase cosa hai scelto e perché.
+Lo standard è Astro: costruisce pagine HTML semplici e veloci, senza JavaScript. Un altro framework solo se la persona lo vuole espressamente o se una funzione del piano ne ha bisogno. Allora sotto «Perché» stanno la funzione e il motivo per cui Astro non basta. «Moderno» o «conosciuto» non è un motivo. Una lista di iscrizione, un accesso o una finestra di modifica non sono un motivo per un altro framework, ma per un blocco (skill `bausteine`).
 
-### 5. PRD con criteri di collaudo (`schritt: prd`)
+La persona conferma il modo di costruzione insieme alle porte (passo 3), in un solo messaggio.
 
-Il PRD è il progetto su una pagina, con la lista di cosa si controlla al collaudo. Scrivi `docs/prd.md`:
+### 3. PRD con accesso e porte (`schritt: prd`)
+
+Il PRD è il progetto di costruzione su una pagina. È ricavato dalla bozza approvata: la persona ha già firmato con la bozza, perciò per il PRD non c'è un collaudo a parte. Per scriverlo leggi `docs/projekt.md`, `docs/plan.md`, `docs/konzept.md`, `docs/designsystem.md`, `docs/entwurf.md` e ogni pagina in `design/entwurf/`. Scrivi `docs/prd.md`:
 
 ```markdown
-# PRD: <nome del sito>
+# PRD: <nome del progetto>
 
-**Per chi e a cosa serve:** … (dall'incarico)
-**Pagine:** pagina iniziale, …, Impressum, protezione dei dati
-**Funzioni:** ogni funzione con la sua decisione (per un sito esistente tutte quelle di docs/bestand.md)
-**Design:** direzione <nome>, vedi docs/designsystem.md
+Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <data da docs/entwurf.md>)
+
+**Per chi e a che scopo:** … (da docs/projekt.md)
+**Pagine:** come nella bozza: home, …, più impressum e protezione dei dati
+**Funzioni:** ognuna con il suo percorso, la conferma, l'errore e lo stato vuoto, come mostrati nella bozza (per un sito esistente ogni funzione di docs/bestand.md con la sua decisione)
+**Design:** design/tokens.css e docs/designsystem.md; markup e classi da design/entwurf/
 **Stack tecnologico:** vedi docs/stack.md
-**Hosting:** Light (pagina dal porto, senza server proprio) o Pilot (server proprio)
-**Dominio:** name.aufwind.sh, più tardi dominio proprio (con Light o Pilot)
-**Non incluso:** …
+**Non incluso:** … (da docs/plan.md: quello che per il primo volo resta fuori)
+
+## Accesso (chi può fare che cosa)
+
+| Chi | vede | modifica |
+|---|---|---|
+| tutti i visitatori | home, …, impressum, protezione dei dati | niente |
+| <ruolo da docs/plan.md, riga Zugang:> | … | … |
+
+Le porte stanno in docs/tueren.txt e si controllano con pruefen.mjs --tueren.
 
 ## Criteri di collaudo
 
-### Pagina iniziale
-- [ ] Nelle prime tre frasi c'è scritto chi siete, per chi è il sito e cosa devono fare i visitatori
-- [ ] Il pulsante «…» porta a …
-- [ ] Nella testata c'è una foto vera o la cosa più importante del contenuto, non solo titolo e pulsante in una superficie colorata (skill `gestaltung`, «Sobrio non vuol dire senza immagini»)
+Ricavati da docs/plan.md (Testing:) e dalla bozza; approvati con la bozza.
 
-### <ogni altra pagina>
+### Home
+- [ ] Titoli, menu e sezioni come in design/entwurf/index.html (pruefen.mjs --vergleich)
+- [ ] Nelle prime tre frasi si dice chi siete, a chi si rivolge il sito e che cosa devono fare i visitatori
+- [ ] Nell'intestazione c'è una foto vera o la cosa più importante del contenuto, non solo titolo e pulsante su una superficie colorata (skill gestaltung, «Schlicht heisst nicht ohne Bild»)
+
+### <ogni altra pagina di design/entwurf/>
+- [ ] Titoli, menu e sezioni come in design/entwurf/<pagina>.html
 - [ ] …
 
 ### <ogni funzione, per esempio un modulo o le prenotazioni>
-- [ ] L'invio funziona, i campi obbligatori mancanti lo dicono in modo comprensibile, il messaggio arriva a <indirizzo>
-- [ ] Ogni lista mostra se sta caricando, se è vuota (una frase e un pulsante) o se c'è un errore (con «Riprova», mai camuffato da lista vuota)
-- [ ] Dopo l'invio una pagina di conferma: cosa è successo, il numero, cosa viene dopo, come annullarlo
-- [ ] Il pulsante dice il risultato («Prenota un posto», non «Invia») ed è disattivato durante l'invio
+- [ ] L'invio funziona, i campi obbligatori mancanti si segnalano in modo comprensibile, il messaggio arriva a <indirizzo>
+- [ ] Ogni lista mostra se sta caricando, se è vuota (una frase e un pulsante) o se ha un errore (con «Riprova», mai mascherato da lista vuota)
+- [ ] Dopo l'invio una conferma: che cosa è successo, che cosa viene dopo, come annullarlo
+- [ ] Il pulsante dice il risultato («Prenota un posto», non «Invia») ed è bloccato durante l'invio
 
 ### Per tutte le pagine
-- [ ] Contenuto come nell'incarico, nessun segnaposto senza un'indicazione chiara
-- [ ] Telefonino (largo 390 px): niente tagliato, leggibile senza zoom, a sinistra e a destra almeno 16 px di margine, pulsanti alti almeno 44 px, il menu su una riga o come pulsante «Menu»
-- [ ] Ogni pagina, anche le pagine dei blocchi (per esempio per prenotare), ha testata, menu e piè di pagina con Impressum e protezione dei dati
+- [ ] Contenuto come nella bozza, nessun segnaposto senza un'etichetta chiara
+- [ ] Telefonino (390 px di larghezza): niente tagliato, leggibile senza zoom, almeno 16 px di margine a sinistra e a destra, pulsanti alti almeno 44 px, il menu su una riga o come pulsante «Menu»
+- [ ] Ogni pagina, anche quelle dei blocchi, ha intestazione, menu e piè di pagina con impressum e protezione dei dati
 - [ ] Contrasto: testo almeno 4,5 : 1, pulsanti e bordi almeno 3 : 1
-- [ ] Si può usare con la tastiera, il focus è visibile
-- [ ] Impressum e protezione dei dati ci sono e hanno un link su ogni pagina
+- [ ] Usabile con la tastiera, il focus è visibile
 - [ ] Velocità: Lighthouse almeno 90 in prestazioni, accessibilità, best practice e SEO; al massimo 50 KB di JavaScript per pagina; immagini sotto 500 KB
-- [ ] Nessun segreto nel codice, nessun .env in rete
-
-Approvato: <data> da <nome>
+- [ ] Ogni porta di docs/tueren.txt risponde come previsto; nessun segreto nel codice, nessun .env in rete
 ```
 
-**Costruire le funzioni come i professionisti.** Quello che fanno i visitatori (prenotare, iscriversi, ordinare, chiedere informazioni) lo costruisci con queste regole, anche se la persona non lo chiede:
+**Le porte:** dalla tabella «Accesso» nasce `docs/tueren.txt`, con per riga un percorso e lo stato con cui deve rispondere senza accesso. 200 vuol dire aperto, 404 «non esiste», 401 o 403 «solo con accesso», 302 «avanti all'accesso». Più numeri su una riga vogliono dire «uno di questi», dopo `#` c'è un commento:
 
-- **Tre porte:** pagine pubbliche senza accesso; una pagina per gli ospiti tramite un link con un codice segreto, senza account (per esempio «Annulla prenotazione»); l'amministrazione solo per la persona, mai collegata con un link.
-- **Una fonte per ogni verità:** offerte, prezzi, scadenze e orari d'apertura stanno in un solo posto. Sito, modulo, e-mail e condizioni leggono da lì.
-- **Una parola per ogni cosa,** uguale sul sito, nell'e-mail e nell'amministrazione. Una richiesta non è una prenotazione. Le parole stanno in `docs/designsystem.md`.
-- **Controllare nel server, mai solo nel browser:** posti, scadenze e stato li calcola il server. Per le prenotazioni c'è la ricetta collaudata `buchungen` (skill `bausteine`), invece di reinventarla.
-- **Errori onesti:** se un servizio non risponde, è un errore con «Riprova», mai «nessuna data».
-- **Formato svizzero:** «CHF 1'250.–», «mar 3 nov 2026, 18:00–19:15», orari in `Europe/Zurich`.
-- **Prima il telefonino:** a 390 px nessuno scorrimento laterale, l'azione principale si vede senza scorrere, un modulo chiede una cosa per passo («Passo 2 di 3»).
+```
+# percorso      stato atteso senza accesso (da «Accesso» in docs/prd.md)
+/               200
+/impressum      200
+/datenschutz    200
+/verwaltung     404     # mai pubblico
+/.env           404
+/.git/config    404 403
+/docs/plan.md   404     # i documenti di lavoro non vanno in rete
+```
 
-Ogni criterio deve potersi controllare: si vede o si misura se è giusto. «Bello» o «moderno» non è un criterio. Scrivi invece da cosa lo si riconosce. Mostra alla persona il PRD in breve nella chat e apri il file. Solo dopo il suo sì scrivi `Approvato:` con data e nome, segnali `prd` e costruisci.
+Con un blocco si aggiungono le sue porte, per esempio `/mitglieder 302` o `/api/collections/users/records 401 403`: che cosa risponde senza accesso sta nello skill `bausteine`.
 
-### 6. Costruire (`schritt: lokal`)
+**Un messaggio per le ipotesi:** mostra il PRD alla persona in tre o quattro frasi, apri il file e presenta modo di costruzione e porte come ipotesi, per esempio: «Costruisco con Astro, senza blocchi, e aperte sono solo home, offerta, richiesta, impressum e protezione dei dati. Va bene così?» Dopo il suo sì togli `[Annahme: …]`, fai la voce nel diario di bordo (`git add docs && git commit -m "PRD dalla bozza, modo di costruzione e porte"`), segnali `prd` e costruisci.
+
+**Costruire le funzioni come i professionisti.** Quello che fanno i visitatori (prenotare, iscriversi, ordinare, chiedere), lo costruisci secondo queste regole, anche se la persona non lo chiede:
+
+- **Tre porte:** pagine pubbliche senza accesso; una pagina per gli ospiti tramite link con un codice segreto, senza conto (per esempio «Annullare la prenotazione»); l'amministrazione solo per la persona, mai collegata.
+- **Una fonte per ogni verità:** offerte, prezzi, scadenze e orari stanno in un solo posto. Pagina, modulo, e-mail e condizioni leggono tutti da lì.
+- **Una parola per ogni cosa,** uguale sulla pagina, nell'e-mail e nell'amministrazione. Una richiesta non è una prenotazione. Le parole stanno in `docs/designsystem.md`.
+- **Controllare sul server, mai solo nel browser:** posti, scadenze e stati li calcola il server. Per le prenotazioni c'è la ricetta testata `buchungen` (skill `bausteine`), invece di reinventarla.
+- **Errori onesti:** se un servizio non risponde, è un errore con «Riprova», mai «nessun appuntamento».
+- **Formato svizzero:** «CHF 1'250.–», «mar 3 nov. 2026, 18:00–19:15», orari in `Europe/Zurich`.
+- **Prima il telefonino:** a 390 px niente scorrimento laterale, l'azione principale si vede senza scorrere, un modulo chiede una cosa per passo («Passo 2 di 3»).
+
+Ogni criterio deve potersi controllare: si vede o si misura se è vero. «Bello» o «moderno» non è un criterio.
+
+### 4. Costruire (`schritt: lokal`)
 
 ```bash
 npm create astro@latest web -- --template minimal --install --no-git --skip-houston --yes
 ```
 
-- In `web/astro.config.mjs`: `outDir: '../seite'`. Albatros consegna la cartella `seite/`, con Light direttamente e con Pilot attraverso il nastro trasportatore.
-- `tokens.css` del passo 3 sta in `web/src/styles/` e viene incluso in ogni layout. Prima costruisci i componenti di `docs/designsystem.md`, poi con questi le pagine.
-- **Prima i dati:** quello che la persona ha nominato nel piano (corsi con orari e posti, prezzi, orari d'apertura) lo vai a prendere adesso, prima di costruire. Un «ce l'abbiamo» nel piano non basta: chiedi il testo, la lista o una foto.
-- Liste come appuntamenti, tornei o sponsor stanno come dati in `web/src/data/*.json`, le pagine le leggono. Documenti e immagini vanno in `web/public/`, le immagini rimpicciolite.
-- Il simbolo nella scheda del browser (`web/public/favicon.svg` e `favicon.ico`) è la «A» di Astro: sostituiscilo con il logo o un segno tratto da esso.
-- Se manca del materiale (per esempio i loghi degli sponsor), c'è un segnaposto chiaramente indicato, mai un'altra immagine sotto un nome sbagliato.
-- Costruire e aprire l'anteprima:
+- In `web/astro.config.mjs`: `outDir: '../seite'`. Si costruisce nella cartella `seite/`, è lei che più tardi il domicilio consegna.
+- **I token in un solo posto:** il layout (per esempio `web/src/layouts/Seite.astro`) integra direttamente `design/tokens.css`, per primo: `import '../../../design/tokens.css';`. Il file non lo copi mai in `web/`: due copie prima o poi divergono. Se manca un valore, va prima in `design/tokens.css` e in `docs/designsystem.md`.
+- **Markup e classi dalla bozza:** ogni pagina in `design/entwurf/` diventa una pagina in `web/src/pages/`, con lo stesso markup e le stesse classi. Quello che è uguale su più pagine (intestazione, menu, piè di pagina, schede, campi dei moduli) diventa un componente in `web/src/components/`. I fogli di stile che la bozza integra (tranne `tokens.css`) vanno così come sono in `web/src/styles/` e nel layout subito dopo i token; gli stili in uno `<style>` di una pagina della bozza vanno nella pagina o nel componente che corrisponde. Gli script che nella bozza fanno solo finta (un modulo che non invia niente, un menu inserito da uno script) li sostituisci con la cosa vera.
+- **Impressum e protezione dei dati** non stanno nella bozza: li costruisci adesso nello stesso layout (skill `recht-ch`).
+- **Prima i dati:** quello che la persona ha nominato nel piano (corsi con orari e posti, prezzi, orari di apertura) lo procuri adesso, prima di costruire. Un «ce l'abbiamo» non basta: chiedi il testo, la lista o una foto di essa.
+- Le liste come appuntamenti, tornei o sponsor sono dati in `web/src/data/*.json`, le pagine li leggono. Documenti e immagini vanno in `web/public/`, le immagini rimpicciolite. Se vengono da un sito esistente, vale lo skill `webseite-modernisieren`, parte «Rechte» (i diritti).
+- Il segno nella scheda del browser (`web/public/favicon.svg` e `favicon.ico`) è la «A» di Astro: sostituiscilo con il logo o con un segno ricavato da esso.
+- Se manca del materiale (per esempio i loghi degli sponsor), c'è un segnaposto chiaramente etichettato come nella bozza, mai un'altra immagine sotto un nome falso.
+- Costruire e avviare l'anteprima:
   ```bash
-  cd web && npm run build && npx astro preview --open
+  (cd web && npm run build && npx astro preview --background)
+  open http://localhost:4321
   ```
-- **Con un blocco** (prenotazioni, lista di iscrizione, accesso) invece dell'anteprima avvii `bun bausteine/pocketbase/lokal.ts`: solo così moduli e prenotazioni funzionano davvero, sul computer della persona.
-- Quando l'anteprima gira, segnali `lokal`, prima di mostrare il sito alla persona e aspettare la sua risposta.
+  L'anteprima continua a girare in background e mostra il nuovo stato dopo ogni `npm run build`, finché non la fermi con `(cd web && npx astro preview stop)`.
+- **Con un blocco** (prenotazioni, lista di iscrizione, accesso) avvii, al posto dell'anteprima, `bun bausteine/pocketbase/lokal.ts` (indirizzo `http://localhost:8090`): solo così moduli e prenotazioni funzionano davvero, sul computer della persona.
+- Quando l'anteprima gira, fai la voce nel diario di bordo (`git add web seite && git commit -m "Rustico: tutte le pagine dalla bozza"`; `web/.gitignore` esclude `web/node_modules`) e segnali `lokal`, prima di mostrare il sito alla persona.
 
-### 7. Controllare (`schritt: pruefung`)
+### 5. Controllare (`schritt: pruefung`)
 
-Quattro esperti fanno il collaudo della costruzione, ognuno scrive un rapporto con un semaforo. Lo script `pruefen.mjs` in questo skill misura quello che si può misurare. Copialo nel progetto e fallo partire:
+Quattro esperte fanno il collaudo del rustico, ognuna scrive un rapporto con un semaforo. `pruefen.mjs` misura quello che si può misurare, e in più controlla le porte:
 
 ```bash
-mkdir -p scripts && cp <cartella di questo skill>/pruefen.mjs scripts/
-# cartella sconosciuta o file mancante: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
 (cd web && npm run build) && node scripts/pruefen.mjs
+node scripts/pruefen.mjs --tueren                               # con un blocco: --tueren http://localhost:8090, mentre gira lokal.ts
 ```
 
-La prima volta scarica gli strumenti (Playwright, axe-core, Lighthouse, circa 200 MB) e ci mette qualche minuto. Dillo prima alla persona. Scrive `docs/pruefung/messwerte.json` e foto di ogni pagina a 390 e 1440 px in `docs/pruefung/fotos/`.
+La prima volta lo script scarica gli strumenti (Playwright, axe-core, Lighthouse, circa 200 MB) e ci mette qualche minuto. Dillo prima alla persona. Scrive `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` e foto di ogni pagina a 390 e 1440 px in `docs/pruefung/fotos/`. I suoi messaggi sono in tedesco: li passi in italiano.
 
 Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
-- `docs/pruefung/sicherheit.md` (sicurezza e aspetti legali): segreti nel codice, `npm audit`, nessun `.env` in `seite/`, Impressum e protezione dei dati presenti e completi (skill `recht-ch`), quali servizi esterni e cookie usa il sito.
-- `docs/pruefung/ablaeufe.md` (percorsi e accesso): le regole per l'accessibilità (WCAG 2.2 AA, axe) su ogni pagina, link morti, ogni modulo provato tu stesso una volta, la pagina iniziale percorsa con la tastiera (Tab), i percorsi del PRD passo per passo.
-  - **Verde solo con una prova.** Per ogni funzione con un blocco, nel rapporto vanno il risultato del test («Alles grün») e una foto di una vera prenotazione di prova o di una vera iscrizione su questo computer. Se qualcosa non ha funzionato, il semaforo è giallo o rosso. Non scrivere mai «provato fino in fondo» se non l'hai fatto.
-- `docs/pruefung/aussehen.md` (aspetto): solo valori di `tokens.css`, sistema di design rispettato, ogni foto guardata da te (tagliato, coperto, leggibile?) e controllata con la lista dei tratti tipici dell'IA nello skill `gestaltung`. Se `pruefen.mjs` segna in rosso il menu sul telefonino o schede uguali sulla pagina iniziale, rifai l'impaginazione prima di andare avanti. Con il giallo «nessuna foto nella prima schermata» la cosa più importante sta in grande nella testata, e la persona riceve la lista delle foto.
+- `docs/pruefung/sicherheit.md` (sicurezza e diritto): segreti nel codice, `npm audit`, nessun `.env` in `seite/`, ogni porta di `docs/tueren.txt` con il suo stato, impressum e protezione dei dati presenti e completi (skill `recht-ch`), quali servizi esterni e cookie usa il sito.
+- `docs/pruefung/ablaeufe.md` (percorsi e accesso): le regole di accessibilità (WCAG 2.2 AA, axe) su ogni pagina, link morti, ogni modulo provato tu una volta, la home percorsa con la tastiera (Tab), i percorsi del PRD passo per passo.
+  - **Verde solo con una prova.** Per ogni funzione con un blocco, nel rapporto vanno l'output del test («Alles grün», tutto verde) e una foto di una vera prenotazione di prova o di una vera voce su questo computer. Se qualcosa non ha funzionato, il semaforo è giallo o rosso. Non scrivere mai «provato fino in fondo» se non l'hai fatto.
+- `docs/pruefung/aussehen.md` (aspetto): `design/tokens.css` è integrato, solo i suoi valori nel codice, sistema di design rispettato, ogni foto guardata tu stesso (tagliato, coperto, leggibile?) e confrontata con la lista dei tratti da IA dello skill `gestaltung`. Se `pruefen.mjs` segna in rosso il menu sul telefonino o schede uguali sulla home, rifai la disposizione prima di andare avanti. Con il giallo «nessuna foto nella prima schermata», la cosa più importante sta in grande nell'intestazione e la persona riceve la lista delle foto.
 - `docs/pruefung/code.md` (codice e velocità): Lighthouse nei quattro ambiti, JavaScript per pagina, dimensioni delle immagini, e quali criteri di collaudo sono soddisfatti.
 
 ```markdown
 # Controllo: <ambito>
 
 **Semaforo:** verde | giallo | rosso
-**In parole semplici:** due o tre frasi su cosa significa per le visitatrici e i visitatori
+**In parole semplici:** due o tre frasi su che cosa significa per le visitatrici e i visitatori
 
 ## Controllato
-- … (valore misurato da messwerte.json o quello che hai provato tu)
+- … (valore misurato da messwerte.json o tueren.json, o quello che hai provato tu)
 
 ## Corretto
 - …
@@ -205,74 +266,56 @@ Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 - … (con il motivo per cui può restare così)
 ```
 
-Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: quelli soddisfatti li spunti (`- [x]`) e scrivi in breve dove o con cosa li hai controllati. Quello che non è soddisfatto resta aperto, con il motivo.
+Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: spunti quelli soddisfatti (`- [x]`) e annoti brevemente dove o con che cosa li hai controllati. Quello che non è soddisfatto resta aperto, con un motivo.
 
-Rosso vuol dire: correggere, ricostruire, controllare di nuovo, finché niente è più rosso. Giallo va bene solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo quando hai guardato tu le foto. Quando i quattro rapporti sono in `docs/pruefung/` e niente è più rosso, segnali `pruefung`.
+Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`.
 
-### 8. Via libera (`schritt: freigabe`)
+### 6. Approvazione: il sopralluogo (`schritt: freigabe`)
 
-La consegna delle chiavi: è la persona a decidere se il sito può uscire. Mostrale i quattro semafori con una frase ciascuno, apri i rapporti e l'anteprima e dille cosa resta aperto. Dille anche: con Light il prossimo passo è la pubblicazione, poi il sito è visibile a tutti. Chiedi: «Il sito può andare in rete così?»
+Adesso la persona passa lei stessa per la sua casa. Decide se può andare online così.
 
-Solo dopo il suo sì esplicito scrivi in `docs/prd.md`, sotto `Approvato:`, la riga `Freigegeben: <data> da <nome>`. La parola `Freigegeben:` resta in tedesco, perché la verifica della missione la cerca. Poi segnali `freigabe`. Se vuole cambiare qualcosa, si torna al passo 6 e poi di nuovo al controllo.
+1. **Mostrare in locale, sul telefonino e sul computer.** Costruire, avviare l'anteprima (passo 4) e passare ogni pagina con la persona: sul computer nell'anteprima (`open http://localhost:4321`), per il telefonino le foto a 390 px (`open docs/pruefung/fotos/start-390.png` e le altre). Se vuole vederlo sul suo vero telefonino e questo è nella stessa rete Wi-Fi: fermare l'anteprima e riavviarla con `(cd web && npx astro preview --host --background)`, poi sul telefonino apre l'indirizzo che sta sotto «Network».
+2. **Confronto con la bozza.** Si è costruito quello che la persona ha visto nel modello; lo controlli pagina per pagina:
+   ```bash
+   node scripts/pruefen.mjs --vergleich
+   ```
+   Confronta per ogni pagina titoli, voci del menu e sezioni con `design/entwurf/` e segnala ogni differenza in giallo, con il punto (pagina, che cosa, numero nella bozza e nella costruzione). Per ogni differenza apri le due affiancate (`open design/entwurf/<pagina>.html` e `open http://localhost:4321/<pagina>/`). Se è un errore della costruzione, costruisci come nella bozza e confronti di nuovo. Se è voluto (per esempio un testo vero al posto di `[da completare]`), lo dici alla persona, e decide lei. Si va avanti solo quando non resta più nessuna differenza aperta.
+3. **Momento di apprendimento «cambiare da sé un testo e vederlo in locale».** Nel modo `lernen` è obbligatorio, nel modo `machen` lo offri in una frase. La persona apre il file di una pagina in un editor di testo (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; le liste come gli appuntamenti stanno in `web/src/data/`), cambia una frase e salva. Tu ricostruisci (`(cd web && npm run build)`), lei ricarica l'anteprima e vede la sua modifica. Poi decide: tenerla (voce nel diario di bordo, di nuovo `pruefen.mjs`, niente rosso) o tornare indietro con `git restore <file>`. Se l'ha fatto lei, segnali `verstanden_melden` (missione `webseite-02-bauen`, tipo `selbst`).
+4. **Quello che si è visto va in `docs/prd.md`,** sotto i criteri di collaudo (inizi di riga in tedesco):
+   ```
+   Lokal gesehen: <data>, sul telefonino (foto a 390 px) e sul computer (anteprima)
+   Vergleich mit Entwurf: <data>, nessuna differenza aperta (pruefen.mjs --vergleich; discusso: …)
+   ```
+5. **La domanda:** «Hai visto il tuo sito sul tuo computer, in larghezza telefonino e computer. Lo approvi?» Aggiungi che cosa è ancora aperto (dai rapporti), e che quest'approvazione vale per la messa online: va online esattamente questo sito, né più né meno.
+6. **Solo dopo il suo sì esplicito** scrivi sotto `Freigegeben: <data> («<le sue parole>»)`. «Sembra bello» senza un sì all'approvazione non basta. Poi la voce nel diario di bordo, con un segno (tag) esattamente su questo stato:
+   ```bash
+   git add docs/prd.md && git commit -m "Sito approvato" && git tag -f freigegeben
+   ```
+   Alla messa online il tag `freigegeben` mostra se da allora sul sito è cambiato ancora qualcosa.
+7. Segnala `freigabe`. Nel modo `lernen` adesso fai le domande di controllo della missione `webseite-02-bauen` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
 
-### 9. Porto, nastro trasportatore e in rete (`schritt: hafen`, `fliessband`, `live`)
+Se prima dell'approvazione la persona vuole ancora cambiare qualcosa: un testo, un'immagine o un appuntamento, si torna al passo 4, poi di nuovo controllo e sopralluogo. Una nuova pagina o una nuova funzione è un'aggiunta: prima in `docs/plan.md`, poi una bozza delle pagine cambiate e un nuovo via libera per costruire (skill `entwurf`), solo dopo la costruzione.
 
-Il porto di Albatros (`code.aufwind.sh`) è il repository di allenamento della persona: lì c'è il suo codice, privato. Se servono ancora account, abbonamento e chiave, segui adesso lo skill `start` dal passo 3. Poi prendi il diario di bordo e ci metti dentro il nuovo sito (skill `git-logbuch`):
-
-```bash
-git clone git@aufwind.sh:{name}/projekt.git logbuch
-cp -R web docs seite scripts logbuch/        # senza web/node_modules, lo esclude web/.gitignore
-echo "docs/bestand/dateien/" >> logbuch/.gitignore   # la copia di lavoro del vecchio sito resta fuori
-cd logbuch && git add .gitignore web docs seite scripts && git commit -m "Nuovo sito: <direzione>" && git push
-```
-
-Poi apri il porto nel browser, così la persona vede che il suo codice è lì, e segnali `hafen`:
-
-```bash
-open https://code.aufwind.sh/{name}/projekt
-```
-
-**Nastro trasportatore:** Un nastro trasportatore semplice, niente di speciale (skill `pipeline`). Con Light non ne serve nessuno: quello che sta nel porto su `main` in `seite/`, Albatros lo mostra circa un minuto dopo. Con Pilot il nastro trasportatore di `.github/workflows/deploy.yml` consegna la pagina sul server.
-
-**In rete:** Il sito si trova su `https://{name}.aufwind.sh`, con Light senza server proprio, con Pilot sul server proprio.
-
-**Controlli tu, la persona non aspetta mai.** Invece di «guarda di nuovo tra qualche minuto», dopo il push controlli tu finché la tua nuova pagina c'è, al massimo tre minuti. L'indirizzo risponde già prima (con il modello o la pagina di benvenuto). Perciò aspetti il titolo della tua pagina, come sta in `seite/index.html` tra `<title>` e `</title>`:
-
-```bash
-for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<titolo della tua pagina>" && echo "La pagina c'è" && break; sleep 15; done
-```
-
-- **C'è:** controlla di nuovo il sito in rete (titolo, Impressum e protezione dei dati, Lighthouse). Finito vuol dire visibile:
-  ```bash
-  node scripts/pruefen.mjs --live https://{name}.aufwind.sh
-  ```
-  Se lì niente è rosso, segnali `fliessband` e `live`, apri l'indirizzo con la persona (`open https://{name}.aufwind.sh`) e confrontalo con le foto del passo 7.
-- **Con un blocco «online» non vuol dire ancora «finito»:** solo quando i dati ci sono (per esempio i corsi) e una prenotazione di prova in rete ha portato la sua e-mail all'indirizzo della persona (skill `bausteine`), dici alla persona che può condividere il link. Fino ad allora dici onestamente cosa manca ancora.
-- **Dopo tre minuti non c'è ancora:** chiedi `konto_status`. Con Light lì c'è scritto se l'ultimo stato è online o cosa manca. Spesso nel porto manca `seite/index.html`, perché prima del push non si è costruito o perché `seite/` sta in `.gitignore`. Con Pilot guardi nel porto sotto «Actions» dove si è fermato il nastro trasportatore (skill `pipeline`). Correggere, nuova voce, push, controllare di nuovo. Solo se non funziona ancora, dici alla persona cosa hai controllato e chiedi al coach (`coach_fragen`).
-
-Se poi la persona vuole ancora qualcosa di diverso («manca ancora …», una data, un testo), carichi lo skill `webseite-aendern` e lo segui. Il sito ha il via libera ed è online, quindi ogni modifica ha bisogno del suo criterio nel PRD, di un prima e dopo e di un nuovo via libera prima del push.
-
-Un dominio proprio si aggiunge con lo skill `domain`, con Light come con Pilot, poi segnali `domain`.
-
-Si pubblica solo quello che appartiene alla persona o per cui ha il permesso (skill `webseite-modernisieren`, sezione «Diritti»).
+Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo strumento c'è, e seguilo.
 
 ## Trappole
 
-- Costruire prima del PRD: così si fa bello il sito sbagliato.
-- Nel porto prima del via libera: con Light questa è già la pubblicazione.
-- Criteri di collaudo che non si possono controllare («bello», «moderno»): scrivi da cosa lo si vede o come lo si misura.
+- Costruire senza `pruefen.mjs --vor-bau`, o scrivere tu la riga `Freigegeben zum Bauen:`: si costruisce allora quello che nessuno ha approvato.
+- Reinventare il markup invece di riprenderlo dalla bozza: al sopralluogo la persona vede allora qualcos'altro che nel modello.
+- Un secondo `tokens.css` in `web/`: allora ci sono due verità, e una presto è sbagliata.
+- Criteri di collaudo che non si possono controllare («bello», «moderno»): scrivi da che cosa si vede o si misura.
 - Un altro framework «perché è moderno»: il motivo è il desiderio della persona o una funzione, altrimenti Astro.
-- Tre bozze che si distinguono solo per il colore: nessuna vera scelta.
-- Colori, spaziature o dimensioni dei caratteri scritti a mano nel codice: così il sistema di design si rompe.
+- Colori, spaziature o dimensioni dei caratteri a mano nel codice: il sistema di design si rompe.
 - Rapporti senza valori misurati, o «tutto verde» senza aver guardato le foto.
-- Dimenticare di costruire `seite/`: nel porto c'è allora la vecchia pagina. Prima di ogni push `npm run build` in `web/`.
-- Far aspettare la persona («guarda più tardi»): controlli tu finché la pagina c'è (passo 9).
-- Un passo non segnalato: la casa sull'isola resta ferma. Segnala ogni passo con una voce nella colonna «Isola», appena è riuscito.
+- Dimenticare di costruire `seite/`: l'anteprima mostra allora lo stato vecchio.
+- Mandare qualcosa in un porto o pubblicare: non fa parte di questo skill, ma della messa online (skill `lancieren`).
+- L'approvazione senza sopralluogo sul telefonino, o con differenze aperte rispetto alla bozza.
+- Non segnalare un passo: la casa sull'isola resta ferma.
 
-## Verifica la missione
+## Verificare la missione
 
-`mission_pruefen` con `webseite-02-bauen`, appena il sito è in rete. La verifica controlla se in `docs/prd.md` c'è il via libera (la riga `Freigegeben:`) e se il sito risponde. La parola `Freigegeben:` resta in tedesco, perché la verifica della missione la cerca.
+`mission_pruefen` con `webseite-02-bauen`, appena è segnalato `freigabe`. La verifica guarda sull'isola se il progetto è almeno al passo «Freigabe» (approvazione).
 
 ## Messaggio finale
 
-Il tuo ultimo messaggio in questo passo inizia con una frase sull'immagine «la piccola fabbrica», che ne ripete il nocciolo. Poi: quale dei nove passi è fatto e cosa è nato, dove si trova il risultato, cosa deve decidere la persona e quale passo viene dopo.
+Il tuo ultimo messaggio in questo passo comincia con una frase sull'immagine «il rustico nella tua officina», che ridice il nocciolo. Poi: quale passo è riuscito e che cosa ne è nato, dove sta il risultato, che cosa deve decidere la persona e che cosa viene dopo (dopo l'approvazione: il domicilio, skill `lancieren`).

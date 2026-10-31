@@ -1,45 +1,45 @@
 ---
 name: webseite-bauen
-description: 'Baut mit einer Person ohne Vorwissen ihre Webseite wie in einer kleinen Software-Fabrik, in neun festen Schritten mit je einem Ergebnis in docs/: Auftrag, Mockup, Designsystem, Tech-Stack (Astro, wenig JavaScript), PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen mit Bericht und Ampel (Sicherheit, Abläufe und Zugang, Aussehen, Code und Tempo, gemessen mit pruefen.mjs), Freigabe durch die Person, dann Hafen, Fliessband und Seite im Netz mit Schlussprüfung. Öffnet die Insel im Cockpit und meldet die Schritte mit schritt_melden. Nutze den Skill, sobald auf dem Weg Webseite gebaut wird: nach webseite-planen, nach der Bestandsaufnahme von webseite-modernisieren, bei «bau mir die Seite», «Mockup», «Entwurf», «Designsystem», «Tech-Stack», «PRD», «Abnahmekriterien», «vor dem Veröffentlichen prüfen», «lokal anschauen», «wie geht es nach dem Plan weiter».'
+description: 'Baut mit einer Person ohne Vorwissen ihre Webseite auf ihrem Computer, genau nach dem freigegebenen Entwurf (P9 und P10): pruefen.mjs --vor-bau prüft die Freigabe zum Bauen, dann Logbuch (git init, ein Eintrag je Schritt), Bauweise, PRD aus dem Entwurf mit Zugang und Türen (docs/tueren.txt), Bau mit Astro aus Markup und Klassen des Entwurfs und design/tokens.css, vier Prüfungen mit pruefen.mjs und die Türen, Begehung auf Handy und Computer, Vergleich mit dem Entwurf (--vergleich) und Freigabe. Ins Netz geht nichts, das macht lancieren. Meldet prd, lokal, pruefung, freigabe. Nutze den Skill nach entwurf (Freigabe zum Bauen) und bei «bau mir die Seite», «Tech-Stack», «PRD», «lokal anschauen», «vor dem Veröffentlichen prüfen», «Freigabe», «wie geht es nach dem Entwurf weiter».'
 metadata:
   stand: 0.2.0
 ---
 
-# Webseite bauen: die kleine Fabrik
+# Webseite bauen: der Rohbau in der eigenen Werkstatt
 
 ## Das Bild
 
-Ein Haus entsteht in einer festen Reihenfolge: Auftrag, Skizze, Materialmuster, Bauweise, Bauplan mit Unterschrift, Rohbau, Abnahme durch Fachleute, Schlüsselübergabe, Einzug. Niemand giesst das Fundament, bevor die Familie den Plan unterschrieben hat, und niemand zieht ein, bevor die Fachleute abgenommen haben. Eine Software-Fabrik arbeitet genauso: Jeder Schritt hat ein Ergebnis, das man anschauen kann, und am Ende prüfen Fachleute, bevor etwas hinausgeht. Auf der Insel im Cockpit wächst das Haus mit.
+Der Entwurf ist das begehbare Modell, das die Person freigegeben hat. Jetzt entsteht daraus in der eigenen Werkstatt, auf ihrem Computer, der Rohbau: mit denselben Räumen, Türen und Fenstern wie im Modell. Fachleute nehmen ihn ab, dann geht die Person selbst hindurch, auf dem Handy und am Computer (die Begehung), und gibt ihn frei. Ein Logbuch hält jeden Arbeitsschritt fest. Ins Netz geht dabei noch nichts: Wo das Haus steht, entscheidet sie danach beim Lancieren.
 
-**So setzt du das Bild ein:** In deiner ersten Antwort ein Satz zum Bild. Bei jedem neuen Schritt ein Satz mit seinem Bild (in der Tabelle unten), was dabei entsteht und wozu. So versteht die Person, warum es diesen Schritt braucht.
+**So setzt du das Bild ein:** In deiner ersten Antwort ein Satz zum Bild. Bei jedem neuen Schritt ein Satz mit seinem Bild (in der Tabelle unten), was dabei entsteht und wozu.
 
 ## So sprichst du
 
-- Die Reihenfolge ist fest. Du überspringst keinen Schritt, baust nichts vor der Abnahme des PRD und schickst nichts in den Hafen vor der Freigabe. Mit Light ist der Push schon die Veröffentlichung.
-- Du schlägst den nächsten Schritt vor und machst ihn nach einem kurzen Ja. Die Person muss nie wissen, was als Nächstes kommt.
+- Die Reihenfolge ist fest. Gebaut wird erst, wenn `pruefen.mjs --vor-bau` die Freigabe zum Bauen findet, und nur, was im Entwurf steht. Soll etwas anders werden als im Entwurf, sagst du das der Person, bevor du es baust.
+- In diesem Skill geht nichts ins Netz und nichts in einen Hafen. Alles bleibt auf dem Computer der Person und ist bei Albatros gratis.
+- Du schlägst den nächsten Schritt vor und machst ihn. Die Person muss nie wissen, was als Nächstes kommt.
+- Der Modus steht in `docs/projekt.md` (Zeile `Modus:`): Bei `machen` arbeitest du und erklärst jeden Schritt in einem Satz mit Bild, die Lernmomente bietest du an. Bei `lernen` erklärst du jeden Schritt mit Bild und Warum, und die Person macht die Lernmomente selbst.
+- Höchstens zwei Fragen in einer Nachricht. Was du selbst vorschlagen kannst (Bauweise, Türen), trägst du als `[Annahme: …]` ein und lässt alle Annahmen in einer einzigen Nachricht bestätigen.
 - Du-Form, Alltagssprache. Fachwörter (PRD, Tokens, Lighthouse) erklärst du beim ersten Mal mit ihrem Bild.
-- Webseiten bleiben statisch, ohne eigene Dienste. Ein Baustein (Skill `bausteine`) kommt nur dazu, wenn die Person ihn wirklich braucht.
-- Was die Person sehen soll (Insel, Mockup, Entwürfe, Vorschau, Berichte, Hafen, fertige Seite), öffnest du selbst im Browser: `open <adresse oder datei>` (Linux `xdg-open`, Windows `start`). Nur die Adresse zu nennen reicht nicht.
+- Was die Person sehen soll (Insel, Vorschau, Fotos, Berichte, Entwurf und Bau nebeneinander), öffnest du selbst: `open <adresse oder datei>` (Linux `xdg-open`, Windows `start`). Nur die Adresse zu nennen reicht nicht.
 
-## Die neun Schritte auf einen Blick
+## Die Schritte auf einen Blick
 
 | Schritt | Bild | Ergebnis | Insel |
 |---|---|---|---|
-| 1. Auftrag | der Auftrag an die Baufirma | `docs/plan.md` oder `docs/bestand.md` | |
-| 2. Mockup | die Skizze auf Papier | `docs/mockup.html` | `mockup` |
-| 3. Designsystem | die Materialmuster | `docs/designsystem.md`, `web/src/styles/tokens.css` | `entwuerfe` |
-| 4. Tech-Stack | die Bauweise | `docs/stack.md` | |
-| 5. PRD mit Abnahmekriterien | der Bauplan mit Unterschrift | `docs/prd.md` mit `Abgenommen:` | `prd` |
-| 6. Bauen | der Rohbau | `web/`, `seite/` | `lokal` |
-| 7. Prüfen | die Abnahme durch Fachleute | `docs/pruefung/` mit vier Berichten | `pruefung` |
-| 8. Freigabe | die Schlüsselübergabe | `Freigegeben:` in `docs/prd.md` | `freigabe` |
-| 9. Hafen, Fliessband, live | der Einzug | Seite im Netz, `docs/pruefung/messwerte-live.json` | `hafen`, `fliessband`, `live` |
+| 0. Vor dem Bau | der Blick auf die Unterschrift unter dem Modell | `pruefen.mjs --vor-bau` endet mit 0 | |
+| 1. Werkstatt und Logbuch | die Werkbank einrichten, das Logbuch aufschlagen | Logbuch mit dem ersten Eintrag | |
+| 2. Bauweise | wie gebaut wird: Holz oder Stein | `docs/stack.md` | |
+| 3. PRD mit Zugang und Türen | der Bauplan, abgeleitet aus dem Modell | `docs/prd.md` mit `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
+| 4. Bauen | der Rohbau | `web/`, `seite/` | `lokal` |
+| 5. Prüfen | die Abnahme durch Fachleute | `docs/pruefung/` mit vier Berichten, Türen geprüft | `pruefung` |
+| 6. Freigabe | die Begehung des fertigen Rohbaus | `Lokal gesehen:`, `Vergleich mit Entwurf:` und `Freigegeben:` in `docs/prd.md` | `freigabe` |
 
-Was in der Spalte «Ergebnis» steht, muss am Ende des Schritts da sein. Fehlt es, ist der Schritt nicht geschafft.
+Schritte 0 bis 5 sind die Phase P9, Schritt 6 ist P10. Was in der Spalte «Ergebnis» steht, muss am Ende des Schritts da sein. Jeder Schritt endet mit einem Eintrag im Logbuch.
 
 ## Die Insel
 
-Gleich zu Beginn öffnest du die Insel der Person im Browser. Unter `https://albatros.build/cockpit/insel` steht für jedes Projekt ein Haus, das mit jedem Schritt wächst. Für Französisch, Italienisch und Englisch steht das Präfix davor, zum Beispiel `/fr/cockpit/insel`:
+Ist die Insel noch nicht offen, öffnest du sie gleich zu Beginn im Browser. Unter `https://albatros.build/cockpit/insel` steht für jedes Projekt ein Haus, das mit jedem Schritt wächst. Für Französisch, Italienisch und Englisch steht das Präfix davor, zum Beispiel `/fr/cockpit/insel`:
 
 ```bash
 open https://albatros.build/cockpit/insel        # macOS; Linux: xdg-open, Windows: start
@@ -47,94 +47,151 @@ open https://albatros.build/cockpit/insel        # macOS; Linux: xdg-open, Windo
 
 Die Insel lädt sich selbst nach, einmal öffnen reicht.
 
-Nach jedem geschafften Schritt mit einem Eintrag in der Spalte «Insel» rufst du das Werkzeug `schritt_melden` von Albatros auf, mit `schritt` (`mockup`, `entwuerfe`, `prd`, `lokal`, `pruefung`, `freigabe`, `hafen`, `fliessband`, `live`, `domain`) und `sprache` (die Sprache des Gesprächs). `projekt` lässt du im Normalfall weg: Dann gilt das Logbuch im Hafen (`git@aufwind.sh:<name>/projekt.git`), auch wenn es erst später entsteht. Nur für ein weiteres Projekt, das bloss auf dem Computer liegt, gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit. Die Antwort nennt den Schritt und die Adresse der Insel. Sag der Person in einem Satz, dass ihr Haus gewachsen ist.
+Nach jedem geschafften Schritt mit einem Eintrag in der Spalte «Insel» rufst du das Werkzeug `schritt_melden` von Albatros auf, mit `schritt` (`prd`, `lokal`, `pruefung`, `freigabe`) und `sprache` (die Sprache des Gesprächs). `projekt` lässt du im Normalfall weg: Dann gilt das Projekt, das später im Hafen liegt, auch wenn es heute nur auf dem Computer ist. Nur für ein weiteres Projekt gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit, immer denselben. Die Antwort nennt den Schritt und die Adresse der Insel. Sag der Person in einem Satz, dass ihr Haus gewachsen ist.
 
 - Die Insel geht nur vorwärts. Meldest du einen Schritt, der schon steht, ändert sich nichts. Die Antwort sagt das, du versuchst es nicht nochmals.
-- `hafen`, `fliessband`, `live` und `domain` sieht Albatros auch selbst. Melde sie trotzdem, sobald sie geschafft sind.
 - Antwortet es «Ungültige Angaben», war der Schritt oder der Name falsch geschrieben: korrigieren und einmal neu aufrufen.
-- Fehlt das Werkzeug oder antwortet es «unbekannt», geht es ohne Insel weiter.
+- Fehlt das Werkzeug, ist die Person nicht angemeldet oder antwortet es «unbekannt», geht es ohne Insel weiter.
 
 ## Die Schritte
 
-### 1. Auftrag
+### 0. Vor dem Bau: Ist der Entwurf freigegeben?
 
-Ohne Auftrag kein Bau. Der Auftrag ist der Grundriss `docs/plan.md` (Skill `webseite-planen`) oder bei einer bestehenden Seite die Bestandsaufnahme `docs/bestand.md` (Skill `webseite-modernisieren`). Fehlt beides, gehst du zuerst dorthin. Lies den Auftrag und sag der Person in drei Sätzen, was gebaut wird, für wen und woran sie den Erfolg merkt.
+Das Prüfskript `pruefen.mjs` liegt in diesem Skill. Kopier es ins Projekt, dann prüft es, ob gebaut werden darf:
 
-### 2. Mockup (`schritt: mockup`)
+```bash
+mkdir -p scripts && cp <Ordner dieses Skills>/pruefen.mjs scripts/
+# Ordner unbekannt: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
+node scripts/pruefen.mjs --vor-bau
+```
 
-Schnell und grob, in Graustufen: die Startseite und die wichtigste Unterseite als eine HTML-Datei `docs/mockup.html`, mit echten Überschriften und dem Inhalt aus dem Auftrag. Er zeigt Aufbau und Reihenfolge, noch keine Farben und keine Bilder (graue Flächen). Öffne ihn im Browser und frag nur: «Stimmt die Reihenfolge?»
+- **Ende mit 0:** Es gibt die Zeile `Freigegeben zum Bauen: <Datum>` in `docs/entwurf.md`, den Entwurf in `design/entwurf/` und die Tokens in `design/tokens.css`. Weiter mit Schritt 1.
+- **Ende mit 2:** Die Ausgabe nennt, was fehlt. Sag es der Person in einem Satz und geh dorthin zurück: ohne Freigabe zum Bauen zum Skill `entwurf` (Abschnitt «Freigabe»), ohne Entwurf zum Skill `entwurf`, ohne Tokens zum Skill `gestaltung`. Die Zeile `Freigegeben zum Bauen:` schreibst du nie selbst, auch nicht «schnell mal»: Sie steht nur nach dem Ja der Person zum Entwurf.
 
-### 3. Designsystem (`schritt: entwuerfe`)
+### 1. Werkstatt und Logbuch
 
-Folge dem Skill `gestaltung`, Abschnitte «Drei Richtungen», «Nicht nach KI aussehen», «Der Farbfächer (Tokens)» und «Gestaltungselemente». Zuerst fragst du nach dem Charakter, nicht nach Farben. Dann legst du zwei bis drei klar verschiedene Entwürfe auf dem Mockup vor, als HTML in `docs/gestaltung/entwuerfe/`, und öffnest sie. Die Person wählt eine Richtung oder eine Mischung, dann meldest du `entwuerfe`.
+**Werkstatt nochmals:** Node, npm und Git müssen da sein, auch wenn sie es beim Entwurf schon waren:
 
-Aus der gewählten Richtung entsteht das Designsystem, die Materialmuster für das ganze Haus:
+```bash
+command -v node npm git        # Windows: where node npm git
+```
 
-- `web/src/styles/tokens.css`: Farben für hell und dunkel, Schriften, Schriftgrössen, Abstände, Radien und Schatten als CSS-Variablen, die Kontrastwerte als Kommentar.
-- `docs/designsystem.md` auf einer Seite, für Menschen lesbar: Richtung und Eigenschaften; jede Farbe mit Token-Name, Zweck und Kontrast; Schriften und Grössen; Abstände und Radien; die Komponenten (Knopf, Link, Kopf, Fuss, Karte, Formularfeld und was die Seite sonst braucht), je mit Zweck und den Tokens, die sie nutzt; die Gestaltungselemente.
+Fehlt etwas, hilfst du beim Installieren wie im Skill `entwurf` (Werkstatt) und prüfst nochmals.
 
-Farben, Schrift, Abstände, Radien und Komponenten stehen nur dort. Im Code der Seiten steht nur `var(--…)` und die Komponenten. Fehlt ein Wert, kommt er zuerst ins Designsystem.
+**Das Logbuch auf dem Computer:** Jeder Schritt bekommt einen Eintrag (Commit), mit einer Notiz in einem Satz. So kann die Person jederzeit zurückblättern. Einen Hafen braucht es dafür noch nicht: Das Logbuch liegt im Projektordner, verbunden wird es erst beim Live schalten (Skill `git-logbuch`, Abschnitt «Logbuch ohne Hafen»).
 
-### 4. Tech-Stack
+- Hat der Projektordner noch kein Logbuch (kein Ordner `.git`), legst du es an: `git init -b main`.
+- Name und Adresse fürs Logbuch fehlen (`git config user.name` bleibt leer)? Dann fragst du die Person und setzt beides wie im Skill `git-logbuch`, Schritt 1.
+- `.gitignore` im Projektordner, mindestens:
+  ```
+  node_modules/
+  .env
+  .env.*
+  !.env.example
+  .DS_Store
+  docs/pruefung/fotos/
+  docs/pruefung/vorher/
+  ```
+- Der erste Eintrag hält fest, was bis jetzt entstanden ist. Zuerst zeigen, was hineinkommt, dann eintragen:
+  ```bash
+  git status
+  git add .gitignore AGENTS.md docs design scripts       # nur, was es davon gibt
+  git diff --cached --stat
+  git commit -m "Entwurf freigegeben: Plan, Konzept, Entwurf"
+  ```
+- Regeln wie im Skill `git-logbuch`: nur `main`, nur die eigenen Dateien und Ordner mit Namen aufnehmen (nie `git add .` oder `git add -A`), nie `--force`.
 
-Die Bauweise entscheidest du, bevor gebaut wird, und schreibst sie in `docs/stack.md`:
+**Lernmoment «Was ein Logbuch-Eintrag ist»:** ein Satz mit dem Bild vom Logbuch an Bord. Im Modus `lernen` tippt die Person den Befehl `git commit` beim ersten Eintrag selbst, danach meldest du mit `verstanden_melden` (Mission `webseite-02-bauen`, Art `selbst`). Im Modus `machen` bietest du es an.
+
+### 2. Bauweise (`docs/stack.md`)
+
+Die Bauweise folgt aus `docs/plan.md`, Zeile `Setup:`. Du schlägst sie vor und schreibst sie als Annahme in `docs/stack.md`:
 
 ```markdown
 # Tech-Stack
 
-**Entscheid:** Astro, statisch
-**Warum:** … (ein, zwei Sätze, aus dem Auftrag)
+**Entscheid:** [Annahme: Astro, statisch]
+**Warum:** … (ein, zwei Sätze, aus docs/plan.md)
 **JavaScript:** nur wo nötig, höchstens 50 KB je Seite
-**Ausgeliefert:** der Ordner seite/ (Light: direkt aus dem Hafen; Pilot: über das Fliessband)
+**Baustein:** keiner (oder: welcher, Skill bausteine; er braucht später einen eigenen Server)
+**Ausgeliefert:** der Ordner seite/; wo er wohnt, entscheidet die Person beim Lancieren
 **Nicht gewählt:** … (zum Beispiel eine React-App oder WordPress), weil …
 ```
 
-Standard ist Astro: Es baut schnelle, einfache HTML-Seiten ohne JavaScript, die Albatros direkt ausliefern kann. Ein anderes Framework gibt es nur, wenn die Person es ausdrücklich will oder eine Funktion aus dem Auftrag es braucht. Dann steht unter «Warum» die Funktion und warum Astro dafür nicht reicht. «Modern» oder «bekannt» ist kein Grund. Eine Anmeldeliste, ein Login oder ein Bearbeitungsfenster sind kein Grund für ein anderes Framework, sondern für einen Baustein (Skill `bausteine`, mit Pilot). Sag der Person in einem Satz, was gewählt ist und warum.
+Standard ist Astro: Es baut schnelle, einfache HTML-Seiten ohne JavaScript. Ein anderes Framework gibt es nur, wenn die Person es ausdrücklich will oder eine Funktion aus dem Plan es braucht. Dann steht unter «Warum» die Funktion und warum Astro dafür nicht reicht. «Modern» oder «bekannt» ist kein Grund. Eine Anmeldeliste, ein Login oder ein Bearbeitungsfenster sind kein Grund für ein anderes Framework, sondern für einen Baustein (Skill `bausteine`).
 
-### 5. PRD mit Abnahmekriterien (`schritt: prd`)
+Die Bauweise bestätigt die Person zusammen mit den Türen (Schritt 3) in einer Nachricht.
 
-Das PRD ist der Bauplan auf einer Seite, mit der Liste, was bei der Abnahme geprüft wird. Schreib `docs/prd.md`:
+### 3. PRD mit Zugang und Türen (`schritt: prd`)
+
+Das PRD ist der Bauplan auf einer Seite. Es wird aus dem freigegebenen Entwurf abgeleitet: Die Person hat mit dem Entwurf schon unterschrieben, darum gibt es für das PRD keine eigene Abnahme. Lies dafür `docs/projekt.md`, `docs/plan.md`, `docs/konzept.md`, `docs/designsystem.md`, `docs/entwurf.md` und jede Seite in `design/entwurf/`. Schreib `docs/prd.md`:
 
 ```markdown
-# PRD: <Name der Seite>
+# PRD: <Projektname>
 
-**Für wen und wozu:** … (aus dem Auftrag)
-**Seiten:** Start, …, Impressum, Datenschutz
-**Funktionen:** jede mit Entscheid (bei einer bestehenden Seite alle aus docs/bestand.md)
-**Design:** Richtung <Name>, siehe docs/designsystem.md
+Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <Datum aus docs/entwurf.md>)
+
+**Für wen und wozu:** … (aus docs/projekt.md)
+**Seiten:** wie im Entwurf: Start, …, dazu Impressum und Datenschutz
+**Funktionen:** jede mit Ablauf, Bestätigung, Fehler und leerem Zustand, wie im Entwurf gezeigt (bei einer bestehenden Seite jede Funktion aus docs/bestand.md mit Entscheid)
+**Design:** design/tokens.css und docs/designsystem.md; Markup und Klassen aus design/entwurf/
 **Tech-Stack:** siehe docs/stack.md
-**Hosting:** Light (Seite aus dem Hafen, ohne eigenen Server) oder Pilot (eigener Server)
-**Domain:** name.aufwind.sh, später eigene Domain (mit Light oder Pilot)
-**Nicht dabei:** …
+**Nicht dabei:** … (aus docs/plan.md: was für den ersten Flug wegfällt)
+
+## Zugang (wer darf was)
+
+| Wer | sieht | ändert |
+|---|---|---|
+| alle Besucher | Start, …, Impressum, Datenschutz | nichts |
+| <Rolle aus docs/plan.md, Zeile Zugang:> | … | … |
+
+Die Türen stehen in docs/tueren.txt und werden mit pruefen.mjs --tueren geprüft.
 
 ## Abnahmekriterien
 
-### Start
-- [ ] In den ersten drei Sätzen steht, wer ihr seid, für wen die Seite ist und was Besucher tun sollen
-- [ ] Der Knopf «…» führt zu …
-- [ ] Im Kopf steht ein echtes Foto oder das Wichtigste aus dem Inhalt, nicht bloss Titel und Knopf in einer Farbfläche (Skill `gestaltung`, «Schlicht heisst nicht ohne Bild»)
+Abgeleitet aus docs/plan.md (Testing:) und dem Entwurf; freigegeben mit dem Entwurf.
 
-### <jede weitere Seite>
+### Start
+- [ ] Überschriften, Menü und Abschnitte wie in design/entwurf/index.html (pruefen.mjs --vergleich)
+- [ ] In den ersten drei Sätzen steht, wer ihr seid, für wen die Seite ist und was Besucher tun sollen
+- [ ] Im Kopf steht ein echtes Foto oder das Wichtigste aus dem Inhalt, nicht bloss Titel und Knopf in einer Farbfläche (Skill gestaltung, «Schlicht heisst nicht ohne Bild»)
+
+### <jede weitere Seite aus design/entwurf/>
+- [ ] Überschriften, Menü und Abschnitte wie in design/entwurf/<seite>.html
 - [ ] …
 
 ### <jede Funktion, zum Beispiel ein Formular oder Buchungen>
 - [ ] Absenden geht, fehlende Pflichtfelder melden sich verständlich, die Nachricht kommt bei <Adresse> an
 - [ ] Jede Liste zeigt, ob sie lädt, leer ist (ein Satz und ein Knopf) oder einen Fehler hat (mit «Nochmals versuchen», nie als leere Liste getarnt)
-- [ ] Nach dem Absenden eine Bestätigungsseite: was passiert ist, die Nummer, was als Nächstes kommt, wie man es rückgängig macht
+- [ ] Nach dem Absenden eine Bestätigung: was passiert ist, was als Nächstes kommt, wie man es rückgängig macht
 - [ ] Der Knopf sagt das Ergebnis («Platz buchen», nicht «Senden») und ist gesperrt, solange gesendet wird
 
 ### Für alle Seiten
-- [ ] Inhalt wie im Auftrag, kein Platzhalter ohne klare Beschriftung
+- [ ] Inhalt wie im Entwurf, kein Platzhalter ohne klare Beschriftung
 - [ ] Handy (390 px breit): nichts abgeschnitten, ohne Zoom lesbar, links und rechts mindestens 16 px Rand, Knöpfe mindestens 44 px hoch, das Menü auf einer Zeile oder als Knopf «Menü»
-- [ ] Jede Seite, auch die Seiten der Bausteine (zum Beispiel zum Buchen), hat Kopf, Menü und Fuss mit Impressum und Datenschutz
+- [ ] Jede Seite, auch die Seiten der Bausteine, hat Kopf, Menü und Fuss mit Impressum und Datenschutz
 - [ ] Kontrast: Text mindestens 4,5 : 1, Knöpfe und Ränder mindestens 3 : 1
 - [ ] Mit der Tastatur bedienbar, der Fokus ist sichtbar
-- [ ] Impressum und Datenschutz vorhanden und auf jeder Seite verlinkt
 - [ ] Tempo: Lighthouse mindestens 90 in Leistung, Zugang, Best Practices und SEO; höchstens 50 KB JavaScript je Seite; Bilder unter 500 KB
-- [ ] Keine Geheimnisse im Code, keine .env im Netz
-
-Abgenommen: <Datum> von <Name>
+- [ ] Jede Tür aus docs/tueren.txt antwortet wie erwartet; keine Geheimnisse im Code, keine .env im Netz
 ```
+
+**Die Türen:** Aus der Tabelle «Zugang» entsteht `docs/tueren.txt`, je Zeile ein Pfad und der Status, mit dem er ohne Anmeldung antworten muss. 200 heisst offen, 404 heisst «gibt es nicht», 401 oder 403 heisst «nur mit Anmeldung», 302 heisst «weiter zur Anmeldung». Mehrere Zahlen auf einer Zeile heissen «eine davon», nach `#` steht ein Kommentar:
+
+```
+# Pfad          erwarteter Status ohne Anmeldung (aus «Zugang» in docs/prd.md)
+/               200
+/impressum      200
+/datenschutz    200
+/verwaltung     404     # nie öffentlich
+/.env           404
+/.git/config    404 403
+/docs/plan.md   404     # Arbeitsdokumente gehören nicht ins Netz
+```
+
+Mit einem Baustein kommen seine Türen dazu, zum Beispiel `/mitglieder 302` oder `/api/collections/users/records 401 403`: was er ohne Anmeldung antwortet, steht im Skill `bausteine`.
+
+**Eine Nachricht für die Annahmen:** Zeig der Person das PRD in drei, vier Sätzen, öffne die Datei und leg Bauweise und Türen als Annahmen vor, etwa: «Ich baue mit Astro, ohne Baustein, und offen sind nur Start, Angebot, Anfrage, Impressum und Datenschutz. Stimmt das so?» Nach ihrem Ja streichst du `[Annahme: …]`, machst den Eintrag ins Logbuch (`git add docs && git commit -m "PRD aus dem Entwurf, Bauweise und Türen"`), meldest `prd` und baust.
 
 **Funktionen bauen wie die Profis.** Was Besucher tun (buchen, anmelden, bestellen, anfragen), baust du nach diesen Regeln, auch wenn die Person nicht danach fragt:
 
@@ -146,45 +203,48 @@ Abgenommen: <Datum> von <Name>
 - **Schweizer Format:** «CHF 1'250.–», «Di, 3. Nov. 2026, 18:00–19:15 Uhr», Zeiten in `Europe/Zurich`.
 - **Handy zuerst:** Bei 390 px kein seitliches Scrollen, die Hauptaktion ist ohne Scrollen sichtbar, ein Formular fragt eine Sache pro Schritt («Schritt 2 von 3»).
 
-Jedes Kriterium muss man prüfen können: Man sieht oder misst, ob es stimmt. «Schön» oder «modern» ist kein Kriterium. Schreib stattdessen, woran man es erkennt. Zeig der Person das PRD in einer Kurzfassung im Chat und öffne die Datei. Erst nach ihrem Ja trägst du `Abgenommen:` mit Datum und Namen ein, meldest `prd` und baust.
+Jedes Kriterium muss man prüfen können: Man sieht oder misst, ob es stimmt. «Schön» oder «modern» ist kein Kriterium.
 
-### 6. Bauen (`schritt: lokal`)
+### 4. Bauen (`schritt: lokal`)
 
 ```bash
 npm create astro@latest web -- --template minimal --install --no-git --skip-houston --yes
 ```
 
-- In `web/astro.config.mjs`: `outDir: '../seite'`. Albatros liefert den Ordner `seite/` aus, mit Light direkt und mit Pilot über das Fliessband.
-- `tokens.css` aus Schritt 3 liegt in `web/src/styles/` und wird in jedem Layout eingebunden. Die Komponenten aus `docs/designsystem.md` baust du zuerst, dann die Seiten daraus.
-- **Daten zuerst:** Was die Person im Plan genannt hat (Kurse mit Zeiten und Plätzen, Preise, Öffnungszeiten), holst du jetzt, bevor du baust. Ein «haben wir» im Plan reicht nicht: Bitte um den Text, die Liste oder ein Foto davon.
-- Listen wie Termine, Turniere oder Sponsoren liegen als Daten in `web/src/data/*.json`, die Seiten lesen sie. Dokumente und Bilder kommen nach `web/public/`, Bilder verkleinert.
+- In `web/astro.config.mjs`: `outDir: '../seite'`. Gebaut wird in den Ordner `seite/`, ihn liefert später der Wohnort aus.
+- **Tokens an einem Ort:** Das Layout (zum Beispiel `web/src/layouts/Seite.astro`) bindet `design/tokens.css` direkt ein, als Erstes: `import '../../../design/tokens.css';`. Du kopierst die Datei nie nach `web/`: Zwei Kopien laufen auseinander. Fehlt ein Wert, kommt er zuerst in `design/tokens.css` und `docs/designsystem.md`.
+- **Markup und Klassen aus dem Entwurf:** Jede Seite in `design/entwurf/` wird eine Seite in `web/src/pages/`, mit demselben Markup und denselben Klassen. Was auf mehreren Seiten gleich ist (Kopf, Menü, Fuss, Karten, Formularfelder), wird eine Komponente in `web/src/components/`. Die Stil-Dateien, die der Entwurf einbindet (ausser `tokens.css`), kommen unverändert nach `web/src/styles/` und ins Layout gleich nach den Tokens; Stile aus einem `<style>` einer Entwurfsseite kommen in die passende Seite oder Komponente. Skripte, die im Entwurf nur so tun als ob (ein Formular, das nichts sendet, ein Menü, das ein Skript einfügt), ersetzt du durch das Echte.
+- **Impressum und Datenschutz** stehen nicht im Entwurf: Du baust sie jetzt im selben Layout (Skill `recht-ch`).
+- **Daten zuerst:** Was die Person im Plan genannt hat (Kurse mit Zeiten und Plätzen, Preise, Öffnungszeiten), holst du jetzt, bevor du baust. Ein «haben wir» reicht nicht: Bitte um den Text, die Liste oder ein Foto davon.
+- Listen wie Termine, Turniere oder Sponsoren liegen als Daten in `web/src/data/*.json`, die Seiten lesen sie. Dokumente und Bilder kommen nach `web/public/`, Bilder verkleinert. Stammen sie von einer bestehenden Seite, gilt der Skill `webseite-modernisieren`, Abschnitt «Rechte».
 - Das Zeichen im Browser-Tab (`web/public/favicon.svg` und `favicon.ico`) ist das «A» von Astro: Ersetze es durch das Logo oder ein Zeichen daraus.
-- Fehlt Material (zum Beispiel die Sponsorenlogos), steht ein klar beschrifteter Platzhalter da, nie ein anderes Bild unter falschem Namen.
-- Bauen und die Vorschau öffnen:
+- Fehlt Material (zum Beispiel die Sponsorenlogos), steht ein klar beschrifteter Platzhalter da wie im Entwurf, nie ein anderes Bild unter falschem Namen.
+- Bauen und die Vorschau starten:
   ```bash
-  cd web && npm run build && npx astro preview --open
+  (cd web && npm run build && npx astro preview --background)
+  open http://localhost:4321
   ```
-- **Mit einem Baustein** (Buchungen, Anmeldeliste, Login) startest du statt der Vorschau `bun bausteine/pocketbase/lokal.ts`: Nur so laufen Formulare und Buchungen wirklich, auf dem Computer der Person.
-- Läuft die Vorschau, meldest du `lokal`, bevor du der Person die Seite zeigst und auf ihre Antwort wartest.
+  Die Vorschau läuft im Hintergrund weiter und zeigt nach jedem neuen `npm run build` den neuen Stand, bis du sie mit `(cd web && npx astro preview stop)` beendest.
+- **Mit einem Baustein** (Buchungen, Anmeldeliste, Login) startest du statt der Vorschau `bun bausteine/pocketbase/lokal.ts` (Adresse `http://localhost:8090`): Nur so laufen Formulare und Buchungen wirklich, auf dem Computer der Person.
+- Läuft die Vorschau, machst du den Eintrag ins Logbuch (`git add web seite && git commit -m "Rohbau: alle Seiten aus dem Entwurf"`; `web/node_modules` schliesst `web/.gitignore` aus) und meldest `lokal`, bevor du der Person die Seite zeigst.
 
-### 7. Prüfen (`schritt: pruefung`)
+### 5. Prüfen (`schritt: pruefung`)
 
-Vier Fachleute nehmen den Bau ab, jede schreibt einen Bericht mit Ampel. Das Skript `pruefen.mjs` in diesem Skill misst, was sich messen lässt. Kopier es ins Projekt und lass es laufen:
+Vier Fachleute nehmen den Rohbau ab, jede schreibt einen Bericht mit Ampel. `pruefen.mjs` misst, was sich messen lässt, dazu prüft es die Türen:
 
 ```bash
-mkdir -p scripts && cp <Ordner dieses Skills>/pruefen.mjs scripts/
-# Ordner unbekannt: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
 (cd web && npm run build) && node scripts/pruefen.mjs
+node scripts/pruefen.mjs --tueren                               # mit Baustein: --tueren http://localhost:8090, solange lokal.ts läuft
 ```
 
-Beim ersten Mal lädt es die Werkzeuge (Playwright, axe-core, Lighthouse, etwa 200 MB) und braucht einige Minuten. Sag das der Person vorher. Es schreibt `docs/pruefung/messwerte.json` und Fotos jeder Seite in 390 und 1440 px nach `docs/pruefung/fotos/`.
+Beim ersten Mal lädt das Skript die Werkzeuge (Playwright, axe-core, Lighthouse, etwa 200 MB) und braucht einige Minuten. Sag das der Person vorher. Es schreibt `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` und Fotos jeder Seite in 390 und 1440 px nach `docs/pruefung/fotos/`.
 
 Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
-- `docs/pruefung/sicherheit.md` (Sicherheit und Recht): Geheimnisse im Code, `npm audit`, keine `.env` in `seite/`, Impressum und Datenschutz vorhanden und vollständig (Skill `recht-ch`), welche fremden Dienste und Cookies die Seite nutzt.
+- `docs/pruefung/sicherheit.md` (Sicherheit und Recht): Geheimnisse im Code, `npm audit`, keine `.env` in `seite/`, jede Tür aus `docs/tueren.txt` mit ihrem Status, Impressum und Datenschutz vorhanden und vollständig (Skill `recht-ch`), welche fremden Dienste und Cookies die Seite nutzt.
 - `docs/pruefung/ablaeufe.md` (Abläufe und Zugang): die Regeln für Barrierefreiheit (WCAG 2.2 AA, axe) auf jeder Seite, tote Links, jedes Formular selbst einmal ausprobiert, die Startseite mit der Tastatur durchgegangen (Tab), die Abläufe aus dem PRD Schritt für Schritt.
   - **Grün nur mit Beweis.** Für jede Funktion mit Baustein gehören die Ausgabe des Tests («Alles grün») und ein Foto einer echten Testbuchung oder eines echten Eintrags auf diesem Computer in den Bericht. Lief etwas nicht, ist die Ampel gelb oder rot. Schreib nie «durchgespielt», wenn du es nicht getan hast.
-- `docs/pruefung/aussehen.md` (Aussehen): nur Werte aus `tokens.css`, Designsystem eingehalten, jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft. Meldet `pruefen.mjs` das Menü auf dem Handy oder gleich gestaltete Karten auf der Startseite rot, baust du um, bevor es weitergeht. Bei Gelb «kein Foto im ersten Bild» steht das Wichtigste gross im Kopf, und die Person bekommt die Fotoliste.
+- `docs/pruefung/aussehen.md` (Aussehen): `design/tokens.css` ist eingebunden, nur Werte daraus im Code, Designsystem eingehalten, jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft. Meldet `pruefen.mjs` das Menü auf dem Handy oder gleich gestaltete Karten auf der Startseite rot, baust du um, bevor es weitergeht. Bei Gelb «kein Foto im ersten Bild» steht das Wichtigste gross im Kopf, und die Person bekommt die Fotoliste.
 - `docs/pruefung/code.md` (Code und Tempo): Lighthouse in den vier Bereichen, JavaScript je Seite, Bildgrössen, und welche Abnahmekriterien erfüllt sind.
 
 ```markdown
@@ -194,7 +254,7 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 **In einfachen Worten:** zwei, drei Sätze, was das für die Besucherinnen und Besucher heisst
 
 ## Geprüft
-- … (Messwert aus messwerte.json oder was du selbst ausprobiert hast)
+- … (Messwert aus messwerte.json oder tueren.json, oder was du selbst ausprobiert hast)
 
 ## Behoben
 - …
@@ -205,72 +265,54 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
 Dann gehst du die Abnahmekriterien in `docs/prd.md` durch: Erfüllte hakst du ab (`- [x]`) und schreibst kurz dazu, wo oder womit geprüft. Was nicht erfüllt ist, bleibt offen, mit Grund.
 
-Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, meldest du `pruefung`.
+Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, machst du den Eintrag ins Logbuch (`git add docs web seite && git commit -m "Prüfung: vier Berichte, nichts rot"`) und meldest `pruefung`.
 
-### 8. Freigabe (`schritt: freigabe`)
+### 6. Freigabe: die Begehung (`schritt: freigabe`)
 
-Die Schlüsselübergabe: Die Person entscheidet, ob die Seite hinaus darf. Zeig ihr die vier Ampeln in je einem Satz, öffne die Berichte und die Vorschau und sag dazu, was offen ist. Sag auch: Mit Light ist der nächste Schritt die Veröffentlichung, die Seite ist dann für alle sichtbar. Frag: «Darf die Seite so ins Netz?»
+Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz darf.
 
-Erst nach ihrem ausdrücklichen Ja schreibst du unter `Abgenommen:` in `docs/prd.md` die Zeile `Freigegeben: <Datum> von <Name>`. Danach meldest du `freigabe`. Will sie etwas ändern, geht es zurück zu Schritt 6 und danach nochmals durch die Prüfung.
+1. **Lokal zeigen, auf dem Handy und am Computer.** Bauen, Vorschau starten (Schritt 4) und mit der Person jede Seite durchgehen: am Computer in der Vorschau (`open http://localhost:4321`), fürs Handy die Fotos in 390 px (`open docs/pruefung/fotos/start-390.png` und die übrigen). Will sie es auf ihrem echten Handy sehen und ist es im selben WLAN: Vorschau beenden und neu mit `(cd web && npx astro preview --host --background)` starten, dann öffnet sie auf dem Handy die Adresse, die unter «Network» steht.
+2. **Vergleich mit dem Entwurf.** Gebaut wurde, was die Person im Modell gesehen hat; das prüfst du Seite für Seite:
+   ```bash
+   node scripts/pruefen.mjs --vergleich
+   ```
+   Es vergleicht je Seite Überschriften, Menüpunkte und Abschnitte mit `design/entwurf/` und meldet jede Abweichung gelb, mit Stelle (Seite, was, Nummer im Entwurf und im Bau). Zu jeder Abweichung öffnest du beide nebeneinander (`open design/entwurf/<seite>.html` und `open http://localhost:4321/<seite>/`). Ist es ein Fehler im Bau, baust du es wie im Entwurf und vergleichst nochmals. Ist es gewollt (zum Beispiel ein echter Text statt `[Platzhalter]`), sagst du es der Person, und sie entscheidet. Erst wenn keine Abweichung mehr offen ist, geht es weiter.
+3. **Lernmoment «einen Text selbst ändern und lokal sehen».** Im Modus `lernen` ist er Pflicht, im Modus `machen` bietest du ihn in einem Satz an. Die Person öffnet die Datei einer Seite in einem Texteditor (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; Listen wie Termine stehen in `web/src/data/`), ändert einen Satz und speichert. Du baust neu (`(cd web && npm run build)`), sie lädt die Vorschau neu und sieht ihre Änderung. Dann entscheidet sie: behalten (Eintrag ins Logbuch, `pruefen.mjs` nochmals, nichts rot) oder zurück mit `git restore <datei>`. Hat sie es selbst gemacht, meldest du `verstanden_melden` (Mission `webseite-02-bauen`, Art `selbst`).
+4. **Was gesehen ist, kommt in `docs/prd.md`,** unter die Abnahmekriterien:
+   ```
+   Lokal gesehen: <Datum>, auf dem Handy (Fotos 390 px) und am Computer (Vorschau)
+   Vergleich mit Entwurf: <Datum>, keine offene Abweichung (pruefen.mjs --vergleich; besprochen: …)
+   ```
+5. **Die Frage:** «Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?» Sag dazu, was offen ist (aus den Berichten), und dass diese Freigabe für das Live schalten gilt: Ins Netz geht genau diese Seite, nicht mehr und nicht weniger.
+6. **Erst nach ihrem ausdrücklichen Ja** schreibst du darunter `Freigegeben: <Datum> («<ihre Worte>»)`. «Sieht gut aus» ohne Ja zur Freigabe reicht nicht. Dann der Eintrag ins Logbuch, mit einem Zeichen (Tag) genau an diesem Stand:
+   ```bash
+   git add docs/prd.md && git commit -m "Seite freigegeben" && git tag -f freigegeben
+   ```
+   Beim Live schalten zeigt der Tag `freigegeben`, ob seither noch etwas an der Seite geändert hat.
+7. Melde `freigabe`. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Mission `webseite-02-bauen` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
 
-### 9. Hafen, Fliessband und live (`schritt: hafen`, `fliessband`, `live`)
+Will die Person vor der Freigabe noch etwas ändern: Ein Text, ein Bild oder ein Termin geht zurück zu Schritt 4, dann Prüfen und Begehung nochmals. Eine neue Seite oder eine neue Funktion ist ein Nachtrag: zuerst in `docs/plan.md`, dann ein Entwurf der geänderten Seiten und eine neue Freigabe zum Bauen (Skill `entwurf`), erst dann gebaut.
 
-Der Hafen von Albatros (`code.aufwind.sh`) ist das Trainings-Repo der Person: Dort liegt ihr Code, privat. Braucht es dafür noch Konto, Abo und Schlüssel, folge jetzt dem Skill `start` ab Schritt 3. Dann holst du das Logbuch und legst die neue Seite hinein (Skill `git-logbuch`):
-
-```bash
-git clone git@aufwind.sh:{name}/projekt.git logbuch
-cp -R web docs seite scripts logbuch/        # ohne web/node_modules, das schliesst web/.gitignore aus
-echo "docs/bestand/dateien/" >> logbuch/.gitignore   # Arbeitskopie der alten Seite bleibt draussen
-cd logbuch && git add .gitignore web docs seite scripts && git commit -m "Neue Seite: <Richtung>" && git push
-```
-
-Danach öffnest du den Hafen im Browser, damit die Person sieht, dass ihr Code dort liegt, und meldest `hafen`:
-
-```bash
-open https://code.aufwind.sh/{name}/projekt
-```
-
-**Fliessband:** Ein einfaches Fliessband, nichts Spezielles (Skill `pipeline`). Mit Light braucht es keins: Was im Hafen auf `main` unter `seite/` liegt, zeigt Albatros etwa eine Minute später. Mit Pilot liefert das Fliessband aus `.github/workflows/deploy.yml` die Seite auf den Server aus.
-
-**Live:** Die Seite steht unter `https://{name}.aufwind.sh`, mit Light ohne eigenen Server, mit Pilot auf dem eigenen Server.
-
-**Du schaust selbst nach, die Person wartet nie.** Statt «schau in ein paar Minuten nochmal rein» prüfst du nach dem Push selbst, bis deine neue Seite da ist, höchstens drei Minuten. Die Adresse antwortet schon vorher (mit der Vorlage oder der Willkommensseite). Darum wartest du auf den Titel deiner Seite, wie er in `seite/index.html` zwischen `<title>` und `</title>` steht:
-
-```bash
-for i in $(seq 12); do curl -s https://{name}.aufwind.sh/ | grep -qF "<Titel deiner Seite>" && echo "Seite ist da" && break; sleep 15; done
-```
-
-- **Da:** Prüf die Seite im Netz nochmals (Titel, Impressum und Datenschutz, Lighthouse). Fertig heisst sichtbar:
-  ```bash
-  node scripts/pruefen.mjs --live https://{name}.aufwind.sh
-  ```
-  Ist dort nichts rot, meldest du `fliessband` und `live`, öffnest die Adresse mit der Person (`open https://{name}.aufwind.sh`) und vergleichst mit den Fotos aus Schritt 7.
-- **Mit einem Baustein ist «live» noch nicht «fertig»:** Erst wenn die Daten drin sind (zum Beispiel die Kurse) und eine Testbuchung im Netz ihre Mail an die eigene Adresse gebracht hat (Skill `bausteine`), sagst du der Person, dass sie den Link teilen kann. Bis dahin sagst du ehrlich, was noch fehlt.
-- **Nach drei Minuten noch nicht da:** Frag `konto_status`. Mit Light steht dort, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil vor dem Push nicht gebaut wurde oder `seite/` in `.gitignore` steht. Mit Pilot schaust du im Hafen unter «Actions» nach, wo das Fliessband stehen blieb (Skill `pipeline`). Beheben, neuer Eintrag, pushen, nochmals prüfen. Erst wenn es dann immer noch nicht geht, sagst du der Person, was du geprüft hast, und fragst den Coach (`coach_fragen`).
-
-Wünscht die Person danach noch etwas anders («es fehlt noch …», ein Termin, ein Text), lädst du den Skill `webseite-aendern` und folgst ihm. Die Seite ist freigegeben und im Netz, darum braucht jede Änderung ihr Kriterium im PRD, vorher und nachher und eine neue Freigabe vor dem Push.
-
-Eine eigene Domain kommt mit dem Skill `domain` dazu, mit Light wie mit Pilot, dann meldest du `domain`.
-
-Veröffentlicht wird nur, was der Person gehört oder wofür sie die Erlaubnis hat (Skill `webseite-modernisieren`, Abschnitt «Rechte»).
+Danach kommt der Skill `lancieren`: Wo soll die Seite wohnen? Ruf `lage` auf, wenn es das Werkzeug gibt, und folge ihm.
 
 ## Stolpersteine
 
-- Bauen vor dem PRD: Dann baut man die falsche Seite schön.
-- In den Hafen vor der Freigabe: Mit Light ist das schon die Veröffentlichung.
+- Bauen ohne `pruefen.mjs --vor-bau`, oder die Zeile `Freigegeben zum Bauen:` selbst schreiben: Dann baut man, was niemand freigegeben hat.
+- Markup neu erfinden statt aus dem Entwurf übernehmen: Bei der Begehung sieht die Person dann etwas anderes als im Modell.
+- Eine zweite `tokens.css` in `web/`: Dann gibt es zwei Wahrheiten, und eine davon ist bald falsch.
 - Abnahmekriterien, die man nicht prüfen kann («schön», «modern»): Schreib, woran man es sieht oder misst.
 - Ein anderes Framework, «weil es modern ist»: Der Grund ist der Wunsch der Person oder eine Funktion, sonst Astro.
-- Drei Entwürfe, die sich nur in der Farbe unterscheiden: keine echte Wahl.
 - Farben, Abstände oder Schriftgrössen von Hand im Code: Dann bricht das Designsystem.
 - Berichte ohne Messwerte, oder «alles grün», ohne die Fotos angeschaut zu haben.
-- `seite/` vergessen zu bauen: Im Hafen liegt dann die alte Seite. Vor jedem Push `npm run build` in `web/`.
-- Die Person warten lassen («schau später nochmal rein»): Du prüfst selbst, bis die Seite da ist (Schritt 9).
-- Einen Schritt nicht gemeldet: Das Haus auf der Insel bleibt stehen. Melde jeden Schritt mit Eintrag in der Spalte «Insel», sobald er geschafft ist.
+- `seite/` vergessen zu bauen: Dann zeigt die Vorschau den alten Stand.
+- Etwas in einen Hafen schicken oder veröffentlichen: Das gehört nicht in diesen Skill, sondern zum Live schalten (Skill `lancieren`).
+- Die Freigabe ohne Begehung auf dem Handy, oder mit offenen Abweichungen vom Entwurf.
+- Einen Schritt nicht gemeldet: Das Haus auf der Insel bleibt stehen.
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-02-bauen`, sobald die Seite im Netz ist. Die Prüfung schaut, ob in `docs/prd.md` die Freigabe steht (`Freigegeben:`) und die Seite antwortet.
+`mission_pruefen` mit `webseite-02-bauen`, sobald `freigabe` gemeldet ist. Die Prüfung schaut auf der Insel, ob das Projekt mindestens beim Schritt «Freigabe» steht.
 
 ## Schlussnachricht
 
-Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «die kleine Fabrik», der den Kern noch einmal sagt. Danach: welcher der neun Schritte geschafft ist und was dabei entstanden ist, wo das Ergebnis liegt, was die Person entscheiden muss und welcher Schritt als Nächstes kommt.
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «der Rohbau in der eigenen Werkstatt», der den Kern noch einmal sagt. Danach: welcher Schritt geschafft ist und was dabei entstanden ist, wo das Ergebnis liegt, was die Person entscheiden muss und was als Nächstes kommt (nach der Freigabe: der Wohnort, Skill `lancieren`).
