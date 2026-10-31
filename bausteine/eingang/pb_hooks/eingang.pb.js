@@ -5,10 +5,13 @@
 //   POST /api/eingang/abmelden                     204, Cookie gelöscht
 //   GET  /api/eingang/pruefen                      204 mit x-eingang-benutzer (Record-ID) und x-eingang-rolle, sonst 401
 
+// Durch den Eingang (Kopf X-Eingang-Weg: aussen) ist die Verwaltung zu: kein Konto der Verwaltung, keine Systemsammlung und nicht /_/,
+// egal wie geschrieben (404). Der Eingang sperrt das schon selbst, das hier ist die zweite Schicht. Über den Tunnel bleibt alles, wie es ist.
 // Das Cookie gilt auch für die Sammlungen, mit denselben Regeln wie eine Anmeldung im Browser. Nie für die Wege zum Anmelden und
 // Erneuern (das Token stünde sonst in einer Antwort an ein Skript), und Schreiben mit dem Cookie nur von der eigenen Seite.
 routerUse((e) => {
   const h = require(`${__hooks}/eingang.js`);
+  if (h.vonAussen(e) && h.verwaltung(e)) throw new NotFoundError("Nicht gefunden.");
   const token = e.auth ? "" : h.sitzung(e);
   if (!token || /^\/api\/collections\/[^/]+\/auth-/.test(e.request.url.path)) return e.next();
   if (!h.lesend(e.request.method) && !h.eigeneHerkunft(e)) throw new ForbiddenError("Mit der Anmeldung geht Schreiben nur von der eigenen Seite.");

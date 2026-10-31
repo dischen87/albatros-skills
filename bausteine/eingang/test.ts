@@ -27,7 +27,8 @@ const passwort = crypto.randomUUID();
 const dirs = [`--dir=${join(tmp, 'pb_data')}`, `--migrationsDir=${join(tmp, 'pb_migrations')}`, `--hooksDir=${join(tmp, 'pb_hooks')}`];
 Bun.spawnSync([programm, 'superuser', 'upsert', 'test@example.com', passwort, ...dirs]);
 const server = Bun.spawn([programm, 'serve', `--http=127.0.0.1:${pbPort}`, ...dirs], { stdout: 'ignore', stderr: 'pipe' });
-const smtp = mailAttrappe(() => {});
+let mails = 0;
+const smtp = mailAttrappe(() => { mails++; });
 
 // Teile zum Schein: zeigen, was ankommt, und versuchen selbst Kopfzeilen und die Sitzung zu setzen
 type Gesehen = { pfad: string; kopf: Record<string, string>; bytes: number };
@@ -175,6 +176,43 @@ try {
   pruefe(zu.every((r) => r.status === 404) && gesehen.length === zahl, `Verwaltungspfade und Punktdateien: 404, kein Teil sieht sie (${VERWALTUNG.length} Pfade)`);
   pruefe((await roh('POST /api/collections/%5fsuperusers/auth-with-password')) === 404 && (await roh('GET /api/collections/_super%75sers/records')) === 404, 'Auch kodiert (%5fsuperusers): 404');
   pruefe((await holen('/.well-known/security.txt')).status === 200, '/.well-known/ bleibt erreichbar');
+
+  // Die Verwaltung bleibt zu, egal wie geschrieben: PocketBase findet Sammlungen ohne Gross/Klein (Go EqualFold, auch «ſ» für «s») und über
+  // ihre ID (pbc_<crc32>, in jeder PocketBase gleich). Jede Probe kommt von einer eigenen Adresse, damit keine Grenze dazwischenkommt.
+  const e4 = await starten(konfig(`http://127.0.0.1:${pbPort}`), { VERTRAUTE_PROXYS: '127.0.0.1' });
+  let nummer = 0;
+  const neu = () => `192.0.2.${++nummer}`;
+  const suId = (await admin('GET', '/collections/_superusers')).id as string;
+  const suKoerper = JSON.stringify({ identity: 'test@example.com', password: passwort });
+  const schreibweisen = ['_SUPERUSERS', '_Superusers', suId, '_%C5%BFuperusers', '_MFAS'];
+  const mailsVorher = mails;
+  const anders = await Promise.all(schreibweisen.flatMap((s) => [
+    e4.holen(`/api/collections/${s}/auth-with-password`, { methode: 'POST', kopf: { ...json, 'x-forwarded-for': neu() }, koerper: suKoerper }),
+    e4.holen(`/api/collections/${s}/auth-methods`, { kopf: { 'x-forwarded-for': neu() } }),
+    e4.holen(`/api/collections/${s}/request-password-reset`, { methode: 'POST', kopf: { ...json, 'x-forwarded-for': neu() }, koerper: JSON.stringify({ email: 'test@example.com' }) }),
+  ]));
+  await Bun.sleep(300);
+  pruefe(anders.every((r) => r.status === 404) && mails === mailsVorher,
+    `Verwaltung in anderer Schreibweise (_SUPERUSERS, _Superusers, ${suId}, _ſuperusers, _MFAS): anmelden, auth-methods und Passwort vergessen 404, keine Mail (${anders.map((r) => r.status)})`);
+  const mitToken = await Promise.all([e4.holen('/api/collections/users/records', { kopf: { authorization: token, 'x-forwarded-for': neu() } }),
+    e4.holen(`/api/collections/users/records/${bert.id}`, { methode: 'PATCH', kopf: { ...json, authorization: token, 'x-forwarded-for': neu() }, koerper: JSON.stringify({ freigegeben: true, rolle: 'vorstand' }) })]);
+  const bertNachher = await admin('GET', `/collections/users/records/${bert.id}`);
+  pruefe(mitToken.every((r) => r.status === 404) && bertNachher.freigegeben === false && bertNachher.rolle === 'mitglied',
+    `Ein Token der Verwaltung gilt durch den Eingang nicht: Mitglieder lesen oder freigeben 404, nichts geändert (${mitToken.map((r) => r.status)})`);
+  // Zweite Schicht: PocketBase selbst sperrt mit dem Kopf x-eingang-weg (setzt nur der Eingang) jedes Konto der Verwaltung und jede
+  // Systemsammlung; über den Tunnel (direkt, ohne den Kopf) bleibt die Verwaltung erreichbar
+  const direkt2 = (pfad: string, kopf: Record<string, string>, koerper?: string) =>
+    fetch(`http://127.0.0.1:${pbPort}${pfad}`, { method: koerper ? 'POST' : 'GET', headers: { 'content-type': 'application/json', 'x-forwarded-for': neu(), ...kopf }, body: koerper });
+  const aussen = { 'x-eingang-weg': 'aussen' };
+  const mailsVorher2 = mails;
+  const schicht2 = await Promise.all([...['_superusers', '_SUPERUSERS', suId, '_%C5%BFuperusers'].map((s) => direkt2(`/api/collections/${s}/auth-with-password`, aussen, suKoerper)),
+    direkt2('/api/collections/users/records', { ...aussen, authorization: token }), direkt2('/api/collections/_superusers/request-password-reset', aussen, JSON.stringify({ email: 'test@example.com' })),
+    direkt2('/_/', aussen)]);
+  await Bun.sleep(300);
+  const keineMail = mails === mailsVorher2; // vor der Anmeldung über den Tunnel: die schickt PocketBase eine Mail «Neue Anmeldung»
+  const tunnel = await direkt2('/api/collections/_superusers/auth-with-password', {}, suKoerper);
+  pruefe(schicht2.every((r) => r.status === 404) && keineMail && tunnel.status === 200,
+    `Zweite Schicht: PocketBase mit x-eingang-weg 404 für Verwaltung und Systemsammlungen, keine Mail (${schicht2.map((r) => r.status)}); über den Tunnel ohne den Kopf ${tunnel.status}`);
 
   // Pfade mit Tricks: entschieden wird auf dem aufgelösten Pfad
   const tricks: [string, number][] = [['GET /verein/../api/settings', 404], ['GET /verein/../intern/seite.html', 401], ['GET /verein/%2e%2e/intern/seite.html', 401], ['GET /intern%2fseite.html', 400],

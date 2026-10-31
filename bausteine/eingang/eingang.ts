@@ -88,9 +88,18 @@ export function pfadVon(pathname: string): string | null {
   }
 }
 
+// PocketBase findet eine Sammlung ohne Gross/Klein (Go strings.EqualFold, also auch «ſ» für «s» und «K» für «k») und über ihre ID
+// (pbc_<Ziffern>, für _superusers in jeder PocketBase gleich). Darum vergleicht der Eingang so, wie PocketBase auflöst: Systemsammlungen
+// (alle mit «_» am Anfang, etwa _superusers) und Sammlungen über ihre ID bleiben zu, egal wie geschrieben. Die Seiten nennen Sammlungen
+// beim Namen. PocketBase prüft dasselbe noch einmal (pb_hooks/eingang.pb.js, mit dem Kopf x-eingang-weg).
+const systemOderId = (pfad: string) => {
+  const s = /^\/api\/collections\/([^/]+)/.exec(pfad)?.[1]?.toUpperCase().toLowerCase();
+  return s !== undefined && (s.startsWith('_') || /^pbc_\d+$/.test(s));
+};
+
 export const verwaltung = (pfad: string) =>
   VERWALTUNG.some((v) => pfad === v || pfad.startsWith(`${v}/`)) || /^\/api\/collections\/?$|^\/api\/collections\/[^/]+\/?$|^\/api\/collections\/[^/]+\/(truncate|impersonate)(\/|$)/.test(pfad) ||
-  pfad.split('/').some((s) => s.startsWith('.') && s !== '.well-known');
+  systemOderId(pfad) || pfad.split('/').some((s) => s.startsWith('.') && s !== '.well-known');
 
 // Adressen als 16 Bytes (IPv4 als ::ffff:a.b.c.d), damit Netze wie 10.0.0.0/8 und fd00::/8 gleich gerechnet werden
 export function ipBytes(ip: string): Uint8Array | null {
@@ -279,6 +288,8 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     kopf.set('x-forwarded-for', wer);
     kopf.set('x-forwarded-proto', proto);
     kopf.set('x-forwarded-host', url.host);
+    // Für PocketBase: Die Anfrage kommt von aussen. Dann gilt dort kein Konto der Verwaltung und keine Systemsammlung (zweite Schicht)
+    if (pb) kopf.set('x-eingang-weg', 'aussen');
     if (angemeldet) { kopf.set('x-eingang-benutzer', angemeldet.id); kopf.set('x-eingang-rolle', angemeldet.rolle); }
 
     const halt = new AbortController();

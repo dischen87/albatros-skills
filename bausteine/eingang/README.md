@@ -43,12 +43,13 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 5. In `mitglieder.html` `const EINGANG = true;` setzen: Die Seite meldet sich dann über den Eingang an (Cookie für alle Teile).
 6. In `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen. Port 80 hat jetzt der Eingang; sonst käme man an ihm vorbei.
 7. Lokal prüfen: `bun bausteine/eingang/test.ts` meldet «Alles grün» (eingebaut prüft er die Dateien in `bausteine/pocketbase`). Dann `bun bausteine/pocketbase/lokal.ts --eingang`: Die Seite läuft unter `http://localhost:8080` durch den Eingang, die Person klickt selbst (geschützte Seite ohne Anmeldung, anmelden, abmelden).
-8. Erst beim Lancieren ins Logbuch und in den Hafen. Danach von aussen: `/intern/` ohne Anmeldung 401, `/_/` 404, die Startseite 200.
+8. Erst beim Lancieren ins Logbuch und in den Hafen. Danach von aussen: `/intern/` ohne Anmeldung 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404, die Startseite 200.
 
 ## Was er tut
 
 - Entscheidet auf dem Pfad, den `new URL()` aufgelöst hat (`..` und `.` weg), dekodiert einmal. Kodierte Punkte, Schrägstriche und Rückstriche (`%2e`, `%2f`, `%5c`), Nullbytes, `//` und kaputte Kodierung: 400. Der Teil bekommt genau den Pfad, auf dem entschieden wurde.
-- Sperrt mit 404: `/_/`, `/admin`, `/api/collections/_superusers`, `/api/settings`, `/api/backups`, `/api/logs`, `/api/crons`, die Verwaltung der Sammlungen (`/api/collections`, `/api/collections/<name>`, `…/truncate`, `…/impersonate`, `/api/collections/meta`) und jede Punktdatei ausser `/.well-known/`, auch kodiert (`%5fsuperusers`).
+- Sperrt mit 404: `/_/`, `/admin`, `/api/settings`, `/api/backups`, `/api/logs`, `/api/crons`, die Verwaltung der Sammlungen (`/api/collections`, `/api/collections/<name>`, `…/truncate`, `…/impersonate`, `/api/collections/meta`) und jede Punktdatei ausser `/.well-known/`, auch kodiert (`%5fsuperusers`). Dazu jede Systemsammlung (`_superusers`, `_mfas` …) und jede Sammlung über ihre ID (`pbc_…`), in jeder Schreibweise, die PocketBase auflöst: Gross/Klein (`_SUPERUSERS`), Unicode (`_ſuperusers`), ID (`pbc_3142635823`). Die Seiten nennen Sammlungen beim Namen.
+- Zweite Schicht in PocketBase: Jede Anfrage an PocketBase bekommt vom Eingang den Kopf `x-eingang-weg: aussen`. Mit ihm gilt dort kein Konto der Verwaltung, keine Systemsammlung und nicht `/_/` (404, `pb_hooks/eingang.pb.js`). Über den Tunnel (ohne den Kopf) bleibt die Verwaltung, wie sie ist.
 - Entfernt alle eingehenden `x-eingang-*`, `x-forwarded-*`, `forwarded` und `x-real-ip`; setzt `x-eingang-benutzer` (nur die Record-ID) und `x-eingang-rolle` für geschützte Teile, `x-forwarded-for` mit der geprüften Adresse für alle. Cookie und Authorization bekommt nur PocketBase. Antworten verlieren `x-eingang-*`, und eine Sitzung (`__Host-sitzung`) darf nur PocketBase setzen.
 - Schreiben (alles ausser GET, HEAD, OPTIONS) aus einer fremden Seite: 403. Mit Cookie nur mit eigenem `Origin` (fehlt er, 403). PocketBase prüft dasselbe noch einmal (zweite Schicht).
 - Geschützter Teil ohne Anmeldung: 401, im Browser eine kleine Seite mit dem Weg zur Anmeldung; falsche Rolle: 403. Antwortet PocketBase nicht innert 2 s: 503.
@@ -96,7 +97,7 @@ Fazit: nginx spart 20 bis 66 MB und einen Container. Der Bun-Eingang kostet dies
 ## Grenzen
 
 - Nur mit eigenem Server (Pilot); mit Light läuft auf dem Server kein Programm.
-- Das Rezept `buchungen` meldet «Meine Buchungen» (`verwaltung.html`) über `/api/collections/_superusers` an. Das sperrt der Eingang: Hinter ihm geht «Meine Buchungen» nur über den Tunnel, bis die Seite über eine Rolle angemeldet wird (nicht gebaut).
+- Das Rezept `buchungen` meldet «Meine Buchungen» (`verwaltung.html`) über `/api/collections/_superusers` an. Das sperrt der Eingang, und ein Token der Verwaltung gilt durch ihn nicht: Hinter ihm geht «Meine Buchungen» nur über den Tunnel, bis die Seite über eine Rolle angemeldet wird (nicht gebaut).
 - Abmelden gilt für dieses Gerät; das Token selbst bleibt gültig, bis es abläuft. Überall abmelden: ein neues Passwort setzen («Passwort vergessen?»).
 - Die Mail «Neue Anmeldung» von PocketBase kommt bei der Anmeldung über den Eingang nicht, und die Anmeldung in zwei Schritten (MFA) geht über ihn nicht.
 - WebSockets gehen nicht durch (PocketBase braucht sie nicht). Die Echtzeit-Funktion von PocketBase (Server-Sent Events) ist nicht getestet.
