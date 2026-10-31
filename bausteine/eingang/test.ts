@@ -405,7 +405,7 @@ try {
   const mitZeit = (s: Promise<number>) => s.then((status) => ({ status, ms: performance.now() - t7 }));
   const ohnePlatzWarten = mitZeit(k7.roh('GET /langsam/strom', { 'X-Forwarded-For': '203.0.113.69' }));
   const zuLangeWarten = mitZeit(k7.roh('GET /langsam/3', { 'X-Forwarded-For': '203.0.113.70' }));
-  await Bun.sleep(100);
+  await Bun.sleep(300); // die Anfrage von .69 wartet sicher schon
   const alleVoll = await mitZeit(k7.roh('GET /langsam/strom', { 'X-Forwarded-For': '203.0.113.71' }));
   const [ohnePlatz, zuLange] = await Promise.all([ohnePlatzWarten, zuLangeWarten]);
   const downloads = await Promise.all(voll.map((v) => Promise.race([v.status, Bun.sleep(100).then(() => 0)])));
@@ -423,8 +423,8 @@ try {
   e7.stop(true);
   pruefe(downloads.every((s) => s === 200) && ohnePlatz.status === 429 && ohnePlatz.ms >= 1400 && zuLange.status === 504 && zuLange.ms >= 1400 && zuLange.ms < 2900 && wiederBeimTeil === GRENZEN.gleichzeitig,
     `Frist ab Ankunft (im Test 1,5 s statt 60 s): ohne freien Platz 429 (${ohnePlatz.status} nach ${(ohnePlatz.ms / 1000).toFixed(1)} s), Teil zu langsam 504 (${zuLange.status} nach ${(zuLange.ms / 1000).toFixed(1)} s); danach wieder ${wiederBeimTeil} zugleich beim Teil`);
-  pruefe(alleVoll.status === 429 && alleVoll.ms - 100 < 500,
-    `Warten über alle Adressen begrenzt: Ist es voll, gibt es sofort 429, auch für eine andere Adresse (${alleVoll.status} nach ${((alleVoll.ms - 100) / 1000).toFixed(1)} s)`);
+  pruefe(alleVoll.status === 429 && alleVoll.ms - 300 < 500,
+    `Warten über alle Adressen begrenzt: Ist es voll, gibt es sofort 429, auch für eine andere Adresse (${alleVoll.status} nach ${((alleVoll.ms - 300) / 1000).toFixed(1)} s)`);
 
   // Pfade mit Tricks: entschieden wird auf dem aufgelösten Pfad
   const tricks: [string, number][] = [['GET /verein/../api/settings', 404], ['GET /verein/../intern/seite.html', 401], ['GET /verein/%2e%2e/intern/seite.html', 401], ['GET /intern%2fseite.html', 400],
