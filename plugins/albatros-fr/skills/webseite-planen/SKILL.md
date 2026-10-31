@@ -1,6 +1,9 @@
 ---
 name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web, avant de construire : pour qui, ce que les visiteurs doivent faire, quelles pages il faut, quels contenus existent déjà, quels modèles lui plaisent. Le résultat est un plan dans docs/plan.md. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « de quoi j'ai besoin pour un site web ? », « quelles pages il me faut ? », « plan du site », « sitemap », « par où je commence ? », et toujours avant de construire la première page sur le parcours site web."
+metadata:
+  stand: 0.2.0
+  quelle: '642881a80547'
 ---
 
 # Planifier le site web : le plan de la maison

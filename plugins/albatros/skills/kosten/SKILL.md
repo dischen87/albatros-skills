@@ -1,6 +1,8 @@
 ---
 name: kosten
 description: 'Macht mit der Person ein ehrliches Haushaltsbuch für ihr Projekt: Albatros-Abo, Domain, KI-Abo, E-Mail, Zusatzdienste, später ein eigener Server. Erklärt, welche Kosten fix und welche variabel sind, wie man böse Überraschungen vermeidet und wann sich ein Umzug lohnt. Nutze den Skill bei «was kostet das», «Kosten», «Preise», «zu teuer», «Budget», «Rechnung», «lohnt sich das», «wie viel kostet ein Server», und bevor die Person einen neuen bezahlten Dienst einbaut.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Kosten: das Haushaltsbuch

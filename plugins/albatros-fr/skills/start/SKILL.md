@@ -1,6 +1,9 @@
 ---
 name: start
 description: "Lance Albatros pour une personne sans connaissances techniques. Demande si elle veut un site web ou une entreprise, guide la connexion dans le navigateur web, le choix de l'abonnement (Gratuit pour apprendre, Light pour un site web tiré du journal de bord, Pilot avec son propre serveur), la clé SSH et la page ou le serveur, jusqu'à la première page sous name.aufwind.sh. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « est-ce que j'ai besoin d'un serveur ? », « combien coûte Albatros ? », et quand quelqu'un parle d'Albatros mais n'a pas encore de compte ni de page."
+metadata:
+  stand: 0.2.0
+  quelle: '68bcadea56ec'
 ---
 
 # Start : monter à bord

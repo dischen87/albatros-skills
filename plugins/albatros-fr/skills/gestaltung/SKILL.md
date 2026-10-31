@@ -1,6 +1,9 @@
 ---
 name: gestaltung
 description: "Retravaille l'utilisation et l'apparence d'un petit site web avec une personne sans connaissances préalables, étape par étape avec son IA. D'abord vérifier sous trois angles (déroulements, accès, états et langage), puis réparer l'utilisation, puis le caractère du site avant les couleurs préférées, trois directions bien différentes au choix, une vérification contre le look typique de l'IA, des valeurs fixes pour les couleurs, la police et les espacements (tokens), la question des éléments graphiques (icônes, illustrations, photos, mascotte, 3D, sur demande avec les outils d'images d'Albatros) et la transformation de toutes les pages, avec des photos en largeur natel et ordinateur. Utilise ce skill quand on dit « design », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « layout », « icônes », « illustrations », « mascotte », « 3D »."
+metadata:
+  stand: 0.2.0
+  quelle: '5e92a468f2d5'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade

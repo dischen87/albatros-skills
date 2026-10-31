@@ -1,6 +1,8 @@
 ---
 name: webseite-aendern
 description: 'Ändert mit einer Person ohne Vorwissen ihre fertige Webseite aus dem Hafen von Albatros, selbst gebaut oder von Albatros gebaut, mit ihrer eigenen KI: Hafen holen, zuerst docs/ lesen (Designsystem, Tech-Stack und PRD sind die Regeln), die Änderung im bestehenden Designsystem machen, als Abnahmekriterien ins PRD, bauen, mit pruefen.mjs prüfen, vorher und nachher zeigen, Freigabe, pushen und im Netz nachprüfen. Kleine Wünsche (Text, Termin, Bild) gehen schnell, grössere (neue Seite, neue Funktion) über PRD und Prüfung. Nutze den Skill bei «ändere meine Seite», «neuer Termin», «Text ändern», «Bild austauschen», «es fehlt …», «mach die Seite …», «auf der Seite steht etwas Falsches», und immer, wenn an einer Seite unter name.aufwind.sh etwas anders werden soll.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Webseite ändern: Umbau im bewohnten Haus

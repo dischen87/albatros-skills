@@ -1,6 +1,9 @@
 ---
 name: start
 description: "Starts Albatros for someone with no technical background. Asks whether they want a website or a business, guides them through signing in in the browser, choosing a plan (Free for learning, Light for a website straight from the logbook, Pilot with their own server), the SSH key and the page or server, up to their first page at name.aufwind.sh. Use this skill on /albatros-en:start, “start Albatros”, “I want a website”, “I've got a business idea”, “how do I get started?”, “I'm new here”, “do I need a server?”, “how much does Albatros cost?”, and whenever someone mentions Albatros but doesn't have an account or a page yet."
+metadata:
+  stand: 0.2.0
+  quelle: '68bcadea56ec'
 ---
 
 # Start: going on board

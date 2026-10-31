@@ -1,6 +1,9 @@
 ---
 name: webseite-modernisieren
 description: "Modernizza un sito web esistente (associazione, negozio, studio, vecchio sito Jimdo, Wix o WordPress) per una persona senza conoscenze tecniche. Comincia subito, senza domande, con l'inventario: tutte le pagine, ogni funzione (moduli, iscrizioni, appuntamenti, PDF, prezzi, gallerie, mappe, lingue) e tutti i contenuti, con foto del vecchio sito in docs/bestand.md. Dopo chiede solo quello che sa solo la persona e porta, attraverso il piano e l'aspetto, al nuovo sito, senza che una funzione vada persa senza la sua decisione. Usa lo skill con «Modernizza …», «modernizza il nostro sito», «il nostro sito è datato», «rinnovare il sito web», «relaunch», «via da Jimdo, Wix o WordPress», «rifare il vecchio sito», e subito quando qualcuno manda solo l'indirizzo di un sito web (https://…), senza altre parole."
+metadata:
+  stand: 0.2.0
+  quelle: 'e26fabf5d62a'
 ---
 
 # Modernizzare il sito web: ristrutturare una casa vecchia

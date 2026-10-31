@@ -1,6 +1,9 @@
 ---
 name: zurueck-auf-gestern
 description: "Explique les snapshots avec l'image de la photo quotidienne de tout l'appartement, prend une photo à part avant les modifications risquées et remet le serveur en état avec « retour à hier ». Contient l'exercice « casser exprès et réparer ». Utilise ce skill pour « snapshot », « backup », « sauvegarde », « j'ai effacé quelque chose », « ma page est cassée », « mon serveur ne marche plus », « annuler », « revenir en arrière », « retour à hier », et avant de transformer quelque chose de gros sur le serveur."
+metadata:
+  stand: 0.2.0
+  quelle: '29cd8368b213'
 ---
 
 # Retour à hier : la photo de tout l'appartement

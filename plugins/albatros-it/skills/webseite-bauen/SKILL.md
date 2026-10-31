@@ -1,6 +1,9 @@
 ---
 name: webseite-bauen
 description: 'Costruisce con una persona senza conoscenze tecniche il suo sito web come in una piccola fabbrica di software, in nove passi fissi, ognuno con un risultato in docs/: incarico, mockup, sistema di design, stack tecnologico (Astro, poco JavaScript), PRD con criteri di collaudo, costruire in locale, quattro controlli con rapporto e semaforo (sicurezza, percorsi e accesso, aspetto, codice e velocità, misurati con pruefen.mjs), via libera della persona, poi porto, nastro trasportatore e sito in rete con controllo finale. Apre l''isola nel cockpit e segnala i passi con schritt_melden. Usa lo skill appena sul percorso sito web si costruisce: dopo webseite-planen, dopo l''inventario di webseite-modernisieren, con «costruiscimi il sito», «mockup», «bozza», «sistema di design», «stack tecnologico», «tech stack», «PRD», «criteri di collaudo», «criteri di accettazione», «controllare prima di pubblicare», «guardarlo in locale», «come si va avanti dopo il piano?».'
+metadata:
+  stand: 0.2.0
+  quelle: 'b737eb0fb17c'
 ---
 
 # Costruire il sito web: la piccola fabbrica

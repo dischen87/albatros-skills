@@ -1,6 +1,9 @@
 ---
 name: webseite-bauen
 description: 'Construit avec une personne sans connaissances préalables son site web comme dans une petite usine à logiciels, en neuf étapes fixes, chacune avec un résultat dans docs/ : mandat, maquette, système de design, stack technique (Astro, peu de JavaScript), PRD avec critères d''acceptation, construire en local, quatre vérifications avec rapport et feu tricolore (sécurité, déroulements et accès, apparence, code et vitesse, mesurés avec pruefen.mjs), autorisation par la personne, puis port, tapis roulant et site en ligne avec contrôle final. Ouvre l''île dans le cockpit et annonce les étapes avec schritt_melden. Utilise ce skill dès qu''on construit sur le parcours site web : après webseite-planen, après l''état des lieux de webseite-modernisieren, quand on dit « construis-moi le site », « maquette », « mockup », « ébauche », « système de design », « stack technique », « PRD », « critères d''acceptation », « vérifier avant de publier », « regarder en local », « comment ça continue après le plan ? ».'
+metadata:
+  stand: 0.2.0
+  quelle: 'b737eb0fb17c'
 ---
 
 # Construire le site web : la petite usine

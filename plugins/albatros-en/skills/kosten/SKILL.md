@@ -1,6 +1,9 @@
 ---
 name: kosten
 description: "Draws up an honest household budget book for the person's project: Albatros plan, domain, AI subscription, email, extra services, later a server of their own. Explains which costs are fixed and which vary, how to avoid nasty surprises and when a move pays off. Use this skill for “how much does it cost?”, “costs”, “prices”, “too expensive”, “budget”, “invoice”, “bill”, “is it worth it?”, “how much is a server?”, and before the person adds a new paid service."
+metadata:
+  stand: 0.2.0
+  quelle: '437e60a41721'
 ---
 
 # Costs: the household budget book

@@ -1,6 +1,9 @@
 ---
 name: inhalte
 description: "Helps a person with no prior knowledge write and choose texts and pictures for their website: the home page in three sentences, short texts for people reading on their phone, own photos instead of stock images, picture rights and image size, bringing AI texts into their own voice. The result is a content list in docs/inhalte.md and the texts on the site. Use this skill for “write the texts”, “what do I put on my home page”, “about us”, “pictures for my website”, “am I allowed to use this picture”, “this text sounds like AI”, “content”."
+metadata:
+  stand: 0.2.0
+  quelle: '26be6bc28284'
 ---
 
 # Content: the goods in the shop window

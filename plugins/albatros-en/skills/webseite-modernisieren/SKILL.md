@@ -1,6 +1,9 @@
 ---
 name: webseite-modernisieren
 description: "Modernises an existing website (a club, a shop, a practice, an old Jimdo, Wix or WordPress site) for a person with no prior knowledge. Gets going straight away with the inventory, without asking first: all pages, every feature (forms, sign-ups, dates, PDFs, prices, galleries, maps, languages) and all content, with screenshots of the old site in docs/bestand.md. Only then asks what only the person knows, and leads via plan and design to the new site, without any feature getting lost unasked. Use this skill for “Modernise …”, “Modernize …”, “modernise our website”, “our site is out of date”, “renew our website”, “relaunch”, “move away from Jimdo, Wix or WordPress”, “redo the old site”, and straight away when someone just sends the address of a website (https://…), with no other words."
+metadata:
+  stand: 0.2.0
+  quelle: 'e26fabf5d62a'
 ---
 
 # Modernise a website: renovating an old house

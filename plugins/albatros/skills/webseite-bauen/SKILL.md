@@ -1,6 +1,8 @@
 ---
 name: webseite-bauen
 description: 'Baut mit einer Person ohne Vorwissen ihre Webseite wie in einer kleinen Software-Fabrik, in neun festen Schritten mit je einem Ergebnis in docs/: Auftrag, Mockup, Designsystem, Tech-Stack (Astro, wenig JavaScript), PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen mit Bericht und Ampel (Sicherheit, Abläufe und Zugang, Aussehen, Code und Tempo, gemessen mit pruefen.mjs), Freigabe durch die Person, dann Hafen, Fliessband und Seite im Netz mit Schlussprüfung. Öffnet die Insel im Cockpit und meldet die Schritte mit schritt_melden. Nutze den Skill, sobald auf dem Weg Webseite gebaut wird: nach webseite-planen, nach der Bestandsaufnahme von webseite-modernisieren, bei «bau mir die Seite», «Mockup», «Entwurf», «Designsystem», «Tech-Stack», «PRD», «Abnahmekriterien», «vor dem Veröffentlichen prüfen», «lokal anschauen», «wie geht es nach dem Plan weiter».'
+metadata:
+  stand: 0.2.0
 ---
 
 # Webseite bauen: die kleine Fabrik

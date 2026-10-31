@@ -1,6 +1,8 @@
 ---
 name: server-kennenlernen
 description: 'Rundgang durch den eigenen Albatros-Server für eine Person ohne Vorwissen. Erklärt Terminal, Ordner, Speicher, Arbeitsspeicher, laufende Programme und den Hauptschlüssel sudo mit Bildern aus einer Wohnung. Die Person tippt die ersten Befehle selbst. Nutze den Skill bei «was ist auf meinem Server», «wie bewege ich mich im Terminal», «was ist ein Ordner auf dem Server», «ls cd pwd», «wie viel Platz habe ich», «was läuft da», und nach dem ersten erfolgreichen SSH-Besuch.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Server kennenlernen: Rundgang durch die neue Wohnung

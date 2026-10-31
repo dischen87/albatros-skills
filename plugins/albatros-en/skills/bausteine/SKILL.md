@@ -1,6 +1,9 @@
 ---
 name: bausteine
 description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks: a sign-up list, bookings for classes and appointments, a members' area with login, a noticeboard (PocketBase) or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
+metadata:
+  stand: 0.2.0
+  quelle: '9f1bc9959480'
 ---
 
 # Building blocks: prefab parts for your site

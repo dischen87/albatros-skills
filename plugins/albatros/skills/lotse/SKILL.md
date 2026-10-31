@@ -1,6 +1,8 @@
 ---
 name: lotse
 description: 'Hauptskill von Albatros: der Fluglotse. Fragt mit dem Werkzeug lage den echten Stand der Person ab (Abo, Schlüssel, Server oder Seite, Fliessband, Domain, Mission) und folgt dann genau dem Skill, der jetzt dran ist; nach jedem geschafften Schritt fragt er neu. Ohne Anmeldung zeigt er die offene Bibliothek aller Skills zum Selbstwählen und erklärt, wie die Anmeldung geht. Nutze den Skill, sobald jemand an seinem Albatros-Projekt weiterarbeitet oder fragt «was jetzt?», «wie weiter?», «was ist der nächste Schritt?», «wo stehe ich?», «es geht nicht», «es klemmt», «ich weiss nicht weiter», bei /albatros:lotse und am Ende des Skills start. Bei einer klaren Frage zu einem Thema (z. B. «wie verbinde ich meine Domain?», «was ist ein SSH-Schlüssel?») hat der passende Fach-Skill Vorrang.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Lotse: im richtigen Moment das Richtige

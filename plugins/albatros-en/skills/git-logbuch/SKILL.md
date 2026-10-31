@@ -1,6 +1,9 @@
 ---
 name: git-logbuch
 description: "Explains Git to someone with no background using the picture of the logbook on board and the copy in the harbour (the Albatros Git service, code.aufwind.sh). Fetches the repo from the harbour, guides them through their first entries (commits) with good notes, sends them to the harbour (push) and checks that the copy arrives on the Albatros server in ~/projekt. Rules: only on main, add only your own files one by one, never force-push. Use this skill for “Git”, “GitHub”, “harbour”, “commit”, “push”, “pull”, “repo”, “what's a repository?”, “save my changes”, “back up my work”, “push rejected”, “merge conflict”, and before you commit anything for the person."
+metadata:
+  stand: 0.2.0
+  quelle: '37805921dff9'
 ---
 
 # Git: the logbook on board, with a copy in the harbour

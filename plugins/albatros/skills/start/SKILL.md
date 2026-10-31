@@ -1,6 +1,8 @@
 ---
 name: start
 description: 'Startet Albatros für eine Person ohne Technik-Vorwissen. Fragt, ob sie eine Webseite oder ein Geschäft will, führt durch Anmeldung im Browser, die Wahl des Abos (Gratis zum Lernen, Light für eine Webseite aus dem Logbuch, Pilot mit eigenem Server), SSH-Schlüssel und Seite oder Server bis zur ersten Seite unter name.aufwind.sh. Nutze den Skill bei /albatros:start, «Albatros starten», «ich will eine Webseite», «ich habe eine Geschäftsidee», «wie fange ich an», «ich bin neu hier», «brauche ich einen Server», «was kostet Albatros», und wenn jemand Albatros erwähnt, aber noch kein Konto oder keine Seite hat.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Start: an Bord gehen

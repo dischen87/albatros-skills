@@ -1,6 +1,9 @@
 ---
 name: webseite-aendern
 description: 'Changes a finished website from the Albatros harbour with a person who has no prior knowledge, whether they built it themselves or Albatros built it, using their own AI: fetch it from the harbour, read docs/ first (design system, tech stack and PRD are the rules), make the change within the existing design system, add it to the PRD as acceptance criteria, build, check with pruefen.mjs, show before and after, release, push and check on the web. Small requests (a text, a date, a picture) go quickly, bigger ones (a new page, a new feature) go through the PRD and the check. Use this skill for “change my site”, “new date”, “change a text”, “swap a picture”, “… is missing”, “make the site …”, “something on the site is wrong”, and whenever something on a site at name.aufwind.sh should be different.'
+metadata:
+  stand: 0.2.0
+  quelle: '9f4aa3ad35be'
 ---
 
 # Change your website: renovating a house you live in

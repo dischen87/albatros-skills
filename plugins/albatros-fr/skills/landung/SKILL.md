@@ -1,6 +1,9 @@
 ---
 name: landung
 description: "Planifie et accompagne le déménagement d'un projet d'Albatros vers un propre serveur, expliqué avec l'image du déménagement dans sa propre maison : liste de déménagement, louer et installer le serveur (SSH seulement avec clé, pare-feu, mises à jour, Caddy pour HTTPS), emporter le journal de bord sur GitHub, y régler le tapis roulant avec sa propre clé par SSH sur la nouvelle destination, emporter les données et les secrets, tester, changer l'adresse dans le DNS ou faire déménager un domaine acheté chez Albatros vers un nouveau registraire avec l'auth-code de domain_mitnehmen, reprendre soi-même les sauvegardes. Utilise ce skill pour « propre serveur », « déménager », « quitter Albatros », « Hetzner », « VPS », « héberger moi-même », « atterrissage », « de quoi j'ai besoin pour un propre serveur ? »."
+metadata:
+  stand: 0.2.0
+  quelle: '53bf9c40474d'
 ---
 
 # Atterrissage : déménager dans ta propre maison

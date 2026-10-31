@@ -1,6 +1,9 @@
 ---
 name: lotse
 description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (plan, key, server or page, conveyor belt, domain, mission), then follows exactly the skill that is up now; after every step they finish, it asks again. Without sign-in it shows the open library of all skills to pick from and explains how to sign in. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “what's the next step?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I don't know what to do next”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”, “what's an SSH key?”), the matching topic skill comes first."
+metadata:
+  stand: 0.2.0
+  quelle: '38e168913650'
 ---
 
 # Air traffic controller: the right thing at the right moment

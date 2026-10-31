@@ -1,6 +1,8 @@
 ---
 name: recht-ch
 description: 'Bringt eine kleine Schweizer Webseite rechtlich in Ordnung, erklärt für Menschen ohne Vorwissen mit dem Bild von Klingelschild und Hausordnung: Impressum (UWG Art. 3 Abs. 1 lit. s), Datenschutzerklärung nach revDSG (Informationspflicht Art. 19), Cookies (Art. 45c FMG), wann die DSGVO der EU dazukommt, Bildrechte, Werbemails nur mit Einwilligung. Keine Rechtsberatung. Nutze den Skill bei «Impressum», «Datenschutz», «Datenschutzerklärung», «DSG», «DSGVO», «Cookie-Banner», «brauche ich das rechtlich», «was muss auf meine Webseite», «Kontaktformular Datenschutz».'
+metadata:
+  stand: 0.2.0
 ---
 
 # Recht CH: Klingelschild und Hausordnung

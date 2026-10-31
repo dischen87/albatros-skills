@@ -1,6 +1,9 @@
 ---
 name: bausteine
 description: "Découvre avec une personne sans connaissances préalables ce que sa page doit savoir faire, et installe les briques toutes faites qui conviennent : liste d'inscription, réservations pour des cours et des rendez-vous, espace membres avec connexion, tableau d'affichage (PocketBase) ou un grand CMS (Strapi avec Postgres), avec la mémoire vive mesurée. Explique avec l'image des éléments préfabriqués dans la construction d'une maison. Utilise ce skill pour « inscription », « liste d'inscription », « réservation », « outil de réservation », « réserver un cours », « prendre rendez-vous », « réserver une place », « enregistrer un formulaire », « connexion », « se connecter », « espace membres », « espace admin », « gérer les utilisateurs », « base de données », « Strapi », « CMS », « PocketBase », « brique », « qu'est-ce qui tient sur mon serveur ? », « est-ce que mon serveur suffit ? », et quand une page doit savoir faire plus que montrer des textes et des images."
+metadata:
+  stand: 0.2.0
+  quelle: '9f1bc9959480'
 ---
 
 # Briques : des éléments préfabriqués pour ta page

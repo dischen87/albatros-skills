@@ -1,6 +1,9 @@
 ---
 name: barrierefreiheit
 description: "Vérifie et améliore l'accessibilité d'un petit site web avec une personne sans connaissances préalables, selon les WCAG 2.2 AA en mots simples : contraste, taille du texte et zoom, descriptions d'images, utilisation au clavier, formulaires, lecture à voix haute, mouvement. Le résultat est un procès-verbal de contrôle dans docs/barrierefreiheit.md. Utilise ce skill quand on dit « accessibilité », « accessible », « accessibility », « a11y », « WCAG », « contraste », « texte alternatif », « lecteur d'écran », « lisible pour les personnes âgées », « utiliser au clavier »."
+metadata:
+  stand: 0.2.0
+  quelle: '25b012463510'
 ---
 
 # Accessibilité : la rampe à côté de l'escalier

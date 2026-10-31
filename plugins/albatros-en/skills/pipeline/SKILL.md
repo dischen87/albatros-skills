@@ -1,6 +1,9 @@
 ---
 name: pipeline
 description: "Explains CI/CD to someone with no background using the picture of the conveyor belt with quality control, and sets it up: a workflow in the Albatros harbour (Forgejo, code.aufwind.sh) starts on every push to main. The worker (runner) on their own server builds the site, delivers it with a health check, checks it through the public address and otherwise jumps back to the last good version. Use this skill for “pipeline”, “CI/CD”, “GitHub Actions”, “Forgejo Actions”, “workflow”, “runner”, “deploy automatically”, “deploying”, “how does my change get onto the server?”, “the conveyor belt is red”, “my build is failing”, “deploy failed”."
+metadata:
+  stand: 0.2.0
+  quelle: 'c4476789bb24'
 ---
 
 # Pipeline: the conveyor belt with quality control

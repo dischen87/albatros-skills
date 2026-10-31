@@ -1,6 +1,9 @@
 ---
 name: server-kennenlernen
 description: "A tour of your own Albatros server for someone with no background. Explains the terminal, folders, storage, memory, running programs and the master key sudo with pictures from a flat. The person types their first commands themselves. Use this skill for “what's on my server?”, “how do I get around in the terminal?”, “what's a folder on the server?”, “ls cd pwd”, “how much space have I got?”, “what's running on there?”, and after the first successful SSH visit."
+metadata:
+  stand: 0.2.0
+  quelle: '0e2dae85702b'
 ---
 
 # Getting to know your server: a tour of your new flat

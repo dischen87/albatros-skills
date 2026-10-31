@@ -1,6 +1,9 @@
 ---
 name: gestaltung
 description: "Rivede l'uso e l'aspetto di un piccolo sito web con una persona senza conoscenze tecniche, passo per passo con la sua IA. Prima un controllo da tre punti di vista (percorsi, accesso, stati e linguaggio), poi la riparazione dell'uso, poi il carattere del sito invece dei colori preferiti, tre direzioni chiaramente diverse tra cui scegliere, un controllo contro il tipico aspetto da IA, valori fissi per colori, caratteri e spaziature (token), la domanda sugli elementi grafici (icone, illustrazioni, foto, mascotte, 3D, se si vuole con gli strumenti per immagini di Albatros) e il rifacimento di tutte le pagine con foto in larghezza telefonino e desktop. Usa lo skill con «design», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «font», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «illustrazioni», «mascotte», «3D»."
+metadata:
+  stand: 0.2.0
+  quelle: '5e92a468f2d5'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata

@@ -1,6 +1,9 @@
 ---
 name: inhalte
 description: "Aide une personne sans connaissances préalables à écrire et à choisir les textes et les images de son site web : la page d'accueil en trois phrases, des textes courts pour qui lit sur son natel, ses propres photos plutôt que des images de banque d'images, droits et taille des images, ramener des textes d'IA à sa propre voix. Le résultat est une liste des contenus dans docs/inhalte.md et les textes sur le site. Utilise ce skill quand on dit « écrire les textes », « qu'est-ce que j'écris sur la page d'accueil ? », « à propos de nous », « des images pour mon site », « j'ai le droit d'utiliser cette image ? », « le texte sonne comme de l'IA », « contenus »."
+metadata:
+  stand: 0.2.0
+  quelle: '26be6bc28284'
 ---
 
 # Contenus : la marchandise dans la vitrine

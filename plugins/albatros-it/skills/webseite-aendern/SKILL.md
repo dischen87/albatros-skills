@@ -1,6 +1,9 @@
 ---
 name: webseite-aendern
 description: 'Cambia con una persona senza conoscenze tecniche il suo sito web finito dal porto di Albatros, costruito da sé o da Albatros, con la sua IA: prendere il diario di bordo dal porto, leggere prima docs/ (sistema di design, stack tecnologico e PRD sono le regole), fare la modifica nel sistema di design esistente, scriverla come criteri di collaudo nel PRD, costruire, controllare con pruefen.mjs, mostrare prima e dopo, via libera, push e controllo in rete. Le richieste piccole (testo, data, immagine) vanno veloci, quelle più grandi (nuova pagina, nuova funzione) passano da PRD e controllo. Usa lo skill con «cambia il mio sito», «nuova data», «cambiare un testo», «sostituire un''immagine», «manca …», «fai il sito …», «sul sito c''è scritto qualcosa di sbagliato», e sempre quando su un sito sotto name.aufwind.sh qualcosa deve cambiare.'
+metadata:
+  stand: 0.2.0
+  quelle: '9f4aa3ad35be'
 ---
 
 # Cambiare il sito web: ristrutturare una casa abitata

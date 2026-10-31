@@ -1,6 +1,9 @@
 ---
 name: gestaltung
 description: "Reworks how a small website works and looks, with a person who has no prior knowledge, step by step with their AI. First a check from three angles (flows, access, states and language), then fixing how it works, then the site's character instead of favourite colours, three clearly different directions to choose from, a check against the typical AI look, fixed values for colours, type and spacing (tokens), the question about design elements (icons, illustrations, photos, mascot, 3D, on request with the Albatros image tools) and rebuilding all pages with screenshots at phone and desktop width. Use this skill for “design”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “illustrations”, “mascot”, “3D”."
+metadata:
+  stand: 0.2.0
+  quelle: '5e92a468f2d5'
 ---
 
 # Design: first the foundations, then the facade

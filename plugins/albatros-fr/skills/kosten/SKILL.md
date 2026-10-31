@@ -1,6 +1,9 @@
 ---
 name: kosten
 description: "Tient avec la personne un cahier de comptes honnête pour son projet : abonnement Albatros, domaine, abonnement IA, e-mail, services en plus, plus tard un propre serveur. Explique quels coûts sont fixes et lesquels varient, comment éviter les mauvaises surprises et quand un déménagement vaut la peine. Utilise ce skill pour « ça coûte combien ? », « coûts », « prix », « trop cher », « budget », « facture », « est-ce que ça vaut la peine ? », « combien coûte un serveur ? », et avant que la personne ajoute un nouveau service payant."
+metadata:
+  stand: 0.2.0
+  quelle: '437e60a41721'
 ---
 
 # Coûts : le cahier de comptes

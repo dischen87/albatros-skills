@@ -1,6 +1,9 @@
 ---
 name: statistik
 description: "Met en place avec une personne sans connaissances préalables des statistiques respectueuses de la protection des données pour son site web, avec PostHog. D'abord un petit plan des événements (quels bâtons on compte, et à quel moment exactement), puis l'intégration, un événement cible comme « demande envoyée », filtrer ses propres visites et comparer avec les vraies demandes. Utilise ce skill pour « statistiques », « compter les visiteurs », « combien de gens viennent sur mon site ? », « PostHog », « Google Analytics », « tracking », « conversion », « mesurer un événement », « d'où viennent mes visiteurs ? »."
+metadata:
+  stand: 0.2.0
+  quelle: 'd7b868d6a715'
 ---
 
 # Statistiques : la liste de bâtons à la porte du magasin

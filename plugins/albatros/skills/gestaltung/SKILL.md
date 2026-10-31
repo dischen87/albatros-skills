@@ -1,6 +1,8 @@
 ---
 name: gestaltung
 description: 'Überarbeitet Bedienung und Aussehen einer kleinen Webseite mit einer Person ohne Vorwissen, Schritt für Schritt mit ihrer KI. Zuerst prüfen aus drei Blickwinkeln (Abläufe, Zugang, Zustände und Sprache), dann die Bedienung reparieren, dann der Charakter der Seite statt Lieblingsfarben, drei klar verschiedene Richtungen zur Wahl, eine Prüfung gegen den typischen KI-Look, feste Werte für Farben, Schrift und Abstände (Tokens), die Frage nach Gestaltungselementen (Icons, Illustrationen, Fotos, Maskottchen, 3D, auf Wunsch mit den Bild-Werkzeugen von Albatros) und der Umbau aller Seiten mit Fotos in Handy- und Desktopbreite. Nutze den Skill bei «Design», «sieht langweilig aus», «sieht selbstgebastelt aus», «sieht nach KI aus», «vibe coded», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «wirkt unprofessionell», «Layout», «Icons», «Illustrationen», «Maskottchen», «3D».'
+metadata:
+  stand: 0.2.0
 ---
 
 # Gestaltung: erst das Fundament, dann die Fassade

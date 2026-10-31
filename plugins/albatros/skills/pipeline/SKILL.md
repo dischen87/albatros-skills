@@ -1,6 +1,8 @@
 ---
 name: pipeline
 description: 'Erklärt CI/CD einer Person ohne Vorwissen mit dem Bild vom Fliessband mit Qualitätskontrolle und richtet es ein: Ein Workflow im Hafen von Albatros (Forgejo, code.aufwind.sh) startet bei jedem Push auf main. Der Arbeiter (Runner) auf dem eigenen Server baut die Seite, liefert sie mit Gesundheitscheck aus, prüft sie über die öffentliche Adresse und springt sonst auf die letzte gute Version zurück. Nutze den Skill bei «Pipeline», «CI/CD», «GitHub Actions», «Forgejo Actions», «Workflow», «Runner», «automatisch ausliefern», «deployen», «wie kommt meine Änderung auf den Server», «Fliessband ist rot», «Deploy fehlgeschlagen».'
+metadata:
+  stand: 0.2.0
 ---
 
 # Pipeline: das Fliessband mit Qualitätskontrolle

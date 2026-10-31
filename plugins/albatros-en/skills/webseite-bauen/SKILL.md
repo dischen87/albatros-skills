@@ -1,6 +1,9 @@
 ---
 name: webseite-bauen
 description: 'Builds a website with a person who has no prior knowledge, like in a small software factory, in nine fixed steps, each with a result in docs/: brief, mockup, design system, tech stack (Astro, little JavaScript), PRD with acceptance criteria, building locally, four checks with a report and a traffic light (security, flows and access, looks, code and speed, measured with pruefen.mjs), release by the person, then harbour, conveyor belt and the site on the web with a final check. Opens the island in the cockpit and reports the steps with schritt_melden. Use this skill as soon as building starts on the website path: after webseite-planen, after the inventory from webseite-modernisieren, for “build me the site”, “mockup”, “draft”, “design system”, “tech stack”, “PRD”, “acceptance criteria”, “check before publishing”, “let me see it locally”, “what happens after the plan?”.'
+metadata:
+  stand: 0.2.0
+  quelle: 'b737eb0fb17c'
 ---
 
 # Build your website: the little factory

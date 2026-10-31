@@ -1,6 +1,8 @@
 ---
 name: webseite-planen
 description: 'Plant mit einer Person ohne Vorwissen ihre Webseite, bevor gebaut wird: für wen, was Besucher tun sollen, welche Seiten es braucht, welche Inhalte schon da sind, welche Vorbilder gefallen. Ergebnis ist ein Grundriss in docs/plan.md. Nutze den Skill bei «ich will eine Webseite», «Webseite planen», «was brauche ich für eine Webseite», «welche Seiten», «Sitemap», «wo fange ich an», und immer bevor auf dem Weg Webseite die erste Seite gebaut wird.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Webseite planen: der Grundriss

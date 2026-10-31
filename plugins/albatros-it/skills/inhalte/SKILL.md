@@ -1,6 +1,9 @@
 ---
 name: inhalte
 description: "Aiuta una persona senza conoscenze tecniche a scrivere e scegliere testi e immagini per il suo sito web: la pagina iniziale in tre frasi, testi brevi per chi legge sul telefonino, foto proprie invece di immagini di repertorio, diritti e dimensioni delle immagini, testi dell'IA riportati nella propria voce. Il risultato è una lista dei contenuti in docs/inhalte.md e i testi sul sito. Usa lo skill con «scrivere i testi», «cosa scrivo sulla pagina iniziale», «chi siamo», «immagini per il sito», «posso usare questa immagine?», «il testo sembra scritto dall'IA», «contenuti»."
+metadata:
+  stand: 0.2.0
+  quelle: '26be6bc28284'
 ---
 
 # Contenuti: la merce in vetrina

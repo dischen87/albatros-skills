@@ -1,6 +1,9 @@
 ---
 name: webseite-planen
 description: "Plans a website with a person who has no prior knowledge, before anything gets built: who it's for, what visitors should do, which pages it needs, which content already exists, which examples they like. The result is a floor plan in docs/plan.md. Use this skill for “I want a website”, “plan my website”, “what do I need for a website”, “which pages do I need”, “sitemap”, “where do I start”, and always before the first page gets built on the website path."
+metadata:
+  stand: 0.2.0
+  quelle: '642881a80547'
 ---
 
 # Plan your website: the floor plan

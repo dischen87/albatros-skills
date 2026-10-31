@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
+import { hoeher, quelle } from './stand.ts';
 
 type Mission = {
   id: string;
@@ -37,11 +38,40 @@ async function kopfdaten(datei: string) {
   }
 }
 
+// Version (scripts/stand.ts): alle Plugins und ihre Einträge im Marktplatz gleich, im Format a.b.c
+const VERSION: string = (await Bun.file(wurzel + 'plugins/albatros/.claude-plugin/plugin.json').json()).version;
+if (!/^\d+\.\d+\.\d+$/.test(String(VERSION))) fehler.push(`plugins/albatros/.claude-plugin/plugin.json: version ${VERSION} ist nicht a.b.c`);
+for (const p of (await Bun.file(wurzel + '.claude-plugin/marketplace.json').json()).plugins as { name: string; source: string; version: string }[]) {
+  if (p.version !== VERSION) fehler.push(`.claude-plugin/marketplace.json: ${p.name} hat version ${p.version}, nicht ${VERSION}`);
+  const eigen = (await Bun.file(`${wurzel}${p.source}/.claude-plugin/plugin.json`).json()).version;
+  if (eigen !== VERSION) fehler.push(`${p.source.replace(/^\.\//, '')}/.claude-plugin/plugin.json: version ${eigen}, nicht ${VERSION}`);
+}
+// Ändert sich etwas unter plugins/*/skills, steigt die Version gegenüber origin/main (sonst behalten alte Installationen den alten Stand
+// ohne es zu merken). Ohne origin/main, etwa in einer flachen Kopie, entfällt diese Prüfung.
+const git = (...a: string[]) => Bun.spawnSync(['git', '-C', wurzel, ...a]);
+if (git('rev-parse', '--verify', '--quiet', 'origin/main^{commit}').exitCode === 0) {
+  const SKILLS = ':(glob)plugins/*/skills/**';
+  const geaendert = [git('diff', '--name-only', 'origin/main', '--', SKILLS), git('ls-files', '--others', '--exclude-standard', '--', SKILLS)].some((r) => r.stdout.toString().trim());
+  const vorher = git('show', 'origin/main:plugins/albatros/.claude-plugin/plugin.json');
+  const alt: unknown = vorher.exitCode === 0 ? JSON.parse(vorher.stdout.toString()).version : null;
+  if (geaendert && typeof alt === 'string' && !hoeher(VERSION, alt)) fehler.push(`Skills geändert gegenüber origin/main, aber version ${VERSION} ist nicht höher als ${alt} (alle plugin.json und marketplace.json)`);
+} else console.log('Ohne origin/main: Prüfung «Version höher als auf main» übersprungen.');
+
 const skills = new Set<string>();
 for await (const datei of new Glob('plugins/*/skills/*/SKILL.md').scan(wurzel)) {
   const ordner = datei.split('/').at(-2)!;
   const k = await kopfdaten(datei);
   if (!k) continue;
+  // Jede SKILL.md trägt den Stand; eine Übersetzung nennt den deutschen Text, nach dem sie übersetzt ist
+  const meta = typeof k.metadata === 'object' && k.metadata !== null ? k.metadata : {};
+  if (meta.stand !== VERSION) fehler.push(`${datei}: metadata.stand muss ${VERSION} sein (version in plugin.json), nicht ${meta.stand ?? 'leer'}`);
+  if (!datei.startsWith('plugins/albatros/')) {
+    const de = Bun.file(`${wurzel}plugins/albatros/skills/${ordner}/SKILL.md`);
+    const soll = (await de.exists()) ? quelle(await de.text()) : null;
+    if (!soll) fehler.push(`${datei}: keine deutsche SKILL.md in plugins/albatros/skills/${ordner}`);
+    else if (meta.quelle !== soll)
+      fehler.push(`${datei}: Übersetzung veraltet, metadata.quelle ist ${meta.quelle ?? 'leer'}, der deutsche Text hat ${soll} (erst übersetzen, dann quelle setzen)`);
+  }
   if (k.name !== ordner || !NAME.test(ordner) || ordner.length > 64)
     fehler.push(`${datei}: name muss gleich wie der Ordner sein (klein, Bindestriche, höchstens 64 Zeichen)`);
   if (typeof k.description !== 'string' || !k.description.trim() || k.description.length > 1024)

@@ -1,6 +1,8 @@
 ---
 name: webseite-modernisieren
 description: 'Modernisiert eine bestehende Webseite (Verein, Laden, Praxis, alte Jimdo-, Wix- oder WordPress-Seite) für eine Person ohne Vorwissen. Legt sofort ohne Rückfrage mit der Bestandsaufnahme los: alle Seiten, jede Funktion (Formulare, Anmeldungen, Termine, PDFs, Preise, Galerien, Karten, Sprachen) und alle Inhalte, mit Fotos der alten Seite in docs/bestand.md. Fragt danach nur, was nur die Person weiss, und führt über Plan und Gestaltung zur neuen Seite, ohne dass eine Funktion ungefragt verloren geht. Nutze den Skill bei «Modernisiere …», «modernisiere unsere Webseite», «unsere Seite ist veraltet», «Webseite erneuern», «Relaunch», «weg von Jimdo, Wix oder WordPress», «die alte Seite neu machen», und sofort, wenn jemand nur die Adresse einer Webseite schickt (https://…), ohne weitere Worte.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Webseite modernisieren: einen Altbau renovieren

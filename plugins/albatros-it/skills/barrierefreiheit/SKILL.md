@@ -1,6 +1,9 @@
 ---
 name: barrierefreiheit
 description: "Controlla e migliora l'accessibilità di un piccolo sito web con una persona senza conoscenze tecniche, secondo le WCAG 2.2 AA spiegate con parole semplici: contrasto, dimensione del testo e zoom, descrizioni delle immagini, uso con la tastiera, moduli, lettura ad alta voce, movimento. Il risultato è un protocollo di controllo in docs/barrierefreiheit.md. Usa lo skill con «accessibilità», «accessibile», «senza barriere», «accessibility», «a11y», «WCAG», «contrasto», «testo alternativo», «alt text», «screen reader», «leggibile per le persone anziane», «usare con la tastiera»."
+metadata:
+  stand: 0.2.0
+  quelle: '25b012463510'
 ---
 
 # Accessibilità: la rampa accanto alla scala

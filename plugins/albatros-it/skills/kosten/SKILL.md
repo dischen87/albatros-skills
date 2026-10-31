@@ -1,6 +1,9 @@
 ---
 name: kosten
 description: "Con la persona tiene un libro dei conti di casa onesto per il suo progetto: abbonamento Albatros, dominio, abbonamento all'IA, e-mail, servizi aggiuntivi, più avanti un server proprio. Spiega quali costi sono fissi e quali variabili, come evitare brutte sorprese e quando conviene un trasloco. Usa lo skill con «quanto costa?», «costi», «prezzi», «è troppo caro», «budget», «fattura», «ne vale la pena?», «quanto costa un server?», e prima che la persona aggiunga un nuovo servizio a pagamento."
+metadata:
+  stand: 0.2.0
+  quelle: '437e60a41721'
 ---
 
 # Costi: il libro dei conti di casa

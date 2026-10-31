@@ -1,6 +1,8 @@
 ---
 name: git-logbuch
 description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (dem Git-Dienst von Albatros, code.aufwind.sh). Holt das Repo aus dem Hafen, führt durch die ersten Einträge (Commit) mit guten Notizen, schickt sie in den Hafen (Push) und prüft, dass die Kopie auf dem Albatros-Server in ~/projekt ankommt. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «Hafen», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
+metadata:
+  stand: 0.2.0
 ---
 
 # Git: das Logbuch an Bord, mit einer Kopie im Hafen

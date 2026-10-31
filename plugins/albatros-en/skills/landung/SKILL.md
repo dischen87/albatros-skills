@@ -1,6 +1,9 @@
 ---
 name: landung
 description: "Plans and guides the move of a project from Albatros to an own server, explained with the picture of moving into your own house: moving checklist, renting and setting up a server (SSH with keys only, firewall, updates, Caddy for HTTPS), taking the logbook to GitHub, switching the conveyor belt there to the new target over SSH with its own key, taking data and secrets along, testing, switching the address in DNS or moving a domain bought through Albatros to a new registrar with the auth code from domain_mitnehmen, and taking over backups yourself. Use this skill for “my own server”, “move my site”, “leave Albatros”, “Hetzner”, “VPS”, “self-host”, “landing”, “what do I need for my own server”."
+metadata:
+  stand: 0.2.0
+  quelle: '53bf9c40474d'
 ---
 
 # Landing: moving into your own house

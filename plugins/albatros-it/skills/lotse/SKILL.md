@@ -1,6 +1,9 @@
 ---
 name: lotse
 description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (abbonamento, chiave, server o pagina, nastro trasportatore, dominio, missione) e poi segue esattamente lo skill che tocca adesso; dopo ogni passo riuscito chiede di nuovo. Senza accesso mostra la biblioteca aperta di tutti gli skill da scegliere da soli e spiega come accedere. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «non so più cosa fare», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?», «cos'è una chiave SSH?») ha la precedenza lo skill specifico."
+metadata:
+  stand: 0.2.0
+  quelle: '38e168913650'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto

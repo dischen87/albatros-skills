@@ -1,6 +1,9 @@
 ---
 name: webseite-planen
 description: "Pianifica con una persona senza conoscenze tecniche il suo sito web, prima di costruirlo: per chi è, cosa devono fare i visitatori, quali pagine servono, quali contenuti ci sono già, quali modelli le piacciono. Il risultato è una pianta in docs/plan.md. Usa lo skill con «voglio un sito web», «pianificare un sito web», «cosa mi serve per un sito web», «quali pagine mi servono», «sitemap», «da dove comincio», e sempre prima di costruire la prima pagina sul percorso sito web."
+metadata:
+  stand: 0.2.0
+  quelle: '642881a80547'
 ---
 
 # Pianificare il sito web: la pianta
