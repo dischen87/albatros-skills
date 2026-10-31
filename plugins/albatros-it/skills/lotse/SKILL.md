@@ -98,9 +98,13 @@ Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente
 | `domain` | Trovare, comprare o collegare un indirizzo tuo come mionegozio.ch |
 | `landung` | Trasloco su un server tuo fuori da Albatros |
 | `webseite-bauen` | Dal piano al sito finito come in una piccola fabbrica, in nove passi: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online |
+| `lancieren` | Dopo il via libera: decidere dove abita il sito (da Albatros o da te) e metterlo online |
+| `betrieb` | Prima della messa online: preparare messaggi dei visitatori, sorveglianza, copia di sicurezza e statistiche |
 | `webseite-aendern` | Cambiare qualcosa sul sito finito: data, testo, immagine o una nuova pagina, nel sistema di design esistente, con verifica e approvazione |
 | `webseite-modernisieren` | Rinnovare un sito web esistente: inventario di tutte le pagine e funzioni, poi piano e aspetto |
 | `webseite-planen` | Prima di costruire: per chi, quali pagine, quali contenuti |
+| `konzept` | Dopo il piano confermato: nome, tono, carattere e se ne fa parte un personaggio, prima di scegliere i colori |
+| `entwurf` | Progettare tutto il sito da sfogliare cliccando prima di costruirlo, e dare il via libera per costruire |
 | `inhalte` | Scrivere e scegliere testi e immagini per il sito |
 | `gestaltung` | Il sito deve essere più facile da usare e più bello |
 | `cms` | Più avanti cambiare i contenuti da soli, senza codice |

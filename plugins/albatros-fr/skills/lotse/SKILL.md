@@ -98,9 +98,13 @@ Si Albatros répond avec une autre erreur ou ne répond pas du tout : dis honn
 | `domain` | Trouver, acheter ou relier ta propre adresse comme monmagasin.ch |
 | `landung` | Déménager sur ton propre serveur, en dehors d'Albatros |
 | `webseite-bauen` | Du plan au site terminé comme dans une petite fabrique, en neuf étapes : mandat, maquette, système de design, stack technique, PRD avec critères de réception, construction en local, quatre vérifications, validation, port, tapis roulant et en ligne |
+| `lancieren` | Après l'autorisation : décider où le site habite (chez Albatros ou par toi-même) et le mettre en ligne |
+| `betrieb` | Avant la mise en ligne : préparer les retours des visiteurs, la surveillance, la sauvegarde et les statistiques |
 | `webseite-aendern` | Changer quelque chose sur le site terminé : date, texte, image ou nouvelle page, dans le système de design existant, avec vérification et validation |
 | `webseite-modernisieren` | Renouveler un site web existant : état des lieux de toutes les pages et fonctions, puis plan et mise en forme |
 | `webseite-planen` | Avant de construire : pour qui, quelles pages, quels contenus |
+| `konzept` | Après le plan confirmé : nom, ton, caractère et si un personnage en fait partie, avant de choisir les couleurs |
+| `entwurf` | Concevoir tout le site à parcourir en cliquant avant de construire, et autoriser la construction |
 | `inhalte` | Écrire et choisir les textes et les images de la page |
 | `gestaltung` | La page doit être plus simple à utiliser et plus belle |
 | `cms` | Modifier plus tard les contenus toi-même, sans code |

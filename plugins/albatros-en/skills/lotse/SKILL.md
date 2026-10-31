@@ -98,9 +98,13 @@ If Albatros answers with a different error or doesn't answer at all: say honestl
 | `domain` | Find, buy or connect your own address like meinladen.ch |
 | `landung` | Move to your own server outside Albatros |
 | `webseite-bauen` | From the plan to the finished site like a small factory, in nine steps: brief, mockup, design system, tech stack, PRD with acceptance criteria, local build, four checks, release, harbour, conveyor belt and live |
+| `lancieren` | After the release: decide where the site lives (with Albatros or self-hosted) and take it live |
+| `betrieb` | Before going live: prepare visitor feedback, monitoring, backup and statistics |
 | `webseite-aendern` | Change something on the finished site: a date, text, picture or a new page, in the existing design system, with checks and release |
 | `webseite-modernisieren` | Renew an existing website: an inventory of all pages and features, then plan and design |
 | `webseite-planen` | Before you build: for whom, which pages, which content |
+| `konzept` | After the plan is confirmed: name, tone, character and whether a mascot belongs to it, before choosing colours |
+| `entwurf` | Draft the whole site to click through before building, and give the go-ahead to build |
 | `inhalte` | Write and choose texts and pictures for the site |
 | `gestaltung` | The site should be easier to use and look better |
 | `cms` | Change content yourself later, without code |

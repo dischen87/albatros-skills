@@ -97,9 +97,13 @@ Antwortet Albatros mit einem anderen Fehler oder gar nicht: Sag ehrlich, dass Al
 | `domain` | Eine eigene Adresse wie meinladen.ch finden, kaufen oder verbinden |
 | `landung` | Umzug auf einen eigenen Server ausserhalb von Albatros |
 | `webseite-bauen` | Vom Plan zur fertigen Seite wie in einer kleinen Fabrik, in neun Schritten: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live |
+| `lancieren` | Nach der Freigabe: entscheiden, wo die Seite wohnt (bei Albatros oder selbst), und sie live schalten |
+| `betrieb` | Vor dem Livegang: Rückmeldungen, Überwachung, Sicherung und Statistik vorbereiten |
 | `webseite-aendern` | An der fertigen Seite etwas ändern: Termin, Text, Bild oder eine neue Seite, im bestehenden Designsystem, mit Prüfung und Freigabe |
 | `webseite-modernisieren` | Eine bestehende Webseite erneuern: Bestandsaufnahme aller Seiten und Funktionen, dann Plan und Gestaltung |
 | `webseite-planen` | Bevor gebaut wird: für wen, welche Seiten, welche Inhalte |
+| `konzept` | Nach dem bestätigten Plan: Name, Ton, Charakter und ob eine Figur dazugehört, bevor Farben gewählt werden |
+| `entwurf` | Die ganze Seite zum Durchklicken entwerfen, bevor gebaut wird, und zum Bauen freigeben |
 | `inhalte` | Texte und Bilder für die Seite schreiben und auswählen |
 | `gestaltung` | Die Seite soll einfacher zu bedienen sein und besser aussehen |
 | `cms` | Inhalte später ohne Code selbst ändern |
