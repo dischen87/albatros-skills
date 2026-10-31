@@ -1,9 +1,9 @@
 ---
 name: lancieren
-description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, vérification de l'extérieur (pruefen.mjs --live), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
+description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: 'dd7642456b2b'
+  quelle: '4097894a1741'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -45,7 +45,11 @@ Avant de demander, tu rassembles les bases : `konto_status` (abonnement et pri
 | Albatros Pilot | une brique tourne (inscription, réservation, connexion) ou tu veux un propre serveur | CHF … par mois | peu : tapis roulant et photos quotidiennes du serveur sont là |
 | par toi-même | tu veux tout avoir en main et tu as du temps pour l'entretien | chez le fournisseur | compte, installation, sauvegarde et surveillance |
 
-Ajoute une phrase de recommandation avec une raison tirée de `docs/plan.md` (`Setup:`). Puis la question, seule dans le message :
+Ajoute une phrase de recommandation avec une raison tirée de `docs/plan.md` (`Setup:`).
+
+**Avec connexion :** si le projet a une brique avec connexion (recette `mitglieder` ; on le voit à `Zugang:` dans `docs/plan.md` et à `Baustein:` dans `docs/stack.md`), tu recommandes Pilot ou par toi-même avec un propre serveur, jamais Light, et tu nommes tout de suite l'étape **entrée** (Eingang) : s'il y aura devant le site une entrée avec une seule connexion pour toutes les parties, vous le clarifiez dans l'exploitation (skill `betrieb`, ligne `Eingang:`, selon les critères du skill `bausteine`, section « Une entrée pour tout ? »). Elle est installée à la mise en ligne (`bausteine/eingang`) ; ensuite, le site web n'est plus accessible que derrière l'entrée.
+
+Puis la question, seule dans le message :
 
 > Où ton site doit-il habiter : chez Albatros (Light sans brique, Pilot avec ton propre serveur) ou est-ce que tu t'en charges toi-même ?
 
@@ -113,10 +117,17 @@ git remote add origin git@aufwind.sh:<name>/projekt.git          # adresse tiré
 git fetch origin
 git merge origin/main --allow-unrelated-histories -X ours -m "Modèle du port repris, le site validé reste"
 git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
+```
+
+Dis-le à la personne avec l'image : le modèle est repris une fois dans le journal de bord. Là où les deux ont le même fichier (`seite/index.html`, `.gitignore`), c'est le sien qui reste. S'y ajoutent les fichiers dont le tapis roulant de Pilot a besoin (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`) ; avec Light, ils dorment. Si, après la fusion, il n'y a pas « Seite unverändert » (site inchangé), tu ne pousses pas et tu regardes avec `git diff freigegeben HEAD -- seite`.
+
+**Avec une brique (Pilot), avant le push :** maintenant, le `compose.yaml` du modèle est dans le journal de bord, et tu branches les briques comme dans le skill `bausteine`, section 4 « Au lancement, avec Pilot » : d'abord une photo du serveur (outil `snapshot`, nom `vor-baustein`), puis `include:` dans `compose.yaml`. Si `docs/betrieb.md` dit `Eingang: ja`, l'étape **entrée** s'y ajoute : la ligne `- bausteine/eingang/compose.yaml` sous `include:`, et pour le service `webseite`, les lignes `ports:` et `- "80:80"` disparaissent. Le port 80 est alors à l'entrée, le site web n'est plus accessible que derrière elle. Avant, `bun bausteine/eingang/test.ts` doit annoncer « Alles grün ». Sans connexion, ou avec `Eingang: nicht nötig`, `compose.yaml` reste comme dans le modèle. Ensuite, tu l'inscris dans le journal de bord.
+
+```bash
 git push -u origin main
 ```
 
-Dis-le à la personne avec l'image : le modèle est repris une fois dans le journal de bord. Là où les deux ont le même fichier (`seite/index.html`, `.gitignore`), c'est le sien qui reste. S'y ajoutent les fichiers dont le tapis roulant de Pilot a besoin (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`) ; avec Light, ils dorment. Si, après la fusion, il n'y a pas « Seite unverändert » (site inchangé), tu ne pousses pas et tu regardes avec `git diff freigegeben HEAD -- seite`. Ensuite, tu ouvres le port dans le navigateur (`open https://code.aufwind.sh/<name>/projekt`) et tu annonces `hafen`.
+Ensuite, tu ouvres le port dans le navigateur (`open https://code.aufwind.sh/<name>/projekt`) et tu annonces `hafen`.
 
 **Par toi-même, avec GitHub :** la personne se connecte avec `gh auth login` dans le navigateur. Pour GitHub Pages, tu crées avant le tapis roulant, `.github/workflows/seite.yml` :
 
@@ -171,6 +182,7 @@ node scripts/pruefen.mjs --tueren <adresse>
 
 L'adresse figure dans `docs/lancieren.md` (`Adresse:`). N'est en ligne que ce qui a été vérifié de l'extérieur : si rien n'est rouge avec `--live` (titre comme construit, mentions légales et protection des données accessibles, accès, Lighthouse) ni avec `--tueren`, tu annonces `live`, tu ouvres l'adresse avec la personne et tu compares avec les photos de la vérification.
 
+- **Avec l'entrée :** dans `docs/tueren.txt` figurent les chemins protégés avec 401 (sans connexion) et `/_/` avec 404 ; si le fichier date encore de la construction sans entrée, tu l'adaptes avant la vérification. C'est seulement quand `--tueren` montre exactement cela et que la page d'accueil donne 200 que le site est vraiment derrière l'entrée.
 - **Avec une brique, « en ligne » n'est pas encore « terminé » :** seulement quand les données sont dedans (par exemple les cours) et qu'une réservation de test en ligne a apporté son e-mail à sa propre adresse (skill `bausteine`), tu dis à la personne qu'elle peut partager le lien. D'ici là, tu dis honnêtement ce qui manque encore.
 - **Toujours pas là après trois minutes :** avec Light, `konto_status` montre si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port parce que `seite/` figure dans un `.gitignore`. Avec Pilot, tu regardes sous « Actions » (skill `pipeline`), par toi-même dans la liste des livraisons du fournisseur. Corriger, nouvelle entrée, pousser, revérifier. Si la correction change le site lui-même, tu le montres d'abord à la personne et tu obtiens à nouveau la validation. Si ça ne marche toujours pas, tu dis ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
 
@@ -213,6 +225,7 @@ Ne va en ligne que ce qui appartient à la personne ou ce pour quoi elle a l'aut
 - `git push --force` pour écraser le port : jamais. Fusionner comme plus haut.
 - Pousser alors que le site a changé depuis la validation.
 - Dire « c'est en ligne » sans avoir vérifié soi-même de l'extérieur.
+- Avec l'entrée, laisser `ports:` dans le service `webseite` : on pourrait alors contourner l'entrée.
 - Un dépôt public pour GitHub Pages, sans dire à la personne qu'alors `docs/` est aussi public.
 
 ## Vérifier la mission

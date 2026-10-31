@@ -1,9 +1,9 @@
 ---
 name: lancieren
-description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, check from outside (pruefen.mjs --live), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
+description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
   stand: 0.2.0
-  quelle: 'dd7642456b2b'
+  quelle: '4097894a1741'
 ---
 
 # Launch: where it lives and the opening
@@ -45,7 +45,11 @@ Before you ask, you gather the basics: `konto_status` (plan, and the prices of L
 | Albatros Pilot | a building block runs (sign-up, booking, login) or you want your own server | CHF … a month | little: conveyor belt and daily photos of the server are there |
 | hosting it yourself | you want everything in your own hands and have time for the upkeep | with the provider | account, set-up, backup and monitoring |
 
-Add one sentence of recommendation with a reason from `docs/plan.md` (`Setup:`). Then the question, on its own in the message:
+Add one sentence of recommendation with a reason from `docs/plan.md` (`Setup:`).
+
+**With a login:** if the project has a building block with a login (recipe `mitglieder`; you can tell from `Zugang:` in `docs/plan.md` and `Baustein:` in `docs/stack.md`), you recommend Pilot or hosting it yourself on your own server, never Light, and you name the **entrance** step (Eingang) straight away: whether an entrance with one login for all parts goes in front of the site, you sort out when getting ready to run it (skill `betrieb`, line `Eingang:`, following the criteria in the skill `bausteine`, section “One entrance for everything?”). It gets built in when going live (`bausteine/eingang`); after that, the website can only be reached behind the entrance.
+
+Then the question, on its own in the message:
 
 > Where should your site live: with Albatros (Light without building blocks, Pilot with your own server) or do you host it yourself?
 
@@ -113,10 +117,17 @@ git remote add origin git@aufwind.sh:<name>/projekt.git          # address from 
 git fetch origin
 git merge origin/main --allow-unrelated-histories -X ours -m "Template from the harbour taken in, the released site stays"
 git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
+```
+
+Tell the person with the picture: the template is taken into the logbook once. Where both have the same file (`seite/index.html`, `.gitignore`), theirs stays. On top come the files Pilot's conveyor belt needs (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); with Light they sleep. If after the merge it doesn't say “Seite unverändert” (site unchanged), you don't push, and you look with `git diff freigegeben HEAD -- seite`.
+
+**With a building block (Pilot), before the push:** now the template's `compose.yaml` is in the logbook, and you hook in the building blocks as in the skill `bausteine`, section 4 “At launch, with Pilot”: first a photo of the server (tool `snapshot`, name `vor-baustein`), then `include:` in `compose.yaml`. If `docs/betrieb.md` says `Eingang: ja`, the **entrance** step comes on top: the line `- bausteine/eingang/compose.yaml` under `include:`, and for the service `webseite` the lines `ports:` and `- "80:80"` go. Port 80 then belongs to the entrance, and the website can only be reached behind it. Before that, `bun bausteine/eingang/test.ts` has to report “Alles grün”. Without a login, or with `Eingang: nicht nötig`, `compose.yaml` stays as in the template. Then a logbook entry.
+
+```bash
 git push -u origin main
 ```
 
-Tell the person with the picture: the template is taken into the logbook once. Where both have the same file (`seite/index.html`, `.gitignore`), theirs stays. On top come the files Pilot's conveyor belt needs (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); with Light they sleep. If after the merge it doesn't say “Seite unverändert” (site unchanged), you don't push, and you look with `git diff freigegeben HEAD -- seite`. Then you open the harbour in the browser (`open https://code.aufwind.sh/<name>/projekt`) and report `hafen`.
+Then you open the harbour in the browser (`open https://code.aufwind.sh/<name>/projekt`) and report `hafen`.
 
 **Hosting it yourself, with GitHub:** the person signs in with `gh auth login` in the browser. For GitHub Pages, you first create the conveyor belt, `.github/workflows/seite.yml`:
 
@@ -171,6 +182,7 @@ node scripts/pruefen.mjs --tueren <address>
 
 The address is in `docs/lancieren.md` (`Adresse:`). Only what's been checked from outside counts as live: if nothing is red with `--live` (title as built, legal notice and privacy policy reachable, access, Lighthouse) or with `--tueren`, you report `live`, open the address with the person and compare it with the screenshots from the check.
 
+- **With the entrance:** `docs/tueren.txt` lists the protected paths with 401 (without signing in) and `/_/` with 404; if the file still dates from the build without an entrance, you adjust it before the check. Only when `--tueren` shows exactly that and the home page gives 200 is the site really behind the entrance.
 - **With a building block, “live” isn't “done” yet:** only once the data is in (for example the courses) and a test booking on the web has brought its email to the person's own address (skill `bausteine`) do you tell the person they can share the link. Until then, you say honestly what's still missing.
 - **Still not there after three minutes:** with Light, `konto_status` shows whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour because `seite/` is listed in a `.gitignore`. With Pilot you look under “Actions” (skill `pipeline`), when hosting it yourself in the provider's list of deploys. Fix it, new entry, push, check again. If the fix changes the site itself, you show it to the person first and get the release again. If it still doesn't work, you say what you checked and ask the coach (`coach_fragen`).
 
@@ -213,6 +225,7 @@ Only what belongs to the person, or what they have permission for, gets publishe
 - `git push --force` to overwrite the harbour: never. Merge as above.
 - Pushing although the site has changed since the release.
 - Saying “it's online” without having checked from outside yourself.
+- With the entrance, leaving `ports:` in the service `webseite`: then people could get round the entrance.
 - A public repository for GitHub Pages without telling the person that `docs/` is then public too.
 
 ## Checking the mission

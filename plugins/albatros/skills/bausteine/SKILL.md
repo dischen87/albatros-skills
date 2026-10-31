@@ -81,7 +81,7 @@ Vor dem Lancieren: `free -h` auf dem Server zeigt, wie viel frei ist. Danach: `d
 
 Strapi hat noch keinen Test und kein `lokal.ts`; seine Inhaltstypen schreibst du als Dateien (Abschnitt 6), laufen sieht man ihn erst auf dem Server. Sag das ehrlich.
 
-**Beim Lancieren, mit Pilot** (Skill `lancieren`, nach der Freigabe der Seite):
+**Beim Lancieren, mit Pilot** (Skill `lancieren`, Teil 2, nach der Freigabe der Seite und vor dem Push in den Hafen):
 
 1. **Foto des Servers:** Werkzeug `snapshot` mit Namen `vor-baustein` (Skill `zurueck-auf-gestern`).
 2. **Einhängen.** In `compose.yaml` ganz oben:
@@ -90,8 +90,9 @@ Strapi hat noch keinen Test und kein `lokal.ts`; seine Inhaltstypen schreibst du
      - bausteine/pocketbase/compose.yaml
    ```
    Die Webseite reicht die Anfragen selbst weiter: Die Vorlage liest jede `bausteine/*/nginx.conf`. Ist das Projekt älter als die Bausteine (kein `nginx.conf` im Projekt), hol `Dockerfile` und `nginx.conf` aus `vorlage/` im gleichen Repo.
+   **Mit Login der Schritt Eingang:** Steht in `docs/betrieb.md` `Eingang: ja` (Abschnitt 7), kommt `- bausteine/eingang/compose.yaml` unter `include:`, und beim Dienst `webseite` fallen `ports:` und `- "80:80"` weg: Dann ist die Webseite nur noch hinter dem Eingang erreichbar. Ohne Login, oder wenn die Regeln von PocketBase reichen, bleibt `compose.yaml` wie in der Vorlage. Den Schritt nennt der Skill `lancieren` schon beim Wohnort.
 3. **In den Hafen.** Das Fliessband baut und liefert aus (Skill `pipeline`). Klappt der Bau nicht, bleibt die alte Seite online.
-4. **Prüfen** auf dem Server: `docker ps` zeigt den Baustein als `healthy`. Dann das erste Konto der Verwaltung und die Mails (Abschnitt 5).
+4. **Prüfen** auf dem Server: `docker ps` zeigt den Baustein als `healthy`. Mit Eingang prüfst du von aussen jede Tür: `node scripts/pruefen.mjs --tueren <Adresse>` (geschützte Pfade 401, `/_/` 404, die Startseite 200). Dann das erste Konto der Verwaltung und die Mails (Abschnitt 5).
 
 ## 5. PocketBase: Anmeldeliste, Buchungen, Mitglieder, Pinnwand
 
@@ -195,7 +196,7 @@ Die Antwort kommt in `docs/betrieb.md` in die Zeile `Eingang:`, mit Grund (Skill
 2. In `eingang.json` die Adresse der Seite (`ursprung`) und die Teile eintragen: Name, Ziel, Pfade, Zugang `offen`, `angemeldet` oder `rolle:<name>`. Geschützte Seiten liegen in eigenen Ordnern (`seite/intern/`).
 3. In `mitglieder.html` `const EINGANG = true;` setzen: Die Anmeldung gilt dann mit einem Cookie für alle Teile.
 4. `bun bausteine/eingang/test.ts` meldet «Alles grün», dann `bun bausteine/pocketbase/lokal.ts --eingang`: Die Person öffnet eine geschützte Seite ohne Anmeldung, meldet sich an, kommt zurück und meldet sich wieder ab.
-5. Beim Lancieren: in `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen, sonst käme man am Eingang vorbei. Danach von aussen jede Tür prüfen: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` gibt 401, `/_/` gibt 404, die Startseite 200.
+5. Beim Lancieren (Skill `lancieren`, Teil 2): in `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen, sonst käme man am Eingang vorbei. Die Webseite ist dann nur noch hinter dem Eingang erreichbar. Danach von aussen jede Tür prüfen: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` gibt 401, `/_/` gibt 404, die Startseite 200.
 
 **Was er nicht kann:** Hinter dem Eingang geht «Meine Buchungen» (Rezept `buchungen`) nur über den Tunnel, weil er die Anmeldung der Verwaltung von aussen sperrt. Abmelden gilt je Gerät; überall abmelden heisst: ein neues Passwort setzen.
 
