@@ -48,6 +48,9 @@ const teil = Bun.serve({
     h.append('set-cookie', '__Host-sitzung =mit-leerzeichen; Path=/; Secure; HttpOnly');
     h.append('set-cookie', '__Host-sitzung\t=mit-tab; Path=/; Secure; HttpOnly');
     h.append('set-cookie', '__HOST-Sitzung=gross; Path=/; Secure; HttpOnly');
+    // Ohne Namen: Manche Browser schicken davon nur den Wert zurück, «=__Host-sitzung=…» käme als Sitzung an (RFC 6265bis, 5.6)
+    h.append('set-cookie', '=__Host-sitzung=ohne-namen; Path=/; Secure');
+    h.append('set-cookie', '__Host-sitzung; Path=/; Secure');
     h.append('set-cookie', 'sprache=de; Path=/');
     return new Response(JSON.stringify({ pfad: u.pathname }), { headers: h });
   },
@@ -202,7 +205,7 @@ try {
   pruefe(offen['x-forwarded-for'] === '127.0.0.1', `X-Forwarded-For vom Browser zählt nicht (VERTRAUTE_PROXYS leer): der Teil bekommt die Adresse der Verbindung (${offen['x-forwarded-for']})`);
   const antwort = await holen('/verein/');
   pruefe(!antwort.headers.get('x-eingang-rolle') && antwort.headers.getSetCookie().join() === 'sprache=de; Path=/',
-    `Antworten der Teile: x-eingang-* entfernt, eine Sitzung von einem Teil fällt weg (auch «__Host-sitzung =…», mit Tab oder in Grossbuchstaben), andere Cookies bleiben (${antwort.headers.getSetCookie().length} Set-Cookie)`);
+    `Antworten der Teile: x-eingang-* entfernt, eine Sitzung von einem Teil fällt weg (auch «__Host-sitzung =…», mit Tab, in Grossbuchstaben oder ohne Namen «=__Host-sitzung=…»), andere Cookies bleiben (${antwort.headers.getSetCookie().join(' | ')})`);
   // Köpfe mit Unterstrich: Server nach WSGI oder CGI (etwa Python) lesen x_eingang_rolle wie x-eingang-rolle. Der Eingang verwirft sie, wie nginx
   await holen('/verein/', { kopf: { X_Eingang_Rolle: 'vorstand', X_Eingang_Benutzer: 'jemand', X_Forwarded_For: '6.6.6.6', X_Real_IP: '6.6.6.6' } });
   const unterOffen = gesehen.at(-1)!.kopf;

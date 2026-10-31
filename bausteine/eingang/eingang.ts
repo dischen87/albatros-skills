@@ -239,6 +239,13 @@ const cookieWert = (kopf: string | null, name: string) => {
   }
   return null;
 };
+// Der Name in einem Set-Cookie eines Teils, so wie der Browser ihn liest (RFC 6265bis, 5.6): das Paar bis zum ersten «;», der Name bis
+// zum ersten «=», ohne Leerzeichen und Tab davor und danach; klein geschrieben. Leer heisst: ein Cookie ohne Namen (kein «=» oder nichts
+// davor). Manche Browser schicken davon nur den Wert zurück, «=__Host-sitzung=x» käme also als Sitzung an. Kein Teil braucht so eines.
+const cookieName = (setCookie: string) => {
+  const paar = setCookie.split(';', 1)[0]!, i = paar.indexOf('=');
+  return i < 0 ? '' : paar.slice(0, i).trim().toLowerCase();
+};
 const MELDUNG: Record<number, string> = {
   400: 'Diese Adresse gibt es so nicht.', 401: 'Dafür musst du angemeldet sein.', 403: 'Das ist nicht erlaubt.', 404: 'Nicht gefunden.',
   413: 'Die Anfrage ist zu gross.', 429: 'Zu viele Anfragen. Warte bitte einen Moment.', 431: 'Die Anfrage ist zu gross.',
@@ -405,8 +412,7 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     // content-length geht mit: Der Körper geht unverändert durch (auch komprimiert, decompress: false). Bun schickt ihn mit dieser Länge
     // oder in Stücken (chunked), die Bytes sind dieselben (gemessen mit 3 MB und gzip).
     res.headers.forEach((v, k) => { if ((!HOP.has(k) || k === 'content-length') && !k.startsWith('x-eingang-') && k !== 'set-cookie') aus.append(k, v); });
-    // Den Namen lesen wie der Browser: bis zum ersten «=», ohne Leerzeichen und Tab davor und danach (RFC 6265, 5.2)
-    for (const c of res.headers.getSetCookie()) if (pb || c.slice(0, Math.max(0, c.indexOf('='))).trim().toLowerCase() !== COOKIE.toLowerCase()) aus.append('set-cookie', c);
+    for (const c of res.headers.getSetCookie()) { const n = cookieName(c); if (pb || (n !== '' && n !== COOKIE.toLowerCase())) aus.append('set-cookie', c); }
     if (!aus.has('x-content-type-options')) aus.set('x-content-type-options', 'nosniff');
     if (angemeldet || (pb && (cookie || authorization))) {
       aus.set('cache-control', 'no-store');
