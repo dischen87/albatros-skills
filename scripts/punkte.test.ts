@@ -6,7 +6,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PERSONEN, rolle } from './durchspiel/personen.ts';
 import { ladeFahrplan, type Fahrplan } from './fahrplan.ts';
-import { beantwortet, belegt, datiert, fragen, freigabeZumBauen, punkte, wert, type Lauf } from './punkte.ts';
+import { beantwortet, belegt, bisAbschluss, datiert, fragen, freigabeZumBauen, markeVon, punkte, wert, wertPasst, wohnortVon, type Lauf } from './punkte.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const geladen = await ladeFahrplan(wurzel);
@@ -42,9 +42,35 @@ describe('Zeilen und Fragen', () => {
     expect(wert(true, 'Ton:')).toBeNull();
   });
   test('belegt und beantwortet: offen, Platzhalter und Annahme in vier Sprachen', () => {
-    for (const w of ['[offen: fragen]', '[ouvert : demander]', '[aperto: chiedere]', '[open: ask]', '[Platzhalter: Text]', '[placeholder: text]', '', null]) expect(belegt(w)).toBe(false);
-    for (const w of ['[Annahme: zehn Anfragen]', '[Hypothèse : dix]', '[Ipotesi: dieci]', '[Assumption: ten]']) expect([belegt(w), beantwortet(w)]).toEqual([true, false]);
-    expect(beantwortet('Blende 8 [Annahme: Schreibweise]')).toBe(true);
+    for (const w of ['[offen: fragen]', '[ouvert : demander]', '[aperto: chiedere]', '[open: ask]', '[Platzhalter: Text]', '[placeholder: text]', '', null]) expect(belegt(F, w)).toBe(false);
+    for (const w of ['[Annahme: zehn Anfragen]', '[Hypothèse : dix]', '[Ipotesi: dieci]', '[Assumption: ten]']) expect([belegt(F, w), beantwortet(F, w)]).toEqual([true, false]);
+    expect(beantwortet(F, 'Blende 8 [Annahme: Schreibweise]')).toBe(true);
+  });
+  // Gegenprüfung 31.10.2026 (vert-09): die Marken aus dem Vertrag, Fettdruck zählt nicht. Dieselbe Tabelle steht in albatros
+  // packages/kit/src/phasen.test.ts (MARKEN_FAELLE, markeVon und belegtWert); lage soll so lesen. Vorher war «**[offen]**» belegt.
+  test('Marken wie im Vertrag (Tabelle wie in kit): offen und Platzhalter nicht belegt, auch fett; Annahme belegt; ein Wort mehr ist keine Marke', () => {
+    const FAELLE: [string | null, 'offen' | 'platzhalter' | 'annahme' | null, boolean][] = [
+      ['[offen: kommt]', 'offen', false], ['[ouvert : à voir]', 'offen', false], ['[aperto: da vedere]', 'offen', false], ['[open: tbd]', 'offen', false],
+      ['**[offen]**', 'offen', false], ['[Platzhalter: kommt]', 'platzhalter', false], ['[à compléter]', 'platzhalter', false],
+      ['[da completare]', 'platzhalter', false], ['[placeholder]', 'platzhalter', false], ['[Annahme: zwei Anfragen]', 'annahme', true],
+      ['[Hypothèse : dix]', 'annahme', true], ['[Ipotesi: dieci]', 'annahme', true], ['[Assumption: ten]', 'annahme', true],
+      ['zwei Anfragen', null, true], ['[Annahmen]', null, true], ['[openly]', null, true], ['', null, false], [null, null, false],
+    ];
+    for (const [w, marke, b] of FAELLE) expect([w, markeVon(F, w), belegt(F, w)]).toEqual([w, marke, b]);
+    expect(F.marken).toEqual({
+      offen: ['offen', 'ouvert', 'aperto', 'open'], platzhalter: ['Platzhalter', 'à compléter', 'a compléter', 'a completer', 'da completare', 'placeholder'],
+      annahme: ['Annahme', 'hypothèse', 'hypothese', 'ipotesi', 'assumption'],
+    });
+  });
+  test('werte und Wohnort wie im Vertrag (vert-06, vert-05)', () => {
+    const frage = (id: string) => F.phasen.flatMap((p) => p.pflichtfragen).find((q) => q.id === id)!;
+    expect(['später', 'Jetzt, mit sonnenhof.ch', 'nie'].map((w) => wertPasst(F, frage('adresse'), w))).toEqual([true, true, true]);
+    expect(['https://speiche.aufwind.sh', 'niemals', null].map((w) => wertPasst(F, frage('adresse'), w))).toEqual([false, false, false]);
+    expect([wertPasst(F, frage('modus'), '[Annahme: machen]'), wertPasst(F, frage('richtung'), 'weich')]).toEqual([true, true]);
+    expect(['Albatros Light', 'Albatros Pilot', 'selbst: Netlify', 'par toi-même : Netlify'].map((w) => wohnortVon(F, w, 'gratis'))).toEqual(['light', 'pilot', 'selbst', 'selbst']);
+    expect([wohnortVon(F, null, 'light'), wohnortVon(F, '[offen]', 'pilot'), wohnortVon(F, null, 'gratis')]).toEqual(['light', 'pilot', 'selbst']);
+    const p13 = F.phasen.find((p) => p.id === 'P13')!;
+    expect((['light', 'pilot', 'selbst'] as const).map((w) => bisAbschluss(F, p13, w))).toEqual([['hafen', 'live'], ['hafen', 'fliessband', 'live'], ['live']]);
   });
   test('Freigabe zum Bauen wie pruefen.mjs --vor-bau: letzte Zeile, Fett weg, Datum vorne', () => {
     expect(datiert(freigabeZumBauen('Freigegeben zum Bauen: 31.10.2026, «Ja, bau ihn so.»'))).toBe(true);
@@ -124,6 +150,42 @@ describe('Regeln', () => {
     expect(ergebnis({ fall: 'knapp', nachrichten: [], aufrufe: [], geoeffnet: [], zustaende: [] }).exit).toBe(2);
     expect(punkte(lauf('knapp', ['a']), F, undefined).exit).toBe(2);
     expect(ergebnis(lauf('knapp', ['a']), 'P99').exit).toBe(2);
+  });
+});
+
+// Gegenprüfung 31.10.2026: Ein Lauf genau nach lancieren (vert-05, Light ohne Fliessband) und mit «Eigene Domain:» (vert-06) besteht;
+// vorher endeten knapp, musikverein und curling mit «nicht gemeldet: fliessband» und «adresse: … passt nicht zu /später/»
+describe('P13 je Wohnort und Eigene Domain', () => {
+  const LIVE = 'Live seit: 31.10.2026\nAdresse: https://speiche-testdorf.aufwind.sh\nEigene Domain: später, wenn die Saison läuft\nGeprüft: 31.10.2026, pruefen.mjs --live ohne Rot\nAngekündigt: 31.10.2026, Stammkunden';
+  const p13 = (fall: string, schritte: string[], dateien: Record<string, string>): Lauf => ({
+    fall, ab: 'P13', bis: 'P13',
+    nachrichten: [{ wer: 'Person', text: 'Eine eigene Adresse später, nicht jetzt.' }, { wer: 'KI', text: 'Gut, später. Die Seite ist live.' }],
+    aufrufe: [{ runde: 0, werkzeug: 'lage', argumente: { skills_stand: '1.0.0', belege: [] } }, ...schritte.map((schritt) => ({ runde: 0, werkzeug: 'schritt_melden', argumente: { schritt } }))],
+    geoeffnet: [], zustaende: [{ runde: 0, dateien, gebaut: true }],
+  });
+  const LIGHT = { 'docs/lancieren.md': 'Wohnort: Albatros Light\nGrund: ohne Baustein\nAdresse: https://speiche-testdorf.aufwind.sh', 'docs/live.md': LIVE };
+  test('Light: hafen und live genügen (kein Fliessband), für knapp, musikverein und curling', () => {
+    for (const fall of ['knapp', 'musikverein', 'curling']) {
+      const l = p13(fall, ['hafen', 'live'], LIGHT);
+      expect([fall, pr(l, 'insel')?.ok, pr(l, 'insel')?.titel]).toEqual([fall, true, 'Insel-Schritte P13 bis P13 gemeldet (Wohnort light)']);
+    }
+  });
+  test('Pilot braucht das Fliessband, selbst nur live; ohne Zeile «Wohnort:» gilt das Abo der Persona', () => {
+    const pilot = { ...LIGHT, 'docs/lancieren.md': 'Wohnort: Albatros Pilot\nGrund: Buchungen\nAdresse: https://yoga.aufwind.sh' };
+    expect(pr(p13('buchung', ['hafen', 'live'], pilot), 'insel')).toMatchObject({ ok: false, beleg: ['nicht gemeldet: fliessband'] });
+    expect(pr(p13('buchung', ['hafen', 'fliessband', 'live'], pilot), 'insel')?.ok).toBe(true);
+    const selbst = { ...LIGHT, 'docs/lancieren.md': 'Wohnort: selbst: Netlify, Hochladen vom Computer\nGrund: eigener Webspace\nAdresse: https://mittag.netlify.app' };
+    expect(pr(p13('knapp', ['live'], selbst), 'insel')?.ok).toBe(true);
+    expect(pr(p13('knapp', ['hafen', 'live'], { 'docs/live.md': LIVE }), 'insel')?.ok).toBe(true);
+  });
+  test('Eigene Domain: die Antwort der Person (später) steht in ihrer Zeile, die URL in «Adresse:» zählt nicht als Antwort', () => {
+    const gut = p13('knapp', ['hafen', 'live'], LIGHT);
+    expect([pr(gut, 'pflichtfragen')?.ok, pr(gut, 'tatsachen')?.ok]).toEqual([true, true]);
+    const nurUrl = p13('knapp', ['hafen', 'live'], { ...LIGHT, 'docs/live.md': LIVE.replace(/\nEigene Domain: [^\n]*/, '') });
+    expect(pr(nurUrl, 'pflichtfragen')?.beleg).toEqual(['P13 adresse (person): Zeile «Eigene Domain:» fehlt']);
+    expect(pr(nurUrl, 'tatsachen')?.beleg).toEqual(['adresse: Zeile «Eigene Domain:» in docs/live.md fehlt']);
+    const keinWert = p13('knapp', ['hafen', 'live'], { ...LIGHT, 'docs/live.md': LIVE.replace('Eigene Domain: später, wenn die Saison läuft', 'Eigene Domain: vielleicht') });
+    expect(pr(keinWert, 'pflichtfragen')?.beleg).toEqual(['P13 adresse (person): «vielleicht» beginnt nicht mit jetzt, später, nie']);
   });
 });
 

@@ -22,7 +22,7 @@ import { spawnSync } from 'node:child_process';
 import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
-import { belegt, bisAbschluss, erledigtNachDateien, erledigtNachInsel, phaseIndex, wert } from '../punkte.ts';
+import { belegt, bisAbschluss, erledigtNachDateien, erledigtNachInsel, phaseIndex, wert, wohnortVon } from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
 
 type Args = Record<string, unknown>;
@@ -160,10 +160,11 @@ function lage(a: Args): Antwort {
   if (phaseDran && p) {
     for (const q of p.pflichtfragen) {
       const [datei, anfang] = q.ablage.split('#') as [string, string | undefined];
-      if (!(anfang ? belegt(wert(dateien[datei], anfang)) : dateien[datei] !== undefined)) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)})`);
+      if (!(anfang ? belegt(F, wert(dateien[datei], anfang)) : dateien[datei] !== undefined)) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)})`);
     }
     zeilen.push(`Ergebnis: ${p.ergebnis.map((x) => (x.zeilen?.length ? `${x.datei} mit ${x.zeilen.map((z) => `«${z}»`).join(', ')}` : x.datei)).join('; ')}.`);
-    const melden = bisAbschluss(F, p);
+    // In P13 je Wohnort (fahrplan.yaml: insel_je_wohnort), aus «Wohnort:» in den Belegen, sonst aus dem Abo der Attrappe
+    const melden = bisAbschluss(F, p, wohnortVon(F, wert(dateien['docs/lancieren.md'], 'Wohnort:'), st));
     zeilen.push(`Fertig, wenn: ${p.gate} Dann schritt_melden mit ${melden.map((x) => `«${x}»`).join(', ')}${melden.length > 1 ? ', je sobald geschafft' : ''}.`);
     if (st === 'gratis' && erledigt <= gratisBis) zeilen.push(`Hinweis: ${GRATIS_HINWEIS}`);
     zeilen.push(`Modus: ${modus}. ${F.modus[modus]}`);

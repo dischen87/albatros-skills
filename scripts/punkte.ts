@@ -5,15 +5,18 @@
 //   bun scripts/punkte.ts <ergebnis-ordner> [--bis P4]   liest lauf.json (und fahrplan.yaml des Laufs, sonst den des Repos), schreibt
 //                                                        punkte.json; Exit 0: alles eingehalten, 1: etwas verletzt, 2: nicht auswertbar
 //                                                        oder der Kern der Persona kam im Lauf nie vor (zum Beispiel nie ein Nein)
-// «Belegt» heisst wie in lage (albatros services/mcp/src/lage.ts): Zeile am Zeilenanfang (Listenzeichen davor zählen nicht), Wert nicht
-// leer, nicht [offen …]. Die Freigabe zum Bauen liest es wie pruefen.mjs --vor-bau (letzte Zeile, Datum vorne).
+// «Belegt» heisst wie im Vertrag (fahrplan.yaml: marken; albatros packages/kit/src/phasen.ts belegtWert, das lage nutzen soll): Zeile am
+// Zeilenanfang (Listenzeichen davor zählen nicht), Wert ohne Sternchen nicht leer, keine Marke offen oder Platzhalter. Die Freigabe zum
+// Bauen liest es wie pruefen.mjs --vor-bau (letzte Zeile, Datum vorne).
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Fahrplan, Phase } from './fahrplan.ts';
+import type { Fahrplan, Phase, Pflichtfrage, Wohnort } from './fahrplan.ts';
 import type { Persona } from './durchspiel/personen.ts';
 
 // Stand der Prüfungen. Der Verlauf (scripts/verlauf.ts) vergleicht nur Läufe mit demselben Stand. Ändern nur mit Datum und Grund:
 // 2026-10-31  erste Fassung (Paket Durchspiel, Schnitt B5b)
+// 2026-10-31  zweite Fassung (Gegenprüfung: vert-05, vert-06, vert-09): Marken aus dem Vertrag, Fettdruck zählt nicht, werte der Pflichtfragen,
+//             Insel-Schritte von P13 je Wohnort. Gleiches Datum, weil davor kein Lauf aufgezeichnet ist (scripts/durchspiel/verlauf.jsonl leer).
 export const PUNKTE_STAND = '2026-10-31';
 
 export type Nachricht = { wer: 'Person' | 'KI'; text: string };
@@ -38,10 +41,20 @@ export type Punkte = {
   info: { runden: number; phase_nach_insel: string | null; phase_nach_dateien: string | null; lage_aufrufe: number; fragen_je_phase: Record<string, number>; werkzeuge: Record<string, number> };
 };
 
-// ———— Zeilen und Marken (in allen vier Sprachen, wie die Skills sie schreiben) ————
-const OFFEN = /^\[(offen|ouvert|aperto|open)\b/i;
-const PLATZHALTER = /^\[(platzhalter|à compléter|a compléter|da completare|placeholder)\b/i;
-const ANNAHME = /^\[(annahme|hypoth[eè]se|ipotesi|assumption)\b/i;
+// ———— Zeilen, Marken und Werte, wie der Vertrag sie nennt (fahrplan.yaml: marken, werte, wohnorte) ————
+// Seit 31.10.2026 (Gegenprüfung, vert-09) aus dem Vertrag statt aus eigenen Listen, gleich wie albatros packages/kit/src/phasen.ts
+type Marke = keyof Fahrplan['marken'];
+const wort = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// Ein Wort am Anfang, danach kein Buchstabe und keine Ziffer (ohne Gross- und Kleinschreibung, auch bei Umlauten)
+const beginntMit = (woerter: readonly string[]) => new RegExp(`^(?:${woerter.map(wort).join('|')})(?![\\p{L}\\p{N}])`, 'iu');
+// Fettdruck zählt nicht: Sternchen fallen weg, wie in pruefen.mjs
+export const ohneFett = (w: string): string => w.replace(/\*/g, '').trim();
+// Marke am Anfang eines Werts («[offen: …]», «[à compléter]», «[Annahme: …]»); null: keine
+export const markeVon = (f: Fahrplan, w: string | null): Marke | null => {
+  if (w === null) return null;
+  const t = ohneFett(w);
+  return t.startsWith('[') ? ((['offen', 'platzhalter', 'annahme'] as const).find((m) => beginntMit(f.marken[m]).test(t.slice(1))) ?? null) : null;
+};
 
 // Wert der ersten Zeile «Anfang: Wert», wie lage; null: Zeile fehlt
 export const wert = (text: string | true | undefined, anfang: string): string | null => {
@@ -52,9 +65,27 @@ export const wert = (text: string | true | undefined, anfang: string): string | 
   }
   return null;
 };
-export const belegt = (w: string | null): boolean => w !== null && w !== '' && !OFFEN.test(w) && !PLATZHALTER.test(w);
+export const belegt = (f: Fahrplan, w: string | null): boolean =>
+  w !== null && ohneFett(w) !== '' && markeVon(f, w) !== 'offen' && markeVon(f, w) !== 'platzhalter';
 // Von der Person beantwortet: belegt und keine Annahme der KI
-export const beantwortet = (w: string | null): boolean => belegt(w) && !ANNAHME.test(w!);
+export const beantwortet = (f: Fahrplan, w: string | null): boolean => belegt(f, w) && markeVon(f, w) !== 'annahme';
+// Passt der Wert zu werte der Pflichtfrage (beginnt mit einem dieser Wörter)? Ohne werte immer; eine Annahme davor zählt nicht mit
+export const wertPasst = (f: Fahrplan, q: Pick<Pflichtfrage, 'werte'>, w: string | null): boolean => {
+  if (!q.werte?.length) return true;
+  if (w === null) return false;
+  const t = ohneFett(w);
+  return beginntMit(q.werte).test(markeVon(f, t) === 'annahme' ? t.slice(1).replace(beginntMit(f.marken.annahme), '').replace(/^[\s:\]]*/, '') : t);
+};
+// Wohnort nach dem Wert der Zeile «Wohnort:» (P11): beginnt er mit dem Namen bei Albatros, light oder pilot, jeder andere entschiedene Wert
+// selbst; ohne Entscheid (fehlt, offen, Annahme) das Abo, Gratis heisst selbst (vert-05)
+export const wohnortVon = (f: Fahrplan, w: string | null, stufe: string | undefined): Wohnort => {
+  if (belegt(f, w) && markeVon(f, w) !== 'annahme') {
+    if (beginntMit([f.wohnorte.light]).test(ohneFett(w!))) return 'light';
+    if (beginntMit([f.wohnorte.pilot]).test(ohneFett(w!))) return 'pilot';
+    return 'selbst';
+  }
+  return stufe === 'light' || stufe === 'pilot' ? stufe : 'selbst';
+};
 // Wie pruefen.mjs --vor-bau: letzte Zeile «Freigegeben zum Bauen:», Fett und Listenzeichen weg, ein Datum vorne
 export const freigabeZumBauen = (text: string | true | undefined): string | null => {
   if (typeof text !== 'string') return null;
@@ -75,12 +106,13 @@ export const abschluss = (f: Fahrplan, p: Phase): string => {
   const l = p.insel[p.insel.length - 1]!;
   return rang(f, l) > rang(f, 'live') ? 'live' : l;
 };
-export const bisAbschluss = (f: Fahrplan, p: Phase) => p.insel.slice(0, p.insel.indexOf(abschluss(f, p)) + 1);
+// Insel-Schritte bis zum Abschluss: je Wohnort, wo der Vertrag sie unterscheidet (P13: insel_je_wohnort), sonst alle bis zum Abschluss
+export const bisAbschluss = (f: Fahrplan, p: Phase, w: Wohnort) => p.insel_je_wohnort?.[w] ?? p.insel.slice(0, p.insel.indexOf(abschluss(f, p)) + 1);
 export const erledigtNachInsel = (f: Fahrplan, s: string | null | undefined) => f.phasen.filter((p) => rang(f, abschluss(f, p)) <= rang(f, s)).length;
 export const hoeher = (f: Fahrplan, a: string | null, b: string | null) => (rang(f, a) >= rang(f, b) ? a : b);
 // Wie lage: die höchste Phase, deren Pflichtzeilen in allen Ergebnissen belegt sind
 export const erledigtNachDateien = (f: Fahrplan, dateien: Record<string, string | true>) =>
-  f.phasen.reduce((n, p, i) => (p.ergebnis.every((e) => (e.zeilen ?? []).every((z) => belegt(wert(dateien[e.datei], z)))) ? i + 1 : n), 0);
+  f.phasen.reduce((n, p, i) => (p.ergebnis.every((e) => (e.zeilen ?? []).every((z) => belegt(f, wert(dateien[e.datei], z)))) ? i + 1 : n), 0);
 export const phaseIndex = (f: Fahrplan, id: string) => f.phasen.findIndex((p) => p.id === id);
 const pflichtfrage = (f: Fahrplan, id: string) => {
   for (const p of f.phasen) for (const q of p.pflichtfragen) if (q.id === id) return { phase: p, frage: q };
@@ -137,11 +169,12 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
   liste.push(pruefung('lage-belege', 'lage mit skills_stand und, sobald es ein Projekt gibt, mit belege', jeLage.filter((x) => !x.length).length, Math.max(1, lage.length),
     lage.length ? jeLage.flat() : ['lage nie aufgerufen']));
 
-  // Insel: jeder Schritt bis zum Abschluss der letzten Phase gemeldet
-  const soll = phasen.flatMap((p) => bisAbschluss(f, p));
+  // Insel: jeder Schritt bis zum Abschluss der letzten Phase gemeldet; in P13 je Wohnort (Light ohne Fliessband, selbst nur live)
+  const wohnort = wohnortVon(f, wert(ende['docs/lancieren.md'], 'Wohnort:'), persona.stufe);
+  const soll = phasen.flatMap((p) => bisAbschluss(f, p, wohnort));
   const gemeldet = new Set(melden.map((a) => a.argumente.schritt as string));
   const fehlt = soll.filter((s) => !gemeldet.has(s));
-  liste.push(pruefung('insel', `Insel-Schritte ${ab} bis ${bis} gemeldet`, soll.length - fehlt.length, soll.length, fehlt.length ? [`nicht gemeldet: ${fehlt.join(', ')}`] : []));
+  liste.push(pruefung('insel', `Insel-Schritte ${ab} bis ${bis} gemeldet (Wohnort ${wohnort})`, soll.length - fehlt.length, soll.length, fehlt.length ? [`nicht gemeldet: ${fehlt.join(', ')}`] : []));
 
   // Insel belegt: der Abschluss einer Phase erst mit ihren Ergebnisdateien (bei einem Ja-Moment mit Datum in der Zeile der Person)
   const belegFehler: string[] = [];
@@ -179,11 +212,12 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
   let frOk = 0, frAlle = 0;
   for (const p of phasen) for (const q of p.pflichtfragen) {
     frAlle++;
-    const [datei, anfang] = q.ablage.split('#') as [string, string | undefined];
-    const w = anfang ? wert(ende[datei], anfang) : null;
-    const ok = anfang ? (q.antwortet === 'person' ? beantwortet(w) : belegt(w)) : ende[datei] !== undefined;
-    if (ok) frOk++;
-    else frFehler.push(`${p.id} ${q.id} (${q.antwortet}): ${!anfang ? `${datei} fehlt` : w === null ? `Zeile «${anfang}» fehlt` : `«${kurz(w)}»`}`);
+    const [datei, zeile] = q.ablage.split('#') as [string, string | undefined];
+    const w = zeile ? wert(ende[datei], zeile) : null;
+    const da = zeile ? (q.antwortet === 'person' ? beantwortet(f, w) : belegt(f, w)) : ende[datei] !== undefined;
+    const passt = !zeile || wertPasst(f, q, w);
+    if (da && passt) frOk++;
+    else frFehler.push(`${p.id} ${q.id} (${q.antwortet}): ${!zeile ? `${datei} fehlt` : w === null ? `Zeile «${zeile}» fehlt` : `«${kurz(w)}»${da ? ` beginnt nicht mit ${q.werte!.join(', ')}` : ''}`}`);
   }
   liste.push(pruefung('pflichtfragen', 'Pflichtfragen gestellt: die der Person von ihr beantwortet, die übrigen belegt', frOk, frAlle, frFehler));
 
