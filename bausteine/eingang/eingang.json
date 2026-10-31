@@ -1,0 +1,10 @@
+{
+  "ursprung": "https://NAME.aufwind.sh",
+  "anmeldeseite": "/mitglieder.html",
+  "teile": [
+    { "name": "pocketbase", "ziel": "http://pocketbase:8090", "pfade": ["/api/"], "zugang": "offen" },
+    { "name": "intern", "ziel": "http://webseite:80", "pfade": ["/intern/"], "zugang": "angemeldet" },
+    { "name": "vorstand", "ziel": "http://webseite:80", "pfade": ["/vorstand/"], "zugang": "rolle:vorstand" },
+    { "name": "webseite", "ziel": "http://webseite:80", "pfade": ["/"], "zugang": "offen" }
+  ]
+}

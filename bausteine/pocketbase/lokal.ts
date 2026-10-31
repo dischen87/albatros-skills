@@ -1,10 +1,11 @@
 // Die Seite mit PocketBase auf diesem Computer, bevor etwas ins Netz geht (Skill bausteine): echtes Buchen, echte Mails, nur lokal.
 //   bun bausteine/pocketbase/lokal.ts                  die gebaute Seite aus seite/ (vorher in web/ «npm run build») unter http://localhost:8090
 //   --seite <ordner>  --port <zahl>
+//   --eingang  [--eingang-port <zahl>]               mit dem Baustein eingang davor (bausteine/eingang), die Seite dann unter http://localhost:8080
 // Bei jedem Start frisch (eigener Temp-Ordner). Die Daten aus pb_migrations kommen mit, also auch der Wochenplan der Person
 // (3_kurse.js). Mails gehen an niemanden, sie erscheinen hier im Terminal. Für die Verwaltung (verwaltung.html und /_/) gibt es
 // ein Konto nur für diesen Computer, es steht unten. Beenden mit Ctrl+C.
-import { cpSync, existsSync, mkdtempSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { einstellen, lesbar, mailAttrappe, pocketbase, wurzelVon } from './programm.ts';
@@ -28,7 +29,23 @@ const programm = await pocketbase(wurzel);
 const konto = 'lokal@albatros.test', passwort = crypto.randomUUID().slice(0, 18);
 Bun.spawnSync([programm, 'superuser', 'upsert', konto, passwort, ...dirs], { env });
 const server = Bun.spawn([programm, 'serve', `--http=127.0.0.1:${port}`, `--publicDir=${seite}`, ...dirs], { env, stdout: 'inherit', stderr: 'inherit' });
-process.on('SIGINT', () => { server.kill(); process.exit(0); });
+const prozesse: { kill(): void }[] = [server];
+process.on('SIGINT', () => { for (const p of prozesse) p.kill(); process.exit(0); });
+
+// Mit dem Eingang: Er bekommt eingang.json aus dem Projekt, nur gehen alle Teile an dieses PocketBase (es liefert lokal auch die Seite aus)
+let seitenAdresse = adresse;
+if (args.includes('--eingang')) {
+  const ordner = join(wurzel, '..', 'eingang');
+  if (!existsSync(join(ordner, 'eingang.json'))) { console.error(`${ordner}/eingang.json fehlt: zuerst den Baustein eingang holen (Skill bausteine).`); server.kill(); process.exit(2); }
+  const konfig = JSON.parse(readFileSync(join(ordner, 'eingang.json'), 'utf8')) as { teile: { ziel: string }[] };
+  for (const t of konfig.teile) t.ziel = `http://127.0.0.1:${port}`;
+  const eingangPort = Number(wert('--eingang-port') ?? 8080);
+  seitenAdresse = `http://localhost:${eingangPort}`;
+  writeFileSync(join(tmp, 'eingang.json'), JSON.stringify({ ...konfig, ursprung: seitenAdresse }));
+  prozesse.push(Bun.spawn([process.execPath, '--smol', join(ordner, 'eingang.ts')], {
+    env: { ...env, PORT: String(eingangPort), EINGANG_JSON: join(tmp, 'eingang.json'), VERTRAUTE_PROXYS: '' }, stdout: 'ignore', stderr: 'inherit',
+  }));
+}
 
 // Mails im Terminal: an wen, Betreff und Text
 const smtp = mailAttrappe((roh) => {
@@ -45,12 +62,12 @@ for (let i = 0; i < 50 && !(await fetch(`${api}/health`).catch(() => null))?.ok;
 const anmeldung = await fetch(`${api}/collections/_superusers/auth-with-password`, {
   method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identity: konto, password: passwort }),
 });
-if (!anmeldung.ok) { console.error(`PocketBase antwortet nicht wie erwartet (${anmeldung.status}).`); server.kill(); process.exit(1); }
-await einstellen(api, ((await anmeldung.json()) as { token: string }).token, smtp.port, adresse);
+if (!anmeldung.ok) { console.error(`PocketBase antwortet nicht wie erwartet (${anmeldung.status}).`); for (const p of prozesse) p.kill(); process.exit(1); }
+await einstellen(api, ((await anmeldung.json()) as { token: string }).token, smtp.port, seitenAdresse);
 
 console.log(`
 Läuft auf diesem Computer, nichts davon ist im Netz:
-  Seite:          ${adresse}/
+  Seite:          ${seitenAdresse}/${seitenAdresse !== adresse ? '  (durch den Eingang; geschützte Teile nur mit Anmeldung)' : ''}
   Verwaltung:     ${adresse}/verwaltung.html (falls eingebaut) und ${adresse}/_/
   Konto (nur hier): ${konto}  Passwort: ${passwort}
   Mails erscheinen hier im Terminal. Beenden mit Ctrl+C.`);
