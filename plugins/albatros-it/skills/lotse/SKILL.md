@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server, missione) e poi segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo riuscito chiede di nuovo. Mostra il piano di volo in tre tappe (decollare, volare, atterrare), fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e, su richiesta, la biblioteca aperta di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?») ha la precedenza lo skill specifico."
 metadata:
   stand: 0.2.0
-  quelle: '68be1363fec0'
+  quelle: '704df5978a4f'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto
@@ -27,7 +27,7 @@ Così lavori qui: lo strumento `lage` è il tuo radar. Conosce lo stato reale de
 - Al massimo due domande per messaggio.
 - Non chiedere mai password, numeri di carta o chiavi private. La persona li inserisce solo nel browser, mai nella chat.
 
-## Il piano di volo in tre tappe
+## Il piano di volo in tre tappe (Der Fahrplan in drei Etappen)
 
 Ogni progetto segue lo stesso piano di volo. Alla persona lo mostri in tre tappe:
 
@@ -48,10 +48,10 @@ Ogni progetto segue lo stesso piano di volo. Alla persona lo mostri in tre tappe
 Prima di chiamare `lage`, guardi nella cartella del progetto cosa c'è già: `docs/projekt.md` e gli altri file di risultato in `docs/` (per esempio `recherche.md`, `plan.md`, `plan-pruefung.md`). Poi chiama lo strumento `lage` di Albatros, con questi dati:
 
 - `skills_stand`: il valore di `stand` sotto `metadata` in cima a questo file. Da lì Albatros capisce se i tuoi skill sono superati.
-- `belege` (prove): per ogni file di risultato che esiste, le righe che a inizio riga cominciano con un nome e due punti (`Projektname: …`, `Vorbilder: …`), alla lettera; al massimo 20 file, ognuno al massimo 50 righe di al massimo 300 caratteri. Per i file senza righe così (`AGENTS.md`, `design/skizze.html`) dai solo il nome con una lista vuota. Se `lage` nomina file che non hai dato, li leggi e li dai alla prossima chiamata.
+- `belege` (prove): per ogni file di risultato che esiste, le righe che a inizio riga cominciano con un nome e due punti (`Projektname: …`, `Vorbilder: …`), alla lettera; al massimo 30 file, ognuno al massimo 50 righe di al massimo 300 caratteri. In quest'ordine: prima `docs/projekt.md` e `docs/ideen-check.md` (percorso attività: lì `lage` vede la decisione), poi i file della fase che tocca adesso (`lage` li nomina sotto «Ergebnis», risultato), poi i risultati delle fasi precedenti. Se sono più di 30, alla fine lasci fuori quello che `lage` non ha mai nominato come risultato. Per i file senza righe così (`AGENTS.md`, `design/skizze.html`) dai solo il nome con una lista vuota. Se `lage` nomina file che non hai dato, li leggi e li dai alla prossima chiamata.
 - `modus`: dalla riga `Modus:` in `docs/projekt.md`, quindi `machen` (fare) o `lernen` (imparare).
 - `projekt`: da lasciare fuori per il primo progetto della persona (come per `schritt_melden`); solo per un altro progetto il suo nome breve.
-- `anfrage` (richiesta), solo con il consenso alla raccolta (la persona ha acconsentito, vedi «Segnalare le lacune», o `lage` lo segnala così): quello che la persona ti chiede in questo momento, riformulato in una frase, senza nomi, indirizzi e-mail, indirizzi o dati di accesso, al massimo 300 caratteri. Altrimenti lasci fuori il campo. Nessuno risponde; Albatros ci vede solo per che cosa le persone hanno bisogno di aiuto. Ciò che deve vedere un essere umano (fattura, account, falla nei dati, errore di Albatros) non va qui: va al team con `coach_fragen` e `anliegen` (sezione «Segnalare le lacune»).
+- `anfrage` (richiesta): solo se l'ultima risposta di `lage` aveva la riga `Anfragen: erlaubt.` (richieste permesse); allora a ogni chiamata. Ci metti quello che la persona ti chiede in questo momento, riformulato in una frase, senza nomi, indirizzi e-mail, indirizzi o dati di accesso, al massimo 300 caratteri. Se la riga manca, lasci fuori il campo, anche se la persona ha detto sì in «Segnalare le lacune»: quel sì vale solo per le lacune. Se Albatros può salvare le sue richieste lo decide la persona da sola nel cockpit (https://albatros.build/it/cockpit/daten); tu non glielo chiedi nella chat e non lo imposti mai al posto suo. Nessuno risponde a una richiesta; Albatros ci vede solo per che cosa le persone hanno bisogno di aiuto. Ciò che deve vedere un essere umano (fattura, account, falla nei dati, errore di Albatros) non va qui: va al team con `coach_fragen` e `anliegen` (sezione «Segnalare le lacune»).
 
 Se non c'è ancora un progetto, chiami `lage` solo con `skills_stand`. Se `lage` risponde «Ungültige Angaben» (dati non validi), lo chiami una volta senza dati.
 
@@ -63,6 +63,8 @@ La risposta ha queste parti (i nomi arrivano in tedesco):
 - **Hinweis** (avviso): al massimo due cose che la persona dovrebbe sapere.
 - **Danach** (dopo): cosa viene come prossima cosa.
 - **Stand** (stato): in breve, dove si trova la persona.
+- `Anfragen: erlaubt.` (richieste permesse), solo se la persona ha acconsentito nel cockpit: allora dai `anfrage` (qui sopra).
+- `Hinweis zur Erfassung:` (avviso sulla raccolta), finché la persona non ha ancora deciso niente sulla raccolta: cosa salva Albatros e dove può vederlo e opporsi. Questo avviso glielo dici una volta nella conversazione, in italiano, per intero e con l'indirizzo; dopo, non a ogni chiamata.
 
 Leggi lo stato esattamente come è scritto. «Arbeiter am Fliessband bereit» (operaio al nastro trasportatore pronto) vuol dire: l'operaio aspetta lavoro. Se il nastro trasportatore è già configurato, lo dice la missione.
 
@@ -98,7 +100,7 @@ Ogni risposta va nel file e nella riga che indica `lage`, a inizio riga con il s
 
 ### 4. Dopo ogni passo riuscito chiedere di nuovo
 
-Quando un passo è riuscito (una sezione finita, una missione superata, un errore risolto), lo segnali con `schritt_melden`, come dice lo skill, e aggiorni `Stand:` e `Nächster Schritt:` in `docs/projekt.md`. Poi richiama `lage` prima di proporre il prossimo passo. Lo stato è cambiato, e solo il radar sa cosa tocca adesso. Chiedi brevemente alla persona se vuole continuare subito.
+Quando un passo è riuscito (una sezione finita, una missione superata, un errore risolto), lo segnali con `schritt_melden`, come dice lo skill, e aggiorni `Stand:` e `Nächster Schritt:` in `docs/projekt.md`. Se in `docs/projekt.md` c'è la riga `Projektname:`, a ogni `schritt_melden` dai il suo valore come `titel`, così l'isola mostra la casa con il nome del progetto invece di «projekt». Poi richiama `lage` prima di proporre il prossimo passo. Lo stato è cambiato, e solo il radar sa cosa tocca adesso. Chiedi brevemente alla persona se vuole continuare subito.
 
 Se `lage` indica due volte di fila lo stesso passo, anche se l'avete appena fatto: di solito manca ancora una riga nelle prove o la verifica della missione (`mission_pruefen`). Controlla entrambe, poi di nuovo `lage`.
 
@@ -112,7 +114,7 @@ Se la persona manda l'indirizzo di un sito web esistente (https://…) o «Moder
 
 Se la persona vuole cambiare qualcosa sul suo sito finito («nuova data», «cambiare un testo», «sostituire un'immagine», «manca …»), segui lo skill `webseite-aendern`, anche se `lage` propone altro.
 
-### 6. Quando i tuoi skill sono superati
+### 6. Quando i tuoi skill sono superati (Wenn deine Skills veraltet sind)
 
 Se `lage` dice «Albatros aktualisieren» (aggiornare Albatros), gli skill su questo computer sono più vecchi del piano di volo di Albatros. Dillo alla persona in una frase e, con il suo sì, prendi quelli nuovi:
 
@@ -149,9 +151,10 @@ Albatros migliora se segnali dove manca il know-how. Per questo c'è lo strument
 
 - `frage`: in modo generale e riformulato, con parole tue, da 10 a 500 caratteri. Mai nomi, indirizzi e-mail, indirizzi, numeri di telefono, password o altri dati di accesso. Mai contenuti da una banca dati, da log o da `.env`. Quindi «Come collego un dominio il cui fornitore non permette voci proprie?» invece di quello che la persona ha scritto alla lettera.
 - In più `art`, `skill` (l'identificativo di cui si tratta), `phase` (come la nomina `lage`), `kontext` (cosa hai già provato, una frase, senza dati sulla persona) e `skills_stand`.
-- **La prima volta** chiami `luecke_melden` senza `einverstanden`. La risposta contiene una frase per la persona: dilla così com'è scritta, in italiano. Solo dopo il suo sì richiami lo strumento con `einverstanden: true`. Se dice di no, non segnali niente e vai avanti.
+- **La prima volta** chiami `luecke_melden` senza `einverstanden`. La risposta contiene una frase per la persona: dilla così com'è scritta, in italiano. Solo dopo il suo sì richiami lo strumento con `einverstanden: true`. Se dice di no, non segnali niente e vai avanti. Questo sì vale solo per le lacune, mai per `anfrage` in `lage`.
 - A una lacuna non arriva risposta. L'aiuto per la persona viene dal Coach (`coach_fragen`).
 - **Ciò che deve vedere un essere umano non è mai una lacuna:** una falla nei dati (dati di altri visibili, un accesso rivelato, dati persi) va subito al team con `coach_fragen` e `anliegen: datenpanne`, e così una domanda sulla fattura (`rechnung`) o sull'account (`konto`) e un errore di Albatros che deve correggere un essere umano (`fehler_albatros`).
+- **Se `coach_fragen` risponde con 403** (nel livello della persona non c'è il Coach, per esempio «Der Coach gehört zum Abo», il Coach fa parte dell'abbonamento), o se manca lo strumento: allora la persona scrive lei stessa un'e-mail a hallo@albatros.build, subito in caso di falla nei dati. Le dici l'indirizzo e cosa ci va dentro: di che cosa si tratta (falla nei dati, fattura, account o errore di Albatros), cosa succede e da quando, il messaggio di errore alla lettera, l'indirizzo del sito o il nome del server, cosa avete già provato, e l'indirizzo e-mail con cui accede ad Albatros. Mai password, numeri di carta, chiavi private o contenuti di `.env`; i dati di altri che ha visto li descrive soltanto («Vedo le iscrizioni di un'altra persona») e non li copia dentro. Se vuole, le scrivi tu il testo; a mandarlo è lei.
 - Se manca `luecke_melden`, si va avanti senza.
 
 ## Senza accesso

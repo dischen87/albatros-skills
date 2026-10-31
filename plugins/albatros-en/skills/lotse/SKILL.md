@@ -3,7 +3,7 @@ name: lotse
 description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server, mission), then follows exactly the skill and section that are up now; after every step they finish, it asks again. Shows the flight plan in three stages (take off, fly, land), asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and, on request, the open library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”), the matching topic skill comes first."
 metadata:
   stand: 0.2.0
-  quelle: '68be1363fec0'
+  quelle: '704df5978a4f'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -27,7 +27,7 @@ That's how you work here: the tool `lage` is your radar. It knows where the pers
 - At most two questions in one message.
 - Never ask for passwords, card numbers or private keys. The person only types them in the browser, never in the chat.
 
-## The flight plan in three stages
+## The flight plan in three stages (Der Fahrplan in drei Etappen)
 
 Every project follows the same flight plan. You show it to the person in three stages:
 
@@ -48,10 +48,10 @@ Every project follows the same flight plan. You show it to the person in three s
 Before you call `lage`, look in the project folder to see what's already there: `docs/projekt.md` and the other result files in `docs/` (for example `recherche.md`, `plan.md`, `plan-pruefung.md`). Then call the Albatros tool `lage`, with these details:
 
 - `skills_stand`: the value of `stand` under `metadata` at the top of this file. That's how Albatros notices whether your skills are out of date.
-- `belege` (evidence): for every result file that exists, the lines that start at the beginning of the line with a name and a colon (`Projektname: …`, `Vorbilder: …`), word for word; at most 20 files, each with at most 50 lines of at most 300 characters. For files without such lines (`AGENTS.md`, `design/skizze.html`), give just the name with an empty list. If `lage` names files you didn't send, read them and send them with the next call.
+- `belege` (evidence): for every result file that exists, the lines that start at the beginning of the line with a name and a colon (`Projektname: …`, `Vorbilder: …`), word for word; at most 30 files, each with at most 50 lines of at most 300 characters. In this order: first `docs/projekt.md` and `docs/ideen-check.md` (business path: that's where `lage` sees the decision), then the files of the phase that's up now (`lage` names them under “Ergebnis”, result), then the results of earlier phases. If there are more than 30, leave out at the end whatever `lage` has never named as a result. For files without such lines (`AGENTS.md`, `design/skizze.html`), give just the name with an empty list. If `lage` names files you didn't send, read them and send them with the next call.
 - `modus`: from the line `Modus:` in `docs/projekt.md`, so `machen` (do) or `lernen` (learn).
 - `projekt`: leave it out for the person's first project (as with `schritt_melden`); only for another project, its short name.
-- `anfrage` (request), only with consent to the recording (the person has agreed, see “Reporting gaps”, or `lage` says so): what the person is asking you for right now, reworded in one sentence, without names, email addresses, addresses or access details, at most 300 characters. Otherwise leave the field out. Nobody answers it; it only shows Albatros what people need help with. Anything a human has to see (a bill, the account, a data breach, a mistake at Albatros) doesn't go here: it goes to the team with `coach_fragen` and `anliegen` (section “Reporting gaps”).
+- `anfrage` (request): only if `lage`'s last answer had the line `Anfragen: erlaubt.` (requests allowed); then with every call. It says what the person is asking you for right now, reworded in one sentence, without names, email addresses, addresses or access details, at most 300 characters. If the line is missing, leave the field out, even if the person said yes under “Reporting gaps”: that yes only counts for gaps. Whether Albatros may store their requests is something the person decides themselves in the cockpit (https://albatros.build/en/cockpit/daten); you don't ask them about it in the chat and you never set it for them. Nobody answers a request; it only shows Albatros what people need help with. Anything a human has to see (a bill, the account, a data breach, a mistake at Albatros) doesn't go here: it goes to the team with `coach_fragen` and `anliegen` (section “Reporting gaps”).
 
 If there's no project yet, call `lage` with just `skills_stand`. If `lage` answers “Ungültige Angaben” (invalid details), call it once without any details.
 
@@ -63,6 +63,8 @@ Its answer has these parts (the labels come in German):
 - **Hinweis** (note): at most two things the person should know.
 - **Danach** (after that): what comes next.
 - **Stand** (status): briefly, where the person stands.
+- `Anfragen: erlaubt.` (requests allowed), only if the person agreed in the cockpit: then you send `anfrage` (above).
+- `Hinweis zur Erfassung:` (note on the recording), as long as the person hasn't decided anything about the recording yet: what Albatros stores and where they can see it and object. Tell them this note once in the conversation, in English, in full and with the address; after that, not on every call.
 
 Read the status exactly as it's written. “Arbeiter am Fliessband bereit” (worker at the conveyor belt ready) means: the worker is waiting for work. Whether the conveyor belt is already set up is something the mission tells you.
 
@@ -98,7 +100,7 @@ Every answer goes into the file and line `lage` names, at the start of the line 
 
 ### 4. Ask again after every step that's done
 
-Once a step is done (a section finished, a mission passed, an error fixed), report it with `schritt_melden` as the skill says, and update `Stand:` and `Nächster Schritt:` in `docs/projekt.md`. Then call `lage` again before you suggest the next step. The status has changed, and only the radar knows what's up now. Briefly ask the person whether they want to carry on straight away.
+Once a step is done (a section finished, a mission passed, an error fixed), report it with `schritt_melden` as the skill says, and update `Stand:` and `Nächster Schritt:` in `docs/projekt.md`. If `docs/projekt.md` has the line `Projektname:`, pass its value as `titel` with every `schritt_melden`, so the island shows the house with the project's name instead of “projekt”. Then call `lage` again before you suggest the next step. The status has changed, and only the radar knows what's up now. Briefly ask the person whether they want to carry on straight away.
 
 If `lage` names the same step twice in a row although you've just done it: usually a line is still missing from the evidence, or the mission check (`mission_pruefen`). Check both, then `lage` again.
 
@@ -112,7 +114,7 @@ If the person sends the address of an existing website (https://…) or “Moder
 
 If the person wants to change something on their finished site (“new date”, “change a text”, “swap a picture”, “… is missing”), you follow the skill `webseite-aendern`, even if `lage` suggests something else.
 
-### 6. If your skills are out of date
+### 6. If your skills are out of date (Wenn deine Skills veraltet sind)
 
 If `lage` says “Albatros aktualisieren” (update Albatros), the skills on this computer are older than the flight plan at Albatros. Tell the person in one sentence and, with their yes, get the new ones:
 
@@ -149,9 +151,10 @@ Albatros gets better when you report where the know-how is missing. That's what 
 
 - `frage`: general and reworded, in your own words, 10 to 500 characters. Never names, email addresses, addresses, phone numbers, passwords or other access details. Never content from a database, from logs or from `.env`. So “How do I connect a domain whose provider doesn't allow its own records?” rather than what the person wrote word for word.
 - On top of that `art`, `skill` (the slug it's about), `phase` (as `lage` names it), `kontext` (what you've already tried, one sentence, without details about the person) and `skills_stand`.
-- **The first time**, call `luecke_melden` without `einverstanden`. The answer contains a sentence for the person: tell them it as it's written, in English. Only after their yes, call it again with `einverstanden: true`. If they say no, report nothing and carry on.
+- **The first time**, call `luecke_melden` without `einverstanden`. The answer contains a sentence for the person: tell them it as it's written, in English. Only after their yes, call it again with `einverstanden: true`. If they say no, report nothing and carry on. This yes only counts for gaps, never for `anfrage` in `lage`.
 - A gap gets no answer. Help for the person comes from the coach (`coach_fragen`).
 - **Anything a human has to see is never a gap:** a data breach (other people's data visible, access details given away, data lost) goes to the team straight away with `coach_fragen` and `anliegen: datenpanne`, and so does a question about a bill (`rechnung`) or the account (`konto`) and a mistake at Albatros that a human has to fix (`fehler_albatros`).
+- **If `coach_fragen` answers 403** (there's no coach in the person's plan, for example “Der Coach gehört zum Abo”, the coach is part of the subscription), or the tool is missing: then the person writes an email to hallo@albatros.build themselves, straight away for a data breach. Give them the address and what goes in it: what it's about (data breach, bill, account or a mistake at Albatros), what's happening and since when, the error message word for word, the address of the site or the name of the server, what you've already tried, and the email address they use to sign in to Albatros. Never passwords, card numbers, private keys or anything from `.env`; other people's data they've seen, they only describe (“I can see another person's sign-ups”) and never copy in. If they like, you draft the text; they send it themselves.
 - If `luecke_melden` is missing, carry on without it.
 
 ## Without sign-in
