@@ -9,6 +9,7 @@ import schema from '../schema/mission.schema.json';
 import { befehleAusReadme, befehleAusSkill, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
+import { lektionenFehlen } from './lektionen.ts';
 import { hoeher, quelle } from './stand.ts';
 
 type Mission = {
@@ -196,6 +197,8 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
 }
 for (const weg of ['flugschule', 'webseite', 'geschaeft'])
   if (!wege.has(weg)) fehler.push(`missionen/${weg}: keine Missionen`);
+// Lektion je Phase und Weg (scripts/lektionen.ts): Wo der Fahrplan Lernmomente hat, zeigt lage im Modus lernen eine Kontrollfrage
+if (fahrplan) for (const f of lektionenFehlen(fahrplan.phasen, [...deutsch.values()])) fehler.push(`missionen: ${f}`);
 
 // Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md
 // sind in jeder Sprache gleich: Sie geben keinen Text aus, den die Person liest, ohne dass die KI ihn erklärt.
