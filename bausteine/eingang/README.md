@@ -11,7 +11,7 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 | `pb_hooks/eingang.pb.js`, `pb_hooks/eingang.js` | Anmelden mit Cookie in PocketBase: `POST /api/eingang/anmelden`, `POST /api/eingang/abmelden`, `GET /api/eingang/pruefen` |
 | `pb_migrations/2_eingang.js` | Grenze für das Anmelden: 5 Versuche je Adresse in 60 Sekunden, über den Eingang und über `auth-with-password` |
 | `Dockerfile`, `compose.yaml` | Container `eingang` auf Port 80 (Ausschnitt für `include:`) |
-| `test.ts` | 34 Prüfungen gegen ein echtes PocketBase und Teile zum Schein: `bun bausteine/eingang/test.ts` |
+| `test.ts` | 46 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
 | `messen.ts` | Arbeitsspeicher und Antwortzeiten: `bun bausteine/eingang/messen.ts --anfragen 200000 --smol`; mit gehaltenen Anfragen: `--gehalten 1100 --fetch-plaetze 1024` |
 
 ## eingang.json
@@ -61,21 +61,31 @@ Das Cookie `__Host-sitzung` ist `HttpOnly`, `Secure`, `SameSite=Lax`, `Path=/`, 
 
 ## Gemessen
 
-Am 31.10.2026 mit `messen.ts`, je Lage zwei Läufe, auf einem Mac (Apple M5 Pro, macOS, arm64), Bun 1.4.2 mit `--smol` wie im `Dockerfile`, vor einem echten PocketBase 0.40.5 (`GOMEMLIMIT=200MiB` wie in `pocketbase/compose.yaml`). Je 200 000 Anfragen, die Hälfte an einen geschützten Teil (jede mit Prüfung bei PocketBase), ohne Grenzen. Auf dem Server (Linux) nicht gemessen.
+Am 31.10.2026 mit `messen.ts`, je Lage zwei Läufe, auf einem Mac (Apple M5 Pro, macOS, arm64), Bun 1.4.2 mit `--smol` wie im `Dockerfile`, vor einem echten PocketBase 0.40.5 (`GOMEMLIMIT=200MiB` wie in `pocketbase/compose.yaml`). Je 200 000 Anfragen, die Hälfte an einen geschützten Teil (jede mit Prüfung bei PocketBase), ohne Grenze je Minute. Gemessen mit der Grenze von 20 offenen Anfragen je Adresse. Auf dem Server (Linux) nicht gemessen.
 
 | Lage | Eingang (RSS) | offen: Median / 95 % | geschützt: Median / 95 % |
 |---|---|---|---|
 | Leerlauf | 20 MB | – | – |
-| 50 gleichzeitig, rund 30 000 Anfragen je Sekunde, 1000 Adressen | Spitze 55–56 MB | 1,2 / 2,7 ms | 1,7 / 3,8–4,0 ms |
-| 200 gleichzeitig, rund 20 000 je Sekunde | Spitze 59–62 MB | 3,6–3,8 / 8,5 ms | 8,5 / 52–53 ms |
-| 50 gleichzeitig, von 60 000 Adressen | Spitze 64–66 MB | 1,2 / 2,6 ms | 1,6 / 3,3–3,4 ms |
-| 50 gleichzeitig, ohne `--smol` | Spitze 69–71 MB | 1,2 / 2,5–2,7 ms | 1,6–1,7 / 3,7–4,3 ms |
+| 50 gleichzeitig, rund 16 000 Anfragen je Sekunde, 1000 Adressen | Spitze 56 MB | 2,5 / 4,4 ms | 3,4–3,5 / 5,6–5,7 ms |
+| 200 gleichzeitig, rund 18 000 je Sekunde | Spitze 65–66 MB | 9,1–9,2 / 12,9–13,1 ms | 12,5–12,7 / 18,0–18,3 ms |
+| 50 gleichzeitig, von 60 000 Adressen | Spitze 67–69 MB | 2,1 / 4,1 ms | 2,9 / 5,1 ms |
+| 50 gleichzeitig, ohne `--smol` | Spitze 68–69 MB | 1,9–2,0 / 3,6–3,9 ms | 2,6–2,7 / 4,7–4,9 ms |
 
-- Kein Leck: 50 000 und 200 000 Anfragen endeten auf derselben Höhe, 600 000 von 60 000 Adressen ebenso. Was der Speicher einmal hatte, gibt Bun in 5 Sekunden nicht zurück (RSS bleibt auf der Spitze).
-- Die Prüfung bei PocketBase kostet je geschützte Anfrage rund 0,5 ms (Median 1,7 statt 1,2 ms).
+Langsame Anfragen, die ein Teil festhält (`messen.ts --gehalten`, je 20 von einer Adresse), je ein Lauf:
+
+| Offen gehalten | Plätze für fetch | Eingang (RSS) | eine andere Besucherin |
+|---|---|---|---|
+| 300 von 15 Adressen | 256 (Standard von Bun) | 33 MB | keine Antwort in 4 s |
+| 1000 von 50 Adressen | 1024 (wie im `Dockerfile`) | 45 MB | 200 sofort |
+| 1100 von 55 Adressen | 1024 | 47 MB | keine Antwort in 4 s |
+| 4200 von 210 Adressen | 4096 | 89 MB | keine Antwort in 4 s |
+
+- Der Körper jeder Antwort geht durch einen Strom in JavaScript, damit der Platz erst frei wird, wenn er ganz durch ist. Das kostet: Vorher waren es 29 600 statt 16 000 Anfragen je Sekunde und im Median 1,2 statt 2,5 ms (offen), gemessen am selben Tag mit je 100 000 Anfragen. Für eine Vereinsseite (höchstens 600 Anfragen je Minute und Adresse) spielt das keine Rolle; dafür blockiert eine einzelne Adresse nicht mehr alle.
+- Kein Leck: 100 000 und 200 000 Anfragen endeten auf derselben Höhe (55–57 MB). Was der Speicher einmal hatte, gibt Bun in 5 Sekunden nicht zurück (RSS bleibt auf der Spitze).
+- Die Prüfung bei PocketBase kostet je geschützte Anfrage knapp 1 ms (Median 3,4 statt 2,5 ms).
 - Die Liste der Adressen für die Grenzen ist auf 10 000 begrenzt; mit 20 000 kostete sie gemessen 40 MB mehr (Spitze 95 MB), darum die kleinere Zahl. `mem_limit` im Container: 128 MB.
-- Ehrlich dazu: PocketBase selbst stieg unter dieser künstlichen Last von 45 MB auf 172–180 MB (50 gleichzeitig) und 311–314 MB (200 gleichzeitig), über sein `mem_limit` von 256 MB. Im Betrieb begrenzt der Eingang jede Adresse auf 600 Anfragen je Minute; so viel Last kommt von einer Vereinsseite nicht. Die PocketBase-Werte sind RSS auf dem Mac und nicht vergleichbar mit den 20 MB vom 28.10.2026 (`docker stats` auf dem Server).
-- Das Docker-Abbild ist nicht lokal gebaut (Docker lief auf diesem Rechner nicht). Gleich wie in den anderen Diensten von Albatros: `oven/bun:1.4.2-slim`.
+- Ehrlich dazu: PocketBase selbst stieg unter dieser künstlichen Last von 45 MB auf 166–175 MB (50 gleichzeitig) und 207–245 MB (200 gleichzeitig), nahe an sein `mem_limit` von 256 MB. Im Betrieb begrenzt der Eingang jede Adresse auf 600 Anfragen je Minute; so viel Last kommt von einer Vereinsseite nicht. Die PocketBase-Werte sind RSS auf dem Mac und nicht vergleichbar mit den 20 MB vom 28.10.2026 (`docker stats` auf dem Server).
+- Das Docker-Abbild ist nicht lokal gebaut (Docker lief auf diesem Rechner nicht), darum ist auch `mem_limit` nicht im Container gemessen, nur RSS auf dem Mac. Gleich wie in den anderen Diensten von Albatros: `oven/bun:1.4.2-slim`.
 
 ## Vergleich: nginx mit auth_request (nicht gebaut)
 
@@ -83,16 +93,16 @@ Statt eines eigenen Dienstes könnte nginx im Container `webseite` die Tür sein
 
 | | Bun-Eingang | nginx `auth_request` |
 |---|---|---|
-| Speicher | 20 MB im Leerlauf, 55–66 MB unter Volllast (gemessen) | kein zusätzlicher Prozess; nginx in `webseite` braucht rund 10 MB (gemessen am 28.10.2026), der Zuschlag für `auth_request` ist geschätzt, nicht gemessen |
-| Prüfung bei PocketBase | je Anfrage an einen geschützten Teil, rund 0,5 ms (gemessen) | ebenso je Anfrage |
+| Speicher | 20 MB im Leerlauf, 56–69 MB unter Volllast (gemessen) | kein zusätzlicher Prozess; nginx in `webseite` braucht rund 10 MB (gemessen am 28.10.2026), der Zuschlag für `auth_request` ist geschätzt, nicht gemessen |
+| Prüfung bei PocketBase | je Anfrage an einen geschützten Teil, knapp 1 ms (gemessen) | ebenso je Anfrage |
 | Fremde `x-eingang-*` | alle mit dem Präfix weg | nur einzeln mit `proxy_set_header … ""`; eine neue Kopfzeile ginge durch, bis jemand die Konfiguration nachführt |
 | Pfade | eine Funktion: aufgelöst, einmal dekodiert, Tricks abgelehnt, getestet | nginx löst selbst auf (`merge_slashes`, `..`, `%2F`); Entscheid über `location` mit Vorrangregeln (`=`, `^~`, Regex, Präfix), Fehler leicht und schwer zu sehen |
 | Ursprung beim Schreiben | Liste in `eingang.json` | `map $http_origin` und `if`, in `location` heikel |
 | 503 nach 2 s | so gebaut und getestet | `auth_request` meldet bei einem Fehler 500; 503 braucht `error_page`-Umwege |
 | Protokoll ohne Adressen | so gebaut und getestet | eigenes `log_format` ohne `$remote_addr` und mit `$uri` statt `$request_uri` |
-| Test | `test.ts` mit 34 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
+| Test | `test.ts` mit 46 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
 
-Fazit: nginx spart 20 bis 66 MB und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
+Fazit: nginx spart 20 bis 69 MB und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
 
 ## Grenzen
 
