@@ -1,6 +1,6 @@
 ---
 description: Person spricht Französisch, hat Light und ein Schloss; die Seite entsteht mit sprache fr
-tags: [kern, flugschule]
+tags: [kern, flugschule, P11]
 runs: 1
 max_turns: 15
 allowed_tools: [Read, Glob, Grep, Skill]

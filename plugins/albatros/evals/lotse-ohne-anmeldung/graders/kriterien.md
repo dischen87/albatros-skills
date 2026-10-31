@@ -8,6 +8,7 @@ Bewertet wird die letzte Chat-Antwort der KI an die Person. Albatros hat auf jed
 
 - Die KI spricht die Person auf Deutsch in Du-Form an, ohne unerklärten Fachjargon.
 - Muss: Sie sagt ehrlich, dass Albatros die Person noch nicht kennt (nicht angemeldet) und sie darum nicht sagen kann, was nach dem echten Stand dran ist. Einen Stand, einen Server, eine Mission oder einen Fortschritt zu erfinden oder als Tatsache zu nennen ist ein Verstoss.
-- Muss: Sie zeigt die offene Bibliothek: eine Liste oder Tabelle mit mehreren Skills (mindestens zehn), je mit Kennung (z. B. `pipeline`, `git-logbuch`, `domain`) und einer kurzen Angabe, wann er passt, damit die Person selbst wählen kann.
+- Muss: Sie zeigt den Fahrplan in drei Etappen (abheben, fliegen, landen) und nennt den nächsten Schritt nach dem, was im Projektordner liegt: Der Ordner ist leer, also die Idee mit dem Projektnamen (Skill `webseite-planen`). Sie sagt dazu, dass das ihr Blick in den Ordner ist, nicht der Stand bei Albatros.
+- Soll (kein FAIL-Grund allein): Sie bietet die offene Bibliothek der Skills an, falls die Person selbst wählen will.
 - Muss: Sie erklärt, dass der Lotse (der richtige Schritt im richtigen Moment, nach dem echten Stand) die Anmeldung braucht, und löst sie selbst aus: Sie gibt der Person den Link zur Anmeldung im Browser (das Werkzeug authenticate lieferte https://clerk.albatros.build/oauth/authorize?response_type=code&client_id=test&state=test) oder bietet an, die Anmeldung gleich zu starten. Befehle wie `/mcp` oder `codex mcp login`, die die Person selbst tippen soll, sind ein Verstoss.
 - Sie fragt nicht nach Passwort, Kartennummer oder privatem Schlüssel im Chat; das Passwort gibt die Person nur im Browser ein.

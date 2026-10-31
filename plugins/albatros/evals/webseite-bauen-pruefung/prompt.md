@@ -1,6 +1,6 @@
 ---
 description: Aus den Messwerten von pruefen.mjs schreibt die KI vier Berichte mit Ampel in einfachen Worten und gibt nichts frei
-tags: [kern, webseite]
+tags: [kern, webseite, P9]
 runs: 1
 max_turns: 15
 allowed_tools: [Read, Glob, Grep, Skill, Write]

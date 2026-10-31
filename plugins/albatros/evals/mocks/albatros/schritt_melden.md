@@ -2,4 +2,4 @@
 type: fixed
 ---
 
-Schritt gemeldet. Das Haus auf der Insel ist gewachsen: https://albatros.build/cockpit/insel
+Auf der Insel steht projekt jetzt bei «{{input.schritt}}». Ruf lage erneut auf. Insel: https://albatros.build/cockpit/insel

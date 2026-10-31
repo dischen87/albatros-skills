@@ -1,0 +1,634 @@
+{
+  "tools": [
+    {
+      "name": "lage",
+      "description": "Zuerst aufrufen, mit skills_stand und belege. Liest den echten Stand der Person (Konto, Insel, Server oder Seite) und deine Belege und sagt nach dem Fahrplan (P1 bis P13), welcher Skill und Abschnitt jetzt dran ist (beim Weg Geschäft zuerst die Methoden der Phase), mit Grund, den offenen Pflichtfragen der Phase in der Sprache der Person, dem Ergebnis der Phase und dem Modus. Störungen kommen zuerst. Nach jedem geschafften Schritt erneut aufrufen. Hauptskill: lotse.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "skills_stand": {
+            "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin), damit lage merkt, wenn sie veraltet sind.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "projekt": {
+            "description": "Projekt, um das es geht (wie bei schritt_melden); ohne Angabe projekt, das Repo im Hafen.",
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+          },
+          "belege": {
+            "description": "Zeilen aus den Dateien des Projekts, die lage als Ergebnis der Phase nennt (z. B. docs/projekt.md mit «Projektname: …»), höchstens 20 Dateien. Daran erkennt lage, welche Pflichtfragen noch offen sind.",
+            "maxItems": 20,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "datei": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "zeilen": {
+                  "maxItems": 50,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 300
+                  }
+                }
+              },
+              "required": [
+                "datei",
+                "zeilen"
+              ]
+            }
+          },
+          "anliegen": {
+            "description": "Ein Anliegen, das ein Mensch bei Albatros sehen muss (Datenpanne, Rechnung, Konto, Fehler bei Albatros), in den Worten der Person, ohne Passwörter oder Zugangsdaten.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "modus": {
+            "description": "Modus des Projekts aus docs/projekt.md (Zeile «Modus:»).",
+            "type": "string",
+            "enum": [
+              "lernen",
+              "machen"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "konto_status",
+      "description": "Zeigt Anmeldung, gewählten Weg, Abo und den eigenen Server (Status, Adresse, SSH, hinterlegte Schlüssel, Fingerabdruck des Servers) oder bei Light die eigene Seite (Adresse, Hafen, Stand, eigene Domains). Für alle Einzelheiten; was jetzt dran ist, sagt lage. Auch um zu warten, bis ein Server bereit oder ein Abo aktiv ist.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "weg_waehlen",
+      "description": "Speichert den Weg der Person: webseite («Ich will eine Webseite») oder geschaeft («Ich habe eine Geschäftsidee»). Lässt sich später ändern.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "weg": {
+            "type": "string",
+            "enum": [
+              "webseite",
+              "geschaeft"
+            ]
+          }
+        },
+        "required": [
+          "weg"
+        ]
+      }
+    },
+    {
+      "name": "upgrade_link",
+      "description": "Gibt den Link zur Zahlungsseite von Stripe: light (eine Webseite unter name.aufwind.sh, auch mit eigener Domain, ohne eigenen Server) oder pilot (eigener Server mit Snapshots, ebenfalls mit eigenen Domains); die Preise nennt konto_status. Die Person gibt ihre Karte nur dort ein, nie im Chat. Läuft schon ein Abo, kommt der Link zum Kundenportal (zwischen Light und Pilot wechseln, kündigen).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "stufe": {
+            "default": "pilot",
+            "type": "string",
+            "enum": [
+              "light",
+              "pilot"
+            ]
+          },
+          "bestaetigt": {
+            "description": "true erst, wenn die Person in Phase P11 den Wohnort bei Albatros gewählt hat und das Abo will; vorher gibt es den Link nur so.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "name": "wunsch_melden",
+      "description": "Nur wenn die Person ausdrücklich will, dass Albatros eine Änderung an ihrer Seite für sie macht; das kostet pro Wunsch, den Preis nennt die Antwort. Selbst ändern mit ihrer eigenen KI ist gratis (Skill webseite-aendern). Geht nur mit einer Seite mit Light. text: der Wunsch in ihren Worten, ohne Passwörter oder Zugangsdaten. link: freiwillig eine Adresse, z. B. zu einem Bild. Gibt den Link zur Zahlung zurück.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "link": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "server_erstellen",
+      "description": "Erstellt den eigenen Server (braucht das Abo Pilot; mit Light stattdessen seite_erstellen). Wer von Light kommt, behält den Namen der Seite samt Repo und Schlüsseln; das passiert nach dem Wechsel zu Pilot auch von selbst innert 5 Minuten. name wird Teil der Adresse: anna → https://anna.aufwind.sh und ssh anna@aufwind.sh. 3–32 Zeichen: Kleinbuchstaben, Ziffern, Bindestrich. Optional gleich den öffentlichen SSH-Schlüssel (Inhalt der .pub-Datei) mitgeben, nie den privaten.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "schluessel": {
+            "type": "string"
+          },
+          "sprache": {
+            "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
+            "type": "string",
+            "enum": [
+              "de",
+              "fr",
+              "it",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "seite_erstellen",
+      "description": "Legt mit dem Abo Light die eigene Webseite an, ohne eigenen Server: name wird die Adresse (anna → https://anna.aufwind.sh), dazu ein Repo im Hafen. Veröffentlicht wird mit git push; nur Dateien, die der Browser direkt zeigt (HTML, CSS, Bilder, JavaScript). 3–32 Zeichen: Kleinbuchstaben, Ziffern, Bindestrich. Optional gleich den öffentlichen SSH-Schlüssel mitgeben, nie den privaten. Mit Pilot stattdessen server_erstellen.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "schluessel": {
+            "type": "string"
+          },
+          "sprache": {
+            "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
+            "type": "string",
+            "enum": [
+              "de",
+              "fr",
+              "it",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "schluessel_hinterlegen",
+      "description": "Hinterlegt einen öffentlichen SSH-Schlüssel (eine Zeile aus der .pub-Datei, beginnt mit ssh-ed25519) auf dem eigenen Server und im Hafen, bei Light nur im Hafen (für git push): das Schloss an der Tür. Der private Schlüssel bleibt auf dem Computer der Person und wird abgelehnt.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schluessel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schluessel"
+        ]
+      }
+    },
+    {
+      "name": "snapshot",
+      "description": "Listet die Snapshots des Servers (tägliches Foto der ganzen Wohnung, 7 Tage). Mit name entsteht vorher ein eigener Snapshot (höchstens 5, je 30 Tage), z. B. vor einem grossen Umbau.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "zurueck",
+      "description": "«Zurück auf gestern»: setzt den ganzen Server auf einen Snapshot zurück. Alles danach geht verloren, auch neuere Snapshots. Vorher mit der Person bestätigen und den Namen aus snapshot nehmen.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "snapshot"
+        ]
+      }
+    },
+    {
+      "name": "domain_verbinden",
+      "description": "Meldet eine eigene Domain (z. B. annas-laden.ch) für die Seite oder den Server an (Light oder Pilot) und sagt, welche Einträge die Person beim Anbieter der Domain setzen muss. Nochmals aufrufen prüft erneut; das Zertifikat folgt, sobald alles stimmt.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "domain_suchen",
+      "description": "Sucht freie Domains zu Wünschen der Person (Namen, Wörter oder ganze Domains wie annas-laden.ch; bis 5). Albatros ergänzt Endungen (.ch, .com, .net, .shop, .li) und Varianten und nennt nur, was wirklich frei ist, mit Preis pro Jahr. Schlage vorher selbst ein paar Namen passend zur Idee vor.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "wuensche": {
+            "minItems": 1,
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 63
+            }
+          }
+        },
+        "required": [
+          "wuensche"
+        ]
+      }
+    },
+    {
+      "name": "domain_kaufen",
+      "description": "Gibt den Link zur Zahlungsseite für eine freie Domain (Light oder Pilot; Seite oder Server muss stehen). Dort gibt die Person Name, Adresse und Telefon als Inhaberin ein und bezahlt; nie im Chat. Danach registriert Albatros die Domain und verbindet sie mit der Seite oder dem Server, meist in 5 bis 30 Minuten. Stand mit konto_status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 253
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "domain_mitnehmen",
+      "description": "Für den Umzug einer bei Albatros gekauften Domain zu einem anderen Anbieter (Landen): gibt den Auth-Code. Danach verlängert Albatros die Domain nicht mehr. Den Code nur der Person zeigen und beim neuen Anbieter eingeben lassen.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 253
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    },
+    {
+      "name": "mission_holen",
+      "description": "Gibt die nächste offene Mission auf dem Weg der Person: Titel, Bild, passender Skill, Prüfung und Anleitung. {name} im Text steht für den Servernamen.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "mission_pruefen",
+      "description": "Prüft eine Mission auf dem Server (z. B. flugschule-01-start). Besteht sie, kommt ein Eintrag ins Flugbuch.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "mission": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mission"
+        ]
+      }
+    },
+    {
+      "name": "methode",
+      "description": "Holt eine Methode für den Weg Geschäft (z. B. ideen-check, zielgruppe, angebot-und-preis). Ohne name: Liste aller Methoden, mit denen, die ohne Abo gehen. Die Methoden bis zur Seite auf dem Computer gibt es ohne Abo, die übrigen mit Abo; die KI folgt danach der Anleitung der Methode.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "coach_fragen",
+      "description": "Stellt dem Albatros-Coach eine Frage. Er kennt Weg, Server und Mission der Person. Für Rechnung, Konto, Missbrauch oder Fehler an Albatros gibt er die Frage an das Team weiter; die Antwort kommt dann per Mail. Für eine Pflichtmeldung (Datenpanne, Rechnung, Konto, Fehler bei Albatros) mit anliegen: Dann geht sie direkt an das Team, auch ohne Abo.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "frage": {
+            "type": "string"
+          },
+          "skill": {
+            "description": "Slug des Skills, mit dem du gerade arbeitest, z. B. webseite-planen.",
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+          },
+          "anliegen": {
+            "description": "Nur für Pflichtmeldungen an einen Menschen: datenpanne, rechnung, konto oder fehler_albatros. Dann antwortet nicht der Coach, sondern das Team per Mail, auch ohne Abo.",
+            "type": "string",
+            "enum": [
+              "datenpanne",
+              "rechnung",
+              "konto",
+              "fehler_albatros"
+            ]
+          }
+        },
+        "required": [
+          "frage"
+        ]
+      }
+    },
+    {
+      "name": "bild_erzeugen",
+      "description": "Erzeugt ein Bild (PNG) aus einer Beschreibung, z. B. ein Icon, eine Illustration oder ein Maskottchen für die Seite. Kostet einen kleinen Betrag aus dem Guthaben der Person (Preise mit guthaben); die Antwort nennt Kosten und Rest. Beschreibe Motiv, Stil, Farben und Hintergrund genau, am besten auf Englisch. Dieselbe Beschreibung innert 15 Minuten liefert dasselbe Bild ohne neue Kosten; für eine Variante die Beschreibung ändern.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "beschreibung": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 2000
+          },
+          "format": {
+            "description": "quadrat 1024×1024 (ohne Angabe), quer 1024×768, hoch 768×1024, breit 1024×576",
+            "type": "string",
+            "enum": [
+              "quadrat",
+              "quer",
+              "hoch",
+              "breit"
+            ]
+          }
+        },
+        "required": [
+          "beschreibung"
+        ]
+      }
+    },
+    {
+      "name": "bild_freistellen",
+      "description": "Stellt das Motiv eines Bildes frei: PNG mit durchsichtigem Hintergrund, z. B. für ein Logo oder ein Maskottchen auf farbigem Grund. Kostet einen kleinen Betrag aus dem Guthaben (Preise mit guthaben).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "bild_url": {
+            "type": "string",
+            "minLength": 8,
+            "description": "https-Adresse des Bildes (z. B. aus bild_erzeugen) oder das Bild als data:image/png;base64,… (bis etwa 700 KB)"
+          }
+        },
+        "required": [
+          "bild_url"
+        ]
+      }
+    },
+    {
+      "name": "modell_3d",
+      "description": "Macht aus einem Bild ein 3D-Modell (GLB, mit Farben), z. B. für ein Maskottchen, das sich auf der Seite dreht (<model-viewer>). Am besten mit einem freigestellten Motiv (bild_freistellen). Dauert bis etwa eine Minute und kostet einen kleinen Betrag aus dem Guthaben (Preise mit guthaben).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "bild_url": {
+            "type": "string",
+            "minLength": 8,
+            "description": "https-Adresse des Bildes (z. B. aus bild_erzeugen) oder das Bild als data:image/png;base64,… (bis etwa 700 KB)"
+          }
+        },
+        "required": [
+          "bild_url"
+        ]
+      }
+    },
+    {
+      "name": "guthaben",
+      "description": "Stand des Guthabens für bild_erzeugen, bild_freistellen und modell_3d, Preis pro Aufruf, die letzten Aufrufe und der Link zum Aufladen (CHF 10, 20 oder 50 im Cockpit). Ruf es auf, bevor du Preise nennst, und wenn das Guthaben nicht reicht.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "schritt_melden",
+      "description": "Meldet, dass ein Projekt der Person einen Schritt weiter ist; auf ihrer Insel im Cockpit wächst dann das Gebäude. Schritte nach dem Fahrplan in dieser Reihenfolge: idee (P1), recherche (P2), plan (P3), plan-geprueft (P4), konzept (P5), mockup, entwuerfe (P6), entwurf (P7), entwurf-freigegeben (P8), prd, lokal, pruefung (P9), freigabe (P10), wohnort (P11), betrieb (P12), hafen, fliessband, live, domain (P13). Erst nach dem ausdrücklichen Ja der Person: plan-geprueft, entwurf-freigegeben, freigabe. Nur vorwärts: Ein früherer oder derselbe Schritt ändert nichts. hafen, fliessband, live und domain sieht Albatros auch selbst. Das Hauptprojekt heisst ab P1 projekt; titel ist sein Name, wie ihn die Person nennt (Zeile «Projektname:» in docs/projekt.md). Gibt die Adresse der Insel zurück: beim Start einmal im Browser öffnen, sie lädt danach selbst nach.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schritt": {
+            "type": "string",
+            "enum": [
+              "idee",
+              "recherche",
+              "plan",
+              "plan-geprueft",
+              "konzept",
+              "mockup",
+              "entwuerfe",
+              "entwurf",
+              "entwurf-freigegeben",
+              "prd",
+              "lokal",
+              "pruefung",
+              "freigabe",
+              "wohnort",
+              "betrieb",
+              "hafen",
+              "fliessband",
+              "live",
+              "domain"
+            ]
+          },
+          "projekt": {
+            "description": "Ohne Angabe: projekt, das Repo im Hafen (git@aufwind.sh:<name>/projekt.git). Für ein Projekt, das nur auf dem Computer liegt, ein kurzer Name, z. B. baeckerei. Höchstens sechs Projekte.",
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+          },
+          "titel": {
+            "description": "Name des Projekts, wie die Person es nennt (Projektname aus docs/projekt.md), höchstens 80 Zeichen; erscheint auf der Insel.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[^\\u0000-\\u001f]*$"
+          },
+          "sprache": {
+            "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en. Bordbuch und Projekt-Vorlage kommen in dieser Sprache; ohne Angabe Deutsch.",
+            "type": "string",
+            "enum": [
+              "de",
+              "fr",
+              "it",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "schritt"
+        ]
+      }
+    },
+    {
+      "name": "modus_waehlen",
+      "description": "Speichert, ob die Person lernen oder machen will, als Vorgabe für neue Projekte: machen (du machst die Arbeit und erklärst jeden Schritt in einem Satz mit Bild) oder lernen (du erklärst jeden Schritt mit Bild und Warum, die Person tippt die Lernmomente selbst). Im Projekt gilt die Zeile «Modus:» in docs/projekt.md; trag den Modus auch dort ein. Jederzeit änderbar.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "modus": {
+            "type": "string",
+            "enum": [
+              "lernen",
+              "machen"
+            ]
+          }
+        },
+        "required": [
+          "modus"
+        ]
+      }
+    },
+    {
+      "name": "verstanden_melden",
+      "description": "Meldet, dass die Person den Lernmoment einer Mission verstanden hat, erst nach ihrer eigenen Antwort oder Handlung, nie an ihrer Stelle: selbst (sie hat den Schritt selbst gemacht), kontrollfrage (sie hat die Kontrollfrage der Lektion richtig beantwortet) oder wiederholung (sie konnte es später nochmals). mission: die ID wie in mission_holen, z. B. webseite-01-webseite-planen. Die Antwort sagt, wann die Lektion zur Wiederholung fällig ist.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "mission": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "art": {
+            "type": "string",
+            "enum": [
+              "selbst",
+              "kontrollfrage",
+              "wiederholung"
+            ]
+          }
+        },
+        "required": [
+          "mission",
+          "art"
+        ]
+      }
+    },
+    {
+      "name": "skill_holen",
+      "description": "Holt einen Albatros-Skill in der aktuellen Fassung vom Server, wenn lage einen Skill nennt, den deine Kopie des Plugins nicht hat oder nur älter (lage sagt es). slug wie in lage, z. B. webseite-planen. Folge danach der Anleitung im Text.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+          },
+          "sprache": {
+            "description": "Sprache, in der du mit der Person sprichst: de, fr, it oder en; ohne Angabe Deutsch. Fehlt die Übersetzung, kommt der Skill auf Deutsch.",
+            "type": "string",
+            "enum": [
+              "de",
+              "fr",
+              "it",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "slug"
+        ]
+      }
+    },
+    {
+      "name": "luecke_melden",
+      "description": "Meldet eine Lücke im Know-how von Albatros, damit die Skills besser werden: eine Frage der Person, die kein Skill abdeckt (nicht_abgedeckt), eine Antwort, bei der du raten musstest (geraten), ein unklarer oder falscher Skill (skill_unklar, skill_falsch), ein fehlendes Werkzeug (werkzeug_fehlt) oder ein Fehler bei Albatros (fehler_bei_albatros). frage: allgemein und in eigenen Worten, ohne Namen, E-Mail-Adressen, Adressen, Passwörter oder andere Angaben zur Person; solche Meldungen lehnt Albatros ab. Nur mit dem Einverständnis der Person (einverstanden). Eine Antwort gibt es darauf nicht; für Hilfe ist coach_fragen da.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "frage": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 500,
+            "description": "Die Frage oder Lücke, allgemein formuliert, 10 bis 500 Zeichen."
+          },
+          "art": {
+            "type": "string",
+            "enum": [
+              "nicht_abgedeckt",
+              "geraten",
+              "skill_unklar",
+              "skill_falsch",
+              "werkzeug_fehlt",
+              "fehler_bei_albatros"
+            ]
+          },
+          "skill": {
+            "description": "Slug des Skills, um den es geht, z. B. webseite-planen.",
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+          },
+          "phase": {
+            "description": "Phase des Fahrplans, in der die Person gerade ist (P1 bis P13), wie lage sie nennt.",
+            "type": "string",
+            "enum": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10",
+              "P11",
+              "P12",
+              "P13"
+            ]
+          },
+          "kontext": {
+            "description": "Was du schon versucht hast, in einem Satz, ohne Angaben zur Person.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "skills_stand": {
+            "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin).",
+            "type": "string",
+            "maxLength": 20
+          },
+          "einverstanden": {
+            "description": "Antwort der Person auf die Frage, ob Albatros ihre Meldungen mit ihrem Konto speichern darf: true bei Ja, false bei Nein (dann speichert Albatros nichts mehr von ihr). Ohne Angabe fragt Albatros zuerst nach und nennt den Satz dafür.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "frage",
+          "art"
+        ]
+      }
+    }
+  ]
+}

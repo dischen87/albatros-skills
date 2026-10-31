@@ -9,5 +9,5 @@ So bewertest du: PASS, wenn jeder Punkt im Kern erfüllt ist; Wortlaut, Reihenfo
 
 Bewertet werden die Dateien, die die KI geschrieben hat. Mehrere gute Lösungen sind möglich.
 
-- Der Plan enthält: einen Satz, worum es geht; die Zielgruppe (Eltern im Quartier); eine Hauptsache für Besucher (Platz anfragen); höchstens etwa fünf Seiten inklusive Impressum/Datenschutz; was schon da ist und was fehlt; das Vorbild; das Erfolgsmass (zehn Anfragen im Monat).
+- Der Plan enthält: einen Satz, worum es geht; die Zielgruppe (Eltern im Quartier); eine Hauptsache für Besucher (Platz anfragen); höchstens sieben Seiten inklusive Impressum und Datenschutz; was schon da ist und was fehlt; das Erfolgsmass (zehn Anfragen im Monat). Das Vorbild gehört in docs/recherche.md, nicht in den Plan.
 - Offene Punkte stehen als offen da, statt erfunden zu werden.
