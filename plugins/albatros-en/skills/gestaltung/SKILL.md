@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge. In the flight plan (P6): a grey mockup (“Is the order right?”), three clearly different directions from the concept, a check against the AI look, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. Always with the question about design elements (icons, photos, mascot, 3D; image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “mascot”, “3D”."
 metadata:
   stand: 0.2.0
-  quelle: 'fe6fcb8ce168'
+  quelle: 'd264ba19b721'
 ---
 
 # Design: first the foundations, then the facade
@@ -40,9 +40,9 @@ The sections “Three directions”, “Don't look like AI”, “The colour fan
 
 Phase P6 “Design system with an example”. It's due once `docs/konzept.md` has all seven lines (P5, skill `konzept`); if it's missing, go there first. After that comes P7, the whole site as a draft to click through (skill `entwurf`).
 
-- **Result:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and `docs/designsystem.md` with the lines `Richtung:` (direction), `Farben:` (colours), `Schriften:` (fonts), `Abstände:` (spacing), `Komponenten:` (components) and `Maskottchen:` (mascot). File and line names stay German, because `lage` and the check scripts read them; the content is in English.
-- **Done when** `tokens.css` and `musterblatt.html` exist, the sample sheet uses colours, fonts and sizes only as `var(--…)` from `tokens.css`, and the person has seen it.
-- **Questions for the person:** “Is the order on the grey sketch right?”, “Which of the three directions, or which mix?”, “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” and the question about design elements. “A dark version too?” you suggest as `[Annahme: yes, light and dark]`, because many phones switch to dark at night.
+- **Result:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and `docs/designsystem.md` with the lines `Reihenfolge:` (order), `Richtung:` (direction), `Musterblatt:` (sample sheet), `Farben:` (colours), `Schriften:` (fonts), `Abstände:` (spacing), `Komponenten:` (components) and `Maskottchen:` (mascot). File and line names stay German, because `lage` and the check scripts read them; the content is in English.
+- **Done when** `tokens.css` and `musterblatt.html` exist, the sample sheet uses colours, fonts and sizes only as `var(--…)` from `tokens.css`, and the person has seen it (`Musterblatt: gesehen am …`).
+- **Questions for the person:** “Is the order in the grey mockup right?”, “Which of the three directions, or which mix?”, “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” and the question about design elements. Each of the three answers has its own line (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). There's no assumption for these: until the person has answered, the line says `[offen: …]`. “A dark version too?” you suggest as `[Annahme: yes, light and dark]`, because many phones switch to dark at night.
 - **Island:** `mockup` as soon as the order is right; `entwuerfe` as soon as the person has seen the sample sheet and is happy with it.
 
 **Mode:** Read `Modus:` in `docs/projekt.md` (if the line is missing, `machen`, do, applies). The learning moment of this phase is “Why colours and fonts live in one place only”: the person changes a colour in `design/tokens.css` themselves, reloads the sample sheet and sees it change everywhere. In mode `lernen` (learn) they do it themselves (then `verstanden_melden` with `mission: webseite-04-gestaltung` and `art: selbst`), and at the end you ask the check question of the lesson: “Why do colours and fonts live in one place only?” Only after their answer do you report `art: kontrollfrage`. In mode `machen` (do) you offer the learning moment and explain each step in one sentence with its picture. If the tool `verstanden_melden` is missing, you carry on without it.
@@ -55,7 +55,7 @@ The grey sketch of the home page from P1 is in `design/skizze.html`. From it you
 - Real headings and sentences from `docs/projekt.md`, `docs/plan.md` and `docs/konzept.md` (name, core), the main button with its real text (“Ask for a place”), the menu with all pages from `Seiten:`.
 - One file with no links to the web; it opens with a double-click.
 
-Open it and ask only: “Is the order on the grey sketch right?” Why: structure before looks. Change it until it's right. Then you create `docs/designsystem.md` (template in step 4) with `Richtung: [offen: choice of direction] · order confirmed on <DD.MM.YYYY>`, the other lines with `[offen: …]`, and report `mockup` (section “The island”).
+Open it and ask only: “Is the order in the grey mockup right?” Why: structure before looks. Change it until it's right. Then you create `docs/designsystem.md` (template in step 4) with `Reihenfolge: bestätigt am <DD.MM.YYYY>`, `Richtung: [offen: choice of direction]`, `Musterblatt: [offen: comes after showing it]` and the other lines with `[offen: …]`, and report `mockup` (section “The island”).
 
 ### 2. Three directions on the mockup
 
@@ -69,7 +69,7 @@ Now the character comes in. Read in `docs/konzept.md` the three words under `Cha
 
 Look at each direction in the browser, at phone and desktop width, and check it against the list in the section “Don't look like AI”. Whatever you find, you fix before the person sees the directions. Write the result in `docs/designsystem.md` under `## Richtung`: `AI traits checked: soft ok, clear ok, bold: cards all the same size, rebuilt`.
 
-Open all three and ask: “Which of the three directions, or which mix?” Why: three clearly different directions show what's possible. In the same message or right after it comes the question about design elements (section “Design elements”). The choice goes into the line `Richtung:`, for example `Richtung: clear, with the colours of soft · order confirmed on 30.10.2026`.
+Open all three and ask: “Which of the three directions, or which mix?” Why: three clearly different directions show what's possible. In the same message or right after it comes the question about design elements (section “Design elements”). The choice goes into the line `Richtung:`, for example `Richtung: clear, with the colours of soft`.
 
 ### 4. Colour fan, components and design system
 
@@ -83,7 +83,9 @@ The chosen direction becomes the material samples for the whole house:
 # Design system: <name>
 Stand: <DD.MM.YYYY>
 
-Richtung: <name of the direction or mix> · order confirmed on <DD.MM.YYYY> · sample sheet seen on <DD.MM.YYYY>
+Reihenfolge: bestätigt am <DD.MM.YYYY>
+Richtung: <name of the direction or mix>
+Musterblatt: [offen: comes after showing it]
 Farben: <action colour, background, text, error>; light and dark; contrasts in design/tokens.css
 Schriften: <heading font> and <body font>; text 17 px, headings <sizes>
 Abstände: 4, 8, 12, 16, 24, 32, 48 px; content 1200 px at most; corners <…>; depth: <shadow or line>
@@ -108,7 +110,7 @@ One word per thing, the same on the site, in the email and in the admin area: en
 Icons: … · illustrations: … · photos: photo list in docs/inhalte.md · mascot: … · 3D: …
 ```
 
-After `Maskottchen:` comes first `ja`, `nein` or `später` (yes, no, later), as in `docs/konzept.md`.
+The starts of these lines are fixed and stay German, because `lage` and the skill `entwurf` read them: after `Reihenfolge:` comes `bestätigt am` (confirmed on) with the date. After `Musterblatt:` comes `[offen: comes after showing it]` until the person has said yes, then `gesehen am <DD.MM.YYYY>, passt` (seen on …, fits; step 5). After `Maskottchen:` comes first `ja`, `nein` or `später` (yes, no, later), as in `docs/konzept.md`.
 
 ### 5. The sample sheet
 
@@ -125,7 +127,7 @@ After `Maskottchen:` comes first `ja`, `nein` or `später` (yes, no, later), as 
 
 In the sample sheet, colours, fonts and sizes appear only as `var(--…)`. Check this with your own eyes in the code; if Node is already there, `node <folder of the skill entwurf>/entwurf-pruefen.mjs --nur farbfaecher` measures it and recalculates every contrast comment along the way (folder unknown: `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Open the sample sheet and show the person how to see it as on a phone: drag the browser window very narrow, or use the browser's phone view (Firefox and Chrome: `Ctrl+Shift+M`, on a Mac in Firefox `Cmd+Opt+M`, in Chrome `F12` first). Then ask: “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” Why: what's right on the sample sheet is right on every page. You make changes in `tokens.css` or `komponenten.css`, never in the sample sheet itself. After their yes you add `sample sheet seen on <DD.MM.YYYY>` to the line `Richtung:`, fill in the other lines and report `entwuerfe`.
+Open the sample sheet and show the person how to see it as on a phone: drag the browser window very narrow, or use the browser's phone view (Firefox and Chrome: `Ctrl+Shift+M`, on a Mac in Firefox `Cmd+Opt+M`, in Chrome `F12` first). Then ask: “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” Why: what's right on the sample sheet is right on every page. You make changes in `tokens.css` or `komponenten.css`, never in the sample sheet itself. After their yes you write the line `Musterblatt: gesehen am <DD.MM.YYYY>, passt` into `docs/designsystem.md` (instead of `[offen: …]`), for example `Musterblatt: gesehen am 31.10.2026, passt`, fill in the other lines and report `entwuerfe`.
 
 ### The island
 
@@ -207,7 +209,7 @@ This is how a `tokens.css` starts (the contrasts of these colours are recalculat
 }
 ```
 
-## Design elements: always ask
+## Design elements (Gestaltungselemente): always ask
 
 Once the direction is settled, you always ask: “Would you like any design elements as well?” Put the options forward with the effort each one takes. Whatever is already decided in the flight plan (`Bildsprache:` and `Maskottchen:` in `docs/konzept.md`), you don't ask again; you build on it.
 

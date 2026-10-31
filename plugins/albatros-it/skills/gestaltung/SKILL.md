@@ -3,7 +3,7 @@ name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito. Nel piano di volo (P6): mockup grigio («L'ordine è giusto?»), tre direzioni chiaramente diverse dal concetto, controllo contro l'aspetto da IA, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Sempre con la domanda sugli elementi grafici (icone, foto, mascotte, 3D; strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «mascotte», «3D»."
 metadata:
   stand: 0.2.0
-  quelle: 'fe6fcb8ce168'
+  quelle: 'd264ba19b721'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -40,9 +40,9 @@ Per entrambe valgono le sezioni «Tre direzioni», «Non sembrare fatto dall'IA�
 
 Fase P6 «Sistema di design con esempio». Tocca a questa fase quando `docs/konzept.md` ha tutte e sette le righe (P5, skill `konzept`); se manca, vai prima lì. Dopo viene P7, tutto il sito come bozza da sfogliare cliccando (skill `entwurf`).
 
-- **Risultato:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` e `docs/designsystem.md` con le righe `Richtung:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` e `Maskottchen:`. I nomi dei file e delle righe restano in tedesco, perché `lage` e gli script di verifica li leggono; il contenuto è in italiano.
-- **Fatto quando** ci sono `tokens.css` e `musterblatt.html`, la tavola dei campioni usa colori, caratteri e dimensioni solo come `var(--…)` da `tokens.css` e la persona l'ha vista.
-- **Domande alla persona:** «L'ordine sullo schizzo grigio è giusto?», «Quale delle tre direzioni, o quale combinazione?», «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» e la domanda sugli elementi grafici. «Anche una versione scura?» la proponi come `[Annahme: sì, chiara e scura]`, perché molti telefonini di notte mostrano tutto scuro.
+- **Risultato:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` e `docs/designsystem.md` con le righe `Reihenfolge:`, `Richtung:`, `Musterblatt:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` e `Maskottchen:`. I nomi dei file e delle righe restano in tedesco, perché `lage` e gli script di verifica li leggono; il contenuto è in italiano.
+- **Fatto quando** ci sono `tokens.css` e `musterblatt.html`, la tavola dei campioni usa colori, caratteri e dimensioni solo come `var(--…)` da `tokens.css` e la persona l'ha vista (`Musterblatt: gesehen am …`).
+- **Domande alla persona:** «L'ordine nel mockup grigio è giusto?», «Quale delle tre direzioni, o quale combinazione?», «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» e la domanda sugli elementi grafici. Ognuna delle tre risposte ha la sua riga (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Qui non ci sono ipotesi: finché la persona non ha risposto, c'è `[offen: …]`. «Anche una versione scura?» la proponi come `[Annahme: sì, chiara e scura]`, perché molti telefonini di notte mostrano tutto scuro.
 - **Isola:** `mockup` appena l'ordine è giusto; `entwuerfe` appena la persona ha visto la tavola dei campioni e le va bene.
 
 **Modo:** Leggi `Modus:` in `docs/projekt.md` (se la riga manca, vale `machen`, fare). Il momento di apprendimento di questa fase è «Perché colori e caratteri stanno in un solo posto»: la persona cambia lei stessa un colore in `design/tokens.css`, ricarica la tavola dei campioni e vede che cambia dappertutto. Nel modo `lernen` (imparare) lo fa da sola (poi `verstanden_melden` con `mission: webseite-04-gestaltung` e `art: selbst`), e alla fine fai la domanda di controllo della lezione: «Perché colori e caratteri stanno in un solo posto?» Solo dopo la sua risposta annunci `art: kontrollfrage`. Nel modo `machen` (fare) offri il momento di apprendimento e spieghi ogni passo in una frase con la sua immagine. Se lo strumento `verstanden_melden` manca, si continua senza.
@@ -55,7 +55,7 @@ Lo schizzo grigio della pagina iniziale di P1 si trova in `design/skizze.html`. 
 - Titoli e frasi veri da `docs/projekt.md`, `docs/plan.md` e `docs/konzept.md` (nome, nucleo), il pulsante principale con il suo testo vero («Chiedi un posto»), il menu con tutte le pagine di `Seiten:`.
 - Un solo file senza link alla rete; si apre con un doppio clic.
 
-Aprilo e chiedi solo: «L'ordine sullo schizzo grigio è giusto?» Perché: prima la struttura, poi l'aspetto. Cambia finché è giusto. Poi crei `docs/designsystem.md` (modello al passo 4) con `Richtung: [offen: scelta della direzione] · ordine confermato il <GG.MM.AAAA>`, le altre righe con `[offen: …]`, e annunci `mockup` (sezione «L'isola»).
+Aprilo e chiedi solo: «L'ordine nel mockup grigio è giusto?» Perché: prima la struttura, poi l'aspetto. Cambia finché è giusto. Poi crei `docs/designsystem.md` (modello al passo 4) con `Reihenfolge: bestätigt am <GG.MM.AAAA>`, `Richtung: [offen: scelta della direzione]`, `Musterblatt: [offen: viene dopo averla mostrata]` e le altre righe con `[offen: …]`, e annunci `mockup` (sezione «L'isola»).
 
 ### 2. Tre direzioni sul mockup
 
@@ -69,7 +69,7 @@ Adesso entra in gioco il carattere. Leggi in `docs/konzept.md` le tre parole sot
 
 Guarda ogni direzione nel browser, in larghezza telefonino e desktop, e controllala con la lista della sezione «Non sembrare fatto dall'IA». Quello che trovi lo correggi prima che la persona veda le direzioni. Scrivi il risultato in `docs/designsystem.md` sotto `## Richtung`: `Tratti dell'IA controllati: morbida ok, chiara ok, decisa: schede tutte uguali, rifatta`.
 
-Apri tutte e tre e chiedi: «Quale delle tre direzioni, o quale combinazione?» Perché: tre direzioni chiaramente diverse mostrano che cosa è possibile. Nello stesso messaggio o subito dopo viene la domanda sugli elementi grafici (sezione «Elementi grafici»). La scelta va nella riga `Richtung:`, per esempio `Richtung: chiara, con i colori di morbida · ordine confermato il 30.10.2026`.
+Apri tutte e tre e chiedi: «Quale delle tre direzioni, o quale combinazione?» Perché: tre direzioni chiaramente diverse mostrano che cosa è possibile. Nello stesso messaggio o subito dopo viene la domanda sugli elementi grafici (sezione «Elementi grafici»). La scelta va nella riga `Richtung:`, per esempio `Richtung: chiara, con i colori di morbida`.
 
 ### 4. Mazzetta dei colori, componenti e sistema di design
 
@@ -83,7 +83,9 @@ Dalla direzione scelta nascono i campioni dei materiali per tutta la casa:
 # Sistema di design: <nome>
 Stand: <GG.MM.AAAA>
 
-Richtung: <nome della direzione o combinazione> · ordine confermato il <GG.MM.AAAA> · tavola dei campioni vista il <GG.MM.AAAA>
+Reihenfolge: bestätigt am <GG.MM.AAAA>
+Richtung: <nome della direzione o combinazione>
+Musterblatt: [offen: viene dopo averla mostrata]
 Farben: <colore d'azione, sfondo, testo, errore>; chiaro e scuro; contrasti in design/tokens.css
 Schriften: <carattere dei titoli> e <carattere del testo>; testo 17 px, titoli <dimensioni>
 Abstände: 4, 8, 12, 16, 24, 32, 48 px; contenuto al massimo 1200 px; arrotondamenti <…>; profondità: <ombra o linea>
@@ -108,7 +110,7 @@ Una parola per ogni cosa, uguale sul sito, nella mail e nell'amministrazione: ri
 Icone: … · illustrazioni: … · foto: lista delle foto in docs/inhalte.md · personaggio: … · 3D: …
 ```
 
-Dopo `Maskottchen:` viene prima `ja`, `nein` o `später`, come in `docs/konzept.md`.
+Gli inizi di queste righe sono fissi e restano in tedesco, perché `lage` e lo skill `entwurf` li leggono: dopo `Reihenfolge:` viene `bestätigt am` con la data. Dopo `Musterblatt:` viene `[offen: viene dopo averla mostrata]` finché la persona non ha detto sì, poi `gesehen am <GG.MM.AAAA>, passt` (passo 5). Dopo `Maskottchen:` viene prima `ja`, `nein` o `später`, come in `docs/konzept.md`.
 
 ### 5. La tavola dei campioni
 
@@ -125,7 +127,7 @@ Dopo `Maskottchen:` viene prima `ja`, `nein` o `später`, come in `docs/konzept.
 
 Nella tavola dei campioni colori, caratteri e dimensioni compaiono solo come `var(--…)`. Controllalo con gli occhi nel codice; se Node c'è già, lo misura `node <cartella dello skill entwurf>/entwurf-pruefen.mjs --nur farbfaecher`, che ricalcola anche ogni commento di contrasto (cartella sconosciuta: `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Apri la tavola dei campioni e mostra alla persona come vederla sul telefonino: rendere la finestra del browser strettissima o usare la vista telefonino del browser (Firefox e Chrome: `Ctrl+Shift+M`, sul Mac in Firefox `Cmd+Opt+M`, in Chrome prima `F12`). Poi chiedi: «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» Perché: ciò che è giusto nella tavola dei campioni è giusto su ogni pagina. Le modifiche le fai in `tokens.css` o `komponenten.css`, mai nella tavola stessa. Dopo il suo sì aggiungi `tavola dei campioni vista il <GG.MM.AAAA>` alla riga `Richtung:`, riempi le altre righe e annunci `entwuerfe`.
+Apri la tavola dei campioni e mostra alla persona come vederla sul telefonino: rendere la finestra del browser strettissima o usare la vista telefonino del browser (Firefox e Chrome: `Ctrl+Shift+M`, sul Mac in Firefox `Cmd+Opt+M`, in Chrome prima `F12`). Poi chiedi: «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» Perché: ciò che è giusto nella tavola dei campioni è giusto su ogni pagina. Le modifiche le fai in `tokens.css` o `komponenten.css`, mai nella tavola stessa. Dopo il suo sì scrivi in `docs/designsystem.md` la riga `Musterblatt: gesehen am <GG.MM.AAAA>, passt` (al posto di `[offen: …]`), per esempio `Musterblatt: gesehen am 31.10.2026, passt`, riempi le altre righe e annunci `entwuerfe`.
 
 ### L'isola
 
@@ -207,7 +209,7 @@ Così comincia un `tokens.css` (i contrasti di questi colori sono ricalcolati):
 }
 ```
 
-## Elementi grafici: chiedi sempre
+## Elementi grafici (Gestaltungselemente): chiedi sempre
 
 Quando la direzione è decisa, chiedi sempre: «Vuoi aggiungere anche degli elementi grafici?» Presenta le possibilità con il lavoro che richiedono. Ciò che nel piano di volo è già deciso (`Bildsprache:` e `Maskottchen:` in `docs/konzept.md`) non lo richiedi, ci costruisci sopra.
 

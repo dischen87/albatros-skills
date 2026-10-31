@@ -38,9 +38,9 @@ Für beide gelten die Abschnitte «Drei Richtungen», «Nicht nach KI aussehen»
 
 Phase P6 «Designsystem mit Beispiel». Dran, wenn `docs/konzept.md` alle sieben Zeilen hat (P5, Skill `konzept`); fehlt sie, gehst du zuerst dorthin. Danach kommt P7, die ganze Seite als Entwurf zum Durchklicken (Skill `entwurf`).
 
-- **Ergebnis:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` und `docs/designsystem.md` mit den Zeilen `Richtung:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` und `Maskottchen:`.
-- **Geschafft, wenn** `tokens.css` und `musterblatt.html` da sind, das Musterblatt Farben, Schriften und Grössen nur als `var(--…)` aus `tokens.css` nutzt und die Person es gesehen hat.
-- **Fragen an die Person:** «Stimmt die Reihenfolge auf der grauen Skizze?», «Welche der drei Richtungen, oder welche Mischung?», «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» und die Frage nach Gestaltungselementen. «Auch eine dunkle Fassung?» schlägst du als `[Annahme: ja, hell und dunkel]` vor, denn viele Handys zeigen nachts dunkel.
+- **Ergebnis:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` und `docs/designsystem.md` mit den Zeilen `Reihenfolge:`, `Richtung:`, `Musterblatt:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` und `Maskottchen:`.
+- **Geschafft, wenn** `tokens.css` und `musterblatt.html` da sind, das Musterblatt Farben, Schriften und Grössen nur als `var(--…)` aus `tokens.css` nutzt und die Person es gesehen hat (`Musterblatt: gesehen am …`).
+- **Fragen an die Person:** «Stimmt die Reihenfolge im grauen Mockup?», «Welche der drei Richtungen, oder welche Mischung?», «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» und die Frage nach Gestaltungselementen. Jede der drei Antworten hat ihre eigene Zeile (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Eine Annahme gibt es dafür nicht: Bis die Person geantwortet hat, steht dort `[offen: …]`. «Auch eine dunkle Fassung?» schlägst du als `[Annahme: ja, hell und dunkel]` vor, denn viele Handys zeigen nachts dunkel.
 - **Insel:** `mockup`, sobald die Reihenfolge stimmt; `entwuerfe`, sobald die Person das Musterblatt gesehen hat und es passt.
 
 **Modus:** Lies `Modus:` in `docs/projekt.md` (fehlt die Zeile, gilt `machen`). Der Lernmoment dieser Phase ist «Warum Farben und Schriften nur an einem Ort stehen»: Die Person ändert selbst eine Farbe in `design/tokens.css`, lädt das Musterblatt neu und sieht, wie sie sich überall ändert. Im Modus `lernen` macht sie das selbst (danach `verstanden_melden` mit `mission: webseite-04-gestaltung` und `art: selbst`), und am Ende stellst du die Kontrollfrage der Lektion: «Warum stehen Farben und Schriften nur an einem Ort?» Erst nach ihrer Antwort meldest du `art: kontrollfrage`. Im Modus `machen` bietest du den Lernmoment an und erklärst jeden Schritt in einem Satz mit seinem Bild. Fehlt das Werkzeug `verstanden_melden`, geht es ohne weiter.
@@ -53,7 +53,7 @@ Die graue Skizze der Startseite aus P1 liegt in `design/skizze.html`. Daraus mac
 - Echte Überschriften und Sätze aus `docs/projekt.md`, `docs/plan.md` und `docs/konzept.md` (Name, Kern), der Hauptknopf mit seinem echten Text («Platz anfragen»), das Menü mit allen Seiten aus `Seiten:`.
 - Eine Datei ohne Verweise ins Netz; sie öffnet sich mit einem Doppelklick.
 
-Öffne sie und frag nur: «Stimmt die Reihenfolge auf der grauen Skizze?» Warum: Aufbau vor Aussehen. Ändere, bis sie stimmt. Dann legst du `docs/designsystem.md` an (Vorlage in Schritt 4) mit `Richtung: [offen: Wahl der Richtung] · Reihenfolge bestätigt am <TT.MM.JJJJ>`, die übrigen Zeilen mit `[offen: …]`, und meldest `mockup` (Abschnitt «Die Insel»).
+Öffne sie und frag nur: «Stimmt die Reihenfolge im grauen Mockup?» Warum: Aufbau vor Aussehen. Ändere, bis sie stimmt. Dann legst du `docs/designsystem.md` an (Vorlage in Schritt 4) mit `Reihenfolge: bestätigt am <TT.MM.JJJJ>`, `Richtung: [offen: Wahl der Richtung]`, `Musterblatt: [offen: kommt nach dem Zeigen]` und den übrigen Zeilen mit `[offen: …]`, und meldest `mockup` (Abschnitt «Die Insel»).
 
 ### 2. Drei Richtungen auf dem Mockup
 
@@ -67,7 +67,7 @@ Jetzt kommt der Charakter dazu. Lies in `docs/konzept.md` die drei Wörter unter
 
 Schau jede Richtung im Browser an, in Handy- und Desktopbreite, und prüf sie gegen die Liste im Abschnitt «Nicht nach KI aussehen». Was du findest, besserst du, bevor die Person die Richtungen sieht. Schreib das Ergebnis in `docs/designsystem.md` unter `## Richtung`: `KI-Merkmale geprüft: weich ok, klar ok, kräftig: Karten gleich gross, umgebaut`.
 
-Öffne alle drei und frag: «Welche der drei Richtungen, oder welche Mischung?» Warum: Drei klar verschiedene Richtungen zeigen, was möglich ist. In derselben Nachricht oder gleich danach kommt die Frage nach Gestaltungselementen (Abschnitt «Gestaltungselemente»). Die Wahl kommt in die Zeile `Richtung:`, zum Beispiel `Richtung: klar, mit den Farben von weich · Reihenfolge bestätigt am 30.10.2026`.
+Öffne alle drei und frag: «Welche der drei Richtungen, oder welche Mischung?» Warum: Drei klar verschiedene Richtungen zeigen, was möglich ist. In derselben Nachricht oder gleich danach kommt die Frage nach Gestaltungselementen (Abschnitt «Gestaltungselemente»). Die Wahl kommt in die Zeile `Richtung:`, zum Beispiel `Richtung: klar, mit den Farben von weich`.
 
 ### 4. Farbfächer, Komponenten und Designsystem
 
@@ -81,7 +81,9 @@ Aus der gewählten Richtung entstehen die Materialmuster für das ganze Haus:
 # Designsystem: <Name>
 Stand: <TT.MM.JJJJ>
 
-Richtung: <Name der Richtung oder Mischung> · Reihenfolge bestätigt am <TT.MM.JJJJ> · Musterblatt gesehen am <TT.MM.JJJJ>
+Reihenfolge: bestätigt am <TT.MM.JJJJ>
+Richtung: <Name der Richtung oder Mischung>
+Musterblatt: [offen: kommt nach dem Zeigen]
 Farben: <Aktionsfarbe, Grund, Text, Fehler>; hell und dunkel; Kontraste in design/tokens.css
 Schriften: <Titelschrift> und <Textschrift>; Text 17 px, Titel <Grössen>
 Abstände: 4, 8, 12, 16, 24, 32, 48 px; Inhalt höchstens 1200 px; Rundungen <…>; Tiefe: <Schatten oder Linie>
@@ -106,7 +108,7 @@ Ein Wort je Ding, gleich auf der Seite, in der Mail und in der Verwaltung: Anfra
 Icons: … · Illustrationen: … · Fotos: Fotoliste in docs/inhalte.md · Figur: … · 3D: …
 ```
 
-Hinter `Maskottchen:` steht zuerst `ja`, `nein` oder `später`, wie in `docs/konzept.md`.
+Die Anfänge der Zeilen sind fest, denn `lage` und der Skill `entwurf` lesen sie: Hinter `Reihenfolge:` steht `bestätigt am` mit dem Datum. Hinter `Musterblatt:` steht `[offen: kommt nach dem Zeigen]`, bis die Person Ja gesagt hat, danach `gesehen am <TT.MM.JJJJ>, passt` (Schritt 5). Hinter `Maskottchen:` steht zuerst `ja`, `nein` oder `später`, wie in `docs/konzept.md`.
 
 ### 5. Das Musterblatt
 
@@ -123,7 +125,7 @@ Hinter `Maskottchen:` steht zuerst `ja`, `nein` oder `später`, wie in `docs/kon
 
 Farben, Schriften und Grössen stehen im Musterblatt nur als `var(--…)`. Prüf das mit den Augen im Code; ist Node schon da, misst es `node <Ordner des Skills entwurf>/entwurf-pruefen.mjs --nur farbfaecher` und rechnet dabei auch jeden Kontrast-Kommentar nach (Ordner unbekannt: `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Öffne das Musterblatt und zeig der Person, wie sie es am Handy sieht: das Browserfenster ganz schmal ziehen oder die Handy-Ansicht des Browsers (Firefox und Chrome: `Ctrl+Shift+M`, am Mac in Firefox `Cmd+Opt+M`, in Chrome zuerst `F12`). Dann frag: «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» Warum: Was im Musterblatt stimmt, stimmt auf jeder Seite. Änderungen machst du in `tokens.css` oder `komponenten.css`, nie im Musterblatt selbst. Nach ihrem Ja trägst du `Musterblatt gesehen am <TT.MM.JJJJ>` in die Zeile `Richtung:` ein, füllst die übrigen Zeilen und meldest `entwuerfe`.
+Öffne das Musterblatt und zeig der Person, wie sie es am Handy sieht: das Browserfenster ganz schmal ziehen oder die Handy-Ansicht des Browsers (Firefox und Chrome: `Ctrl+Shift+M`, am Mac in Firefox `Cmd+Opt+M`, in Chrome zuerst `F12`). Dann frag: «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» Warum: Was im Musterblatt stimmt, stimmt auf jeder Seite. Änderungen machst du in `tokens.css` oder `komponenten.css`, nie im Musterblatt selbst. Nach ihrem Ja schreibst du in `docs/designsystem.md` die Zeile `Musterblatt: gesehen am <TT.MM.JJJJ>, passt` (statt `[offen: …]`), zum Beispiel `Musterblatt: gesehen am 31.10.2026, passt`, füllst die übrigen Zeilen und meldest `entwuerfe`.
 
 ### Die Insel
 
