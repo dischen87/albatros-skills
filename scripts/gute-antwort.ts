@@ -1,5 +1,5 @@
 // Erzeugt plugins/albatros/evals/GUTE-ANTWORT.md aus fahrplan.yaml: was eine gute Antwort in jeder Phase enthält, als Grundlage der
-// Evals. Eval-Fälle markieren ihre Phase im Kopf ihrer prompt.md (phase: P3 oder phase: [P3, P4]); die Änderungen kommen aus
+// Evals. Eval-Fälle nennen ihre Phase als Tag im Kopf ihrer prompt.md (tags: [P3] oder tags: [P3, P4]); die Änderungen kommen aus
 // KRITERIEN-LOG.md. Aufruf: bun scripts/gute-antwort.ts (schreibt die Datei). pruefen.ts verlangt, dass sie dem Erzeugten entspricht.
 import { Glob } from 'bun';
 import { type Fahrplan, ladeFahrplan, type Phase } from './fahrplan.ts';
@@ -10,7 +10,8 @@ const WER = { person: 'Person', annahme_ok: 'Annahme', ki: 'KI' } as const;
 const zelle = (s: string) => s.replaceAll('|', '\\|').replaceAll('\n', ' ');
 const code = (s: string) => `\`${s}\``;
 
-// Eval-Fälle je Phase, aus dem Kopf von plugins/albatros/evals/<fall>/prompt.md
+// Eval-Fälle je Phase, aus den Tags im Kopf von plugins/albatros/evals/<fall>/prompt.md. Ein Tag wie P3 ist eine Phase; so filtert auch
+// claude plugin eval --tag P3. Einen Kopf «phase:» lädt plugin eval nicht (unknown frontmatter key, gemessen mit 2.1.309 am 31.10.2026).
 async function evalFaelle(wurzel: string, ids: string[]) {
   const je = new Map<string, string[]>(ids.map((p) => [p, []]));
   const fehler: string[] = [];
@@ -22,11 +23,13 @@ async function evalFaelle(wurzel: string, ids: string[]) {
     } catch (e) {
       fehler.push(`${datei}: Kopf ist kein gültiges YAML (${(e as Error).message})`);
     }
-    if (typeof kopf !== 'object' || kopf === null || !('phase' in kopf)) continue;
-    for (const p of Array.isArray(kopf.phase) ? kopf.phase : [kopf.phase]) {
-      const liste = typeof p === 'string' ? je.get(p) : undefined;
+    if (typeof kopf !== 'object' || kopf === null) continue;
+    if ('phase' in kopf) fehler.push(`${datei}: «phase:» im Kopf lädt plugin eval nicht; die Phase gehört als Tag in tags, z. B. tags: [P3]`);
+    const tags = 'tags' in kopf && Array.isArray(kopf.tags) ? kopf.tags : [];
+    for (const p of tags.filter((t): t is string => typeof t === 'string' && /^P\d+$/.test(t))) {
+      const liste = je.get(p);
       if (liste) liste.push(datei.split('/').at(-2)!);
-      else fehler.push(`${datei}: phase ${JSON.stringify(p)} ist keine Phase aus fahrplan.yaml`);
+      else fehler.push(`${datei}: Tag ${p} ist keine Phase aus fahrplan.yaml`);
     }
   }
   for (const liste of je.values()) liste.sort();
@@ -94,7 +97,7 @@ export async function guteAntwort(wurzel: string, f: Fahrplan): Promise<{ ok: tr
   const text = [
     '# Gute Antwort: was die KI in jeder Phase tut',
     '',
-    `Erzeugt aus ${code('fahrplan.yaml')} (Fassung ${f.version}, Stand ${f.stand}) mit ${code('bun scripts/gute-antwort.ts')}. Nicht von Hand ändern: ${code('bun scripts/pruefen.ts')} verlangt, dass diese Datei dem Erzeugten entspricht. Kriterien ändern sich nur mit Datum und Grund in ${code('KRITERIEN-LOG.md')}. Ein Eval-Fall zählt für eine Phase, wenn der Kopf seiner ${code('prompt.md')} sie nennt (${code('phase: P3')} oder ${code('phase: [P3, P4]')}).`,
+    `Erzeugt aus ${code('fahrplan.yaml')} (Fassung ${f.version}, Stand ${f.stand}) mit ${code('bun scripts/gute-antwort.ts')}. Nicht von Hand ändern: ${code('bun scripts/pruefen.ts')} verlangt, dass diese Datei dem Erzeugten entspricht. Kriterien ändern sich nur mit Datum und Grund in ${code('KRITERIEN-LOG.md')}. Ein Eval-Fall zählt für eine Phase, wenn seine ${code('prompt.md')} sie als Tag nennt (${code('tags: [P3]')} oder ${code('tags: [P3, P4]')}); so filtert auch ${code('claude plugin eval --tag P3')}.`,
     '',
     '## Für alle Phasen',
     '',

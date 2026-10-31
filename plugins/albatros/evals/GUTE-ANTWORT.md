@@ -1,6 +1,6 @@
 # Gute Antwort: was die KI in jeder Phase tut
 
-Erzeugt aus `fahrplan.yaml` (Fassung 2, Stand 2026-10-31) mit `bun scripts/gute-antwort.ts`. Nicht von Hand ändern: `bun scripts/pruefen.ts` verlangt, dass diese Datei dem Erzeugten entspricht. Kriterien ändern sich nur mit Datum und Grund in `KRITERIEN-LOG.md`. Ein Eval-Fall zählt für eine Phase, wenn der Kopf seiner `prompt.md` sie nennt (`phase: P3` oder `phase: [P3, P4]`).
+Erzeugt aus `fahrplan.yaml` (Fassung 2, Stand 2026-10-31) mit `bun scripts/gute-antwort.ts`. Nicht von Hand ändern: `bun scripts/pruefen.ts` verlangt, dass diese Datei dem Erzeugten entspricht. Kriterien ändern sich nur mit Datum und Grund in `KRITERIEN-LOG.md`. Ein Eval-Fall zählt für eine Phase, wenn seine `prompt.md` sie als Tag nennt (`tags: [P3]` oder `tags: [P3, P4]`); so filtert auch `claude plugin eval --tag P3`.
 
 ## Für alle Phasen
 
@@ -395,3 +395,4 @@ Aus `KRITERIEN-LOG.md`, ältester Eintrag zuerst.
 | Datum | Fall | Änderung | Grund |
 |---|---|---|---|
 | 2026-10-31 | alle | Fahrplan-Fassung 2: Phasen P1 bis P13 mit Pflichtfragen (wer antwortet), Ergebnissen mit Pflichtzeilen, Gates, drei Ja-Momenten (P4, P8, P10) und 19 Insel-Schritten; `GUTE-ANTWORT.md` wird daraus erzeugt. | Plan «Fahrplan und Lernschleife», Fassung 2 nach der Gegenprüfung (albatros/docs/plan-fahrplan.md): Was eine gute Antwort ist, soll an einer Stelle festgelegt und messbar sein, statt über 42 Grader verstreut. |
+| 2026-10-31 | alle | Die Phase eines Falls steht als Tag (P1 bis P13) in `tags` der `prompt.md`, nicht mehr im Kopf `phase:`; `scripts/gute-antwort.ts` liest die Tags und meldet einen Kopf `phase:` als Fehler. | Gemessen mit Claude Code 2.1.309 (`plugin eval` mit `--max-cost-usd 0`, ohne Modell): Ein Kopf `phase:` ergibt «unknown frontmatter key "phase"», der Fall lädt nicht. Tags sind erlaubt und filtern mit `--tag P3`. |
