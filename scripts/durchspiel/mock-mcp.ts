@@ -1,7 +1,8 @@
 // Attrappe des MCP-Diensts von Albatros für den Durchspiel-Test (stdio, JSON-RPC je Zeile), so wie Albatros mit den Schaltern FAHRPLAN und
 // ERFASSUNG antwortet (Plan «Fahrplan und Lernschleife»). Keine Zahlung, kein Server: Albatros wird nie echt angesprochen.
-// - Mit Zustand im Ordner DURCHSPIEL_HAFEN: lage nach dem Fahrplan (Phase aus Insel und belege wie albatros services/mcp/src/lage.ts, offene
-//   Pflichtfragen, Ergebnis, Gate, Gratis-Hinweis, Modus, im Modus lernen die Lektion), schritt_melden, weg_waehlen, modus_waehlen,
+// - Mit Zustand im Ordner DURCHSPIEL_HAFEN: lage nach dem Fahrplan (Phase aus Insel und belege wie albatros services/mcp/src/lage.ts: die
+//   Insel als Boden, die Belege lückenlos weiter; offene Pflichtfragen, Ergebnis, Gate, Gratis-Hinweis, Modus, im Modus lernen die Lektion,
+//   Methoden vor oder nach dem Skill, Hinweis zur Erfassung bis luecke_melden mit einverstanden), schritt_melden, weg_waehlen, modus_waehlen,
 //   verstanden_melden, skill_holen, luecke_melden, upgrade_link (ohne Abo vor P11 ohne bestaetigt nur der Gratis-Hinweis, sonst gilt das
 //   Abo als bezahlt), methode, konto_status, schluessel_hinterlegen, mission_holen und mission_pruefen (Prüfung insel gegen die Insel).
 //   seite_erstellen und server_erstellen legen den Hafen unter dem Namen an (Kopie von vorlage.git).
@@ -22,7 +23,7 @@ import { spawnSync } from 'node:child_process';
 import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
-import { belegt, bisAbschluss, erledigtNachDateien, erledigtNachInsel, phaseIndex, wert, wohnortVon } from '../punkte.ts';
+import { bisAbschluss, erledigtNachDateien, erledigtNachInsel, frageBelegt, phaseIndex, wert, wohnortVon } from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
 
 type Args = Record<string, unknown>;
@@ -80,7 +81,13 @@ const freieMethoden = F.phasen.slice(0, gratisBis + 1).flatMap((p) => p.methoden
 const ENTSCHEID = /^Entscheid: (Hausaufgabe offen bis (\d{1,2}\.\d{1,2}\.\d{4})|weiter|anpassen|stoppen)/;
 const bisText = (n: number) => (n ? `bis ${F.phasen[n - 1]!.id}` : 'keine');
 const wer = (p: Phase, q: Pflichtfrage) => (q.antwortet === 'ki' ? 'klärst du selbst' : q.antwortet === 'annahme_ok' ? 'als [Annahme] vorschlagen'
-  : F.ja_momente.some((j) => j.phase === p.id && j.frage === q.id) ? 'die Person antwortet; Ja-Moment: nur ihr ausdrückliches Ja zählt' : 'die Person antwortet');
+  : F.ja_momente.some((j) => j.phase === p.id && j.frage === q.id) ? 'die Person antwortet; Ja-Moment: nur ihr ausdrückliches Ja zählt, mit Datum vorne' : 'die Person antwortet, eine [Annahme] zählt nicht');
+// Methoden vor oder nach dem Skill wie im Vertrag (methoden.wann), wie lage
+const mitMethoden = (p: Phase, skillText: string, ms: string[]) => (!ms.length ? skillText
+  : p.methoden?.wann === 'nach_skill' ? `${skillText}, dann ${methodeText(ms)}, sobald der Skill sie nennt` : `${methodeText(ms)}, dann ${skillText}`);
+// Erfassung wie Albatros mit ERFASSUNG: solange die Person nichts gesagt hat (luecke_melden ohne einverstanden), der Hinweis; Anfragen erlaubt
+// die Person nur im Cockpit, im Durchspiel also nie
+const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Werkzeuge deine KI aufruft, nie Inhalte. Ansehen und widersprechen kannst du unter https://albatros.build/cockpit/daten.';
 
 type Mission = {
   id: string; weg: string; titel: string; skill?: string; phase?: string; optional?: boolean; abo?: string;
@@ -97,7 +104,8 @@ const missionen: Mission[] = ['flugschule', 'webseite', 'geschaeft'].flatMap((w)
 function lektion(p: Phase, weg: string | null, st: string): string[] {
   const zeilen = p.lernmomente?.length ? [`Lernmomente: ${p.lernmomente.join('; ')}.`] : [];
   const verstanden = (merk('verstanden') ?? '').split('\n').filter(Boolean).map((z) => z.split(' '));
-  for (const m of missionen.filter((x) => x.phase === p.id && !x.optional && (x.weg === 'flugschule' || x.weg === weg) && !(st === 'light' && x.abo === 'pilot'))) {
+  // Lektionen nur mit Kontrollfrage (verstehen), wie lage seit 31.10.2026 (weg-10)
+  for (const m of missionen.filter((x) => x.phase === p.id && !x.optional && (x.weg === 'flugschule' || x.weg === weg) && !(st === 'light' && x.abo === 'pilot') && (x.verstehen?.length ?? 0) > 0)) {
     const arten = verstanden.filter(([id]) => id === m.id).map(([, art]) => art);
     zeilen.push(`Lektion: Mission ${m.id} («${m.titel}»), verstanden: ${arten.length ? `ja (${arten.join(', ')})` : 'noch nicht'}.`);
     for (const f of m.verstehen ?? []) zeilen.push(`Kontrollfrage am Ende der Phase: ${f.frage} Kern einer guten Antwort: ${f.kern} Danach verstanden_melden mit mission ${m.id}.`);
@@ -112,11 +120,14 @@ function lage(a: Args): Antwort {
   const st = stufe();
   const modus = a.modus === 'lernen' || a.modus === 'machen' ? a.modus : (merk('modus') as 'lernen' | 'machen' | null) ?? F.modus.standard;
   const geschaeft = weg === 'geschaeft';
-  const e = geschaeft ? belege.filter((b) => b.datei === 'docs/ideen-check.md').flatMap((b) => b.zeilen).map((z) => ENTSCHEID.exec(z.trim())).find(Boolean) ?? null : null;
+  const e = geschaeft ? belege.filter((b) => b.datei === 'docs/ideen-check.md').flatMap((b) => b.zeilen).map((z) => ENTSCHEID.exec(z.trim().replace(/^[-*]\s+/, ''))).find(Boolean) ?? null : null;
   const entscheid = e ? (e[2] ? 'hausaufgabe' : e[1]!) : null;
-  const [nachInsel, nachDateien] = [erledigtNachInsel(F, insel()), erledigtNachDateien(F, dateien)];
-  const erledigt = entscheid === 'anpassen' ? 0 : Math.max(nachInsel, nachDateien);
+  // Wie lage seit 31.10.2026 (vert-02, weg-02): die Insel ist der Boden, die Belege führen lückenlos von dort weiter
+  const nachInsel = erledigtNachInsel(F, insel());
+  const nachDateien = erledigtNachDateien(F, dateien, nachInsel);
+  const erledigt = entscheid === 'anpassen' ? 0 : nachDateien;
   const p = F.phasen[erledigt];
+  const wohnort = wohnortVon(F, wert(dateien['docs/lancieren.md'], 'Wohnort:'), st);
   const modernisieren = /https?:\/\/|\b[a-z0-9-]+\.[a-z]{2,}\b/i.test(wert(dateien['docs/projekt.md'], 'Bestehende Seite:') ?? '');
   const fuer = (q: Phase) => {
     const v = modernisieren ? q.varianten?.modernisieren : undefined;
@@ -146,30 +157,37 @@ function lage(a: Args): Antwort {
     const f = fuer(p);
     const methoden = geschaeft ? (p.methoden?.geschaeft ?? []).filter((m) => !(m === 'ideen-check' && entscheid === 'weiter')) : [];
     const mitAbo = st === 'gratis' ? methoden.filter((m) => !freieMethoden.includes(m)) : [];
-    const holbar = methoden.filter((m) => !mitAbo.includes(m));
-    jetzt = holbar.length ? `${methodeText(holbar)}, dann ${f.text}` : f.text;
+    jetzt = mitMethoden(p, f.text, methoden.filter((m) => !mitAbo.includes(m)));
     grund = `${entscheid === 'anpassen' ? 'Dein Ideen-Check sagt «anpassen»: Idee schärfen, dann den Check wiederholen. ' : ''}Phase ${p.id} «${p.titel}» (Etappe ${p.etappe}), Bild: ${p.bild}.`;
     if (f.zusatz) hinweise.push(f.zusatz);
     if (mitAbo.length) hinweise.push(`${mitAbo.map((m) => `Die Methode \`${m}\``).join(' und ')} gehört zum Abo; ohne Abo führt ${f.text} allein durch die Phase.`);
     const q = F.phasen[erledigt + 1];
-    danach = q ? `Phase ${q.id} «${q.titel}» mit ${fuer(q).text}` : `nach dem Livegang ${skill(F.nach_live.aendern.skill)}`;
+    // Nach dem Livegang auf dem Weg Geschäft die erste Methode der Etappe Landen, mit Gratis der freie Weg (wie lage, steu-06)
+    const landen = geschaeft && st !== 'gratis' ? F.nach_live.landen.geschaeft?.[0] : undefined;
+    danach = q ? `Phase ${q.id} «${q.titel}» mit ${fuer(q).text}`
+      : `nach dem Livegang ${landen ? methodeText([landen]) : skill(F.nach_live.aendern.skill)}${geschaeft && !landen ? '; die Etappe Landen mit den Methoden gehört zum Abo' : ''}`;
+  } else if (geschaeft && st !== 'gratis') {
+    [jetzt, grund] = [methodeText([F.nach_live.landen.geschaeft?.[0] ?? 'zahlen']), `Deine Seite ist live, alle ${F.phasen.length} Phasen sind geschafft. Jetzt kommt die Etappe Landen: sichtbar werden und die ersten Kundinnen und Kunden gewinnen.`];
+    danach = `${skill('landung')}, sobald du in ein eigenes Haus umziehen willst`;
   } else {
     [jetzt, grund] = [skill(F.nach_live.aendern.skill), `Deine Seite ist live, alle ${F.phasen.length} Phasen sind geschafft. Änderungen gehen klein (${F.nach_live.aendern.klein.join(', ')}) oder gross (${F.nach_live.aendern.gross.join(', ')}).`];
+    if (geschaeft) hinweise.push('Die Etappe Landen mit den Methoden gehört zum Abo; den Link gibt upgrade_link, wenn die Person es will.');
+    danach = merk('seite') || merk('server') ? `${skill('landung')}, sobald du in ein eigenes Haus umziehen willst` : `${skill('statistik')}, sobald du wissen willst, wer deine Seite besucht`;
   }
-  zeilen.push(`Jetzt dran: ${jetzt}. Grund: ${grund}`, ...hinweise.slice(0, 2).map((h) => `Hinweis: ${h}`));
+  zeilen.push(`Jetzt dran: ${jetzt}. Grund: ${grund}`, ...(merk('erfassung') ? [] : [HINWEIS_ERFASSUNG]), ...hinweise.slice(0, 2).map((h) => `Hinweis: ${h}`));
   if (phaseDran && p) {
-    for (const q of p.pflichtfragen) {
-      const [datei, anfang] = q.ablage.split('#') as [string, string | undefined];
-      if (!(anfang ? belegt(F, wert(dateien[datei], anfang)) : dateien[datei] !== undefined)) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)})`);
-    }
+    for (const q of p.pflichtfragen.filter((x) => !frageBelegt(F, p, x, dateien))) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)})`);
     zeilen.push(`Ergebnis: ${p.ergebnis.map((x) => (x.zeilen?.length ? `${x.datei} mit ${x.zeilen.map((z) => `«${z}»`).join(', ')}` : x.datei)).join('; ')}.`);
     // In P13 je Wohnort (fahrplan.yaml: insel_je_wohnort), aus «Wohnort:» in den Belegen, sonst aus dem Abo der Attrappe
-    const melden = bisAbschluss(F, p, wohnortVon(F, wert(dateien['docs/lancieren.md'], 'Wohnort:'), st));
+    const melden = bisAbschluss(F, p, wohnort);
     zeilen.push(`Fertig, wenn: ${p.gate} Dann schritt_melden mit ${melden.map((x) => `«${x}»`).join(', ')}${melden.length > 1 ? ', je sobald geschafft' : ''}.`);
     if (st === 'gratis' && erledigt <= gratisBis) zeilen.push(`Hinweis: ${GRATIS_HINWEIS}`);
     zeilen.push(`Modus: ${modus}. ${F.modus[modus]}`);
     if (modus === 'lernen') zeilen.push(...lektion(p, weg, st));
   }
+  // Was die Belege über die Insel hinaus belegen, fehlt auf der Insel noch (wie lage)
+  const nachmelden = F.phasen.slice(nachInsel, nachDateien).flatMap((q) => bisAbschluss(F, q, wohnort)).filter((x) => rang(x) > rang(insel()));
+  if (entscheid !== 'anpassen' && nachmelden.length) zeilen.push(`Auf der Insel fehlt noch: ${nachmelden.map((x) => `«${x}»`).join(', ')} (nach den Belegen schon geschafft). Melde sie mit schritt_melden, der Reihe nach.`);
   if (danach) zeilen.push(`Danach: ${danach}.`);
   const [n, server, s, i] = [schloesser(), merk('server'), seiteName(), insel()];
   zeilen.push(`Stand: ${[
@@ -177,7 +195,7 @@ function lage(a: Args): Antwort {
     `Abo ${STUFEN[st] ?? st}`,
     server ? `Server ${server} bereit, ${n} Schlösser` : s ? `Seite https://${s}.aufwind.sh ${stand(s)}, ${n} Schlösser` : null,
     `Projekt projekt ${i ? `auf der Insel bei «${i}»` : 'noch nicht auf der Insel'}`,
-    p ? `Phase ${p.id} von ${F.phasen.length} (geschafft nach Insel: ${bisText(nachInsel)}, nach Belegen: ${bisText(nachDateien)})` : `alle ${F.phasen.length} Phasen geschafft`,
+    p ? `Phase ${p.id} von ${F.phasen.length} (geschafft nach Insel: ${bisText(nachInsel)}${nachDateien > nachInsel ? `, nach Belegen weiter: ${bisText(nachDateien)}` : ''})` : `alle ${F.phasen.length} Phasen geschafft`,
   ].filter(Boolean).join(' · ')}.`);
   return { text: zeilen.join('\n') };
 }
@@ -237,10 +255,15 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
     }
     return { text: `Skill ${String(a.slug)} in der aktuellen Fassung von Albatros. Folge dieser Anleitung statt einer älteren Kopie.\n\n${readFileSync(f, 'utf8').replace(/^---[\s\S]*?---\s*/, '')}` };
   },
-  luecke_melden: (a) => (a.einverstanden === undefined
-    ? { fehler: true, text: 'Bevor Albatros Meldungen speichert, frag die Person: «Darf Albatros solche Fragen mit deinem Konto speichern, damit die Skills besser werden? Du siehst sie im Cockpit und kannst sie dort löschen.» Ruf luecke_melden danach mit einverstanden: true oder false nochmals auf.' }
-    : a.einverstanden === false ? { text: 'Nichts gespeichert. Albatros speichert keine Meldungen mehr von dieser Person.' }
-      : { text: 'Gespeichert, danke: Damit werden die Skills von Albatros besser. Die Person sieht ihre Meldungen im Cockpit und kann sie dort löschen.' }),
+  // Mit einverstanden ist die Einwilligung gesetzt (wie flugschule über konto): danach kein Hinweis zur Erfassung mehr in lage
+  luecke_melden: (a) => {
+    if (a.einverstanden === undefined) {
+      return { fehler: true, text: 'Bevor Albatros Meldungen speichert, frag die Person: «Darf Albatros solche Fragen mit deinem Konto speichern, damit die Skills besser werden? Du siehst sie im Cockpit und kannst sie dort löschen.» Ruf luecke_melden danach mit einverstanden: true oder false nochmals auf.' };
+    }
+    setze('erfassung', a.einverstanden === false ? 'nein' : 'ja');
+    return a.einverstanden === false ? { text: 'Nichts gespeichert. Albatros speichert keine Meldungen mehr von dieser Person.' }
+      : { text: 'Gespeichert, danke: Damit werden die Skills von Albatros besser. Die Person sieht ihre Meldungen im Cockpit und kann sie dort löschen.' };
+  },
   upgrade_link: (a) => {
     const ziel = a.stufe === 'light' ? 'light' : 'pilot';
     if (stufe() !== 'gratis') return { text: 'Du hast schon ein Abo. Wechseln oder kündigen kannst du im Kundenportal: https://albatros.build/cockpit/abo' };
