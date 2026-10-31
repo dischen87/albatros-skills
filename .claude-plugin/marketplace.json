@@ -5,31 +5,31 @@
     "url": "https://albatros.build"
   },
   "metadata": {
-    "description": "Albatros: Deine KI im Terminal führt dich von der Idee zur eigenen Webseite oder zum eigenen Geschäft, auf einem echten Server."
+    "description": "Albatros: Deine KI im Terminal führt dich nach einem festen Fahrplan von der Idee zur eigenen Webseite oder zum eigenen Geschäft. Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts; dann geht sie ins Netz, bei Albatros (mit Pilot auf einem echten eigenen Server) oder selbst."
   },
   "plugins": [
     {
       "name": "albatros",
       "source": "./plugins/albatros",
-      "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung). Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+      "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung), auf einem festen Fahrplan von der Idee bis zur Seite im Netz. Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts; dann wählst du, wo sie wohnt: bei Albatros (Light für eine Seite aus Texten und Bildern, Pilot mit einem echten eigenen Server) oder selbst. Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
       "version": "0.2.0"
     },
     {
       "name": "albatros-fr",
       "source": "./plugins/albatros-fr",
-      "description": "L'aiguilleur du ciel te dit, d'après ton état réel, quel skill est à faire maintenant (avec connexion). En plus, la bibliothèque ouverte : école de vol et parcours site web avec clé SSH, serveur, Git, tapis roulant, domaine, photos du serveur et tout ce qu'il faut pour ton premier site web, en français et sans jargon technique.",
+      "description": "L'aiguilleur du ciel te dit, d'après ton état réel, quel skill est à faire maintenant (avec connexion), sur un plan de vol fixe, de l'idée jusqu'au site en ligne. Jusqu'à ce que ton site soit terminé sur ton ordinateur, Albatros ne coûte rien ; ensuite, tu choisis où il habite : chez Albatros (Light pour un site de textes et d'images, Pilot avec un vrai serveur à toi) ou par toi-même. En plus, la bibliothèque ouverte : école de vol et parcours site web avec clé SSH, serveur, Git, tapis roulant, domaine, photos du serveur et tout ce qu'il faut pour ton premier site web, en français et sans jargon technique.",
       "version": "0.2.0"
     },
     {
       "name": "albatros-it",
       "source": "./plugins/albatros-it",
-      "description": "Il controllore di volo ti dice, secondo il tuo stato reale, quale skill tocca adesso (con accesso). In più la biblioteca aperta: scuola di volo e percorso sito web con chiave SSH, server, Git, nastro trasportatore, dominio, foto del server e tutto per il tuo primo sito web, in italiano e senza gergo tecnico.",
+      "description": "Il controllore di volo ti dice, secondo il tuo stato reale, quale skill tocca adesso (con accesso), su un piano di volo fisso dall'idea fino al sito online. Finché il tuo sito non è finito sul tuo computer, Albatros non costa niente; poi scegli dove abita: da Albatros (Light per un sito di testi e immagini, Pilot con un vero server tuo) o da te. In più la biblioteca aperta: scuola di volo e percorso sito web con chiave SSH, server, Git, nastro trasportatore, dominio, foto del server e tutto per il tuo primo sito web, in italiano e senza gergo tecnico.",
       "version": "0.2.0"
     },
     {
       "name": "albatros-en",
       "source": "./plugins/albatros-en",
-      "description": "The air traffic controller tells you, based on where you really are, which skill is up now (sign-in needed). Plus the open library: flight school and website path with SSH key, server, Git, pipeline, domain, snapshots and everything for your first website, in English and without jargon.",
+      "description": "The air traffic controller tells you, based on where you really are, which skill is up now (sign-in needed), on a fixed flight plan from the idea to your site online. Until your site is finished on your own computer, Albatros costs nothing; then you choose where it lives: with Albatros (Light for a site of text and pictures, Pilot with a real server of your own) or self-hosted. Plus the open library: flight school and website path with SSH key, server, Git, pipeline, domain, snapshots and everything for your first website, in English and without jargon.",
       "version": "0.2.0"
     }
   ]
