@@ -26,7 +26,7 @@ A un'inaugurazione c'è un nastro davanti alla porta. Lo si taglia solo quando �
 ## Come procedi
 
 1. La tua IA verifica che in `docs/prd.md` ci sia la tua approvazione. Senza, non parte niente.
-2. Manda il tuo sito nel porto. Con Light così è online, con Pilot lo consegna il nastro trasportatore.
+2. Manda il tuo sito nel porto. Con Light così è online, con Pilot lo consegna il nastro trasportatore. Se abita da te, va dal tuo fornitore.
 3. Verifica il tuo sito dall'esterno al suo indirizzo, anche impressum e protezione dei dati.
 4. Decidi se vuoi un indirizzo tuo: adesso, più tardi o mai.
 5. Dici a chi lo racconti per primo. La tua IA annota tutto in `docs/live.md`.

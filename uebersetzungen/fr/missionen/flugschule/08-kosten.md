@@ -17,7 +17,7 @@ Qui note tout n'a pas de mauvaise surprise sur la facture. Tu fais un cahier de 
 ## Comment t'y prendre
 
 1. Rassembler tous les postes avec ton IA.
-2. Vérifier les prix actuels chez les fournisseurs.
+2. Vérifier les prix : ceux d'Albatros, ton IA les donne depuis ton compte, les autres figurent sur les pages de prix des fournisseurs.
 3. Marquer les pièges et fixer des plafonds.
 4. Écrire le cahier de comptes dans le projet et fixer une date pour le prochain contrôle.
 

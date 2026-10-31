@@ -28,12 +28,13 @@ Eine Suchmaschine ist ein Stadtplan, den ein Bote jeden Tag nachzeichnet. Damit 
 
 ## So gehst du vor
 
-1. Fünf Suchsätze deiner Zielgruppe aufschreiben.
+1. Die Suchbegriffe aus deiner Recherche (`docs/recherche.md`) nehmen und zu fünf Suchsätzen deiner Zielgruppe ergänzen.
 2. Jede Seite mit Titel, Beschreibung und einer Hauptüberschrift versehen.
 3. Lageplan und Hausordnung für den Boten anlegen.
 4. Ladezeit am Handy prüfen.
-5. Mit eigener Domain: die Seite bei der Suchmaschine anmelden.
+5. Die Änderungen auf deinem Computer ansehen und freigeben. Ins Netz gehen sie wie jede Änderung erst nach deiner Freigabe.
+6. Mit eigener Domain: die Seite bei der Suchmaschine anmelden.
 
 ## Geschafft, wenn
 
-- `https://{name}.aufwind.sh/sitemap.xml` und `https://{name}.aufwind.sh/robots.txt` antworten.
+- `https://{name}.aufwind.sh/sitemap.xml` und `https://{name}.aufwind.sh/robots.txt` antworten. Wohnt deine Seite selbst, kann Albatros das nicht prüfen.

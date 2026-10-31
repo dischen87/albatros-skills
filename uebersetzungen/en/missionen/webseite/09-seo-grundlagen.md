@@ -17,12 +17,13 @@ A search engine is a city map that a messenger redraws every day. For your shop 
 
 ## How you go about it
 
-1. Write down five phrases your target group searches for.
+1. Take the search terms from your research (`docs/recherche.md`) and turn them into five phrases your target group searches for.
 2. Give every page a title, a description and one main heading.
 3. Set up the site plan and house rules for the messenger.
 4. Check the loading time on a phone.
-5. With your own domain: register the page with the search engine.
+5. Look at the changes on your computer and release them. Like every change, they only go online after your release.
+6. With your own domain: register the page with the search engine.
 
 ## Done when
 
-- `https://{name}.aufwind.sh/sitemap.xml` and `https://{name}.aufwind.sh/robots.txt` answer.
+- `https://{name}.aufwind.sh/sitemap.xml` and `https://{name}.aufwind.sh/robots.txt` answer. If you host your site yourself, Albatros can't check this.

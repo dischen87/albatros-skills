@@ -17,12 +17,13 @@ Un motore di ricerca è una pianta della città che un fattorino ridisegna ogni 
 
 ## Come procedi
 
-1. Annoti cinque frasi che il tuo pubblico scrive nella ricerca.
+1. Riprendi i termini di ricerca della tua ricerca (`docs/recherche.md`) e li completi in cinque frasi che il tuo pubblico scrive nella ricerca.
 2. Dai a ogni pagina un titolo, una descrizione e un titolo principale.
 3. Prepari la piantina e il regolamento della casa per il fattorino.
 4. Verifichi il tempo di caricamento sul cellulare.
-5. Con un dominio proprio: iscrivi il sito al motore di ricerca.
+5. Guardi le modifiche sul tuo computer e le approvi. Come ogni modifica, vanno online solo dopo la tua approvazione.
+6. Con un dominio proprio: iscrivi il sito al motore di ricerca.
 
 ## Ce l'hai fatta quando
 
-- `https://{name}.aufwind.sh/sitemap.xml` e `https://{name}.aufwind.sh/robots.txt` rispondono.
+- `https://{name}.aufwind.sh/sitemap.xml` e `https://{name}.aufwind.sh/robots.txt` rispondono. Se il tuo sito abita da te, Albatros non lo può controllare.

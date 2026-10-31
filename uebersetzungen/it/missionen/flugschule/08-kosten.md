@@ -17,7 +17,7 @@ Chi annota tutto non ha sorprese in fattura. Fai un libro dei conti di casa ones
 ## Come procedi
 
 1. Raccogli con la tua IA tutte le voci.
-2. Controlli i prezzi attuali presso i fornitori.
+2. Controlli i prezzi: quelli di Albatros te li dice la tua IA dal tuo conto, gli altri stanno sulle pagine dei prezzi dei fornitori.
 3. Segni le trappole e fissi dei tetti massimi.
 4. Scrivi il libro dei conti di casa nel progetto e fissi una data per il prossimo controllo.
 

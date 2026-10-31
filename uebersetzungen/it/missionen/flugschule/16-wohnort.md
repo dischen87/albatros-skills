@@ -27,8 +27,8 @@ La tua casa è pianificata, costruita e collaudata. Adesso le serve un posto in 
 1. La tua IA ti mostra le possibilità, con i prezzi del tuo conto.
 2. Scegli dove abita il tuo sito. La tua IA annota la scelta con il motivo in `docs/lancieren.md`.
 3. Da Albatros la tua IA apre la pagina per pagare solo dopo la tua scelta. I dati della carta li digiti solo lì, mai nella chat.
-4. Fai la tua chiave di casa (chiave SSH), se il tuo domicilio ne ha bisogno.
-5. La tua IA verifica il nuovo indirizzo. Lì c'è prima il modello; il tuo sito arriva solo alla messa online.
+4. Fai la tua chiave di casa (chiave SSH), se il tuo domicilio ne ha bisogno. Se te ne occupi tu, apri da te il conto presso il fornitore.
+5. Da Albatros la tua IA verifica il nuovo indirizzo. Lì c'è prima il modello; il tuo sito arriva solo alla messa online.
 
 ## Ce l'hai fatta quando
 

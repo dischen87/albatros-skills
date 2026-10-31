@@ -26,7 +26,7 @@ Lors d'une inauguration, un ruban est tendu devant la porte. On ne le coupe que 
 ## Comment t'y prendre
 
 1. Ton IA vérifie que ta validation figure dans `docs/prd.md`. Sans elle, rien ne part.
-2. Elle envoie ton site au port. Avec Light, il est alors en ligne ; avec Pilot, le tapis roulant le livre.
+2. Elle envoie ton site au port. Avec Light, il est alors en ligne ; avec Pilot, le tapis roulant le livre. S'il habite par toi-même, il va chez ton fournisseur.
 3. Elle vérifie ton site de l'extérieur à son adresse, y compris les mentions légales et la protection des données.
 4. Tu décides si tu veux ta propre adresse : maintenant, plus tard ou jamais.
 5. Tu dis à qui tu l'annonces en premier. Ton IA note tout dans `docs/live.md`.

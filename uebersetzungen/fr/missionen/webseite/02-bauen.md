@@ -1,29 +1,35 @@
 ---
-titel: Du plan au site terminé
-bild: Le plan signé, puis la construction
+titel: Ton site sur ton ordinateur
+bild: Le gros œuvre dans ton propre atelier, puis la visite
 phase: P10
+verstehen:
+  - frage: Qu'est-ce qu'une entrée dans le journal de bord (commit) ?
+    kern: Une entrée retient une étape terminée, avec une note qui dit quoi et pourquoi. Tu peux revenir plus tard à chaque entrée.
+  - frage: Pourquoi vois-tu ton site d'abord sur ton ordinateur, avant qu'il aille en ligne ?
+    kern: Sur ton propre ordinateur, tu compares et tu changes en paix, sans que personne voie un site à moitié fini. Ne va en ligne que ce que tu as validé.
 ---
 
 ## De quoi il s'agit
 
-Une maison se construit dans un ordre fixe : esquisse, échantillons de matériaux, plan de construction signé, construction, réception par des spécialistes, emménagement. Ton IA construit ton site de la même façon, comme dans une petite fabrique : chaque étape a un résultat, on ne construit qu'après ta signature sous le plan, et le site ne part sur Internet qu'une fois les vérifications faites et ta validation donnée. Sur ton île dans le cockpit, ta maison grandit à chaque étape.
+Ton ébauche est le modèle de ton site qu'on peut visiter, et tu l'as autorisée pour la construction. Maintenant, ton IA en construit le vrai site sur ton propre ordinateur, avec les mêmes pages, menus et sections que dans le modèle. Un journal de bord garde chaque étape. Quatre vérifications réceptionnent le gros œuvre, puis tu le parcours toi-même, sur le natel et sur l'ordinateur, et tu le valides. Jusqu'ici, tout est gratuit, et rien ne va encore en ligne.
 
 ## Ce que tu apprends
 
-- regarder une esquisse (mockup) et des ébauches, et choisir
-- ce qu'est un système de design et pourquoi couleurs et polices ne se trouvent qu'à un seul endroit
-- ce qu'est un plan de construction (PRD) avec critères de réception et pourquoi tu le valides avant la construction
-- comment quatre vérifications (sécurité, parcours et accès, apparence, code et vitesse) réceptionnent un site
-- regarder ton site d'abord sur ton propre ordinateur
+- ce qu'est une entrée dans le journal de bord (commit) et pourquoi chaque étape en reçoit une
+- comment ton ébauche devient un vrai site, sans que rien ne se décale
+- comment quatre vérifications (sécurité, parcours et accès, apparence, code et vitesse) réceptionnent un site, et quelles portes restent fermées sans connexion
+- regarder ton site sur ton ordinateur et le comparer avec l'ébauche
+- changer toi-même un texte et voir le changement tout de suite
 - pourquoi seule ta validation ouvre le chemin vers Internet
 
 ## Comment t'y prendre
 
-1. Ton IA te montre une esquisse de la page d'accueil, puis deux ou trois ébauches. Tu en choisis une, et le système de design en découle.
-2. Elle écrit le plan de construction avec la liste de ce qui sera vérifié à la fin. Tu le lis et tu dis oui ou ce qui manque encore.
-3. Elle construit le site et te le montre dans le navigateur web, en largeur natel et en largeur ordinateur.
-4. Elle vérifie le site dans quatre domaines et te montre les rapports avec un feu tricolore.
-5. Tu valides le site. Il ne va sur Internet qu'ensuite, lors de la mise en ligne, jamais sans ta validation.
+1. Ton IA vérifie que ton ébauche est autorisée pour la construction, et elle ouvre le journal de bord.
+2. Elle écrit le mode de construction et le plan de construction (PRD) à partir de ton ébauche et propose quelles adresses sont ouvertes sans connexion. Tu confirmes les deux dans un seul message.
+3. Elle construit le site et le vérifie dans quatre domaines. Elle te montre les rapports avec un feu tricolore.
+4. Tu regardes ton site sur ton ordinateur, en largeur natel et en largeur ordinateur. Ton IA compare chaque page avec l'ébauche et te montre chaque écart.
+5. Si tu veux, tu changes toi-même un texte et tu le vois tout de suite. En mode apprendre, ça en fait partie.
+6. Tu valides le site. Il ne va sur Internet qu'ensuite, lors de la mise en ligne, jamais sans ta validation.
 
 ## Réussi quand
 
