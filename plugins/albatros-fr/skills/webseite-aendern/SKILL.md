@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Modifie avec une personne sans connaissances préalables son site web terminé, avec sa propre IA, qu'il soit au port d'Albatros ou qu'elle l'héberge elle-même : récupérer le journal de bord, lire d'abord docs/ (plan, système de design, stack technique, PRD, domicile), puis petit (texte, date, image : changer en local, montrer avant et après, validation, push) ou grand (nouvelle page, fonction, autre apparence : complément au plan, ébauche des pages modifiées, autorisation de construire, construire et vérifier, montrer, validation, push), toujours dans le système de design existant, puis vérifier en ligne. Utilise ce skill pour « modifie mon site », « nouvelle date », « changer un texte », « remplacer une image », « il manque … », « nouvelle page », « rends le site … », « il y a une erreur sur le site », et chaque fois que quelque chose doit changer sur un site en ligne."
 metadata:
   stand: 0.2.0
-  quelle: 'd29818fca42b'
+  quelle: 'b1185cbb28aa'
 ---
 
 # Modifier le site web : des travaux dans une maison habitée
@@ -69,7 +69,7 @@ Dis à la personne en une phrase ce que c'est et comment ça continue.
    Zugang: … (qui a le droit de faire quoi change ? alors aussi docs/tueren.txt)
    ```
 2. **Ébauche des pages modifiées** dans `design/entwurf/`, dans le système de design existant, avec de vrais textes (skill `entwurf`). La personne clique à travers, sur le natel et sur l'ordinateur.
-3. **Autorisation de construire :** seulement après son oui, dans `docs/entwurf.md`, sous un titre pour le complément, la ligne `Freigegeben zum Bauen: <date> (« <ses mots> »)`. Ensuite, `node scripts/pruefen.mjs --vor-bau` doit se terminer par 0.
+3. **Autorisation de construire :** seulement après son oui, dans `docs/entwurf.md`, sous un titre pour le complément, la ligne `Freigegeben zum Bauen: <JJ.MM.AAAA>, « <ses mots> »`. La date vient devant, en chiffres ; sans date, avec `[Annahme: …]` ou avec « pas encore », elle ne compte pas comme un oui. Ensuite, `node scripts/pruefen.mjs --vor-bau` doit se terminer par 0.
 4. **Construire** comme dans le skill `webseite-bauen`, étape 4 : balisage et classes tirés de l'ébauche, tokens seulement depuis `design/tokens.css`.
 
 ### 4. Le souhait dans le PRD
@@ -84,7 +84,7 @@ Tout en bas de `docs/prd.md`, après la ligne `Freigegeben:` de la première con
 - [ ] Seulement des valeurs du système de design, les critères d'acceptation précédents restent valables
 ```
 
-Pour un grand souhait, il y a au-dessus `Abgeleitet aus: docs/entwurf.md (Nachtrag <date>, Freigegeben zum Bauen: <date>)` : les critères découlent de l'ébauche que la personne a autorisée. Pour un petit, tu les montres à l'étape 5 avec le résultat.
+Pour un grand souhait, il y a au-dessus `Abgeleitet aus: docs/entwurf.md (Nachtrag <JJ.MM.AAAA>, Freigegeben zum Bauen: <JJ.MM.AAAA>)` : les critères découlent de l'ébauche que la personne a autorisée. Pour un petit, tu les montres à l'étape 5 avec le résultat.
 
 ### 5. Changer, construire, vérifier, montrer avant et après
 
@@ -105,7 +105,7 @@ Quand plus rien n'est rouge, le changement va dans le journal de bord, seulement
 
 ### 6. Validation
 
-Demande : « Est-ce que ça peut aller en ligne comme ça ? » Seulement après le oui, tu inscris sous le souhait `Freigegeben: <date> (« <ses mots> »)` et tu fais l'entrée dans le journal de bord avec le repère de l'état validé :
+Demande : « Est-ce que ça peut aller en ligne comme ça ? » Seulement après le oui, tu inscris sous le souhait `Freigegeben: <JJ.MM.AAAA>, « <ses mots> »`, la date devant en chiffres, et tu fais l'entrée dans le journal de bord avec le repère de l'état validé :
 
 ```bash
 git add docs/prd.md && git commit -m "Validé : <le souhait en une phrase>" && git tag -f freigegeben

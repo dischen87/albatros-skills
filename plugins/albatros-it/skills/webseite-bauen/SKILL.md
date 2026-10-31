@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza approvata (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: 'c7313a0c5be0'
+  quelle: 'acb53511503d'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -68,7 +68,7 @@ mkdir -p scripts && cp <cartella di questo skill>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Finisce con 0:** c'è la riga `Freigegeben zum Bauen: <data>` in `docs/entwurf.md`, la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
+- **Finisce con 0:** c'è la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, …` in `docs/entwurf.md`, la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
 - **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza via libera per costruire allo skill `entwurf` (parte «Freigabe», l'approvazione), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. La riga `Freigegeben zum Bauen:` non la scrivi mai tu, nemmeno «al volo»: c'è solo dopo il sì della persona alla bozza.
 
 ### 1. Officina e diario di bordo
@@ -76,10 +76,12 @@ node scripts/pruefen.mjs --vor-bau
 **L'officina, ancora una volta:** Node, npm e Git devono esserci, anche se c'erano già per la bozza:
 
 ```bash
-command -v node npm git        # Windows: where node npm git
+command -v node npm git        # Windows in PowerShell: where.exe node npm git
 ```
 
 Se manca qualcosa, aiuti a installarlo come nello skill `entwurf` (l'officina) e controlli di nuovo.
+
+**Con un blocco** (`Setup:` in `docs/plan.md` ne nomina uno, o `Baustein:` in `docs/stack.md`) serve anche Bun: con lui il blocco e i suoi test girano su questo computer (passo 4). Controllalo con `command -v bun` (Windows in PowerShell `where.exe bun`). Se manca, la persona lo installa da sola: su Mac e Linux nel terminale `curl -fsSL https://bun.com/install | bash`, su Windows in PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. Poi aprire un nuovo terminale e controllare con `bun --version`.
 
 **Il diario di bordo sul computer:** ogni passo riceve una voce (commit), con una nota in una frase. Così la persona può sfogliare all'indietro in qualsiasi momento. Per questo non serve un porto: il diario di bordo sta nella cartella del progetto, viene collegato solo alla messa online (skill `git-logbuch`, parte «Logbuch ohne Hafen», il diario di bordo senza porto).
 
@@ -184,15 +186,15 @@ Ricavati da docs/plan.md (Testing:) e dalla bozza; approvati con la bozza.
 ```
 # percorso      stato atteso senza accesso (da «Accesso» in docs/prd.md)
 /               200
-/impressum      200
-/datenschutz    200
+/impressum             200
+/protezione-dei-dati   200
 /verwaltung     404     # mai pubblico
 /.env           404
 /.git/config    404 403
 /docs/plan.md   404     # i documenti di lavoro non vanno in rete
 ```
 
-Con un blocco si aggiungono le sue porte, per esempio `/mitglieder 302` o `/api/collections/users/records 401 403`: che cosa risponde senza accesso sta nello skill `bausteine`.
+Con un blocco si aggiungono le sue porte. Se davanti c'è un ingresso (skill `bausteine`, parte «Ein Eingang für alles?»), sono per esempio `/intern/ 401`, `/_/ 404` e `/api/collections/_SUPERUSERS/auth-methods 404`: le pagine protette chiedono l'accesso, e l'accesso dell'amministrazione resta chiuso dall'esterno. Le liste di PocketBase (per esempio `/api/collections/users/records`) rispondono agli ospiti con 200 e una lista vuota, non con 401 o 403; se metti una lista così in `docs/tueren.txt`, allora con 200.
 
 **Un messaggio per le ipotesi:** mostra il PRD alla persona in tre o quattro frasi, apri il file e presenta modo di costruzione e porte come ipotesi, per esempio: «Costruisco con Astro, senza blocchi, e aperte sono solo home, offerta, richiesta, impressum e protezione dei dati. Va bene così?» Dopo il suo sì togli `[Annahme: …]`, fai la voce nel diario di bordo (`git add docs && git commit -m "PRD dalla bozza, modo di costruzione e porte"`), segnali `prd` e costruisci.
 
@@ -270,7 +272,7 @@ Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: spunti quelli sodd
 
 Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`.
 
-### 6. Approvazione: il sopralluogo (`schritt: freigabe`)
+### 6. Approvazione (Freigabe): il sopralluogo (`schritt: freigabe`)
 
 Adesso la persona passa lei stessa per la sua casa. Decide se può andare online così.
 
@@ -287,7 +289,7 @@ Adesso la persona passa lei stessa per la sua casa. Decide se può andare online
    Vergleich mit Entwurf: <data>, nessuna differenza aperta (pruefen.mjs --vergleich; discusso: …)
    ```
 5. **La domanda:** «Hai visto il tuo sito sul tuo computer, in larghezza telefonino e computer. Lo approvi?» Aggiungi che cosa è ancora aperto (dai rapporti), e che quest'approvazione vale per la messa online: va online esattamente questo sito, né più né meno.
-6. **Solo dopo il suo sì esplicito** scrivi sotto `Freigegeben: <data> («<le sue parole>»)`. «Sembra bello» senza un sì all'approvazione non basta. Poi la voce nel diario di bordo, con un segno (tag) esattamente su questo stato:
+6. **Solo dopo il suo sì esplicito** scrivi sotto `Freigegeben: <GG.MM.AAAA>, «<le sue parole>»`, per esempio `Freigegeben: 31.10.2026, «Sì, online così»`. La data viene davanti, in cifre: senza data, con `[Annahme: …]` o con «non ancora» la riga non conta come sì, né per `lage` né per lo skill `lancieren`. «Sembra bello» senza un sì all'approvazione non basta. Poi la voce nel diario di bordo, con un segno (tag) esattamente su questo stato:
    ```bash
    git add docs/prd.md && git commit -m "Sito approvato" && git tag -f freigegeben
    ```

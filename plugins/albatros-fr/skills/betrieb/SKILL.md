@@ -3,7 +3,7 @@ name: betrieb
 description: "Prépare avec une personne sans connaissances préalables l'exploitation de son site, avant que les invités arrivent (P12) : comment les visiteurs la contactent et qui le lit à quelle fréquence, qui est prévenu quand le site ne répond pas (une surveillance simple et gratuite), comment revenir à hier (photos du serveur avec Pilot, le journal de bord avec Light, une propre sauvegarde par soi-même), si une entrée avec connexion est nécessaire (seulement avec un propre serveur, skill bausteine) et si on compte qui vient (skill statistik, avec consentement là où il le faut). Le résultat est docs/betrieb.md. Utilise ce skill après le domicile (lancieren) et pour « exploitation », « surveillance », « sauvegarde », « backup », « retours », « qui lit le formulaire », « et si le site tombe en panne ? »."
 metadata:
   stand: 0.2.0
-  quelle: 'df2a1ecf1f79'
+  quelle: 'c01d87a8eccd'
 ---
 
 # Exploitation : avant que les invités arrivent
@@ -17,7 +17,7 @@ Avant que les premiers invités arrivent, la boîte aux lettres est posée, et q
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- Les débuts de ligne dans `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) restent en allemand, comme les marques `[Annahme: …]` et `[offen: …]` : `lage` les cherche tels quels. Ce qui suit les deux-points, tu l'écris en français.
+- Les débuts de ligne dans `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) restent en allemand, comme les marques `[Annahme: …]` et `[offen: …]` : `lage` les cherche tels quels. Ce qui suit les deux-points, tu l'écris en français. Seule exception : après `Eingang:` vient toujours d'abord `ja` ou `nicht nötig` en allemand (lancieren et bausteine les cherchent tels quels), puis la raison en français.
 - Tutoiement, calme, concret. Chaque réponse devient une ligne dans `docs/betrieb.md`.
 - Les retours, l'entrée et les statistiques, la personne les décide elle-même, aussi en mode `machen`. La surveillance, tu la proposes et tu l'inscris comme `[Annahme: …]` (hypothèse). La sauvegarde, tu la clarifies toi-même et tu la montres. Au maximum deux questions par message.
 - Les prix et les conditions de services externes, tu ne les donnes que depuis leur page de prix. Les comptes chez des services externes, la personne les crée elle-même.
@@ -67,10 +67,12 @@ Exemple : `Sicherung: journal de bord au port et sur cet ordinateur, retour av
 
 Demande : « Y a-t-il plusieurs parties qui doivent savoir qui est connecté ? » Pourquoi : alors une entrée vérifie à un seul endroit qui a le droit de faire quoi.
 
-- **Pas de connexion sur le site** (le tableau « Accès » de `docs/prd.md` ne contient que « tous les visiteurs ») : `Eingang: pas nécessaire (pas de connexion)`.
+- **Pas de connexion sur le site** (le tableau « Accès » de `docs/prd.md` ne contient que « tous les visiteurs ») : `Eingang: nicht nötig (pas de connexion)`.
 - **Avec connexion :** une entrée ne vient que si les critères du skill `bausteine`, partie « Ein Eingang für alles? » (une entrée pour tout ?), sont remplis, et seulement avec un propre serveur (Pilot, ou par toi-même avec serveur). Sinon, la connexion de la brique elle-même suffit. Dans tous les cas, les portes de `docs/tueren.txt` restent fermées sans connexion (`node scripts/pruefen.mjs --tueren`).
 
-Exemple : `Eingang: pas nécessaire, seulement la liste d'inscription avec sa propre connexion (critères du skill bausteine pas remplis)`
+La ligne commence toujours par `ja` ou `nicht nötig`, puis vient la raison : `lancieren` et `bausteine` n'installent l'entrée qu'avec `Eingang: ja`.
+
+Exemples : `Eingang: ja, /intern/ et les messages de PocketBase demandent la même connexion (critères du skill bausteine remplis)` ou `Eingang: nicht nötig, seulement la liste d'inscription avec sa propre connexion (critères du skill bausteine pas remplis)`
 
 ### 6. Statistiques : la liste à cocher
 

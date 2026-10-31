@@ -3,7 +3,7 @@ name: betrieb
 description: "Prepara con una persona senza conoscenze tecniche la gestione del suo sito, prima che arrivino gli ospiti (P12): come la contattano i visitatori e chi legge i messaggi e quanto spesso, chi lo viene a sapere quando il sito non risponde (una sorveglianza semplice e gratuita), come si torna a ieri (foto del server con Pilot, il diario di bordo con Light, una copia di sicurezza propria se te ne occupi tu), se serve un ingresso con accesso (solo con un server proprio, skill bausteine) e se si conta chi arriva (skill statistik, con consenso dove serve). Il risultato è docs/betrieb.md. Usa lo skill dopo il domicilio (lancieren) e con «gestione», «sorveglianza», «copia di sicurezza», «backup», «messaggi dei visitatori», «chi legge il modulo», «e se il sito non funziona più?»."
 metadata:
   stand: 0.2.0
-  quelle: 'df2a1ecf1f79'
+  quelle: 'c01d87a8eccd'
 ---
 
 # Gestione: prima che arrivino gli ospiti
@@ -17,7 +17,7 @@ Prima che arrivino i primi ospiti, la bucalettere è appesa, e qualcuno la svuot
 ## Come parli
 
 - Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
-- Gli inizi di riga in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) restano in tedesco, come i segni `[Annahme: …]` e `[offen: …]`: `lage` li cerca così. Quello che segue i due punti lo scrivi in italiano.
+- Gli inizi di riga in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) restano in tedesco, come i segni `[Annahme: …]` e `[offen: …]`: `lage` li cerca così. Quello che segue i due punti lo scrivi in italiano. Unica eccezione: dopo `Eingang:` viene sempre prima `ja` o `nicht nötig` in tedesco (lancieren e bausteine li cercano così), poi il motivo in italiano.
 - Dai del tu, calmo, concreto. Ogni risposta diventa una riga in `docs/betrieb.md`.
 - Messaggi dei visitatori, ingresso e statistiche li decide la persona, anche nel modo `machen`. La sorveglianza la proponi tu e la scrivi come `[Annahme: …]` (ipotesi). La copia di sicurezza la chiarisci tu e la mostri. Al massimo due domande per messaggio.
 - Prezzi e condizioni di servizi esterni li dai solo dalla loro pagina dei prezzi. I conti presso servizi esterni li apre la persona stessa.
@@ -67,10 +67,12 @@ Esempio: `Sicherung: diario di bordo nel porto e su questo computer, ritorno con
 
 Chiedi: «Ci sono più parti che devono sapere chi ha fatto l'accesso?» Perché: allora un ingresso controlla in un solo punto chi può fare che cosa.
 
-- **Nessun accesso sul sito** (la tabella «Accesso» in `docs/prd.md` ha solo «tutti i visitatori»): `Eingang: non serve (nessun accesso)`.
+- **Nessun accesso sul sito** (la tabella «Accesso» in `docs/prd.md` ha solo «tutti i visitatori»): `Eingang: nicht nötig (nessun accesso)`.
 - **Con accesso:** un ingresso arriva solo se i criteri dello skill `bausteine`, parte «Ein Eingang für alles?» (un ingresso per tutto?), sono soddisfatti, e solo con un server proprio (Pilot, o da te con server). Altrimenti basta l'accesso del blocco stesso. In ogni caso le porte di `docs/tueren.txt` restano chiuse senza accesso (`node scripts/pruefen.mjs --tueren`).
 
-Esempio: `Eingang: non serve, solo la lista di iscrizione con il suo accesso (criteri dello skill bausteine non soddisfatti)`
+La riga comincia sempre con `ja` o `nicht nötig`, poi viene il motivo: `lancieren` e `bausteine` montano l'ingresso solo con `Eingang: ja`.
+
+Esempi: `Eingang: ja, /intern/ e i messaggi di PocketBase chiedono lo stesso accesso (criteri dello skill bausteine soddisfatti)` o `Eingang: nicht nötig, solo la lista di iscrizione con il suo accesso (criteri dello skill bausteine non soddisfatti)`
 
 ### 6. Statistiche: la lista di tacche
 

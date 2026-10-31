@@ -3,7 +3,7 @@ name: betrieb
 description: "Prepares running the site with a person who has no prior knowledge, before the guests arrive (P12): how visitors get in touch and who reads it how often, who finds out when the site stops responding (simple, free monitoring), how to get back to yesterday (photos of the server with Pilot, the logbook with Light, a backup of your own when hosting it yourself), whether an entrance with sign-in is needed (only with your own server, skill bausteine) and whether visitors are counted (skill statistik, with consent where it's required). The result is docs/betrieb.md. Use this skill after choosing where the site lives (lancieren) and for “running it”, “monitoring”, “backup”, “feedback”, “who reads the form”, “what if the site goes down?”."
 metadata:
   stand: 0.2.0
-  quelle: 'df2a1ecf1f79'
+  quelle: 'c01d87a8eccd'
 ---
 
 # Running it: before the guests arrive
@@ -17,7 +17,7 @@ Before the first guests arrive, the letterbox is up, and someone empties it. The
 ## How you talk
 
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
-- The line starts in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) stay German, like the markers `[Annahme: …]` and `[offen: …]`: `lage` looks for them exactly like that. What comes after the colon you write in English.
+- The line starts in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) stay German, like the markers `[Annahme: …]` and `[offen: …]`: `lage` looks for them exactly like that. What comes after the colon you write in English. The one exception: after `Eingang:` always comes first `ja` or `nicht nötig` in German (lancieren and bausteine look for them exactly like that), then the reason in English.
 - Casual “you”, calm, concrete. Every answer becomes a line in `docs/betrieb.md`.
 - Feedback, entrance and statistics are the person's own decisions, in `machen` mode too. Monitoring you suggest and write down as `[Annahme: …]` (assumption). The backup you work out yourself and show. At most two questions per message.
 - You only name prices and terms of outside services from their pricing page. Accounts with outside services are created by the person themselves.
@@ -67,10 +67,12 @@ Example: `Sicherung: logbook in the harbour and on this computer, back with git 
 
 Ask: “Are there several parts that need to know who is signed in?” Why: then one entrance checks in a single place who may do what.
 
-- **No sign-in on the site** (the “Access” table in `docs/prd.md` only has “all visitors”): `Eingang: not needed (no sign-in)`.
+- **No sign-in on the site** (the “Access” table in `docs/prd.md` only has “all visitors”): `Eingang: nicht nötig (no sign-in)`.
 - **With sign-in:** an entrance only comes if the criteria in the skill `bausteine`, part “Ein Eingang für alles?” (one entrance for everything?), are met, and only with your own server (Pilot, or hosting it yourself with a server). Otherwise the building block's own sign-in is enough. Either way, the doors from `docs/tueren.txt` stay closed without signing in (`node scripts/pruefen.mjs --tueren`).
 
-Example: `Eingang: not needed, only the sign-up list with its own sign-in (criteria in the skill bausteine not met)`
+The line always starts with `ja` or `nicht nötig`, then comes the reason: `lancieren` and `bausteine` only build in the entrance with `Eingang: ja`.
+
+Examples: `Eingang: ja, /intern/ and the messages from PocketBase need the same sign-in (criteria in the skill bausteine met)` or `Eingang: nicht nötig, only the sign-up list with its own sign-in (criteria in the skill bausteine not met)`
 
 ### 6. Statistics: the tally sheet
 

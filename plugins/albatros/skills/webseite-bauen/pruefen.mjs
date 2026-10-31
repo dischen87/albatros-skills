@@ -91,8 +91,10 @@ const statisch = async (wurzel) => {
   await new Promise((r) => s.once('listening', r));
   return { adresse: `http://127.0.0.1:${s.address().port}`, zu: () => s.close() };
 };
-const IMPRESSUM = /impressum|imprint|legal|mentions-legales|note-legali/i;
-const DATENSCHUTZ = /datenschutz|privacy|confidentialit|protezione/i;
+// Impressum und Datenschutz in den vier Sprachen der Skills (Pfade aus recht-ch: /impressum, /mentions-legales, /legal-notice;
+// /datenschutz, /protection-des-donnees, /protezione-dei-dati, /privacy), für Seiten wie für Links (Adresse und Text des Links)
+const IMPRESSUM = /impressum|imprint|legal|mentions|colophon/i;
+const DATENSCHUTZ = /datenschutz|privacy|confidentialit|protection.des.donn|protezione|informativa/i;
 
 // Ergebnis: je Bereich eine Ampel (die schlechteste ihrer Punkte) und die Punkte
 // hinweis: etwas, das die KI selbst tun muss (Fotos anschauen, Formular ausprobieren); ändert die Ampel nicht
@@ -122,7 +124,7 @@ const schluss = (name, titel, kopf) => {
 // ---------- Türen: jede Adresse aus docs/tueren.txt antwortet ohne Anmeldung so, wie es im PRD unter «Zugang» steht ----------
 if (TUEREN) {
   const liste = join(WURZEL, 'docs', 'tueren.txt');
-  const FORM = 'docs/tueren.txt: je Zeile ein Pfad und der erwartete Status ohne Anmeldung, zum Beispiel «/verwaltung 404» oder «/mitglieder 401 403»; Kommentare nach #.';
+  const FORM = 'docs/tueren.txt: je Zeile ein Pfad und der erwartete Status ohne Anmeldung, zum Beispiel «/verwaltung 404» oder «/intern/ 401»; Kommentare nach #.';
   if (!existsSync(liste)) fehlt(`docs/tueren.txt fehlt. ${FORM}`);
   const tueren = [];
   const unlesbar = [];
@@ -362,8 +364,8 @@ try {
       }
       // Impressum und Datenschutz gehören auf jede Seite, auch auf die Seiten der Bausteine (Buchen, Anmelden)
       const links = await page.$$eval('a[href]', (as) => as.map((a) => `${a.getAttribute('href')} ${a.textContent}`.toLowerCase()).join(' '));
-      if (!/impressum|imprint|mentions|legal|colophon/.test(links)) melde('ablaeufe', 'rot', `${p}: kein Link zum Impressum (gehört auf jede Seite, Skill recht-ch)`);
-      if (!/datenschutz|privacy|confidentialit|protezione/.test(links)) melde('ablaeufe', 'rot', `${p}: kein Link zur Datenschutzerklärung (gehört auf jede Seite, Skill recht-ch)`);
+      if (!IMPRESSUM.test(links)) melde('ablaeufe', 'rot', `${p}: kein Link zum Impressum (gehört auf jede Seite, Skill recht-ch)`);
+      if (!DATENSCHUTZ.test(links)) melde('ablaeufe', 'rot', `${p}: kein Link zur Datenschutzerklärung (gehört auf jede Seite, Skill recht-ch)`);
       const formulare = await page.$$eval('form', (fs) => fs.map((f) => f.getAttribute('action') ?? '(ohne action)'));
       if (formulare.length) melde('ablaeufe', 'hinweis', `${p}: ${formulare.length} Formular(e) selbst ausprobieren (absenden, Fehler, Tastatur)`, formulare);
     }

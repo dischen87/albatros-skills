@@ -1,9 +1,9 @@
 ---
 name: entwurf
-description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git), then every page from the plan in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, looked at on a phone and on a computer. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
+description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page from the plan in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, looked at on a phone and on a computer. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
   stand: 0.2.0
-  quelle: '5151a9c28a0c'
+  quelle: '847fd670e192'
 ---
 
 # Draft: the walk-through model
@@ -18,7 +18,12 @@ Like every workshop, model-making needs tools: before you start, you check they'
 
 ## In the flight plan
 
-- **P7 “Draft the whole website”** is due once the person has seen the sample sheet (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html`, the line `Richtung:` in `docs/designsystem.md`). If that's missing, go there first.
+- **P7 “Draft the whole website”** is due once the person has seen the sample sheet (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and, in `docs/designsystem.md`, the line `Musterblatt: gesehen am <date>`). Check this before you start (Windows: `dir design` and `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
+  ```bash
+  ls design/tokens.css design/komponenten.css design/musterblatt.html
+  grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md
+  ```
+  If a file is missing or `grep` shows nothing (for example, it still says `Musterblatt: [offen: …]`), go to the skill `gestaltung`, step 5, first. If in an older project `sample sheet seen on <date>` is still at the end of the line `Richtung:`, turn it into the line `Musterblatt: gesehen am <same date>, passt`.
 - **Result of P7:** `design/entwurf/index.html` and one file for every other page, plus `docs/entwurf.md` with the lines `Werkstatt:` (workshop), `Seiten:` (pages) and `Rückmeldungen:` (feedback). The line names stay German, because `lage` and the check scripts read them; the content is in English.
 - **P7 is done** when every page from `docs/plan.md` (apart from the legal notice and the privacy policy) has its file, carried on from the chosen direction; all links lead to pages that exist; colours, fonts and sizes appear only as `var(--…)` from `design/tokens.css`; `entwurf-pruefen.mjs` is green (or you've checked the same by hand) and the person has clicked through it. Then you report `entwurf`.
 - **P8 “Approval to build”** (section “Approval”): the question “Shall we build it like this?” and the line `Freigegeben zum Bauen:` in `docs/entwurf.md`. Then you report `entwurf-freigegeben`. After that comes P9, the build (skill `webseite-bauen`); without this line it doesn't build.
@@ -59,16 +64,20 @@ In PowerShell it's `where.exe`, not `where`: without `.exe`, PowerShell looks fo
 | Node | the engine for check scripts and for the build with Astro | 22.23.4 (required by Astro 7); better the current LTS version from nodejs.org, currently 24 or 26 |
 | npm | fetches tools, comes with Node | 10 |
 | Git | the logbook | 2.28 |
+| Bun, only with a building block | runs the building block and its tests on the computer (from P9) | checked with 1.4.2 |
+
+**With a building block** (`Setup:` in `docs/plan.md` names one, for example a sign-up list, bookings or a login; skill `bausteine`) you also check Bun: `command -v bun` (Windows in PowerShell `where.exe bun`), then `bun --version`. Without a building block there's no need for Bun.
 
 If something is missing or too old, you explain in everyday words how it gets onto their computer. They install it themselves; you tell them every click:
 
 - **Mac:** Node: on nodejs.org, download the LTS version as an installer (.pkg), open it and click through. If Homebrew is there (`command -v brew`), `brew install node` works too. Git: `xcode-select --install` opens a window offering Apple's developer tools; click “Install” there.
 - **Windows:** in PowerShell `winget install -e --id OpenJS.NodeJS.LTS` and `winget install -e --id Git.Git`; when Windows asks whether to allow changes, they click Yes. Without winget: the installers from nodejs.org and git-scm.com.
 - **Linux (Ubuntu, Debian):** Git with `sudo apt install git`; sudo asks for their password, which they type in the terminal themselves. Node from `apt` is often too old: take the route nodejs.org shows for Linux under “Download” (nvm), then `nvm install --lts`.
+- **Bun, only with a building block:** on a Mac and on Linux in the terminal `curl -fsSL https://bun.com/install | bash`, on Windows in PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. The person types the command themselves; it fetches Bun's installer.
 
-After that, open a new terminal together and check again. Into `docs/entwurf.md` goes `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (checked on 31.10.2026)`. If the person can't install right now (for example on a work computer without admin rights), the draft still works: `Werkstatt: without Node (no admin rights), Git 2.39.5; checked by hand`. Tell them honestly that the build in P9 needs Node.
+After that, open a new terminal together and check again. Into `docs/entwurf.md` goes `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (checked on 31.10.2026)`, with a building block also Bun: `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0, Bun 1.4.2 (checked on 31.10.2026)`. If the person can't install right now (for example on a work computer without admin rights), the draft still works: `Werkstatt: without Node (no admin rights), Git 2.39.5; checked by hand`. Tell them honestly that the build in P9 needs Node, and with a building block Bun too.
 
-### 2. The texts (`Seiten:`)
+### 2. The texts (Die Texte) (`Seiten:`)
 
 A draft with real texts shows whether the site holds up. Follow the skill `inhalte`: from `docs/plan.md` the content list `docs/inhalte.md`, the home page in three sentences, short texts in the tone from `docs/konzept.md` (`Ton:`, formal or informal). You suggest the texts; whatever is missing appears visibly as `[placeholder: what's missing, who delivers it by when]`, never made up. The person confirms the texts while clicking through.
 
@@ -77,7 +86,7 @@ A draft with real texts shows whether the site holds up. Follow the skill `inhal
 You carry the chosen direction (`design/richtungen/<chosen>.html`, `design/musterblatt.html` and `design/komponenten.css`) over to every page from `Seiten:` in `docs/plan.md`:
 
 - **Files:** `design/entwurf/index.html` for the home page; for every other page the name in small letters, without accents (é → e; in German ä → ae, ö → oe, ü → ue), everything else becomes “-”: “About us” → `about-us.html`, “Courses & prices” → `courses-prices.html`. That's how `entwurf-pruefen.mjs` finds them.
-- **One header, one menu, one footer** on every page, built the same way: the menu with all pages from the plan (on a phone on one line or as a “Menu” button), in the footer the links to the legal notice and the privacy policy. These two don't need text in the draft yet: a short page `legal-notice.html` and `privacy.html` with `[placeholder: the text comes with the build, skill recht-ch]` is enough, so no link leads nowhere.
+- **One header, one menu, one footer** on every page, built the same way: the menu with all pages from the plan (on a phone on one line or as a “Menu” button), in the footer the links to the legal notice and the privacy policy. These two don't need text in the draft yet: a short page `legal-notice.html` and `privacy.html` with `[placeholder: the text comes with the build, skill recht-ch]` is enough, so no link leads nowhere. In the build they have the same names (`/legal-notice`, `/privacy`, skill `recht-ch`).
 - **Only values from the colour fan:** every page includes `../tokens.css` and `../komponenten.css`; the CSS for the layout of the pages goes into `design/entwurf/entwurf.css`. Colours, fonts, font sizes, spacing, rounded corners and shadows appear only as `var(--…)`. If a value is missing, you first add it to `design/tokens.css` (and to the sample sheet), never in a page.
 - **The states of every feature:** For every feature under `Funktionen:` in `docs/plan.md` you show what happens after the click: the **confirmation** (what has happened, what comes next, how to undo it), the **error** (in words, with “Try again”, what was typed stays there) and the **empty state** (one sentence and a button instead of an empty list). Each state is a page of its own, for example `contact-sent.html`, `contact-error.html`, `dates-empty.html`. A form points to its confirmation with `action="contact-sent.html"`, so the click works even without a program behind it. A page `zustaende.html` (not in the menu) lists all states with links, so the person can find them.
 - **The pages of building blocks as dummies:** If the plan needs a building block (`Setup:`, skill `bausteine`: sign-up list, bookings, login, noticeboard), you draft its pages the same way, with header, menu and footer: for example `book.html` with the dates, `book-confirmed.html`, `book-full.html` (“This place has just gone”), `book-empty.html` and “My bookings” (`verwaltung.html`, not in the menu). They look real but don't work yet; they're built in P9 from the building block's recipe.
@@ -133,7 +142,7 @@ Each line starts at the beginning of the line with its German name and stays sho
 # Draft: <name>
 Stand: <DD.MM.YYYY>
 
-Werkstatt: Node <version>, npm <version>, Git <version> (checked on <DD.MM.YYYY>)
+Werkstatt: Node <version>, npm <version>, Git <version>, with a building block Bun <version> (checked on <DD.MM.YYYY>)
 Seiten: Home (index.html), Offer (offer.html), Contact (contact.html with confirmation and error); <number> placeholders left
 Rückmeldungen: <DD.MM.YYYY> ‹<their words>› → <what was changed>
 Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›
@@ -154,7 +163,7 @@ Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›
 
 The line `Freigegeben zum Bauen:` (approved to build) is only added with the approval.
 
-## Approval
+## Approval (Freigabe)
 
 The second picture: the signature under the model. Only what the person has seen and approved gets built.
 
@@ -164,7 +173,7 @@ Tell them in three or four sentences what's in the draft (the pages, the feature
 
 - **Only a clear yes to building counts:** “Yes”, “Yes, build it like this”, “Yes, go ahead”, “Agreed, build it”. Praise on its own is not an approval: to “looks good” or “nice” you ask once more: “Glad you like it. Does that mean: yes, build it like this?”
 - **“Yes, but …”** is not an approval: change it first, show it again, ask again.
-- After the yes you write the line `Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›` into `docs/entwurf.md`, for example `Freigegeben zum Bauen: 31.10.2026, ‹Yes, build it like this›`, and report `entwurf-freigegeben`. The words `Freigegeben zum Bauen:` stay German, because the build looks for them.
+- After the yes you write the line `Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›` into `docs/entwurf.md`, for example `Freigegeben zum Bauen: 31.10.2026, ‹Yes, build it like this›`, and report `entwurf-freigegeben`. The words `Freigegeben zum Bauen:` stay German, because the build looks for them. The date comes first, as numbers: without a date, with `[Annahme: …]` or with “not yet”, the line doesn't count as a yes, neither for `lage` nor for `pruefen.mjs --vor-bau`.
 - **If the draft changes after the approval,** it no longer counts: turn the line into `Früher freigegeben zum Bauen: …` (approved earlier), make the change, show it again and ask again. That way the line `Freigegeben zum Bauen:` always means: exactly this draft is approved.
 
 After that comes P9: follow the skill `webseite-bauen` (`../webseite-bauen/SKILL.md`). It builds from this draft, with its markup, its classes and `design/tokens.css`, and it doesn't build without the line `Freigegeben zum Bauen:`.

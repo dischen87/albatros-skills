@@ -1,6 +1,6 @@
 ---
 name: entwurf
-description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git), dann jede Seite aus dem Plan in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, angeschaut auf dem Handy und am Computer. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
+description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite aus dem Plan in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, angeschaut auf dem Handy und am Computer. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
 metadata:
   stand: 0.2.0
 ---
@@ -17,7 +17,12 @@ Wie jede Werkstatt braucht der Modellbau Werkzeug: Bevor es losgeht, schaust du,
 
 ## Im Fahrplan
 
-- **P7 «Ganze Webseite entwerfen»** ist dran, wenn die Person das Musterblatt gesehen hat (P6, Skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html`, die Zeile `Richtung:` in `docs/designsystem.md`). Fehlt das, gehst du zuerst dorthin.
+- **P7 «Ganze Webseite entwerfen»** ist dran, wenn die Person das Musterblatt gesehen hat (P6, Skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` und in `docs/designsystem.md` die Zeile `Musterblatt: gesehen am <Datum>`). Prüf das vor dem Start (Windows: `dir design` und `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
+  ```bash
+  ls design/tokens.css design/komponenten.css design/musterblatt.html
+  grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md
+  ```
+  Fehlt eine Datei oder zeigt `grep` nichts (zum Beispiel steht noch `Musterblatt: [offen: …]`), gehst du zuerst zum Skill `gestaltung`, Schritt 5. Steht in einem älteren Projekt `Musterblatt gesehen am <Datum>` noch hinten in der Zeile `Richtung:`, machst du daraus die Zeile `Musterblatt: gesehen am <dasselbe Datum>, passt`.
 - **Ergebnis P7:** `design/entwurf/index.html` und eine Datei für jede weitere Seite, dazu `docs/entwurf.md` mit den Zeilen `Werkstatt:`, `Seiten:` und `Rückmeldungen:`.
 - **Geschafft ist P7,** wenn jede Seite aus `docs/plan.md` (ausser Impressum und Datenschutz) ihre Datei hat, aus der gewählten Richtung weitergeführt; alle Links auf vorhandene Seiten führen; Farben, Schriften und Grössen nur als `var(--…)` aus `design/tokens.css` stehen; `entwurf-pruefen.mjs` grün ist (oder du dasselbe von Hand geprüft hast) und die Person sich durchgeklickt hat. Dann meldest du `entwurf`.
 - **P8 «Freigabe zum Bauen»** (Abschnitt «Freigabe»): die Frage «Wollen wir das so bauen?» und die Zeile `Freigegeben zum Bauen:` in `docs/entwurf.md`. Dann meldest du `entwurf-freigegeben`. Danach kommt P9, der Bau (Skill `webseite-bauen`); ohne diese Zeile baut er nicht.
@@ -57,14 +62,18 @@ In PowerShell heisst es `where.exe`, nicht `where`: Ohne `.exe` sucht PowerShell
 | Node | der Motor für Prüfskripte und für den Bau mit Astro | 22.23.4 (verlangt Astro 7); besser die aktuelle LTS-Version von nodejs.org, zurzeit 24 oder 26 |
 | npm | holt Werkzeuge, kommt mit Node | 10 |
 | Git | das Logbuch | 2.28 |
+| Bun, nur mit Baustein | lässt den Baustein und seine Tests auf dem Computer laufen (ab P9) | geprüft mit 1.4.2 |
+
+**Mit einem Baustein** (`Setup:` in `docs/plan.md` nennt einen, zum Beispiel Anmeldeliste, Buchungen oder Login; Skill `bausteine`) prüfst du auch Bun: `command -v bun` (Windows in PowerShell `where.exe bun`), dann `bun --version`. Ohne Baustein braucht es kein Bun.
 
 Fehlt etwas oder ist es zu alt, sagst du in Alltagssprache, wie es auf ihren Computer kommt. Sie installiert selbst, du sagst ihr jeden Klick:
 
 - **Mac:** Node: auf nodejs.org die LTS-Version als Installationsprogramm (.pkg) laden, öffnen und durchklicken. Gibt es Homebrew (`command -v brew`), geht auch `brew install node`. Git: `xcode-select --install` öffnet ein Fenster, das die Entwicklerwerkzeuge von Apple anbietet; dort auf «Installieren».
 - **Windows:** in PowerShell `winget install -e --id OpenJS.NodeJS.LTS` und `winget install -e --id Git.Git`; fragt Windows «Änderungen zulassen?», klickt sie auf Ja. Ohne winget: die Installationsprogramme von nodejs.org und git-scm.com.
 - **Linux (Ubuntu, Debian):** Git mit `sudo apt install git`; sudo fragt nach ihrem Passwort, das tippt sie selbst im Terminal. Node aus `apt` ist oft zu alt: Nimm den Weg, den nodejs.org unter «Download» für Linux zeigt (nvm), danach `nvm install --lts`.
+- **Bun, nur mit Baustein:** Mac und Linux im Terminal `curl -fsSL https://bun.com/install | bash`, Windows in PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. Die Person tippt den Befehl selbst; er holt das Installationsprogramm von Bun.
 
-Danach öffnet ihr ein neues Terminal, und du prüfst nochmals. In `docs/entwurf.md` kommt `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (geprüft am 31.10.2026)`. Kann die Person jetzt nicht installieren (zum Beispiel auf einem Firmencomputer ohne Adminrechte), geht der Entwurf trotzdem: `Werkstatt: ohne Node (keine Adminrechte), Git 2.39.5; Prüfung von Hand`. Sag ihr ehrlich, dass der Bau in P9 Node braucht.
+Danach öffnet ihr ein neues Terminal, und du prüfst nochmals. In `docs/entwurf.md` kommt `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (geprüft am 31.10.2026)`, mit Baustein auch Bun: `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0, Bun 1.4.2 (geprüft am 31.10.2026)`. Kann die Person jetzt nicht installieren (zum Beispiel auf einem Firmencomputer ohne Adminrechte), geht der Entwurf trotzdem: `Werkstatt: ohne Node (keine Adminrechte), Git 2.39.5; Prüfung von Hand`. Sag ihr ehrlich, dass der Bau in P9 Node braucht, mit Baustein auch Bun.
 
 ### 2. Die Texte (`Seiten:`)
 
@@ -75,7 +84,7 @@ Ein Entwurf mit echten Texten zeigt, ob die Seite trägt. Folge dem Skill `inhal
 Du führst die gewählte Richtung (`design/richtungen/<gewählt>.html`, `design/musterblatt.html` und `design/komponenten.css`) auf jede Seite aus `Seiten:` in `docs/plan.md` weiter:
 
 - **Dateien:** `design/entwurf/index.html` für die Startseite; für jede andere Seite der Name klein, ä → ae, ö → oe, ü → ue, alles andere wird «-»: «Über uns» → `ueber-uns.html`, «Kurse & Preise» → `kurse-preise.html`. So findet `entwurf-pruefen.mjs` sie.
-- **Ein Kopf, ein Menü, ein Fuss** auf jeder Seite, gleich gebaut: das Menü mit allen Seiten aus dem Plan (am Handy auf einer Zeile oder als Knopf «Menü»), im Fuss die Links auf Impressum und Datenschutz. Diese beiden brauchen im Entwurf noch keinen Text: Eine kurze Seite `impressum.html` und `datenschutz.html` mit `[Platzhalter: Der Text kommt beim Bauen, Skill recht-ch]` genügt, damit kein Link ins Leere führt.
+- **Ein Kopf, ein Menü, ein Fuss** auf jeder Seite, gleich gebaut: das Menü mit allen Seiten aus dem Plan (am Handy auf einer Zeile oder als Knopf «Menü»), im Fuss die Links auf Impressum und Datenschutz. Diese beiden brauchen im Entwurf noch keinen Text: Eine kurze Seite `impressum.html` und `datenschutz.html` mit `[Platzhalter: Der Text kommt beim Bauen, Skill recht-ch]` genügt, damit kein Link ins Leere führt. Im Bau heissen sie gleich (`/impressum`, `/datenschutz`, Skill `recht-ch`).
 - **Nur Werte aus dem Farbfächer:** Jede Seite bindet `../tokens.css` und `../komponenten.css` ein; eigenes CSS für den Aufbau der Seiten kommt in `design/entwurf/entwurf.css`. Farben, Schriften, Schriftgrössen, Abstände, Rundungen und Schatten stehen nur als `var(--…)`. Fehlt ein Wert, ergänzt du ihn zuerst in `design/tokens.css` (und im Musterblatt), nie in einer Seite.
 - **Zustände jeder Funktion:** Für jede Funktion aus `Funktionen:` in `docs/plan.md` zeigst du, was nach dem Klick passiert: die **Bestätigung** (was passiert ist, was als Nächstes kommt, wie man es rückgängig macht), den **Fehler** (in Worten, mit «Nochmals versuchen», das Eingetippte bleibt stehen) und den **leeren Zustand** (ein Satz und ein Knopf statt einer leeren Liste). Jeder Zustand ist eine eigene Seite, zum Beispiel `kontakt-bestaetigt.html`, `kontakt-fehler.html`, `termine-leer.html`. Ein Formular zeigt mit `action="kontakt-bestaetigt.html"` auf seine Bestätigung, so geht der Klick auch ohne Programm dahinter. Eine Seite `zustaende.html` (nicht im Menü) listet alle Zustände mit Links, damit die Person sie findet.
 - **Seiten der Bausteine als Attrappe:** Braucht der Plan einen Baustein (`Setup:`, Skill `bausteine`: Anmeldeliste, Buchungen, Login, Pinnwand), entwirfst du seine Seiten genauso, mit Kopf, Menü und Fuss: zum Beispiel `buchen.html` mit den Terminen, `buchen-bestaetigt.html`, `buchen-voll.html` («Dieser Platz ist eben weg»), `buchen-leer.html` und «Meine Buchungen» (`verwaltung.html`, nicht im Menü). Sie sehen echt aus, arbeiten aber noch nicht; gebaut werden sie in P9 aus dem Rezept des Bausteins.
@@ -131,7 +140,7 @@ Jede Zeile beginnt am Zeilenanfang mit ihrem Namen und bleibt kurz (höchstens 3
 # Entwurf: <Name>
 Stand: <TT.MM.JJJJ>
 
-Werkstatt: Node <Version>, npm <Version>, Git <Version> (geprüft am <TT.MM.JJJJ>)
+Werkstatt: Node <Version>, npm <Version>, Git <Version>, mit Baustein Bun <Version> (geprüft am <TT.MM.JJJJ>)
 Seiten: Start (index.html), Angebot (angebot.html), Kontakt (kontakt.html mit Bestätigung und Fehler); noch <Zahl> Platzhalter
 Rückmeldungen: <TT.MM.JJJJ> ‹<ihre Worte>› → <was geändert ist>
 Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›
@@ -162,7 +171,7 @@ Sag ihr in drei, vier Sätzen, was im Entwurf steht (die Seiten, die Funktionen 
 
 - **Nur ein klares Ja zum Bauen gilt:** «Ja», «Ja, so bauen», «Ja, bau es», «Einverstanden, bauen». Lob allein ist keine Freigabe: Auf «sieht gut aus» oder «schön» fragst du einmal nach: «Freut mich. Heisst das: Ja, so bauen?»
 - **«Ja, aber …»** ist keine Freigabe: zuerst ändern, neu zeigen, neu fragen.
-- Nach dem Ja schreibst du in `docs/entwurf.md` die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›`, zum Beispiel `Freigegeben zum Bauen: 31.10.2026, ‹Ja, so bauen›`, und meldest `entwurf-freigegeben`.
+- Nach dem Ja schreibst du in `docs/entwurf.md` die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›`, zum Beispiel `Freigegeben zum Bauen: 31.10.2026, ‹Ja, so bauen›`, und meldest `entwurf-freigegeben`. Das Datum steht vorne, als Zahl: Ohne Datum, mit `[Annahme: …]` oder mit «noch nicht» gilt die Zeile nicht als Ja, weder für `lage` noch für `pruefen.mjs --vor-bau`.
 - **Ändert sich der Entwurf nach der Freigabe,** gilt sie nicht mehr: Mach aus der Zeile `Früher freigegeben zum Bauen: …`, ändere, zeig neu und frag nochmals. So heisst die Zeile `Freigegeben zum Bauen:` immer: genau dieser Entwurf ist freigegeben.
 
 Danach kommt P9: Folge dem Skill `webseite-bauen` (`../webseite-bauen/SKILL.md`). Er baut aus diesem Entwurf, mit seinem Markup, seinen Klassen und `design/tokens.css`, und er baut nicht ohne die Zeile `Freigegeben zum Bauen:`.

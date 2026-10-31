@@ -66,7 +66,7 @@ Sag der Person in einem Satz, was es ist und wie es weitergeht.
    Zugang: … (ändert sich, wer was darf? dann auch docs/tueren.txt)
    ```
 2. **Entwurf der geänderten Seiten** in `design/entwurf/`, im bestehenden Designsystem, mit echten Texten (Skill `entwurf`). Die Person klickt sich durch, auf dem Handy und am Computer.
-3. **Freigabe zum Bauen:** Erst nach ihrem Ja kommt in `docs/entwurf.md` unter einer Überschrift für den Nachtrag die Zeile `Freigegeben zum Bauen: <Datum> («<ihre Worte>»)`. Dann muss `node scripts/pruefen.mjs --vor-bau` mit 0 enden.
+3. **Freigabe zum Bauen:** Erst nach ihrem Ja kommt in `docs/entwurf.md` unter einer Überschrift für den Nachtrag die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, «<ihre Worte>»`. Das Datum steht vorne, als Zahl; ohne Datum, mit `[Annahme: …]` oder mit «noch nicht» gilt sie nicht als Ja. Dann muss `node scripts/pruefen.mjs --vor-bau` mit 0 enden.
 4. **Bauen** wie im Skill `webseite-bauen`, Schritt 4: Markup und Klassen aus dem Entwurf, Tokens nur aus `design/tokens.css`.
 
 ### 4. Der Wunsch ins PRD
@@ -81,7 +81,7 @@ Ganz unten in `docs/prd.md`, nach der Zeile `Freigegeben:` des ersten Baus, komm
 - [ ] Nur Werte aus dem Designsystem, die bisherigen Abnahmekriterien gelten weiter
 ```
 
-Bei einem grossen Wunsch steht darüber `Abgeleitet aus: docs/entwurf.md (Nachtrag <Datum>, Freigegeben zum Bauen: <Datum>)`: Die Kriterien folgen aus dem Entwurf, den die Person freigegeben hat. Bei einem kleinen zeigst du sie in Schritt 5 zusammen mit dem Ergebnis.
+Bei einem grossen Wunsch steht darüber `Abgeleitet aus: docs/entwurf.md (Nachtrag <TT.MM.JJJJ>, Freigegeben zum Bauen: <TT.MM.JJJJ>)`: Die Kriterien folgen aus dem Entwurf, den die Person freigegeben hat. Bei einem kleinen zeigst du sie in Schritt 5 zusammen mit dem Ergebnis.
 
 ### 5. Ändern, bauen, prüfen, vorher und nachher zeigen
 
@@ -102,7 +102,7 @@ Ist nichts mehr rot, kommt die Änderung ins Logbuch, nur mit den eigenen Dateie
 
 ### 6. Freigabe
 
-Frag: «Darf das so ins Netz?» Erst nach dem Ja trägst du unter dem Wunsch `Freigegeben: <Datum> («<ihre Worte>»)` ein und machst den Eintrag ins Logbuch mit dem Zeichen für den freigegebenen Stand:
+Frag: «Darf das so ins Netz?» Erst nach dem Ja trägst du unter dem Wunsch `Freigegeben: <TT.MM.JJJJ>, «<ihre Worte>»` ein, das Datum vorne als Zahl, und machst den Eintrag ins Logbuch mit dem Zeichen für den freigegebenen Stand:
 
 ```bash
 git add docs/prd.md && git commit -m "Freigegeben: <der Wunsch in einem Satz>" && git tag -f freigegeben

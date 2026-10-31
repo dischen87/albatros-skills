@@ -3,7 +3,7 @@ name: lancieren
 description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
   stand: 0.2.0
-  quelle: '4097894a1741'
+  quelle: '791efc92d97c'
 ---
 
 # Launch: where it lives and the opening
@@ -30,10 +30,10 @@ The house is built, inspected and released. Now two things follow, in this order
 ### 1. Is the site released?
 
 ```bash
-grep -m1 '^Freigegeben: ' docs/prd.md        # Windows: findstr /b "Freigegeben:" docs\prd.md
+grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md        # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md
 ```
 
-If the line is missing, you say so honestly: first comes the walk-through with the release (skill `webseite-bauen`, step 6). If the person still wants to choose where it lives already, that's fine; the site only moves in after the release.
+If that shows no line, the site isn't released yet: the line is missing, or there's no date at the front (for example `[Annahme: …]` or “not yet”). Then you say so honestly: first comes the walk-through with the release (skill `webseite-bauen`, step 6). If the person still wants to choose where it lives already, that's fine; the site only moves in after the release. But you only write `docs/lancieren.md` and report `wohnort` after the release: otherwise the flight plan counts where it lives, and the question about the release drops out.
 
 ### 2. The question, always the same
 
@@ -77,6 +77,8 @@ Help with the choice with three questions: may the logbook be public? Does the s
 
 ### 4. `docs/lancieren.md`
 
+Only once the site is released (step 1):
+
 ```markdown
 # Launch
 
@@ -91,19 +93,19 @@ If, when hosting it yourself, the address is only known after the first upload, 
 
 Next comes the skill `betrieb`: letterbox, smoke alarm and front door, before the guests arrive.
 
-## Part 2: Going live (phase P13, `schritt: hafen`, `fliessband`, `live`, `domain`)
+## Part 2: Going live (Live schalten) (phase P13, `schritt: hafen`, `fliessband`, `live`, `domain`)
 
 Only once `docs/betrieb.md` has all its lines (skill `betrieb`). If it's missing, you go there first.
 
 ### 1. Only the released site
 
 ```bash
-grep -m1 '^Freigegeben: ' docs/prd.md                     # the release from the walk-through
+grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md            # the release from the walk-through, with the date at the front
 git status --short seite web design                       # empty: nothing unsaved on the site
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
 
-- **No line `Freigegeben:`:** nothing goes online. Back to the skill `webseite-bauen`, step 6.
+- **No line `Freigegeben:` with the date at the front:** nothing goes online. Back to the skill `webseite-bauen`, step 6.
 - **Changed since the release** (no output “Seite wie freigegeben”, site as released): the person looks at the changed site locally and releases it again (new line `Freigegeben:`, `git tag -f freigegeben`). Only then do you carry on.
 - **No tag `freigegeben`** (older projects): show the person the site locally and ask: “Is this exactly the site you released?” After the yes, you set the tag (`git tag freigegeben`).
 
@@ -121,7 +123,7 @@ git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
 
 Tell the person with the picture: the template is taken into the logbook once. Where both have the same file (`seite/index.html`, `.gitignore`), theirs stays. On top come the files Pilot's conveyor belt needs (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); with Light they sleep. If after the merge it doesn't say “Seite unverändert” (site unchanged), you don't push, and you look with `git diff freigegeben HEAD -- seite`.
 
-**With a building block (Pilot), before the push:** now the template's `compose.yaml` is in the logbook, and you hook in the building blocks as in the skill `bausteine`, section 4 “At launch, with Pilot”: first a photo of the server (tool `snapshot`, name `vor-baustein`), then `include:` in `compose.yaml`. If `docs/betrieb.md` says `Eingang: ja`, the **entrance** step comes on top: the line `- bausteine/eingang/compose.yaml` under `include:`, and for the service `webseite` the lines `ports:` and `- "80:80"` go. Port 80 then belongs to the entrance, and the website can only be reached behind it. Before that, `bun bausteine/eingang/test.ts` has to report “Alles grün”. Without a login, or with `Eingang: nicht nötig`, `compose.yaml` stays as in the template. Then a logbook entry.
+**With a building block (Pilot), before the push:** now the template's `compose.yaml` is in the logbook, and you hook in the building blocks as in the skill `bausteine`, section 4 “At launch, with Pilot”: first a photo of the server (tool `snapshot`, name `vor-baustein`), then `include:` in `compose.yaml`. If `docs/betrieb.md` says `Eingang: ja` (`grep -E '^Eingang: ja' docs/betrieb.md` shows the line), the **entrance** step comes on top: the line `- bausteine/eingang/compose.yaml` under `include:`, and for the service `webseite` the lines `ports:` and `- "80:80"` go. Port 80 then belongs to the entrance, and the website can only be reached behind it. Before that, `bun bausteine/eingang/test.ts` has to report “Alles grün”. Without a login, or with `Eingang: nicht nötig`, `compose.yaml` stays as in the template. Then a logbook entry.
 
 ```bash
 git push -u origin main
@@ -129,7 +131,7 @@ git push -u origin main
 
 Then you open the harbour in the browser (`open https://code.aufwind.sh/<name>/projekt`) and report `hafen`.
 
-**Hosting it yourself, with GitHub:** the person signs in with `gh auth login` in the browser. For GitHub Pages, you first create the conveyor belt, `.github/workflows/seite.yml`:
+**Hosting it yourself, with GitHub (Selbst, mit GitHub):** the person signs in with `gh auth login` in the browser. For GitHub Pages, you first create the conveyor belt, `.github/workflows/seite.yml`:
 
 ```yaml
 name: Seite
@@ -162,7 +164,7 @@ jobs:
 
 Then take the logbook along: `gh repo create <repo> --private --source . --remote origin --push` (for GitHub Pages without a paid account `--public`, once the person knows that `docs/` is then public too). For GitHub Pages, the person sets the source to “GitHub Actions” under Settings, Pages. Then you report `hafen`.
 
-**Hosting it yourself, without a repository:** you upload `seite/` directly, after the person has signed in in the browser: `npx netlify-cli deploy --dir=seite --prod` or `npx wrangler pages deploy seite --project-name=<name>`. The logbook stays on the computer; its backup is noted in `docs/betrieb.md`. Then there's no harbour, and you don't report `hafen`.
+**Hosting it yourself, without a repository (Selbst, ohne Repo):** you upload `seite/` directly, after the person has signed in in the browser: `npx netlify-cli deploy --dir=seite --prod` or `npx wrangler pages deploy seite --project-name=<name>`. The logbook stays on the computer; its backup is noted in `docs/betrieb.md`. Then there's no harbour, and you don't report `hafen`.
 
 ### 3. Conveyor belt (`schritt: fliessband`)
 
@@ -182,13 +184,15 @@ node scripts/pruefen.mjs --tueren <address>
 
 The address is in `docs/lancieren.md` (`Adresse:`). Only what's been checked from outside counts as live: if nothing is red with `--live` (title as built, legal notice and privacy policy reachable, access, Lighthouse) or with `--tueren`, you report `live`, open the address with the person and compare it with the screenshots from the check.
 
-- **With the entrance:** `docs/tueren.txt` lists the protected paths with 401 (without signing in) and `/_/` with 404; if the file still dates from the build without an entrance, you adjust it before the check. Only when `--tueren` shows exactly that and the home page gives 200 is the site really behind the entrance.
+- **With the entrance:** `docs/tueren.txt` lists the protected paths with 401 (without signing in, for example `/intern/ 401`), plus `/_/ 404` and `/api/collections/_SUPERUSERS/auth-methods 404`: the admin sign-in stays closed from outside. PocketBase lists answer guests with 200 and an empty list, not 401. If the file still dates from the build without an entrance, you adjust it before the check. Only when `--tueren` shows exactly that and the home page gives 200 is the site really behind the entrance.
 - **With a building block, “live” isn't “done” yet:** only once the data is in (for example the courses) and a test booking on the web has brought its email to the person's own address (skill `bausteine`) do you tell the person they can share the link. Until then, you say honestly what's still missing.
-- **Still not there after three minutes:** with Light, `konto_status` shows whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour because `seite/` is listed in a `.gitignore`. With Pilot you look under “Actions” (skill `pipeline`), when hosting it yourself in the provider's list of deploys. Fix it, new entry, push, check again. If the fix changes the site itself, you show it to the person first and get the release again. If it still doesn't work, you say what you checked and ask the coach (`coach_fragen`).
+- **Still not there after three minutes (Nach drei Minuten noch nicht da):** with Light, `konto_status` shows whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour because `seite/` is listed in a `.gitignore`. With Pilot you look under “Actions” (skill `pipeline`), when hosting it yourself in the provider's list of deploys. Fix it, new entry, push, check again. If the fix changes the site itself, you show it to the person first and get the release again. If it still doesn't work, you say what you checked and ask the coach (`coach_fragen`).
 
 ### 5. Your own address, optional (`schritt: domain`)
 
-Ask: “Your own address (domain) now, later or never?” Add: it costs something every year and is optional. Now: with Albatros you follow the skill `domain`; when hosting it yourself, you connect it at the provider (skill `landung`, part “Direkt vom Computer ins Netz”). Once `https://<domain>` shows the site with the padlock, you report `domain` and check again with `pruefen.mjs --live https://<domain>`.
+Ask: “Your own address (domain) now, later or never?” Add: it costs something every year and is optional. Their answer goes straight into `docs/live.md` (template in step 8), into the line `Eigene Domain:`: first `jetzt`, `später` or `nie` in German, then, if they like, a sentence in English, for example `Eigene Domain: später, once the committee has decided on the name`. Now: with Albatros you follow the skill `domain`; when hosting it yourself, you connect it at the provider (skill `landung`, part “Direkt vom Computer ins Netz”). Once `https://<domain>` shows the site with the padlock, you report `domain` and check again with `pruefen.mjs --live https://<domain>`.
+
+**With a login** (a building block with sign-in, for example a members' area): after the domain, the person signs in once through `https://<domain>`, on the sign-in page. If that works, the site accepts sign-ins and forms through the new address too. If the page says the email or password is wrong although both are right, or a form doesn't go through on the domain, you ask the coach (`coach_fragen`) and say what you checked. Until then, the person signs in through `https://<name>.aufwind.sh`.
 
 **If the site replaces an existing one** (`docs/bestand.md`, skill `webseite-modernisieren`): the old domain then points to the new site. Every old address from `docs/bestand.md` that no longer exists gets a redirect to the matching new place (in Astro under `redirects` in `web/astro.config.mjs`). You never touch the email entries (MX).
 
@@ -206,12 +210,13 @@ Ask: “Who do you tell first?” Your first fan won't turn up on their own. Hel
 # Live
 
 Live seit: <date>
-Adresse: https://… (your own domain, once it's active)
+Adresse: https://… (the address on the web; with your own domain, that one, once it's active)
+Eigene Domain: <jetzt | später | nie>, <a sentence, if the person says one>
 Geprüft: <date>, pruefen.mjs --live without red, doors as expected (docs/pruefung/messwerte-live.json)
 Angekündigt: <date>, <whom>
 ```
 
-Then the logbook entry, the push as above, and the mission. In `lernen` mode you ask the check questions of the mission `flugschule-18-live-schalten` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
+After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you ask the check questions of the mission `flugschule-18-live-schalten` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
 If the person wants something different afterwards, the skill `webseite-aendern` applies: small (change locally, show, release, push) or big (addition to the plan, draft, approval to build, build, show, release, push).
 
@@ -221,6 +226,7 @@ Only what belongs to the person, or what they have permission for, gets publishe
 
 - `upgrade_link` before the person has chosen, or prices from memory.
 - Pushing your own site already when choosing where it lives: with Light every push is online right away, and the site is then on the web before the letterbox and the smoke alarm.
+- Reporting `wohnort` or writing `docs/lancieren.md` before the site is released: then the flight plan jumps over the release.
 - Cloning the logbook from the harbour and copying the site into it: the entries from the build are lost. Connect instead of copying.
 - `git push --force` to overwrite the harbour: never. Merge as above.
 - Pushing although the site has changed since the release.

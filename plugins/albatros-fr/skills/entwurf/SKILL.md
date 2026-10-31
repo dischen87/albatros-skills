@@ -1,24 +1,29 @@
 ---
 name: entwurf
-description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git), puis chaque page du plan dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, regardé sur le natel et sur l'ordinateur. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
+description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git, avec une brique aussi Bun), puis chaque page du plan dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, regardé sur le natel et sur l'ordinateur. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
 metadata:
   stand: 0.2.0
-  quelle: '5151a9c28a0c'
+  quelle: '847fd670e192'
 ---
 
 # Ébauche : le modèle qu'on peut visiter
 
 ## L'image
 
-Avant que le gros œuvre commence, l'architecte a sur sa table une maquette de toute la maison : chaque pièce, chaque porte, la cuisine avec ses vraies façades. On la parcourt des yeux et on dit « ici, il manque une fenêtre ». Maintenant, un changement tient en une phrase ; une fois le béton coulé, c'est une transformation. C'est pourquoi tu construis d'abord avec la personne une telle maquette de son site, qu'elle peut parcourir en cliquant. C'est seulement quand elle la signe qu'on construit.
+Avant que le gros œuvre commence, l'architecte a sur sa table un modèle de toute la maison : chaque pièce, chaque porte, la cuisine avec ses vraies façades. On le parcourt des yeux et on dit « ici, il manque une fenêtre ». Maintenant, un changement tient en une phrase ; une fois le béton coulé, c'est une transformation. C'est pourquoi tu construis d'abord avec la personne un tel modèle de son site, qu'elle peut parcourir en cliquant. C'est seulement quand elle le signe qu'on construit.
 
-Comme tout atelier, la construction de la maquette a besoin d'outils : avant de commencer, tu regardes s'ils sont accrochés au mur.
+Comme tout atelier, la construction du modèle a besoin d'outils : avant de commencer, tu regardes s'ils sont accrochés au mur.
 
-**Comment utiliser l'image :** Dis-la à la personne dans ta première réponse, avant de montrer des commandes. À l'autorisation s'ajoute la deuxième image : la signature sous la maquette.
+**Comment utiliser l'image :** Dis-la à la personne dans ta première réponse, avant de montrer des commandes. À l'autorisation s'ajoute la deuxième image : la signature sous le modèle.
 
 ## Dans le plan de vol
 
-- **P7 « Concevoir tout le site »** est au tour quand la personne a vu la planche d'échantillons (P6, skill `gestaltung` : `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html`, la ligne `Richtung:` dans `docs/designsystem.md`). Si ça manque, tu vas d'abord là-bas.
+- **P7 « Concevoir tout le site »** est au tour quand la personne a vu la planche d'échantillons (P6, skill `gestaltung` : `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` et, dans `docs/designsystem.md`, la ligne `Musterblatt: gesehen am <date>`). Vérifie-le avant de commencer (Windows : `dir design` et `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`) :
+  ```bash
+  ls design/tokens.css design/komponenten.css design/musterblatt.html
+  grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md
+  ```
+  S'il manque un fichier ou si `grep` ne montre rien (par exemple, il y a encore `Musterblatt: [offen: …]`), tu vas d'abord au skill `gestaltung`, étape 5. Si, dans un projet plus ancien, `planche d'échantillons vue le <date>` figure encore à la fin de la ligne `Richtung:`, tu en fais la ligne `Musterblatt: gesehen am <même date>, passt`.
 - **Résultat de P7 :** `design/entwurf/index.html` et un fichier pour chaque autre page, plus `docs/entwurf.md` avec les lignes `Werkstatt:` (atelier), `Seiten:` (pages) et `Rückmeldungen:` (retours). Les noms des lignes restent en allemand, parce que `lage` et les scripts de vérification les lisent ; le contenu est en français.
 - **P7 est réussi** quand chaque page de `docs/plan.md` (sauf mentions légales et protection des données) a son fichier, prolongé à partir de la direction choisie ; que tous les liens mènent à des pages existantes ; que les couleurs, les polices et les tailles ne figurent que comme `var(--…)` tirées de `design/tokens.css` ; que `entwurf-pruefen.mjs` est vert (ou que tu as vérifié la même chose à la main) et que la personne a tout parcouru en cliquant. Tu annonces alors `entwurf`.
 - **P8 « Autorisation de construire »** (section « Autorisation ») : la question « On le construit comme ça ? » et la ligne `Freigegeben zum Bauen:` dans `docs/entwurf.md`. Tu annonces alors `entwurf-freigegeben`. Ensuite vient P9, la construction (skill `webseite-bauen`) ; sans cette ligne, il ne construit pas.
@@ -59,16 +64,20 @@ Dans PowerShell, c'est `where.exe`, pas `where` : sans `.exe`, PowerShell cherch
 | Node | le moteur des scripts de vérification et de la construction avec Astro | 22.23.4 (exigé par Astro 7) ; mieux, la version LTS actuelle de nodejs.org, en ce moment 24 ou 26 |
 | npm | va chercher des outils, vient avec Node | 10 |
 | Git | le journal de bord | 2.28 |
+| Bun, seulement avec une brique | fait tourner la brique et ses tests sur l'ordinateur (dès P9) | vérifié avec 1.4.2 |
+
+**Avec une brique** (`Setup:` dans `docs/plan.md` en nomme une, par exemple liste d'inscription, réservations ou connexion ; skill `bausteine`), tu vérifies aussi Bun : `command -v bun` (Windows dans PowerShell `where.exe bun`), puis `bun --version`. Sans brique, pas besoin de Bun.
 
 S'il manque quelque chose ou si c'est trop vieux, tu expliques en langage de tous les jours comment ça arrive sur son ordinateur. Elle installe elle-même, tu lui dis chaque clic :
 
 - **Mac :** Node : sur nodejs.org, télécharger la version LTS comme programme d'installation (.pkg), l'ouvrir et cliquer jusqu'au bout. S'il y a Homebrew (`command -v brew`), `brew install node` marche aussi. Git : `xcode-select --install` ouvre une fenêtre qui propose les outils de développement d'Apple ; là, cliquer sur « Installer ».
 - **Windows :** dans PowerShell, `winget install -e --id OpenJS.NodeJS.LTS` et `winget install -e --id Git.Git` ; quand Windows demande s'il faut autoriser les modifications, elle clique sur Oui. Sans winget : les programmes d'installation de nodejs.org et de git-scm.com.
 - **Linux (Ubuntu, Debian) :** Git avec `sudo apt install git` ; sudo demande son mot de passe, elle le tape elle-même dans le terminal. Node tiré d'`apt` est souvent trop vieux : prends le chemin que nodejs.org montre pour Linux sous « Download » (nvm), puis `nvm install --lts`.
+- **Bun, seulement avec une brique :** sur Mac et Linux dans le terminal `curl -fsSL https://bun.com/install | bash`, sous Windows dans PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. La personne tape la commande elle-même ; elle va chercher le programme d'installation de Bun.
 
-Ensuite, vous ouvrez un nouveau terminal et tu vérifies encore une fois. Dans `docs/entwurf.md` va `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (vérifié le 31.10.2026)`. Si la personne ne peut pas installer maintenant (par exemple sur un ordinateur d'entreprise sans droits d'administration), l'ébauche marche quand même : `Werkstatt: sans Node (pas de droits d'administration), Git 2.39.5 ; vérification à la main`. Dis-lui honnêtement que la construction en P9 a besoin de Node.
+Ensuite, vous ouvrez un nouveau terminal et tu vérifies encore une fois. Dans `docs/entwurf.md` va `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (vérifié le 31.10.2026)`, avec une brique aussi Bun : `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0, Bun 1.4.2 (vérifié le 31.10.2026)`. Si la personne ne peut pas installer maintenant (par exemple sur un ordinateur d'entreprise sans droits d'administration), l'ébauche marche quand même : `Werkstatt: sans Node (pas de droits d'administration), Git 2.39.5 ; vérification à la main`. Dis-lui honnêtement que la construction en P9 a besoin de Node, avec une brique aussi de Bun.
 
-### 2. Les textes (`Seiten:`)
+### 2. Les textes (Die Texte) (`Seiten:`)
 
 Une ébauche avec de vrais textes montre si le site tient debout. Suis le skill `inhalte` : à partir de `docs/plan.md`, la liste des contenus `docs/inhalte.md`, la page d'accueil en trois phrases, des textes courts dans le ton de `docs/konzept.md` (`Ton:`, tu ou vous). C'est toi qui proposes les textes ; ce qui manque figure de façon visible comme `[à compléter : ce qui manque, qui le livre et quand]`, jamais inventé. La personne confirme les textes en parcourant le site.
 
@@ -77,7 +86,7 @@ Une ébauche avec de vrais textes montre si le site tient debout. Suis le skill 
 Tu prolonges la direction choisie (`design/richtungen/<choisie>.html`, `design/musterblatt.html` et `design/komponenten.css`) sur chaque page de `Seiten:` dans `docs/plan.md` :
 
 - **Fichiers :** `design/entwurf/index.html` pour la page d'accueil ; pour chaque autre page, le nom en minuscules, sans accents (é → e, à → a ; en allemand ä → ae, ö → oe, ü → ue), tout le reste devient « - » : « À propos » → `a-propos.html`, « Cours & prix » → `cours-prix.html`. C'est ainsi que `entwurf-pruefen.mjs` les trouve.
-- **Un en-tête, un menu, un pied de page** sur chaque page, construits de la même façon : le menu avec toutes les pages du plan (sur le natel sur une ligne ou comme bouton « Menu »), dans le pied de page les liens vers les mentions légales et la protection des données. Ces deux pages n'ont pas encore besoin de texte dans l'ébauche : une courte page `mentions-legales.html` et `protection-des-donnees.html` avec `[à compléter : le texte vient à la construction, skill recht-ch]` suffit, pour qu'aucun lien ne mène dans le vide.
+- **Un en-tête, un menu, un pied de page** sur chaque page, construits de la même façon : le menu avec toutes les pages du plan (sur le natel sur une ligne ou comme bouton « Menu »), dans le pied de page les liens vers les mentions légales et la protection des données. Ces deux pages n'ont pas encore besoin de texte dans l'ébauche : une courte page `mentions-legales.html` et `protection-des-donnees.html` avec `[à compléter : le texte vient à la construction, skill recht-ch]` suffit, pour qu'aucun lien ne mène dans le vide. Dans la construction, elles s'appellent pareil (`/mentions-legales`, `/protection-des-donnees`, skill `recht-ch`).
 - **Seulement des valeurs du nuancier :** chaque page intègre `../tokens.css` et `../komponenten.css` ; le CSS propre à la structure des pages va dans `design/entwurf/entwurf.css`. Les couleurs, les polices, les tailles de police, les espacements, les arrondis et les ombres ne figurent que comme `var(--…)`. S'il manque une valeur, tu l'ajoutes d'abord dans `design/tokens.css` (et dans la planche d'échantillons), jamais dans une page.
 - **Les états de chaque fonction :** Pour chaque fonction de `Funktionen:` dans `docs/plan.md`, tu montres ce qui se passe après le clic : la **confirmation** (ce qui s'est passé, ce qui vient ensuite, comment l'annuler), l'**erreur** (en mots, avec « Réessayer », ce qui a été tapé reste là) et l'**état vide** (une phrase et un bouton au lieu d'une liste vide). Chaque état est une page à part, par exemple `contact-confirme.html`, `contact-erreur.html`, `dates-vide.html`. Un formulaire pointe avec `action="contact-confirme.html"` vers sa confirmation ; ainsi le clic marche aussi sans programme derrière. Une page `zustaende.html` (pas dans le menu) liste tous les états avec des liens, pour que la personne les trouve.
 - **Les pages des briques en factice :** si le plan a besoin d'une brique (`Setup:`, skill `bausteine` : liste d'inscription, réservations, connexion, tableau d'affichage), tu conçois ses pages de la même façon, avec en-tête, menu et pied de page : par exemple `reserver.html` avec les dates, `reserver-confirme.html`, `reserver-complet.html` (« Cette place vient d'être prise »), `reserver-vide.html` et « Mes réservations » (`verwaltung.html`, pas dans le menu). Elles ont l'air vraies mais ne fonctionnent pas encore ; elles sont construites en P9 à partir de la recette de la brique.
@@ -133,7 +142,7 @@ Chaque ligne commence au début de la ligne par son nom en allemand et reste cou
 # Ébauche : <nom>
 Stand: <JJ.MM.AAAA>
 
-Werkstatt: Node <version>, npm <version>, Git <version> (vérifié le <JJ.MM.AAAA>)
+Werkstatt: Node <version>, npm <version>, Git <version>, avec une brique Bun <version> (vérifié le <JJ.MM.AAAA>)
 Seiten: Accueil (index.html), Offre (offre.html), Contact (contact.html avec confirmation et erreur) ; encore <nombre> à compléter
 Rückmeldungen: <JJ.MM.AAAA> ‹<ses mots>› → <ce qui a changé>
 Freigegeben zum Bauen: <JJ.MM.AAAA>, ‹<ses mots>›
@@ -154,9 +163,9 @@ Freigegeben zum Bauen: <JJ.MM.AAAA>, ‹<ses mots>›
 
 La ligne `Freigegeben zum Bauen:` (autorisé à construire) ne s'ajoute qu'avec l'autorisation.
 
-## Autorisation
+## Autorisation (Freigabe)
 
-La deuxième image : la signature sous la maquette. On ne construit que ce que la personne a vu et autorisé.
+La deuxième image : la signature sous le modèle. On ne construit que ce que la personne a vu et autorisé.
 
 Dis-lui en trois ou quatre phrases ce que contient l'ébauche (les pages, les fonctions avec leurs états, ce qui est encore à compléter), ouvre la page d'accueil et demande exactement ainsi :
 
@@ -164,7 +173,7 @@ Dis-lui en trois ou quatre phrases ce que contient l'ébauche (les pages, les fo
 
 - **Seul un oui clair à la construction compte :** « Oui », « Oui, construis-le comme ça », « Oui, vas-y », « D'accord, on construit ». Un compliment seul n'est pas une autorisation : à « ça a l'air bien » ou « c'est beau », tu redemandes une fois : « Ça me fait plaisir. Ça veut dire : oui, on le construit comme ça ? »
 - **« Oui, mais … »** n'est pas une autorisation : d'abord changer, remontrer, redemander.
-- Après le oui, tu écris dans `docs/entwurf.md` la ligne `Freigegeben zum Bauen: <JJ.MM.AAAA>, ‹<ses mots>›`, par exemple `Freigegeben zum Bauen: 31.10.2026, ‹Oui, construis-le comme ça›`, et tu annonces `entwurf-freigegeben`. Les mots `Freigegeben zum Bauen:` restent en allemand, c'est eux que la construction cherche.
+- Après le oui, tu écris dans `docs/entwurf.md` la ligne `Freigegeben zum Bauen: <JJ.MM.AAAA>, ‹<ses mots>›`, par exemple `Freigegeben zum Bauen: 31.10.2026, ‹Oui, construis-le comme ça›`, et tu annonces `entwurf-freigegeben`. Les mots `Freigegeben zum Bauen:` restent en allemand, c'est eux que la construction cherche. La date vient devant, en chiffres : sans date, avec `[Annahme: …]` ou avec « pas encore », la ligne ne compte pas comme un oui, ni pour `lage` ni pour `pruefen.mjs --vor-bau`.
 - **Si l'ébauche change après l'autorisation,** celle-ci ne vaut plus : transforme la ligne en `Früher freigegeben zum Bauen: …` (autorisé auparavant), change, remontre et redemande. Ainsi, la ligne `Freigegeben zum Bauen:` veut toujours dire : exactement cette ébauche est autorisée.
 
 Ensuite vient P9 : suis le skill `webseite-bauen` (`../webseite-bauen/SKILL.md`). Il construit à partir de cette ébauche, avec son balisage, ses classes et `design/tokens.css`, et il ne construit pas sans la ligne `Freigegeben zum Bauen:`.

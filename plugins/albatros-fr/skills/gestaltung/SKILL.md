@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site. Dans le plan de vol (P6) : maquette grise (« L'ordre est-il juste ? »), trois directions bien différentes tirées du concept, vérification contre le look IA, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Toujours avec la question des éléments graphiques (icônes, photos, mascotte, 3D ; outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « icônes », « mascotte », « 3D »."
 metadata:
   stand: 0.2.0
-  quelle: 'fe6fcb8ce168'
+  quelle: 'd264ba19b721'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -40,9 +40,9 @@ Pour les deux valent les sections « Trois directions », « Ne pas avoir l'air 
 
 Phase P6 « Système de design avec exemple ». C'est son tour quand `docs/konzept.md` a les sept lignes (P5, skill `konzept`) ; s'il manque, tu vas d'abord là-bas. Ensuite vient P7, tout le site en ébauche à parcourir en cliquant (skill `entwurf`).
 
-- **Résultat :** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` et `docs/designsystem.md` avec les lignes `Richtung:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` et `Maskottchen:`. Les noms de fichiers et de lignes restent en allemand, parce que `lage` et les scripts de vérification les lisent ; le contenu est en français.
-- **Réussi quand** `tokens.css` et `musterblatt.html` sont là, que la planche d'échantillons n'utilise les couleurs, les polices et les tailles que comme `var(--…)` tirées de `tokens.css` et que la personne l'a vue.
-- **Questions à la personne :** « L'ordre sur l'esquisse grise est-il juste ? », « Laquelle des trois directions, ou quel mélange ? », « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » et la question des éléments graphiques. « Aussi une version sombre ? », tu la proposes comme `[Annahme: oui, claire et sombre]`, parce que beaucoup de natels affichent en sombre la nuit.
+- **Résultat :** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` et `docs/designsystem.md` avec les lignes `Reihenfolge:`, `Richtung:`, `Musterblatt:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` et `Maskottchen:`. Les noms de fichiers et de lignes restent en allemand, parce que `lage` et les scripts de vérification les lisent ; le contenu est en français.
+- **Réussi quand** `tokens.css` et `musterblatt.html` sont là, que la planche d'échantillons n'utilise les couleurs, les polices et les tailles que comme `var(--…)` tirées de `tokens.css` et que la personne l'a vue (`Musterblatt: gesehen am …`).
+- **Questions à la personne :** « L'ordre dans la maquette grise est-il juste ? », « Laquelle des trois directions, ou quel mélange ? », « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » et la question des éléments graphiques. Chacune des trois réponses a sa propre ligne (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Pas d'hypothèse ici : tant que la personne n'a pas répondu, il y a `[offen: …]`. « Aussi une version sombre ? », tu la proposes comme `[Annahme: oui, claire et sombre]`, parce que beaucoup de natels affichent en sombre la nuit.
 - **Île :** `mockup` dès que l'ordre est juste ; `entwuerfe` dès que la personne a vu la planche d'échantillons et qu'elle lui convient.
 
 **Mode :** Lis `Modus:` dans `docs/projekt.md` (si la ligne manque, c'est `machen`, faire, qui vaut). Le moment d'apprentissage de cette phase, c'est « Pourquoi les couleurs et les polices ne sont qu'à un seul endroit » : la personne change elle-même une couleur dans `design/tokens.css`, recharge la planche d'échantillons et voit qu'elle change partout. En mode `lernen` (apprendre), elle le fait elle-même (ensuite `verstanden_melden` avec `mission: webseite-04-gestaltung` et `art: selbst`), et à la fin, tu poses la question de contrôle de la leçon : « Pourquoi les couleurs et les polices ne sont-elles qu'à un seul endroit ? » Seulement après sa réponse, tu annonces `art: kontrollfrage`. En mode `machen` (faire), tu proposes le moment d'apprentissage et tu expliques chaque étape en une phrase avec son image. Si l'outil `verstanden_melden` manque, on continue sans.
@@ -55,7 +55,7 @@ L'esquisse grise de la page d'accueil de P1 se trouve dans `design/skizze.html`.
 - De vrais titres et de vraies phrases tirés de `docs/projekt.md`, `docs/plan.md` et `docs/konzept.md` (nom, cœur), le bouton principal avec son vrai texte (« Demander une place »), le menu avec toutes les pages de `Seiten:`.
 - Un seul fichier sans liens vers Internet ; il s'ouvre d'un double-clic.
 
-Ouvre-le et demande seulement : « L'ordre sur l'esquisse grise est-il juste ? » Pourquoi : la structure avant l'apparence. Change jusqu'à ce qu'il soit juste. Ensuite, tu crées `docs/designsystem.md` (modèle à l'étape 4) avec `Richtung: [offen: choix de la direction] · ordre confirmé le <JJ.MM.AAAA>`, les autres lignes avec `[offen: …]`, et tu annonces `mockup` (section « L'île »).
+Ouvre-le et demande seulement : « L'ordre dans la maquette grise est-il juste ? » Pourquoi : la structure avant l'apparence. Change jusqu'à ce qu'il soit juste. Ensuite, tu crées `docs/designsystem.md` (modèle à l'étape 4) avec `Reihenfolge: bestätigt am <JJ.MM.AAAA>`, `Richtung: [offen: choix de la direction]`, `Musterblatt: [offen: vient après l'avoir montrée]` et les autres lignes avec `[offen: …]`, et tu annonces `mockup` (section « L'île »).
 
 ### 2. Trois directions sur la maquette
 
@@ -69,7 +69,7 @@ Maintenant, le caractère entre en jeu. Lis dans `docs/konzept.md` les trois mot
 
 Regarde chaque direction dans le navigateur, en largeur natel et en largeur ordinateur, et vérifie-la avec la liste de la section « Ne pas avoir l'air fait par une IA ». Ce que tu trouves, tu le corriges avant que la personne voie les directions. Écris le résultat dans `docs/designsystem.md` sous `## Richtung` : `Signes d'IA vérifiés : doux ok, clair ok, vif : cartes de même taille, transformé`.
 
-Ouvre les trois et demande : « Laquelle des trois directions, ou quel mélange ? » Pourquoi : trois directions clairement différentes montrent ce qui est possible. Dans le même message ou juste après vient la question des éléments graphiques (section « Éléments graphiques »). Le choix va dans la ligne `Richtung:`, par exemple `Richtung: clair, avec les couleurs de doux · ordre confirmé le 30.10.2026`.
+Ouvre les trois et demande : « Laquelle des trois directions, ou quel mélange ? » Pourquoi : trois directions clairement différentes montrent ce qui est possible. Dans le même message ou juste après vient la question des éléments graphiques (section « Éléments graphiques »). Le choix va dans la ligne `Richtung:`, par exemple `Richtung: clair, avec les couleurs de doux`.
 
 ### 4. Nuancier, composants et système de design
 
@@ -83,7 +83,9 @@ De la direction choisie naissent les échantillons de matériaux pour toute la m
 # Système de design : <nom>
 Stand: <JJ.MM.AAAA>
 
-Richtung: <nom de la direction ou du mélange> · ordre confirmé le <JJ.MM.AAAA> · planche d'échantillons vue le <JJ.MM.AAAA>
+Reihenfolge: bestätigt am <JJ.MM.AAAA>
+Richtung: <nom de la direction ou du mélange>
+Musterblatt: [offen: vient après l'avoir montrée]
 Farben: <couleur d'action, fond, texte, erreur> ; claire et sombre ; contrastes dans design/tokens.css
 Schriften: <police de titre> et <police de texte> ; texte 17 px, titres <tailles>
 Abstände: 4, 8, 12, 16, 24, 32, 48 px ; contenu 1200 px au plus ; arrondis <…> ; profondeur : <ombre ou ligne>
@@ -108,7 +110,7 @@ Un mot par chose, le même sur le site, dans le mail et dans l'administration : 
 Icônes : … · illustrations : … · photos : liste de photos dans docs/inhalte.md · personnage : … · 3D : …
 ```
 
-Après `Maskottchen:` vient d'abord `ja`, `nein` ou `später`, comme dans `docs/konzept.md`.
+Les débuts de ces lignes sont fixes et restent en allemand, parce que `lage` et le skill `entwurf` les lisent : après `Reihenfolge:` vient `bestätigt am` avec la date. Après `Musterblatt:` vient `[offen: vient après l'avoir montrée]` jusqu'au oui de la personne, puis `gesehen am <JJ.MM.AAAA>, passt` (étape 5). Après `Maskottchen:` vient d'abord `ja`, `nein` ou `später`, comme dans `docs/konzept.md`.
 
 ### 5. La planche d'échantillons
 
@@ -125,7 +127,7 @@ Après `Maskottchen:` vient d'abord `ja`, `nein` ou `später`, comme dans `docs/
 
 Dans la planche d'échantillons, les couleurs, les polices et les tailles ne figurent que comme `var(--…)`. Vérifie-le des yeux dans le code ; si Node est déjà là, `node <dossier du skill entwurf>/entwurf-pruefen.mjs --nur farbfaecher` le mesure et recalcule au passage chaque commentaire de contraste (dossier inconnu : `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Ouvre la planche d'échantillons et montre à la personne comment la voir sur le natel : rendre la fenêtre du navigateur toute étroite ou utiliser la vue natel du navigateur (Firefox et Chrome : `Ctrl+Shift+M`, sur Mac dans Firefox `Cmd+Opt+M`, dans Chrome d'abord `F12`). Puis demande : « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » Pourquoi : ce qui est juste sur la planche d'échantillons est juste sur chaque page. Les changements, tu les fais dans `tokens.css` ou `komponenten.css`, jamais dans la planche elle-même. Après son oui, tu ajoutes `planche d'échantillons vue le <JJ.MM.AAAA>` à la ligne `Richtung:`, tu remplis les autres lignes et tu annonces `entwuerfe`.
+Ouvre la planche d'échantillons et montre à la personne comment la voir sur le natel : rendre la fenêtre du navigateur toute étroite ou utiliser la vue natel du navigateur (Firefox et Chrome : `Ctrl+Shift+M`, sur Mac dans Firefox `Cmd+Opt+M`, dans Chrome d'abord `F12`). Puis demande : « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » Pourquoi : ce qui est juste sur la planche d'échantillons est juste sur chaque page. Les changements, tu les fais dans `tokens.css` ou `komponenten.css`, jamais dans la planche elle-même. Après son oui, tu écris dans `docs/designsystem.md` la ligne `Musterblatt: gesehen am <JJ.MM.AAAA>, passt` (à la place de `[offen: …]`), par exemple `Musterblatt: gesehen am 31.10.2026, passt`, tu remplis les autres lignes et tu annonces `entwuerfe`.
 
 ### L'île
 
@@ -207,7 +209,7 @@ Voici comment commence un `tokens.css` (les contrastes de ces couleurs sont reca
 }
 ```
 
-## Éléments graphiques : toujours demander
+## Éléments graphiques (Gestaltungselemente) : toujours demander
 
 Une fois la direction fixée, tu demandes toujours : « Tu veux encore des éléments graphiques en plus ? » Présente les possibilités avec l'effort qu'elles demandent. Ce qui est déjà décidé dans le plan de vol (`Bildsprache:` et `Maskottchen:` dans `docs/konzept.md`), tu ne le redemandes pas, tu t'appuies dessus.
 

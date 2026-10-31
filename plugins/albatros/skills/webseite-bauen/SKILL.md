@@ -65,7 +65,7 @@ mkdir -p scripts && cp <Ordner dieses Skills>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Ende mit 0:** Es gibt die Zeile `Freigegeben zum Bauen: <Datum>` in `docs/entwurf.md`, den Entwurf in `design/entwurf/` und die Tokens in `design/tokens.css`. Weiter mit Schritt 1.
+- **Ende mit 0:** Es gibt die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, …` in `docs/entwurf.md`, den Entwurf in `design/entwurf/` und die Tokens in `design/tokens.css`. Weiter mit Schritt 1.
 - **Ende mit 2:** Die Ausgabe nennt, was fehlt. Sag es der Person in einem Satz und geh dorthin zurück: ohne Freigabe zum Bauen zum Skill `entwurf` (Abschnitt «Freigabe»), ohne Entwurf zum Skill `entwurf`, ohne Tokens zum Skill `gestaltung`. Die Zeile `Freigegeben zum Bauen:` schreibst du nie selbst, auch nicht «schnell mal»: Sie steht nur nach dem Ja der Person zum Entwurf.
 
 ### 1. Werkstatt und Logbuch
@@ -73,10 +73,12 @@ node scripts/pruefen.mjs --vor-bau
 **Werkstatt nochmals:** Node, npm und Git müssen da sein, auch wenn sie es beim Entwurf schon waren:
 
 ```bash
-command -v node npm git        # Windows: where node npm git
+command -v node npm git        # Windows in PowerShell: where.exe node npm git
 ```
 
 Fehlt etwas, hilfst du beim Installieren wie im Skill `entwurf` (Werkstatt) und prüfst nochmals.
+
+**Mit einem Baustein** (`Setup:` in `docs/plan.md` nennt einen, oder `Baustein:` in `docs/stack.md`) braucht es auch Bun: Damit laufen der Baustein und seine Tests auf diesem Computer (Schritt 4). Prüf es mit `command -v bun` (Windows in PowerShell `where.exe bun`). Fehlt es, installiert die Person es selbst: Mac und Linux im Terminal `curl -fsSL https://bun.com/install | bash`, Windows in PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. Danach ein neues Terminal öffnen und mit `bun --version` nachschauen.
 
 **Das Logbuch auf dem Computer:** Jeder Schritt bekommt einen Eintrag (Commit), mit einer Notiz in einem Satz. So kann die Person jederzeit zurückblättern. Einen Hafen braucht es dafür noch nicht: Das Logbuch liegt im Projektordner, verbunden wird es erst beim Live schalten (Skill `git-logbuch`, Abschnitt «Logbuch ohne Hafen»).
 
@@ -189,7 +191,7 @@ Abgeleitet aus docs/plan.md (Testing:) und dem Entwurf; freigegeben mit dem Entw
 /docs/plan.md   404     # Arbeitsdokumente gehören nicht ins Netz
 ```
 
-Mit einem Baustein kommen seine Türen dazu, zum Beispiel `/mitglieder 302` oder `/api/collections/users/records 401 403`: was er ohne Anmeldung antwortet, steht im Skill `bausteine`.
+Mit einem Baustein kommen seine Türen dazu. Steht ein Eingang davor (Skill `bausteine`, Abschnitt «Ein Eingang für alles?»), sind das zum Beispiel `/intern/ 401`, `/_/ 404` und `/api/collections/_SUPERUSERS/auth-methods 404`: Geschützte Seiten verlangen eine Anmeldung, und die Anmeldung der Verwaltung bleibt von aussen zu. Listen von PocketBase (zum Beispiel `/api/collections/users/records`) geben Gästen 200 mit einer leeren Liste, nicht 401 oder 403; nimmst du so eine Liste in `docs/tueren.txt` auf, dann mit 200.
 
 **Eine Nachricht für die Annahmen:** Zeig der Person das PRD in drei, vier Sätzen, öffne die Datei und leg Bauweise und Türen als Annahmen vor, etwa: «Ich baue mit Astro, ohne Baustein, und offen sind nur Start, Angebot, Anfrage, Impressum und Datenschutz. Stimmt das so?» Nach ihrem Ja streichst du `[Annahme: …]`, machst den Eintrag ins Logbuch (`git add docs && git commit -m "PRD aus dem Entwurf, Bauweise und Türen"`), meldest `prd` und baust.
 
@@ -284,7 +286,7 @@ Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz 
    Vergleich mit Entwurf: <Datum>, keine offene Abweichung (pruefen.mjs --vergleich; besprochen: …)
    ```
 5. **Die Frage:** «Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?» Sag dazu, was offen ist (aus den Berichten), und dass diese Freigabe für das Live schalten gilt: Ins Netz geht genau diese Seite, nicht mehr und nicht weniger.
-6. **Erst nach ihrem ausdrücklichen Ja** schreibst du darunter `Freigegeben: <Datum> («<ihre Worte>»)`. «Sieht gut aus» ohne Ja zur Freigabe reicht nicht. Dann der Eintrag ins Logbuch, mit einem Zeichen (Tag) genau an diesem Stand:
+6. **Erst nach ihrem ausdrücklichen Ja** schreibst du darunter `Freigegeben: <TT.MM.JJJJ>, «<ihre Worte>»`, zum Beispiel `Freigegeben: 31.10.2026, «Ja, so live»`. Das Datum steht vorne, als Zahl: Ohne Datum, mit `[Annahme: …]` oder mit «noch nicht» gilt die Zeile nicht als Ja, weder für `lage` noch für den Skill `lancieren`. «Sieht gut aus» ohne Ja zur Freigabe reicht nicht. Dann der Eintrag ins Logbuch, mit einem Zeichen (Tag) genau an diesem Stand:
    ```bash
    git add docs/prd.md && git commit -m "Seite freigegeben" && git tag -f freigegeben
    ```

@@ -75,7 +75,9 @@ Stimmen die Antworten mit den Werten aus Schritt 4 überein, ruf `domain_verbind
 
 ### 7. Mission prüfen
 
-Öffne `https://<domain>` mit der Person. Steht die Seite dort mit dem Schloss-Symbol, meldest du `schritt_melden` mit `domain` (Albatros sieht es auch selbst), prüfst sie nochmals von aussen (`node scripts/pruefen.mjs --live https://<domain>`) und trägst die Domain in `docs/live.md` unter `Adresse:` ein. Dann `mission_pruefen` mit `flugschule-09-domain`.
+Öffne `https://<domain>` mit der Person. Steht die Seite dort mit dem Schloss-Symbol, meldest du `schritt_melden` mit `domain` (Albatros sieht es auch selbst), prüfst sie nochmals von aussen (`node scripts/pruefen.mjs --live https://<domain>`) und trägst in `docs/live.md` die Domain unter `Adresse:` ein und `Eigene Domain: jetzt, <domain>` (Skill `lancieren`, Schritt 5). Dann `mission_pruefen` mit `flugschule-09-domain`.
+
+**Mit Login** (ein Baustein mit Anmeldung, zum Beispiel ein Mitgliederbereich): Die Person meldet sich jetzt einmal über `https://<domain>` an, auf der Seite zum Anmelden. Klappt das, nimmt die Seite Anmeldungen und Formulare auch über die Domain an. Kommt «E-Mail oder Passwort stimmt nicht», obwohl beides stimmt, oder geht ein Formular über die Domain nicht, fragst du den Coach (`coach_fragen`) und sagst, was du geprüft hast. Bis dahin meldet sich die Person über `https://{name}.aufwind.sh` an.
 
 ## Wenn es hakt
 

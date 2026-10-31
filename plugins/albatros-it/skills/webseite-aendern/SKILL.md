@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Cambia con una persona senza conoscenze tecniche il suo sito web finito, con la sua IA, che stia nel porto di Albatros o che se ne occupi lei stessa: prendere il diario di bordo, leggere prima docs/ (piano, sistema di design, stack tecnologico, PRD, domicilio), poi piccolo (testo, appuntamento, immagine: cambiare in locale, mostrare prima e dopo, approvazione, push) o grande (nuova pagina, funzione, altro aspetto: aggiunta al piano, bozza delle pagine cambiate, via libera per costruire, costruire e controllare, mostrare, approvazione, push), sempre nel sistema di design esistente, poi verifica in rete. Usa lo skill con «cambia il mio sito», «nuovo appuntamento», «cambiare un testo», «sostituire un'immagine», «manca …», «nuova pagina», «rendi il sito …», «sul sito c'è un errore», e ogni volta che su un sito in rete qualcosa deve cambiare."
 metadata:
   stand: 0.2.0
-  quelle: 'd29818fca42b'
+  quelle: 'b1185cbb28aa'
 ---
 
 # Cambiare il sito web: ristrutturare una casa abitata
@@ -69,7 +69,7 @@ Di' alla persona in una frase che cos'è e come si va avanti.
    Zugang: … (cambia chi può fare che cosa? allora anche docs/tueren.txt)
    ```
 2. **Bozza delle pagine cambiate** in `design/entwurf/`, nel sistema di design esistente, con testi veri (skill `entwurf`). La persona la sfoglia cliccando, sul telefonino e sul computer.
-3. **Via libera per costruire:** solo dopo il suo sì, in `docs/entwurf.md`, sotto un titolo per l'aggiunta, la riga `Freigegeben zum Bauen: <data> («<le sue parole>»)`. Poi `node scripts/pruefen.mjs --vor-bau` deve finire con 0.
+3. **Via libera per costruire:** solo dopo il suo sì, in `docs/entwurf.md`, sotto un titolo per l'aggiunta, la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, «<le sue parole>»`. La data viene davanti, in cifre; senza data, con `[Annahme: …]` o con «non ancora» non conta come sì. Poi `node scripts/pruefen.mjs --vor-bau` deve finire con 0.
 4. **Costruire** come nello skill `webseite-bauen`, passo 4: markup e classi dalla bozza, token solo da `design/tokens.css`.
 
 ### 4. La richiesta nel PRD
@@ -84,7 +84,7 @@ In fondo a `docs/prd.md`, dopo la riga `Freigegeben:` della prima costruzione, l
 - [ ] Solo valori del sistema di design, i criteri di collaudo precedenti restano validi
 ```
 
-Per una richiesta grande sopra c'è `Abgeleitet aus: docs/entwurf.md (Nachtrag <data>, Freigegeben zum Bauen: <data>)`: i criteri seguono dalla bozza che la persona ha approvato. Per una piccola li mostri al passo 5 insieme al risultato.
+Per una richiesta grande sopra c'è `Abgeleitet aus: docs/entwurf.md (Nachtrag <GG.MM.AAAA>, Freigegeben zum Bauen: <GG.MM.AAAA>)`: i criteri seguono dalla bozza che la persona ha approvato. Per una piccola li mostri al passo 5 insieme al risultato.
 
 ### 5. Cambiare, costruire, controllare, mostrare prima e dopo
 
@@ -105,7 +105,7 @@ Quando niente è più rosso, la modifica va nel diario di bordo, solo con i prop
 
 ### 6. Approvazione
 
-Chiedi: «Può andare in rete così?» Solo dopo il sì scrivi sotto la richiesta `Freigegeben: <data> («<le sue parole>»)` e fai la voce nel diario di bordo con il segno dello stato approvato:
+Chiedi: «Può andare in rete così?» Solo dopo il sì scrivi sotto la richiesta `Freigegeben: <GG.MM.AAAA>, «<le sue parole>»`, con la data davanti in cifre, e fai la voce nel diario di bordo con il segno dello stato approvato:
 
 ```bash
 git add docs/prd.md && git commit -m "Approvato: <la richiesta in una frase>" && git tag -f freigegeben

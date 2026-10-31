@@ -3,7 +3,7 @@ name: domain
 description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin.ch) pour le site ou le serveur chez Albatros, avec Light comme avec Pilot ; facultatif, à la mise en ligne (P13). Explique le domaine et le DNS avec l'image de l'adresse et de l'annuaire, propose des noms, cherche avec domain_suchen ce qui est libre et achète via Albatros avec domain_kaufen (la personne est titulaire, elle ne donne ses coordonnées que sur la page de paiement). Un domaine que la personne a déjà, le skill le relie avec domain_verbinden : entrées DNS, preuve TXT _albatros et contrôle, jusqu'à ce que le site s'affiche avec le cadenas dans le navigateur web. Utilise ce skill pour « propre domaine », « mon adresse », « acheter un .ch », « quel domaine est libre ? », « chercher un domaine », « DNS », « entrée A », « CNAME », « entrée TXT », « mon domaine ne pointe pas sur mon site », « certificat », « https ne marche pas »."
 metadata:
   stand: 0.2.0
-  quelle: '7222e3d428b9'
+  quelle: 'ac1706205469'
 ---
 
 # Domaine : ton adresse dans l'annuaire
@@ -77,7 +77,9 @@ Si les réponses correspondent aux valeurs de l'étape 4, appelle encore une foi
 
 ### 7. Contrôler la mission
 
-Ouvre `https://<domain>` avec la personne. Quand le site s'y affiche avec le cadenas, tu annonces `schritt_melden` avec `domain` (Albatros le voit aussi tout seul), tu le revérifies de l'extérieur (`node scripts/pruefen.mjs --live https://<domain>`) et tu inscris le domaine dans `docs/live.md` sous `Adresse:`. Ensuite `mission_pruefen` avec `flugschule-09-domain`.
+Ouvre `https://<domain>` avec la personne. Quand le site s'y affiche avec le cadenas, tu annonces `schritt_melden` avec `domain` (Albatros le voit aussi tout seul), tu le revérifies de l'extérieur (`node scripts/pruefen.mjs --live https://<domain>`) et tu inscris dans `docs/live.md` le domaine sous `Adresse:` et `Eigene Domain: jetzt, <domain>` (skill `lancieren`, étape 5). Ensuite `mission_pruefen` avec `flugschule-09-domain`.
+
+**Avec connexion** (une brique avec connexion, par exemple un espace membres) : la personne se connecte maintenant une fois via `https://<domain>`, sur la page de connexion. Si ça marche, le site accepte les connexions et les formulaires aussi via le domaine. Si la page dit que l'e-mail ou le mot de passe est faux alors que les deux sont justes, ou si un formulaire ne passe pas via le domaine, tu demandes au coach (`coach_fragen`) et tu dis ce que tu as vérifié. D'ici là, la personne se connecte via `https://{name}.aufwind.sh`.
 
 ## Quand ça coince
 

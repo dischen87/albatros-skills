@@ -67,7 +67,9 @@ Frag: «Gibt es mehrere Teile, die wissen müssen, wer angemeldet ist?» Warum: 
 - **Keine Anmeldung auf der Seite** (Tabelle «Zugang» in `docs/prd.md` hat nur «alle Besucher»): `Eingang: nicht nötig (keine Anmeldung)`.
 - **Mit Anmeldung:** Ein Eingang kommt nur, wenn die Kriterien im Skill `bausteine`, Abschnitt «Ein Eingang für alles?», erfüllt sind, und nur mit eigenem Server (Pilot, oder selbst mit Server). Sonst reicht die Anmeldung des Bausteins selbst. So oder so bleiben die Türen aus `docs/tueren.txt` ohne Anmeldung zu (`node scripts/pruefen.mjs --tueren`).
 
-Beispiel: `Eingang: nicht nötig, nur die Anmeldeliste mit eigener Anmeldung (Kriterien im Skill bausteine nicht erfüllt)`
+Die Zeile beginnt immer mit `ja` oder `nicht nötig`, danach kommt der Grund: `lancieren` und `bausteine` bauen den Eingang nur bei `Eingang: ja` ein.
+
+Beispiele: `Eingang: ja, /intern/ und die Mitteilungen aus PocketBase brauchen dieselbe Anmeldung (Kriterien im Skill bausteine erfüllt)` oder `Eingang: nicht nötig, nur die Anmeldeliste mit eigener Anmeldung (Kriterien im Skill bausteine nicht erfüllt)`
 
 ### 6. Statistik: die Strichliste
 

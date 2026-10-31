@@ -1,9 +1,9 @@
 ---
 name: entwurf
-description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git), poi ogni pagina del piano nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, guardato sul telefonino e sul computer. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
+description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina del piano nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, guardato sul telefonino e sul computer. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
 metadata:
   stand: 0.2.0
-  quelle: '5151a9c28a0c'
+  quelle: '847fd670e192'
 ---
 
 # Bozza: il modello in cui si può entrare
@@ -18,7 +18,12 @@ Come ogni officina, anche la costruzione del modello ha bisogno di attrezzi: pri
 
 ## Nel piano di volo
 
-- **P7 «Progettare tutto il sito»** tocca quando la persona ha visto la tavola dei campioni (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html`, la riga `Richtung:` in `docs/designsystem.md`). Se manca, vai prima lì.
+- **P7 «Progettare tutto il sito»** tocca quando la persona ha visto la tavola dei campioni (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` e, in `docs/designsystem.md`, la riga `Musterblatt: gesehen am <data>`). Controllalo prima di cominciare (Windows: `dir design` e `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
+  ```bash
+  ls design/tokens.css design/komponenten.css design/musterblatt.html
+  grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md
+  ```
+  Se manca un file o se `grep` non mostra niente (per esempio c'è ancora `Musterblatt: [offen: …]`), vai prima allo skill `gestaltung`, passo 5. Se in un progetto più vecchio `tavola dei campioni vista il <data>` sta ancora in fondo alla riga `Richtung:`, ne fai la riga `Musterblatt: gesehen am <stessa data>, passt`.
 - **Risultato di P7:** `design/entwurf/index.html` e un file per ogni altra pagina, più `docs/entwurf.md` con le righe `Werkstatt:` (officina), `Seiten:` (pagine) e `Rückmeldungen:` (riscontri). I nomi delle righe restano in tedesco, perché `lage` e gli script di verifica li leggono; il contenuto è in italiano.
 - **P7 è fatta** quando ogni pagina di `docs/plan.md` (tranne impressum e protezione dei dati) ha il suo file, continuato dalla direzione scelta; tutti i link portano a pagine esistenti; colori, caratteri e dimensioni compaiono solo come `var(--…)` da `design/tokens.css`; `entwurf-pruefen.mjs` è verde (o hai controllato lo stesso a mano) e la persona ha sfogliato tutto cliccando. Allora annunci `entwurf`.
 - **P8 «Via libera per costruire»** (sezione «Via libera»): la domanda «Lo costruiamo così?» e la riga `Freigegeben zum Bauen:` in `docs/entwurf.md`. Allora annunci `entwurf-freigegeben`. Dopo viene P9, la costruzione (skill `webseite-bauen`); senza questa riga non costruisce.
@@ -59,16 +64,20 @@ In PowerShell si scrive `where.exe`, non `where`: senza `.exe` PowerShell cerca 
 | Node | il motore degli script di verifica e della costruzione con Astro | 22.23.4 (lo chiede Astro 7); meglio la versione LTS attuale di nodejs.org, adesso 24 o 26 |
 | npm | prende gli attrezzi, arriva con Node | 10 |
 | Git | il diario di bordo | 2.28 |
+| Bun, solo con un blocco | fa girare il blocco e i suoi test sul computer (da P9) | controllato con 1.4.2 |
+
+**Con un blocco** (`Setup:` in `docs/plan.md` ne nomina uno, per esempio lista di iscrizione, prenotazioni o accesso; skill `bausteine`) controlli anche Bun: `command -v bun` (Windows in PowerShell `where.exe bun`), poi `bun --version`. Senza blocco Bun non serve.
 
 Se manca qualcosa o è troppo vecchio, spieghi con parole di tutti i giorni come arriva sul suo computer. Installa lei, tu le dici ogni clic:
 
 - **Mac:** Node: su nodejs.org scaricare la versione LTS come programma d'installazione (.pkg), aprirlo e cliccare fino alla fine. Se c'è Homebrew (`command -v brew`), va anche `brew install node`. Git: `xcode-select --install` apre una finestra che offre gli strumenti per sviluppatori di Apple; lì cliccare su «Installa».
 - **Windows:** in PowerShell `winget install -e --id OpenJS.NodeJS.LTS` e `winget install -e --id Git.Git`; quando Windows chiede se consentire le modifiche, clicca su Sì. Senza winget: i programmi d'installazione di nodejs.org e git-scm.com.
 - **Linux (Ubuntu, Debian):** Git con `sudo apt install git`; sudo chiede la sua password, la scrive lei nel terminale. Node da `apt` spesso è troppo vecchio: prendi la strada che nodejs.org mostra per Linux sotto «Download» (nvm), poi `nvm install --lts`.
+- **Bun, solo con un blocco:** su Mac e Linux nel terminale `curl -fsSL https://bun.com/install | bash`, su Windows in PowerShell `powershell -c "irm bun.sh/install.ps1|iex"`. La persona scrive il comando da sola; prende il programma d'installazione di Bun.
 
-Dopo aprite un nuovo terminale e tu controlli di nuovo. In `docs/entwurf.md` va `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (controllato il 31.10.2026)`. Se la persona adesso non può installare (per esempio su un computer aziendale senza diritti di amministratore), la bozza si fa lo stesso: `Werkstatt: senza Node (nessun diritto di amministratore), Git 2.39.5; verifica a mano`. Dille onestamente che la costruzione in P9 ha bisogno di Node.
+Dopo aprite un nuovo terminale e tu controlli di nuovo. In `docs/entwurf.md` va `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0 (controllato il 31.10.2026)`, con un blocco anche Bun: `Werkstatt: Node 24.22.2, npm 11.19.1, Git 2.53.0, Bun 1.4.2 (controllato il 31.10.2026)`. Se la persona adesso non può installare (per esempio su un computer aziendale senza diritti di amministratore), la bozza si fa lo stesso: `Werkstatt: senza Node (nessun diritto di amministratore), Git 2.39.5; verifica a mano`. Dille onestamente che la costruzione in P9 ha bisogno di Node, con un blocco anche di Bun.
 
-### 2. I testi (`Seiten:`)
+### 2. I testi (Die Texte) (`Seiten:`)
 
 Una bozza con testi veri mostra se il sito regge. Segui lo skill `inhalte`: da `docs/plan.md` la lista dei contenuti `docs/inhalte.md`, la pagina iniziale in tre frasi, testi brevi nel tono di `docs/konzept.md` (`Ton:`, tu o Lei). I testi li proponi tu; ciò che manca compare in modo visibile come `[da completare: che cosa manca, chi lo fornisce entro quando]`, mai inventato. La persona conferma i testi mentre sfoglia il sito.
 
@@ -77,7 +86,7 @@ Una bozza con testi veri mostra se il sito regge. Segui lo skill `inhalte`: da `
 Porti la direzione scelta (`design/richtungen/<scelta>.html`, `design/musterblatt.html` e `design/komponenten.css`) su ogni pagina di `Seiten:` in `docs/plan.md`:
 
 - **File:** `design/entwurf/index.html` per la pagina iniziale; per ogni altra pagina il nome in minuscolo, senza accenti (è → e; in tedesco ä → ae, ö → oe, ü → ue), tutto il resto diventa «-»: «Chi siamo» → `chi-siamo.html`, «Corsi & prezzi» → `corsi-prezzi.html`. Così `entwurf-pruefen.mjs` li trova.
-- **Un'intestazione, un menu, un piè di pagina** su ogni pagina, costruiti uguali: il menu con tutte le pagine del piano (sul telefonino su una riga o come pulsante «Menu»), nel piè di pagina i link a impressum e protezione dei dati. Queste due nella bozza non hanno ancora bisogno di testo: una breve pagina `impressum.html` e `protezione-dei-dati.html` con `[da completare: il testo arriva con la costruzione, skill recht-ch]` basta, perché nessun link porti nel vuoto.
+- **Un'intestazione, un menu, un piè di pagina** su ogni pagina, costruiti uguali: il menu con tutte le pagine del piano (sul telefonino su una riga o come pulsante «Menu»), nel piè di pagina i link a impressum e protezione dei dati. Queste due nella bozza non hanno ancora bisogno di testo: una breve pagina `impressum.html` e `protezione-dei-dati.html` con `[da completare: il testo arriva con la costruzione, skill recht-ch]` basta, perché nessun link porti nel vuoto. Nella costruzione si chiamano uguale (`/impressum`, `/protezione-dei-dati`, skill `recht-ch`).
 - **Solo valori della mazzetta dei colori:** ogni pagina integra `../tokens.css` e `../komponenten.css`; il CSS proprio per la struttura delle pagine va in `design/entwurf/entwurf.css`. Colori, caratteri, dimensioni dei caratteri, spaziature, arrotondamenti e ombre compaiono solo come `var(--…)`. Se manca un valore, lo aggiungi prima in `design/tokens.css` (e nella tavola dei campioni), mai in una pagina.
 - **Gli stati di ogni funzione:** Per ogni funzione di `Funktionen:` in `docs/plan.md` mostri che cosa succede dopo il clic: la **conferma** (che cosa è successo, che cosa viene dopo, come annullarlo), l'**errore** (a parole, con «Riprova», ciò che è stato scritto resta lì) e lo **stato vuoto** (una frase e un pulsante invece di una lista vuota). Ogni stato è una pagina a sé, per esempio `contatto-confermato.html`, `contatto-errore.html`, `date-vuoto.html`. Un modulo punta con `action="contatto-confermato.html"` alla sua conferma; così il clic funziona anche senza un programma dietro. Una pagina `zustaende.html` (non nel menu) elenca tutti gli stati con dei link, perché la persona li trovi.
 - **Le pagine dei blocchi come simulazione:** se il piano ha bisogno di un blocco (`Setup:`, skill `bausteine`: lista di iscrizione, prenotazioni, accesso, bacheca), progetti le sue pagine allo stesso modo, con intestazione, menu e piè di pagina: per esempio `prenotare.html` con le date, `prenotare-confermato.html`, `prenotare-completo.html` («Questo posto è appena stato preso»), `prenotare-vuoto.html` e «Le mie prenotazioni» (`verwaltung.html`, non nel menu). Sembrano vere ma ancora non funzionano; si costruiscono in P9 dalla ricetta del blocco.
@@ -133,7 +142,7 @@ Ogni riga comincia a inizio riga con il suo nome in tedesco e resta breve (al ma
 # Bozza: <nome>
 Stand: <GG.MM.AAAA>
 
-Werkstatt: Node <versione>, npm <versione>, Git <versione> (controllato il <GG.MM.AAAA>)
+Werkstatt: Node <versione>, npm <versione>, Git <versione>, con un blocco Bun <versione> (controllato il <GG.MM.AAAA>)
 Seiten: Pagina iniziale (index.html), Offerta (offerta.html), Contatto (contatto.html con conferma ed errore); ancora <numero> da completare
 Rückmeldungen: <GG.MM.AAAA> ‹<le sue parole>› → <che cosa è cambiato>
 Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›
@@ -154,7 +163,7 @@ Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›
 
 La riga `Freigegeben zum Bauen:` (via libera per costruire) si aggiunge solo con il via libera.
 
-## Via libera
+## Via libera (Freigabe)
 
 La seconda immagine: la firma sotto il modello. Si costruisce solo ciò che la persona ha visto e approvato.
 
@@ -164,7 +173,7 @@ Dille in tre o quattro frasi che cosa c'è nella bozza (le pagine, le funzioni c
 
 - **Vale solo un sì chiaro alla costruzione:** «Sì», «Sì, costruiscilo così», «Sì, vai», «D'accordo, costruiamo». Un complimento da solo non è un via libera: a «sembra bello» o «carino» chiedi una volta: «Mi fa piacere. Vuol dire: sì, lo costruiamo così?»
 - **«Sì, ma …»** non è un via libera: prima cambiare, mostrare di nuovo, chiedere di nuovo.
-- Dopo il sì scrivi in `docs/entwurf.md` la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›`, per esempio `Freigegeben zum Bauen: 31.10.2026, ‹Sì, costruiscilo così›`, e annunci `entwurf-freigegeben`. Le parole `Freigegeben zum Bauen:` restano in tedesco, perché la costruzione le cerca.
+- Dopo il sì scrivi in `docs/entwurf.md` la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›`, per esempio `Freigegeben zum Bauen: 31.10.2026, ‹Sì, costruiscilo così›`, e annunci `entwurf-freigegeben`. Le parole `Freigegeben zum Bauen:` restano in tedesco, perché la costruzione le cerca. La data viene davanti, in cifre: senza data, con `[Annahme: …]` o con «non ancora» la riga non conta come sì, né per `lage` né per `pruefen.mjs --vor-bau`.
 - **Se la bozza cambia dopo il via libera,** questo non vale più: trasforma la riga in `Früher freigegeben zum Bauen: …` (via libera precedente), cambia, mostra di nuovo e chiedi di nuovo. Così la riga `Freigegeben zum Bauen:` vuol sempre dire: proprio questa bozza ha il via libera.
 
 Dopo viene P9: segui lo skill `webseite-bauen` (`../webseite-bauen/SKILL.md`). Costruisce da questa bozza, con il suo markup, le sue classi e `design/tokens.css`, e non costruisce senza la riga `Freigegeben zum Bauen:`.

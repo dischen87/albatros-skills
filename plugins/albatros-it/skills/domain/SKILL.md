@@ -3,7 +3,7 @@ name: domain
 description: "Trova, compra o collega un dominio proprio (p. es. mionegozio.ch) per la pagina o il server su Albatros, con Light come con Pilot; facoltativo, alla messa online (P13). Spiega dominio e DNS con l'immagine dell'indirizzo e dell'elenco telefonico, propone nomi, cerca con domain_suchen cosa è libero e compra tramite Albatros con domain_kaufen (la persona è titolare, i suoi dati li inserisce solo sulla pagina di pagamento). Un dominio che la persona ha già, lo skill lo collega con domain_verbinden: voci DNS, prova TXT _albatros e verifica, finché la pagina compare nel browser con il lucchetto. Usa lo skill con «dominio proprio», «il mio indirizzo», «comprare un .ch», «quale dominio è libero?», «cercare un dominio», «DNS», «record A», «CNAME», «record TXT», «il dominio non punta alla mia pagina», «certificato», «https non funziona»."
 metadata:
   stand: 0.2.0
-  quelle: '7222e3d428b9'
+  quelle: 'ac1706205469'
 ---
 
 # Dominio: il tuo indirizzo nell'elenco telefonico
@@ -77,7 +77,9 @@ Se le risposte corrispondono ai valori del passo 4, chiama di nuovo `domain_verb
 
 ### 7. Verifica la missione
 
-Apri `https://<domain>` con la persona. Quando il sito compare lì con il lucchetto, segnali `schritt_melden` con `domain` (Albatros lo vede anche da solo), lo ricontrolli dall'esterno (`node scripts/pruefen.mjs --live https://<domain>`) e scrivi il dominio in `docs/live.md` sotto `Adresse:`. Poi `mission_pruefen` con `flugschule-09-domain`.
+Apri `https://<domain>` con la persona. Quando il sito compare lì con il lucchetto, segnali `schritt_melden` con `domain` (Albatros lo vede anche da solo), lo ricontrolli dall'esterno (`node scripts/pruefen.mjs --live https://<domain>`) e scrivi in `docs/live.md` il dominio sotto `Adresse:` e `Eigene Domain: jetzt, <domain>` (skill `lancieren`, passo 5). Poi `mission_pruefen` con `flugschule-09-domain`.
+
+**Con accesso** (un blocco con accesso, per esempio un'area membri): adesso la persona fa una volta l'accesso tramite `https://<domain>`, sulla pagina di accesso. Se funziona, il sito accetta accessi e moduli anche tramite il dominio. Se la pagina dice che e-mail o password sono sbagliate anche se tutti e due sono giusti, o se un modulo tramite il dominio non va, chiedi al coach (`coach_fragen`) e dici che cosa hai controllato. Fino ad allora la persona fa l'accesso tramite `https://{name}.aufwind.sh`.
 
 ## Se qualcosa si inceppa
 

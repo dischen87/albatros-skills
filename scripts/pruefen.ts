@@ -7,6 +7,7 @@ import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { befehleAusReadme, befehleAusSkill, unterschiede, vorlageGegenSkill } from './abgleich.ts';
+import { pruefeAbschnittsnamen } from './abschnitte.ts';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { hoeher, quelle } from './stand.ts';
@@ -153,6 +154,10 @@ if (fahrplan) {
   const alt = ALTE_INSEL.map((s) => fahrplan.insel.indexOf(s));
   if (alt.some((i, n) => i < 0 || (n > 0 && i <= alt[n - 1]!))) f(`insel: die zehn alten Schritte fehlen oder stehen nicht in alter Reihenfolge (${ALTE_INSEL.join(' < ')})`);
 }
+
+// Abschnittsnamen (scripts/abschnitte.ts): Was lage aus fahrplan.yaml nennt und worauf deutsche Skills verweisen, steht im Ziel-Skill
+// jeder Sprache in einer Überschrift, übersetzt mit dem deutschen Namen in Klammern
+if (fahrplan) fehler.push(...(await pruefeAbschnittsnamen(wurzel, fahrplan)));
 
 // GUTE-ANTWORT.md ist aus fahrplan.yaml, den Köpfen der Eval-Fälle und KRITERIEN-LOG.md erzeugt und darf nicht davon abweichen
 if (fahrplan) {

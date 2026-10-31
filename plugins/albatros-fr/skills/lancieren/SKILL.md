@@ -3,7 +3,7 @@ name: lancieren
 description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: '4097894a1741'
+  quelle: '791efc92d97c'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -30,10 +30,10 @@ La maison est construite, réceptionnée et validée. Maintenant viennent deux c
 ### 1. Le site est-il validé ?
 
 ```bash
-grep -m1 '^Freigegeben: ' docs/prd.md        # Windows : findstr /b "Freigegeben:" docs\prd.md
+grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md        # Windows : findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md
 ```
 
-Si la ligne manque, tu le dis honnêtement : d'abord vient la visite avec la validation (skill `webseite-bauen`, étape 6). Si la personne veut quand même déjà choisir le domicile, c'est possible ; le site n'emménagera qu'après la validation.
+Si ça ne montre aucune ligne, le site n'est pas encore validé : la ligne manque, ou il n'y a pas de date devant (par exemple `[Annahme: …]` ou « pas encore »). Alors tu le dis honnêtement : d'abord vient la visite avec la validation (skill `webseite-bauen`, étape 6). Si la personne veut quand même déjà choisir le domicile, c'est possible ; le site n'emménagera qu'après la validation. Mais tu n'écris `docs/lancieren.md` et tu n'annonces `wohnort` qu'après la validation : sinon le plan de vol compte le domicile, et la question de la validation disparaît.
 
 ### 2. La question, toujours la même
 
@@ -77,6 +77,8 @@ Aide au choix avec trois questions : le journal de bord peut-il être public�
 
 ### 4. `docs/lancieren.md`
 
+Seulement quand le site est validé (étape 1) :
+
 ```markdown
 # Lancer
 
@@ -91,19 +93,19 @@ Si, par toi-même, l'adresse n'est connue qu'après le premier téléversement, 
 
 On continue avec le skill `betrieb` : boîte aux lettres, détecteur de fumée et porte d'entrée, avant que les invités arrivent.
 
-## Partie 2 : la mise en ligne (phase P13, `schritt: hafen`, `fliessband`, `live`, `domain`)
+## Partie 2 : la mise en ligne (Live schalten) (phase P13, `schritt: hafen`, `fliessband`, `live`, `domain`)
 
 Seulement quand `docs/betrieb.md` a toutes ses lignes (skill `betrieb`). S'il manque, tu vas d'abord là-bas.
 
 ### 1. Seulement le site validé
 
 ```bash
-grep -m1 '^Freigegeben: ' docs/prd.md                     # la validation de la visite
+grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md            # la validation de la visite, avec la date devant
 git status --short seite web design                       # vide : rien de non enregistré sur le site
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
 
-- **Pas de ligne `Freigegeben:` :** rien ne va en ligne. Retour au skill `webseite-bauen`, étape 6.
+- **Pas de ligne `Freigegeben:` avec la date devant :** rien ne va en ligne. Retour au skill `webseite-bauen`, étape 6.
 - **Changé depuis la validation** (pas de sortie « Seite wie freigegeben », site comme validé) : la personne regarde le site modifié en local et le valide à nouveau (nouvelle ligne `Freigegeben:`, `git tag -f freigegeben`). Seulement ensuite on continue.
 - **Pas de tag `freigegeben`** (projets plus anciens) : montre le site en local à la personne et demande : « Est-ce exactement le site que tu as validé ? » Après le oui, tu poses le tag (`git tag freigegeben`).
 
@@ -121,7 +123,7 @@ git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
 
 Dis-le à la personne avec l'image : le modèle est repris une fois dans le journal de bord. Là où les deux ont le même fichier (`seite/index.html`, `.gitignore`), c'est le sien qui reste. S'y ajoutent les fichiers dont le tapis roulant de Pilot a besoin (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`) ; avec Light, ils dorment. Si, après la fusion, il n'y a pas « Seite unverändert » (site inchangé), tu ne pousses pas et tu regardes avec `git diff freigegeben HEAD -- seite`.
 
-**Avec une brique (Pilot), avant le push :** maintenant, le `compose.yaml` du modèle est dans le journal de bord, et tu branches les briques comme dans le skill `bausteine`, section 4 « Au lancement, avec Pilot » : d'abord une photo du serveur (outil `snapshot`, nom `vor-baustein`), puis `include:` dans `compose.yaml`. Si `docs/betrieb.md` dit `Eingang: ja`, l'étape **entrée** s'y ajoute : la ligne `- bausteine/eingang/compose.yaml` sous `include:`, et pour le service `webseite`, les lignes `ports:` et `- "80:80"` disparaissent. Le port 80 est alors à l'entrée, le site web n'est plus accessible que derrière elle. Avant, `bun bausteine/eingang/test.ts` doit annoncer « Alles grün ». Sans connexion, ou avec `Eingang: nicht nötig`, `compose.yaml` reste comme dans le modèle. Ensuite, tu l'inscris dans le journal de bord.
+**Avec une brique (Pilot), avant le push :** maintenant, le `compose.yaml` du modèle est dans le journal de bord, et tu branches les briques comme dans le skill `bausteine`, section 4 « Au lancement, avec Pilot » : d'abord une photo du serveur (outil `snapshot`, nom `vor-baustein`), puis `include:` dans `compose.yaml`. Si `docs/betrieb.md` dit `Eingang: ja` (`grep -E '^Eingang: ja' docs/betrieb.md` montre la ligne), l'étape **entrée** s'y ajoute : la ligne `- bausteine/eingang/compose.yaml` sous `include:`, et pour le service `webseite`, les lignes `ports:` et `- "80:80"` disparaissent. Le port 80 est alors à l'entrée, le site web n'est plus accessible que derrière elle. Avant, `bun bausteine/eingang/test.ts` doit annoncer « Alles grün ». Sans connexion, ou avec `Eingang: nicht nötig`, `compose.yaml` reste comme dans le modèle. Ensuite, tu l'inscris dans le journal de bord.
 
 ```bash
 git push -u origin main
@@ -129,7 +131,7 @@ git push -u origin main
 
 Ensuite, tu ouvres le port dans le navigateur (`open https://code.aufwind.sh/<name>/projekt`) et tu annonces `hafen`.
 
-**Par toi-même, avec GitHub :** la personne se connecte avec `gh auth login` dans le navigateur. Pour GitHub Pages, tu crées avant le tapis roulant, `.github/workflows/seite.yml` :
+**Par toi-même, avec GitHub (Selbst, mit GitHub) :** la personne se connecte avec `gh auth login` dans le navigateur. Pour GitHub Pages, tu crées avant le tapis roulant, `.github/workflows/seite.yml` :
 
 ```yaml
 name: Seite
@@ -162,7 +164,7 @@ jobs:
 
 Ensuite, emporter le journal de bord : `gh repo create <depot> --private --source . --remote origin --push` (pour GitHub Pages sans compte payant `--public`, après que la personne sait qu'alors `docs/` est aussi public). Pour GitHub Pages, la personne règle sous Settings, Pages la source sur « GitHub Actions ». Ensuite, tu annonces `hafen`.
 
-**Par toi-même, sans dépôt :** tu téléverses `seite/` directement, après que la personne s'est connectée dans le navigateur : `npx netlify-cli deploy --dir=seite --prod` ou `npx wrangler pages deploy seite --project-name=<name>`. Le journal de bord reste sur l'ordinateur ; sa sauvegarde figure dans `docs/betrieb.md`. Il n'y a alors pas de port, tu n'annonces pas `hafen`.
+**Par toi-même, sans dépôt (Selbst, ohne Repo) :** tu téléverses `seite/` directement, après que la personne s'est connectée dans le navigateur : `npx netlify-cli deploy --dir=seite --prod` ou `npx wrangler pages deploy seite --project-name=<name>`. Le journal de bord reste sur l'ordinateur ; sa sauvegarde figure dans `docs/betrieb.md`. Il n'y a alors pas de port, tu n'annonces pas `hafen`.
 
 ### 3. Tapis roulant (`schritt: fliessband`)
 
@@ -182,13 +184,15 @@ node scripts/pruefen.mjs --tueren <adresse>
 
 L'adresse figure dans `docs/lancieren.md` (`Adresse:`). N'est en ligne que ce qui a été vérifié de l'extérieur : si rien n'est rouge avec `--live` (titre comme construit, mentions légales et protection des données accessibles, accès, Lighthouse) ni avec `--tueren`, tu annonces `live`, tu ouvres l'adresse avec la personne et tu compares avec les photos de la vérification.
 
-- **Avec l'entrée :** dans `docs/tueren.txt` figurent les chemins protégés avec 401 (sans connexion) et `/_/` avec 404 ; si le fichier date encore de la construction sans entrée, tu l'adaptes avant la vérification. C'est seulement quand `--tueren` montre exactement cela et que la page d'accueil donne 200 que le site est vraiment derrière l'entrée.
+- **Avec l'entrée :** dans `docs/tueren.txt` figurent les chemins protégés avec 401 (sans connexion, par exemple `/intern/ 401`), en plus `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase répondent aux visiteurs 200 avec une liste vide, pas 401. Si le fichier date encore de la construction sans entrée, tu l'adaptes avant la vérification. C'est seulement quand `--tueren` montre exactement cela et que la page d'accueil donne 200 que le site est vraiment derrière l'entrée.
 - **Avec une brique, « en ligne » n'est pas encore « terminé » :** seulement quand les données sont dedans (par exemple les cours) et qu'une réservation de test en ligne a apporté son e-mail à sa propre adresse (skill `bausteine`), tu dis à la personne qu'elle peut partager le lien. D'ici là, tu dis honnêtement ce qui manque encore.
-- **Toujours pas là après trois minutes :** avec Light, `konto_status` montre si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port parce que `seite/` figure dans un `.gitignore`. Avec Pilot, tu regardes sous « Actions » (skill `pipeline`), par toi-même dans la liste des livraisons du fournisseur. Corriger, nouvelle entrée, pousser, revérifier. Si la correction change le site lui-même, tu le montres d'abord à la personne et tu obtiens à nouveau la validation. Si ça ne marche toujours pas, tu dis ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
+- **Toujours pas là après trois minutes (Nach drei Minuten noch nicht da) :** avec Light, `konto_status` montre si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port parce que `seite/` figure dans un `.gitignore`. Avec Pilot, tu regardes sous « Actions » (skill `pipeline`), par toi-même dans la liste des livraisons du fournisseur. Corriger, nouvelle entrée, pousser, revérifier. Si la correction change le site lui-même, tu le montres d'abord à la personne et tu obtiens à nouveau la validation. Si ça ne marche toujours pas, tu dis ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
 
 ### 5. Une propre adresse, facultative (`schritt: domain`)
 
-Demande : « Ta propre adresse (domaine) maintenant, plus tard ou jamais ? » Ajoute : elle coûte chaque année et elle est facultative. Maintenant : chez Albatros, tu suis le skill `domain` ; par toi-même, tu la relies chez le fournisseur (skill `landung`, partie « Direkt vom Computer ins Netz »). Quand `https://<domaine>` montre le site avec le cadenas, tu annonces `domain` et tu revérifies avec `pruefen.mjs --live https://<domaine>`.
+Demande : « Ta propre adresse (domaine) maintenant, plus tard ou jamais ? » Ajoute : elle coûte chaque année et elle est facultative. Sa réponse va tout de suite dans `docs/live.md` (modèle à l'étape 8), dans la ligne `Eigene Domain:` : d'abord `jetzt`, `später` ou `nie` en allemand, puis, si elle le souhaite, une phrase en français, par exemple `Eigene Domain: später, quand le comité aura choisi le nom`. Maintenant : chez Albatros, tu suis le skill `domain` ; par toi-même, tu la relies chez le fournisseur (skill `landung`, partie « Direkt vom Computer ins Netz »). Quand `https://<domaine>` montre le site avec le cadenas, tu annonces `domain` et tu revérifies avec `pruefen.mjs --live https://<domaine>`.
+
+**Avec connexion** (une brique avec connexion, par exemple un espace membres) : après le domaine, la personne se connecte une fois via `https://<domaine>`, sur la page de connexion. Si ça marche, le site accepte les connexions et les formulaires aussi via la nouvelle adresse. Si la page dit que l'e-mail ou le mot de passe est faux alors que les deux sont justes, ou si un formulaire ne passe pas via le domaine, tu demandes au coach (`coach_fragen`) et tu dis ce que tu as vérifié. D'ici là, la personne se connecte via `https://<name>.aufwind.sh`.
 
 **Si le site en remplace un existant** (`docs/bestand.md`, skill `webseite-modernisieren`) : l'ancien domaine pointe ensuite sur le nouveau site. Chaque ancienne adresse de `docs/bestand.md` qui n'existe plus reçoit une redirection vers le bon nouvel endroit (dans Astro sous `redirects` dans `web/astro.config.mjs`). Les entrées pour l'e-mail (MX), tu n'y touches jamais.
 
@@ -206,12 +210,13 @@ Demande : « À qui le dis-tu en premier ? » Le premier fan ne vient pa
 # En ligne
 
 Live seit: <date>
-Adresse: https://… (le propre domaine, dès qu'il est actif)
+Adresse: https://… (l'adresse sur Internet ; avec un propre domaine, celui-ci, dès qu'il est actif)
+Eigene Domain: <jetzt | später | nie>, <une phrase, si la personne en dit une>
 Geprüft: <date>, pruefen.mjs --live sans rouge, portes comme prévu (docs/pruefung/messwerte-live.json)
 Angekündigt: <date>, <à qui>
 ```
 
-Ensuite, l'entrée dans le journal de bord, le push comme plus haut, et la mission. En mode `lernen`, tu poses les questions de contrôle de la mission `flugschule-18-live-schalten` (`mission_holen`) et tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+Après `Eigene Domain:` vient d'abord `jetzt`, `später` ou `nie`, en allemand, comme la personne a répondu à l'étape 5 ; `Adresse:` est toujours l'adresse sur Internet. Ensuite, l'entrée dans le journal de bord, le push comme plus haut, et la mission. En mode `lernen`, tu poses les questions de contrôle de la mission `flugschule-18-live-schalten` (`mission_holen`) et tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
 
 Si la personne veut ensuite autre chose, le skill `webseite-aendern` s'applique : petit (changer en local, montrer, validation, push) ou grand (complément au plan, ébauche, autorisation de construire, construire, montrer, validation, push).
 
@@ -221,6 +226,7 @@ Ne va en ligne que ce qui appartient à la personne ou ce pour quoi elle a l'aut
 
 - `upgrade_link` avant le choix de la personne, ou des prix de mémoire.
 - Pousser déjà son propre site au moment du domicile : avec Light, chaque push est tout de suite en ligne, et le site est alors sur Internet avant la boîte aux lettres et le détecteur de fumée.
+- Annoncer `wohnort` ou écrire `docs/lancieren.md` avant que le site soit validé : alors le plan de vol saute par-dessus la validation.
 - Cloner le journal de bord depuis le port et y copier le site : les entrées de la construction sont alors perdues. Relier au lieu de copier.
 - `git push --force` pour écraser le port : jamais. Fusionner comme plus haut.
 - Pousser alors que le site a changé depuis la validation.
