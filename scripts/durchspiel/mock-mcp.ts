@@ -3,8 +3,8 @@
 // - Mit Zustand im Ordner DURCHSPIEL_HAFEN: lage nach dem Fahrplan (Phase aus Insel und belege wie albatros services/mcp/src/lage.ts, offene
 //   Pflichtfragen, Ergebnis, Gate, Gratis-Hinweis, Modus, im Modus lernen die Lektion), schritt_melden, weg_waehlen, modus_waehlen,
 //   verstanden_melden, skill_holen, luecke_melden, upgrade_link (ohne Abo vor P11 ohne bestaetigt nur der Gratis-Hinweis, sonst gilt das
-//   Abo als bezahlt), methode, konto_status, schluessel_hinterlegen. seite_erstellen und server_erstellen legen den Hafen unter dem Namen
-//   an (Kopie von vorlage.git).
+//   Abo als bezahlt), methode, konto_status, schluessel_hinterlegen, mission_holen und mission_pruefen (Prüfung insel gegen die Insel).
+//   seite_erstellen und server_erstellen legen den Hafen unter dem Namen an (Kopie von vorlage.git).
 // - Feste Texte: zuerst scripts/durchspiel/mocks/<fall>/<werkzeug>.md (überschreibt auch die Werkzeuge mit Zustand), sonst für die übrigen
 //   scripts/durchspiel/mocks/<werkzeug>.md oder plugins/albatros/evals/mocks/albatros/<werkzeug>.md; je nach Stand zuerst
 //   <werkzeug>.server.md, .seite.md, .<abo>.md. Platzhalter: {repo}, {name} (Name der Seite), {stand} (zuletzt veröffentlicht), {stufe}.
@@ -82,7 +82,10 @@ const bisText = (n: number) => (n ? `bis ${F.phasen[n - 1]!.id}` : 'keine');
 const wer = (p: Phase, q: Pflichtfrage) => (q.antwortet === 'ki' ? 'klärst du selbst' : q.antwortet === 'annahme_ok' ? 'als [Annahme] vorschlagen'
   : F.ja_momente.some((j) => j.phase === p.id && j.frage === q.id) ? 'die Person antwortet; Ja-Moment: nur ihr ausdrückliches Ja zählt' : 'die Person antwortet');
 
-type Mission = { id: string; weg: string; titel: string; phase?: string; optional?: boolean; abo?: string; verstehen?: { frage: string; kern: string }[] };
+type Mission = {
+  id: string; weg: string; titel: string; skill?: string; phase?: string; optional?: boolean; abo?: string;
+  pruefung?: { typ: string; schritt?: string }[]; verstehen?: { frage: string; kern: string }[];
+};
 const missionen: Mission[] = ['flugschule', 'webseite', 'geschaeft'].flatMap((w) => {
   const d = join(QUELLE, 'missionen', w);
   return (existsSync(d) ? readdirSync(d) : []).filter((f) => f.endsWith('.md')).flatMap((f) => {
@@ -206,6 +209,25 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
     const schon = (merk('verstanden') ?? '').split('\n').includes(`${m.id} ${String(a.art)}`);
     if (!schon && HAFEN) appendFileSync(join(HAFEN, 'verstanden'), `${m.id} ${String(a.art)}\n`);
     return { text: `${schon ? 'War schon notiert' : 'Notiert'}: «verstanden» für ${m.id} («${m.titel}»), ${ART[String(a.art)]}.\nWiederholung: in etwa einer Woche, zu Beginn einer Sitzung.` };
+  },
+  // Missionen wie flugschule: Prüfung insel besteht, sobald der Schritt auf der Insel steht; andere Prüfungen (Datei, http, git) kann die
+  // Attrappe nicht sehen und lässt sie gelten
+  mission_pruefen: (a) => {
+    const m = missionen.find((x) => x.id === a.mission);
+    if (!m) return { fehler: true, text: `Die Mission ${String(a.mission)} gibt es nicht.` };
+    const fehlt = (m.pruefung ?? []).filter((x) => x.typ === 'insel' && rang(insel()) < rang(x.schritt ?? null));
+    if (fehlt.length) return { text: `Noch nicht bestanden: ${fehlt.map((x) => `Auf der Insel steht projekt noch nicht bei «${x.schritt}».`).join(' ')}` };
+    const schon = (merk('flugbuch') ?? '').split('\n').includes(m.id);
+    if (!schon && HAFEN) appendFileSync(join(HAFEN, 'flugbuch'), `${m.id}\n`);
+    return { text: schon ? 'Prüfung bestanden. Die Mission stand schon im Flugbuch.' : 'Prüfung bestanden. Eintrag im Flugbuch gemacht.' };
+  },
+  mission_holen: () => {
+    const p = F.phasen[erledigtNachInsel(F, insel())];
+    const fertig = (merk('flugbuch') ?? '').split('\n');
+    const m = missionen.find((x) => x.phase === p?.id && !x.optional && (x.weg === 'flugschule' || x.weg === merk('weg')) && !fertig.includes(x.id));
+    if (!m) return { text: p ? `Keine offene Mission in Phase ${p.id}. Was jetzt dran ist, sagt lage.` : 'Alle Missionen des Fahrplans sind geschafft.' };
+    const pruefung = (m.pruefung ?? []).map((x) => (x.typ === 'insel' ? `Insel bei «${x.schritt}»` : x.typ)).join(', ');
+    return { text: `Aktuelle Mission: ${m.id} («${m.titel}»), Phase ${m.phase}. Skill: ${m.skill ?? 'lotse'}. Prüfung: ${pruefung || 'keine'}.` };
   },
   skill_holen: (a) => {
     const f = join(QUELLE, 'plugins/albatros/skills', String(a.slug), 'SKILL.md');
