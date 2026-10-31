@@ -49,7 +49,7 @@ Bevor du `lage` aufrufst, schaust du im Projektordner nach, was schon da ist: `d
 - `belege`: je Ergebnisdatei, die es gibt, die Zeilen, die am Zeilenanfang mit einem Namen und Doppelpunkt beginnen (`Projektname: …`, `Vorbilder: …`), wörtlich; höchstens 20 Dateien, je höchstens 50 Zeilen mit höchstens 300 Zeichen. Für Dateien ohne solche Zeilen (`AGENTS.md`, `design/skizze.html`) gibst du nur den Namen mit einer leeren Liste mit. Nennt `lage` Dateien, die du nicht mitgegeben hast, liest du sie und gibst sie beim nächsten Aufruf mit.
 - `modus`: aus der Zeile `Modus:` in `docs/projekt.md`, also `machen` oder `lernen`.
 - `projekt`: beim ersten Projekt der Person weglassen (wie bei `schritt_melden`); nur für ein weiteres Projekt dessen kurzer Name.
-- `anliegen`, nur wenn es erlaubt ist: worum die Person dich gerade bittet, umformuliert in einem Satz, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten, höchstens 300 Zeichen. Erlaubt ist es, wenn die Person der Erfassung zugestimmt hat (siehe «Lücken melden») oder `lage` es so meldet. Sonst lässt du das Feld weg.
+- `anfrage`, nur mit Einwilligung zur Erfassung (die Person hat zugestimmt, siehe «Lücken melden», oder `lage` meldet es so): worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten, höchstens 300 Zeichen. Sonst lässt du das Feld weg. Niemand antwortet darauf; Albatros sieht daran nur, wobei Leute Hilfe brauchen. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), gehört nicht hierhin: Das geht mit `coach_fragen` und `anliegen` an das Team (Abschnitt «Lücken melden»).
 
 Gibt es noch kein Projekt, rufst du `lage` nur mit `skills_stand` auf. Antwortet `lage` mit «Ungültige Angaben», rufst du es einmal ohne Angaben auf.
 
@@ -114,11 +114,12 @@ Will die Person an ihrer fertigen Seite etwas ändern («neuer Termin», «Text 
 
 Sagt `lage` «Albatros aktualisieren», sind die Skills auf diesem Computer älter als der Fahrplan bei Albatros. Sag es der Person in einem Satz und hol mit ihrem Ja die neuen:
 
-| KI | So |
+| KI | Befehle |
 |---|---|
 | Claude Code | `claude plugin marketplace update albatros` und `claude plugin update albatros@albatros`, dann tippt die Person `/reload-plugins` |
 | Codex | `codex plugin marketplace upgrade albatros` und `codex plugin add albatros@albatros`, dann ein neues Gespräch |
-| Gemini CLI, Cursor | `npx skills update -g -y`, dann das Programm neu starten |
+| Gemini CLI | `npx skills update -g -y`, dann Gemini CLI neu starten |
+| Cursor | `npx skills update -g -y`, dann Cursor neu starten |
 
 Bis es geklappt hat, holst du den Skill, der jetzt dran ist, mit `skill_holen`.
 
@@ -148,7 +149,7 @@ Albatros wird besser, wenn du meldest, wo das Know-how fehlt. Dafür gibt es das
 - Dazu `art`, `skill` (die Kennung, um die es geht), `phase` (wie `lage` sie nennt), `kontext` (was du schon versucht hast, ein Satz, ohne Angaben zur Person) und `skills_stand`.
 - **Beim ersten Mal** rufst du `luecke_melden` ohne `einverstanden` auf. Die Antwort enthält einen Satz für die Person: Sag ihn ihr so, wie er dasteht. Nur nach ihrem Ja rufst du nochmals auf, mit `einverstanden: true`. Sagt sie Nein, meldest du nichts und machst weiter.
 - Auf eine Lücke kommt keine Antwort. Hilfe für die Person gibt der Coach (`coach_fragen`).
-- **Eine Datenpanne** (fremde Daten sichtbar, ein Zugang verraten, Daten verloren) ist nie eine Lücke: Sie geht mit `coach_fragen` und `anliegen: datenpanne` sofort an das Team.
+- **Was ein Mensch sehen muss, ist nie eine Lücke:** Eine Datenpanne (fremde Daten sichtbar, ein Zugang verraten, Daten verloren) geht mit `coach_fragen` und `anliegen: datenpanne` sofort an das Team, ebenso eine Frage zur Rechnung (`rechnung`) oder zum Konto (`konto`) und ein Fehler bei Albatros, den ein Mensch beheben muss (`fehler_albatros`).
 - Fehlt `luecke_melden`, geht es ohne weiter.
 
 ## Ohne Anmeldung

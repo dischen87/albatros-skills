@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server, missione) e poi segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo riuscito chiede di nuovo. Mostra il piano di volo in tre tappe (decollare, volare, atterrare), fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e, su richiesta, la biblioteca aperta di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?») ha la precedenza lo skill specifico."
 metadata:
   stand: 0.2.0
-  quelle: 'dbf42cb3e0f6'
+  quelle: '68be1363fec0'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto
@@ -51,7 +51,7 @@ Prima di chiamare `lage`, guardi nella cartella del progetto cosa c'è già: `do
 - `belege` (prove): per ogni file di risultato che esiste, le righe che a inizio riga cominciano con un nome e due punti (`Projektname: …`, `Vorbilder: …`), alla lettera; al massimo 20 file, ognuno al massimo 50 righe di al massimo 300 caratteri. Per i file senza righe così (`AGENTS.md`, `design/skizze.html`) dai solo il nome con una lista vuota. Se `lage` nomina file che non hai dato, li leggi e li dai alla prossima chiamata.
 - `modus`: dalla riga `Modus:` in `docs/projekt.md`, quindi `machen` (fare) o `lernen` (imparare).
 - `projekt`: da lasciare fuori per il primo progetto della persona (come per `schritt_melden`); solo per un altro progetto il suo nome breve.
-- `anliegen` (richiesta), solo se è permesso: quello che la persona ti chiede in questo momento, riformulato in una frase, senza nomi, indirizzi e-mail, indirizzi o dati di accesso, al massimo 300 caratteri. È permesso se la persona ha acconsentito alla raccolta (vedi «Segnalare le lacune») o se `lage` lo segnala così. Altrimenti lasci fuori il campo.
+- `anfrage` (richiesta), solo con il consenso alla raccolta (la persona ha acconsentito, vedi «Segnalare le lacune», o `lage` lo segnala così): quello che la persona ti chiede in questo momento, riformulato in una frase, senza nomi, indirizzi e-mail, indirizzi o dati di accesso, al massimo 300 caratteri. Altrimenti lasci fuori il campo. Nessuno risponde; Albatros ci vede solo per che cosa le persone hanno bisogno di aiuto. Ciò che deve vedere un essere umano (fattura, account, falla nei dati, errore di Albatros) non va qui: va al team con `coach_fragen` e `anliegen` (sezione «Segnalare le lacune»).
 
 Se non c'è ancora un progetto, chiami `lage` solo con `skills_stand`. Se `lage` risponde «Ungültige Angaben» (dati non validi), lo chiami una volta senza dati.
 
@@ -116,11 +116,12 @@ Se la persona vuole cambiare qualcosa sul suo sito finito («nuova data», «cam
 
 Se `lage` dice «Albatros aktualisieren» (aggiornare Albatros), gli skill su questo computer sono più vecchi del piano di volo di Albatros. Dillo alla persona in una frase e, con il suo sì, prendi quelli nuovi:
 
-| IA | Come |
+| IA | Comandi |
 |---|---|
 | Claude Code | `claude plugin marketplace update albatros` e `claude plugin update albatros-it@albatros`, poi la persona digita `/reload-plugins` |
 | Codex | `codex plugin marketplace upgrade albatros` e `codex plugin add albatros-it@albatros`, poi una nuova conversazione |
-| Gemini CLI, Cursor | `npx skills update -g -y`, poi riavviare il programma |
+| Gemini CLI | `npx skills update -g -y`, poi riavviare Gemini CLI |
+| Cursor | `npx skills update -g -y`, poi riavviare Cursor |
 
 Finché non ha funzionato, prendi lo skill che tocca adesso con `skill_holen`.
 
@@ -150,7 +151,7 @@ Albatros migliora se segnali dove manca il know-how. Per questo c'è lo strument
 - In più `art`, `skill` (l'identificativo di cui si tratta), `phase` (come la nomina `lage`), `kontext` (cosa hai già provato, una frase, senza dati sulla persona) e `skills_stand`.
 - **La prima volta** chiami `luecke_melden` senza `einverstanden`. La risposta contiene una frase per la persona: dilla così com'è scritta, in italiano. Solo dopo il suo sì richiami lo strumento con `einverstanden: true`. Se dice di no, non segnali niente e vai avanti.
 - A una lacuna non arriva risposta. L'aiuto per la persona viene dal Coach (`coach_fragen`).
-- **Una falla nei dati** (dati di altri visibili, un accesso rivelato, dati persi) non è mai una lacuna: va subito al team con `coach_fragen` e `anliegen: datenpanne`.
+- **Ciò che deve vedere un essere umano non è mai una lacuna:** una falla nei dati (dati di altri visibili, un accesso rivelato, dati persi) va subito al team con `coach_fragen` e `anliegen: datenpanne`, e così una domanda sulla fattura (`rechnung`) o sull'account (`konto`) e un errore di Albatros che deve correggere un essere umano (`fehler_albatros`).
 - Se manca `luecke_melden`, si va avanti senza.
 
 ## Senza accesso
