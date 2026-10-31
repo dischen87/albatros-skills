@@ -324,7 +324,7 @@ if (B.farbfaecher) {
   const fehlt = [...benutzt].filter(([n]) => !definiert.has(n) && !eigene.has(n));
   for (const [n, wo] of fehlt) melde('farbfaecher', 'rot', `${wo}: var(${n}) gibt es nicht in design/tokens.css`);
   const anzahl = seiten.length + [...cssDateien].filter((x) => resolve(x) !== resolve(TOKENS)).length;
-  if (!vonHand.length && !fehlt.length && seiten.length) melde('farbfaecher', 'grün', `Farben, Schriften und Grössen nur als var(--…), in ${anzahl} Dateien`);
+  if (!vonHand.length && !fehlt.length && seiten.length) melde('farbfaecher', 'grün', `Farben, Schriften und Grössen nur als var(--…), in ${anzahl} ${anzahl === 1 ? 'Datei' : 'Dateien'}`);
 }
 
 // ---------- Kontraste in tokens.css nachrechnen (Formel wie im Skill barrierefreiheit) ----------
