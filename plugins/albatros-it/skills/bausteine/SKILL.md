@@ -3,7 +3,7 @@ name: bausteine
 description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti, prima sul suo computer: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso e abilitazione, bacheca (PocketBase), un ingresso con un solo accesso per più parti o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «ruoli», «ingresso», «banca dati», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 metadata:
   stand: 0.2.0
-  quelle: 'e164b9948100'
+  quelle: '0a3abd265736'
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -44,7 +44,7 @@ Una domanda per messaggio, solo quante ne servono perché la risposta sia chiara
 | I visitatori prenotano un posto o un appuntamento (corso, visita guidata, appuntamento dal parrucchiere), voglio vedere le prenotazioni e poterle annullare | **Prenotazioni** (PocketBase, ricetta `buchungen`) | Pilot | circa 20 MB |
 | I membri accedono e vedono un'area tutta loro; chi è nuovo fa una richiesta, e io lo abilito | **Area membri con accesso** (PocketBase, ricetta `mitglieder`) | Pilot | circa 20 MB |
 | Altri curano news o appuntamenti nel browser | **Bacheca** (PocketBase, ricetta `pinnwand`) | Pilot | circa 20 MB |
-| Più parti hanno bisogno dello stesso accesso, o un'area è solo per un ruolo (per esempio il comitato) | **Ingresso** (blocco `eingang`, con la ricetta `mitglieder`), sezione 7 | Pilot | 20 MB, a pieno carico fino a 66 MB |
+| Più parti hanno bisogno dello stesso accesso, o un'area è solo per un ruolo (per esempio il comitato) | **Ingresso** (blocco `eingang`, con la ricetta `mitglieder`), sezione 7 | Pilot | 20 MB, a pieno carico fino a 69 MB |
 | Molti tipi di contenuto, più ruoli, gestione delle immagini, più tardi un'app | **CMS grande** (Strapi con Postgres) | Pilot | circa 200 MB, costruzione fino a 2,5 GB |
 
 Consiglia sempre il più piccolo che basta. Più lingue da sole non sono mai un motivo per un blocco. PocketBase copre insieme lista di iscrizione, accesso e bacheca, e gira una volta sola. Strapi conviene solo quando PocketBase diventa troppo piccolo.
@@ -60,7 +60,7 @@ Un server con Pilot ha 4 GB di memoria di lavoro (RAM) e 40 GB di spazio, senza 
 | Carico di base: sistema, Docker, operaio del nastro trasportatore | 150 MB, previsti 0,5 GB | per poco di più | – |
 | Sito dal modello | 10 MB | breve | poco |
 | PocketBase (tutte le ricette insieme) | 20 MB | breve | 40 MB |
-| Ingresso | 20 MB, a pieno carico fino a 66 MB | breve | poco |
+| Ingresso | 20 MB, a pieno carico fino a 69 MB | breve | poco |
 | Strapi con Postgres | 150 MB + 55 MB | picco 2,5 GB, prima costruzione circa 7 minuti | 1,4 GB |
 
 Per i blocchi restano quindi circa 3,5 GB. Sito, PocketBase e Strapi insieme, in funzione, usano circa 250 MB. Si fa stretto solo durante la costruzione, per questo il nastro trasportatore costruisce un lavoro dopo l'altro. Sul server non vanno programmi che da soli usano più di 1 GB, per esempio Keycloak, Supabase, Logto, Mattermost o il riconoscimento del testo (OCR). Per un accesso proprio prendi PocketBase.
@@ -69,7 +69,9 @@ Prima del lancio: `free -h` sul server mostra quanto è libero. Dopo: `docker st
 
 ## 4. Montare: prima in locale, il server al lancio
 
-**In locale, sul computer della persona** (durante la costruzione, skill `webseite-bauen`; gratis):
+### In locale, sul computer della persona
+
+Durante la costruzione (skill `webseite-bauen`), gratis:
 
 1. **Prendere.** Nel diario di bordo sul computer della persona (skill `git-logbuch`) scarichi il blocco dalla fabbrica, il repository pubblico di Albatros:
    ```bash
@@ -83,7 +85,9 @@ Prima del lancio: `free -h` sul server mostra quanto è libero. Dopo: `docker st
 
 Strapi non ha ancora un test né `lokal.ts`; i suoi tipi di contenuto li scrivi come file (sezione 6), e lo si vede girare solo sul server. Dillo onestamente.
 
-**Al lancio, con Pilot** (skill `lancieren`, parte 2, dopo l'approvazione del sito e prima del push nel porto):
+### Al lancio, con Pilot (Beim Lancieren, mit Pilot)
+
+Nello skill `lancieren`, parte 2, dopo l'approvazione del sito e prima del push nel porto:
 
 1. **Foto del server:** strumento `snapshot` con il nome `vor-baustein` (skill `zurueck-auf-gestern`).
 2. **Agganciare.** In `compose.yaml`, proprio in cima:
@@ -94,7 +98,26 @@ Strapi non ha ancora un test né `lokal.ts`; i suoi tipi di contenuto li scrivi 
    Il sito inoltra da solo le richieste: il modello legge ogni `bausteine/*/nginx.conf`. Se il progetto è più vecchio dei blocchi (nessun `nginx.conf` nel progetto), prendi `Dockerfile` e `nginx.conf` da `vorlage/` nello stesso repository.
    **Con accesso, il passo ingresso:** se in `docs/betrieb.md` c'è `Eingang: ja` (sezione 7), sotto `include:` si aggiunge `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` spariscono `ports:` e `- "80:80"`: allora il sito è raggiungibile solo dietro l'ingresso. Senza accesso, o se bastano le regole di PocketBase, `compose.yaml` resta come nel modello. Lo skill `lancieren` nomina questo passo già al domicilio.
 3. **Al porto.** Il nastro trasportatore costruisce e consegna (skill `pipeline`). Se la costruzione non riesce, il vecchio sito resta online.
-4. **Verificare** sul server: `docker ps` mostra il blocco come `healthy`. Con l'ingresso verifichi ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren <indirizzo>` (percorsi protetti 401, `/_/` 404, la pagina iniziale 200). Poi il primo account dell'amministrazione e le e-mail (sezione 5).
+4. **Verificare** sul server: `docker ps` mostra il blocco come `healthy`. Poi verifichi ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren <indirizzo>` con le porte qui sotto, con l'ingresso anche i percorsi protetti 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 e la pagina iniziale 200. Poi il primo account dell'amministrazione e le e-mail (sezione 5).
+
+### Porte dei blocchi (Türen der Bausteine)
+
+Quello che un blocco risponde senza accesso va in `docs/tueren.txt` (skill `webseite-bauen`), solo le righe delle ricette montate. `node scripts/pruefen.mjs --tueren` le verifica in locale contro `http://localhost:8090` (con l'ingresso `http://localhost:8080`), finché gira `lokal.ts`, e dopo il lancio contro l'indirizzo. Le liste di PocketBase con una regola (per esempio «solo il proprio account») danno agli ospiti 200 con una lista vuota, non 401 né 403; solo le liste riservate all'amministrazione danno 403. È giusto così; le regole restano come sono.
+
+```
+/api/collections/anmeldungen/records      403   # anmeldeliste: iscriversi possono tutti, leggere solo l'amministrazione
+/api/collections/termine_frei/records     200   # buchungen: le date libere le vede chiunque
+/api/collections/buchungen/records        403   # buchungen: le prenotazioni le vede solo l'amministrazione
+/api/collections/wochenplan/records       403   # buchungen
+/api/collections/users/records            200   # mitglieder: gli ospiti ricevono una lista vuota
+/api/collections/mitteilungen/records     200   # mitglieder: gli ospiti ricevono una lista vuota
+/api/collections/beitraege/records        200   # pinnwand: per tutti
+/intern/                                  401   # con l'ingresso: ogni percorso protetto di eingang.json
+/_/                                       404   # con l'ingresso
+/api/collections/_SUPERUSERS/auth-methods 404   # con l'ingresso
+```
+
+Misurato il 31.10.2026 con PocketBase 0.40.5 e `pruefen.mjs --tueren`, direttamente presso PocketBase e attraverso l'ingresso. Senza l'ingresso `/_/` è chiuso solo sul server (404); in locale `lokal.ts` lì mostra l'amministrazione, quindi questa porta si verifica solo dopo il lancio. Con `buchungen`, «Le mie prenotazioni» (`/verwaltung/`) risponde 200: la pagina è aperta, ma le prenotazioni le vede solo chi accede con l'account dell'amministrazione. Una riga `/verwaltung 404` allora non va bene.
 
 ## 5. PocketBase: lista di iscrizione, prenotazioni, membri, bacheca
 
@@ -178,7 +201,7 @@ Strapi è un sistema completo per i contenuti con ruoli e gestione delle immagin
 6. **Aprire l'amministrazione** (per una redazione senza terminale): solo quando il primo account c'è, altrimenti una persona estranea potrebbe registrarsi per prima. In `bausteine/strapi/nginx.conf` sostituisci la prima sezione con la sezione «Verwaltung freigeben» (senza `#`), in `bausteine/strapi/cms/config/server.ts` attiva la riga `url: '/cms'`, nel diario di bordo, al porto. Allora l'amministrazione è su `https://{name}.aufwind.sh/cms/admin`. Lì la persona invita la redazione (Settings → Users, ruolo Editor o Author). Ogni persona imposta da sola la propria password.
 7. **Le voci compaiono** appena sono pubblicate nell'amministrazione. Non serve una nuova costruzione.
 
-## 7. Un ingresso per tutto?
+## 7. Un ingresso per tutto? (Ein Eingang für alles?)
 
 **L'immagine:** la reception di un palazzo con più uffici. Chi vuole entrare si annuncia una volta; ogni ufficio sa solo chi arriva e con quale ruolo. L'ingresso è un piccolo servizio davanti al sito. Ha fatto l'accesso chi PocketBase conosce (ricetta `mitglieder`), un secondo accesso non c'è.
 
@@ -188,19 +211,19 @@ Se serve lo decidono queste regole, in quest'ordine:
 2. **Non serve con un blocco per cui bastano le regole di PocketBase:** per esempio solo la ricetta `mitglieder` (comunicazioni solo per chi è abilitato) o solo `buchungen`. Allora senza ingresso.
 3. **Serve quando due o più parti devono sapere chi ha fatto l'accesso** (per esempio pagine protette sotto `/intern/` e le comunicazioni da PocketBase, o un piccolo programma tuo accanto), **o quando dei ruoli valgono per più parti** (il comitato vede `/vorstand/` e in PocketBase può fare di più).
 
-La risposta va in `docs/betrieb.md`, alla riga `Eingang:`, con il motivo (skill `betrieb`). Le porte del sito (`docs/tueren.txt`: aperte, solo con accesso, mai) diventano le parti in `bausteine/eingang/eingang.json`.
+La risposta va in `docs/betrieb.md`, alla riga `Eingang:` (skill `betrieb`). Il suo valore comincia sempre con la parola tedesca `ja` o `nicht nötig`, anche se la persona parla un'altra lingua; dopo viene il motivo nella sua lingua, per esempio `Eingang: ja – /intern/ e le comunicazioni da PocketBase richiedono lo stesso accesso` o `Eingang: nicht nötig – solo la ricetta mitglieder, bastano le regole di PocketBase`. Lo skill `lancieren` monta l'ingresso solo con `Eingang: ja`. Le porte del sito (`docs/tueren.txt`: aperte, solo con accesso, mai) diventano le parti in `bausteine/eingang/eingang.json`.
 
-**Costi:** niente soldi in più, gira insieme al resto sul server Pilot. Memoria: 20 MB a riposo, a pieno carico fino a 66 MB (misurato il 31.10.2026 su un Mac, sul server non ancora); ogni chiamata a una parte protetta interroga PocketBase, costa circa mezzo millisecondo. In più un elemento da curare (versione di Bun nel `Dockerfile`).
+**Costi:** niente soldi in più, gira insieme al resto sul server Pilot. Memoria: 20 MB a riposo, a pieno carico fino a 69 MB (misurato il 31.10.2026 su un Mac, sul server non ancora); ogni chiamata a una parte protetta interroga PocketBase, costa quasi un millisecondo. In più un elemento da curare (versione di Bun nel `Dockerfile`).
 
 **Montare,** prima in locale come ogni blocco (sezione 4), passo per passo in `bausteine/eingang/README.md`:
 
 1. PocketBase con la ricetta `mitglieder` è montato. Prendere `bausteine/eingang`, `pb_hooks/*` in `bausteine/pocketbase/pb_hooks/`, `pb_migrations/2_eingang.js` in `bausteine/pocketbase/pb_migrations/`.
-2. In `eingang.json` inserire l'indirizzo del sito (`ursprung`) e le parti: nome, destinazione, percorsi, accesso `offen` (aperto), `angemeldet` (con accesso) o `rolle:<name>`. Le pagine protette stanno in cartelle proprie (`seite/intern/`).
+2. In `eingang.json` inserire l'indirizzo del sito (`ursprung`) e le parti: nome, destinazione, percorsi, accesso `offen` (aperto), `angemeldet` (con accesso) o `rolle:<name>`. Le pagine protette stanno in cartelle proprie (`seite/intern/`). Se più tardi arriva un dominio proprio, qui non serve niente: l'ingresso accetta moduli e accessi dall'indirizzo con cui si apre il sito.
 3. In `mitglieder.html` impostare `const EINGANG = true;`: l'accesso vale allora con un cookie per tutte le parti.
 4. `bun bausteine/eingang/test.ts` segnala «Alles grün», poi `bun bausteine/pocketbase/lokal.ts --eingang`: la persona apre una pagina protetta senza accesso, accede, torna indietro ed esce.
-5. Al lancio (skill `lancieren`, parte 2): in `compose.yaml` sotto `include:` la riga `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` cancellare le righe `ports:` e `- "80:80"`, altrimenti si potrebbe aggirare l'ingresso. Il sito è allora raggiungibile solo dietro l'ingresso. Poi verificare ogni porta dall'esterno: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` dà 401, `/_/` dà 404, la pagina iniziale 200.
+5. Al lancio (skill `lancieren`, parte 2): in `compose.yaml` sotto `include:` la riga `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` cancellare le righe `ports:` e `- "80:80"`, altrimenti si potrebbe aggirare l'ingresso. Il sito è allora raggiungibile solo dietro l'ingresso. Poi verificare ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` con le «porte dei blocchi» (sezione 4): `/intern/` dà 401, `/_/` e `/api/collections/_SUPERUSERS/auth-methods` danno 404, la pagina iniziale 200.
 
-**Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'accesso dell'amministrazione. Uscire vale per un dispositivo; uscire ovunque vuol dire impostare una nuova password.
+**Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'amministrazione, in qualsiasi grafia. Chiude anche il tempo reale di PocketBase (`/api/realtime`), nessuna ricetta ne ha bisogno. Uscire vale per un dispositivo; uscire ovunque vuol dire impostare una nuova password.
 
 ## Trappole
 

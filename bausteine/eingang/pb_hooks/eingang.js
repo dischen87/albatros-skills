@@ -24,6 +24,30 @@ function eigeneHerkunft(e) {
   return o !== "" && (o === String(e.request.host).toLowerCase() || o === host(e.app.settings().meta.appURL));
 }
 
+// Kommt die Anfrage durch den Eingang von aussen? Den Kopf setzt nur der Eingang (eingehende x-eingang-* entfernt er); über den Tunnel
+// fehlt er.
+const vonAussen = (e) => e.request.header.get("X-Eingang-Weg") === "aussen";
+
+// Verwaltung von aussen: ein Konto der Verwaltung (Token im Kopf Authorization), eine Systemsammlung (_superusers, _mfas …) in jeder
+// Schreibweise, die PocketBase auflöst (Gross/Klein, «ſ», ID), oder die Oberfläche /_/. Die Sammlung sucht PocketBase hier selbst,
+// über den Wert aus der Route und zur Sicherheit auch über den Pfad.
+function verwaltung(e) {
+  if (e.auth && e.auth.isSuperuser()) return true;
+  const pfad = String(e.request.url.path);
+  if (pfad === "/_" || pfad.startsWith("/_/")) return true;
+  const namen = [];
+  try { namen.push(e.request.pathValue("collection")); } catch (_) {}
+  const m = /^\/api\/(?:collections|files)\/([^/]+)/.exec(pfad);
+  if (m) namen.push(m[1]);
+  for (const n of namen) {
+    if (!n) continue;
+    try {
+      if (e.app.findCachedCollectionByNameOrId(n).system) return true;
+    } catch (_) {}
+  }
+  return false;
+}
+
 // Ein angemeldetes Mitglied (Sammlung users) zum Token, sonst null
 function mitglied(app, token) {
   try {
@@ -36,4 +60,4 @@ function mitglied(app, token) {
 
 const cookie = (wert, sekunden) => `${COOKIE}=${wert}; Path=/; Max-Age=${sekunden}; HttpOnly; Secure; SameSite=Lax`;
 
-module.exports = { COOKIE, sitzung, lesend, eigeneHerkunft, mitglied, cookie };
+module.exports = { COOKIE, sitzung, lesend, eigeneHerkunft, vonAussen, verwaltung, mitglied, cookie };

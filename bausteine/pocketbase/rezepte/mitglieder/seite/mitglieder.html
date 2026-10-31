@@ -89,10 +89,14 @@
   const keinNetz = 'Keine Verbindung. Prüf dein Internet und versuch es nochmals.';
   function melde(id, satz, ok) { $(id).textContent = satz; $(id).className = ok ? 'ok' : 'fehler'; $(id).hidden = false; }
 
-  // Nach dem Anmelden zurück auf die Seite, von der der Eingang hierher geschickt hat (nur Seiten der eigenen Adresse)
+  // Nach dem Anmelden zurück auf die Seite, von der der Eingang hierher geschickt hat (nur Seiten der eigenen Adresse). Entschieden wird
+  // auf der Adresse, wie der Browser sie auflöst (Tab und Zeilenumbruch fallen weg, «\» gilt wie «/», «/.//x» wird zu «//x»), und
+  // weiter geht es genau dorthin, mit ganzer Adresse.
   function weiter() {
     const w = new URLSearchParams(location.search).get('weiter');
-    if (w && w.startsWith('/') && !w.startsWith('//') && !w.startsWith('/\\')) { location.assign(w); return true; }
+    let u = null;
+    try { u = w && w.startsWith('/') ? new URL(w, location.href) : null; } catch {}
+    if (u && u.origin === location.origin) { location.assign(u.href); return true; }
     return false;
   }
 
@@ -137,6 +141,8 @@
     $('anmeldeknopf').disabled = false;
     if (!r) return melde('anmeldefehler', keinNetz);
     if (r.status === 429) return melde('anmeldefehler', 'Zu viele Versuche. Warte bitte eine Minute.');
+    // 403: Die Anfrage kam nicht von der eigenen Adresse (etwa eine Domain, die der Eingang nicht kennt), das Passwort ist nicht schuld
+    if (r.status === 403) return melde('anmeldefehler', 'Anmelden geht hier gerade nicht. Öffne die Seite nochmals über ihre Adresse und versuch es dann.');
     if (!r.ok) return melde('anmeldefehler', 'E-Mail oder Passwort stimmt nicht.');
     if (!EINGANG) merken(r.body.token);
     $('passwort').value = '';

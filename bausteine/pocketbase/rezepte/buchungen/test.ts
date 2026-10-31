@@ -2,7 +2,7 @@
 //   bun bausteine/pocketbase/rezepte/buchungen/test.ts      (lädt PocketBase einmal nach ~/.cache, prüft die Prüfsumme)
 // Ist das Rezept eingebaut (bausteine/pocketbase/pb_hooks/buchungen.pb.js), prüft er die eingebauten Dateien, also genau das, was
 // ins Netz geht. Sonst das Rezept selbst.
-import { cpSync, existsSync, mkdirSync, mkdtempSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { einstellen, lesbar, mailAttrappe, pocketbase, wurzelVon } from '../../programm.ts';
@@ -116,6 +116,8 @@ try {
   smtp.stop(true);
   const log = await new Response(server.stderr).text();
   if (fehler && log.trim()) console.log(log.slice(-2000));
+  await server.exited;
+  rmSync(tmp, { recursive: true, force: true }); // die Daten dieses Laufs, wie in den Tests mitglieder und eingang
 }
 console.log(fehler ? `\n${fehler} Prüfungen fehlgeschlagen` : '\nAlles grün');
 process.exit(fehler ? 1 : 0);

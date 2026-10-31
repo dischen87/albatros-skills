@@ -42,7 +42,7 @@ Eine Frage pro Nachricht, nur so viele, bis die Antwort klar ist:
 | Besucher buchen einen Platz oder Termin (Kurs, Führung, Termin beim Coiffeur), ich will die Buchungen sehen und absagen können | **Buchungen** (PocketBase, Rezept `buchungen`) | Pilot | etwa 20 MB |
 | Mitglieder melden sich an und sehen einen eigenen Bereich; wer neu ist, fragt an, und ich schalte frei | **Mitgliederbereich mit Login** (PocketBase, Rezept `mitglieder`) | Pilot | etwa 20 MB |
 | Andere pflegen News oder Termine im Browser | **Pinnwand** (PocketBase, Rezept `pinnwand`) | Pilot | etwa 20 MB |
-| Mehrere Teile brauchen dasselbe Login, oder ein Bereich ist nur für eine Rolle (zum Beispiel den Vorstand) | **Eingang** (Baustein `eingang`, mit dem Rezept `mitglieder`), Abschnitt 7 | Pilot | 20 MB, unter Volllast bis 66 MB |
+| Mehrere Teile brauchen dasselbe Login, oder ein Bereich ist nur für eine Rolle (zum Beispiel den Vorstand) | **Eingang** (Baustein `eingang`, mit dem Rezept `mitglieder`), Abschnitt 7 | Pilot | 20 MB, unter Volllast bis 69 MB |
 | Viele Inhaltstypen, mehrere Rollen, Bilderverwaltung, später eine App | **Grosses CMS** (Strapi mit Postgres) | Pilot | etwa 200 MB, Bau bis 2,5 GB |
 
 Empfiehl immer das Kleinste, das reicht. Mehrere Sprachen allein sind nie ein Grund für einen Baustein. PocketBase deckt Anmeldeliste, Login und Pinnwand zusammen ab, es läuft nur einmal. Strapi lohnt sich erst, wenn PocketBase zu klein wird.
@@ -58,7 +58,7 @@ Ein Server mit Pilot hat 4 GB Arbeitsspeicher und 40 GB Platz, ohne Auslagerungs
 | Grundlast: System, Docker, Arbeiter am Fliessband | 150 MB, eingeplant 0,5 GB | kurz mehr | – |
 | Webseite aus der Vorlage | 10 MB | kurz | klein |
 | PocketBase (alle Rezepte zusammen) | 20 MB | kurz | 40 MB |
-| Eingang | 20 MB, unter Volllast bis 66 MB | kurz | klein |
+| Eingang | 20 MB, unter Volllast bis 69 MB | kurz | klein |
 | Strapi mit Postgres | 150 MB + 55 MB | Spitze 2,5 GB, erster Bau etwa 7 Minuten | 1,4 GB |
 
 Für Bausteine bleiben also etwa 3,5 GB. Webseite, PocketBase und Strapi zusammen brauchen im Betrieb etwa 250 MB. Eng wird es nur beim Bauen, darum baut das Fliessband einen Auftrag nach dem anderen. Nicht auf den Server gehören Programme, die allein mehr als 1 GB brauchen, zum Beispiel Keycloak, Supabase, Logto, Mattermost oder Texterkennung (OCR). Für ein eigenes Login nimm PocketBase.
@@ -67,7 +67,9 @@ Vor dem Lancieren: `free -h` auf dem Server zeigt, wie viel frei ist. Danach: `d
 
 ## 4. Einbauen: zuerst lokal, der Server beim Lancieren
 
-**Lokal, auf dem Computer der Person** (beim Bauen, Skill `webseite-bauen`; gratis):
+### Lokal, auf dem Computer der Person
+
+Beim Bauen (Skill `webseite-bauen`), gratis:
 
 1. **Holen.** Im Logbuch auf dem Computer der Person (Skill `git-logbuch`) lädst du den Baustein aus der Fabrik, dem öffentlichen Repo von Albatros:
    ```bash
@@ -81,7 +83,9 @@ Vor dem Lancieren: `free -h` auf dem Server zeigt, wie viel frei ist. Danach: `d
 
 Strapi hat noch keinen Test und kein `lokal.ts`; seine Inhaltstypen schreibst du als Dateien (Abschnitt 6), laufen sieht man ihn erst auf dem Server. Sag das ehrlich.
 
-**Beim Lancieren, mit Pilot** (Skill `lancieren`, Teil 2, nach der Freigabe der Seite und vor dem Push in den Hafen):
+### Beim Lancieren, mit Pilot
+
+Im Skill `lancieren`, Teil 2, nach der Freigabe der Seite und vor dem Push in den Hafen:
 
 1. **Foto des Servers:** Werkzeug `snapshot` mit Namen `vor-baustein` (Skill `zurueck-auf-gestern`).
 2. **Einhängen.** In `compose.yaml` ganz oben:
@@ -92,7 +96,26 @@ Strapi hat noch keinen Test und kein `lokal.ts`; seine Inhaltstypen schreibst du
    Die Webseite reicht die Anfragen selbst weiter: Die Vorlage liest jede `bausteine/*/nginx.conf`. Ist das Projekt älter als die Bausteine (kein `nginx.conf` im Projekt), hol `Dockerfile` und `nginx.conf` aus `vorlage/` im gleichen Repo.
    **Mit Login der Schritt Eingang:** Steht in `docs/betrieb.md` `Eingang: ja` (Abschnitt 7), kommt `- bausteine/eingang/compose.yaml` unter `include:`, und beim Dienst `webseite` fallen `ports:` und `- "80:80"` weg: Dann ist die Webseite nur noch hinter dem Eingang erreichbar. Ohne Login, oder wenn die Regeln von PocketBase reichen, bleibt `compose.yaml` wie in der Vorlage. Den Schritt nennt der Skill `lancieren` schon beim Wohnort.
 3. **In den Hafen.** Das Fliessband baut und liefert aus (Skill `pipeline`). Klappt der Bau nicht, bleibt die alte Seite online.
-4. **Prüfen** auf dem Server: `docker ps` zeigt den Baustein als `healthy`. Mit Eingang prüfst du von aussen jede Tür: `node scripts/pruefen.mjs --tueren <Adresse>` (geschützte Pfade 401, `/_/` 404, die Startseite 200). Dann das erste Konto der Verwaltung und die Mails (Abschnitt 5).
+4. **Prüfen** auf dem Server: `docker ps` zeigt den Baustein als `healthy`. Dann prüfst du von aussen jede Tür: `node scripts/pruefen.mjs --tueren <Adresse>` mit den Türen unten, mit Eingang auch geschützte Pfade 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 und die Startseite 200. Dann das erste Konto der Verwaltung und die Mails (Abschnitt 5).
+
+### Türen der Bausteine
+
+Was ein Baustein ohne Anmeldung antwortet, kommt in `docs/tueren.txt` (Skill `webseite-bauen`), nur die Zeilen der eingebauten Rezepte. `node scripts/pruefen.mjs --tueren` prüft sie lokal gegen `http://localhost:8090` (mit Eingang `http://localhost:8080`), solange `lokal.ts` läuft, und nach dem Lancieren gegen die Adresse. Listen von PocketBase mit einer Regel (etwa «nur das eigene Konto») geben Gästen 200 mit leerer Liste, nicht 401 oder 403; nur Listen allein für die Verwaltung geben 403. Das ist richtig so; die Regeln bleiben, wie sie sind.
+
+```
+/api/collections/anmeldungen/records      403   # anmeldeliste: eintragen dürfen alle, lesen nur die Verwaltung
+/api/collections/termine_frei/records     200   # buchungen: freie Termine sieht jede Person
+/api/collections/buchungen/records        403   # buchungen: Buchungen sieht nur die Verwaltung
+/api/collections/wochenplan/records       403   # buchungen
+/api/collections/users/records            200   # mitglieder: Gäste bekommen eine leere Liste
+/api/collections/mitteilungen/records     200   # mitglieder: Gäste bekommen eine leere Liste
+/api/collections/beitraege/records        200   # pinnwand: für alle
+/intern/                                  401   # mit Eingang: jeder geschützte Pfad aus eingang.json
+/_/                                       404   # mit Eingang
+/api/collections/_SUPERUSERS/auth-methods 404   # mit Eingang
+```
+
+Gemessen am 31.10.2026 mit PocketBase 0.40.5 und `pruefen.mjs --tueren`, direkt bei PocketBase und durch den Eingang. Ohne Eingang ist `/_/` erst auf dem Server zu (404); lokal zeigt `lokal.ts` dort die Verwaltung, darum diese Tür dann erst nach dem Lancieren prüfen. Mit `buchungen` antwortet «Meine Buchungen» (`/verwaltung/`) mit 200: Die Seite ist offen, die Buchungen darin sieht nur, wer sich mit dem Konto der Verwaltung anmeldet. Eine Zeile `/verwaltung 404` passt dann nicht.
 
 ## 5. PocketBase: Anmeldeliste, Buchungen, Mitglieder, Pinnwand
 
@@ -186,19 +209,19 @@ Ob es ihn braucht, entscheiden diese Regeln, in dieser Reihenfolge:
 2. **Nicht nötig bei einem Baustein, wo die Regeln von PocketBase reichen:** zum Beispiel nur das Rezept `mitglieder` (Mitteilungen nur für Freigeschaltete) oder nur `buchungen`. Dann ohne Eingang.
 3. **Nötig, wenn zwei oder mehr Teile wissen müssen, wer angemeldet ist** (zum Beispiel geschützte Seiten unter `/intern/` und die Mitteilungen aus PocketBase, oder ein eigenes kleines Programm daneben), **oder wenn Rollen über Teile hinweg gelten** (der Vorstand sieht `/vorstand/` und darf in PocketBase mehr).
 
-Die Antwort kommt in `docs/betrieb.md` in die Zeile `Eingang:`, mit Grund (Skill `betrieb`). Die Türen der Seite (`docs/tueren.txt`: offen, nur mit Anmeldung, nie) werden zu den Teilen in `bausteine/eingang/eingang.json`.
+Die Antwort kommt in `docs/betrieb.md` in die Zeile `Eingang:` (Skill `betrieb`). Ihr Wert beginnt immer mit dem deutschen `ja` oder `nicht nötig`, auch wenn die Person eine andere Sprache spricht; danach folgt der Grund in ihrer Sprache, zum Beispiel `Eingang: ja – /intern/ und die Mitteilungen aus PocketBase brauchen dieselbe Anmeldung` oder `Eingang: nicht nötig – nur das Rezept mitglieder, die Regeln von PocketBase reichen`. Nur bei `Eingang: ja` baut der Skill `lancieren` den Eingang ein. Die Türen der Seite (`docs/tueren.txt`: offen, nur mit Anmeldung, nie) werden zu den Teilen in `bausteine/eingang/eingang.json`.
 
-**Kosten:** kein Geld extra, er läuft auf dem Pilot-Server mit. Speicher: 20 MB im Leerlauf, unter Volllast bis 66 MB (gemessen am 31.10.2026 auf einem Mac, auf dem Server noch nicht); jeder Aufruf eines geschützten Teils fragt PocketBase, das kostet rund eine halbe Millisekunde. Dazu ein Teil mehr, das gepflegt wird (Bun-Version im `Dockerfile`).
+**Kosten:** kein Geld extra, er läuft auf dem Pilot-Server mit. Speicher: 20 MB im Leerlauf, unter Volllast bis 69 MB (gemessen am 31.10.2026 auf einem Mac, auf dem Server noch nicht); jeder Aufruf eines geschützten Teils fragt PocketBase, das kostet knapp eine Millisekunde. Dazu ein Teil mehr, das gepflegt wird (Bun-Version im `Dockerfile`).
 
 **Einbauen,** zuerst lokal wie jeder Baustein (Abschnitt 4), Schritt für Schritt in `bausteine/eingang/README.md`:
 
 1. PocketBase mit dem Rezept `mitglieder` ist eingebaut. `bausteine/eingang` holen, `pb_hooks/*` nach `bausteine/pocketbase/pb_hooks/`, `pb_migrations/2_eingang.js` nach `bausteine/pocketbase/pb_migrations/`.
-2. In `eingang.json` die Adresse der Seite (`ursprung`) und die Teile eintragen: Name, Ziel, Pfade, Zugang `offen`, `angemeldet` oder `rolle:<name>`. Geschützte Seiten liegen in eigenen Ordnern (`seite/intern/`).
+2. In `eingang.json` die Adresse der Seite (`ursprung`) und die Teile eintragen: Name, Ziel, Pfade, Zugang `offen`, `angemeldet` oder `rolle:<name>`. Geschützte Seiten liegen in eigenen Ordnern (`seite/intern/`). Kommt später eine eigene Domain dazu, braucht es hier nichts: Der Eingang nimmt Formulare und Anmeldungen von der Adresse an, über die die Seite aufgerufen wird.
 3. In `mitglieder.html` `const EINGANG = true;` setzen: Die Anmeldung gilt dann mit einem Cookie für alle Teile.
 4. `bun bausteine/eingang/test.ts` meldet «Alles grün», dann `bun bausteine/pocketbase/lokal.ts --eingang`: Die Person öffnet eine geschützte Seite ohne Anmeldung, meldet sich an, kommt zurück und meldet sich wieder ab.
-5. Beim Lancieren (Skill `lancieren`, Teil 2): in `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen, sonst käme man am Eingang vorbei. Die Webseite ist dann nur noch hinter dem Eingang erreichbar. Danach von aussen jede Tür prüfen: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` gibt 401, `/_/` gibt 404, die Startseite 200.
+5. Beim Lancieren (Skill `lancieren`, Teil 2): in `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen, sonst käme man am Eingang vorbei. Die Webseite ist dann nur noch hinter dem Eingang erreichbar. Danach von aussen jede Tür prüfen: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` mit den «Türen der Bausteine» (Abschnitt 4): `/intern/` gibt 401, `/_/` und `/api/collections/_SUPERUSERS/auth-methods` geben 404, die Startseite 200.
 
-**Was er nicht kann:** Hinter dem Eingang geht «Meine Buchungen» (Rezept `buchungen`) nur über den Tunnel, weil er die Anmeldung der Verwaltung von aussen sperrt. Abmelden gilt je Gerät; überall abmelden heisst: ein neues Passwort setzen.
+**Was er nicht kann:** Hinter dem Eingang geht «Meine Buchungen» (Rezept `buchungen`) nur über den Tunnel, weil er die Verwaltung von aussen sperrt, in jeder Schreibweise. Die Echtzeit von PocketBase (`/api/realtime`) sperrt er auch, kein Rezept braucht sie. Abmelden gilt je Gerät; überall abmelden heisst: ein neues Passwort setzen.
 
 ## Stolpersteine
 
