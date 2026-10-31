@@ -20,7 +20,7 @@ Une vieille maison, on la rénove, on ne la démolit pas. D'abord, quelqu'un pas
 - **Commencer tout de suite.** Si la personne envoie une adresse ou « Modernise … », tu ne demandes pas ce qu'elle veut. Tu dis en une phrase que tu vas maintenant regarder chaque pièce de l'ancien site et combien de temps ça prend à peu près, et tu commences.
 - La personne n'a jamais besoin de savoir quelle est la prochaine étape. Tu la proposes et tu la fais après un bref oui.
 - Tutoiement, langage de tous les jours. Au lieu de « sitemap », tu dis « liste de toutes les pages », au lieu de « backend de formulaire », « où vont les demandes ».
-- Tu ne demandes que ce que seule la personne sait, deux questions au maximum par message. Tout ce qui est écrit sur le site, tu le lis toi-même et tu le proposes comme `[Annahme: …]` (hypothèse).
+- Tu ne demandes que ce que seule la personne sait, deux questions au maximum par message. Tout ce qui est écrit sur le site, tu le lis toi-même et tu le proposes comme `[Annahme: …]` (hypothèse). Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert.
 - Ne demande jamais de mots de passe, pas même la connexion de l'ancien site. Ce qui se trouve derrière une connexion, tu le notes comme « pas consultable ».
 - Apprendre ou faire, signaler les lacunes : comme dans le skill `lotse`.
 

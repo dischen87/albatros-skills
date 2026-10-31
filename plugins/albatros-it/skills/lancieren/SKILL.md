@@ -1,9 +1,9 @@
 ---
 name: lancieren
-description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, verifica dall'esterno (pruefen.mjs --live), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
+description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: 'dd7642456b2b'
+  quelle: '4097894a1741'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -17,7 +17,7 @@ La casa è costruita, collaudata e approvata. Adesso vengono due cose, in quest'
 ## Come parli
 
 - Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
-- Gli inizi di riga nei file di `docs/` (`Wohnort:`, `Grund:`, `Adresse:`, `Freigegeben:`, `Live seit:`, `Geprüft:`, `Angekündigt:`) restano in tedesco: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
+- Gli inizi di riga nei file di `docs/` (`Wohnort:`, `Grund:`, `Adresse:`, `Freigegeben:`, `Live seit:`, `Geprüft:`, `Angekündigt:`) restano in tedesco, come i segni `[Annahme: …]` e `[offen: …]`: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
 - I prezzi li dai solo da `konto_status` (Albatros) o dalla pagina dei prezzi di un fornitore che hai appena letto, mai a memoria. Se non l'hai letta, dici «sta sulla pagina dei prezzi».
 - Carte, password e chiavi private non vanno mai nella chat. Si paga sulla pagina di pagamento, i conti presso i fornitori li apre la persona stessa, nel browser.
 - Niente pressioni: «da te» è una buona scelta, se va bene. Consigli il domicilio più piccolo che basta, con una frase di motivo dal piano.
@@ -45,7 +45,11 @@ Prima di chiedere, raccogli le basi: `konto_status` (abbonamento e prezzi di Lig
 | Albatros Pilot | gira un blocco (iscrizione, prenotazione, accesso) o vuoi un server tuo | CHF … al mese | poco: nastro trasportatore e foto quotidiane del server ci sono già |
 | da te | vuoi avere tutto in mano e hai tempo per la manutenzione | dal fornitore | conto, installazione, copia di sicurezza e sorveglianza |
 
-Aggiungi una frase di consiglio con un motivo da `docs/plan.md` (`Setup:`). Poi la domanda, da sola nel messaggio:
+Aggiungi una frase di consiglio con un motivo da `docs/plan.md` (`Setup:`).
+
+**Con accesso:** se il progetto ha un blocco con accesso (ricetta `mitglieder`; lo si vede da `Zugang:` in `docs/plan.md` e da `Baustein:` in `docs/stack.md`), consigli Pilot o da te con un server tuo, mai Light, e nomini subito il passo **ingresso** (Eingang): se davanti al sito ci sarà un ingresso con un solo accesso per tutte le parti, lo chiarite nella gestione (skill `betrieb`, riga `Eingang:`, secondo i criteri dello skill `bausteine`, sezione «Un ingresso per tutto?»). Viene montato alla messa online (`bausteine/eingang`); dopo, il sito è raggiungibile solo dietro l'ingresso.
+
+Poi la domanda, da sola nel messaggio:
 
 > Dove deve abitare il tuo sito: da Albatros (Light senza blocchi, Pilot con il tuo server) o te ne occupi tu?
 
@@ -113,10 +117,17 @@ git remote add origin git@aufwind.sh:<name>/projekt.git          # indirizzo da 
 git fetch origin
 git merge origin/main --allow-unrelated-histories -X ours -m "Modello dal porto ripreso, il sito approvato resta"
 git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
+```
+
+Dillo alla persona con l'immagine: il modello viene ripreso una volta nel diario di bordo. Dove entrambi hanno lo stesso file (`seite/index.html`, `.gitignore`), resta il suo. Si aggiungono i file che servono al nastro trasportatore di Pilot (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); con Light dormono. Se dopo l'unione non c'è «Seite unverändert» (sito invariato), non fai il push e guardi con `git diff freigegeben HEAD -- seite`.
+
+**Con un blocco (Pilot), prima del push:** adesso nel diario di bordo c'è il `compose.yaml` del modello, e agganci i blocchi come nello skill `bausteine`, sezione 4 «Al lancio, con Pilot»: prima una foto del server (strumento `snapshot`, nome `vor-baustein`), poi `include:` in `compose.yaml`. Se in `docs/betrieb.md` c'è `Eingang: ja`, si aggiunge il passo **ingresso**: la riga `- bausteine/eingang/compose.yaml` sotto `include:`, e nel servizio `webseite` spariscono le righe `ports:` e `- "80:80"`. La porta 80 è allora dell'ingresso, il sito è raggiungibile solo dietro di lui. Prima `bun bausteine/eingang/test.ts` deve segnalare «Alles grün». Senza accesso, o con `Eingang: nicht nötig`, `compose.yaml` resta come nel modello. Poi una voce nel diario di bordo.
+
+```bash
 git push -u origin main
 ```
 
-Dillo alla persona con l'immagine: il modello viene ripreso una volta nel diario di bordo. Dove entrambi hanno lo stesso file (`seite/index.html`, `.gitignore`), resta il suo. Si aggiungono i file che servono al nastro trasportatore di Pilot (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); con Light dormono. Se dopo l'unione non c'è «Seite unverändert» (sito invariato), non fai il push e guardi con `git diff freigegeben HEAD -- seite`. Poi apri il porto nel browser (`open https://code.aufwind.sh/<name>/projekt`) e segnali `hafen`.
+Poi apri il porto nel browser (`open https://code.aufwind.sh/<name>/projekt`) e segnali `hafen`.
 
 **Da te, con GitHub:** la persona fa l'accesso con `gh auth login` nel browser. Per GitHub Pages prima crei il nastro trasportatore, `.github/workflows/seite.yml`:
 
@@ -171,6 +182,7 @@ node scripts/pruefen.mjs --tueren <indirizzo>
 
 L'indirizzo sta in `docs/lancieren.md` (`Adresse:`). È online solo ciò che è stato controllato dall'esterno: se con `--live` (titolo come costruito, impressum e protezione dei dati raggiungibili, accessibilità, Lighthouse) e con `--tueren` niente è rosso, segnali `live`, apri l'indirizzo con la persona e confronti con le foto del controllo.
 
+- **Con l'ingresso:** in `docs/tueren.txt` ci sono i percorsi protetti con 401 (senza accesso) e `/_/` con 404; se il file è ancora quello della costruzione senza ingresso, lo adatti prima della verifica. Solo quando `--tueren` mostra esattamente questo e la pagina iniziale dà 200, il sito sta davvero dietro l'ingresso.
 - **Con un blocco «online» non vuol dire ancora «finito»:** solo quando i dati ci sono (per esempio i corsi) e una prenotazione di prova in rete ha portato la sua e-mail al proprio indirizzo (skill `bausteine`), dici alla persona che può condividere il link. Fino ad allora dici onestamente che cosa manca ancora.
 - **Dopo tre minuti non c'è ancora:** con Light `konto_status` mostra se l'ultimo stato è online o che cosa manca. Spesso nel porto manca `seite/index.html`, perché `seite/` sta in un `.gitignore`. Con Pilot guardi sotto «Actions» (skill `pipeline`), da te nella lista delle consegne del fornitore. Correggere, nuova voce, push, ricontrollare. Se la correzione cambia il sito stesso, prima lo mostri alla persona e ottieni di nuovo l'approvazione. Se ancora non va, dici che cosa hai controllato e chiedi al coach (`coach_fragen`).
 
@@ -213,6 +225,7 @@ Online va solo ciò che appartiene alla persona o per cui ha il permesso (skill 
 - `git push --force` per sovrascrivere il porto: mai. Unire come sopra.
 - Fare il push anche se il sito è cambiato dopo l'approvazione.
 - Dire «è online» senza aver controllato tu dall'esterno.
+- Con l'ingresso, lasciare `ports:` nel servizio `webseite`: così si potrebbe aggirare l'ingresso.
 - Un repository pubblico per GitHub Pages, senza dire alla persona che allora anche `docs/` è pubblico.
 
 ## Verificare la missione

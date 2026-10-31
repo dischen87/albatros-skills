@@ -43,7 +43,7 @@ Bevor du etwas änderst, liest du:
 - `docs/designsystem.md` und `design/tokens.css` (bei älteren Seiten `web/src/styles/tokens.css`): Farben, Schriften, Abstände, Radien und Komponenten.
 - `docs/stack.md`: womit die Seite gebaut ist (meist Astro, höchstens 50 KB JavaScript je Seite).
 - `docs/prd.md`: was die Seite können muss, mit den Abnahmekriterien, dem Zugang und der Freigabe.
-- `docs/plan.md` oder `docs/bestand.md`: für wen die Seite ist. `design/entwurf/`, falls es ihn gibt: das Modell der Seiten.
+- `docs/projekt.md` (Zeile `Für wen:`, bei älteren Seiten `docs/plan.md`) oder `docs/bestand.md`: für wen die Seite ist. `design/entwurf/`, falls es ihn gibt: das Modell der Seiten.
 - `web/src/data/*.json`: Listen wie Termine, Preise oder Sponsoren.
 
 Fehlt `designsystem.md` oder `stack.md` (ältere Seite), schreibst du sie zuerst kurz aus dem, was da ist (`tokens.css`, `web/package.json`), und sagst das der Person. Fehlt `scripts/pruefen.mjs`, holst du es wie im Skill `webseite-bauen`, Schritt 0.
@@ -71,7 +71,7 @@ Sag der Person in einem Satz, was es ist und wie es weitergeht.
 
 ### 4. Der Wunsch ins PRD
 
-Ganz unten in `docs/prd.md`, nach der Zeile `Freigegeben:` des ersten Baus (bei älteren Seiten auch `Abgenommen:`), kommt der Wunsch als neue Abnahmekriterien dazu. So sieht man, dass die alte Freigabe nicht für den neuen Wunsch gilt:
+Ganz unten in `docs/prd.md`, nach der Zeile `Freigegeben:` des ersten Baus, kommt der Wunsch als neue Abnahmekriterien dazu. So sieht man, dass die alte Freigabe nicht für den neuen Wunsch gilt:
 
 ```markdown
 ## Änderungen

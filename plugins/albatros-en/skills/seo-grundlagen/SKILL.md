@@ -3,7 +3,7 @@ name: seo-grundlagen
 description: "Makes a small website easy to find for search engines, explained for people with no prior knowledge with the picture of signposts and a city map. Page title and description, one main heading, readable addresses, picture descriptions, loading time, sitemap.xml, robots.txt, structured data for local businesses, Google Search Console and Business Profile. Use this skill for “SEO”, “get found on Google”, “Google can't find my site”, “search engine”, “sitemap”, “meta description”, “get found locally”, “Google Maps listing”."
 metadata:
   stand: 0.2.0
-  quelle: '5b8215a93591'
+  quelle: '281041258ca8'
 ---
 
 # SEO basics: signposts and a city map
@@ -23,7 +23,7 @@ The technical word for all of this is **SEO** (search engine optimisation). But 
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”. Don't promise miracles: getting found takes weeks, not hours. No tricks (hidden text, bought links), they do more harm than good.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 
@@ -31,7 +31,7 @@ The technical word for all of this is **SEO** (search engine optimisation). But 
 
 ### 1. What are people searching for?
 
-Write down with the person five phrases their audience would type into Google (“lunch club Wipkingen”, “bike repair Bern Länggasse”). One main phrase per page. It goes into `docs/plan.md`.
+Write down with the person five phrases their audience would type into Google (“lunch club Wipkingen”, “bike repair Bern Länggasse”). One main phrase per page. It goes into `docs/recherche.md`, in the line `Suchbegriffe:`; if there's already something there from the research (P2), you build on it.
 
 ### 2. Every page: the sign above the door
 

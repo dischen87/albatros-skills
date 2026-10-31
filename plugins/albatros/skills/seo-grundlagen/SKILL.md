@@ -29,7 +29,7 @@ Das Fachwort für all das ist **SEO** (Suchmaschinen-Optimierung). Am meisten z�
 
 ### 1. Wonach suchen die Leute?
 
-Mit der Person fünf Sätze aufschreiben, die ihre Zielgruppe bei Google eintippen würde («Mittagstisch Wipkingen», «Velo reparieren Bern Länggasse»). Pro Seite ein Hauptsatz. Kommt in `docs/plan.md`.
+Mit der Person fünf Sätze aufschreiben, die ihre Zielgruppe bei Google eintippen würde («Mittagstisch Wipkingen», «Velo reparieren Bern Länggasse»). Pro Seite ein Hauptsatz. Kommt in `docs/recherche.md` in die Zeile `Suchbegriffe:`; steht dort schon etwas aus der Research (P2), baust du darauf auf.
 
 ### 2. Jede Seite: das Schild über der Tür
 

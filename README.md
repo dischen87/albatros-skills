@@ -1,20 +1,23 @@
 # Albatros Skills
 
-Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich zu einem echten eigenen Server. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind. Dein Logbuch (Git) liegt im Hafen von Albatros, `code.aufwind.sh`. Ein GitHub-Konto brauchst du erst, wenn du in ein eigenes Haus umziehst.
+Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich nach einem festen Fahrplan von der Idee bis zur Seite im Netz und fragt von sich aus, was sie wissen muss. Bis deine Seite auf deinem Computer fertig und freigegeben ist, kostet Albatros nichts; ins Netz geht sie mit Light, mit Pilot (ein echter eigener Server) oder selbst. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind; im Modus «lernen» machst du die wichtigen Schritte selbst. Dein Logbuch (Git) liegt bei Albatros im Hafen, `code.aufwind.sh`. Ein GitHub-Konto brauchst du nur, wenn deine Seite selbst wohnt (zum Beispiel auf GitHub Pages) oder du in ein eigenes Haus umziehst.
 
-Die drei Stufen jeder Mission:
+Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen:
 
-- **abheben:** Idee und Produkt
-- **fliegen:** Setup und live gehen
-- **landen:** der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen
+- **abheben:** Idee und Produkt, von der Idee über Research, Plan, Konzept und Musterblatt bis zum Entwurf der ganzen Seite (P1 bis P8)
+- **fliegen:** die Seite auf dem eigenen Computer bauen, prüfen und freigeben, dann den Wohnort wählen (P9 bis P11)
+- **landen:** Betrieb vorbereiten, live schalten und der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen (P12, P13 und danach)
+
+Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` trägt dieselben drei Namen (Abschnitt «Missionen»).
 
 Dieses Repo enthält:
 
 - das **Plugin `albatros`** für Claude Code (Skills und die Verbindung zu Albatros über MCP),
 - die **Skills** der Flugschule und des Wegs Webseite, im [Agent-Skills-Standard](https://agentskills.io) (`SKILL.md`), damit sie auch in Codex, Gemini CLI und Cursor laufen,
 - die **Missionen** aller drei Wege als Markdown. Die Website macht daraus öffentliche Lernseiten, der Dienst flugschule prüft damit den Fortschritt,
-- die **Vorlage** für das Projekt-Repo der Lernenden (`vorlage/`): eine kleine Seite, `Dockerfile`, `compose.yaml` und das Fliessband,
-- die **Bausteine** (`bausteine/`): fertige, gemessene Teile für Seiten mit Pilot, PocketBase für Anmeldeliste, Login und Pinnwand, Strapi für ein grosses CMS. Auswahl und Einbau: Skill `bausteine`.
+- den **Fahrplan** (`fahrplan.yaml`): Phasen, Skills und Abschnitte, Pflichtfragen, Ergebnisse, Ja-Momente und Insel-Schritte; albatros erzeugt daraus, was `lage` braucht,
+- die **Vorlage** für das Projekt-Repo der Lernenden (`vorlage/`): eine kleine Seite, `AGENTS.md` mit `CLAUDE.md` und `GEMINI.md` (Hinweise für jede KI), `Dockerfile`, `compose.yaml` und das Fliessband,
+- die **Bausteine** (`bausteine/`): fertige, gemessene Teile für Seiten mit eigenem Server, PocketBase für Anmeldeliste, Buchungen, Login und Pinnwand, ein Eingang mit einem Login für mehrere Teile, Strapi für ein grosses CMS. Auswahl und Einbau: Skill `bausteine`.
 
 flotte legt mit der Vorlage für jeden neuen Server `{name}/projekt` im Hafen an und klont es nach `~/projekt`. flotte-1 holt die Vorlage beim Deploy von `albatros-flotte`. Nach einer Änderung an `vorlage/` also `gh workflow run "Deploy flotte-1" -R dischen87/albatros-flotte` starten. Danach gilt sie für neue Server. Bestehende Repos bleiben, wie sie sind.
 
@@ -24,11 +27,11 @@ Die Methoden für den Weg Geschäft liegen im privaten Repo `albatros-methoden`.
 
 Die Skills sind eine offene Bibliothek: Jede und jeder kann sie lesen und selbst den passenden wählen. Der spannende Teil ist, im richtigen Moment das Richtige zu tun. Das macht der Hauptskill **`lotse`**, wie der Fluglotse im Turm, der auf dem Radar sieht, wo jedes Flugzeug ist:
 
-1. Er ruft das Werkzeug `lage` auf. Es liest den echten Stand der Person bei Albatros (Abo, Schlüssel, Server oder Seite, Fliessband, Domain, Mission) und nennt den Skill, der jetzt dran ist, mit Grund und dem, was danach kommt.
-2. Er liest diesen Skill (`../<kennung>/SKILL.md` im selben Plugin, in Claude Code auch `albatros:<kennung>`) und folgt ihm. Beim Weg Geschäft holt er die Methode mit `methode`.
-3. Nach jedem geschafften Schritt fragt er `lage` erneut.
+1. Er ruft das Werkzeug `lage` auf, mit dem Stand seiner Skills und den Zeilen aus den Dateien des Projekts (`docs/projekt.md` und die anderen Ergebnisse). `lage` liest den echten Stand der Person bei Albatros (Phase im Fahrplan, Insel, Abo, Seite oder Server, Mission) und nennt den Skill und Abschnitt, der jetzt dran ist, mit Grund, den offenen Pflichtfragen der Phase und dem, was danach kommt.
+2. Er liest diesen Skill (`../<kennung>/SKILL.md` im selben Plugin, in Claude Code auch `albatros:<kennung>`) und folgt ihm. Fehlt der Skill oder ist er veraltet, holt er ihn mit `skill_holen`. Beim Weg Geschäft holt er die Methode mit `methode`.
+3. Nach jedem geschafften Schritt meldet er ihn (`schritt_melden`) und fragt `lage` erneut.
 
-Der Lotse funktioniert nur mit Anmeldung, denn nur dann kennt Albatros den Stand. Wann welcher Skill dran ist, entscheidet der MCP-Dienst, nicht dieses Repo. Ohne Anmeldung zeigt der Lotse die Bibliothek mit einer Zeile pro Skill und erklärt, wie die Anmeldung geht. Die Kennungen der Skills bleiben deutsch und stabil, auch in den Plugins für andere Sprachen.
+Den richtigen Schritt nach dem echten Stand gibt es nur mit Anmeldung, denn nur dann kennt Albatros den Stand. Wann welcher Skill dran ist, entscheidet der MCP-Dienst nach dem Fahrplan, nicht dieses Repo. Ohne Anmeldung zeigt der Lotse die drei Etappen mit dem nächsten Schritt aus dem Projektordner, auf Wunsch die Bibliothek mit einer Zeile pro Skill, und erklärt, wie die Anmeldung geht. Die Kennungen der Skills bleiben deutsch und stabil, auch in den Plugins für andere Sprachen.
 
 > Status: öffentlich ab dem Go-live von albatros.build (freigegeben am 28.10.2026). Lizenz: MIT, siehe [LICENSE](LICENSE).
 
@@ -57,6 +60,19 @@ Von Hand, für alle, die selbst tippen wollen:
 
 Den Befehl `/albatros:start` gibt es nur in Claude Code. In Codex, Gemini CLI und Cursor sagt die Person «Starte Albatros», dann lädt die KI den Skill `start`. `npx skills` findet die Skills über `.claude-plugin/marketplace.json`, getestet mit `skills@1.7.4`.
 
+## Aktualisieren
+
+Die Skills liegen als Kopie auf dem Computer der Person. Ist die Kopie älter als der Fahrplan bei Albatros, meldet `lage` «Albatros aktualisieren» mit diesen Befehlen, und der Lotse holt die neuen Skills mit dem Ja der Person (Skill `lotse`, «Wenn deine Skills veraltet sind»). Bis dahin holt die KI den Skill, der jetzt dran ist, mit `skill_holen`.
+
+| KI | Befehle |
+|---|---|
+| Claude Code | `claude plugin marketplace update albatros` und `claude plugin update albatros@albatros`, dann tippt die Person `/reload-plugins` |
+| Codex | `codex plugin marketplace upgrade albatros` und `codex plugin add albatros@albatros`, dann ein neues Gespräch |
+| Gemini CLI | `npx skills update -g -y`, dann Gemini CLI neu starten |
+| Cursor | `npx skills update -g -y`, dann Cursor neu starten |
+
+albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`; die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
+
 ## Sprachen
 
 Alle Skills und Missionen gibt es auf Deutsch, Französisch, Italienisch und Englisch, mit denselben Kennungen. Begriffe und Ablage: [GLOSSAR.md](GLOSSAR.md).
@@ -73,53 +89,66 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 ## Aufbau
 
 ```
-.claude-plugin/marketplace.json     Marktplatz «albatros» mit einem Plugin
+.claude-plugin/marketplace.json     Marktplatz «albatros» mit vier Plugins: albatros (Deutsch), albatros-fr, albatros-it, albatros-en
 plugins/albatros/
   .claude-plugin/plugin.json
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
   skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
+  skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
+  skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9, P10, P13): vier Bereiche, --vor-bau, --tueren, --vergleich, --live
   evals/<name>/                     mindestens ein Eval-Fall pro Skill (claude plugin eval)
   evals/mocks/albatros/             Antworten der Albatros-Werkzeuge für die Evals
   evals/GUTE-ANTWORT.md             was eine gute Antwort je Phase enthält, erzeugt aus fahrplan.yaml (scripts/gute-antwort.ts)
   evals/KRITERIEN-LOG.md            jede Änderung an Kriterien mit Datum, Fall und Grund
+plugins/albatros-fr/, -it/, -en/    dieselben Skills übersetzt (Kennungen deutsch); metadata.quelle nennt den deutschen Text
 fahrplan.yaml                       der Ablauf P1 bis P13: Skills, Pflichtfragen, Ergebnisse, Ja-Momente, Gates, Insel-Schritte
 missionen/<weg>/<nr>-<slug>.md      41 Missionen: flugschule 18, webseite 9, geschaeft 14
+uebersetzungen/<sprache>/           Missionen, Vorlage und Texte für den Server auf Französisch, Italienisch und Englisch
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
 schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
-vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, Dockerfile, compose.yaml, Fliessband
-scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, auch dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt
+vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband
+bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
+scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts)
+scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht)
+scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens), je mit erwartet.json: bun scripts/testseiten/test.ts
+scripts/gute-antwort.ts             erzeugt evals/GUTE-ANTWORT.md
+scripts/einbau-test.sh              Einbau nach EINRICHTEN.md in einem leeren Home
+scripts/durchspiel.ts               Durchspiel-Test (Abschnitt «Durchspiel-Test»)
 ```
 
 ## Skills
 
-| Weg | Skill | Bild |
+Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran ist (aus `fahrplan.yaml` und den Missionen).
+
+| Wann | Skill | Bild |
 |---|---|---|
-| alle | `lotse` | der Fluglotse im Turm: sagt, was jetzt dran ist |
-| Flugschule | `start` | Bordkarte holen und einsteigen |
-| | `ssh-schluessel` | Hausschlüssel und Schloss |
-| | `server-kennenlernen` | Rundgang durch die neue Wohnung |
-| | `git-logbuch` | Logbuch an Bord, Kopie im Hafen |
-| | `pipeline` | Fliessband mit Qualitätskontrolle |
-| | `zurueck-auf-gestern` | das tägliche Foto der ganzen Wohnung |
-| | `sicherheit` | den Schlüssel nicht unter die Fussmatte |
-| | `kosten` | Haushaltsbuch |
-| | `domain` | Adresse im Telefonbuch |
-| | `landung` | Umzug ins eigene Haus |
-| Webseite | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite |
-| | `webseite-planen` | Grundriss |
-| | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden (Platzhalter) |
-| | `entwurf` | das begehbare Modell, bevor der Rohbau beginnt (Platzhalter) |
-| | `lancieren` | wo das Haus steht, und die Eröffnung mit Band (Platzhalter) |
-| | `betrieb` | Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen (Platzhalter) |
-| | `webseite-bauen` | die kleine Fabrik: Auftrag, Mockup, Designsystem, Tech-Stack, PRD mit Abnahmekriterien, lokal bauen, vier Prüfungen, Freigabe, Hafen, Fliessband und live; misst mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder) |
-| | `inhalte` | Ware im Schaufenster |
-| | `gestaltung` | erst das Fundament, dann die Fassade |
-| | `cms` | Pinnwand im Flur |
-| | `bausteine` | Fertigteile beim Hausbau |
-| | `seo-grundlagen` | Wegweiser und Stadtplan |
-| | `barrierefreiheit` | Rampe neben der Treppe |
-| | `recht-ch` | Klingelschild und Hausordnung |
-| | `statistik` | Strichliste an der Ladentür |
+| immer | `lotse` | der Fluglotse im Turm: sagt nach dem echten Stand, was jetzt dran ist |
+| Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, dann los mit der Idee |
+| P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss, Plan prüfen) |
+| P2, P4, P13 | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite, keine Funktion geht ohne Entscheid verloren, Umleitungen beim Livegang |
+| P5 | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden; Maskottchen ja, nein oder später |
+| P6 | `gestaltung` | erst das Fundament, dann die Fassade: graues Mockup, drei Richtungen, Farbfächer (Tokens) und Musterblatt |
+| P7, P8 | `entwurf` | das begehbare Modell, bevor der Rohbau beginnt, und die Unterschrift darunter (Freigabe zum Bauen); prüft mit `entwurf-pruefen.mjs` |
+| P7 | `inhalte` | Ware im Schaufenster |
+| P9, P10 | `webseite-bauen` | der Rohbau in der eigenen Werkstatt: PRD aus dem freigegebenen Entwurf, bauen, vier Prüfungen und die Türen mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder), Vergleich mit dem Entwurf, Freigabe; ins Netz geht nichts |
+| P9, P13 | `git-logbuch` | Logbuch an Bord, Kopie im Hafen |
+| P9 | `barrierefreiheit` | Rampe neben der Treppe |
+| P9 | `recht-ch` | Klingelschild und Hausordnung |
+| P9, P13 | `bausteine` | Fertigteile beim Hausbau: zuerst auf dem Computer, auf den Server beim Lancieren; ein Eingang mit einem Login für mehrere Teile |
+| P11, P13 | `lancieren` | Wohnort und Eröffnung: Light, Pilot oder selbst, dann nur die freigegebene Seite ins Netz, von aussen geprüft |
+| P11 | `kosten` | Haushaltsbuch |
+| P11 | `ssh-schluessel` | Hausschlüssel und Schloss |
+| P11 | `server-kennenlernen` | Rundgang durch die neue Wohnung (Pilot) |
+| P12 | `betrieb` | Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen |
+| P12 | `sicherheit` | den Schlüssel nicht unter die Fussmatte |
+| P12 | `zurueck-auf-gestern` | das tägliche Foto der ganzen Wohnung |
+| P12, freiwillig | `cms` | Pinnwand im Flur |
+| P13 | `pipeline` | Fliessband mit Qualitätskontrolle |
+| P13 | `seo-grundlagen` | Wegweiser und Stadtplan |
+| P13, freiwillig | `domain` | Adresse im Telefonbuch |
+| P13, freiwillig | `statistik` | Strichliste an der Ladentür |
+| P13, freiwillig | `landung` | Umzug ins eigene Haus |
+| nach dem Livegang | `webseite-aendern` | ein Umbau im bewohnten Haus: klein (lokal, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe, bauen) |
 
 Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er gebraucht wird, und zuerst mit seinem Bild.
 
@@ -156,7 +185,7 @@ Die Prüftypen passen zur Prüf-API von flotte (`POST /server/:id/pruefen`); `in
 | `git` | `pfad`, `min_commits` (1), `branch` (`main`) | der Ordner ein Repo mit so vielen Einträgen ist |
 | `workflow` | `datei` (`.github/workflows/…`) | der letzte Lauf im Repo der Person im Hafen (Forgejo) grün ist |
 | `docker` | `container` | der Container läuft |
-| `insel` | `schritt` (Schlüssel aus `insel` in `fahrplan.yaml`) | ein Projekt der Person auf der Insel mindestens bei diesem Schritt steht |
+| `insel` | `schritt` (Schlüssel aus `insel` in `fahrplan.yaml`) | das Hauptprojekt der Person (`projekt`, das Projekt ohne eigenen Namen bei `schritt_melden`) auf der Insel mindestens bei diesem Schritt steht; weitere Projekte zählen nicht |
 
 Bis P10 (`gratis_bis`) liegt alles nur auf dem Computer der Person: Dort prüfen Missionen nur mit `insel`, und der Schritt gehört zur Phase der Mission (`pruefen.ts` prüft beides).
 
@@ -168,7 +197,12 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 
 ```bash
 bun install
-bun run pruefen                       # Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md
+bun run pruefen                       # Skills, Missionen, Fahrplan, Version, GUTE-ANTWORT.md, Vorlage und Befehle zum Aktualisieren
+bun test                              # scripts/*.test.ts: Abgleiche von pruefen.ts, entwurf-pruefen.mjs gegen die Testseiten (CI: Job pruefen)
+bun scripts/testseiten/test.ts        # pruefen.mjs gegen die Testseiten; --vergleich lädt beim ersten Mal Playwright und Chromium (nicht in CI)
+bun bausteine/pocketbase/rezepte/buchungen/test.ts   # Rezepte und Eingang gegen ein echtes PocketBase (CI: Job bausteine)
+bun bausteine/pocketbase/rezepte/mitglieder/test.ts
+bun bausteine/eingang/test.ts
 bun scripts/gute-antwort.ts           # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, phase: in Evals oder KRITERIEN-LOG.md
 claude plugin validate .              # Marktplatz und Plugin
 QUELLE=$PWD bash scripts/einbau-test.sh   # Einbau nach EINRICHTEN.md in leerem Home (CI: Job einbau)

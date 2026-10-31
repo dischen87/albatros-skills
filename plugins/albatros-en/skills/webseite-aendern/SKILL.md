@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Changes a finished website with a person who has no prior knowledge, with their own AI, whether it's in the Albatros harbour or they host it themselves: fetch the logbook, read docs/ first (plan, design system, tech stack, PRD, where it lives), then small (text, date, picture: change locally, show before and after, release, push) or big (new page, feature, different look: addition to the plan, draft of the changed pages, approval to build, build and check, show, release, push), always within the existing design system, then check on the web. Use this skill for “change my site”, “new date”, “change a text”, “swap a picture”, “… is missing”, “new page”, “make the site …”, “something on the site is wrong”, and whenever something on a site that's online should be different."
 metadata:
   stand: 0.2.0
-  quelle: '1bdaf535ed2f'
+  quelle: 'd29818fca42b'
 ---
 
 # Change your website: renovating a house you live in
@@ -46,7 +46,7 @@ Before you change anything, you read:
 - `docs/designsystem.md` and `design/tokens.css` (older sites: `web/src/styles/tokens.css`): colours, fonts, spacing, corner radii and components.
 - `docs/stack.md`: what the site is built with (usually Astro, at most 50 KB of JavaScript per page).
 - `docs/prd.md`: what the site has to do, with the acceptance criteria, the access and the release.
-- `docs/plan.md` or `docs/bestand.md`: who the site is for. `design/entwurf/`, if there is one: the model of the pages.
+- `docs/projekt.md` (line `Für wen:`, on older sites `docs/plan.md`) or `docs/bestand.md`: who the site is for. `design/entwurf/`, if there is one: the model of the pages.
 - `web/src/data/*.json`: lists such as dates, prices or sponsors.
 
 If `designsystem.md` or `stack.md` is missing (older site), you write them briefly first from what's there (`tokens.css`, `web/package.json`) and tell the person. If `scripts/pruefen.mjs` is missing, you fetch it as in the skill `webseite-bauen`, step 0.
@@ -74,7 +74,7 @@ Tell the person in one sentence what it is and how it goes on.
 
 ### 4. The wish in the PRD
 
-At the very bottom of `docs/prd.md`, after the line `Freigegeben:` from the first build (on older sites also `Abgenommen:`), the wish is added as new acceptance criteria. That way it's clear the old release doesn't cover the new wish:
+At the very bottom of `docs/prd.md`, after the line `Freigegeben:` from the first build, the wish is added as new acceptance criteria. That way it's clear the old release doesn't cover the new wish:
 
 ```markdown
 ## Changes

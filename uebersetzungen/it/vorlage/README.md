@@ -7,7 +7,8 @@ Questo è il tuo diario di bordo, si trova al porto. Quando mandi una modifica s
 
 | File | A cosa serve |
 |---|---|
-| `seite/` | la tua pagina, comincia da `index.html` |
+| `seite/` | la tua pagina, così come va online: prima questo modello, alla messa online la pagina che hai costruito e approvato sul tuo computer |
+| `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | indicazioni per la tua IA (Claude Code, Codex, Gemini CLI o Cursor): a che punto siete e cosa vale |
 | `Dockerfile` | le istruzioni di costruzione: un piccolo server web con la tua pagina (Pilot) |
 | `compose.yaml` | come gira la pagina sul server (container `webseite`, porta 80, Pilot) |
 | `.github/workflows/deploy.yml` | il nastro trasportatore: costruire, consegnare, controllare, se serve tornare indietro (Pilot) |

@@ -136,7 +136,7 @@
       }
     },
     "insel": {
-      "description": "Auf der Insel im Cockpit steht ein Projekt der Person mindestens bei diesem Schritt (Reihenfolge wie insel in fahrplan.yaml; die KI meldet Schritte mit schritt_melden). flugschule prüft das selbst, ohne Server und Hafen; der Schritt gehört zur Phase der Mission.",
+      "description": "Auf der Insel im Cockpit steht das Hauptprojekt der Person (projekt: das Projekt, das die KI bei schritt_melden ohne eigenen Namen meldet, im Hafen das Repo {name}/projekt) mindestens bei diesem Schritt (Reihenfolge wie insel in fahrplan.yaml). Weitere Projekte der Person zählen für die Prüfung nicht. flugschule prüft das selbst am Hauptprojekt, ohne Server und Hafen; der Schritt gehört zur Phase der Mission.",
       "type": "object",
       "additionalProperties": false,
       "required": ["typ", "schritt"],

@@ -22,7 +22,7 @@ Se il sito è già online e un testo deve cambiare, vale lo skill `webseite-aend
 
 ## Come parli
 
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Dai del tu, in modo breve e concreto. Non scrivere mai i testi definitivi scavalcando la persona: tu fai proposte, lei decide e cambia. Alla fine ogni testo deve suonare come parla lei.
 

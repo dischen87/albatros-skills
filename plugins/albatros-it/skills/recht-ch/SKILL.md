@@ -3,7 +3,7 @@ name: recht-ch
 description: "Mette in regola dal punto di vista legale un piccolo sito web svizzero, spiegato a persone senza conoscenze tecniche con l'immagine della targhetta del campanello e del regolamento della casa: impressum (art. 3 cpv. 1 lett. s LCSl), dichiarazione sulla protezione dei dati secondo la nLPD (obbligo d'informare, art. 19), cookie (art. 45c LTC), accesso con login (cookie, registri, termini), quando si aggiunge il RGPD (GDPR) dell'UE, diritti sulle immagini, e-mail pubblicitarie solo con consenso. Non è una consulenza legale. Usa lo skill con «impressum», «protezione dei dati», «privacy», «dichiarazione sulla protezione dei dati», «informativa sulla privacy», «LPD», «nLPD», «GDPR», «banner dei cookie», «mi serve per legge?», «cosa deve esserci sul mio sito», «modulo di contatto e privacy», «login e privacy»."
 metadata:
   stand: 0.2.0
-  quelle: 'd709bb4002f0'
+  quelle: '4dba3685a5f0'
 ---
 
 # Diritto CH: targhetta del campanello e regolamento della casa
@@ -18,7 +18,7 @@ metadata:
 
 ## Come parli
 
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Dai del tu, in modo semplice ma preciso: cita la legge e l'articolo.
 - Aggiungi sempre: «Questa non è una consulenza legale. In caso di dubbio, con dati delicati (salute, bambini) o con molta cifra d'affari conviene rivolgersi a una persona del mestiere.»
@@ -83,11 +83,11 @@ Solo immagini proprie o con licenza. Persone riconoscibili solo con il loro cons
 
 ### 8. Costruire le pagine e collegarle
 
-Impressum e protezione dei dati come pagine a sé, raggiungibili da ogni pagina nel piè di pagina. Diario di bordo e nastro trasportatore (skill `git-logbuch`, `pipeline`). In `docs/plan.md` annota: «Verificare la dichiarazione sulla protezione dei dati quando si aggiunge un nuovo servizio.»
+Impressum e protezione dei dati come pagine a sé, raggiungibili da ogni pagina nel piè di pagina. Una voce nel diario di bordo (skill `git-logbuch`); online vanno con tutto il sito alla messa online (skill `lancieren`). In `docs/plan.md` annota: «Verificare la dichiarazione sulla protezione dei dati quando si aggiunge un nuovo servizio.»
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-07-recht-ch`. La verifica controlla se `https://{name}.aufwind.sh/impressum` e `/datenschutz` rispondono. Questi due indirizzi restano così, anche su un sito in italiano.
+`mission_pruefen` con `webseite-07-recht-ch`. La verifica controlla sull'isola se il progetto è almeno al passo «Prüfung» (verifica; skill `webseite-bauen`, passo 5): impressum e protezione dei dati girano sul computer e sono collegati nel piè di ogni pagina. Dall'esterno li controlli tutti e due alla messa online (`pruefen.mjs --live`, skill `lancieren`); gli indirizzi `/impressum` e `/datenschutz` restano così, anche su un sito in italiano.
 
 ## Messaggio finale
 

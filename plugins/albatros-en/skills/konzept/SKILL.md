@@ -26,8 +26,8 @@ Phase P5 “Design and marketing concept”. It's due after the confirmed plan: 
 
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - Casual “you”, short sentences, no jargon. Whatever the person has already said (in `docs/projekt.md`, in the plan or in the conversation), you don't ask again: you read it back to them and write it down.
-- Two questions per message at most. Five questions are answered only by the person: name, tone, character, the mascot and what has to stay. Core and visual style you suggest and write down as `[Assumption: …]`; the person confirms all assumptions in one single message.
-- Whatever the person hasn't said appears as `[open: …]`, never as something you made up.
+- Two questions per message at most. Five questions are answered only by the person: name, tone, character, the mascot and what has to stay. Core and visual style you suggest and write down as `[Annahme: …]` (assumption); the person confirms all assumptions in one single message.
+- Whatever the person hasn't said appears as `[offen: …]` (open), never as something you made up. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open.
 - Taste is the person's call. You help with pairs of opposites and examples, not with favourite colours.
 - Pictures made with the Albatros image tools cost credit: first the price, then only after their yes (section “The mascot”).
 
@@ -66,13 +66,13 @@ You always ask this question, even if the person doesn't bring it up, in a messa
 
 “Should there be a character who guides people through your site? Yes, no or later.”
 
-With the reason in one sentence: a character makes a site unmistakable, but it needs care in every picture. You don't suggest an answer; the person decides. Until they answer, `docs/konzept.md` says `Maskottchen: [open: question asked on <DD.MM.YYYY>]`.
+With the reason in one sentence: a character makes a site unmistakable, but it needs care in every picture. You don't suggest an answer; the person decides. Until they answer, `docs/konzept.md` says `Maskottchen: [offen: question asked on <DD.MM.YYYY>]`.
 
 With “yes” you continue with the section “The mascot”. With “no” or “later” the line is enough. “Later” means: the site works without a mascot, and the question comes back after going live.
 
 ### 5. Core and visual style as a suggestion
 
-From what the person has said, you suggest both and write them down as `[Assumption: …]`:
+From what the person has said, you suggest both and write them down as `[Annahme: …]`:
 
 - **Core** in three sentences: for whom? What do you promise (a result, not an adjective)? Why you of all people (with evidence)? The core is the yardstick for every text and every picture.
 - **Visual style:** photos, illustrations, icons or a mix. A site without pictures looks like a template. Real photos of the place and the people beat any generated picture. If photos are part of it, you write a short photo list into `docs/inhalte.md` straight away (section “Photo list”: what, where, who's in it): photos take time, so the person can start now.

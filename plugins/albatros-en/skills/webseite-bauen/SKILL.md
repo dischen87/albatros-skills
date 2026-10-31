@@ -17,7 +17,7 @@ The draft is the walk-through model, and the person has approved it. Now, in the
 ## How you talk
 
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
-- The line starts in files under `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) stay German: `lage` and the checks look for them exactly like that. What comes after the colon you write in English.
+- The line starts in files under `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) stay German, like the markers `[Annahme: …]` and `[offen: …]`: `lage` and the checks look for them exactly like that. What comes after the colon you write in English.
 - The order is fixed. Building starts only once `pruefen.mjs --vor-bau` finds the approval to build, and only what's in the draft gets built. If something should be different from the draft, you tell the person before you build it.
 - In this skill nothing goes online and nothing goes to a harbour. Everything stays on the person's computer and costs nothing at Albatros.
 - You suggest the next step and do it. The person never has to know what comes next.

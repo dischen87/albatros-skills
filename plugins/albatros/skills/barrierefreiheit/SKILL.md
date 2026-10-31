@@ -30,7 +30,7 @@ Bei Webseiten sind die Rampen: genug Kontrast, Beschreibungen für Bilder, Bedie
 Die Person öffnet ihre Seite in Chrome, Rechtsklick, «Untersuchen», Reiter «Lighthouse», nur «Barrierefreiheit» wählen, «Seite analysieren». Oder du prüfst im Terminal:
 
 ```bash
-npx pa11y https://{name}.aufwind.sh
+npx pa11y http://localhost:4321          # die Vorschau auf dem Computer (Skill webseite-bauen); ist die Seite schon live, ihre Adresse aus docs/lancieren.md
 ```
 
 Die Meldungen gehen als Befunde ins Protokoll. Was die Werkzeuge nicht sehen: ob die Reihenfolge Sinn ergibt, ob Texte verständlich sind, wo man nach einem Klick landet.
@@ -81,7 +81,7 @@ Die Meldungen gehen als Befunde ins Protokoll. Was die Werkzeuge nicht sehen: ob
 |---|---|---|
 ```
 
-Dann reparieren, kritische Punkte zuerst (alles, was eine Person ganz ausschliesst). Danach nochmals prüfen und das Protokoll nachführen. Logbuch (Skill `git-logbuch`), Fliessband (Skill `pipeline`).
+Dann reparieren, kritische Punkte zuerst (alles, was eine Person ganz ausschliesst). Danach nochmals prüfen und das Protokoll nachführen. Ein Eintrag ins Logbuch (Skill `git-logbuch`); ins Netz kommt es mit der ganzen Seite beim Live schalten (Skill `lancieren`), bei einer Seite, die schon live ist, über den Skill `webseite-aendern`.
 
 ## Gut zu wissen
 
@@ -90,7 +90,7 @@ Dann reparieren, kritische Punkte zuerst (alles, was eine Person ganz ausschlies
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-06-barrierefreiheit`. Die Prüfung schaut, ob `docs/barrierefreiheit.md` im Projekt liegt (mit Pilot in `~/projekt` auf dem Server, mit Light im Hafen).
+`mission_pruefen` mit `webseite-06-barrierefreiheit`. Die Prüfung schaut auf der Insel, ob das Projekt mindestens beim Schritt «Prüfung» steht (Skill `webseite-bauen`, Schritt 5). Das Protokoll `docs/barrierefreiheit.md` gehört dazu, bleibt aber auf dem Computer der Person; die Prüfung liest es nicht.
 
 ## Schlussnachricht
 

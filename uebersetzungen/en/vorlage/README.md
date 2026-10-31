@@ -7,7 +7,8 @@ This is your logbook, it lives in the harbour. When you send a change on `main` 
 
 | File | What it's for |
 |---|---|
-| `seite/` | your page, start with `index.html` |
+| `seite/` | your page as it goes online: first this template, then, when going live, the page you built and released on your computer |
+| `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` | notes for your AI (Claude Code, Codex, Gemini CLI or Cursor): where you are and what applies |
 | `Dockerfile` | the building instructions: a small web server with your page (Pilot) |
 | `compose.yaml` | how the page runs on the server (container `webseite`, port 80, Pilot) |
 | `.github/workflows/deploy.yml` | the conveyor belt: build, deliver, check, roll back if needed (Pilot) |

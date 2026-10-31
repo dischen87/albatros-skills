@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site. Dans le plan de vol (P6) : maquette grise (« L'ordre est-il juste ? »), trois directions bien différentes tirées du concept, vérification contre le look IA, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Toujours avec la question des éléments graphiques (icônes, photos, mascotte, 3D ; outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « icônes », « mascotte », « 3D »."
 metadata:
   stand: 0.2.0
-  quelle: '02f75af84c9c'
+  quelle: 'fe6fcb8ce168'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -29,7 +29,7 @@ Pour les deux valent les sections « Trois directions », « Ne pas avoir l'air 
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
 - Ta première réponse, c'est toujours l'image et le chemin en cinq étapes : dans le plan de vol, maquette, trois directions, choix, nuancier, planche d'échantillons ; pour un site existant, vérifier, réparer l'utilisation, choisir entre trois directions bien différentes, fixer le nuancier, transformer. Si la personne veut « plus beau » ou « d'autres couleurs », c'est pareil. Où se trouve le site et comment tu y accèdes, tu ne le demandes qu'après.
-- **Ne pas seulement poser des questions :** S'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées (`[Hypothèse : …]`). Demande ce qui manque seulement à la fin.
+- **Ne pas seulement poser des questions :** S'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées `[Annahme: …]`. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert. Demande ce qui manque seulement à la fin.
 - Tutoiement, court. Au plus deux questions par message. Chaque critique a besoin d'une preuve : quelle page, quel endroit, idéalement une photo. « Ça fait agité » tout seul ne compte pas.
 - Les goûts, c'est la personne qui décide. Tu proposes des directions et tu dis honnêtement ce que chacune sait faire et quel est son risque.
 - Les exigences propres de la personne (logo, couleur maison, forme d'adresse, textes obligatoires) passent avant tout conseil de mise en forme. Dans le plan de vol, elles figurent dans `docs/konzept.md` sous `Muss bleiben:`.
@@ -42,7 +42,7 @@ Phase P6 « Système de design avec exemple ». C'est son tour quand `docs/konze
 
 - **Résultat :** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` et `docs/designsystem.md` avec les lignes `Richtung:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` et `Maskottchen:`. Les noms de fichiers et de lignes restent en allemand, parce que `lage` et les scripts de vérification les lisent ; le contenu est en français.
 - **Réussi quand** `tokens.css` et `musterblatt.html` sont là, que la planche d'échantillons n'utilise les couleurs, les polices et les tailles que comme `var(--…)` tirées de `tokens.css` et que la personne l'a vue.
-- **Questions à la personne :** « L'ordre sur l'esquisse grise est-il juste ? », « Laquelle des trois directions, ou quel mélange ? », « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » et la question des éléments graphiques. « Aussi une version sombre ? », tu la proposes comme `[Hypothèse : oui, claire et sombre]`, parce que beaucoup de natels affichent en sombre la nuit.
+- **Questions à la personne :** « L'ordre sur l'esquisse grise est-il juste ? », « Laquelle des trois directions, ou quel mélange ? », « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » et la question des éléments graphiques. « Aussi une version sombre ? », tu la proposes comme `[Annahme: oui, claire et sombre]`, parce que beaucoup de natels affichent en sombre la nuit.
 - **Île :** `mockup` dès que l'ordre est juste ; `entwuerfe` dès que la personne a vu la planche d'échantillons et qu'elle lui convient.
 
 **Mode :** Lis `Modus:` dans `docs/projekt.md` (si la ligne manque, c'est `machen`, faire, qui vaut). Le moment d'apprentissage de cette phase, c'est « Pourquoi les couleurs et les polices ne sont qu'à un seul endroit » : la personne change elle-même une couleur dans `design/tokens.css`, recharge la planche d'échantillons et voit qu'elle change partout. En mode `lernen` (apprendre), elle le fait elle-même (ensuite `verstanden_melden` avec `mission: webseite-04-gestaltung` et `art: selbst`), et à la fin, tu poses la question de contrôle de la leçon : « Pourquoi les couleurs et les polices ne sont-elles qu'à un seul endroit ? » Seulement après sa réponse, tu annonces `art: kontrollfrage`. En mode `machen` (faire), tu proposes le moment d'apprentissage et tu expliques chaque étape en une phrase avec son image. Si l'outil `verstanden_melden` manque, on continue sans.
@@ -55,7 +55,7 @@ L'esquisse grise de la page d'accueil de P1 se trouve dans `design/skizze.html`.
 - De vrais titres et de vraies phrases tirés de `docs/projekt.md`, `docs/plan.md` et `docs/konzept.md` (nom, cœur), le bouton principal avec son vrai texte (« Demander une place »), le menu avec toutes les pages de `Seiten:`.
 - Un seul fichier sans liens vers Internet ; il s'ouvre d'un double-clic.
 
-Ouvre-le et demande seulement : « L'ordre sur l'esquisse grise est-il juste ? » Pourquoi : la structure avant l'apparence. Change jusqu'à ce qu'il soit juste. Ensuite, tu crées `docs/designsystem.md` (modèle à l'étape 4) avec `Richtung: [ouvert : choix de la direction] · ordre confirmé le <JJ.MM.AAAA>`, les autres lignes avec `[ouvert : …]`, et tu annonces `mockup` (section « L'île »).
+Ouvre-le et demande seulement : « L'ordre sur l'esquisse grise est-il juste ? » Pourquoi : la structure avant l'apparence. Change jusqu'à ce qu'il soit juste. Ensuite, tu crées `docs/designsystem.md` (modèle à l'étape 4) avec `Richtung: [offen: choix de la direction] · ordre confirmé le <JJ.MM.AAAA>`, les autres lignes avec `[offen: …]`, et tu annonces `mockup` (section « L'île »).
 
 ### 2. Trois directions sur la maquette
 
@@ -161,7 +161,7 @@ Vérifie le motif, pas la formulation : un bouton au lieu de deux ou des cartes 
 
 ## Le nuancier (tokens)
 
-Un fichier `tokens.css` avec des variables CSS : couleurs pour clair et sombre, polices, tailles de police, espacements, arrondis et ombres. Dans le plan de vol, il se trouve dans `design/tokens.css`, pour un site construit dans `web/src/styles/tokens.css`. Pour chaque bloc, une phrase de commentaire qui dit pourquoi. Règles :
+Un fichier `tokens.css` avec des variables CSS : couleurs pour clair et sombre, polices, tailles de police, espacements, arrondis et ombres. Il se trouve dans `design/tokens.css`, même quand le site est construit : la mise en page l'intègre à cet endroit (skill `webseite-bauen`), il n'y en a pas de copie sous `web/`. Pour chaque bloc, une phrase de commentaire qui dit pourquoi. Règles :
 
 - Une couleur d'action pour tout ce qui est cliquable, et nulle part ailleurs.
 - Recalculer le contraste, ne pas l'estimer : texte au moins 4,5 : 1, boutons et bordures au moins 3 : 1 (formule dans le skill `barrierefreiheit`). Les couleurs en hexadécimal (`#1d1b18`), le contraste en commentaire sur la même ligne, toujours avec la couleur d'en face : `/* 16,0 : 1 sur --hell-grund */`. Ainsi, on peut le recalculer ; `entwurf-pruefen.mjs` (skill `entwurf`) le fait pour chaque commentaire.
@@ -219,7 +219,7 @@ Une fois la direction fixée, tu demandes toujours : « Tu veux encore des élé
 
 **Sobre ne veut pas dire sans image.** Si la personne ne veut ni icônes, ni illustrations, ni personnage, tu proposes quand même une vraie photo pour l'en-tête de la page d'accueil (le lieu, des gens en action) et tu lui donnes la liste de photos. Une photo, c'est du contenu, pas de la décoration. Si elle n'en a pas encore, l'en-tête porte l'essentiel du contenu au lieu d'une surface de couleur avec un titre (par exemple la prochaine date en grand), et la liste de photos figure sous « Ouvert » (dans le plan de vol dans `docs/inhalte.md`, sinon dans `docs/gestaltung/richtungen.md`). Si elle ne veut pas non plus de photos, sa phrase y figure.
 
-Ce que la personne choisit va dans le système de design (dans le plan de vol `docs/designsystem.md`, sinon `docs/gestaltung/richtungen.md`) et dans le nuancier (tailles, espacements, règles).
+Ce que la personne choisit va dans le système de design (`docs/designsystem.md`) et dans le nuancier (tailles, espacements, règles).
 
 **Avec Albatros**, les images, les personnages détourés et les modèles 3D naissent avec les outils d'Albatros, payés avec le crédit de la personne (prix coûtant plus 35 %) :
 
@@ -242,7 +242,7 @@ Si tu ne vois pas encore le site (pas de projet dans le dossier, pas d'adresse),
 
 ### 0. Cadre (5 minutes)
 
-Reprendre de `docs/plan.md` (skill `webseite-planen`) : pour qui, la chose principale pour les visiteurs, les pages. En plus, demander : qu'est-ce qui doit rester (logo, couleur, police, textes) ? Crée `docs/gestaltung/`.
+Reprendre de `docs/projekt.md` et de `docs/plan.md` (skill `webseite-planen`) : pour qui (`Für wen:`), la chose principale pour les visiteurs (`Hauptsache:`), les pages (`Seiten:`). En plus, demander : qu'est-ce qui doit rester (logo, couleur, police, textes) ? Crée `docs/gestaltung/`.
 
 ### 1. Vérifier sous trois angles (seulement lire, ne rien changer)
 
@@ -269,11 +269,11 @@ Présente à la personne, regroupé, ce qu'elle doit décider (avec ta recommand
 
 ### 3. Trois directions
 
-Selon la section « Trois directions », avec deux ou trois pages du site existant. `docs/gestaltung/richtungen.md` : tout en haut la ligne `Entscheid: <direction ou mélange> (<date>)`, en dessous le diagnostic et, pour chaque direction, un tableau (idée, police, couleurs, formes, force, risque), plus la ligne `Signes d'IA vérifiés : …`. Le mot `Entscheid:` (décision) reste en allemand. Les ébauches en fichiers HTML dans `docs/gestaltung/entwuerfe/`, pour que la personne puisse les ouvrir dans son navigateur web.
+Selon la section « Trois directions », avec deux ou trois pages du site existant. `docs/gestaltung/richtungen.md` : tout en haut la ligne `Entscheid: <direction ou mélange> (<date>)`, en dessous le diagnostic et, pour chaque direction, un tableau (idée, police, couleurs, formes, force, risque), plus la ligne `Signes d'IA vérifiés : …`. Le mot `Entscheid:` (décision) reste en allemand. Les directions en fichiers HTML dans `design/richtungen/`, comme dans le plan de vol, pour que la personne puisse les ouvrir dans son navigateur web.
 
 ### 4. Le nuancier
 
-Selon la section « Le nuancier (tokens) », dans `web/src/styles/tokens.css`. Avec la question des éléments graphiques (section « Éléments graphiques »).
+Selon la section « Le nuancier (tokens) », dans `design/tokens.css`, avec `docs/designsystem.md` comme dans le plan de vol (étape 4 plus haut) ; c'est sur eux que le skill `webseite-aendern` construit plus tard. Si un site plus ancien a encore ses tokens dans `web/src/styles/tokens.css`, tu les déménages à cette occasion : la mise en page n'intègre plus que `design/tokens.css`, l'ancien fichier disparaît. Avec la question des éléments graphiques (section « Éléments graphiques »).
 
 ### 5. Transformation
 

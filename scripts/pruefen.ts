@@ -1,9 +1,12 @@
 // Prüft die Kopfdaten aller Skills (Agent-Skills-Standard) und aller Missionen (schema/mission.schema.json), den Fahrplan
 // (fahrplan.yaml gegen schema/fahrplan.schema.json, dazu was ein Schema nicht prüfen kann) und dass GUTE-ANTWORT.md erzeugt ist.
+// Dazu Texte, die an zwei Orten stehen (scripts/abgleich.ts): die Vorlage je Sprache gegen webseite-planen, die Befehle zum
+// Aktualisieren in der README gegen den Lotse.
 import Ajv from 'ajv/dist/2020';
 import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
+import { befehleAusReadme, befehleAusSkill, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { hoeher, quelle } from './stand.ts';
@@ -90,6 +93,27 @@ for await (const datei of new Glob('plugins/*/skills/lotse/SKILL.md').scan(wurze
     if (name !== 'lotse' && !text.includes(`| \`${name}\` |`)) fehler.push(`${datei}: Skill «${name}» fehlt in der Bibliothek`);
   }
 }
+
+// P1 legt AGENTS.md im Projekt an, mit demselben Text wie die Vorlage im Hafen: je Sprache der Block in webseite-planen gleich
+// vorlage/AGENTS.md (übersetzt: uebersetzungen/<sprache>/vorlage/), CLAUDE.md und GEMINI.md mit der Zeile aus dem Skill und dem Verweis
+const lies = async (pfad: string) => ((await Bun.file(wurzel + pfad).exists()) ? Bun.file(wurzel + pfad).text() : null);
+for (const s of ['de', 'fr', 'it', 'en']) {
+  const skill = `plugins/albatros${s === 'de' ? '' : `-${s}`}/skills/webseite-planen/SKILL.md`;
+  const ordner = s === 'de' ? 'vorlage' : `uebersetzungen/${s}/vorlage`;
+  const text = await lies(skill);
+  if (text === null) continue; // eine fehlende Übersetzung meldet die Prüfung der vier Sprachen
+  const vorlage = { 'AGENTS.md': await lies(`${ordner}/AGENTS.md`), 'CLAUDE.md': await lies(`${ordner}/CLAUDE.md`), 'GEMINI.md': await lies(`${ordner}/GEMINI.md`) };
+  for (const f of vorlageGegenSkill(text, vorlage)) fehler.push(`${ordner}/${f} (gegen ${skill})`);
+}
+
+// Befehle zum Aktualisieren: albatros erzeugt aus der README (Abschnitt «Aktualisieren») AKTUALISIEREN, das lage bei veralteten Skills
+// nennt; der Lotse (de) sagt der KI dieselben Befehle
+const LOTSE = 'plugins/albatros/skills/lotse/SKILL.md';
+const imLotse = befehleAusSkill((await lies(LOTSE)) ?? '');
+const inReadme = befehleAusReadme((await lies('README.md')) ?? '');
+if (typeof imLotse === 'string') fehler.push(`${LOTSE}: ${imLotse}`);
+else if (!inReadme) fehler.push('README.md: Abschnitt «Aktualisieren» mit der Tabelle «| KI | Befehle |» fehlt (albatros erzeugt daraus AKTUALISIEREN)');
+else for (const u of unterschiede(inReadme, imLotse)) fehler.push(`README.md, Abschnitt «Aktualisieren», anders als ${LOTSE}: ${u}`);
 
 // Fahrplan: nach dem Schema, was ein Schema nicht prüfen kann
 const plan = await ladeFahrplan(wurzel);

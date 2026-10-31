@@ -3,7 +3,7 @@ name: statistik
 description: "Installa con una persona senza conoscenze tecniche statistiche rispettose della privacy per il suo sito web, con PostHog. Prima un piccolo piano degli eventi (quali tacche contiamo, e quando esattamente), poi l'integrazione, un evento obiettivo come «richiesta inviata», escludere le proprie visite e confrontare con le richieste vere. Usa lo skill con «statistiche», «contare i visitatori», «quante persone vengono sul mio sito?», «PostHog», «Google Analytics», «tracking», «conversion», «misurare un evento», «da dove arrivano i miei visitatori?»."
 metadata:
   stand: 0.2.0
-  quelle: 'd7b868d6a715'
+  quelle: '8e43b3ced7ac'
 ---
 
 # Statistiche: il foglio delle tacche alla porta del negozio
@@ -18,7 +18,7 @@ Proprio così devono lavorare le statistiche del tuo sito web: poche tacche con 
 
 ## Come parli
 
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Dai del tu, niente gergo tecnico. «Evento» solo dopo l'immagine del foglio delle tacche.
 - La protezione dei dati non è un'appendice. Ogni impostazione che salva di più sulle persone ha bisogno di un motivo e di una frase nella dichiarazione sulla protezione dei dati (skill `recht-ch`).
@@ -28,7 +28,7 @@ Proprio così devono lavorare le statistiche del tuo sito web: poche tacche con 
 
 ### 1. Prima la lista, poi l'integrazione
 
-Crea con la persona `docs/statistik.md`. Per cominciare basta un evento obiettivo: l'azione che per lei conta (da `docs/plan.md`, «Da cosa capiamo il successo»).
+Crea con la persona `docs/statistik.md`. Per cominciare basta un evento obiettivo: l'azione che per lei conta (da `docs/projekt.md`, riga `Erfolg:`).
 
 ```markdown
 # Piano degli eventi

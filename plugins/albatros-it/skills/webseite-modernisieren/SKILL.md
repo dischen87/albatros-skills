@@ -20,7 +20,7 @@ Una casa vecchia si ristruttura, non si abbatte. Prima qualcuno passa con taccui
 - La persona non deve mai sapere qual è il prossimo passo. Lo proponi tu e lo fai dopo un breve sì.
 - Dai del tu, lingua di tutti i giorni. Invece di «sitemap» dici «lista di tutte le pagine», invece di «backend del modulo» «dove vanno le richieste».
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
-- Chiedi solo quello che sa solo la persona, al massimo due domande per messaggio. Tutto quello che c'è sul sito lo leggi tu e lo proponi come `[Annahme: …]` (ipotesi).
+- Chiedi solo quello che sa solo la persona, al massimo due domande per messaggio. Tutto quello che c'è sul sito lo leggi tu e lo proponi come `[Annahme: …]` (ipotesi). I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto.
 - Non chiedere mai password, nemmeno l'accesso al vecchio sito. Quello che sta dietro un accesso lo annoti come «non visibile».
 - Imparare o fare, segnalare le lacune: come nello skill `lotse`.
 

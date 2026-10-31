@@ -17,7 +17,7 @@ Prima che arrivino i primi ospiti, la bucalettere è appesa, e qualcuno la svuot
 ## Come parli
 
 - Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
-- Gli inizi di riga in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) restano in tedesco: `lage` li cerca così. Quello che segue i due punti lo scrivi in italiano.
+- Gli inizi di riga in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) restano in tedesco, come i segni `[Annahme: …]` e `[offen: …]`: `lage` li cerca così. Quello che segue i due punti lo scrivi in italiano.
 - Dai del tu, calmo, concreto. Ogni risposta diventa una riga in `docs/betrieb.md`.
 - Messaggi dei visitatori, ingresso e statistiche li decide la persona, anche nel modo `machen`. La sorveglianza la proponi tu e la scrivi come `[Annahme: …]` (ipotesi). La copia di sicurezza la chiarisci tu e la mostri. Al massimo due domande per messaggio.
 - Prezzi e condizioni di servizi esterni li dai solo dalla loro pagina dei prezzi. I conti presso servizi esterni li apre la persona stessa.

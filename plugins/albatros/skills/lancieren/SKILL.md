@@ -1,6 +1,6 @@
 ---
 name: lancieren
-description: 'Bringt die freigegebene Seite einer Person ohne Vorwissen ins Netz, in zwei Teilen. Wohnort (P11): immer dieselbe Frage, Albatros (Light ohne Baustein, Pilot mit Baustein) oder selbst, Preise nur aus konto_status, upgrade_link mit bestaetigt erst nach der Wahl, SSH-Schlüssel, seite_erstellen oder server_erstellen, bei selbst GitHub Pages, Cloudflare Pages, Netlify oder eigener Server. Live schalten (P13): nur mit «Freigegeben:» die freigegebene Seite in den Hafen oder zum Anbieter, Prüfung von aussen (pruefen.mjs --live), Domain freiwillig, go-live-check beim Weg Geschäft, Ankündigung. Ergebnis: docs/lancieren.md, docs/live.md. Nutze den Skill nach der Freigabe und bei «online stellen», «veröffentlichen», «live schalten», «wo soll meine Seite wohnen», «Abo wählen», «selber hosten».'
+description: 'Bringt die freigegebene Seite einer Person ohne Vorwissen ins Netz, in zwei Teilen. Wohnort (P11): immer dieselbe Frage, Albatros (Light ohne Baustein, Pilot mit Baustein) oder selbst, Preise nur aus konto_status, upgrade_link mit bestaetigt erst nach der Wahl, SSH-Schlüssel, seite_erstellen oder server_erstellen, bei selbst GitHub Pages, Cloudflare Pages, Netlify oder eigener Server. Live schalten (P13): nur mit «Freigegeben:» die freigegebene Seite in den Hafen oder zum Anbieter, mit Baustein und Login der Eingang davor, Prüfung von aussen (pruefen.mjs --live und --tueren), Domain freiwillig, go-live-check beim Weg Geschäft, Ankündigung. Ergebnis: docs/lancieren.md, docs/live.md. Nutze den Skill nach der Freigabe und bei «online stellen», «veröffentlichen», «live schalten», «wo soll meine Seite wohnen», «Abo wählen», «selber hosten».'
 metadata:
   stand: 0.2.0
 ---
@@ -42,7 +42,11 @@ Bevor du fragst, holst du die Grundlagen: `konto_status` (Abo und Preise von Lig
 | Albatros Pilot | ein Baustein läuft (Anmeldung, Buchung, Login) oder du einen eigenen Server willst | CHF … pro Monat | wenig: Fliessband und tägliche Fotos des Servers sind da |
 | selbst | du alles selbst in der Hand haben willst und Zeit für die Pflege hast | beim Anbieter | Konto, Einrichten, Sicherung und Überwachung |
 
-Dazu ein Satz Empfehlung mit Grund aus `docs/plan.md` (`Setup:`). Dann die Frage, allein in der Nachricht:
+Dazu ein Satz Empfehlung mit Grund aus `docs/plan.md` (`Setup:`).
+
+**Mit Login:** Hat das Projekt einen Baustein mit Login (Rezept `mitglieder`; zu sehen an `Zugang:` in `docs/plan.md` und `Baustein:` in `docs/stack.md`), empfiehlst du Pilot oder selbst mit eigenem Server, nie Light, und nennst gleich den Schritt **Eingang**: Ob vor der Seite ein Eingang mit einem Login für alle Teile steht, klärt ihr im Betrieb (Skill `betrieb`, Zeile `Eingang:`, nach den Kriterien im Skill `bausteine`, Abschnitt «Ein Eingang für alles?»). Eingebaut wird er beim Live schalten (`bausteine/eingang`); danach ist die Webseite nur noch hinter dem Eingang erreichbar.
+
+Dann die Frage, allein in der Nachricht:
 
 > Wo soll deine Seite wohnen: bei Albatros (Light ohne Baustein, Pilot mit eigenem Server) oder selbst?
 
@@ -110,10 +114,17 @@ git remote add origin git@aufwind.sh:<name>/projekt.git          # Adresse aus d
 git fetch origin
 git merge origin/main --allow-unrelated-histories -X ours -m "Vorlage aus dem Hafen übernommen, die freigegebene Seite bleibt"
 git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
+```
+
+Sag es der Person mit dem Bild: Die Vorlage wird einmal ins Logbuch aufgenommen. Wo beide dieselbe Datei haben (`seite/index.html`, `.gitignore`), bleibt ihre. Dazu kommen die Dateien, die das Fliessband von Pilot braucht (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); mit Light schlafen sie. Steht nach dem Zusammenführen nicht «Seite unverändert», pushst du nicht und schaust mit `git diff freigegeben HEAD -- seite` nach.
+
+**Mit Baustein (Pilot), vor dem Push:** Jetzt liegt die `compose.yaml` der Vorlage im Logbuch, und du hängst die Bausteine ein wie im Skill `bausteine`, Abschnitt 4 «Beim Lancieren, mit Pilot»: zuerst ein Foto des Servers (Werkzeug `snapshot`, Name `vor-baustein`), dann `include:` in `compose.yaml`. Steht in `docs/betrieb.md` `Eingang: ja`, kommt der Schritt **Eingang** dazu: die Zeile `- bausteine/eingang/compose.yaml` unter `include:`, und beim Dienst `webseite` fallen `ports:` und `- "80:80"` weg. Port 80 hat dann der Eingang, die Webseite ist nur noch hinter ihm erreichbar. Vorher muss `bun bausteine/eingang/test.ts` «Alles grün» melden. Ohne Login, oder mit `Eingang: nicht nötig`, bleibt `compose.yaml` wie in der Vorlage. Danach ein Eintrag ins Logbuch.
+
+```bash
 git push -u origin main
 ```
 
-Sag es der Person mit dem Bild: Die Vorlage wird einmal ins Logbuch aufgenommen. Wo beide dieselbe Datei haben (`seite/index.html`, `.gitignore`), bleibt ihre. Dazu kommen die Dateien, die das Fliessband von Pilot braucht (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); mit Light schlafen sie. Steht nach dem Zusammenführen nicht «Seite unverändert», pushst du nicht und schaust mit `git diff freigegeben HEAD -- seite` nach. Dann öffnest du den Hafen im Browser (`open https://code.aufwind.sh/<name>/projekt`) und meldest `hafen`.
+Dann öffnest du den Hafen im Browser (`open https://code.aufwind.sh/<name>/projekt`) und meldest `hafen`.
 
 **Selbst, mit GitHub:** Die Person meldet sich mit `gh auth login` im Browser an. Für GitHub Pages legst du vorher das Fliessband an, `.github/workflows/seite.yml`:
 
@@ -168,6 +179,7 @@ node scripts/pruefen.mjs --tueren <Adresse>
 
 Die Adresse steht in `docs/lancieren.md` (`Adresse:`). Live ist erst, was von aussen geprüft ist: Ist bei `--live` (Titel wie gebaut, Impressum und Datenschutz erreichbar, Zugang, Lighthouse) und bei `--tueren` nichts rot, meldest du `live`, öffnest die Adresse mit der Person und vergleichst mit den Fotos aus der Prüfung.
 
+- **Mit Eingang:** In `docs/tueren.txt` stehen die geschützten Pfade mit 401 (ohne Anmeldung) und `/_/` mit 404; stammt die Datei noch vom Bau ohne Eingang, passt du sie vor der Prüfung an. Erst wenn `--tueren` genau das zeigt und die Startseite 200 gibt, steht die Seite wirklich hinter dem Eingang.
 - **Mit einem Baustein ist «live» noch nicht «fertig»:** Erst wenn die Daten drin sind (zum Beispiel die Kurse) und eine Testbuchung im Netz ihre Mail an die eigene Adresse gebracht hat (Skill `bausteine`), sagst du der Person, dass sie den Link teilen kann. Bis dahin sagst du ehrlich, was noch fehlt.
 - **Nach drei Minuten noch nicht da:** Mit Light zeigt `konto_status`, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil `seite/` in einer `.gitignore` steht. Mit Pilot schaust du unter «Actions» nach (Skill `pipeline`), bei «selbst» in der Liste der Auslieferungen des Anbieters. Beheben, neuer Eintrag, pushen, nochmals prüfen. Ändert die Behebung die Seite selbst, zeigst du sie der Person zuerst und holst die Freigabe neu. Geht es dann immer noch nicht, sagst du, was du geprüft hast, und fragst den Coach (`coach_fragen`).
 
@@ -210,6 +222,7 @@ Veröffentlicht wird nur, was der Person gehört oder wofür sie die Erlaubnis h
 - `git push --force`, um den Hafen zu überschreiben: nie. Zusammenführen wie oben.
 - Pushen, obwohl sich die Seite seit der Freigabe geändert hat.
 - «Ist online» sagen, ohne selbst von aussen geprüft zu haben.
+- Mit Eingang `ports:` beim Dienst `webseite` stehen lassen: Dann käme man am Eingang vorbei.
 - Ein öffentliches Repo für GitHub Pages, ohne der Person zu sagen, dass dann auch `docs/` öffentlich ist.
 
 ## Mission prüfen

@@ -25,7 +25,7 @@ Importante: tutto quello che si è aggiunto dopo la foto, dopo non c'è più. Pe
 ## Come parli
 
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Dai del tu, con calma, frasi brevi. Se qualcosa è rotto, prima rassicura: «Si può riparare.» Solo dopo agisci.
 
 ## Prima di un grosso cambiamento: una foto propria

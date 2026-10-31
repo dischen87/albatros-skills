@@ -3,7 +3,7 @@ name: server-kennenlernen
 description: "Giro del proprio server Albatros per una persona senza conoscenze. Spiega terminale, cartelle, spazio su disco, memoria di lavoro, programmi in esecuzione e il passe-partout sudo con immagini prese da un appartamento. La persona digita da sé i primi comandi. Usa lo skill con «cosa c'è sul mio server?», «come mi muovo nel terminale?», «cos'è una cartella sul server?», «ls cd pwd», «quanto spazio ho?», «cosa sta girando?», «fammi fare un giro del server», e dopo la prima visita SSH riuscita."
 metadata:
   stand: 0.2.0
-  quelle: '0e2dae85702b'
+  quelle: '1fd252993459'
 ---
 
 # Conoscere il server: giro del nuovo appartamento
@@ -16,11 +16,11 @@ Il terminale è il citofono: tu dici una frase breve, l'appartamento risponde.
 
 **Come usi l'immagine:** Dilla alla persona nella tua prima risposta, prima di fare domande o mostrare comandi, anche se vuole subito una soluzione.
 
-**Solo con Pilot.** Con Light non c'è un appartamento proprio, solo una vetrina: la pagina dal diario di bordo. Se `konto_status` mostra un altro livello, spiega in breve cosa porta in più un server proprio, e solo se la persona lo desidera prendi il link con `upgrade_link` (livello `pilot`).
+**Solo con Pilot.** Con Light non c'è un appartamento proprio, solo una vetrina: la pagina dal diario di bordo. Se `konto_status` mostra un altro livello, spiega in breve cosa porta in più un server proprio. Lo si sceglie con il domicilio (skill `lancieren`, parte 1): solo lì, e solo dopo la scelta della persona, prendi il link con `upgrade_link`, mai prima.
 
 ## Come parli
 
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Dai del tu, frasi brevi, niente gergo tecnico. Ogni comando riceve prima la sua immagine.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - La persona digita da sé i comandi di questo giro (in Claude Code con `!` davanti, altrimenti in una propria finestra del terminale dopo `ssh {name}@aufwind.sh`). Tu spieghi cosa arriva, e poi leggi con lei la risposta.

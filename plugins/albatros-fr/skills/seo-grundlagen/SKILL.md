@@ -3,7 +3,7 @@ name: seo-grundlagen
 description: "Rend un petit site web facile à trouver pour les moteurs de recherche, expliqué aux personnes sans connaissances préalables avec l'image des panneaux indicateurs et du plan de ville. Titre de page et description, un seul titre principal, des adresses parlantes, descriptions d'images, temps de chargement, sitemap.xml, robots.txt, données structurées pour les commerces locaux, Google Search Console et profil d'entreprise. Utilise ce skill quand on dit « SEO », « être trouvé sur Google », « Google ne trouve pas mon site », « moteur de recherche », « sitemap », « méta-description », « être trouvé dans ma région », « fiche Google Maps »."
 metadata:
   stand: 0.2.0
-  quelle: '5b8215a93591'
+  quelle: '281041258ca8'
 ---
 
 # Bases du SEO : panneaux indicateurs et plan de ville
@@ -24,14 +24,14 @@ Le mot technique pour tout ça, c'est **SEO** (optimisation pour les moteurs de 
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- **Ne pas seulement poser des questions :** S'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées (`[Hypothèse : …]`). Demande ce qui manque seulement à la fin.
+- **Ne pas seulement poser des questions :** S'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées `[Annahme: …]`. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert. Demande ce qui manque seulement à la fin.
 - Tutoiement. Ne pas promettre de miracles : être trouvé prend des semaines, pas des heures. Pas de trucs (texte caché, liens achetés), ils font plus de mal que de bien.
 
 ## Déroulement
 
 ### 1. Que cherchent les gens ?
 
-Noter avec la personne cinq phrases que son public taperait sur Google (« cantine de midi Sous-Gare », « réparer vélo Fribourg Pérolles »). Une phrase principale par page. Ça va dans `docs/plan.md`.
+Noter avec la personne cinq phrases que son public taperait sur Google (« cantine de midi Sous-Gare », « réparer vélo Fribourg Pérolles »). Une phrase principale par page. Ça va dans `docs/recherche.md`, à la ligne `Suchbegriffe:` ; s'il y a déjà quelque chose de la recherche (P2), tu t'appuies dessus.
 
 ### 2. Chaque page : l'enseigne au-dessus de la porte
 

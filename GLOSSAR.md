@@ -12,17 +12,25 @@ Gleiche Begriffe überall: Skills, Missionen, Website, Videos. Wer übersetzt, n
 
 Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you» (locker, nicht förmlich). Schweizer Schreibweise: Deutsch mit «ss», Französisch und Italienisch mit «» (wie in der Schweiz), Englisch britisch (colour, organise). Preise: «CHF 15» in allen Sprachen.
 
+Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `Freigegeben:` …) und die Marken `[Annahme: …]` und `[offen: …]` in jeder Sprache deutsch, damit `lage` und die Prüfskripte sie lesen; nach dem Doppelpunkt schreibt die KI in der Sprache der Person. Jede übersetzte `SKILL.md`, die die Marken nutzt, sagt das in einem Satz. Übersetzt ist nur der Platzhalter im Entwurf (`[à compléter]`, `[da completare]`, `[placeholder]`), denn ihn liest die Person auf der Seite.
+
 | Deutsch | Français | Italiano | English | Bedeutung |
 |---|---|---|---|---|
 | Albatros | Albatros | Albatros | Albatros | Marke, nie übersetzen |
 | Flugschule | école de vol | scuola di volo | flight school | die Plattform als Bild |
 | Lotse (Hauptskill `lotse`) | aiguilleur du ciel (kurz: l'aiguilleur) | controllore di volo | air traffic controller | sagt aus dem Turm im richtigen Moment, was dran ist; «navigateur/navigatore/navigator» nicht verwenden (Browser, Navi, sitzt im Flugzeug) |
 | Bibliothek | bibliothèque | biblioteca | library | alle Skills, frei lesbar |
+| Lernen oder machen (Modus) | apprendre ou faire | imparare o fare | learn or do | Zeile `Modus:` in `docs/projekt.md` mit `lernen` oder `machen`, die Werte bleiben deutsch |
+| Lücken melden (`luecke_melden`) | signaler les lacunes | segnalare le lacune | reporting gaps | wo das Know-how fehlt, nur mit Einwilligung; niemand antwortet darauf |
+| Anfrage (Feld `anfrage` von `lage`) | demande | richiesta | request | worum die Person die KI gerade bittet, umformuliert, nur mit Einwilligung; was ein Mensch sehen muss, geht mit `coach_fragen` und `anliegen` |
+| Anfrage (eines Besuchers, «Platz anfragen») | demande | richiesta | enquiry | |
 | Skill | skill | skill | skill | |
 | Mission | mission | missione | mission | |
-| abheben · Idee und Produkt | décoller · idée et produit | decollare · idea e prodotto | take off · idea and product | Stufe 1 |
-| fliegen · Setup und live gehen | voler · mise en place et mise en ligne | volare · configurazione e messa online | fly · set-up and going live | Stufe 2 |
-| landen · der erste Fan | atterrir · le premier fan | atterrare · il primo fan | land · your first fan | Stufe 3 |
+| Fahrplan (`fahrplan.yaml`) | plan de vol | piano di volo | flight plan | der feste Ablauf in 13 Phasen (P1 bis P13); die Phasen nennt nur `lage`, der Person zeigt die KI die Etappen |
+| Etappe | grande étape | tappa | stage | drei Etappen des Fahrplans; auf Französisch nicht «étape», das heisst schon Schritt |
+| abheben · Idee und Produkt | décoller · l'idée et le produit | decollare · l'idea e il prodotto | take off · the idea and the product | Etappe 1 (P1 bis P8): bis zum Entwurf zum Durchklicken |
+| fliegen · bauen und freigeben | voler · construire et valider | volare · costruire e approvare | fly · build and release | Etappe 2 (P9 bis P11): die Seite auf dem eigenen Computer, Freigabe, Wohnort |
+| landen · live und der erste Fan | atterrir · la mise en ligne et le premier fan | atterrare · la messa online e il primo fan | land · going live and your first fan | Etappe 3 (P12, P13 und danach); in Missionen heisst das Feld `stufe` |
 | Anlauf | élan | rincorsa | run-up | |
 | Bordkarte (Konto) | carte d'embarquement | carta d'imbarco | boarding pass | |
 | Cockpit | cockpit | cockpit | cockpit | |
@@ -64,20 +72,29 @@ Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you�
 | grosses CMS | grand CMS | CMS grande | big CMS | Baustein (Strapi mit Postgres) |
 | einen Altbau renovieren | rénover une vieille maison | ristrutturare una casa vecchia | renovating an old house | Bild für `webseite-modernisieren` |
 | Bestandsaufnahme · Bestandsplan (`docs/bestand.md`) | état des lieux · plan de l'état des lieux | inventario · piano dell'inventario | inventory · inventory plan | was die alte Seite hat |
-| vom Grundriss zum fertigen Haus | du plan à la maison terminée | dalla pianta alla casa finita | from floor plan to finished house | Bild für `webseite-bauen` |
-| Mockup · Entwürfe · PRD | maquette · ébauches · PRD | mockup · bozze · PRD | mockup · drafts · PRD | Schritte 1, 2 und 4 von `webseite-bauen`; PRD = der Bauplan mit Unterschrift |
+| der Rohbau in der eigenen Werkstatt | le gros œuvre dans ton propre atelier | il rustico nella tua officina | the shell in your own workshop | Bild für `webseite-bauen` (P9, P10) |
+| Skizze (`design/skizze.html`) | esquisse | schizzo | sketch | die graue Startseite aus P1; in P6 wird daraus das Mockup |
+| zweite Meinung | deuxième avis | secondo parere | second opinion | P4: Prüfung des Plans in frischem Kontext gegen die feste Prüfliste |
+| Mockup (`design/mockup.html`) | maquette | mockup | mockup | P6, Skill `gestaltung`: die graue Startseite in ihrer Reihenfolge; Insel-Schritt `mockup` |
+| drei Richtungen | trois directions | tre direzioni | three directions | P6, `design/richtungen/`; Insel-Schritt `entwuerfe`, sobald das Musterblatt gesehen ist |
+| PRD (`docs/prd.md`) | PRD | PRD | PRD | P9, Skill `webseite-bauen`: der Bauplan, aus dem freigegebenen Entwurf abgeleitet, ohne eigene Unterschrift |
 | Insel (Cockpit) | île | isola | island | dort wächst pro Projekt ein Haus mit jedem Schritt |
 | Konzept (Skill `konzept`) | concept | concetto | concept | Charakter vor Farben |
 | Musterblatt | planche d'échantillons | tavola dei campioni | sample sheet | Farben, Schriften, Knöpfe und Felder auf einem Blatt |
-| Entwurf (ganze Seite zum Durchklicken, Skill `entwurf`) | ébauche | bozza | draft | das begehbare Modell vor dem Rohbau |
+| Entwurf (ganze Seite zum Durchklicken, Skill `entwurf`) | ébauche | bozza | draft | das begehbare Modell vor dem Rohbau (P7) |
+| Werkstatt (Node, npm und Git auf dem Computer) | atelier | officina | workshop | P7: vor dem Entwurf geprüft, ab da helfen Prüfskripte |
+| Attrappe (Seite eines Bausteins im Entwurf) | factice | simulazione | dummy | sieht aus wie echt, sendet aber nichts; gebaut wird sie in P9 |
 | [Platzhalter] | [à compléter] | [da completare] | [placeholder] | fehlender Text im Entwurf |
-| Freigabe zum Bauen | autorisation de construire | via libera per costruire | approval to build | Ja zum Entwurf (P8) |
+| Freigabe zum Bauen | autorisation de construire | via libera per costruire | approval to build | Ja zum Entwurf (P8); `Freigegeben zum Bauen:` bleibt deutsch |
 | Freigabe (Ja zum Livegang) | validation | approvazione | release | `Freigegeben:` bleibt deutsch (P10) |
 | Wohnort (Skill `lancieren`) | domicile (où ton site habite) | domicilio (dove abita il sito) | where it lives | Light, Pilot oder selbst |
 | selbst (Wohnort ausserhalb von Albatros) | par toi-même | da te | hosting it yourself | |
-| Betrieb (Skill `betrieb`) | exploitation | gestione | running it | Rückmeldungen, Überwachung, Sicherung |
+| Betrieb (Skill `betrieb`) | exploitation | gestione | running it | P12: Rückmeldungen, Überwachung, Sicherung, Eingang, Statistik |
+| Eingang (Baustein `eingang`) | entrée | ingresso | entrance | ein Login für alle Teile der Seite, nur mit eigenem Server und nur nach den Kriterien im Skill `bausteine`; Zeile `Eingang:` in `docs/betrieb.md` |
+| freischalten (ein Mitglied) | activer | abilitare | approve | nur die Verwaltung, im Rezept `mitglieder` das Feld `freigegeben`; nicht dasselbe wie die Freigabe einer Seite |
 | Live schalten | mise en ligne | messa online | going live | |
-| Annahme (`[Annahme]`) | hypothèse | ipotesi | assumption | Vorschlag der KI, den die Person bestätigt |
+| `[Annahme: …]` | `[Annahme: …]` (hypothèse) | `[Annahme: …]` (ipotesi) | `[Annahme: …]` (assumption) | Vorschlag der KI, den die Person bestätigt, alle Annahmen einer Phase in einer Nachricht |
+| `[offen: …]` | `[offen: …]` (ouvert) | `[offen: …]` (aperto) | `[offen: …]` (open) | was noch niemand beantwortet hat; `lage` zählt die Zeile als offen |
 | Guthaben | crédit | credito | credit | für Bilder, Freistellen und 3D (Selbstkosten plus 35 %) |
 | Charakter statt Farben | le caractère avant les couleurs | il carattere prima dei colori | character before colours | Gestaltung: zuerst Eigenschaften |
 | Verwaltung (Admin-Bereich) | administration | amministrazione | admin area | |

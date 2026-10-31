@@ -3,7 +3,7 @@ name: bausteine
 description: "Découvre avec une personne sans connaissances préalables ce que sa page doit savoir faire, et installe les briques toutes faites qui conviennent, d'abord sur son ordinateur : liste d'inscription, réservations, espace membres avec connexion et activation, tableau d'affichage (PocketBase), une entrée avec une seule connexion pour plusieurs parties ou un grand CMS (Strapi avec Postgres), avec la mémoire vive mesurée. Explique avec l'image des éléments préfabriqués dans la construction d'une maison. Utilise ce skill pour « inscription », « liste d'inscription », « réservation », « réserver un cours », « prendre rendez-vous », « enregistrer un formulaire », « connexion », « espace membres », « espace admin », « gérer les utilisateurs », « rôles », « entrée », « base de données », « Strapi », « CMS », « PocketBase », « brique », « qu'est-ce qui tient sur mon serveur ? », et quand une page doit savoir faire plus que montrer des textes et des images."
 metadata:
   stand: 0.2.0
-  quelle: '50d2db23bdea'
+  quelle: 'e164b9948100'
 ---
 
 # Briques : des éléments préfabriqués pour ta page
@@ -19,7 +19,7 @@ Et comme pour la maison : chaque élément prend de la place. C'est pourquoi tu 
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- **Ne pas seulement poser des questions :** S'il manque une information, donne quand même les étapes concrètes avec des hypothèses marquées (`[Hypothèse : …]`). Demande ce qui manque seulement à la fin.
+- **Ne pas seulement poser des questions :** S'il manque une information, donne quand même les étapes concrètes avec des hypothèses marquées `[Annahme: …]`. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert. Demande ce qui manque seulement à la fin.
 - Tutoiement, phrases courtes. Au lieu de « authentification », tu dis « se connecter avec e-mail et mot de passe », au lieu de « back-office », « administration ».
 - Ne demande jamais de mots de passe ni de clés. Le premier compte de l'administration, la personne le crée elle-même dans le navigateur web. Les clés d'API (par exemple pour les e-mails), elle les tape seulement là.
 
@@ -83,7 +83,7 @@ Avant le lancement : `free -h` sur le serveur montre combien il reste de libre. 
 
 Strapi n'a pas encore de test ni de `lokal.ts` ; ses types de contenu, tu les écris sous forme de fichiers (section 6), et on ne le voit tourner que sur le serveur. Dis-le honnêtement.
 
-**Au lancement, avec Pilot** (skill `lancieren`, après la validation de la page) :
+**Au lancement, avec Pilot** (skill `lancieren`, partie 2, après la validation de la page et avant le push au port) :
 
 1. **Photo du serveur :** outil `snapshot` avec le nom `vor-baustein` (skill `zurueck-auf-gestern`).
 2. **Brancher.** Tout en haut de `compose.yaml` :
@@ -92,8 +92,9 @@ Strapi n'a pas encore de test ni de `lokal.ts` ; ses types de contenu, tu les é
      - bausteine/pocketbase/compose.yaml
    ```
    Le site web transmet lui-même les demandes : le modèle lit chaque `bausteine/*/nginx.conf`. Si le projet est plus ancien que les briques (pas de `nginx.conf` dans le projet), va chercher `Dockerfile` et `nginx.conf` dans `vorlage/` du même dépôt.
+   **Avec connexion, l'étape entrée :** si `docs/betrieb.md` dit `Eingang: ja` (section 7), `- bausteine/eingang/compose.yaml` s'ajoute sous `include:`, et pour le service `webseite`, `ports:` et `- "80:80"` disparaissent : le site web n'est alors plus accessible que derrière l'entrée. Sans connexion, ou si les règles de PocketBase suffisent, `compose.yaml` reste comme dans le modèle. Le skill `lancieren` nomme cette étape dès le domicile.
 3. **Au port.** Le tapis roulant construit et livre (skill `pipeline`). Si la construction échoue, l'ancienne page reste en ligne.
-4. **Vérifier** sur le serveur : `docker ps` affiche la brique comme `healthy`. Ensuite le premier compte de l'administration et les e-mails (section 5).
+4. **Vérifier** sur le serveur : `docker ps` affiche la brique comme `healthy`. Avec l'entrée, tu vérifies chaque porte de l'extérieur : `node scripts/pruefen.mjs --tueren <adresse>` (chemins protégés 401, `/_/` 404, la page d'accueil 200). Ensuite le premier compte de l'administration et les e-mails (section 5).
 
 ## 5. PocketBase : liste d'inscription, réservations, membres, tableau d'affichage
 
@@ -197,7 +198,7 @@ La réponse va dans `docs/betrieb.md`, à la ligne `Eingang:`, avec la raison (s
 2. Dans `eingang.json`, inscrire l'adresse de la page (`ursprung`) et les parties : nom, cible, chemins, accès `offen` (ouvert), `angemeldet` (connecté) ou `rolle:<name>`. Les pages protégées sont dans leurs propres dossiers (`seite/intern/`).
 3. Dans `mitglieder.html`, mettre `const EINGANG = true;` : la connexion vaut alors avec un cookie pour toutes les parties.
 4. `bun bausteine/eingang/test.ts` annonce « Alles grün », puis `bun bausteine/pocketbase/lokal.ts --eingang` : la personne ouvre une page protégée sans être connectée, se connecte, revient et se déconnecte.
-5. Au lancement : dans `compose.yaml`, sous `include:`, la ligne `- bausteine/eingang/compose.yaml`, et pour le service `webseite`, effacer les lignes `ports:` et `- "80:80"`, sinon on pourrait contourner l'entrée. Ensuite, vérifier chaque porte depuis l'extérieur : `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` donne 401, `/_/` donne 404, la page d'accueil 200.
+5. Au lancement (skill `lancieren`, partie 2) : dans `compose.yaml`, sous `include:`, la ligne `- bausteine/eingang/compose.yaml`, et pour le service `webseite`, effacer les lignes `ports:` et `- "80:80"`, sinon on pourrait contourner l'entrée. Le site web n'est alors plus accessible que derrière l'entrée. Ensuite, vérifier chaque porte depuis l'extérieur : `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` donne 401, `/_/` donne 404, la page d'accueil 200.
 
 **Ce qu'elle ne sait pas faire :** derrière l'entrée, « Mes réservations » (recette `buchungen`) ne marche que par le tunnel, parce qu'elle ferme la connexion de l'administration depuis l'extérieur. Se déconnecter vaut pour un appareil ; se déconnecter partout, c'est choisir un nouveau mot de passe.
 

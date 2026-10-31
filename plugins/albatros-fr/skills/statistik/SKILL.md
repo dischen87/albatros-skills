@@ -3,7 +3,7 @@ name: statistik
 description: "Met en place avec une personne sans connaissances préalables des statistiques respectueuses de la protection des données pour son site web, avec PostHog. D'abord un petit plan des événements (quels bâtons on compte, et à quel moment exactement), puis l'intégration, un événement cible comme « demande envoyée », filtrer ses propres visites et comparer avec les vraies demandes. Utilise ce skill pour « statistiques », « compter les visiteurs », « combien de gens viennent sur mon site ? », « PostHog », « Google Analytics », « tracking », « conversion », « mesurer un événement », « d'où viennent mes visiteurs ? »."
 metadata:
   stand: 0.2.0
-  quelle: 'd7b868d6a715'
+  quelle: '8e43b3ced7ac'
 ---
 
 # Statistiques : la liste de bâtons à la porte du magasin
@@ -19,7 +19,7 @@ Les statistiques de ton site web doivent travailler exactement comme ça : peu
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées (`[Hypothèse : …]`). Ne demande ce qui manque qu'à la fin.
+- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées `[Annahme: …]`. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert. Ne demande ce qui manque qu'à la fin.
 - Tutoiement, pas de jargon. Le mot « événement » seulement après l'image de la liste de bâtons.
 - La protection des données n'est pas un accessoire. Chaque réglage qui enregistre plus sur les gens a besoin d'une raison et d'une phrase dans la déclaration de protection des données (skill `recht-ch`).
 - La personne crée elle-même le compte PostHog dans son navigateur web. Elle peut te donner la clé du projet (elle commence par `phc_`) : elle est faite pour le site web et elle est publique. Les clés API personnelles (`phx_`) n'ont jamais leur place dans le code.
@@ -28,7 +28,7 @@ Les statistiques de ton site web doivent travailler exactement comme ça : peu
 
 ### 1. D'abord la liste, ensuite l'intégration
 
-Crée avec la personne `docs/statistik.md`. Un seul événement cible suffit pour commencer : l'action qui compte pour elle (tirée de `docs/plan.md`, ligne « À quoi nous voyons le succès »).
+Crée avec la personne `docs/statistik.md`. Un seul événement cible suffit pour commencer : l'action qui compte pour elle (tirée de `docs/projekt.md`, ligne `Erfolg:`).
 
 ```markdown
 # Plan des événements

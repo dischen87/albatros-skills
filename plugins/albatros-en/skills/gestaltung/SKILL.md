@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge. In the flight plan (P6): a grey mockup (“Is the order right?”), three clearly different directions from the concept, a check against the AI look, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. Always with the question about design elements (icons, photos, mascot, 3D; image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “mascot”, “3D”."
 metadata:
   stand: 0.2.0
-  quelle: '02f75af84c9c'
+  quelle: 'fe6fcb8ce168'
 ---
 
 # Design: first the foundations, then the facade
@@ -29,7 +29,7 @@ The sections “Three directions”, “Don't look like AI”, “The colour fan
 
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - Your first answer is always the picture and the way there in five steps: in the flight plan mockup, three directions, choice, colour fan, sample sheet; for an existing site check, fix how it works, choose from three clearly different directions, set the colour fan, rebuild. If the person wants it “nicer” or “different colours”, that applies just the same. Only after that do you ask where the site is and how you get to it.
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”, short. Two questions per message at most. Every criticism needs evidence: which page, which spot, ideally a screenshot. “Looks busy” on its own doesn't count.
 - Taste is the person's call. You put forward directions and say honestly what each one does well and what its risk is.
 - The person's own requirements (logo, house colour, how they address people, mandatory texts) come before any design tip. In the flight plan they're in `docs/konzept.md` under `Muss bleiben:` (must stay).
@@ -42,7 +42,7 @@ Phase P6 “Design system with an example”. It's due once `docs/konzept.md` ha
 
 - **Result:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and `docs/designsystem.md` with the lines `Richtung:` (direction), `Farben:` (colours), `Schriften:` (fonts), `Abstände:` (spacing), `Komponenten:` (components) and `Maskottchen:` (mascot). File and line names stay German, because `lage` and the check scripts read them; the content is in English.
 - **Done when** `tokens.css` and `musterblatt.html` exist, the sample sheet uses colours, fonts and sizes only as `var(--…)` from `tokens.css`, and the person has seen it.
-- **Questions for the person:** “Is the order on the grey sketch right?”, “Which of the three directions, or which mix?”, “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” and the question about design elements. “A dark version too?” you suggest as `[Assumption: yes, light and dark]`, because many phones switch to dark at night.
+- **Questions for the person:** “Is the order on the grey sketch right?”, “Which of the three directions, or which mix?”, “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” and the question about design elements. “A dark version too?” you suggest as `[Annahme: yes, light and dark]`, because many phones switch to dark at night.
 - **Island:** `mockup` as soon as the order is right; `entwuerfe` as soon as the person has seen the sample sheet and is happy with it.
 
 **Mode:** Read `Modus:` in `docs/projekt.md` (if the line is missing, `machen`, do, applies). The learning moment of this phase is “Why colours and fonts live in one place only”: the person changes a colour in `design/tokens.css` themselves, reloads the sample sheet and sees it change everywhere. In mode `lernen` (learn) they do it themselves (then `verstanden_melden` with `mission: webseite-04-gestaltung` and `art: selbst`), and at the end you ask the check question of the lesson: “Why do colours and fonts live in one place only?” Only after their answer do you report `art: kontrollfrage`. In mode `machen` (do) you offer the learning moment and explain each step in one sentence with its picture. If the tool `verstanden_melden` is missing, you carry on without it.
@@ -55,7 +55,7 @@ The grey sketch of the home page from P1 is in `design/skizze.html`. From it you
 - Real headings and sentences from `docs/projekt.md`, `docs/plan.md` and `docs/konzept.md` (name, core), the main button with its real text (“Ask for a place”), the menu with all pages from `Seiten:`.
 - One file with no links to the web; it opens with a double-click.
 
-Open it and ask only: “Is the order on the grey sketch right?” Why: structure before looks. Change it until it's right. Then you create `docs/designsystem.md` (template in step 4) with `Richtung: [open: choice of direction] · order confirmed on <DD.MM.YYYY>`, the other lines with `[open: …]`, and report `mockup` (section “The island”).
+Open it and ask only: “Is the order on the grey sketch right?” Why: structure before looks. Change it until it's right. Then you create `docs/designsystem.md` (template in step 4) with `Richtung: [offen: choice of direction] · order confirmed on <DD.MM.YYYY>`, the other lines with `[offen: …]`, and report `mockup` (section “The island”).
 
 ### 2. Three directions on the mockup
 
@@ -161,7 +161,7 @@ Instead: one single signature mark, used sparingly (a stroke under one word in t
 
 ## The colour fan (tokens)
 
-One file `tokens.css` with CSS variables: colours for light and dark, fonts, font sizes, spacing, rounded corners and shadows. In the flight plan it lives in `design/tokens.css`, for a built site in `web/src/styles/tokens.css`. One sentence of comment per block saying why. Rules:
+One file `tokens.css` with CSS variables: colours for light and dark, fonts, font sizes, spacing, rounded corners and shadows. It lives in `design/tokens.css`, even once the site is built: the layout includes it from there (skill `webseite-bauen`); there's no copy under `web/`. One sentence of comment per block saying why. Rules:
 
 - One action colour for everything clickable, and nowhere else.
 - Calculate contrast, don't estimate it: text at least 4.5 : 1, buttons and borders at least 3 : 1 (formula in the skill `barrierefreiheit`). Colours as hex (`#1d1b18`), the contrast as a comment on the same line, always with the colour it's measured against: `/* 16,0 : 1 on --hell-grund */`. That way it can be recalculated; `entwurf-pruefen.mjs` (skill `entwurf`) does that for every comment.
@@ -219,7 +219,7 @@ Once the direction is settled, you always ask: “Would you like any design elem
 
 **Plain doesn't mean without pictures.** If the person wants no icons, illustrations or characters, you still suggest a real photo for the header of the home page (the place, people in action) and give them the photo list. A photo is content, not decoration. If they don't have one yet, the header carries the most important content instead of a colour block with a heading (for example the next date, large), and the photo list goes under “Open” (in the flight plan in `docs/inhalte.md`, otherwise in `docs/gestaltung/richtungen.md`). If they don't want photos either, their sentence goes there.
 
-Whatever the person picks goes into the design system (in the flight plan `docs/designsystem.md`, otherwise `docs/gestaltung/richtungen.md`) and into the colour fan (sizes, spacing, rules).
+Whatever the person picks goes into the design system (`docs/designsystem.md`) and into the colour fan (sizes, spacing, rules).
 
 **With Albatros**, pictures, cut-out characters and 3D models are made with the Albatros tools, paid from the person's credit (cost price plus 35 %):
 
@@ -242,7 +242,7 @@ If you can't see the site yet (no project in the folder, no address), first expl
 
 ### 0. Frame (5 minutes)
 
-Take from `docs/plan.md` (skill `webseite-planen`): who it's for, the main thing for visitors, the pages. Also ask: What has to stay (logo, colour, font, texts)? Create `docs/gestaltung/`.
+Take from `docs/projekt.md` and `docs/plan.md` (skill `webseite-planen`): who it's for (`Für wen:`), the main thing for visitors (`Hauptsache:`), the pages (`Seiten:`). Also ask: What has to stay (logo, colour, font, texts)? Create `docs/gestaltung/`.
 
 ### 1. Check from three angles (read only, change nothing)
 
@@ -269,11 +269,11 @@ Put everything the person has to decide in front of them in one go (with your re
 
 ### 3. Three directions
 
-Following the section “Three directions”, with two or three pages of the existing site. `docs/gestaltung/richtungen.md`: at the top the line `Entscheid: <direction or mix> (<date>)` (“Entscheid” means decision; keep the word `Entscheid:` exactly as it is), below it the diagnosis and one table per direction (idea, font, colours, shapes, strength, risk), plus the line `AI traits checked: …`. The drafts as HTML files in `docs/gestaltung/entwuerfe/`, so the person can open them in the browser.
+Following the section “Three directions”, with two or three pages of the existing site. `docs/gestaltung/richtungen.md`: at the top the line `Entscheid: <direction or mix> (<date>)` (“Entscheid” means decision; keep the word `Entscheid:` exactly as it is), below it the diagnosis and one table per direction (idea, font, colours, shapes, strength, risk), plus the line `AI traits checked: …`. The directions as HTML files in `design/richtungen/`, as in the flight plan, so the person can open them in the browser.
 
 ### 4. The colour fan
 
-Following the section “The colour fan (tokens)”, in `web/src/styles/tokens.css`. Together with the question about design elements (section “Design elements”).
+Following the section “The colour fan (tokens)”, in `design/tokens.css`, with `docs/designsystem.md` as in the flight plan (step 4 above); the skill `webseite-aendern` builds on them later. If an older site still has its tokens in `web/src/styles/tokens.css`, you move them over while you're at it: the layout only includes `design/tokens.css` from then on, and the old file goes. Together with the question about design elements (section “Design elements”).
 
 ### 5. Rebuild
 

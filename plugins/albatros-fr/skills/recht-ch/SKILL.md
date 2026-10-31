@@ -3,7 +3,7 @@ name: recht-ch
 description: "Met en ordre sur le plan juridique un petit site web suisse, expliqué à des personnes sans connaissances préalables avec l'image de la plaque de sonnette et du règlement de maison : mentions légales (impressum, art. 3, al. 1, let. s, LCD), déclaration de protection des données selon la LPD révisée (devoir d'informer, art. 19), cookies (art. 45c LTC), connexion avec login (cookie, journaux, délais), quand le RGPD de l'UE s'ajoute, droits sur les images, e-mails publicitaires seulement avec consentement. Pas de conseil juridique. Utilise ce skill pour « impressum », « mentions légales », « protection des données », « déclaration de protection des données », « LPD », « RGPD », « bannière cookies », « est-ce que j'en ai besoin légalement ? », « qu'est-ce qui doit figurer sur mon site ? », « formulaire de contact et protection des données », « connexion et protection des données »."
 metadata:
   stand: 0.2.0
-  quelle: 'd709bb4002f0'
+  quelle: '4dba3685a5f0'
 ---
 
 # Droit CH : la plaque de sonnette et le règlement de maison
@@ -19,7 +19,7 @@ metadata:
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées (`[Hypothèse : …]`). Ne demande ce qui manque qu'à la fin.
+- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon avec des hypothèses marquées `[Annahme: …]`. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert. Ne demande ce qui manque qu'à la fin.
 - Tutoiement, simple mais précis : cite la loi et l'article.
 - Dis toujours : « Ce n'est pas un conseil juridique. En cas de doute, de données sensibles (santé, enfants) ou de gros chiffre d'affaires, ça vaut la peine de consulter un ou une spécialiste. »
 - Ne copie jamais à l'aveugle un modèle trouvé sur Internet. Chaque phrase doit correspondre au site. Une déclaration qui cite des services qui n'existent pas, ou qui oublie les vrais, est fausse.
@@ -83,11 +83,11 @@ Uniquement des images à toi ou sous licence. Des personnes reconnaissables seul
 
 ### 8. Construire et relier les pages
 
-Mentions légales et protection des données comme pages à part, accessibles depuis le pied de chaque page. Journal de bord et tapis roulant (skills `git-logbuch`, `pipeline`). Note dans `docs/plan.md` : « Vérifier la déclaration de protection des données quand un nouveau service s'ajoute. »
+Mentions légales et protection des données comme pages à part, accessibles depuis le pied de chaque page. Une inscription dans le journal de bord (skill `git-logbuch`) ; en ligne, elles vont avec tout le site à la mise en ligne (skill `lancieren`). Note dans `docs/plan.md` : « Vérifier la déclaration de protection des données quand un nouveau service s'ajoute. »
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-07-recht-ch`. La vérification regarde si `https://{name}.aufwind.sh/impressum` et `/datenschutz` répondent.
+`mission_pruefen` avec `webseite-07-recht-ch`. La vérification regarde sur l'île si le projet est au moins à l'étape « Prüfung » (vérification ; skill `webseite-bauen`, étape 5) : les mentions légales et la protection des données tournent sur l'ordinateur et sont liées dans le pied de chaque page. De l'extérieur, tu vérifies les deux à la mise en ligne (`pruefen.mjs --live`, skill `lancieren`).
 
 ## Message final
 

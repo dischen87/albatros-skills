@@ -3,7 +3,7 @@ name: bausteine
 description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti, prima sul suo computer: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso e abilitazione, bacheca (PocketBase), un ingresso con un solo accesso per più parti o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «ruoli», «ingresso», «banca dati», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 metadata:
   stand: 0.2.0
-  quelle: '50d2db23bdea'
+  quelle: 'e164b9948100'
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -18,7 +18,7 @@ E come per la casa: ogni elemento ha bisogno di spazio. Per questo prima guardi 
 
 ## Come parli
 
-- **Non limitarti a chiedere:** Se manca un dato, dai comunque i passi concreti con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca un dato, dai comunque i passi concreti con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Dai del tu, frasi brevi. Invece di «autenticazione» dici «accedere con e-mail e password», invece di «pannello admin» dici «amministrazione».
 - Non chiedere mai password o chiavi. Il primo account dell'amministrazione lo crea la persona stessa nel browser. Le chiavi API (per esempio per le e-mail) le digita solo lì.
@@ -83,7 +83,7 @@ Prima del lancio: `free -h` sul server mostra quanto è libero. Dopo: `docker st
 
 Strapi non ha ancora un test né `lokal.ts`; i suoi tipi di contenuto li scrivi come file (sezione 6), e lo si vede girare solo sul server. Dillo onestamente.
 
-**Al lancio, con Pilot** (skill `lancieren`, dopo l'approvazione del sito):
+**Al lancio, con Pilot** (skill `lancieren`, parte 2, dopo l'approvazione del sito e prima del push nel porto):
 
 1. **Foto del server:** strumento `snapshot` con il nome `vor-baustein` (skill `zurueck-auf-gestern`).
 2. **Agganciare.** In `compose.yaml`, proprio in cima:
@@ -92,8 +92,9 @@ Strapi non ha ancora un test né `lokal.ts`; i suoi tipi di contenuto li scrivi 
      - bausteine/pocketbase/compose.yaml
    ```
    Il sito inoltra da solo le richieste: il modello legge ogni `bausteine/*/nginx.conf`. Se il progetto è più vecchio dei blocchi (nessun `nginx.conf` nel progetto), prendi `Dockerfile` e `nginx.conf` da `vorlage/` nello stesso repository.
+   **Con accesso, il passo ingresso:** se in `docs/betrieb.md` c'è `Eingang: ja` (sezione 7), sotto `include:` si aggiunge `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` spariscono `ports:` e `- "80:80"`: allora il sito è raggiungibile solo dietro l'ingresso. Senza accesso, o se bastano le regole di PocketBase, `compose.yaml` resta come nel modello. Lo skill `lancieren` nomina questo passo già al domicilio.
 3. **Al porto.** Il nastro trasportatore costruisce e consegna (skill `pipeline`). Se la costruzione non riesce, il vecchio sito resta online.
-4. **Verificare** sul server: `docker ps` mostra il blocco come `healthy`. Poi il primo account dell'amministrazione e le e-mail (sezione 5).
+4. **Verificare** sul server: `docker ps` mostra il blocco come `healthy`. Con l'ingresso verifichi ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren <indirizzo>` (percorsi protetti 401, `/_/` 404, la pagina iniziale 200). Poi il primo account dell'amministrazione e le e-mail (sezione 5).
 
 ## 5. PocketBase: lista di iscrizione, prenotazioni, membri, bacheca
 
@@ -197,7 +198,7 @@ La risposta va in `docs/betrieb.md`, alla riga `Eingang:`, con il motivo (skill 
 2. In `eingang.json` inserire l'indirizzo del sito (`ursprung`) e le parti: nome, destinazione, percorsi, accesso `offen` (aperto), `angemeldet` (con accesso) o `rolle:<name>`. Le pagine protette stanno in cartelle proprie (`seite/intern/`).
 3. In `mitglieder.html` impostare `const EINGANG = true;`: l'accesso vale allora con un cookie per tutte le parti.
 4. `bun bausteine/eingang/test.ts` segnala «Alles grün», poi `bun bausteine/pocketbase/lokal.ts --eingang`: la persona apre una pagina protetta senza accesso, accede, torna indietro ed esce.
-5. Al lancio: in `compose.yaml` sotto `include:` la riga `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` cancellare le righe `ports:` e `- "80:80"`, altrimenti si potrebbe aggirare l'ingresso. Poi verificare ogni porta dall'esterno: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` dà 401, `/_/` dà 404, la pagina iniziale 200.
+5. Al lancio (skill `lancieren`, parte 2): in `compose.yaml` sotto `include:` la riga `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` cancellare le righe `ports:` e `- "80:80"`, altrimenti si potrebbe aggirare l'ingresso. Il sito è allora raggiungibile solo dietro l'ingresso. Poi verificare ogni porta dall'esterno: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` dà 401, `/_/` dà 404, la pagina iniziale 200.
 
 **Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'accesso dell'amministrazione. Uscire vale per un dispositivo; uscire ovunque vuol dire impostare una nuova password.
 

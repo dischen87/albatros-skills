@@ -23,7 +23,7 @@ Da te il nastro parte appena mandi una voce al porto (skill `git-logbuch`). L'op
 ## Come parli
 
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate `[Annahme: …]`. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto. Chiedi solo alla fine quello che manca.
 - Dai del tu. Percorri con la persona il file del workflow stazione per stazione, prima che giri.
 - Il nastro trasportatore non ha bisogno di nessuna chiave e di nessun segreto della persona: l'operaio abita già sul suo server. La sua chiave di casa non va mai nel nastro trasportatore.
 - Se il nastro è rosso: elimina la causa, non spegnere mai la verifica.

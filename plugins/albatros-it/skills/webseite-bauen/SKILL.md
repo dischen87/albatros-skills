@@ -17,7 +17,7 @@ La bozza è il modello in cui si può entrare, e la persona l'ha approvato. Ades
 ## Come parli
 
 - Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
-- Gli inizi di riga nei file di `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restano in tedesco: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
+- Gli inizi di riga nei file di `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restano in tedesco, come i segni `[Annahme: …]` e `[offen: …]`: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
 - L'ordine è fisso. Si costruisce solo quando `pruefen.mjs --vor-bau` trova il via libera per costruire, e solo ciò che sta nella bozza. Se qualcosa deve essere diverso dalla bozza, lo dici alla persona prima di costruirlo.
 - In questo skill niente va online e niente in un porto. Tutto resta sul computer della persona e da Albatros non costa niente.
 - Proponi il prossimo passo e lo fai. La persona non deve mai sapere che cosa viene dopo.
