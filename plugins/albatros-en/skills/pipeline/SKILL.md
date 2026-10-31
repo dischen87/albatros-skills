@@ -3,7 +3,7 @@ name: pipeline
 description: "Explains CI/CD to someone with no background using the picture of the conveyor belt with quality control, and sets it up: a workflow in the Albatros harbour (Forgejo, code.aufwind.sh) starts on every push to main. The worker (runner) on their own server builds the site, delivers it with a health check, checks it through the public address and otherwise jumps back to the last good version. Use this skill for “pipeline”, “CI/CD”, “GitHub Actions”, “Forgejo Actions”, “workflow”, “runner”, “deploy automatically”, “deploying”, “how does my change get onto the server?”, “the conveyor belt is red”, “my build is failing”, “deploy failed”."
 metadata:
   stand: 0.2.0
-  quelle: 'c4476789bb24'
+  quelle: '4148e0142beb'
 ---
 
 # Pipeline: the conveyor belt with quality control
@@ -32,9 +32,9 @@ For you, the belt starts as soon as you send an entry to the harbour (skill `git
 
 ### 1. What's already there
 
-**With Light** there's no conveyor belt: after every push, Albatros puts the folder `seite/` from `main` straight on display, with no build and no check. Explain the picture anyway. The belt with quality control belongs to Pilot (`upgrade_link`, plan `pilot`). The file `deploy.yml` from the template sleeps on Light. When switching to Pilot, Albatros turns the belt on and runs it once straight away, so that your own server delivers the site. The mission `flugschule-05-pipeline` belongs to Pilot.
+**With Light** there's no conveyor belt: after every push, Albatros puts the folder `seite/` from `main` straight on display, with no build and no check. Explain the picture anyway. The belt with quality control belongs to Pilot; it's chosen together with where the site lives (skill `lancieren`). The file `deploy.yml` from the template sleeps on Light. When switching to Pilot, Albatros turns the belt on and runs it once straight away, so that your own server delivers the site. The mission `flugschule-05-pipeline` belongs to Pilot.
 
-**With Pilot:** `konto_status` gives the name of the server, the address of the harbour (`git@aufwind.sh:{name}/projekt.git`) and whether the worker is ready. Don't ask the person for these. The Albatros template already brings `.github/workflows/deploy.yml`, `compose.yaml` and `Dockerfile`: read them with the person and compare them with the core below. If they're missing, create them, even if the folder is still empty, and then say what's still missing (logbook in the harbour, content of the site).
+**With Pilot:** `konto_status` gives the name of the server, the address of the harbour (`git@aufwind.sh:{name}/projekt.git`) and whether the worker is ready. Don't ask the person for these. The Albatros template already brings `.github/workflows/deploy.yml`, `compose.yaml` and `Dockerfile`; on the website path they come into the logbook when going live, once it's connected to the harbour (skill `lancieren`, part 2). Read them with the person and compare them with the core below. If they're missing, create them, even if the folder is still empty, and then say what's still missing (logbook in the harbour, content of the site).
 
 The web server container is called `webseite` and listens on port 80 inside the server. Albatros routes `https://{name}.aufwind.sh` there. On a fresh server the welcome page (service `willkommen`) takes up port 80. The conveyor belt switches it off before the first start. If you start by hand once, first run `sudo systemctl disable --now willkommen`.
 
@@ -113,6 +113,8 @@ jobs:
 Explain it station by station. Nothing on the server gets changed by hand: the state always comes from the logbook. The `.env` on the server stays untouched (skill `sicherheit`). If a step ever does need a secret, it goes into the harbour's safe (in the repo under Settings, Actions, Secrets) and reaches the command in the workflow only through `env:`, never directly as `${{ secrets.… }}` in a `run` line.
 
 ### 3. First run
+
+On the website path the belt runs for the first time when going live, with the released site (skill `lancieren`, part 2).
 
 1. Make an entry in the logbook and push (skill `git-logbuch`).
 2. Watch in the browser: `https://code.aufwind.sh/{name}/projekt/actions`.

@@ -3,7 +3,7 @@ name: sicherheit
 description: "Makes a project secure together with someone with no background, using the picture of a house with a key ring, a safe, windows and locks: secrets never go into the logbook (Git) but into .env on the server (and, if the conveyor belt needs one, into the harbour's safe); keys published by accident get recreated straight away; one key per purpose; only the doors you need stay open; updates. Use this skill for “security”, “password in the code”, “API key”, “.env”, “secret”, “I pushed a key to GitHub”, “I leaked my API key”, “is my site secure?”, “I've been hacked”, “updates”, “firewall”, and before a new secret goes into the project."
 metadata:
   stand: 0.2.0
-  quelle: 'b5f2e84f617a'
+  quelle: '51d4dfe6fcfe'
 ---
 
 # Security: don't leave the key under the doormat
@@ -82,7 +82,7 @@ On Albatros, the platform takes care of the front door (firewall, protection aga
 
 ### 7. Check the mission
 
-Logbook and conveyor belt (skills `git-logbuch`, `pipeline`), then `mission_pruefen` with `flugschule-07-sicherheit`. The check looks at whether `.gitignore` in the project contains `.env` (with Pilot in `~/projekt` on the server, with Light in the harbour).
+An entry in the logbook (skill `git-logbuch`); it reaches the harbour with the next push, on the website path when going live (skill `lancieren`). Then `mission_pruefen` with `flugschule-07-sicherheit`. The check looks at whether `.gitignore` in the project contains `.env` (with Pilot in `~/projekt` on the server, with Light in the harbour). If the person hosts the site themselves, Albatros can't check it.
 
 ## If something has happened
 

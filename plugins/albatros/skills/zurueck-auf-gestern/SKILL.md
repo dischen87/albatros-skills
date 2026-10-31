@@ -17,7 +17,9 @@ Wichtig: Alles, was nach dem Foto dazugekommen ist, ist danach weg. Darum ist da
 
 **So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
 
-**Fotos des Servers gibt es nur mit Pilot.** Mit Light gibt es keinen Server, zurück geht es über das Logbuch: `git log --oneline` zeigt die Einträge, `git revert <eintrag>` nimmt einen Eintrag als neuen Eintrag zurück, dann `git push`. Kurz danach ist die alte Seite wieder online. Nie `git push --force`.
+**Fotos des Servers gibt es nur mit Pilot.** Mit Light gibt es keinen Server, zurück geht es über das Logbuch: `git log --oneline` zeigt die Einträge, `git revert <eintrag>` nimmt einen Eintrag als neuen Eintrag zurück, dann `git push`. Kurz danach ist die alte Seite wieder online. Nie `git push --force`. Wohnt die Seite selbst, gilt dasselbe mit dem Logbuch; mit eigenem Server zählen dazu die eigenen Sicherungen (Skill `landung`).
+
+**Wann:** Wie es auf gestern zurückgeht, wird beim Betrieb vorbereiten geklärt und einmal ausprobiert (Skill `betrieb`, Phase P12), bevor die Seite live geht.
 
 ## So sprichst du
 
@@ -43,7 +45,7 @@ Eigene Fotos: höchstens fünf, sie verfallen nach 30 Tagen. Namen, die mit `tae
 Diese Übung ist die Mission. Sie nimmt die Angst vor Fehlern.
 
 1. Foto machen: `snapshot` mit Namen `vor-der-uebung`.
-2. Seite im Browser öffnen: `https://{name}.aufwind.sh`. Sie läuft.
+2. Seite im Browser öffnen: `https://{name}.aufwind.sh`. Sie läuft (vor dem Live schalten ist es die Vorlage von Albatros).
 3. Kaputt machen (die Person tippt selbst):
    ```bash
    ssh {name}@aufwind.sh 'docker rm -f webseite'

@@ -3,7 +3,7 @@ name: pipeline
 description: "Spiega la CI/CD a una persona senza conoscenze tecniche con l'immagine del nastro trasportatore con controllo qualità e lo configura: un workflow nel porto di Albatros (Forgejo, code.aufwind.sh) parte a ogni push su main. L'operaio (runner) sul proprio server costruisce la pagina, la consegna con un controllo di salute, la verifica dall'indirizzo pubblico e altrimenti torna all'ultima versione buona. Usa lo skill con «pipeline», «CI/CD», «GitHub Actions», «Forgejo Actions», «workflow», «runner», «pubblicare in automatico», «fare il deploy», «come arriva la mia modifica sul server?», «il nastro è rosso», «il deploy non è andato a buon fine», «deploy fallito»."
 metadata:
   stand: 0.2.0
-  quelle: 'c4476789bb24'
+  quelle: '4148e0142beb'
 ---
 
 # Pipeline: il nastro trasportatore con controllo qualità
@@ -32,9 +32,9 @@ Da te il nastro parte appena mandi una voce al porto (skill `git-logbuch`). L'op
 
 ### 1. Cosa c'è già
 
-**Con Light** non c'è nessun nastro trasportatore: dopo ogni push Albatros mette in vetrina direttamente la cartella `seite/` da `main`, senza costruire e senza verifica. Spiega comunque l'immagine. Il nastro con controllo qualità fa parte di Pilot (`upgrade_link`, livello `pilot`). Il file `deploy.yml` del modello dorme con Light. Al passaggio a Pilot, Albatros accende il nastro e lo fa girare subito una volta, così è il proprio server a consegnare la pagina. La missione `flugschule-05-pipeline` fa parte di Pilot.
+**Con Light** non c'è nessun nastro trasportatore: dopo ogni push Albatros mette in vetrina direttamente la cartella `seite/` da `main`, senza costruire e senza verifica. Spiega comunque l'immagine. Il nastro con controllo qualità fa parte di Pilot; si sceglie con il domicilio (skill `lancieren`). Il file `deploy.yml` del modello dorme con Light. Al passaggio a Pilot, Albatros accende il nastro e lo fa girare subito una volta, così è il proprio server a consegnare la pagina. La missione `flugschule-05-pipeline` fa parte di Pilot.
 
-**Con Pilot:** `konto_status` indica il nome del server, l'indirizzo del porto (`git@aufwind.sh:{name}/projekt.git`) e se l'operaio è pronto. Non chiederlo alla persona. Il modello di Albatros porta già con sé `.github/workflows/deploy.yml`, `compose.yaml` e `Dockerfile`: leggili con la persona e confrontali con il nucleo qui sotto. Se mancano li crei tu, anche se la cartella è ancora vuota, e poi dici cosa manca ancora (diario di bordo nel porto, contenuto della pagina).
+**Con Pilot:** `konto_status` indica il nome del server, l'indirizzo del porto (`git@aufwind.sh:{name}/projekt.git`) e se l'operaio è pronto. Non chiederlo alla persona. Il modello di Albatros porta già con sé `.github/workflows/deploy.yml`, `compose.yaml` e `Dockerfile`; sul percorso sito web arrivano nel diario di bordo alla messa online, quando viene collegato al porto (skill `lancieren`, parte 2). Leggili con la persona e confrontali con il nucleo qui sotto. Se mancano li crei tu, anche se la cartella è ancora vuota, e poi dici cosa manca ancora (diario di bordo nel porto, contenuto della pagina).
 
 Il container del server web si chiama `webseite` e nel server ascolta sulla porta 80. Albatros indirizza lì `https://{name}.aufwind.sh`. Su un server appena creato la pagina di benvenuto (servizio `willkommen`) occupa la porta 80. Il nastro trasportatore la spegne prima del primo avvio. Se una volta avvii a mano, prima `sudo systemctl disable --now willkommen`.
 
@@ -111,6 +111,8 @@ jobs:
 Spiega stazione per stazione. Sul server non si cambia niente a mano: lo stato viene sempre dal diario di bordo. Il file `.env` sul server resta intatto (skill `sicherheit`). Se un passo ha comunque bisogno di un segreto, questo va nella cassaforte del porto (nel repo alla voce Impostazioni, Actions, Secrets) e nel workflow arriva al comando solo tramite `env:`, mai direttamente come `${{ secrets.… }}` in una riga `run`.
 
 ### 3. Il primo giro
+
+Sul percorso sito web il nastro gira per la prima volta alla messa online, con il sito approvato (skill `lancieren`, parte 2).
 
 1. Voce nel diario di bordo, push (skill `git-logbuch`).
 2. Guardare nel browser: `https://code.aufwind.sh/{name}/projekt/actions`.

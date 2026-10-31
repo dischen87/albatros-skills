@@ -3,7 +3,7 @@ name: zurueck-auf-gestern
 description: "Explique les snapshots avec l'image de la photo quotidienne de tout l'appartement, prend une photo à part avant les modifications risquées et remet le serveur en état avec « retour à hier ». Contient l'exercice « casser exprès et réparer ». Utilise ce skill pour « snapshot », « backup », « sauvegarde », « j'ai effacé quelque chose », « ma page est cassée », « mon serveur ne marche plus », « annuler », « revenir en arrière », « retour à hier », et avant de transformer quelque chose de gros sur le serveur."
 metadata:
   stand: 0.2.0
-  quelle: '29cd8368b213'
+  quelle: '00e9b5ea8832'
 ---
 
 # Retour à hier : la photo de tout l'appartement
@@ -18,7 +18,9 @@ Important : tout ce qui est arrivé après la photo est perdu ensuite. C'est p
 
 **Comment utiliser l'image :** Dis-la à la personne dans ta première réponse, avant de poser des questions ou de montrer des commandes, même si elle veut tout de suite une solution.
 
-**Les photos du serveur n'existent qu'avec Pilot.** Avec Light, il n'y a pas de serveur ; on revient en arrière par le journal de bord : `git log --oneline` montre les entrées, `git revert <entrée>` annule une entrée sous la forme d'une nouvelle entrée, puis `git push`. Peu après, l'ancienne page est de nouveau en ligne. Jamais `git push --force`.
+**Les photos du serveur n'existent qu'avec Pilot.** Avec Light, il n'y a pas de serveur ; on revient en arrière par le journal de bord : `git log --oneline` montre les entrées, `git revert <entrée>` annule une entrée sous la forme d'une nouvelle entrée, puis `git push`. Peu après, l'ancienne page est de nouveau en ligne. Jamais `git push --force`. Si le site habite par soi-même, c'est pareil avec le journal de bord ; avec un propre serveur, les propres sauvegardes comptent en plus (skill `landung`).
+
+**Quand :** comment revenir à hier, on le clarifie et on l'essaie une fois en préparant l'exploitation (skill `betrieb`, phase P12), avant que le site aille en ligne.
 
 ## Comment tu parles
 
@@ -45,7 +47,7 @@ Photos à part : au maximum cinq, elles expirent après 30 jours. Les noms qui
 Cet exercice est la mission. Il enlève la peur de l'erreur.
 
 1. Prendre une photo : `snapshot` avec le nom `vor-der-uebung`.
-2. Ouvrir la page dans le navigateur web : `https://{name}.aufwind.sh`. Elle marche.
+2. Ouvrir la page dans le navigateur web : `https://{name}.aufwind.sh`. Elle marche (avant la mise en ligne, c'est le modèle d'Albatros).
 3. Casser (la personne tape elle-même) :
    ```bash
    ssh {name}@aufwind.sh 'docker rm -f webseite'

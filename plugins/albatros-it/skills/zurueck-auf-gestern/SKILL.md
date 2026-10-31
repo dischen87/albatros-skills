@@ -3,7 +3,7 @@ name: zurueck-auf-gestern
 description: "Spiega gli snapshot con l'immagine della foto quotidiana di tutto l'appartamento, prima di modifiche rischiose scatta una foto propria e con il «ritorno a ieri» rimette in piedi il server. Contiene l'esercizio «rompere apposta e riparare». Usa lo skill con «snapshot», «backup», «ho cancellato qualcosa», «il sito è rotto», «la pagina non va più», «il server non funziona più», «annullare», «tornare indietro», «ritorno a ieri», e prima di fare un grosso cambiamento sul server."
 metadata:
   stand: 0.2.0
-  quelle: '29cd8368b213'
+  quelle: '00e9b5ea8832'
 ---
 
 # Ritorno a ieri: la foto di tutto l'appartamento
@@ -18,7 +18,9 @@ Importante: tutto quello che si è aggiunto dopo la foto, dopo non c'è più. Pe
 
 **Come usi l'immagine:** dilla alla persona nella tua prima risposta, prima di fare domande o mostrare comandi, anche se vuole subito una soluzione.
 
-**Le foto del server ci sono solo con Pilot.** Con Light non c'è nessun server, si torna indietro con il diario di bordo: `git log --oneline` mostra le voci, `git revert <voce>` annulla una voce con una voce nuova, poi `git push`. Poco dopo la vecchia pagina è di nuovo online. Mai `git push --force`.
+**Le foto del server ci sono solo con Pilot.** Con Light non c'è nessun server, si torna indietro con il diario di bordo: `git log --oneline` mostra le voci, `git revert <voce>` annulla una voce con una voce nuova, poi `git push`. Poco dopo la vecchia pagina è di nuovo online. Mai `git push --force`. Se il sito abita da te, vale lo stesso con il diario di bordo; con un server proprio contano in più le proprie copie di sicurezza (skill `landung`).
+
+**Quando:** come si torna a ieri si chiarisce e si prova una volta preparando la gestione (skill `betrieb`, fase P12), prima che il sito vada online.
 
 ## Come parli
 
@@ -45,7 +47,7 @@ Foto proprie: al massimo cinque, scadono dopo 30 giorni. I nomi che iniziano con
 Questo esercizio è la missione. Toglie la paura degli errori.
 
 1. Scatta una foto: `snapshot` con il nome `vor-der-uebung`.
-2. Apri la pagina nel browser: `https://{name}.aufwind.sh`. Funziona.
+2. Apri la pagina nel browser: `https://{name}.aufwind.sh`. Funziona (prima della messa online è il modello di Albatros).
 3. Rompila (la persona scrive lei stessa):
    ```bash
    ssh {name}@aufwind.sh 'docker rm -f webseite'
