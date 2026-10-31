@@ -37,7 +37,7 @@ Vier Stufen, immer die einfachste nehmen, die reicht:
 | C: kleine Pinnwand | PocketBase auf dem Server, Einträge mit Titel, Datum, Text und Bild | andere pflegen News oder Termine, wenige Felder, kaum Speicher (etwa 20 MB) |
 | D: grosses CMS | Strapi mit eigener Datenbank auf dem Server | viele Inhaltstypen, mehrere Rollen, Bilderverwaltung, später auch eine App (etwa 200 MB, Bau bis 2,5 GB) |
 
-Ist A oder B die Antwort: Schreib das in `docs/plan.md` und hör hier auf. Das ist ein gutes Ergebnis. C und D brauchen einen eigenen Server, also Pilot. Mit Light gehen A und B. C und D sind fertige Bausteine, du baust sie mit dem Skill `bausteine` ein (Rezept `pinnwand` oder Baustein `strapi`).
+Ist A oder B die Antwort: Schreib das in `docs/plan.md` in die Zeile `Pflege:` und hör hier auf. Das ist ein gutes Ergebnis. C und D brauchen einen eigenen Server, also Pilot. Mit Light gehen A und B. C und D sind fertige Bausteine, du baust sie mit dem Skill `bausteine` ein (Rezept `pinnwand` oder Baustein `strapi`).
 
 ## 2. Strapi einrichten (Stufe D)
 

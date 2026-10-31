@@ -15,7 +15,7 @@ Das Terminal ist die Gegensprechanlage: Du sagst einen kurzen Satz, die Wohnung 
 
 **So setzt du das Bild ein:** Sag es der Person in deiner ersten Antwort, bevor du Fragen stellst oder Befehle zeigst, auch wenn sie gleich eine Lösung will.
 
-**Nur mit Pilot.** Mit Light gibt es keine eigene Wohnung, nur ein Schaufenster: die Seite aus dem Logbuch. Zeigt `konto_status` eine andere Stufe, erklär kurz, was ein eigener Server dazu bringt, und hol nur auf Wunsch mit `upgrade_link` (Stufe `pilot`) den Link.
+**Nur mit Pilot.** Mit Light gibt es keine eigene Wohnung, nur ein Schaufenster: die Seite aus dem Logbuch. Zeigt `konto_status` eine andere Stufe, erklär kurz, was ein eigener Server dazu bringt. Gewählt wird er mit dem Wohnort (Skill `lancieren`, Teil 1): Erst dort und erst nach der Wahl der Person holst du den Link mit `upgrade_link`, nie vorher.
 
 ## So sprichst du
 

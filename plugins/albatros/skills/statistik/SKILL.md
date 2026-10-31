@@ -26,7 +26,7 @@ Genau so soll die Statistik deiner Webseite arbeiten: wenige, klar benannte Stri
 
 ### 1. Erst die Liste, dann der Einbau
 
-Leg mit der Person `docs/statistik.md` an. Ein Ziel-Ereignis reicht für den Anfang: die Handlung, die für sie zählt (aus `docs/plan.md`, «Woran wir Erfolg merken»).
+Leg mit der Person `docs/statistik.md` an. Ein Ziel-Ereignis reicht für den Anfang: die Handlung, die für sie zählt (aus `docs/projekt.md`, Zeile `Erfolg:`).
 
 ```markdown
 # Ereignis-Plan

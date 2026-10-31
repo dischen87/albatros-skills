@@ -3,7 +3,7 @@ name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito. Nel piano di volo (P6): mockup grigio («L'ordine è giusto?»), tre direzioni chiaramente diverse dal concetto, controllo contro l'aspetto da IA, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Sempre con la domanda sugli elementi grafici (icone, foto, mascotte, 3D; strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «mascotte», «3D»."
 metadata:
   stand: 0.2.0
-  quelle: '02f75af84c9c'
+  quelle: 'fe6fcb8ce168'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -161,7 +161,7 @@ Invece: un unico segno distintivo, usato con parsimonia (una linea sotto una par
 
 ## La mazzetta dei colori (token)
 
-Un file `tokens.css` con variabili CSS: colori per chiaro e scuro, caratteri, dimensioni dei caratteri, spaziature, arrotondamenti e ombre. Nel piano di volo sta in `design/tokens.css`, per un sito costruito in `web/src/styles/tokens.css`. Per ogni blocco una frase di commento sul perché. Regole:
+Un file `tokens.css` con variabili CSS: colori per chiaro e scuro, caratteri, dimensioni dei caratteri, spaziature, arrotondamenti e ombre. Sta in `design/tokens.css`, anche quando il sito è costruito: il layout lo include da lì (skill `webseite-bauen`), una copia sotto `web/` non c'è. Per ogni blocco una frase di commento sul perché. Regole:
 
 - Un colore d'azione per tutto ciò che si può cliccare, e da nessun'altra parte.
 - Calcola il contrasto, non stimarlo: testo almeno 4,5 : 1, pulsanti e bordi almeno 3 : 1 (formula nello skill `barrierefreiheit`). I colori in esadecimale (`#1d1b18`), il contrasto come commento sulla stessa riga, sempre con il colore di fronte: `/* 16,0 : 1 su --hell-grund */`. Così si può ricalcolare; `entwurf-pruefen.mjs` (skill `entwurf`) lo fa per ogni commento.
@@ -219,7 +219,7 @@ Quando la direzione è decisa, chiedi sempre: «Vuoi aggiungere anche degli elem
 
 **Sobrio non vuol dire senza immagini.** Se la persona non vuole icone, illustrazioni o figure, proponi comunque una foto vera per la testata della pagina iniziale (il luogo, persone in azione) e le dai la lista delle foto. Una foto è contenuto, non decorazione. Se non ne ha ancora, la testata porta la cosa più importante del contenuto invece di una superficie colorata con il titolo (per esempio il prossimo appuntamento in grande), e la lista delle foto sta sotto «Aperto» (nel piano di volo in `docs/inhalte.md`, altrimenti in `docs/gestaltung/richtungen.md`). Se non vuole nemmeno foto, lì c'è la sua frase.
 
-Quello che sceglie la persona va nel sistema di design (nel piano di volo `docs/designsystem.md`, altrimenti `docs/gestaltung/richtungen.md`) e nella mazzetta dei colori (dimensioni, spaziature, regole).
+Quello che sceglie la persona va nel sistema di design (`docs/designsystem.md`) e nella mazzetta dei colori (dimensioni, spaziature, regole).
 
 **Con Albatros** immagini, figure scontornate e modelli 3D nascono con gli strumenti di Albatros, pagati dal credito della persona (prezzo di costo più 35 %):
 
@@ -242,7 +242,7 @@ Se non vedi ancora il sito (nessun progetto nella cartella, nessun indirizzo), s
 
 ### 0. Cornice (5 minuti)
 
-Riprendi da `docs/plan.md` (skill `webseite-planen`): per chi, la cosa principale per i visitatori, le pagine. In più chiedi: cosa deve restare (logo, colore, carattere, testi)? Crea `docs/gestaltung/`.
+Riprendi da `docs/projekt.md` e da `docs/plan.md` (skill `webseite-planen`): per chi (`Für wen:`), la cosa principale per i visitatori (`Hauptsache:`), le pagine (`Seiten:`). In più chiedi: cosa deve restare (logo, colore, carattere, testi)? Crea `docs/gestaltung/`.
 
 ### 1. Controllo da tre punti di vista (solo leggere, non cambiare niente)
 
@@ -269,11 +269,11 @@ Presenta alla persona tutto insieme quello che deve decidere (con la tua raccoma
 
 ### 3. Tre direzioni
 
-Secondo la sezione «Tre direzioni», con due o tre pagine del sito esistente. `docs/gestaltung/richtungen.md`: in alto la riga `Entscheid: <direzione o combinazione> (<data>)` (la parola `Entscheid:` resta in tedesco), sotto la diagnosi e per ogni direzione una tabella (idea, carattere, colori, forme, punto di forza, rischio), in più la riga `Tratti dell'IA controllati: …`. Le bozze come file HTML in `docs/gestaltung/entwuerfe/`, così la persona può aprirle nel browser.
+Secondo la sezione «Tre direzioni», con due o tre pagine del sito esistente. `docs/gestaltung/richtungen.md`: in alto la riga `Entscheid: <direzione o combinazione> (<data>)` (la parola `Entscheid:` resta in tedesco), sotto la diagnosi e per ogni direzione una tabella (idea, carattere, colori, forme, punto di forza, rischio), in più la riga `Tratti dell'IA controllati: …`. Le direzioni come file HTML in `design/richtungen/`, come nel piano di volo, così la persona può aprirle nel browser.
 
 ### 4. La mazzetta dei colori
 
-Secondo la sezione «La mazzetta dei colori (token)», in `web/src/styles/tokens.css`. Con la domanda sugli elementi grafici (sezione «Elementi grafici»).
+Secondo la sezione «La mazzetta dei colori (token)», in `design/tokens.css`, con `docs/designsystem.md` come nel piano di volo (passo 4 più sopra); su questi più tardi continua a costruire lo skill `webseite-aendern`. Se un sito più vecchio ha ancora i suoi token in `web/src/styles/tokens.css`, li trasferisci in questa occasione: il layout ormai include solo `design/tokens.css`, il vecchio file sparisce. Con la domanda sugli elementi grafici (sezione «Elementi grafici»).
 
 ### 5. Rifacimento
 

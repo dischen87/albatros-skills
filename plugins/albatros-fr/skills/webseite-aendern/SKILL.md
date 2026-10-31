@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Modifie avec une personne sans connaissances préalables son site web terminé, avec sa propre IA, qu'il soit au port d'Albatros ou qu'elle l'héberge elle-même : récupérer le journal de bord, lire d'abord docs/ (plan, système de design, stack technique, PRD, domicile), puis petit (texte, date, image : changer en local, montrer avant et après, validation, push) ou grand (nouvelle page, fonction, autre apparence : complément au plan, ébauche des pages modifiées, autorisation de construire, construire et vérifier, montrer, validation, push), toujours dans le système de design existant, puis vérifier en ligne. Utilise ce skill pour « modifie mon site », « nouvelle date », « changer un texte », « remplacer une image », « il manque … », « nouvelle page », « rends le site … », « il y a une erreur sur le site », et chaque fois que quelque chose doit changer sur un site en ligne."
 metadata:
   stand: 0.2.0
-  quelle: '1bdaf535ed2f'
+  quelle: 'd29818fca42b'
 ---
 
 # Modifier le site web : des travaux dans une maison habitée
@@ -46,7 +46,7 @@ Avant de changer quoi que ce soit, tu lis :
 - `docs/designsystem.md` et `design/tokens.css` (sites plus anciens : `web/src/styles/tokens.css`) : couleurs, polices, espacements, arrondis et composants.
 - `docs/stack.md` : avec quoi le site est construit (en général Astro, au maximum 50 Ko de JavaScript par page).
 - `docs/prd.md` : ce que le site doit savoir faire, avec les critères d'acceptation, l'accès et la validation.
-- `docs/plan.md` ou `docs/bestand.md` : pour qui est le site. `design/entwurf/`, s'il existe : le modèle des pages.
+- `docs/projekt.md` (ligne `Für wen:`, sur les sites plus anciens `docs/plan.md`) ou `docs/bestand.md` : pour qui est le site. `design/entwurf/`, s'il existe : le modèle des pages.
 - `web/src/data/*.json` : les listes comme les dates, les prix ou les sponsors.
 
 Si `designsystem.md` ou `stack.md` manque (site plus ancien), tu les écris d'abord brièvement à partir de ce qui existe (`tokens.css`, `web/package.json`) et tu le dis à la personne. Si `scripts/pruefen.mjs` manque, tu le récupères comme dans le skill `webseite-bauen`, étape 0.
@@ -74,7 +74,7 @@ Dis à la personne en une phrase ce que c'est et comment ça continue.
 
 ### 4. Le souhait dans le PRD
 
-Tout en bas de `docs/prd.md`, après la ligne `Freigegeben:` de la première construction (sur les sites plus anciens aussi `Abgenommen:`), le souhait s'ajoute comme nouveaux critères d'acceptation. Ainsi, on voit que l'ancienne validation ne vaut pas pour le nouveau souhait :
+Tout en bas de `docs/prd.md`, après la ligne `Freigegeben:` de la première construction, le souhait s'ajoute comme nouveaux critères d'acceptation. Ainsi, on voit que l'ancienne validation ne vaut pas pour le nouveau souhait :
 
 ```markdown
 ## Changements

@@ -3,7 +3,7 @@ name: statistik
 description: "Installa con una persona senza conoscenze tecniche statistiche rispettose della privacy per il suo sito web, con PostHog. Prima un piccolo piano degli eventi (quali tacche contiamo, e quando esattamente), poi l'integrazione, un evento obiettivo come «richiesta inviata», escludere le proprie visite e confrontare con le richieste vere. Usa lo skill con «statistiche», «contare i visitatori», «quante persone vengono sul mio sito?», «PostHog», «Google Analytics», «tracking», «conversion», «misurare un evento», «da dove arrivano i miei visitatori?»."
 metadata:
   stand: 0.2.0
-  quelle: 'd7b868d6a715'
+  quelle: '8e43b3ced7ac'
 ---
 
 # Statistiche: il foglio delle tacche alla porta del negozio
@@ -28,7 +28,7 @@ Proprio così devono lavorare le statistiche del tuo sito web: poche tacche con 
 
 ### 1. Prima la lista, poi l'integrazione
 
-Crea con la persona `docs/statistik.md`. Per cominciare basta un evento obiettivo: l'azione che per lei conta (da `docs/plan.md`, «Da cosa capiamo il successo»).
+Crea con la persona `docs/statistik.md`. Per cominciare basta un evento obiettivo: l'azione che per lei conta (da `docs/projekt.md`, riga `Erfolg:`).
 
 ```markdown
 # Piano degli eventi

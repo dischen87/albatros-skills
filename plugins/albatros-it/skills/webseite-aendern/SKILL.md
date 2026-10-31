@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Cambia con una persona senza conoscenze tecniche il suo sito web finito, con la sua IA, che stia nel porto di Albatros o che se ne occupi lei stessa: prendere il diario di bordo, leggere prima docs/ (piano, sistema di design, stack tecnologico, PRD, domicilio), poi piccolo (testo, appuntamento, immagine: cambiare in locale, mostrare prima e dopo, approvazione, push) o grande (nuova pagina, funzione, altro aspetto: aggiunta al piano, bozza delle pagine cambiate, via libera per costruire, costruire e controllare, mostrare, approvazione, push), sempre nel sistema di design esistente, poi verifica in rete. Usa lo skill con «cambia il mio sito», «nuovo appuntamento», «cambiare un testo», «sostituire un'immagine», «manca …», «nuova pagina», «rendi il sito …», «sul sito c'è un errore», e ogni volta che su un sito in rete qualcosa deve cambiare."
 metadata:
   stand: 0.2.0
-  quelle: '1bdaf535ed2f'
+  quelle: 'd29818fca42b'
 ---
 
 # Cambiare il sito web: ristrutturare una casa abitata
@@ -46,7 +46,7 @@ Prima di cambiare qualcosa leggi:
 - `docs/designsystem.md` e `design/tokens.css` (siti più vecchi: `web/src/styles/tokens.css`): colori, caratteri, spaziature, arrotondamenti e componenti.
 - `docs/stack.md`: con che cosa è costruito il sito (di solito Astro, al massimo 50 KB di JavaScript per pagina).
 - `docs/prd.md`: che cosa deve saper fare il sito, con i criteri di collaudo, l'accesso e l'approvazione.
-- `docs/plan.md` o `docs/bestand.md`: per chi è il sito. `design/entwurf/`, se c'è: il modello delle pagine.
+- `docs/projekt.md` (riga `Für wen:`, nei siti più vecchi `docs/plan.md`) o `docs/bestand.md`: per chi è il sito. `design/entwurf/`, se c'è: il modello delle pagine.
 - `web/src/data/*.json`: liste come appuntamenti, prezzi o sponsor.
 
 Se manca `designsystem.md` o `stack.md` (sito più vecchio), prima li scrivi brevemente da quello che c'è (`tokens.css`, `web/package.json`) e lo dici alla persona. Se manca `scripts/pruefen.mjs`, lo prendi come nello skill `webseite-bauen`, passo 0.
@@ -74,7 +74,7 @@ Di' alla persona in una frase che cos'è e come si va avanti.
 
 ### 4. La richiesta nel PRD
 
-In fondo a `docs/prd.md`, dopo la riga `Freigegeben:` della prima costruzione (nei siti più vecchi anche `Abgenommen:`), la richiesta si aggiunge come nuovi criteri di collaudo. Così si vede che la vecchia approvazione non vale per la nuova richiesta:
+In fondo a `docs/prd.md`, dopo la riga `Freigegeben:` della prima costruzione, la richiesta si aggiunge come nuovi criteri di collaudo. Così si vede che la vecchia approvazione non vale per la nuova richiesta:
 
 ```markdown
 ## Modifiche

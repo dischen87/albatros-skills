@@ -3,7 +3,7 @@ name: cms
 description: "Aide une personne sans connaissances préalables à décider si son site web a besoin d'un système de gestion des contenus (CMS) et, si oui, l'installe, par exemple Strapi dans Docker sur le serveur Albatros, accessible par un tunnel sécurisé. Explique le CMS avec l'image du tableau d'affichage. Utilise ce skill quand on dit « CMS », « Strapi », « modifier les contenus moi-même sans code », « blog », « actualités », « gérer les événements », « ma collègue doit pouvoir changer les textes », « WordPress », « espace admin »."
 metadata:
   stand: 0.2.0
-  quelle: 'd8b0c70f758c'
+  quelle: '5aebef637f84'
 ---
 
 # CMS : le tableau d'affichage du couloir
@@ -39,7 +39,7 @@ Quatre niveaux, toujours prendre le plus simple qui suffit :
 | C : petit tableau d'affichage | PocketBase sur le serveur, des entrées avec titre, date, texte et image | d'autres s'occupent des actualités ou de l'agenda, peu de champs, presque pas de mémoire (environ 20 MB) |
 | D : grand CMS | Strapi avec sa propre base de données sur le serveur | beaucoup de types de contenu, plusieurs rôles, gestion des images, plus tard aussi une app (environ 200 MB, construction jusqu'à 2,5 GB) |
 
-Si la réponse est A ou B : écris-le dans `docs/plan.md` et arrête-toi là. C'est un bon résultat. C et D ont besoin d'un serveur à soi, donc de Pilot. Avec Light, A et B fonctionnent. C et D sont des briques toutes faites, tu les installes avec le skill `bausteine` (recette `pinnwand` ou brique `strapi`).
+Si la réponse est A ou B : écris-le dans `docs/plan.md`, à la ligne `Pflege:`, et arrête-toi là. C'est un bon résultat. C et D ont besoin d'un serveur à soi, donc de Pilot. Avec Light, A et B fonctionnent. C et D sont des briques toutes faites, tu les installes avec le skill `bausteine` (recette `pinnwand` ou brique `strapi`).
 
 ## 2. Installer Strapi (niveau D)
 

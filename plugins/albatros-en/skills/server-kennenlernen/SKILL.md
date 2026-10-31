@@ -3,7 +3,7 @@ name: server-kennenlernen
 description: "A tour of your own Albatros server for someone with no background. Explains the terminal, folders, storage, memory, running programs and the master key sudo with pictures from a flat. The person types their first commands themselves. Use this skill for “what's on my server?”, “how do I get around in the terminal?”, “what's a folder on the server?”, “ls cd pwd”, “how much space have I got?”, “what's running on there?”, and after the first successful SSH visit."
 metadata:
   stand: 0.2.0
-  quelle: '0e2dae85702b'
+  quelle: '1fd252993459'
 ---
 
 # Getting to know your server: a tour of your new flat
@@ -16,7 +16,7 @@ The terminal is the intercom: you say a short sentence, the flat answers.
 
 **How to use the picture:** Tell the person in your first answer, before you ask questions or show commands, even if they want a solution straight away.
 
-**Pilot only.** With Light there's no flat of your own, just a shop window: the page from the logbook. If `konto_status` shows a different plan, explain briefly what a server of your own adds, and only get the link with `upgrade_link` (plan `pilot`) if they want it.
+**Pilot only.** With Light there's no flat of your own, just a shop window: the page from the logbook. If `konto_status` shows a different plan, explain briefly what a server of your own adds. It gets chosen together with where the site lives (skill `lancieren`, part 1): only there, and only after the person has chosen, do you get the link with `upgrade_link`, never before.
 
 ## How you talk
 

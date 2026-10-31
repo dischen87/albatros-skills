@@ -3,7 +3,7 @@ name: seo-grundlagen
 description: "Rende un piccolo sito web facile da trovare per i motori di ricerca, spiegato a persone senza conoscenze tecniche con l'immagine dei cartelli stradali e della pianta della città. Titolo e descrizione della pagina, un solo titolo principale, indirizzi parlanti, descrizioni delle immagini, tempo di caricamento, sitemap.xml, robots.txt, dati strutturati per attività locali, Google Search Console e profilo dell'attività. Usa lo skill con «SEO», «farsi trovare su Google», «Google non trova il mio sito», «motore di ricerca», «sitemap», «meta description», «farsi trovare in zona», «comparire su Google Maps»."
 metadata:
   stand: 0.2.0
-  quelle: '5b8215a93591'
+  quelle: '281041258ca8'
 ---
 
 # Basi SEO: cartelli stradali e pianta della città
@@ -31,7 +31,7 @@ La parola tecnica per tutto questo è **SEO** (ottimizzazione per i motori di ri
 
 ### 1. Cosa cercano le persone?
 
-Scrivi con la persona cinque frasi che il suo pubblico digiterebbe su Google («mensa pranzo scolari Molino Nuovo», «riparare bici Bellinzona centro»). Per ogni pagina una frase principale. Va in `docs/plan.md`.
+Scrivi con la persona cinque frasi che il suo pubblico digiterebbe su Google («mensa pranzo scolari Molino Nuovo», «riparare bici Bellinzona centro»). Per ogni pagina una frase principale. Va in `docs/recherche.md`, nella riga `Suchbegriffe:`; se lì c'è già qualcosa della ricerca (P2), ci costruisci sopra.
 
 ### 2. Ogni pagina: l'insegna sopra la porta
 

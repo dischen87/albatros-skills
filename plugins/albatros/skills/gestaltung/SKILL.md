@@ -159,7 +159,7 @@ Stattdessen: ein einziges Erkennungszeichen, sparsam eingesetzt (ein Strich unte
 
 ## Der Farbfächer (Tokens)
 
-Eine Datei `tokens.css` mit CSS-Variablen: Farben für hell und dunkel, Schriften, Schriftgrössen, Abstände, Rundungen und Schatten. Im Fahrplan liegt sie in `design/tokens.css`, bei einer gebauten Seite in `web/src/styles/tokens.css`. Pro Block ein Satz Kommentar, warum. Regeln:
+Eine Datei `tokens.css` mit CSS-Variablen: Farben für hell und dunkel, Schriften, Schriftgrössen, Abstände, Rundungen und Schatten. Sie liegt in `design/tokens.css`, auch wenn die Seite gebaut ist: Das Layout bindet sie dort ein (Skill `webseite-bauen`), eine Kopie unter `web/` gibt es nicht. Pro Block ein Satz Kommentar, warum. Regeln:
 
 - Eine Aktionsfarbe für alles Anklickbare, sonst nirgends.
 - Kontrast nachrechnen, nicht schätzen: Text mindestens 4,5 : 1, Knöpfe und Ränder mindestens 3 : 1 (Formel im Skill `barrierefreiheit`). Farben als Hex (`#1d1b18`), den Kontrast als Kommentar in derselben Zeile, immer mit der Gegenfarbe: `/* 16,0 : 1 auf --hell-grund */`. So lässt er sich nachrechnen; `entwurf-pruefen.mjs` (Skill `entwurf`) tut das für jeden Kommentar.
@@ -217,7 +217,7 @@ Steht die Richtung, fragst du immer: «Möchtest du noch Gestaltungselemente daz
 
 **Schlicht heisst nicht ohne Bild.** Will die Person keine Icons, Illustrationen oder Figuren, schlägst du trotzdem ein echtes Foto für den Kopf der Startseite vor (der Ort, die Menschen in Aktion) und gibst ihr die Fotoliste. Ein Foto ist Inhalt, kein Schmuck. Hat sie noch keins, trägt der Kopf statt einer Farbfläche mit Titel das Wichtigste aus dem Inhalt (zum Beispiel den nächsten Termin gross), und die Fotoliste steht unter «Offen» (im Fahrplan in `docs/inhalte.md`, sonst in `docs/gestaltung/richtungen.md`). Will sie auch keine Fotos, steht ihr Satz dort.
 
-Was die Person wählt, kommt ins Designsystem (im Fahrplan `docs/designsystem.md`, sonst `docs/gestaltung/richtungen.md`) und in den Farbfächer (Grössen, Abstände, Regeln).
+Was die Person wählt, kommt ins Designsystem (`docs/designsystem.md`) und in den Farbfächer (Grössen, Abstände, Regeln).
 
 **Mit Albatros** entstehen Bilder, freigestellte Figuren und 3D-Modelle über die Werkzeuge von Albatros, bezahlt aus dem Guthaben der Person (Selbstkosten plus 35 %):
 
@@ -240,7 +240,7 @@ Siehst du die Seite noch nicht (kein Projekt im Ordner, keine Adresse), erklär 
 
 ### 0. Rahmen (5 Minuten)
 
-Aus `docs/plan.md` (Skill `webseite-planen`) übernehmen: für wen, Hauptsache für Besucher, Seiten. Dazu fragen: Was muss bleiben (Logo, Farbe, Schrift, Texte)? Lege `docs/gestaltung/` an.
+Aus `docs/projekt.md` und `docs/plan.md` (Skill `webseite-planen`) übernehmen: für wen (`Für wen:`), Hauptsache für Besucher (`Hauptsache:`), Seiten (`Seiten:`). Dazu fragen: Was muss bleiben (Logo, Farbe, Schrift, Texte)? Lege `docs/gestaltung/` an.
 
 ### 1. Prüfen aus drei Blickwinkeln (nur lesen, nichts ändern)
 
@@ -267,11 +267,11 @@ Lege der Person gesammelt vor, was sie entscheiden muss (mit deiner Empfehlung),
 
 ### 3. Drei Richtungen
 
-Nach dem Abschnitt «Drei Richtungen», mit zwei bis drei Seiten der bestehenden Seite. `docs/gestaltung/richtungen.md`: oben die Zeile `Entscheid: <Richtung oder Mischung> (<Datum>)`, darunter Diagnose und pro Richtung eine Tabelle (Idee, Schrift, Farben, Formen, Stärke, Risiko), dazu die Zeile `KI-Merkmale geprüft: …`. Die Entwürfe als HTML-Dateien in `docs/gestaltung/entwuerfe/`, damit die Person sie im Browser öffnen kann.
+Nach dem Abschnitt «Drei Richtungen», mit zwei bis drei Seiten der bestehenden Seite. `docs/gestaltung/richtungen.md`: oben die Zeile `Entscheid: <Richtung oder Mischung> (<Datum>)`, darunter Diagnose und pro Richtung eine Tabelle (Idee, Schrift, Farben, Formen, Stärke, Risiko), dazu die Zeile `KI-Merkmale geprüft: …`. Die Richtungen als HTML-Dateien in `design/richtungen/`, wie im Fahrplan, damit die Person sie im Browser öffnen kann.
 
 ### 4. Der Farbfächer
 
-Nach dem Abschnitt «Der Farbfächer (Tokens)», in `web/src/styles/tokens.css`. Dazu die Frage nach Gestaltungselementen (Abschnitt «Gestaltungselemente»).
+Nach dem Abschnitt «Der Farbfächer (Tokens)», in `design/tokens.css`, dazu `docs/designsystem.md` wie im Fahrplan (Schritt 4 oben); daran baut später der Skill `webseite-aendern` weiter. Hat eine ältere Seite ihre Tokens noch in `web/src/styles/tokens.css`, ziehst du sie dabei um: Das Layout bindet nur noch `design/tokens.css` ein, die alte Datei fällt weg. Dazu die Frage nach Gestaltungselementen (Abschnitt «Gestaltungselemente»).
 
 ### 5. Umbau
 

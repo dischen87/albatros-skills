@@ -3,7 +3,7 @@ name: server-kennenlernen
 description: "Visite guidée de son propre serveur Albatros pour une personne sans connaissances préalables. Explique le terminal, les dossiers, l'espace disque, la mémoire vive, les programmes qui tournent et le passe-partout sudo avec des images tirées d'un appartement. La personne tape elle-même ses premières commandes. Utilise ce skill pour « qu'est-ce qu'il y a sur mon serveur ? », « comment je me déplace dans le terminal ? », « c'est quoi un dossier sur le serveur ? », « ls cd pwd », « combien de place j'ai ? », « qu'est-ce qui tourne là-dessus ? », et après la première visite SSH réussie."
 metadata:
   stand: 0.2.0
-  quelle: '0e2dae85702b'
+  quelle: '1fd252993459'
 ---
 
 # Découvrir le serveur : visite du nouvel appartement
@@ -16,7 +16,7 @@ Le terminal, c'est l'interphone : tu dis une courte phrase, l'appartement rép
 
 **Comment utiliser l'image :** Dis-la à la personne dans ta première réponse, avant de poser des questions ou de montrer des commandes, même si elle veut tout de suite une solution.
 
-**Seulement avec Pilot.** Avec Light, il n'y a pas d'appartement à soi, seulement une vitrine : la page tirée du journal de bord. Si `konto_status` montre un autre niveau, explique brièvement ce qu'apporte un serveur à soi, et seulement si la personne le souhaite, va chercher le lien avec `upgrade_link` (niveau `pilot`).
+**Seulement avec Pilot.** Avec Light, il n'y a pas d'appartement à soi, seulement une vitrine : la page tirée du journal de bord. Si `konto_status` montre un autre niveau, explique brièvement ce qu'apporte un serveur à soi. On le choisit avec le domicile (skill `lancieren`, partie 1) : c'est seulement là, et seulement après le choix de la personne, que tu vas chercher le lien avec `upgrade_link`, jamais avant.
 
 ## Comment tu parles
 

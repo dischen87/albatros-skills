@@ -3,7 +3,7 @@ name: cms
 description: "Aiuta una persona senza conoscenze tecniche a decidere se il suo sito web ha bisogno di un sistema per gestire i contenuti (CMS) e, se serve, lo installa, per esempio Strapi in Docker sul server Albatros, raggiungibile attraverso un tunnel sicuro. Spiega il CMS con l'immagine della bacheca. Usa lo skill con «CMS», «Strapi», «cambiare i contenuti da solo senza codice», «blog», «news», «gestire gli eventi», «la mia collega deve poter cambiare i testi», «WordPress», «area admin»."
 metadata:
   stand: 0.2.0
-  quelle: 'd8b0c70f758c'
+  quelle: '5aebef637f84'
 ---
 
 # CMS: la bacheca nel corridoio
@@ -39,7 +39,7 @@ Quattro livelli, prendi sempre il più semplice che basta:
 | C: bacheca piccola | PocketBase sul server, voci con titolo, data, testo e immagine | altri curano news o appuntamenti, pochi campi, quasi niente memoria (circa 20 MB) |
 | D: CMS grande | Strapi con una banca dati propria sul server | molti tipi di contenuto, più ruoli, gestione delle immagini, più tardi anche un'app (circa 200 MB, costruzione fino a 2,5 GB) |
 
-Se la risposta è A o B: scrivilo in `docs/plan.md` e fermati qui. È un buon risultato. C e D hanno bisogno di un server proprio, quindi Pilot. Con Light vanno A e B. C e D sono blocchi pronti, li monti con lo skill `bausteine` (ricetta `pinnwand` o blocco `strapi`).
+Se la risposta è A o B: scrivilo in `docs/plan.md`, nella riga `Pflege:`, e fermati qui. È un buon risultato. C e D hanno bisogno di un server proprio, quindi Pilot. Con Light vanno A e B. C e D sono blocchi pronti, li monti con lo skill `bausteine` (ricetta `pinnwand` o blocco `strapi`).
 
 ## 2. Installare Strapi (livello D)
 

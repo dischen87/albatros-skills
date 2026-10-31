@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge. In the flight plan (P6): a grey mockup (“Is the order right?”), three clearly different directions from the concept, a check against the AI look, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. Always with the question about design elements (icons, photos, mascot, 3D; image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “mascot”, “3D”."
 metadata:
   stand: 0.2.0
-  quelle: '02f75af84c9c'
+  quelle: 'fe6fcb8ce168'
 ---
 
 # Design: first the foundations, then the facade
@@ -161,7 +161,7 @@ Instead: one single signature mark, used sparingly (a stroke under one word in t
 
 ## The colour fan (tokens)
 
-One file `tokens.css` with CSS variables: colours for light and dark, fonts, font sizes, spacing, rounded corners and shadows. In the flight plan it lives in `design/tokens.css`, for a built site in `web/src/styles/tokens.css`. One sentence of comment per block saying why. Rules:
+One file `tokens.css` with CSS variables: colours for light and dark, fonts, font sizes, spacing, rounded corners and shadows. It lives in `design/tokens.css`, even once the site is built: the layout includes it from there (skill `webseite-bauen`); there's no copy under `web/`. One sentence of comment per block saying why. Rules:
 
 - One action colour for everything clickable, and nowhere else.
 - Calculate contrast, don't estimate it: text at least 4.5 : 1, buttons and borders at least 3 : 1 (formula in the skill `barrierefreiheit`). Colours as hex (`#1d1b18`), the contrast as a comment on the same line, always with the colour it's measured against: `/* 16,0 : 1 on --hell-grund */`. That way it can be recalculated; `entwurf-pruefen.mjs` (skill `entwurf`) does that for every comment.
@@ -219,7 +219,7 @@ Once the direction is settled, you always ask: “Would you like any design elem
 
 **Plain doesn't mean without pictures.** If the person wants no icons, illustrations or characters, you still suggest a real photo for the header of the home page (the place, people in action) and give them the photo list. A photo is content, not decoration. If they don't have one yet, the header carries the most important content instead of a colour block with a heading (for example the next date, large), and the photo list goes under “Open” (in the flight plan in `docs/inhalte.md`, otherwise in `docs/gestaltung/richtungen.md`). If they don't want photos either, their sentence goes there.
 
-Whatever the person picks goes into the design system (in the flight plan `docs/designsystem.md`, otherwise `docs/gestaltung/richtungen.md`) and into the colour fan (sizes, spacing, rules).
+Whatever the person picks goes into the design system (`docs/designsystem.md`) and into the colour fan (sizes, spacing, rules).
 
 **With Albatros**, pictures, cut-out characters and 3D models are made with the Albatros tools, paid from the person's credit (cost price plus 35 %):
 
@@ -242,7 +242,7 @@ If you can't see the site yet (no project in the folder, no address), first expl
 
 ### 0. Frame (5 minutes)
 
-Take from `docs/plan.md` (skill `webseite-planen`): who it's for, the main thing for visitors, the pages. Also ask: What has to stay (logo, colour, font, texts)? Create `docs/gestaltung/`.
+Take from `docs/projekt.md` and `docs/plan.md` (skill `webseite-planen`): who it's for (`Für wen:`), the main thing for visitors (`Hauptsache:`), the pages (`Seiten:`). Also ask: What has to stay (logo, colour, font, texts)? Create `docs/gestaltung/`.
 
 ### 1. Check from three angles (read only, change nothing)
 
@@ -269,11 +269,11 @@ Put everything the person has to decide in front of them in one go (with your re
 
 ### 3. Three directions
 
-Following the section “Three directions”, with two or three pages of the existing site. `docs/gestaltung/richtungen.md`: at the top the line `Entscheid: <direction or mix> (<date>)` (“Entscheid” means decision; keep the word `Entscheid:` exactly as it is), below it the diagnosis and one table per direction (idea, font, colours, shapes, strength, risk), plus the line `AI traits checked: …`. The drafts as HTML files in `docs/gestaltung/entwuerfe/`, so the person can open them in the browser.
+Following the section “Three directions”, with two or three pages of the existing site. `docs/gestaltung/richtungen.md`: at the top the line `Entscheid: <direction or mix> (<date>)` (“Entscheid” means decision; keep the word `Entscheid:` exactly as it is), below it the diagnosis and one table per direction (idea, font, colours, shapes, strength, risk), plus the line `AI traits checked: …`. The directions as HTML files in `design/richtungen/`, as in the flight plan, so the person can open them in the browser.
 
 ### 4. The colour fan
 
-Following the section “The colour fan (tokens)”, in `web/src/styles/tokens.css`. Together with the question about design elements (section “Design elements”).
+Following the section “The colour fan (tokens)”, in `design/tokens.css`, with `docs/designsystem.md` as in the flight plan (step 4 above); the skill `webseite-aendern` builds on them later. If an older site still has its tokens in `web/src/styles/tokens.css`, you move them over while you're at it: the layout only includes `design/tokens.css` from then on, and the old file goes. Together with the question about design elements (section “Design elements”).
 
 ### 5. Rebuild
 

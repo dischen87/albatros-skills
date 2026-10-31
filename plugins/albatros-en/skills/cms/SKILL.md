@@ -3,7 +3,7 @@ name: cms
 description: "Helps a person with no prior knowledge decide whether their website needs a system for looking after content (CMS), and sets one up if needed, e.g. Strapi in Docker on the Albatros server, reachable through a secure tunnel. Explains a CMS with the picture of a noticeboard. Use this skill for “CMS”, “Strapi”, “change the content myself without code”, “blog”, “news”, “keep events up to date”, “my colleague should be able to change the texts”, “WordPress”, “admin area”."
 metadata:
   stand: 0.2.0
-  quelle: 'd8b0c70f758c'
+  quelle: '5aebef637f84'
 ---
 
 # CMS: the noticeboard in the hallway
@@ -39,7 +39,7 @@ Four levels, always take the simplest one that's enough:
 | C: small noticeboard | PocketBase on the server, entries with title, date, text and picture | others look after news or dates, few fields, hardly any memory (about 20 MB) |
 | D: big CMS | Strapi with its own database on the server | lots of content types, several roles, image management, later an app too (about 200 MB, build up to 2.5 GB) |
 
-If A or B is the answer: write that in `docs/plan.md` and stop here. That's a good result. C and D need an own server, so Pilot. With Light, A and B work. C and D are ready-made building blocks; you build them in with the skill `bausteine` (recipe `pinnwand` or building block `strapi`).
+If A or B is the answer: write that in `docs/plan.md`, in the line `Pflege:`, and stop here. That's a good result. C and D need an own server, so Pilot. With Light, A and B work. C and D are ready-made building blocks; you build them in with the skill `bausteine` (recipe `pinnwand` or building block `strapi`).
 
 ## 2. Set up Strapi (level D)
 

@@ -3,7 +3,7 @@ name: statistik
 description: "Sets up privacy-friendly statistics for a website with a person who has no prior knowledge, using PostHog. First a small event plan (which ticks do we count, and exactly when), then the set-up, one goal event such as “enquiry sent”, filtering out your own visits and comparing with the real enquiries. Use this skill for “statistics”, “analytics”, “count visitors”, “how many people visit my site”, “PostHog”, “Google Analytics”, “tracking”, “conversion”, “measure an event”, “where do my visitors come from”."
 metadata:
   stand: 0.2.0
-  quelle: 'd7b868d6a715'
+  quelle: '8e43b3ced7ac'
 ---
 
 # Statistics: the tally sheet at the shop door
@@ -28,7 +28,7 @@ That's exactly how your website's statistics should work: a few clearly named ti
 
 ### 1. First the list, then the set-up
 
-Create `docs/statistik.md` with the person. One goal event is enough to start with: the action that counts for them (from `docs/plan.md`, “How we'll know it works”).
+Create `docs/statistik.md` with the person. One goal event is enough to start with: the action that counts for them (from `docs/projekt.md`, line `Erfolg:`).
 
 ```markdown
 # Event plan

@@ -3,7 +3,7 @@ name: statistik
 description: "Met en place avec une personne sans connaissances préalables des statistiques respectueuses de la protection des données pour son site web, avec PostHog. D'abord un petit plan des événements (quels bâtons on compte, et à quel moment exactement), puis l'intégration, un événement cible comme « demande envoyée », filtrer ses propres visites et comparer avec les vraies demandes. Utilise ce skill pour « statistiques », « compter les visiteurs », « combien de gens viennent sur mon site ? », « PostHog », « Google Analytics », « tracking », « conversion », « mesurer un événement », « d'où viennent mes visiteurs ? »."
 metadata:
   stand: 0.2.0
-  quelle: 'd7b868d6a715'
+  quelle: '8e43b3ced7ac'
 ---
 
 # Statistiques : la liste de bâtons à la porte du magasin
@@ -28,7 +28,7 @@ Les statistiques de ton site web doivent travailler exactement comme ça : peu
 
 ### 1. D'abord la liste, ensuite l'intégration
 
-Crée avec la personne `docs/statistik.md`. Un seul événement cible suffit pour commencer : l'action qui compte pour elle (tirée de `docs/plan.md`, ligne « À quoi nous voyons le succès »).
+Crée avec la personne `docs/statistik.md`. Un seul événement cible suffit pour commencer : l'action qui compte pour elle (tirée de `docs/projekt.md`, ligne `Erfolg:`).
 
 ```markdown
 # Plan des événements

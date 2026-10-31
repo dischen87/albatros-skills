@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site. Dans le plan de vol (P6) : maquette grise (« L'ordre est-il juste ? »), trois directions bien différentes tirées du concept, vérification contre le look IA, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Toujours avec la question des éléments graphiques (icônes, photos, mascotte, 3D ; outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « icônes », « mascotte », « 3D »."
 metadata:
   stand: 0.2.0
-  quelle: '02f75af84c9c'
+  quelle: 'fe6fcb8ce168'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -161,7 +161,7 @@ Vérifie le motif, pas la formulation : un bouton au lieu de deux ou des cartes 
 
 ## Le nuancier (tokens)
 
-Un fichier `tokens.css` avec des variables CSS : couleurs pour clair et sombre, polices, tailles de police, espacements, arrondis et ombres. Dans le plan de vol, il se trouve dans `design/tokens.css`, pour un site construit dans `web/src/styles/tokens.css`. Pour chaque bloc, une phrase de commentaire qui dit pourquoi. Règles :
+Un fichier `tokens.css` avec des variables CSS : couleurs pour clair et sombre, polices, tailles de police, espacements, arrondis et ombres. Il se trouve dans `design/tokens.css`, même quand le site est construit : la mise en page l'intègre à cet endroit (skill `webseite-bauen`), il n'y en a pas de copie sous `web/`. Pour chaque bloc, une phrase de commentaire qui dit pourquoi. Règles :
 
 - Une couleur d'action pour tout ce qui est cliquable, et nulle part ailleurs.
 - Recalculer le contraste, ne pas l'estimer : texte au moins 4,5 : 1, boutons et bordures au moins 3 : 1 (formule dans le skill `barrierefreiheit`). Les couleurs en hexadécimal (`#1d1b18`), le contraste en commentaire sur la même ligne, toujours avec la couleur d'en face : `/* 16,0 : 1 sur --hell-grund */`. Ainsi, on peut le recalculer ; `entwurf-pruefen.mjs` (skill `entwurf`) le fait pour chaque commentaire.
@@ -219,7 +219,7 @@ Une fois la direction fixée, tu demandes toujours : « Tu veux encore des élé
 
 **Sobre ne veut pas dire sans image.** Si la personne ne veut ni icônes, ni illustrations, ni personnage, tu proposes quand même une vraie photo pour l'en-tête de la page d'accueil (le lieu, des gens en action) et tu lui donnes la liste de photos. Une photo, c'est du contenu, pas de la décoration. Si elle n'en a pas encore, l'en-tête porte l'essentiel du contenu au lieu d'une surface de couleur avec un titre (par exemple la prochaine date en grand), et la liste de photos figure sous « Ouvert » (dans le plan de vol dans `docs/inhalte.md`, sinon dans `docs/gestaltung/richtungen.md`). Si elle ne veut pas non plus de photos, sa phrase y figure.
 
-Ce que la personne choisit va dans le système de design (dans le plan de vol `docs/designsystem.md`, sinon `docs/gestaltung/richtungen.md`) et dans le nuancier (tailles, espacements, règles).
+Ce que la personne choisit va dans le système de design (`docs/designsystem.md`) et dans le nuancier (tailles, espacements, règles).
 
 **Avec Albatros**, les images, les personnages détourés et les modèles 3D naissent avec les outils d'Albatros, payés avec le crédit de la personne (prix coûtant plus 35 %) :
 
@@ -242,7 +242,7 @@ Si tu ne vois pas encore le site (pas de projet dans le dossier, pas d'adresse),
 
 ### 0. Cadre (5 minutes)
 
-Reprendre de `docs/plan.md` (skill `webseite-planen`) : pour qui, la chose principale pour les visiteurs, les pages. En plus, demander : qu'est-ce qui doit rester (logo, couleur, police, textes) ? Crée `docs/gestaltung/`.
+Reprendre de `docs/projekt.md` et de `docs/plan.md` (skill `webseite-planen`) : pour qui (`Für wen:`), la chose principale pour les visiteurs (`Hauptsache:`), les pages (`Seiten:`). En plus, demander : qu'est-ce qui doit rester (logo, couleur, police, textes) ? Crée `docs/gestaltung/`.
 
 ### 1. Vérifier sous trois angles (seulement lire, ne rien changer)
 
@@ -269,11 +269,11 @@ Présente à la personne, regroupé, ce qu'elle doit décider (avec ta recommand
 
 ### 3. Trois directions
 
-Selon la section « Trois directions », avec deux ou trois pages du site existant. `docs/gestaltung/richtungen.md` : tout en haut la ligne `Entscheid: <direction ou mélange> (<date>)`, en dessous le diagnostic et, pour chaque direction, un tableau (idée, police, couleurs, formes, force, risque), plus la ligne `Signes d'IA vérifiés : …`. Le mot `Entscheid:` (décision) reste en allemand. Les ébauches en fichiers HTML dans `docs/gestaltung/entwuerfe/`, pour que la personne puisse les ouvrir dans son navigateur web.
+Selon la section « Trois directions », avec deux ou trois pages du site existant. `docs/gestaltung/richtungen.md` : tout en haut la ligne `Entscheid: <direction ou mélange> (<date>)`, en dessous le diagnostic et, pour chaque direction, un tableau (idée, police, couleurs, formes, force, risque), plus la ligne `Signes d'IA vérifiés : …`. Le mot `Entscheid:` (décision) reste en allemand. Les directions en fichiers HTML dans `design/richtungen/`, comme dans le plan de vol, pour que la personne puisse les ouvrir dans son navigateur web.
 
 ### 4. Le nuancier
 
-Selon la section « Le nuancier (tokens) », dans `web/src/styles/tokens.css`. Avec la question des éléments graphiques (section « Éléments graphiques »).
+Selon la section « Le nuancier (tokens) », dans `design/tokens.css`, avec `docs/designsystem.md` comme dans le plan de vol (étape 4 plus haut) ; c'est sur eux que le skill `webseite-aendern` construit plus tard. Si un site plus ancien a encore ses tokens dans `web/src/styles/tokens.css`, tu les déménages à cette occasion : la mise en page n'intègre plus que `design/tokens.css`, l'ancien fichier disparaît. Avec la question des éléments graphiques (section « Éléments graphiques »).
 
 ### 5. Transformation
 
