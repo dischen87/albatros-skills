@@ -3,7 +3,7 @@ name: bausteine
 description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks, first on their own computer: a sign-up list, bookings for classes and appointments, a members' area with login and approval, a noticeboard (PocketBase), an entrance with one login for several parts, or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “roles”, “entrance”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 metadata:
   stand: 0.2.0
-  quelle: 'e164b9948100'
+  quelle: '0a3abd265736'
 ---
 
 # Building blocks: prefab parts for your site
@@ -44,7 +44,7 @@ One question per message, only as many as it takes for the answer to be clear:
 | Visitors book a place or an appointment (class, guided tour, hairdresser's appointment), I want to see the bookings and be able to cancel them | **Bookings** (PocketBase, recipe `buchungen`) | Pilot | about 20 MB |
 | Members log in and see an area of their own; anyone new sends a request, and I approve them | **Members' area with login** (PocketBase, recipe `mitglieder`) | Pilot | about 20 MB |
 | Others look after news or dates in the browser | **Noticeboard** (PocketBase, recipe `pinnwand`) | Pilot | about 20 MB |
-| Several parts need the same login, or an area is only for one role (for example the committee) | **Entrance** (building block `eingang`, with the recipe `mitglieder`), section 7 | Pilot | 20 MB, up to 66 MB under full load |
+| Several parts need the same login, or an area is only for one role (for example the committee) | **Entrance** (building block `eingang`, with the recipe `mitglieder`), section 7 | Pilot | 20 MB, up to 69 MB under full load |
 | Lots of content types, several roles, image management, an app later | **Big CMS** (Strapi with Postgres) | Pilot | about 200 MB, build up to 2.5 GB |
 
 Always recommend the smallest thing that's enough. Several languages on their own are never a reason for a building block. PocketBase covers the sign-up list, login and noticeboard together; it only runs once. Strapi is only worth it once PocketBase gets too small.
@@ -60,7 +60,7 @@ A server with Pilot has 4 GB of memory (RAM) and 40 GB of space, without swap sp
 | Base load: system, Docker, worker on the conveyor belt | 150 MB, 0.5 GB planned | briefly more | – |
 | Website from the template | 10 MB | brief | small |
 | PocketBase (all recipes together) | 20 MB | brief | 40 MB |
-| Entrance | 20 MB, up to 66 MB under full load | brief | small |
+| Entrance | 20 MB, up to 69 MB under full load | brief | small |
 | Strapi with Postgres | 150 MB + 55 MB | peak 2.5 GB, first build about 7 minutes | 1.4 GB |
 
 That leaves about 3.5 GB for building blocks. Website, PocketBase and Strapi together need about 250 MB while running. It only gets tight while building, which is why the conveyor belt builds one job after another. Programs that need more than 1 GB on their own don't belong on the server, for example Keycloak, Supabase, Logto, Mattermost or text recognition (OCR). For a login of your own, take PocketBase.
@@ -69,7 +69,9 @@ Before launch: `free -h` on the server shows how much is free. Afterwards: `dock
 
 ## 4. Building it in: locally first, the server at launch
 
-**Locally, on the person's computer** (while building, skill `webseite-bauen`; free):
+### Locally, on the person's computer
+
+While building (skill `webseite-bauen`), free:
 
 1. **Fetch.** In the logbook on the person's computer (skill `git-logbuch`), you download the building block from the factory, the public repository of Albatros:
    ```bash
@@ -83,7 +85,9 @@ Before launch: `free -h` on the server shows how much is free. Afterwards: `dock
 
 Strapi has no test and no `lokal.ts` yet; you write its content types as files (section 6), and you only see it running on the server. Say so honestly.
 
-**At launch, with Pilot** (skill `lancieren`, part 2, after the site has been released and before the push to the harbour):
+### At launch, with Pilot (Beim Lancieren, mit Pilot)
+
+In the skill `lancieren`, part 2, after the site has been released and before the push to the harbour:
 
 1. **Photo of the server:** tool `snapshot` with the name `vor-baustein` (skill `zurueck-auf-gestern`).
 2. **Hook it in.** At the very top of `compose.yaml`:
@@ -94,7 +98,26 @@ Strapi has no test and no `lokal.ts` yet; you write its content types as files (
    The website passes the requests on itself: the template reads every `bausteine/*/nginx.conf`. If the project is older than the building blocks (no `nginx.conf` in the project), get `Dockerfile` and `nginx.conf` from `vorlage/` in the same repository.
    **With a login, the entrance step:** if `docs/betrieb.md` says `Eingang: ja` (section 7), `- bausteine/eingang/compose.yaml` goes under `include:` too, and for the service `webseite` the lines `ports:` and `- "80:80"` go: then the website can only be reached behind the entrance. Without a login, or if PocketBase's rules are enough, `compose.yaml` stays as in the template. The skill `lancieren` already names this step when choosing where the site lives.
 3. **To the harbour.** The conveyor belt builds and delivers (skill `pipeline`). If the build fails, the old site stays online.
-4. **Check** on the server: `docker ps` shows the building block as `healthy`. With the entrance, you check every door from outside: `node scripts/pruefen.mjs --tueren <address>` (protected paths 401, `/_/` 404, the home page 200). Then the first account for the admin area and the emails (section 5).
+4. **Check** on the server: `docker ps` shows the building block as `healthy`. Then you check every door from outside: `node scripts/pruefen.mjs --tueren <address>` with the doors below, and with the entrance also protected paths 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 and the home page 200. Then the first account for the admin area and the emails (section 5).
+
+### Doors of the building blocks (Türen der Bausteine)
+
+What a building block answers without signing in goes into `docs/tueren.txt` (skill `webseite-bauen`), only the lines for the recipes that are built in. `node scripts/pruefen.mjs --tueren` checks them locally against `http://localhost:8090` (with the entrance `http://localhost:8080`) while `lokal.ts` is running, and after launch against the address. PocketBase lists with a rule (for example “only your own account”) give guests 200 with an empty list, not 401 or 403; only lists for the admin area alone give 403. That's how it should be; the rules stay as they are.
+
+```
+/api/collections/anmeldungen/records      403   # anmeldeliste: everyone may sign up, only the admin area can read
+/api/collections/termine_frei/records     200   # buchungen: free dates are visible to everyone
+/api/collections/buchungen/records        403   # buchungen: bookings are visible only to the admin area
+/api/collections/wochenplan/records       403   # buchungen
+/api/collections/users/records            200   # mitglieder: guests get an empty list
+/api/collections/mitteilungen/records     200   # mitglieder: guests get an empty list
+/api/collections/beitraege/records        200   # pinnwand: for everyone
+/intern/                                  401   # with the entrance: every protected path from eingang.json
+/_/                                       404   # with the entrance
+/api/collections/_SUPERUSERS/auth-methods 404   # with the entrance
+```
+
+Measured on 31.10.2026 with PocketBase 0.40.5 and `pruefen.mjs --tueren`, directly at PocketBase and through the entrance. Without the entrance, `/_/` is only closed on the server (404); locally `lokal.ts` shows the admin area there, so check that door only after launch. With `buchungen`, “My bookings” (`/verwaltung/`) answers 200: the page is open, but only someone signed in with the admin account sees the bookings on it. A line `/verwaltung 404` doesn't fit then.
 
 ## 5. PocketBase: sign-up list, bookings, members, noticeboard
 
@@ -178,7 +201,7 @@ Strapi is a complete system for content with roles and image management, plus a 
 6. **Open up the admin area** (for an editorial team without a terminal): only once the first account exists, otherwise a stranger could register first. In `bausteine/strapi/nginx.conf`, replace the first block with the block “Verwaltung freigeben” (open up the admin area), without `#`; in `bausteine/strapi/cms/config/server.ts`, switch on the line `url: '/cms'`; into the logbook, to the harbour. Then the admin area is at `https://{name}.aufwind.sh/cms/admin`. The person invites the editorial team there (Settings → Users, role Editor or Author). Everyone sets their own password.
 7. **Entries appear** as soon as they're published in the admin area. A new build isn't needed for that.
 
-## 7. One entrance for everything?
+## 7. One entrance for everything? (Ein Eingang für alles?)
 
 **The picture:** the reception desk in a building with several offices. Anyone who wants to get in signs in once; each office only learns who's coming and with which role. The entrance is a small service in front of the site. Signed in is whoever PocketBase knows (recipe `mitglieder`); there's no second login.
 
@@ -188,19 +211,19 @@ These rules decide whether it's needed, in this order:
 2. **Not needed with one building block where PocketBase's rules are enough:** for example only the recipe `mitglieder` (messages only for approved members) or only `buchungen`. Then go without an entrance.
 3. **Needed when two or more parts must know who's signed in** (for example protected pages under `/intern/` and the messages from PocketBase, or a small program of your own next to it), **or when roles apply across parts** (the committee sees `/vorstand/` and may do more in PocketBase).
 
-The answer goes into `docs/betrieb.md`, on the line `Eingang:`, with the reason (skill `betrieb`). The site's doors (`docs/tueren.txt`: open, only after signing in, never) become the parts in `bausteine/eingang/eingang.json`.
+The answer goes into `docs/betrieb.md`, on the line `Eingang:` (skill `betrieb`). Its value always starts with the German word `ja` or `nicht nötig`, even if the person speaks another language; after that comes the reason in their language, for example `Eingang: ja – /intern/ and the messages from PocketBase need the same sign-in` or `Eingang: nicht nötig – only the recipe mitglieder, PocketBase's rules are enough`. The skill `lancieren` only builds in the entrance with `Eingang: ja`. The site's doors (`docs/tueren.txt`: open, only after signing in, never) become the parts in `bausteine/eingang/eingang.json`.
 
-**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle, up to 66 MB under full load (measured on 31.10.2026 on a Mac, not yet on the server); every call to a protected part asks PocketBase, which costs about half a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
+**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle, up to 69 MB under full load (measured on 31.10.2026 on a Mac, not yet on the server); every call to a protected part asks PocketBase, which costs almost a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
 
 **Building it in,** locally first like every building block (section 4), step by step in `bausteine/eingang/README.md`:
 
 1. PocketBase with the recipe `mitglieder` is built in. Fetch `bausteine/eingang`, `pb_hooks/*` to `bausteine/pocketbase/pb_hooks/`, `pb_migrations/2_eingang.js` to `bausteine/pocketbase/pb_migrations/`.
-2. In `eingang.json`, enter the site's address (`ursprung`) and the parts: name, target, paths, access `offen` (open), `angemeldet` (signed in) or `rolle:<name>`. Protected pages live in their own folders (`seite/intern/`).
+2. In `eingang.json`, enter the site's address (`ursprung`) and the parts: name, target, paths, access `offen` (open), `angemeldet` (signed in) or `rolle:<name>`. Protected pages live in their own folders (`seite/intern/`). If your own domain comes along later, nothing needs to change here: the entrance accepts forms and sign-ins from whatever address the site is opened with.
 3. In `mitglieder.html`, set `const EINGANG = true;`: signing in then applies to all parts, with a cookie.
 4. `bun bausteine/eingang/test.ts` reports “Alles grün”, then `bun bausteine/pocketbase/lokal.ts --eingang`: the person opens a protected page without signing in, signs in, comes back and signs out again.
-5. At launch (skill `lancieren`, part 2): in `compose.yaml` under `include:`, the line `- bausteine/eingang/compose.yaml`, and for the service `webseite`, delete the lines `ports:` and `- "80:80"`, otherwise people could get round the entrance. The website can then only be reached behind the entrance. Then check every door from outside: `curl -s -o /dev/null -w '%{http_code}' https://{name}.aufwind.sh/intern/` gives 401, `/_/` gives 404, the home page 200.
+5. At launch (skill `lancieren`, part 2): in `compose.yaml` under `include:`, the line `- bausteine/eingang/compose.yaml`, and for the service `webseite`, delete the lines `ports:` and `- "80:80"`, otherwise people could get round the entrance. The website can then only be reached behind the entrance. Then check every door from outside: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` with the “doors of the building blocks” (section 4): `/intern/` gives 401, `/_/` and `/api/collections/_SUPERUSERS/auth-methods` give 404, the home page 200.
 
-**What it can't do:** behind the entrance, “My bookings” (recipe `buchungen`) only works through the tunnel, because the entrance blocks the admin area's sign-in from outside. Signing out applies to one device; signing out everywhere means setting a new password.
+**What it can't do:** behind the entrance, “My bookings” (recipe `buchungen`) only works through the tunnel, because the entrance closes the admin area from outside, however it's spelled. It also blocks PocketBase's realtime feature (`/api/realtime`); no recipe needs it. Signing out applies to one device; signing out everywhere means setting a new password.
 
 ## Stumbling blocks
 
