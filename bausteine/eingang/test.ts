@@ -506,15 +506,21 @@ try {
     writeFileSync(join(seiteLokal, 'index.html'), '<!doctype html><title>Probe</title><p>Probe</p>');
     const pbLokal = 21000 + Math.floor(Math.random() * 1000), eingangLokal = 22000 + Math.floor(Math.random() * 1000);
     // TMPDIR: lokal.ts legt seinen Ordner (Daten von PocketBase) dann in den Ordner dieses Tests, und der wird am Ende gelöscht
-    lokal = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal],
+    const lp = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal],
       { env: { ...process.env, TMPDIR: tmp }, stdout: 'pipe', stderr: 'pipe' });
-    const ausgabe = new Response(lokal.stdout as ReadableStream).text();
-    for (let i = 0; i < 100 && !(await fetch(`http://127.0.0.1:${eingangLokal}/`).then((r) => r.ok, () => false)); i++) await Bun.sleep(100);
+    lokal = lp;
+    // Bereit ist lokal.ts, wenn es sagt, wo die Seite läuft: nach PocketBase, der Anmeldung der Verwaltung und den Einstellungen. Der
+    // Eingang antwortet schon früher, und ein Ctrl+C dann beendete lokal.ts vor diesem Satz. Darum erst prüfen, wenn der Satz da ist (bis
+    // 31.10.2026 war die Prüfung nur grün, wenn eine Netzadresse lange nicht antwortete; mit nur IPv4, wie in CI, war sie rot).
+    let ausgabe = '';
+    const lesen = (async () => { const dec = new TextDecoder(); for await (const c of lp.stdout) ausgabe += dec.decode(c, { stream: true }); })();
+    for (let i = 0; i < 300 && !ausgabe.includes('nichts davon ist im Netz') && lp.exitCode === null; i++) await Bun.sleep(100);
     lokalNetz = await imNetz(eingangLokal);
     lokalHier = await fetch(`http://localhost:${eingangLokal}/`).then((r) => r.status, () => 0);
-    lokal.kill('SIGINT'); // lokal.ts beendet PocketBase und den Eingang selbst
-    await lokal.exited;
-    lokalText = await ausgabe;
+    lp.kill('SIGINT'); // lokal.ts beendet PocketBase und den Eingang selbst
+    await lp.exited;
+    await lesen;
+    lokalText = ausgabe;
   }
   pruefe(e6Lokal === 200 && !e6Netz.length && lokalHier === 200 && !lokalNetz.length && lokalText.includes('nichts davon ist im Netz'),
     `Lokal nur auf diesem Computer: Eingang mit EINGANG_HOST${mitLokal ? ` und lokal.ts --eingang über localhost ${lokalHier}` : ' (lokal.ts unter Windows nicht geprüft)'}, über ${netzAdressen.length} Netzadressen ${[...e6Netz, ...lokalNetz].length ? `erreichbar (${[...e6Netz, ...lokalNetz].length}×)` : 'nicht erreichbar'}`);
