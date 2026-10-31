@@ -31,11 +31,11 @@ Wer in ein fremdes Land fliegt, liest vorher den Reiseführer: was man dort erwa
 
 ## So gehst du vor
 
-1. Du nennst Seiten, die dir gefallen. Deine KI sucht bis zu drei vergleichbare dazu und ruft jede Adresse auf. Erfundene Adressen gibt es nicht.
+1. Deine KI sucht ohne Rückfrage bis zu drei vergleichbare Seiten in deiner Region und Branche und ruft jede Adresse auf. Kennst du selbst Seiten, die dir gefallen, kommen sie dazu. Erfundene Adressen gibt es nicht.
 2. Ihr haltet fest, was üblich ist, was ihr übernehmt und was ihr bewusst anders macht.
 3. Deine KI klärt, welche Pflichten für deine Seite gelten.
 4. Du sagst, welche Texte, Fotos und welches Logo du schon hast.
-5. Alles kommt in `docs/recherche.md`, auch die Worte, mit denen dich jemand suchen würde.
+5. Alles kommt in `docs/recherche.md`, auch die Worte, mit denen dich jemand suchen würde. Deine KI erklärt dir das Ergebnis in fünf Zeilen.
 
 Auf dem Weg Geschäft kommen Zielgruppe sowie Angebot und Preis dazu. Modernisierst du eine bestehende Seite, ist dieser Schritt die Bestandsaufnahme: Was hat die alte Seite, das bleiben muss?
 

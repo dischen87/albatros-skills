@@ -15,7 +15,7 @@ video: ideen-check-in-60-sekunden
 
 ## Worum es geht
 
-Bevor eine Pilotin abhebt, schaut sie auf den Windsack. Er zeigt, woher der Wind wirklich weht. Komplimente von Freunden sind kein Wind. Echter Wind ist, was Menschen heute schon tun und bezahlen, um ihr Problem zu lösen. Daran prüfst du deine Idee, bevor du Zeit und Geld hineinsteckst.
+Bevor eine Pilotin abhebt, schaut sie auf den Windsack. Er zeigt, woher der Wind wirklich weht. Komplimente von Freunden sind kein Wind. Echter Wind ist, was Menschen heute schon tun und bezahlen, um ihr Problem zu lösen. Daran prüfst du deine Idee, bevor du Zeit und Geld hineinsteckst. Vorher hat dein Projekt schon einen Namen und eine erste Skizze (Mission «Wohin die Reise geht»).
 
 ## Was du lernst
 
@@ -30,11 +30,11 @@ Bevor eine Pilotin abhebt, schaut sie auf den Windsack. Er zeigt, woher der Wind
 2. Du suchst einige Menschen, die das Problem haben, und führst kurze Gespräche über ihren Alltag. Deine KI bereitet die Fragen vor.
 3. Deine KI hilft dir, die Antworten zu sortieren: Was ist echter Wind, was nur Höflichkeit?
 4. Weht Wind, sammelst du einen kleinen Beweis, zum Beispiel eine Vorbestellung oder einen Eintrag auf einer Warteliste.
-5. Du entscheidest und hältst alles in `docs/ideen-check.md` fest.
+5. Du entscheidest: weiter, anpassen oder stoppen. Deine KI hält alles in `docs/ideen-check.md` fest. Solange Gespräche fehlen, steht dort eine Hausaufgabe mit Datum, und es geht erst danach weiter.
 
-Die Gespräche selbst brauchen ein paar Tage. Die Zeit oben ist die Arbeit mit deiner KI.
+Die Gespräche selbst brauchen ein paar Tage. Die Zeit oben ist die Arbeit mit deiner KI. Auch «stoppen» ist geschafft: Du hast ehrlich hingeschaut und Monate gespart.
 
 ## Geschafft, wenn
 
-- die Datei `docs/ideen-check.md` mit deinen Annahmen, Gesprächen und deinem Entscheid in deinem Projekt liegt
+- die Datei `docs/ideen-check.md` mit deinen Annahmen, Gesprächen und deinem Entscheid «weiter» oder «stoppen» in deinem Projekt liegt
 - und auf deiner Insel der Schritt «Idee» erreicht ist.

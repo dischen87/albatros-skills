@@ -19,7 +19,7 @@ The floor is your cost per sale; below it you lose money. The ceiling is what yo
 
 1. With your AI, you describe your smallest offer.
 2. Together you work out the floor: materials, fees, your time and a share of your fixed costs.
-3. You estimate the ceiling: what do your customers do today, and what does it cost them?
+3. You estimate the ceiling: what do your customers do today, and what does it cost them? Your AI looks for comparable offers and opens every address; the best three become the examples in `docs/recherche.md`.
 4. You set a price and tell it to real people from your target group.
 5. You check whether you'll become liable for VAT, and record everything in `docs/angebot.md`.
 

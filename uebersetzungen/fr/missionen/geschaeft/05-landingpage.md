@@ -6,7 +6,7 @@ phase: P3
 
 ## De quoi il s'agit
 
-Au tableau d'affichage du supermarché, on comprend une bonne annonce en passant, et on arrache une languette si ça correspond. Ta landing page est une annonce de ce genre sur le web : une page, une offre, une action. Et aux languettes qui manquent, tu vois si elle marche.
+Au tableau d'affichage du supermarché, on comprend une bonne annonce en passant, et on arrache une languette si ça correspond. Ta landing page est une annonce de ce genre sur le web : une page, une offre, une action. Et aux languettes qui manquent, tu vois si elle marche. Dans cette étape, tu la planifies : son plan de construction entre dans ton plan de la maison.
 
 ## Ce que tu apprends
 
@@ -18,12 +18,12 @@ Au tableau d'affichage du supermarché, on comprend une bonne annonce en passant
 ## Comment t'y prendre
 
 1. Avec ton IA, tu fixes la seule action que les visiteurs doivent faire.
-2. Vous planifiez la page de haut en bas et vous écrivez les textes avec les mots de ta clientèle.
-3. Vous fixez quelle action aboutie sera comptée. La page sera construite plus tard, après ton autorisation de l'ébauche.
-4. Tu montres une esquisse de la première image pendant cinq secondes à quelques personnes de ton groupe cible et tu améliores ce qui n'est pas clair.
-5. Vous notez le plan et le résultat du test. La page ne sera mise en ligne qu'après ta validation.
+2. Vous planifiez la page d'accueil de haut en bas et vous écrivez les textes avec les mots de ta clientèle.
+3. Vous fixez quelle action aboutie sera comptée et à quoi vous reconnaîtrez que la page est terminée.
+4. Vous planifiez le test de cinq secondes : dès qu'il y a l'ébauche à parcourir en cliquant, tu montres la première image pendant cinq secondes à quelques personnes de ton groupe cible et tu améliores ce qui n'est pas clair.
+5. Tout va dans ton plan `docs/plan.md`. La page n'est construite qu'une fois que tu as autorisé l'ébauche à la construction.
 
 ## Réussi quand
 
-- le fichier `docs/landingpage.md` avec ton plan et le résultat du test se trouve dans ton projet
+- le plan de construction de ta page d'accueil de haut en bas et la réception figurent dans `docs/plan.md`
 - et l'étape « Plan » est atteinte sur ton île.

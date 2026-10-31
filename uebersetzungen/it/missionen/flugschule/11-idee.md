@@ -1,6 +1,6 @@
 ---
 titel: Dove va il viaggio
-bild: 'La carta d''imbarco, su cui c''è scritto dove va il viaggio'
+bild: Cerchiare la meta sulla carta prima di decollare
 phase: P1
 verstehen:
   - frage: Perché il tuo progetto riceve un nome prima ancora che esista qualcosa?
@@ -11,7 +11,7 @@ verstehen:
 
 ## Di cosa si tratta
 
-Sulla carta d'imbarco c'è scritto dove va il viaggio, prima che qualcuno salga a bordo. Senza una meta nessuna pilota sa che rotta prendere. Il tuo progetto comincia allo stesso modo: la tua IA ti chiede un nome, la tua idea in una frase, a chi è destinata e che cosa devono fare soprattutto i visitatori. Poi disegna un primo schizzo della tua pagina iniziale.
+Prima di decollare, una pilota cerchia la meta sulla carta. Senza una meta non sa che rotta prendere. Il tuo progetto comincia allo stesso modo: la tua IA propone un nome o te lo chiede, e vuole sapere di cosa si tratta in una frase, a chi è destinato e che cosa devono fare soprattutto i visitatori. Poi disegna un primo schizzo grigio della tua pagina iniziale.
 
 ## Cosa impari
 
@@ -22,12 +22,13 @@ Sulla carta d'imbarco c'è scritto dove va il viaggio, prima che qualcuno salga 
 
 ## Come procedi
 
-1. Dai un nome al tuo progetto. Basta un nome provvisorio.
+1. Dai un nome al tuo progetto. Basta un nome provvisorio, può anche essere scelto a caso.
 2. Rispondi alle domande della tua IA, al massimo due alla volta. Quello che può proporre da sé lo annota come ipotesi, e tu confermi tutte le ipotesi insieme.
 3. Dici se la tua IA deve semplicemente fare il lavoro o se vuoi imparare tu i passi importanti. Puoi cambiare in qualsiasi momento.
-4. La tua IA scrive tutto in `docs/projekt.md` e apre nel browser lo schizzo della tua pagina iniziale.
+4. Se esiste già un sito web, la tua IA comincia con un inventario del vecchio sito, così non va perso niente.
+5. La tua IA scrive tutto in `docs/projekt.md` e mette nel progetto un biglietto per ogni IA (`AGENTS.md`), così anche una conversazione nuova sa a che punto siete. Poi apre nel browser lo schizzo della tua pagina iniziale.
 
-Sul percorso attività verifichi in più se la tua idea vale la pena: continuare, adattare o fermarti.
+Sul percorso attività verifichi poi se la tua idea vale la pena: continuare, adattare o fermarti.
 
 ## Ce l'hai fatta quando
 

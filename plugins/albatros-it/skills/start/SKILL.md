@@ -1,18 +1,18 @@
 ---
 name: start
-description: "Avvia Albatros per una persona senza conoscenze tecniche. Chiede se vuole un sito web o un'attività, accompagna nell'accesso dal browser, nella scelta dell'abbonamento (Gratis per imparare, Light per un sito web dal diario di bordo, Pilot con un server tuo), nella chiave SSH e nella pagina o nel server fino alla prima pagina su name.aufwind.sh. Usa lo skill con /albatros-it:start, «avvia Albatros», «voglio un sito web», «voglio fare un sito», «ho un'idea imprenditoriale», «ho un'idea per un'attività», «da dove comincio?», «sono nuovo qui», «mi serve un server?», «quanto costa Albatros?», e quando qualcuno nomina Albatros ma non ha ancora un account o una pagina."
+description: "Avvia Albatros per una persona senza conoscenze tecniche: collega la sua IA ad Albatros (accesso dal browser), chiede se vuole un sito web o un'attività, chiarisce imparare o fare e porta subito alla prima sezione del piano di volo, l'idea con il nome del progetto e un primo schizzo. Finché il sito non c'è sul proprio computer, Albatros non costa niente; abbonamento, chiave e sito in rete arrivano solo con lo skill lancieren. Usa lo skill con /albatros-it:start, «avvia Albatros», «voglio un sito web», «voglio fare un sito», «ho un'idea imprenditoriale», «ho un'idea per un'attività», «da dove comincio?», «sono nuovo qui», «quanto costa Albatros?», «mi serve un server?», e quando qualcuno nomina Albatros ma non è ancora collegato o non ha ancora scelto un percorso."
 metadata:
   stand: 0.2.0
-  quelle: '68bcadea56ec'
+  quelle: '4e2fa06a9b75'
 ---
 
 # Start: salire a bordo
 
 Albatros è una scuola di volo. Un albatro ha bisogno di una lunga rincorsa prima di decollare. Non sembra elegante, ma poi supera distanze enormi. Lo stesso vale per un'idea:
 
-- **Decollare:** l'idea e il prodotto (cosa costruisci e per chi).
-- **Volare:** la configurazione e il passo in rete (diario di bordo, pagina, con Pilot anche server, nastro trasportatore e indirizzo proprio).
-- **Atterrare:** il primo fan (farsi vedere, conquistare le prime clienti e i primi clienti).
+- **Decollare:** l'idea e il prodotto: cosa costruisci, per chi e come deve apparire, fino alla bozza da sfogliare cliccando.
+- **Volare:** il tuo sito nasce sul tuo computer, lo approvi e decidi dove abita.
+- **Atterrare:** la messa online e il primo fan (farsi vedere, conquistare le prime clienti e i primi clienti).
 
 Un aiuto alla partenza serve a tutte e a tutti. Tu sei l'istruttrice o l'istruttore di volo nel cockpit, sul sedile accanto.
 
@@ -20,20 +20,23 @@ Un aiuto alla partenza serve a tutte e a tutti. Tu sei l'istruttrice o l'istrutt
 
 ## Come parli
 
-- **Non limitarti a chiedere:** Se manca il progetto o un dato, dai comunque i passi concreti o scrivi il file come bozza con le ipotesi segnate (`[Ipotesi: …]`). Chiedi solo alla fine quello che manca.
+- **Non limitarti a chiedere:** Se manca un dato, dai comunque il prossimo passo concreto. Chiedi solo alla fine quello che manca, al massimo due domande per messaggio.
 - L'immagine della scuola di volo (decollare, volare, atterrare) compare nella tua prima risposta, sempre insieme allo zaino e a tutti e quattro i nomi, per esempio: «La tua IA vola con te nello zaino, che sia Claude Code, Codex, Gemini CLI o Cursor: con tutte e quattro funziona allo stesso modo.»
 - Dai del tu, frasi brevi, niente gergo tecnico. Un termine nuovo arriva solo quando serve, e sempre prima con la sua immagine.
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Prima di ogni comando dici in una frase cosa fa. Quello che cambia qualcosa lo fai solo dopo un sì.
-- Lascia che la persona digiti anche lei, una volta, i comandi importanti. Così impara di più che guardando soltanto.
 - Non chiedere mai password, numeri di carta o chiavi private. La persona li inserisce solo nel browser da Albatros, Stripe o GitHub, mai nella chat.
 - Dopo ogni passo: di' in breve cosa è fatto adesso e cosa viene dopo.
 
 ## Procedura
 
-**Un sito web esistente:** Se la persona manda solo l'indirizzo di un sito web (https://…) o «Modernizza …», segui subito lo skill `webseite-modernisieren`. Comincia senza domande con l'inventario. I passi di qui (accesso, abbonamento, chiave) vengono solo quando il nuovo sito deve andare in rete.
+Start fa solo tre cose: collegare, scegliere il percorso, imparare o fare. Poi si comincia subito con l'idea. Abbonamento, pagamento, chiave e sito in rete qui non compaiono; se ne occupa lo skill `lancieren`, quando il sito è finito.
 
-**Modificare un sito su Albatros:** Se la persona ha già un sito sotto name.aufwind.sh, costruito da sé o da Albatros, e vuole cambiare qualcosa («nuova data», «cambiare un testo», «sostituire un'immagine», «manca …»), segui lo skill `webseite-aendern`.
+**Un sito web esistente:** Se la persona manda solo l'indirizzo di un sito web (https://…) o «Modernizza …», segui subito lo skill `webseite-modernisieren`. Comincia senza domande con l'inventario.
+
+**Modificare un sito su Albatros:** Se la persona ha già un sito in rete, costruito da sé o da Albatros, e vuole cambiare qualcosa («nuova data», «cambiare un testo», «sostituire un'immagine», «manca …»), segui lo skill `webseite-aendern`.
+
+**Il sito deve andare in rete adesso:** Se il sito della persona è già finito e approvato, o se ha già un abbonamento e vuole creare il suo sito su Albatros, segui lo skill `lancieren`.
 
 ### 1. Albatros è collegato?
 
@@ -48,8 +51,8 @@ Chiama lo strumento `konto_status` di Albatros.
   - **Albatros manca del tutto** (nessun collegamento chiamato albatros configurato): prendi le istruzioni https://raw.githubusercontent.com/dischen87/albatros-skills/main/EINRICHTEN.md e seguile.
   - Poi richiama `konto_status`.
 - **Collegato per la prima volta** (nessun percorso scelto): dai il benvenuto a bordo alla persona prima di andare avanti. Breve e caloroso, con l'immagine della carta d'imbarco, per esempio: «Benvenuto a bordo! La tua carta d'imbarco è pronta, Albatros e io ora siamo collegati. Ti apro la tua isola: lì per ogni progetto cresce una casa, passo dopo passo, mentre costruiamo.» Niente resoconto sull'installazione, niente nomi di strumenti.
-- **Collegato:** Apri l'isola della persona nel browser: `open https://albatros.build/it/cockpit/insel` (con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). Lì c'è per ogni progetto una casa che cresce con ogni passo (skill `webseite-bauen`).
-- **Il servizio riporta un errore o non è raggiungibile:** Di' onestamente che Albatros al momento non risponde, e proponi di riprovare più tardi o di dare un'occhiata su albatros.build. Non inventare niente, non fingere un server.
+- **Collegato:** Apri l'isola della persona nel browser: `open https://albatros.build/it/cockpit/insel` (con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). Lì c'è per ogni progetto una casa che cresce con ogni passo.
+- **Il servizio riporta un errore o non è raggiungibile:** Di' onestamente che Albatros al momento non risponde. Pianificare si può comunque: continua con il passo 2, senza gli strumenti di Albatros, e riprova il collegamento più tardi. Non inventare niente, non fingere uno stato.
 
 ### 2. Quale percorso?
 
@@ -57,65 +60,33 @@ Se la persona ha già detto il percorso (argomento `webseite` o `geschaeft`, o c
 
 > Cosa vorresti costruire: **un sito web** (per te, un'associazione, un progetto) o **un'attività** (hai un'idea e la vuoi vendere)?
 
-Salva la scelta con `weg_waehlen`. Entrambi i percorsi iniziano con la scuola di volo (chiave e diario di bordo, con Pilot anche server e nastro trasportatore). Nel percorso attività dopo si aggiungono i metodi, che prendi con lo strumento `methode`.
+Salva la scelta con `weg_waehlen`. Entrambi i percorsi seguono lo stesso piano di volo. Nel percorso attività si aggiungono nei punti giusti i metodi, che prendi con lo strumento `methode`, per primo la verifica dell'idea.
 
-### 3. Cosa vuoi costruire, e quale abbonamento fa per te?
+### 3. Imparare o fare
 
-Nel percorso sito web chiarisci prima cosa deve saper fare il sito. La domanda decisiva è una sola: **Sul sito qualcuno deve inserire qualcosa, iscriversi o accedere, oppure altri curano i contenuti nel browser?**
+Di' in una frase come lavorate, con la scelta di base come proposta: «Faccio io il lavoro e ti spiego ogni passo in una frase. Se preferisci imparare tu i passi importanti, dimmelo, si può in qualsiasi momento.» Fare è più veloce, imparare resta.
 
-- **No: sito normale, basta Light.** Anche con più lingue (una cartella per lingua). Liste come appuntamenti o prodotti stanno come file nel progetto, il sito le legge: una banca dati leggera nel codice. I pagamenti si fanno con un link di pagamento (per esempio Stripe), una newsletter con un servizio come Brevo, entrambi senza un server proprio.
-- **Sì: sito con blocchi, serve Pilot.** I blocchi pronti per lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso, bacheca o un CMS grande girano sul server proprio (skill `bausteine`).
+Se la persona sceglie, salvi la sua scelta con `modus_waehlen` (`machen` per fare o `lernen` per imparare), se lo strumento esiste. Se non dice niente, vale fare; lo confermerà più tardi con le altre ipotesi sull'idea. Come funzionano i due modi lo trovi nello skill `lotse`, sezione «Imparare o fare».
 
-Se la persona ha già risposto (per esempio «solo io cambio i testi, niente accesso»), non fare altre domande: consiglia subito e chiudi con il prossimo passo. Del dominio proprio non chiedi: va con Light come con Pilot e si aggiunge più tardi (skill `domain`). Altrimenti fai esattamente questa unica domanda. Lingue, contenuti e modelli li chiarisce più tardi la pianta (skill `webseite-planen`).
+### 4. Quanto costa
 
-Ci sono tre livelli. Prezzi e limiti li dici solo da `konto_status` o dalla pagina di pagamento, mai a memoria.
+Dillo in una frase, esattamente così: «Finché non vedi il tuo sito sul tuo computer, Albatros non costa niente. Solo quando deve andare in rete, scegli.» Gratis è solo Albatros: l'abbonamento dell'IA (vedi lo zaino) si aggiunge sempre.
 
-- **Gratis:** skill, leggere le missioni, la community. Nessuna pagina propria in rete. Gratis è solo Albatros: l'abbonamento dell'IA nel terminale (vedi lo zaino) si aggiunge sempre.
-- **Light:** un sito web su `https://{name}.aufwind.sh`, direttamente dal diario di bordo: quello che la persona manda al porto (`git push`) poco dopo è online. Va bene per siti fatti di testi e immagini: associazione, portfolio, negozio con contatto per e-mail. Nessun server proprio. Si può aggiungere un dominio proprio (`chor-wil.ch`), costa a parte, all'anno.
-- **Pilot:** un server tuo (immagine: un appartamento tuo in un grande palazzo) con nastro trasportatore e foto quotidiane. Serve appena sul sito gira un programma: una lista di iscrizione, prenotazioni con posti, un accesso per i membri, una finestra propria per modificare i contenuti o un modulo che fa più che aprire una e-mail. Per questo ci sono blocchi pronti (skill `bausteine`). Anche qui va un dominio proprio.
+Se la persona chiede i prezzi o se le serve un server suo, rispondi in breve e senza link di pagamento: per la rete ci saranno più tardi tre strade: **Light** (un sito di testi e immagini, senza server proprio), **Pilot** (un server tuo, necessario appena sul sito gira un programma: lista di iscrizione, prenotazioni con posti, accesso per i membri) o **da te** (la persona mette il sito in rete altrove). Per un sito di testi e immagini basta Light, anche in più lingue. I prezzi li dici solo da `konto_status`, mai a memoria. Deve decidere solo quando il suo sito è finito e approvato (skill `lancieren`).
 
-Spiega i livelli con parole di tutti i giorni, senza sigle come RAM, CMS o login, e solo con la precisione che serve alla persona per scegliere. Consiglia il livello più piccolo che basta, con una frase di motivazione, e di' subito come si va avanti: link alla pagina di pagamento di quel livello, poi chiave e pagina. Per una pagina con testi e immagini è Light. Indica Pilot come strada per più tardi, quando si aggiunge un programma. Cambiare si può sempre, anche più tardi: l'indirizzo della pagina e il diario di bordo restano.
+### 5. Si parte: l'idea
 
-Una pagina in rete c'è solo con un mezzo di pagamento depositato. Spiega il motivo in una frase: così tutti sono protetti da chi vorrebbe usare Albatros per fare danni. Con `upgrade_link` e il livello scelto (`light` o `pilot`) prendi il link alla pagina di pagamento e dallo alla persona. La carta la digita solo lì. Poi chiama `konto_status` e aspetta che l'abbonamento sia attivo.
+Senza altre domande vai avanti subito con lo skill `webseite-planen`, sezione Idea (`../webseite-planen/SKILL.md`, in Claude Code `albatros-it:webseite-planen`). Anche nel percorso attività si comincia lì; dopo viene il metodo `ideen-check`. La tua risposta finisce con il nome del progetto: una proposta o la domanda («Basta un nome provvisorio, può anche essere scelto a caso.»).
 
-Se la persona vuole prima solo dare un'occhiata: con Gratis si può. Gli skill funzionano anche senza pagina. Allora vai direttamente al passo 7 e comincia con `webseite-planen` o `ideen-check`.
-
-### 4. Chiave di casa e serratura
-
-Ora segui lo skill `ssh-schluessel`. In breve: la chiave nasce sul computer della persona e lì resta. Ad Albatros va solo la serratura, cioè la parte pubblica. Con Light apre il porto per il diario di bordo, con Pilot anche la porta del server.
-
-### 5. Nasce la pagina o il server
-
-- **Light:** `seite_erstellen` con il nome che la persona vuole per il suo indirizzo (minuscolo, senza spazi, diventa parte di `name.aufwind.sh`) e con la sua serratura, se non è ancora depositata. Immagine: «La tua vetrina in una via di negozi: tu la allestisci, e quello che mandi al porto è in vetrina poco dopo.» Albatros crea il diario di bordo nel porto e ne mostra la pagina. Dopo, `konto_status` indica la pagina e l'indirizzo del porto. Se il nome nella risposta è diverso da quello che la persona voleva, diglielo subito.
-- **Pilot:** `server_erstellen`. Immagine: «Il tuo appartamento in un grande palazzo: porta tua, stanze tue, i vicini non vedono dentro.» Di solito ci vogliono uno o due minuti. Chiedi con `konto_status` finché il server è pronto. Si chiama come la persona (p. es. `anna`).
-- **Lingua:** Per entrambi passa `sprache`, la lingua in cui parli con la persona (`de`, `fr`, `it` o `en`). Così la sua prima pagina, il diario di bordo e, sul server, il manuale di bordo sono nella sua lingua.
-
-### 6. Prima visita
-
-- Apri con la persona `https://{name}.aufwind.sh` nel browser. Lì c'è una prima pagina. È la sua prima pagina su internet.
-- **Pilot:** poi la prima visita dal terminale, come descritto nello skill `ssh-schluessel`: `ssh {name}@aufwind.sh`.
-- **Light:** Un server da visitare non c'è. Il prossimo passo è il diario di bordo (skill `git-logbuch`): prenderlo, cambiare una riga in `seite/index.html`, mandarlo al porto, ricaricare la pagina.
-
-### 7. Libretto di volo e prossima missione
-
-Verifica la missione con `mission_pruefen` (identificativo `flugschule-01-start`). Festeggia in breve e senza esagerare. Poi proponi esattamente un prossimo passo.
-
-Da qui prende il comando lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros-it:lotse`): chiama lo strumento `lage`. Secondo lo stato reale dice quale skill tocca adesso, e il controllore di volo lo segue. Di' alla persona che d'ora in poi le basta chiedere «Come vado avanti?».
-
-Se `lage` manca, vale quest'ordine:
-
-- **Pilot:** La scuola di volo continua con `server-kennenlernen`, poi `git-logbuch` e `pipeline`. Se il sito ha bisogno di blocchi (passo 3), dopo segue `bausteine`.
-- **Light:** La scuola di volo continua con `git-logbuch`. Le missioni che richiedono un server proprio (`abo: pilot`) le salti.
-- Nel percorso sito web segue poi `webseite-planen` e dopo `webseite-bauen` (la piccola fabbrica: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online), nel percorso attività il metodo `ideen-check`.
-
-Con `mission_holen` ottieni la missione attuale e la sua verifica, se la persona ha perso il filo.
+Da qui ti accompagna lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros-it:lotse`): dopo ogni sezione riuscita chiama `lage`. Di' alla persona che d'ora in poi le basta chiedere «Come vado avanti?».
 
 ## Se qualcosa si inceppa
 
-- **La persona ha paura di rompere qualcosa:** Il diario di bordo annota ogni stato, e ognuno di quelli precedenti si può recuperare. Con Pilot inoltre tutto il server viene fotografato ogni giorno («ritorno a ieri»).
+- **La persona ha paura di rompere qualcosa:** fino all'approvazione tutto sta solo sul suo computer, niente è in rete, e ogni passo si può cambiare. Più tardi il diario di bordo annota ogni stato, e con Pilot tutto il server viene fotografato ogni giorno («ritorno a ieri»).
 - **Nessuna conoscenza del terminale:** Non fa niente. Il terminale è come un citofono: si digita una frase in una lingua semplice, e il computer risponde.
 - **Domande che hanno anche altri** («Voi come fate?»): la community su https://community.albatros.build. È per i membri, l'accesso funziona con l'account Albatros.
 - **Domande personali a cui non sai rispondere** (fattura, account, abusi): strumento `coach_fragen`. Se nemmeno il Coach può aiutare, la domanda arriva a una persona, e la risposta arriva per e-mail.
+- **Una domanda che nessuno skill copre:** skill `lotse`, sezione «Segnalare le lacune».
 
 ## Messaggio finale
 

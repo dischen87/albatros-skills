@@ -28,7 +28,7 @@ Der Boden sind deine Kosten pro Verkauf, darunter verlierst du Geld. Die Decke i
 
 1. Du beschreibst mit deiner KI dein kleinstes Angebot.
 2. Ihr rechnet den Boden: Material, Gebühren, deine Zeit und ein Anteil deiner Fixkosten.
-3. Ihr schätzt die Decke: Was tut die Kundschaft heute, und was kostet es sie?
+3. Ihr schätzt die Decke: Was tut die Kundschaft heute, und was kostet es sie? Deine KI sucht vergleichbare Angebote und ruft jede Adresse auf; die besten drei werden die Vorbilder in `docs/recherche.md`.
 4. Du setzt einen Preis und nennst ihn echten Menschen aus deiner Zielgruppe.
 5. Du prüfst, ob du mehrwertsteuerpflichtig wirst, und hältst alles in `docs/angebot.md` fest.
 

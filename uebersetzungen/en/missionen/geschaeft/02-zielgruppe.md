@@ -6,7 +6,7 @@ phase: P2
 
 ## What it's about
 
-Nobody recognises themselves in a photo of a crowd. A portrait shows one person so precisely that others say: “Hey, that's me.” You paint a portrait of the people your offer is made for, based on real people rather than imagination.
+Nobody recognises themselves in a photo of a crowd. A portrait shows one person so precisely that others say: “Hey, that's me.” You paint a portrait of the people your offer is made for, based on real people rather than imagination. It's up once your idea check says “keep going”; it's part of the research for your plan.
 
 ## What you'll learn
 
@@ -20,7 +20,7 @@ Nobody recognises themselves in a photo of a crowd. A portrait shows one person 
 1. You take what you already know from your conversations.
 2. With three questions, your AI narrows “everyone” down to one group.
 3. Together you paint the portrait: the moment the problem shows up, what these people do today and what bothers them.
-4. You collect sentences word for word and write down who doesn't belong.
+4. You collect sentences word for word and write down who doesn't belong. These sentences become the search words in `docs/recherche.md`.
 5. A short cross-check shows whether the portrait matches real people.
 
 ## Done when

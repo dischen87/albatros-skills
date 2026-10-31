@@ -22,11 +22,11 @@ Qui s'envole vers un pays inconnu lit d'abord le guide de voyage : ce qu'on y 
 
 ## Comment t'y prendre
 
-1. Tu cites des sites qui te plaisent. Ton IA en cherche jusqu'à trois comparables et ouvre chaque adresse. Pas d'adresses inventées.
+1. Sans poser de question, ton IA cherche jusqu'à trois sites comparables dans ta région et ton secteur et ouvre chaque adresse. Si tu connais toi-même des sites qui te plaisent, ils s'y ajoutent. Pas d'adresses inventées.
 2. Vous notez ce qui est habituel, ce que vous reprenez et ce que vous faites volontairement autrement.
 3. Ton IA clarifie quelles obligations s'appliquent à ton site.
 4. Tu dis quels textes, quelles photos et quel logo tu as déjà.
-5. Tout va dans `docs/recherche.md`, y compris les mots avec lesquels quelqu'un te chercherait.
+5. Tout va dans `docs/recherche.md`, y compris les mots avec lesquels quelqu'un te chercherait. Ton IA t'explique le résultat en cinq lignes.
 
 Sur le parcours entreprise, le groupe cible ainsi que l'offre et le prix s'y ajoutent. Si tu modernises un site existant, cette étape est l'état des lieux : qu'est-ce que l'ancien site a qui doit rester ?
 

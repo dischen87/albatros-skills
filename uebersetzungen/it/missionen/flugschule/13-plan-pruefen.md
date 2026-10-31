@@ -23,9 +23,9 @@ Prima di costruire una casa, un'ingegnera statica guarda il piano. Non l'ha dise
 ## Come procedi
 
 1. La tua IA chiede il secondo parere in una conversazione nuova, che legge solo `docs/`.
-2. Ogni punto della lista di controllo riceve ok, rischio o aperto, con il punto del piano.
-3. La tua IA ti mostra i punti con rischio o aperti.
-4. Decidi tu: lasciare così o cambiare. Solo dopo il tuo sì il piano viene segnato come confermato, con la data.
+2. Ogni punto della lista di controllo riceve ok, rischio o aperto, con il punto del piano. Il risultato sta in `docs/plan-pruefung.md`.
+3. La tua IA ti mostra i punti con rischio o aperti, ognuno con una proposta.
+4. Decidi tu: lasciare così o cambiare. È uno dei tre momenti del tuo percorso in cui il sì viene solo da te. Solo dopo il tuo sì il piano viene segnato come confermato, con la data.
 
 Se modernizzi un sito esistente, il secondo parere verifica anche che nessuna funzione del vecchio sito vada persa senza una decisione.
 

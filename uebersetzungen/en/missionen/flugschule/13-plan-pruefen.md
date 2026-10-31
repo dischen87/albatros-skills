@@ -23,9 +23,9 @@ Before a house gets built, a structural engineer looks at the plan. She didn't d
 ## How you go about it
 
 1. Your AI gets the second opinion in a fresh conversation that only reads `docs/`.
-2. Every point on the checklist gets ok, risk or open, with the place in the plan.
-3. Your AI shows you the points marked risk or open.
-4. You decide: leave it or change it. Only after your yes is the plan marked as confirmed, with the date.
+2. Every point on the checklist gets ok, risk or open, with the place in the plan. The result goes into `docs/plan-pruefung.md`.
+3. Your AI shows you the points marked risk or open, each with a suggestion.
+4. You decide: leave it or change it. This is one of three moments on your way where the yes can only come from you. Only after your yes is the plan marked as confirmed, with the date.
 
 If you're modernising an existing site, the second opinion also checks that no feature of the old site gets lost without a decision.
 

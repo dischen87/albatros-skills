@@ -32,9 +32,9 @@ Bevor ein Haus gebaut wird, schaut eine Statikerin den Plan an. Sie hat ihn nich
 ## So gehst du vor
 
 1. Deine KI holt die zweite Meinung in einem frischen Gespräch, das nur `docs/` liest.
-2. Jeder Punkt der Prüfliste bekommt ok, Risiko oder offen, mit der Stelle im Plan.
-3. Deine KI zeigt dir die Punkte mit Risiko oder offen.
-4. Du entscheidest: so lassen oder ändern. Erst nach deinem Ja steht im Plan «Bestätigt:» mit Datum.
+2. Jeder Punkt der Prüfliste bekommt ok, Risiko oder offen, mit der Stelle im Plan. Das Ergebnis steht in `docs/plan-pruefung.md`.
+3. Deine KI zeigt dir die Punkte mit Risiko oder offen, je mit einem Vorschlag.
+4. Du entscheidest: so lassen oder ändern. Das ist einer von drei Momenten auf deinem Weg, in denen nur du Ja sagst. Erst nach deinem Ja steht im Plan «Bestätigt:» mit Datum.
 
 Modernisierst du eine bestehende Seite, prüft die zweite Meinung auch, dass keine Funktion der alten Seite ohne Entscheid verloren geht.
 
