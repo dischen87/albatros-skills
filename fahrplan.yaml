@@ -54,13 +54,104 @@ phasen:
     lernmomente: ['Warum ein Projekt einen Namen braucht, bevor es etwas gibt', 'Eine Hauptsache statt fünf']
     ausgaenge: { geschaeft: [weiter, anpassen, stoppen] }
     pflichtfragen:
-      - { id: projektname, bereich: ablauf, antwortet: person, ablage: 'docs/projekt.md#Projektname:', frage: { de: 'Wie soll dein Projekt heissen? Ein Arbeitsname reicht, er darf auch willkürlich sein.' }, warum: { de: 'Mit einem Namen können wir ab jetzt auf alles verweisen.' } }
-      - { id: satz, bereich: struktur, antwortet: person, ablage: 'docs/projekt.md#In einem Satz:', frage: { de: 'Worum geht es, in einem Satz?' }, warum: { de: 'Was sich nicht in einem Satz sagen lässt, versteht auch kein Besucher.' } }
-      - { id: fuer-wen, bereich: struktur, antwortet: person, ablage: 'docs/projekt.md#Für wen:', frage: { de: 'Für wen ist es gedacht?' }, warum: { de: 'Für wen bestimmt Sprache, Bilder und Aufbau.' } }
-      - { id: hauptsache, bereich: struktur, antwortet: person, ablage: 'docs/projekt.md#Hauptsache:', frage: { de: 'Was sollen Besucher vor allem tun?' }, warum: { de: 'Eine Seite mit einer Hauptsache wirkt; eine mit fünf verwirrt.' } }
-      - { id: bestehend, bereich: ablauf, antwortet: person, ablage: 'docs/projekt.md#Bestehende Seite:', frage: { de: 'Gibt es schon eine Webseite? Wenn ja, die Adresse.' }, warum: { de: 'Dann beginnen wir mit einer Bestandsaufnahme, damit nichts verloren geht.' } }
-      - { id: erfolg, bereich: release, antwortet: annahme_ok, ablage: 'docs/projekt.md#Erfolg:', frage: { de: 'Woran merkst du in drei Monaten, dass es funktioniert?' }, warum: { de: 'Ohne Erfolgsmass weiss niemand, ob die Seite etwas bringt.' } }
-      - { id: modus, bereich: ablauf, antwortet: annahme_ok, ablage: 'docs/projekt.md#Modus:', frage: { de: 'Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen?' }, warum: { de: 'Machen geht schneller, lernen bleibt. Du kannst jederzeit wechseln.' } }
+      - id: projektname
+        bereich: ablauf
+        antwortet: person
+        ablage: 'docs/projekt.md#Projektname:'
+        frage:
+          de: 'Wie soll dein Projekt heissen? Ein Arbeitsname reicht, er darf auch willkürlich sein.'
+          fr: 'Comment doit s''appeler ton projet ? Un nom de travail suffit, il peut même être choisi au hasard.'
+          it: 'Come deve chiamarsi il tuo progetto? Basta un nome provvisorio, può anche essere scelto a caso.'
+          en: 'What should your project be called? A working name is enough, and it can be completely arbitrary.'
+        warum:
+          de: 'Mit einem Namen können wir ab jetzt auf alles verweisen.'
+          fr: 'Avec un nom, nous pouvons désormais y faire référence partout.'
+          it: 'Con un nome, da adesso possiamo farvi riferimento ovunque.'
+          en: 'With a name, we can refer to everything from now on.'
+      - id: satz
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/projekt.md#In einem Satz:'
+        frage:
+          de: 'Worum geht es, in einem Satz?'
+          fr: 'De quoi s''agit-il, en une phrase ?'
+          it: 'Di cosa si tratta, in una frase?'
+          en: 'What is it about, in one sentence?'
+        warum:
+          de: 'Was sich nicht in einem Satz sagen lässt, versteht auch kein Besucher.'
+          fr: 'Ce qui ne se dit pas en une phrase, aucun visiteur ne le comprend non plus.'
+          it: 'Quello che non si può dire in una frase non lo capisce nemmeno un visitatore.'
+          en: 'If it can''t be said in one sentence, no visitor will understand it either.'
+      - id: fuer-wen
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/projekt.md#Für wen:'
+        frage:
+          de: 'Für wen ist es gedacht?'
+          fr: 'À qui s''adresse-t-il ?'
+          it: 'A chi è destinato?'
+          en: 'Who is it for?'
+        warum:
+          de: 'Für wen bestimmt Sprache, Bilder und Aufbau.'
+          fr: 'Le public visé détermine la langue, les images et la structure.'
+          it: 'Il pubblico determina lingua, immagini e struttura.'
+          en: 'Who it''s for decides the language, the pictures and the structure.'
+      - id: hauptsache
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/projekt.md#Hauptsache:'
+        frage:
+          de: 'Was sollen Besucher vor allem tun?'
+          fr: 'Que doivent faire les visiteurs avant tout ?'
+          it: 'Che cosa devono fare soprattutto i visitatori?'
+          en: 'What should visitors do above all?'
+        warum:
+          de: 'Eine Seite mit einer Hauptsache wirkt; eine mit fünf verwirrt.'
+          fr: 'Un site avec une chose principale fonctionne ; avec cinq, il embrouille.'
+          it: 'Un sito con una cosa principale funziona; uno con cinque confonde.'
+          en: 'A site with one main thing works; a site with five confuses.'
+      - id: bestehend
+        bereich: ablauf
+        antwortet: person
+        ablage: 'docs/projekt.md#Bestehende Seite:'
+        frage:
+          de: 'Gibt es schon eine Webseite? Wenn ja, die Adresse.'
+          fr: 'Y a-t-il déjà un site web ? Si oui, son adresse.'
+          it: 'Esiste già un sito web? Se sì, l''indirizzo.'
+          en: 'Is there already a website? If so, its address.'
+        warum:
+          de: 'Dann beginnen wir mit einer Bestandsaufnahme, damit nichts verloren geht.'
+          fr: 'Alors nous commençons par un état des lieux, pour que rien ne se perde.'
+          it: 'Allora cominciamo con un inventario, così non va perso niente.'
+          en: 'Then we start with an inventory, so nothing gets lost.'
+      - id: erfolg
+        bereich: release
+        antwortet: annahme_ok
+        ablage: 'docs/projekt.md#Erfolg:'
+        frage:
+          de: 'Woran merkst du in drei Monaten, dass es funktioniert?'
+          fr: 'À quoi verras-tu dans trois mois que ça marche ?'
+          it: 'Da cosa ti accorgerai, fra tre mesi, che funziona?'
+          en: 'How will you notice in three months that it''s working?'
+        warum:
+          de: 'Ohne Erfolgsmass weiss niemand, ob die Seite etwas bringt.'
+          fr: 'Sans mesure du succès, personne ne sait si le site apporte quelque chose.'
+          it: 'Senza una misura del successo nessuno sa se il sito serve a qualcosa.'
+          en: 'Without a measure of success, nobody knows whether the site achieves anything.'
+      - id: modus
+        bereich: ablauf
+        antwortet: annahme_ok
+        ablage: 'docs/projekt.md#Modus:'
+        frage:
+          de: 'Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen?'
+          fr: 'Est-ce que je le fais simplement et je t''explique chaque étape en une phrase, ou veux-tu apprendre toi-même les étapes importantes ?'
+          it: 'Lo faccio semplicemente io e ti spiego ogni passo in una frase, oppure vuoi imparare tu i passi importanti?'
+          en: 'Shall I just do it and explain each step to you in one sentence, or do you want to learn the important steps yourself?'
+        warum:
+          de: 'Machen geht schneller, lernen bleibt. Du kannst jederzeit wechseln.'
+          fr: 'Faire va plus vite, apprendre reste. Tu peux changer à tout moment.'
+          it: 'Fare è più veloce, imparare resta. Puoi cambiare in qualsiasi momento.'
+          en: 'Doing is faster, learning sticks. You can switch at any time.'
     gate: 'docs/projekt.md hat alle Zeilen; Projektname nicht leer; die Skizze der Startseite ist geöffnet worden.'
 
   - id: P2
@@ -77,12 +168,90 @@ phasen:
     insel: [recherche]
     lernmomente: ['Abgucken ist erlaubt, kopieren nicht']
     pflichtfragen:
-      - { id: vorbilder, bereich: design, antwortet: annahme_ok, ablage: 'docs/recherche.md#Vorbilder:', frage: { de: 'Kennst du Seiten, die dir gefallen? Ich suche zusätzlich bis zu drei vergleichbare in deiner Region und Branche.' }, warum: { de: 'Vorbilder zeigen, was Besucher erwarten.' } }
-      - { id: funktionen-ueblich, bereich: struktur, antwortet: ki, ablage: 'docs/recherche.md#Übliche Seiten und Funktionen:', frage: { de: 'Was bieten vergleichbare Seiten an?' }, warum: { de: 'Was alle haben, erwarten Besucher auch bei dir.' } }
-      - { id: uebernehmen-vermeiden, bereich: design, antwortet: annahme_ok, ablage: 'docs/recherche.md#Übernehmen:', frage: { de: 'Was übernehmen wir, was machen wir bewusst anders?' }, warum: { de: 'So wird deine Seite vertraut und trotzdem deine.' } }
-      - { id: pflichten, bereich: release, antwortet: ki, ablage: 'docs/recherche.md#Pflichten:', frage: { de: 'Welche Pflichten gelten (Impressum, Datenschutz, Bildrechte, Cookies)?' }, warum: { de: 'Was Pflicht ist, gehört von Anfang an in den Plan.' } }
-      - { id: inhalte-vorhanden, bereich: struktur, antwortet: person, ablage: 'docs/recherche.md#Inhalte vorhanden:', frage: { de: 'Welche Texte, Fotos und welches Logo hast du schon?' }, warum: { de: 'Fehlende Inhalte sind der häufigste Grund, warum Seiten nie fertig werden.' } }
-      - { id: suchbegriffe, bereich: release, antwortet: annahme_ok, ablage: 'docs/recherche.md#Suchbegriffe:', frage: { de: 'Mit welchen Worten würde dich jemand suchen?' }, warum: { de: 'Daraus entstehen Titel und Texte, die man findet.' } }
+      - id: vorbilder
+        bereich: design
+        antwortet: annahme_ok
+        ablage: 'docs/recherche.md#Vorbilder:'
+        frage:
+          de: 'Kennst du Seiten, die dir gefallen? Ich suche zusätzlich bis zu drei vergleichbare in deiner Region und Branche.'
+          fr: 'Connais-tu des sites qui te plaisent ? Je cherche en plus jusqu''à trois sites comparables dans ta région et ton secteur.'
+          it: 'Conosci siti che ti piacciono? Io ne cerco in più fino a tre simili nella tua regione e nel tuo settore.'
+          en: 'Do you know any sites you like? I''ll also look for up to three comparable ones in your region and line of business.'
+        warum:
+          de: 'Vorbilder zeigen, was Besucher erwarten.'
+          fr: 'Les modèles montrent ce que les visiteurs attendent.'
+          it: 'I modelli mostrano che cosa si aspettano i visitatori.'
+          en: 'Examples show what visitors expect.'
+      - id: funktionen-ueblich
+        bereich: struktur
+        antwortet: ki
+        ablage: 'docs/recherche.md#Übliche Seiten und Funktionen:'
+        frage:
+          de: 'Was bieten vergleichbare Seiten an?'
+          fr: 'Que proposent les sites comparables ?'
+          it: 'Che cosa offrono i siti simili?'
+          en: 'What do comparable sites offer?'
+        warum:
+          de: 'Was alle haben, erwarten Besucher auch bei dir.'
+          fr: 'Ce que tous ont, les visiteurs l''attendent aussi chez toi.'
+          it: 'Quello che hanno tutti, i visitatori se lo aspettano anche da te.'
+          en: 'What everyone has, visitors will expect from you too.'
+      - id: uebernehmen-vermeiden
+        bereich: design
+        antwortet: annahme_ok
+        ablage: 'docs/recherche.md#Übernehmen:'
+        frage:
+          de: 'Was übernehmen wir, was machen wir bewusst anders?'
+          fr: 'Que reprenons-nous, que faisons-nous volontairement autrement ?'
+          it: 'Che cosa riprendiamo, e che cosa facciamo apposta in modo diverso?'
+          en: 'What do we adopt, and what do we deliberately do differently?'
+        warum:
+          de: 'So wird deine Seite vertraut und trotzdem deine.'
+          fr: 'Ainsi ton site paraît familier tout en restant le tien.'
+          it: 'Così il tuo sito sembra familiare, ma resta tuo.'
+          en: 'That way your site feels familiar and is still yours.'
+      - id: pflichten
+        bereich: release
+        antwortet: ki
+        ablage: 'docs/recherche.md#Pflichten:'
+        frage:
+          de: 'Welche Pflichten gelten (Impressum, Datenschutz, Bildrechte, Cookies)?'
+          fr: 'Quelles obligations s''appliquent (mentions légales, protection des données, droits sur les images, cookies) ?'
+          it: 'Quali obblighi valgono (impressum, protezione dei dati, diritti sulle immagini, cookie)?'
+          en: 'Which obligations apply (legal notice, privacy, image rights, cookies)?'
+        warum:
+          de: 'Was Pflicht ist, gehört von Anfang an in den Plan.'
+          fr: 'Ce qui est obligatoire fait partie du plan dès le début.'
+          it: 'Ciò che è obbligatorio va nel piano fin dall''inizio.'
+          en: 'Whatever is mandatory belongs in the plan from the start.'
+      - id: inhalte-vorhanden
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/recherche.md#Inhalte vorhanden:'
+        frage:
+          de: 'Welche Texte, Fotos und welches Logo hast du schon?'
+          fr: 'Quels textes, quelles photos et quel logo as-tu déjà ?'
+          it: 'Quali testi, quali foto e quale logo hai già?'
+          en: 'Which texts, photos and which logo do you already have?'
+        warum:
+          de: 'Fehlende Inhalte sind der häufigste Grund, warum Seiten nie fertig werden.'
+          fr: 'Les contenus manquants sont la raison la plus fréquente pour laquelle un site n''est jamais terminé.'
+          it: 'I contenuti mancanti sono il motivo più frequente per cui i siti non vengono mai finiti.'
+          en: 'Missing content is the most common reason why websites never get finished.'
+      - id: suchbegriffe
+        bereich: release
+        antwortet: annahme_ok
+        ablage: 'docs/recherche.md#Suchbegriffe:'
+        frage:
+          de: 'Mit welchen Worten würde dich jemand suchen?'
+          fr: 'Avec quels mots quelqu''un te chercherait-il ?'
+          it: 'Con quali parole qualcuno ti cercherebbe?'
+          en: 'Which words would someone use to search for you?'
+        warum:
+          de: 'Daraus entstehen Titel und Texte, die man findet.'
+          fr: 'C''est de là que naissent des titres et des textes qu''on trouve.'
+          it: 'Da qui nascono titoli e testi che si trovano.'
+          en: 'That''s where titles and texts come from that people can find.'
     gate: 'Bis zu drei Vorbilder mit Adresse, jede Adresse von der KI aufgerufen und erreichbar; weniger nur mit Grund; ohne Netz nennt die Person sie. Keine erfundenen Adressen.'
 
   - id: P3
@@ -98,14 +267,118 @@ phasen:
     insel: [plan]
     lernmomente: ['Warum jede Seite gepflegt werden muss']
     pflichtfragen:
-      - { id: funktionen, bereich: struktur, antwortet: person, ablage: 'docs/plan.md#Funktionen:', frage: { de: 'Was sollen Besucher tun können: anfragen, buchen, sich anmelden, bezahlen?' }, warum: { de: 'Jede Funktion braucht einen Ablauf mit Bestätigung und Fehlerfall.' } }
-      - { id: zugang, bereich: struktur, antwortet: person, ablage: 'docs/plan.md#Zugang:', frage: { de: 'Gibt es Bereiche nur für bestimmte Leute? Wer darf was sehen und ändern?' }, warum: { de: 'Wer darf was, entscheidet über Login und Bausteine.' } }
-      - { id: sprachen, bereich: struktur, antwortet: person, ablage: 'docs/plan.md#Sprachen:', frage: { de: 'In welchen Sprachen?' }, warum: { de: 'Jede Sprache verdoppelt die Texte.' } }
-      - { id: release, bereich: release, antwortet: person, ablage: 'docs/plan.md#Release:', frage: { de: 'Bis wann soll es online sein? Gibt es einen Anlass?' }, warum: { de: 'Ein Datum macht aus einem Wunsch einen Plan.' } }
-      - { id: pflege, bereich: release, antwortet: person, ablage: 'docs/plan.md#Pflege:', frage: { de: 'Wer ändert später Texte und Termine, und wie oft?' }, warum: { de: 'Davon hängt ab, ob es ein System zur Inhaltspflege braucht.' } }
-      - { id: seiten, bereich: struktur, antwortet: annahme_ok, ablage: 'docs/plan.md#Seiten:', frage: { de: 'Welche Seiten braucht es? Für den ersten Flug höchstens fünf bis sieben, Impressum und Datenschutz zählen mit.' }, warum: { de: 'Jede Seite muss gepflegt werden.' } }
-      - { id: setup, bereich: setup, antwortet: annahme_ok, ablage: 'docs/plan.md#Setup:', frage: { de: 'Reicht eine Seite ohne eigene Dienste, oder braucht es einen Baustein (Anmeldung, Buchung, Login)?' }, warum: { de: 'Davon hängt ab, wo die Seite später wohnt und was es kostet.' } }
-      - { id: testing, bereich: testing, antwortet: annahme_ok, ablage: 'docs/plan.md#Testing:', frage: { de: 'Woran erkennen wir, dass es fertig ist?' }, warum: { de: 'Abnahmekriterien vor dem Bau verhindern Streit nach dem Bau.' } }
+      - id: funktionen
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/plan.md#Funktionen:'
+        frage:
+          de: 'Was sollen Besucher tun können: anfragen, buchen, sich anmelden, bezahlen?'
+          fr: 'Que doivent pouvoir faire les visiteurs : demander, réserver, s''inscrire, payer ?'
+          it: 'Che cosa devono poter fare i visitatori: chiedere, prenotare, iscriversi, pagare?'
+          en: 'What should visitors be able to do: send an enquiry, book, sign up, pay?'
+        warum:
+          de: 'Jede Funktion braucht einen Ablauf mit Bestätigung und Fehlerfall.'
+          fr: 'Chaque fonction a besoin d''un déroulement avec confirmation et cas d''erreur.'
+          it: 'Ogni funzione ha bisogno di uno svolgimento con conferma e caso di errore.'
+          en: 'Every function needs a flow with a confirmation and a case for when something goes wrong.'
+      - id: zugang
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/plan.md#Zugang:'
+        frage:
+          de: 'Gibt es Bereiche nur für bestimmte Leute? Wer darf was sehen und ändern?'
+          fr: 'Y a-t-il des espaces réservés à certaines personnes ? Qui peut voir et modifier quoi ?'
+          it: 'Ci sono aree solo per certe persone? Chi può vedere e cambiare che cosa?'
+          en: 'Are there areas only for certain people? Who may see and change what?'
+        warum:
+          de: 'Wer darf was, entscheidet über Login und Bausteine.'
+          fr: 'De qui a le droit de faire quoi dépendent la connexion et les briques.'
+          it: 'Da chi può fare che cosa dipendono l''accesso e i blocchi.'
+          en: 'Who may do what decides the login and the building blocks.'
+      - id: sprachen
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/plan.md#Sprachen:'
+        frage:
+          de: 'In welchen Sprachen?'
+          fr: 'Dans quelles langues ?'
+          it: 'In quali lingue?'
+          en: 'In which languages?'
+        warum:
+          de: 'Jede Sprache verdoppelt die Texte.'
+          fr: 'Chaque langue double les textes.'
+          it: 'Ogni lingua raddoppia i testi.'
+          en: 'Every language doubles the texts.'
+      - id: release
+        bereich: release
+        antwortet: person
+        ablage: 'docs/plan.md#Release:'
+        frage:
+          de: 'Bis wann soll es online sein? Gibt es einen Anlass?'
+          fr: 'Pour quand doit-il être en ligne ? Y a-t-il une occasion ?'
+          it: 'Entro quando deve essere online? C''è un''occasione?'
+          en: 'By when should it be online? Is there an occasion?'
+        warum:
+          de: 'Ein Datum macht aus einem Wunsch einen Plan.'
+          fr: 'Une date fait d''un souhait un plan.'
+          it: 'Una data trasforma un desiderio in un piano.'
+          en: 'A date turns a wish into a plan.'
+      - id: pflege
+        bereich: release
+        antwortet: person
+        ablage: 'docs/plan.md#Pflege:'
+        frage:
+          de: 'Wer ändert später Texte und Termine, und wie oft?'
+          fr: 'Qui modifiera plus tard les textes et les dates, et à quelle fréquence ?'
+          it: 'Chi cambierà più tardi testi e appuntamenti, e quanto spesso?'
+          en: 'Who will change texts and dates later, and how often?'
+        warum:
+          de: 'Davon hängt ab, ob es ein System zur Inhaltspflege braucht.'
+          fr: 'C''est de cela que dépend le besoin d''un système de gestion des contenus.'
+          it: 'Da questo dipende se serve un sistema per gestire i contenuti.'
+          en: 'That decides whether you need a system for managing content.'
+      - id: seiten
+        bereich: struktur
+        antwortet: annahme_ok
+        ablage: 'docs/plan.md#Seiten:'
+        frage:
+          de: 'Welche Seiten braucht es? Für den ersten Flug höchstens fünf bis sieben, Impressum und Datenschutz zählen mit.'
+          fr: 'De quelles pages a-t-on besoin ? Pour le premier vol, cinq à sept au maximum, mentions légales et protection des données comprises.'
+          it: 'Quali pagine servono? Per il primo volo al massimo da cinque a sette, impressum e protezione dei dati compresi.'
+          en: 'Which pages are needed? For the first flight five to seven at most, counting the legal notice and the privacy policy.'
+        warum:
+          de: 'Jede Seite muss gepflegt werden.'
+          fr: 'Chaque page doit être entretenue.'
+          it: 'Ogni pagina va curata.'
+          en: 'Every page has to be looked after.'
+      - id: setup
+        bereich: setup
+        antwortet: annahme_ok
+        ablage: 'docs/plan.md#Setup:'
+        frage:
+          de: 'Reicht eine Seite ohne eigene Dienste, oder braucht es einen Baustein (Anmeldung, Buchung, Login)?'
+          fr: 'Un site sans services propres suffit-il, ou faut-il une brique (inscription, réservation, connexion) ?'
+          it: 'Basta un sito senza servizi propri, o serve un blocco (iscrizione, prenotazione, accesso)?'
+          en: 'Is a site without its own services enough, or does it need a building block (sign-up, booking, login)?'
+        warum:
+          de: 'Davon hängt ab, wo die Seite später wohnt und was es kostet.'
+          fr: 'De cela dépend où le site habitera plus tard et ce qu''il coûtera.'
+          it: 'Da questo dipende dove abiterà il sito e quanto costerà.'
+          en: 'That decides where the site will live later and what it will cost.'
+      - id: testing
+        bereich: testing
+        antwortet: annahme_ok
+        ablage: 'docs/plan.md#Testing:'
+        frage:
+          de: 'Woran erkennen wir, dass es fertig ist?'
+          fr: 'À quoi reconnaîtrons-nous qu''il est terminé ?'
+          it: 'Da che cosa capiamo che è finito?'
+          en: 'How will we know it''s finished?'
+        warum:
+          de: 'Abnahmekriterien vor dem Bau verhindern Streit nach dem Bau.'
+          fr: 'Des critères d''acceptation avant la construction évitent les disputes après la construction.'
+          it: 'I criteri di collaudo prima della costruzione evitano litigi dopo la costruzione.'
+          en: 'Acceptance criteria before building prevent arguments after building.'
     gate: 'docs/plan.md hat alle Zeilen; offene Punkte stehen als [offen], nichts erfunden.'
 
   - id: P4
@@ -123,8 +396,34 @@ phasen:
     insel: [plan-geprueft]
     lernmomente: ['Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten']
     pflichtfragen:
-      - { id: zweite-meinung, bereich: ablauf, antwortet: ki, ablage: 'docs/plan-pruefung.md#Zweite Meinung:', frage: { de: 'Was spricht gegen diesen Plan? Prüfung in frischem Kontext, der nur docs/ liest, gegen die feste Prüfliste.' }, warum: { de: 'Eine zweite Meinung ohne die Vorgeschichte findet, was die erste übersieht.' } }
-      - { id: plan-bestaetigt, bereich: ablauf, antwortet: person, ablage: 'docs/plan.md#Bestätigt:', frage: { de: 'Ich habe die Punkte mit Risiko oder offen markiert. Ist der Plan so final, oder ändern wir etwas?' }, warum: { de: 'Erst ein bestätigter Plan wird gestaltet.' } }
+      - id: zweite-meinung
+        bereich: ablauf
+        antwortet: ki
+        ablage: 'docs/plan-pruefung.md#Zweite Meinung:'
+        frage:
+          de: 'Was spricht gegen diesen Plan? Prüfung in frischem Kontext, der nur docs/ liest, gegen die feste Prüfliste.'
+          fr: 'Qu''est-ce qui parle contre ce plan ? Vérification dans un contexte neuf, qui lit seulement docs/, avec la liste de contrôle fixe.'
+          it: 'Che cosa parla contro questo piano? Verifica in un contesto nuovo, che legge solo docs/, con la lista di controllo fissa.'
+          en: 'What speaks against this plan? A check in a fresh context that reads only docs/, against the fixed checklist.'
+        warum:
+          de: 'Eine zweite Meinung ohne die Vorgeschichte findet, was die erste übersieht.'
+          fr: 'Un deuxième avis sans l''historique trouve ce que le premier ne voit pas.'
+          it: 'Un secondo parere senza la storia precedente trova ciò che il primo non vede.'
+          en: 'A second opinion without the back story finds what the first one misses.'
+      - id: plan-bestaetigt
+        bereich: ablauf
+        antwortet: person
+        ablage: 'docs/plan.md#Bestätigt:'
+        frage:
+          de: 'Ich habe die Punkte mit Risiko oder offen markiert. Ist der Plan so final, oder ändern wir etwas?'
+          fr: 'J''ai marqué les points avec risque ou ouverts. Le plan est-il définitif ainsi, ou changeons-nous quelque chose ?'
+          it: 'Ho segnato i punti con rischio o aperti. Il piano è definitivo così, o cambiamo qualcosa?'
+          en: 'I''ve marked the points as risk or open. Is the plan final like this, or do we change something?'
+        warum:
+          de: 'Erst ein bestätigter Plan wird gestaltet.'
+          fr: 'Le design ne commence qu''avec un plan confirmé.'
+          it: 'Il design comincia solo con un piano confermato.'
+          en: 'Design only starts once the plan is confirmed.'
     pruefliste:   # jeder Punkt: ok, Risiko oder offen, mit Stelle im Plan; keine Quote
       - Genau eine Hauptsache, und jede Seite dient ihr
       - Höchstens fünf bis sieben Seiten für den ersten Flug
@@ -155,13 +454,104 @@ phasen:
     insel: [konzept]
     lernmomente: ['Charakter vor Farben']
     pflichtfragen:
-      - { id: name, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Name:', frage: { de: 'Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen?' }, warum: { de: 'Der Name steht auf jeder Seite und später in der Adresse.' } }
-      - { id: ton, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Ton:', frage: { de: 'Du oder Sie, und wie soll die Sprache klingen?' }, warum: { de: 'Der Ton macht aus Texten eine Stimme.' } }
-      - { id: charakter, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Charakter:', frage: { de: 'Welche drei Wörter beschreiben, wie es wirken soll?' }, warum: { de: 'Aus dem Charakter entstehen die Richtungen, nicht aus Lieblingsfarben.' } }
-      - { id: maskottchen, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Maskottchen:', frage: { de: 'Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später.' }, warum: { de: 'Eine Figur macht eine Seite unverwechselbar, braucht aber in jedem Bild Pflege.' } }
-      - { id: muss-bleiben, bereich: design, antwortet: person, ablage: 'docs/konzept.md#Muss bleiben:', frage: { de: 'Gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen?' }, warum: { de: 'Was bleiben muss, ist der Rahmen für alle Richtungen.' } }
-      - { id: kern, bereich: design, antwortet: annahme_ok, ablage: 'docs/konzept.md#Kern:', frage: { de: 'Was versprichst du, und warum gerade du? (drei Sätze)' }, warum: { de: 'Der Kern ist der Massstab für jeden Text und jedes Bild.' } }
-      - { id: bildsprache, bereich: design, antwortet: annahme_ok, ablage: 'docs/konzept.md#Bildsprache:', frage: { de: 'Fotos, Illustrationen, Icons oder eine Mischung?' }, warum: { de: 'Eine Seite ohne Bild wirkt wie eine Vorlage.' } }
+      - id: name
+        bereich: design
+        antwortet: person
+        ablage: 'docs/konzept.md#Name:'
+        frage:
+          de: 'Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen?'
+          fr: 'Le nom du projet reste-t-il, ou le projet doit-il s''appeler autrement vers l''extérieur ?'
+          it: 'Il nome del progetto resta, o verso l''esterno il progetto deve chiamarsi in un altro modo?'
+          en: 'Does the project name stay, or should the project have a different name to the outside world?'
+        warum:
+          de: 'Der Name steht auf jeder Seite und später in der Adresse.'
+          fr: 'Le nom figure sur chaque page et plus tard dans l''adresse.'
+          it: 'Il nome compare su ogni pagina e più tardi nell''indirizzo.'
+          en: 'The name appears on every page and later in the address.'
+      - id: ton
+        bereich: design
+        antwortet: person
+        ablage: 'docs/konzept.md#Ton:'
+        frage:
+          de: 'Du oder Sie, und wie soll die Sprache klingen?'
+          fr: 'Tu ou vous, et comment la langue doit-elle sonner ?'
+          it: 'Tu o Lei, e come deve suonare la lingua?'
+          en: 'Formal or informal, and how should the language sound?'
+        warum:
+          de: 'Der Ton macht aus Texten eine Stimme.'
+          fr: 'Le ton fait des textes une voix.'
+          it: 'Il tono trasforma i testi in una voce.'
+          en: 'The tone turns texts into a voice.'
+      - id: charakter
+        bereich: design
+        antwortet: person
+        ablage: 'docs/konzept.md#Charakter:'
+        frage:
+          de: 'Welche drei Wörter beschreiben, wie es wirken soll?'
+          fr: 'Quels trois mots décrivent l''effet qu''il doit produire ?'
+          it: 'Quali tre parole descrivono l''effetto che deve fare?'
+          en: 'Which three words describe how it should come across?'
+        warum:
+          de: 'Aus dem Charakter entstehen die Richtungen, nicht aus Lieblingsfarben.'
+          fr: 'Les directions naissent du caractère, pas des couleurs préférées.'
+          it: 'Le direzioni nascono dal carattere, non dai colori preferiti.'
+          en: 'The directions come from the character, not from favourite colours.'
+      - id: maskottchen
+        bereich: design
+        antwortet: person
+        ablage: 'docs/konzept.md#Maskottchen:'
+        frage:
+          de: 'Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später.'
+          fr: 'Un personnage doit-il en faire partie, qui guide à travers ton site ? Oui, non ou plus tard.'
+          it: 'Ci deve essere un personaggio che guida attraverso il tuo sito? Sì, no o più tardi.'
+          en: 'Should there be a character who guides people through your site? Yes, no or later.'
+        warum:
+          de: 'Eine Figur macht eine Seite unverwechselbar, braucht aber in jedem Bild Pflege.'
+          fr: 'Un personnage rend un site unique, mais demande du soin dans chaque image.'
+          it: 'Un personaggio rende un sito inconfondibile, ma va curato in ogni immagine.'
+          en: 'A character makes a site unmistakable, but it needs care in every picture.'
+      - id: muss-bleiben
+        bereich: design
+        antwortet: person
+        ablage: 'docs/konzept.md#Muss bleiben:'
+        frage:
+          de: 'Gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen?'
+          fr: 'Y a-t-il un logo, une couleur maison ou une police qui doivent rester ?'
+          it: 'Ci sono un logo, un colore aziendale o un carattere che devono restare?'
+          en: 'Is there a logo, house colour or font that has to stay?'
+        warum:
+          de: 'Was bleiben muss, ist der Rahmen für alle Richtungen.'
+          fr: 'Ce qui doit rester est le cadre de toutes les directions.'
+          it: 'Ciò che deve restare è la cornice per tutte le direzioni.'
+          en: 'Whatever has to stay is the frame for all directions.'
+      - id: kern
+        bereich: design
+        antwortet: annahme_ok
+        ablage: 'docs/konzept.md#Kern:'
+        frage:
+          de: 'Was versprichst du, und warum gerade du? (drei Sätze)'
+          fr: 'Que promets-tu, et pourquoi toi justement ? (trois phrases)'
+          it: 'Che cosa prometti, e perché proprio tu? (tre frasi)'
+          en: 'What do you promise, and why you of all people? (three sentences)'
+        warum:
+          de: 'Der Kern ist der Massstab für jeden Text und jedes Bild.'
+          fr: 'Le cœur est la mesure de chaque texte et de chaque image.'
+          it: 'Il nucleo è il metro per ogni testo e ogni immagine.'
+          en: 'The core is the yardstick for every text and every picture.'
+      - id: bildsprache
+        bereich: design
+        antwortet: annahme_ok
+        ablage: 'docs/konzept.md#Bildsprache:'
+        frage:
+          de: 'Fotos, Illustrationen, Icons oder eine Mischung?'
+          fr: 'Photos, illustrations, icônes ou un mélange ?'
+          it: 'Foto, illustrazioni, icone o un misto?'
+          en: 'Photos, illustrations, icons or a mix?'
+        warum:
+          de: 'Eine Seite ohne Bild wirkt wie eine Vorlage.'
+          fr: 'Un site sans images ressemble à un modèle tout fait.'
+          it: 'Un sito senza immagini sembra un modello già pronto.'
+          en: 'A site without pictures looks like a template.'
     gate: 'docs/konzept.md hat alle Zeilen; Maskottchen ist ja, nein oder später. Bilder mit den Bild-Werkzeugen nur nach Nennung des Preises und Ja der Person.'
 
   - id: P6
@@ -178,10 +568,62 @@ phasen:
     insel: [mockup, entwuerfe]
     lernmomente: ['Warum Farben und Schriften nur an einem Ort stehen']
     pflichtfragen:
-      - { id: reihenfolge, bereich: struktur, antwortet: person, ablage: 'docs/designsystem.md#Richtung:', frage: { de: 'Stimmt die Reihenfolge auf der grauen Skizze?' }, warum: { de: 'Aufbau vor Aussehen.' } }
-      - { id: richtung, bereich: design, antwortet: person, ablage: 'docs/designsystem.md#Richtung:', frage: { de: 'Welche der drei Richtungen, oder welche Mischung?' }, warum: { de: 'Drei klar verschiedene Richtungen zeigen, was möglich ist.' } }
-      - { id: musterblatt, bereich: design, antwortet: person, ablage: 'docs/designsystem.md#Richtung:', frage: { de: 'Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?' }, warum: { de: 'Was im Musterblatt stimmt, stimmt auf jeder Seite.' } }
-      - { id: dunkel, bereich: design, antwortet: annahme_ok, ablage: 'docs/designsystem.md#Farben:', frage: { de: 'Auch eine dunkle Fassung?' }, warum: { de: 'Viele Handys zeigen nachts dunkel.' } }
+      - id: reihenfolge
+        bereich: struktur
+        antwortet: person
+        ablage: 'docs/designsystem.md#Richtung:'
+        frage:
+          de: 'Stimmt die Reihenfolge auf der grauen Skizze?'
+          fr: 'L''ordre sur l''esquisse grise est-il juste ?'
+          it: 'L''ordine sullo schizzo grigio è giusto?'
+          en: 'Is the order on the grey sketch right?'
+        warum:
+          de: 'Aufbau vor Aussehen.'
+          fr: 'La structure avant l''apparence.'
+          it: 'Prima la struttura, poi l''aspetto.'
+          en: 'Structure before looks.'
+      - id: richtung
+        bereich: design
+        antwortet: person
+        ablage: 'docs/designsystem.md#Richtung:'
+        frage:
+          de: 'Welche der drei Richtungen, oder welche Mischung?'
+          fr: 'Laquelle des trois directions, ou quel mélange ?'
+          it: 'Quale delle tre direzioni, o quale combinazione?'
+          en: 'Which of the three directions, or which mix?'
+        warum:
+          de: 'Drei klar verschiedene Richtungen zeigen, was möglich ist.'
+          fr: 'Trois directions clairement différentes montrent ce qui est possible.'
+          it: 'Tre direzioni chiaramente diverse mostrano che cosa è possibile.'
+          en: 'Three clearly different directions show what''s possible.'
+      - id: musterblatt
+        bereich: design
+        antwortet: person
+        ablage: 'docs/designsystem.md#Richtung:'
+        frage:
+          de: 'Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?'
+          fr: 'La planche d''échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le téléphone ?'
+          it: 'La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul cellulare?'
+          en: 'Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?'
+        warum:
+          de: 'Was im Musterblatt stimmt, stimmt auf jeder Seite.'
+          fr: 'Ce qui est juste sur la planche d''échantillons est juste sur chaque page.'
+          it: 'Ciò che è giusto nella tavola dei campioni è giusto su ogni pagina.'
+          en: 'What''s right on the sample sheet is right on every page.'
+      - id: dunkel
+        bereich: design
+        antwortet: annahme_ok
+        ablage: 'docs/designsystem.md#Farben:'
+        frage:
+          de: 'Auch eine dunkle Fassung?'
+          fr: 'Aussi une version sombre ?'
+          it: 'Anche una versione scura?'
+          en: 'A dark version too?'
+        warum:
+          de: 'Viele Handys zeigen nachts dunkel.'
+          fr: 'Beaucoup de téléphones affichent en sombre la nuit.'
+          it: 'Molti cellulari di notte mostrano tutto scuro.'
+          en: 'Many phones switch to dark at night.'
     gate: 'tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen.'
 
   - id: P7
@@ -196,10 +638,62 @@ phasen:
     insel: [entwurf]
     lernmomente: ['Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau']
     pflichtfragen:
-      - { id: werkstatt, bereich: setup, antwortet: ki, ablage: 'docs/entwurf.md#Werkstatt:', frage: { de: 'Sind Node, npm und Git da (Prüfung im Terminal ohne Node: command -v, unter Windows where)?' }, warum: { de: 'Ab hier helfen Prüfskripte; wer ohne Werkzeug baut, sucht Fehler am falschen Ort.' } }
-      - { id: texte, bereich: struktur, antwortet: annahme_ok, ablage: 'docs/entwurf.md#Seiten:', frage: { de: 'Welche Texte kommen auf jede Seite? Fehlende stehen als [Platzhalter] da.' }, warum: { de: 'Ein Entwurf mit echten Texten zeigt, ob die Seite trägt.' } }
-      - { id: zustaende, bereich: struktur, antwortet: ki, ablage: 'docs/entwurf.md#Seiten:', frage: { de: 'Wie sehen Bestätigung, Fehler und leere Zustände jeder Funktion aus?' }, warum: { de: 'Gute Seiten fallen bei Fehlern nicht auseinander.' } }
-      - { id: durchklicken, bereich: design, antwortet: person, ablage: 'docs/entwurf.md#Rückmeldungen:', frage: { de: 'Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört?' }, warum: { de: 'Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau.' } }
+      - id: werkstatt
+        bereich: setup
+        antwortet: ki
+        ablage: 'docs/entwurf.md#Werkstatt:'
+        frage:
+          de: 'Sind Node, npm und Git da (Prüfung im Terminal ohne Node: command -v, unter Windows where)?'
+          fr: 'Node, npm et Git sont-ils là (vérification dans le terminal sans Node : command -v, sous Windows where) ?'
+          it: 'Ci sono Node, npm e Git (verifica nel terminale senza Node: command -v, su Windows where)?'
+          en: 'Are Node, npm and Git there (check in the terminal without Node: command -v, on Windows where)?'
+        warum:
+          de: 'Ab hier helfen Prüfskripte; wer ohne Werkzeug baut, sucht Fehler am falschen Ort.'
+          fr: 'À partir d''ici, des scripts de vérification aident ; qui construit sans outils cherche les erreurs au mauvais endroit.'
+          it: 'Da qui in poi aiutano gli script di verifica; chi costruisce senza attrezzi cerca gli errori nel posto sbagliato.'
+          en: 'From here on, check scripts help; anyone who builds without tools looks for mistakes in the wrong place.'
+      - id: texte
+        bereich: struktur
+        antwortet: annahme_ok
+        ablage: 'docs/entwurf.md#Seiten:'
+        frage:
+          de: 'Welche Texte kommen auf jede Seite? Fehlende stehen als [Platzhalter] da.'
+          fr: 'Quels textes vont sur chaque page ? Ceux qui manquent sont marqués [à compléter].'
+          it: 'Quali testi vanno su ogni pagina? Quelli che mancano sono segnati come [da completare].'
+          en: 'Which texts go on each page? Missing ones show as [placeholder].'
+        warum:
+          de: 'Ein Entwurf mit echten Texten zeigt, ob die Seite trägt.'
+          fr: 'Une ébauche avec de vrais textes montre si le site tient debout.'
+          it: 'Una bozza con testi veri mostra se il sito regge.'
+          en: 'A draft with real texts shows whether the site holds up.'
+      - id: zustaende
+        bereich: struktur
+        antwortet: ki
+        ablage: 'docs/entwurf.md#Seiten:'
+        frage:
+          de: 'Wie sehen Bestätigung, Fehler und leere Zustände jeder Funktion aus?'
+          fr: 'À quoi ressemblent la confirmation, l''erreur et l''état vide de chaque fonction ?'
+          it: 'Come appaiono la conferma, l''errore e lo stato vuoto di ogni funzione?'
+          en: 'What do the confirmation, error and empty states of each function look like?'
+        warum:
+          de: 'Gute Seiten fallen bei Fehlern nicht auseinander.'
+          fr: 'Un bon site ne s''effondre pas quand il y a une erreur.'
+          it: 'Un buon sito non va in pezzi quando c''è un errore.'
+          en: 'Good sites don''t fall apart when something goes wrong.'
+      - id: durchklicken
+        bereich: design
+        antwortet: person
+        ablage: 'docs/entwurf.md#Rückmeldungen:'
+        frage:
+          de: 'Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört?'
+          fr: 'Clique partout, sur le téléphone et sur l''ordinateur : qu''est-ce qui manque, qu''est-ce qui dérange ?'
+          it: 'Clicca dappertutto, sul cellulare e sul computer: che cosa manca, che cosa disturba?'
+          en: 'Click your way through, on a phone and on a computer: what''s missing, what bothers you?'
+        warum:
+          de: 'Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau.'
+          fr: 'Maintenant, un changement tient en une phrase ; après la construction, c''est une transformation.'
+          it: 'Adesso una modifica è una frase; dopo la costruzione è una ristrutturazione.'
+          en: 'Right now a change is one sentence; after the build it''s a rebuild.'
     gate: 'design/entwurf hat eine Seite je Seite aus plan.md (ausser Impressum und Datenschutz), aus der gewählten Richtung weitergeführt; alle Links führen auf vorhandene Seiten; nur var(--…) aus design/tokens.css; entwurf-pruefen.mjs ist grün oder die KI hat dasselbe von Hand geprüft.'
 
   - id: P8
@@ -213,7 +707,20 @@ phasen:
         zeilen: ['Freigegeben zum Bauen:']
     insel: [entwurf-freigegeben]
     pflichtfragen:
-      - { id: freigabe-entwurf, bereich: ablauf, antwortet: person, ablage: 'docs/entwurf.md#Freigegeben zum Bauen:', frage: { de: 'Wollen wir das so bauen?' }, warum: { de: 'Gebaut wird nur, was du gesehen und freigegeben hast.' } }
+      - id: freigabe-entwurf
+        bereich: ablauf
+        antwortet: person
+        ablage: 'docs/entwurf.md#Freigegeben zum Bauen:'
+        frage:
+          de: 'Wollen wir das so bauen?'
+          fr: 'On le construit comme ça ?'
+          it: 'Lo costruiamo così?'
+          en: 'Shall we build it like this?'
+        warum:
+          de: 'Gebaut wird nur, was du gesehen und freigegeben hast.'
+          fr: 'On ne construit que ce que tu as vu et autorisé.'
+          it: 'Si costruisce solo ciò che hai visto e approvato.'
+          en: 'Only what you''ve seen and approved gets built.'
     gate: 'Zeile «Freigegeben zum Bauen: <Datum>» mit dem Wortlaut der Person; «sieht gut aus» ohne Ja zum Bauen reicht nicht. Ohne diese Zeile baut webseite-bauen nicht (pruefen.mjs --vor-bau).'
 
   - id: P9
@@ -230,8 +737,34 @@ phasen:
     insel: [prd, lokal, pruefung]
     lernmomente: ['Was ein Logbuch-Eintrag ist (git commit)']
     pflichtfragen:
-      - { id: stack, bereich: setup, antwortet: annahme_ok, ablage: 'docs/stack.md', frage: { de: 'Bauweise: statisch mit Astro, oder mit Baustein?' }, warum: { de: 'So wenig wie möglich, so viel wie nötig.' } }
-      - { id: tueren, bereich: testing, antwortet: annahme_ok, ablage: 'docs/tueren.txt', frage: { de: 'Welche Adressen sind offen, welche nur mit Anmeldung, welche nie?' }, warum: { de: 'Jede Tür wird vor dem Lancieren geprüft.' } }
+      - id: stack
+        bereich: setup
+        antwortet: annahme_ok
+        ablage: 'docs/stack.md'
+        frage:
+          de: 'Bauweise: statisch mit Astro, oder mit Baustein?'
+          fr: 'Mode de construction : statique avec Astro, ou avec une brique ?'
+          it: 'Modo di costruzione: statico con Astro, o con un blocco?'
+          en: 'Way of building: static with Astro, or with a building block?'
+        warum:
+          de: 'So wenig wie möglich, so viel wie nötig.'
+          fr: 'Aussi peu que possible, autant que nécessaire.'
+          it: 'Il meno possibile, quanto necessario.'
+          en: 'As little as possible, as much as necessary.'
+      - id: tueren
+        bereich: testing
+        antwortet: annahme_ok
+        ablage: 'docs/tueren.txt'
+        frage:
+          de: 'Welche Adressen sind offen, welche nur mit Anmeldung, welche nie?'
+          fr: 'Quelles adresses sont ouvertes, lesquelles seulement avec connexion, lesquelles jamais ?'
+          it: 'Quali indirizzi sono aperti, quali solo con accesso, quali mai?'
+          en: 'Which addresses are open, which only after signing in, which never?'
+        warum:
+          de: 'Jede Tür wird vor dem Lancieren geprüft.'
+          fr: 'Chaque porte est vérifiée avant le lancement.'
+          it: 'Ogni porta viene controllata prima del lancio.'
+          en: 'Every door gets checked before launch.'
     gate: 'Das PRD ist aus dem freigegebenen Entwurf abgeleitet (keine eigene Abnahme); Markup und Klassen kommen aus design/entwurf; pruefen.mjs ohne Rot; lokales Logbuch mit einem Eintrag je Schritt.'
 
   - id: P10
@@ -246,7 +779,20 @@ phasen:
     insel: [freigabe]
     lernmomente: ['Einen Text selbst ändern und lokal sehen (Pflicht im Modus lernen, sonst Angebot)']
     pflichtfragen:
-      - { id: freigabe, bereich: release, antwortet: person, ablage: 'docs/prd.md#Freigegeben:', frage: { de: 'Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?' }, warum: { de: 'Ohne Freigabe geht nichts ins Netz; diese Freigabe gilt für den Livegang.' } }
+      - id: freigabe
+        bereich: release
+        antwortet: person
+        ablage: 'docs/prd.md#Freigegeben:'
+        frage:
+          de: 'Du hast deine Seite auf deinem Computer gesehen, auf dem Handy und am Computer. Gibst du sie frei?'
+          fr: 'Tu as vu ton site sur ton ordinateur, en vue téléphone et en vue ordinateur. Tu donnes ton autorisation ?'
+          it: 'Hai visto il tuo sito sul tuo computer, in vista cellulare e in vista computer. Dai il via libera?'
+          en: 'You''ve seen your site on your computer, in phone view and in computer view. Do you release it?'
+        warum:
+          de: 'Ohne Freigabe geht nichts ins Netz; diese Freigabe gilt für den Livegang.'
+          fr: 'Sans autorisation, rien ne va en ligne ; cette autorisation vaut pour la mise en ligne.'
+          it: 'Senza via libera niente va online; questo via libera vale per la messa online.'
+          en: 'Without a release nothing goes online; this release counts for going live.'
     gate: 'Vergleich Bau gegen Entwurf je Seite (Überschriften, Menü, Abschnitte) ohne offene Abweichung; «Freigegeben: <Datum>» mit dem Wortlaut der Person.'
 
   - id: P11
@@ -260,7 +806,20 @@ phasen:
     insel: [wohnort]
     lernmomente: ['Was ein SSH-Schlüssel ist (Schloss und Schlüssel)']
     pflichtfragen:
-      - { id: wohnort, bereich: release, antwortet: person, ablage: 'docs/lancieren.md#Wohnort:', frage: { de: 'Wo soll deine Seite wohnen: bei Albatros (Light ohne Baustein, Pilot mit eigenem Server) oder selbst?' }, warum: { de: 'Beides geht; die Wahl hängt von Bausteinen, Kosten und Lust aufs Selbermachen ab.' } }
+      - id: wohnort
+        bereich: release
+        antwortet: person
+        ablage: 'docs/lancieren.md#Wohnort:'
+        frage:
+          de: 'Wo soll deine Seite wohnen: bei Albatros (Light ohne Baustein, Pilot mit eigenem Server) oder selbst?'
+          fr: 'Où ton site doit-il habiter : chez Albatros (Light sans brique, Pilot avec ton propre serveur) ou est-ce que tu t''en charges toi-même ?'
+          it: 'Dove deve abitare il tuo sito: da Albatros (Light senza blocchi, Pilot con il tuo server) o te ne occupi tu?'
+          en: 'Where should your site live: with Albatros (Light without building blocks, Pilot with your own server) or do you host it yourself?'
+        warum:
+          de: 'Beides geht; die Wahl hängt von Bausteinen, Kosten und Lust aufs Selbermachen ab.'
+          fr: 'Les deux sont possibles ; le choix dépend des briques, des coûts et de ton envie de faire toi-même.'
+          it: 'Si può fare in entrambi i modi; la scelta dipende dai blocchi, dai costi e dalla voglia di fare da te.'
+          en: 'Both work; the choice depends on building blocks, costs and how much you fancy doing it yourself.'
     gate: 'Preise nur aus konto_status; upgrade_link gibt den Link erst mit bestaetigt: true nach der Wahl der Person. Online ist höchstens die Vorlage; die freigegebene Seite geht erst in P13 ins Netz.'
 
   - id: P12
@@ -274,11 +833,76 @@ phasen:
     insel: [betrieb]
     lernmomente: ['Zurück auf gestern']
     pflichtfragen:
-      - { id: rueckmeldungen, bereich: release, antwortet: person, ablage: 'docs/betrieb.md#Rückmeldungen:', frage: { de: 'Wie melden sich Besucher bei dir, und wer liest es wie oft?' }, warum: { de: 'Eine Rückmeldung, die niemand liest, ist schlimmer als keine.' } }
-      - { id: eingang, bereich: setup, antwortet: person, ablage: 'docs/betrieb.md#Eingang:', frage: { de: 'Gibt es mehrere Teile, die wissen müssen, wer angemeldet ist?' }, warum: { de: 'Dann prüft ein Eingang an einer Stelle, wer was darf (Baustein eingang, nur mit eigenem Server).' } }
-      - { id: statistik, bereich: release, antwortet: person, ablage: 'docs/betrieb.md#Statistik:', frage: { de: 'Willst du zählen, wer kommt (mit Einwilligung)?' }, warum: { de: 'Ohne Zahlen bleibt das Erfolgsmass eine Vermutung.' } }
-      - { id: ueberwachung, bereich: release, antwortet: annahme_ok, ablage: 'docs/betrieb.md#Überwachung:', frage: { de: 'Wer erfährt es, wenn die Seite nicht antwortet?' }, warum: { de: 'Besser du merkst es als deine Kundschaft.' } }
-      - { id: sicherung, bereich: setup, antwortet: ki, ablage: 'docs/betrieb.md#Sicherung:', frage: { de: 'Wie kommst du auf gestern zurück?' }, warum: { de: 'Snapshots bei Pilot, eine Sicherung bei «selbst».' } }
+      - id: rueckmeldungen
+        bereich: release
+        antwortet: person
+        ablage: 'docs/betrieb.md#Rückmeldungen:'
+        frage:
+          de: 'Wie melden sich Besucher bei dir, und wer liest es wie oft?'
+          fr: 'Comment les visiteurs te contactent-ils, et qui lit leurs messages, à quelle fréquence ?'
+          it: 'Come ti contattano i visitatori, e chi legge i messaggi e quanto spesso?'
+          en: 'How do visitors get in touch with you, and who reads it how often?'
+        warum:
+          de: 'Eine Rückmeldung, die niemand liest, ist schlimmer als keine.'
+          fr: 'Un message que personne ne lit est pire que pas de message du tout.'
+          it: 'Un messaggio che nessuno legge è peggio di nessun messaggio.'
+          en: 'Feedback nobody reads is worse than none.'
+      - id: eingang
+        bereich: setup
+        antwortet: person
+        ablage: 'docs/betrieb.md#Eingang:'
+        frage:
+          de: 'Gibt es mehrere Teile, die wissen müssen, wer angemeldet ist?'
+          fr: 'Y a-t-il plusieurs parties qui doivent savoir qui est connecté ?'
+          it: 'Ci sono più parti che devono sapere chi ha fatto l''accesso?'
+          en: 'Are there several parts that need to know who is signed in?'
+        warum:
+          de: 'Dann prüft ein Eingang an einer Stelle, wer was darf (Baustein eingang, nur mit eigenem Server).'
+          fr: 'Alors une entrée vérifie à un seul endroit qui a le droit de faire quoi (brique eingang, seulement avec ton propre serveur).'
+          it: 'Allora un ingresso controlla in un solo punto chi può fare che cosa (blocco eingang, solo con un server tuo).'
+          en: 'Then one entrance checks in a single place who may do what (building block eingang, only with your own server).'
+      - id: statistik
+        bereich: release
+        antwortet: person
+        ablage: 'docs/betrieb.md#Statistik:'
+        frage:
+          de: 'Willst du zählen, wer kommt (mit Einwilligung)?'
+          fr: 'Veux-tu compter qui vient (avec consentement) ?'
+          it: 'Vuoi contare chi arriva (con consenso)?'
+          en: 'Do you want to count who comes (with consent)?'
+        warum:
+          de: 'Ohne Zahlen bleibt das Erfolgsmass eine Vermutung.'
+          fr: 'Sans chiffres, la mesure du succès reste une supposition.'
+          it: 'Senza numeri la misura del successo resta una supposizione.'
+          en: 'Without numbers, the measure of success stays a guess.'
+      - id: ueberwachung
+        bereich: release
+        antwortet: annahme_ok
+        ablage: 'docs/betrieb.md#Überwachung:'
+        frage:
+          de: 'Wer erfährt es, wenn die Seite nicht antwortet?'
+          fr: 'Qui est prévenu quand le site ne répond pas ?'
+          it: 'Chi lo viene a sapere quando il sito non risponde?'
+          en: 'Who finds out when the site stops responding?'
+        warum:
+          de: 'Besser du merkst es als deine Kundschaft.'
+          fr: 'Mieux vaut que ce soit toi qui le remarques, plutôt que ta clientèle.'
+          it: 'Meglio che te ne accorga tu che i tuoi clienti.'
+          en: 'Better you notice than your customers.'
+      - id: sicherung
+        bereich: setup
+        antwortet: ki
+        ablage: 'docs/betrieb.md#Sicherung:'
+        frage:
+          de: 'Wie kommst du auf gestern zurück?'
+          fr: 'Comment reviens-tu à hier ?'
+          it: 'Come torni a ieri?'
+          en: 'How do you get back to yesterday?'
+        warum:
+          de: 'Snapshots bei Pilot, eine Sicherung bei «selbst».'
+          fr: 'Des photos du serveur (snapshots) avec Pilot, une sauvegarde si tu t''en charges toi-même.'
+          it: 'Con Pilot le foto del server (snapshot), una copia di sicurezza se te ne occupi tu.'
+          en: 'Snapshots (photos of the server) with Pilot, a backup if you host it yourself.'
     gate: 'docs/betrieb.md hat alle Zeilen; ein Eingang nur bei erfüllten Kriterien und nur mit eigenem Server.'
 
   - id: P13
@@ -294,9 +918,48 @@ phasen:
         zeilen: ['Live seit:', 'Adresse:', 'Geprüft:', 'Angekündigt:']
     insel: [hafen, fliessband, live, domain]
     pflichtfragen:
-      - { id: adresse, bereich: release, antwortet: person, ablage: 'docs/live.md#Adresse:', frage: { de: 'Eigene Adresse (Domain) jetzt, später oder nie?' }, warum: { de: 'Eine eigene Domain kostet pro Jahr und ist freiwillig.' } }
-      - { id: ankuendigung, bereich: release, antwortet: person, ablage: 'docs/live.md#Angekündigt:', frage: { de: 'Wem sagst du es zuerst?' }, warum: { de: 'Der erste Fan kommt nicht von selbst.' } }
-      - { id: pruefung-live, bereich: testing, antwortet: ki, ablage: 'docs/live.md#Geprüft:', frage: { de: 'Ist die Seite unter ihrer Adresse ohne Rot (pruefen.mjs --live)?' }, warum: { de: 'Live ist erst, was von aussen geprüft ist.' } }
+      - id: adresse
+        bereich: release
+        antwortet: person
+        ablage: 'docs/live.md#Adresse:'
+        frage:
+          de: 'Eigene Adresse (Domain) jetzt, später oder nie?'
+          fr: 'Ta propre adresse (domaine) maintenant, plus tard ou jamais ?'
+          it: 'Un indirizzo tuo (dominio) adesso, più tardi o mai?'
+          en: 'Your own address (domain) now, later or never?'
+        warum:
+          de: 'Eine eigene Domain kostet pro Jahr und ist freiwillig.'
+          fr: 'Un domaine propre coûte chaque année et il est facultatif.'
+          it: 'Un dominio proprio costa ogni anno ed è facoltativo.'
+          en: 'Your own domain costs something every year and is optional.'
+      - id: ankuendigung
+        bereich: release
+        antwortet: person
+        ablage: 'docs/live.md#Angekündigt:'
+        frage:
+          de: 'Wem sagst du es zuerst?'
+          fr: 'À qui le dis-tu en premier ?'
+          it: 'A chi lo dici per primo?'
+          en: 'Who do you tell first?'
+        warum:
+          de: 'Der erste Fan kommt nicht von selbst.'
+          fr: 'Le premier fan ne vient pas tout seul.'
+          it: 'Il primo fan non arriva da solo.'
+          en: 'Your first fan won''t turn up on their own.'
+      - id: pruefung-live
+        bereich: testing
+        antwortet: ki
+        ablage: 'docs/live.md#Geprüft:'
+        frage:
+          de: 'Ist die Seite unter ihrer Adresse ohne Rot (pruefen.mjs --live)?'
+          fr: 'Le site est-il sans rouge à son adresse (pruefen.mjs --live) ?'
+          it: 'Il sito è senza rosso al suo indirizzo (pruefen.mjs --live)?'
+          en: 'Is the site free of red at its address (pruefen.mjs --live)?'
+        warum:
+          de: 'Live ist erst, was von aussen geprüft ist.'
+          fr: 'N''est en ligne que ce qui a été vérifié de l''extérieur.'
+          it: 'È online solo ciò che è stato verificato dall''esterno.'
+          en: 'Only what''s been checked from outside counts as live.'
     gate: 'Push nur mit «Freigegeben:» aus P10; pruefen.mjs --live ohne Rot; Impressum und Datenschutz erreichbar.'
 
 # Nach dem Livegang (kein eigener Platz auf der Insel)
