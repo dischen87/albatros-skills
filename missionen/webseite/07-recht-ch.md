@@ -11,6 +11,9 @@ pruefung:
     schritt: pruefung
 skill: recht-ch
 video: null
+verstehen:
+  - frage: Was sagt das Klingelschild deiner Seite (Impressum), und was die Hausordnung (Datenschutzerklärung)?
+    kern: Das Impressum sagt, wer hinter der Seite steht und wie man die Person erreicht. Die Datenschutzerklärung sagt Besuchern, welche Daten die Seite von ihnen sammelt, wozu und wohin sie gehen.
 ---
 
 ## Worum es geht

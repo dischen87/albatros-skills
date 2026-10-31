@@ -2,6 +2,9 @@
 titel: Una rampa accanto alla scala
 bild: Rampa accanto alla scala
 phase: P9
+verstehen:
+  - frage: A chi serve una rampa accanto alla scala sul tuo sito?
+    kern: A tutte le persone che vedono male, che non usano il mouse o che si fanno leggere il sito ad alta voce. Ma abbastanza contrasto, descrizioni per le immagini e l'uso con la tastiera rendono il sito più facile per tutti.
 ---
 
 ## Di cosa si tratta

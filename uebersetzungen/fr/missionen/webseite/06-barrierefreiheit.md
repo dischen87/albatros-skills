@@ -2,6 +2,9 @@
 titel: Une rampe à côté de l'escalier
 bild: Rampe à côté de l'escalier
 phase: P9
+verstehen:
+  - frage: À qui sert une rampe à côté de l'escalier sur ton site ?
+    kern: À toutes les personnes qui voient mal, qui n'utilisent pas de souris ou qui se font lire le site à voix haute. Mais assez de contraste, des descriptions pour les images et l'utilisation au clavier rendent le site plus facile pour tout le monde.
 ---
 
 ## De quoi il s'agit

@@ -2,6 +2,9 @@
 titel: Doorbell nameplate and house rules
 bild: Doorbell nameplate and house rules
 phase: P9
+verstehen:
+  - frage: What does your site's doorbell nameplate (legal notice) say, and what do the house rules (privacy policy) say?
+    kern: The legal notice says who is behind the site and how to reach them. The privacy policy tells visitors which data the site collects about them, what for and where it goes.
 ---
 
 ## What it's about
