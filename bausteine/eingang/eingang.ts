@@ -210,8 +210,9 @@ function seite(status: 401 | 403, anmeldeseite: string, zurueck: string) {
   return new Response(html, { status, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
 }
 
-// Pfad fürs Protokoll ohne Kennungen, Codes und Abfrage: /api/collections/mitteilungen/records/:id
-const ohneKennungen = (pfad: string) => pfad.split('/').map((s) => (/\d/.test(s) || s.length > 20 ? ':id' : s)).join('/');
+// Pfad fürs Protokoll ohne Kennungen, Codes und Abfrage: /api/collections/mitteilungen/records/:id. Record-IDs von PocketBase haben
+// 15 Zeichen aus a-z und 0-9, nicht jede hat eine Ziffer.
+const ohneKennungen = (pfad: string) => pfad.split('/').map((s) => (/\d/.test(s) || s.length > 20 || /^[a-z0-9]{15}$/.test(s) ? ':id' : s)).join('/');
 
 export type Optionen = { vertraut?: string; anfragenProMinute?: number; jetzt?: () => number; log?: (zeile: string) => void };
 

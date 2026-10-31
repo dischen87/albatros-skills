@@ -149,6 +149,9 @@ try {
   pruefe(an2.status === 204 && (await holen('/intern/seite.html', { kopf: { cookie: bertCookie } })).status === 401, 'Angemeldet, aber nicht freigegeben: geschützter Pfad 401');
   const m = await holen('/api/collections/mitteilungen/records', { kopf: { cookie } });
   pruefe(m.status === 200 && (await m.json() as { totalItems: number }).totalItems === 1 && m.headers.get('cache-control') === 'no-store', 'Mitteilungen mit dem Cookie durch den Eingang: PocketBase prüft selbst, Antwort no-store');
+  // Eine Record-ID hat 15 Zeichen aus a-z und 0-9; etwa jede 130. hat keine Ziffer. Auch die gehört nicht ins Protokoll (unten geprüft)
+  const ohneZiffer = (await admin('POST', '/collections/mitteilungen/records', { id: 'ohneziffernabcd', titel: 'Kennung ohne Ziffer' })).id as string;
+  await holen(`/api/collections/mitteilungen/records/${ohneZiffer}`, { kopf: { cookie } });
 
   // Fremde Ursprünge
   const schreiben = (kopf: Record<string, string>) => holen(`/api/collections/users/records/${anna.id}`, { methode: 'PATCH', kopf: { 'content-type': 'application/json', ...kopf }, koerper: '{"name":"Anna"}' });
@@ -298,7 +301,7 @@ try {
   pruefe(zeilen.length > 40 && zeilen.every((z) => { try { const j = JSON.parse(z); return j.methode && j.pfad && j.teil && j.status && typeof j.ms === 'number'; } catch { return false; } }),
     `Protokoll: eine JSON-Zeile je Anfrage mit Methode, Pfad, Teil, Status und Dauer (${zeilen.length} Zeilen)`);
   const verboten: [string, string][] = [['Token', wert.slice(10, 40)], ['Passwort', 'geheim'], ['Cookie', 'cookie'], ['Authorization', 'authorization'], ['Kopf', 'x-eingang'],
-    ['Adresse', '127.0.0.1'], ['Adresse', '203.0.113'], ['Adresse', '198.51.100'], ['Host', ADRESSE], ['Record-ID', anna.id]];
+    ['Adresse', '127.0.0.1'], ['Adresse', '203.0.113'], ['Adresse', '198.51.100'], ['Host', ADRESSE], ['Record-ID', anna.id], ['Record-ID ohne Ziffer', ohneZiffer]];
   const gefunden = verboten.filter(([, x]) => alle.includes(x)).map(([n]) => n);
   pruefe(!gefunden.length, `Protokoll ohne Cookie, Token, Passwort, Abfrage, Kopfzeilen, Adressen und Record-IDs${gefunden.length ? ` (gefunden: ${gefunden.join(', ')})` : ''}`);
 
