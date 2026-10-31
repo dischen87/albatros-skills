@@ -2,11 +2,13 @@
 
 Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimmst du im Rucksack mit auf den Weg: **Claude Code, Codex, Gemini CLI oder Cursor**. Mit allen vier klappt alles gleich. Du sagst ihr im Terminal «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee». Sie führt dich nach einem festen Fahrplan von der Idee bis zur Seite im Netz und fragt von sich aus, was sie wissen muss. Bis deine Seite auf deinem Computer fertig und freigegeben ist, kostet Albatros nichts; ins Netz geht sie mit Light, mit Pilot (ein echter eigener Server) oder selbst. Unterwegs lernst du, was SSH-Schlüssel, Git und ein Fliessband (CI/CD) sind; im Modus «lernen» machst du die wichtigen Schritte selbst. Dein Logbuch (Git) liegt bei Albatros im Hafen, `code.aufwind.sh`. Ein GitHub-Konto brauchst du nur, wenn deine Seite selbst wohnt (zum Beispiel auf GitHub Pages) oder du in ein eigenes Haus umziehst.
 
-Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen. Jede Mission gehört zu einer Etappe (`stufe`) und zu einer Phase (`phase`):
+Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen:
 
 - **abheben:** Idee und Produkt, von der Idee über Research, Plan, Konzept und Musterblatt bis zum Entwurf der ganzen Seite (P1 bis P8)
 - **fliegen:** die Seite auf dem eigenen Computer bauen, prüfen und freigeben, dann den Wohnort wählen (P9 bis P11)
 - **landen:** Betrieb vorbereiten, live schalten und der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen (P12, P13 und danach)
+
+Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` trägt dieselben drei Namen (Abschnitt «Missionen»).
 
 Dieses Repo enthält:
 
