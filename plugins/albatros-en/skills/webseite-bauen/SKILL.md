@@ -183,7 +183,7 @@ After that you write four reports, one page each, in the person's language:
 - `docs/pruefung/sicherheit.md` (security and the law): secrets in the code, `npm audit`, no `.env` in `seite/`, legal notice and privacy policy there and complete (skill `recht-ch`), which outside services and cookies the site uses.
 - `docs/pruefung/ablaeufe.md` (flows and access): the accessibility rules (WCAG 2.2 AA, axe) on every page, dead links, every form tried out once yourself, the home page gone through with the keyboard (Tab), the flows from the PRD step by step.
   - **Green only with proof.** For every feature with a building block, the test's output (“Alles grün”) and a screenshot of a real test booking or a real entry on this computer go into the report. If something didn't work, the traffic light is yellow or red. Never write “walked through” if you haven't done it.
-- `docs/pruefung/aussehen.md` (looks): only values from `tokens.css`, design system followed, every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`.
+- `docs/pruefung/aussehen.md` (looks): only values from `tokens.css`, design system followed, every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`. If `pruefen.mjs` marks the phone menu or identical cards on the home page red, you rework the layout before going on. With the yellow “no photo in the first screen”, the most important content goes large in the header, and the person gets the photo list.
 - `docs/pruefung/code.md` (code and speed): Lighthouse in the four areas, JavaScript per page, picture sizes, and which acceptance criteria are met.
 
 ```markdown

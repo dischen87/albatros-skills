@@ -201,10 +201,44 @@ try {
       }));
       if (handy.breit) melde('aussehen', 'rot', `${p}: Auf dem Handy (390 px) lässt sich die Seite seitlich schieben`);
       if (handy.amRand) melde('aussehen', 'gelb', `${p}: Auf dem Handy kleben ${handy.amRand} Elemente am Rand (weniger als 12 px Luft)`);
+      // Menü bei 390 px: eine Zeile oder ein Knopf «Menü» (Links in einem geschlossenen <details> haben keine Fläche)
+      const menueZeilen = await page.evaluate(() => {
+        const nav = document.querySelector('header nav') ?? document.querySelector('nav');
+        const oben = [...(nav?.querySelectorAll('a') ?? [])].filter((a) => a.getClientRects().length && getComputedStyle(a).visibility !== 'hidden')
+          .map((a) => a.getBoundingClientRect().top).sort((x, y) => x - y);
+        return oben.filter((t, i) => i === 0 || t - oben[i - 1] > 8).length;
+      });
+      if (menueZeilen > 1) melde('aussehen', 'rot', `${p}: Auf dem Handy (390 px) steht das Menü auf ${menueZeilen} Zeilen: auf eine Zeile oder als Knopf «Menü» (Skill gestaltung)`);
+      // Startseite: gleich gestaltete Karten neben- oder untereinander sind das häufigste KI-Merkmal; Listen gleicher Dinge (ul, ol) zählen nicht
+      const startseite = p === '/' || p === '/index.html';
+      const karten = startseite ? await page.evaluate(() => {
+        const istKarte = (e) => {
+          const s = getComputedStyle(e);
+          const flaeche = s.backgroundColor !== 'rgba(0, 0, 0, 0)' && s.backgroundColor !== getComputedStyle(e.parentElement).backgroundColor;
+          return e.offsetHeight > 60 && parseFloat(s.borderTopLeftRadius) >= 4 && (flaeche || s.boxShadow !== 'none' || parseFloat(s.borderTopWidth) > 0);
+        };
+        const art = (e) => { const s = getComputedStyle(e); return [s.backgroundColor, s.borderTopLeftRadius, s.boxShadow, s.borderTopWidth, s.paddingTop, e.offsetWidth].join('|'); };
+        const wurzel = document.querySelector('main') ?? document.body;
+        let max = 0;
+        for (const el of [wurzel, ...wurzel.querySelectorAll('*')]) {
+          if (/^(UL|OL)$/.test(el.tagName)) continue;
+          const n = {};
+          for (const k of el.children) if (istKarte(k)) n[art(k)] = (n[art(k)] ?? 0) + 1;
+          max = Math.max(max, 0, ...Object.values(n));
+        }
+        return max;
+      }) : 0;
+      if (karten > 1) melde('aussehen', 'rot', `${p}: ${karten} gleich gestaltete Karten (KI-Merkmal): ordne nach Wichtigkeit, das Wichtigste gross in den Kopf, der Rest ohne gleiche Kästen (Skill gestaltung)`);
       mkdirSync(join(AUS, 'fotos'), { recursive: true });
       const vor = LIVE ? 'live-' : '';
       await page.screenshot({ path: join(AUS, 'fotos', `${vor}${name(p)}-390.png`), fullPage: true });
       await page.setViewportSize({ width: 1440, height: 900 });
+      // Startseite: Im ersten Bild am Computer steht ein Foto oder Bild (Skill gestaltung, «Schlicht heisst nicht ohne Bild»)
+      if (startseite && !(await page.evaluate(() => [...document.querySelectorAll('body *')].some((e) => {
+        const r = e.getBoundingClientRect();
+        if (r.top >= innerHeight || r.bottom <= 0 || r.width < 200 || r.height < 120) return false;
+        return /^(img|picture|video|svg|canvas)$/i.test(e.tagName) || getComputedStyle(e).backgroundImage.includes('url(');
+      })))) melde('aussehen', 'gelb', `${p}: Im ersten Bild der Startseite (1440 × 900) steht kein Foto: Foto aus der Fotoliste einsetzen; bis dahin muss das Wichtigste gross im Kopf stehen`);
       await page.screenshot({ path: join(AUS, 'fotos', `${vor}${name(p)}-1440.png`), fullPage: true });
       await page.setViewportSize({ width: 390, height: 844 });
     }

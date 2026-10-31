@@ -182,7 +182,7 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 - `docs/pruefung/sicherheit.md` (Sicherheit und Recht): Geheimnisse im Code, `npm audit`, keine `.env` in `seite/`, Impressum und Datenschutz vorhanden und vollständig (Skill `recht-ch`), welche fremden Dienste und Cookies die Seite nutzt.
 - `docs/pruefung/ablaeufe.md` (Abläufe und Zugang): die Regeln für Barrierefreiheit (WCAG 2.2 AA, axe) auf jeder Seite, tote Links, jedes Formular selbst einmal ausprobiert, die Startseite mit der Tastatur durchgegangen (Tab), die Abläufe aus dem PRD Schritt für Schritt.
   - **Grün nur mit Beweis.** Für jede Funktion mit Baustein gehören die Ausgabe des Tests («Alles grün») und ein Foto einer echten Testbuchung oder eines echten Eintrags auf diesem Computer in den Bericht. Lief etwas nicht, ist die Ampel gelb oder rot. Schreib nie «durchgespielt», wenn du es nicht getan hast.
-- `docs/pruefung/aussehen.md` (Aussehen): nur Werte aus `tokens.css`, Designsystem eingehalten, jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft.
+- `docs/pruefung/aussehen.md` (Aussehen): nur Werte aus `tokens.css`, Designsystem eingehalten, jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft. Meldet `pruefen.mjs` das Menü auf dem Handy oder gleich gestaltete Karten auf der Startseite rot, baust du um, bevor es weitergeht. Bei Gelb «kein Foto im ersten Bild» steht das Wichtigste gross im Kopf, und die Person bekommt die Fotoliste.
 - `docs/pruefung/code.md` (Code und Tempo): Lighthouse in den vier Bereichen, JavaScript je Seite, Bildgrössen, und welche Abnahmekriterien erfüllt sind.
 
 ```markdown
