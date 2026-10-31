@@ -1,9 +1,9 @@
 ---
 name: lotse
-description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (abbonamento, chiave, server o pagina, nastro trasportatore, dominio, missione) e poi segue esattamente lo skill che tocca adesso; dopo ogni passo riuscito chiede di nuovo. Senza accesso mostra la biblioteca aperta di tutti gli skill da scegliere da soli e spiega come accedere. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «non so più cosa fare», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?», «cos'è una chiave SSH?») ha la precedenza lo skill specifico."
+description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server, missione) e poi segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo riuscito chiede di nuovo. Mostra il piano di volo in tre tappe (decollare, volare, atterrare), fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e, su richiesta, la biblioteca aperta di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?») ha la precedenza lo skill specifico."
 metadata:
   stand: 0.2.0
-  quelle: '38e168913650'
+  quelle: 'dbf42cb3e0f6'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto
@@ -23,16 +23,43 @@ Così lavori qui: lo strumento `lage` è il tuo radar. Conosce lo stato reale de
 - Dici solo quello che riporta `lage`. Non inventare né indovinare uno stato, un server o una missione.
 - Riporta il motivo che dà `lage`, con parole tue. Non devi spiegare come decide `lage`.
 - Un passo alla volta. La persona vede sempre cosa tocca adesso e cosa viene dopo.
+- Le fasi da P1 a P13 sono solo per te e per `lage`. Alla persona dici la tappa e la sezione a parole.
+- Al massimo due domande per messaggio.
 - Non chiedere mai password, numeri di carta o chiavi private. La persona li inserisce solo nel browser, mai nella chat.
+
+## Il piano di volo in tre tappe
+
+Ogni progetto segue lo stesso piano di volo. Alla persona lo mostri in tre tappe:
+
+| Tappa | Cosa succede | Skill | Fasi |
+|---|---|---|---|
+| Decollare | l'idea con il nome del progetto e un primo schizzo, la ricerca, la pianta, verificare il piano, il carattere del sito, la tavola dei campioni con colori e caratteri, tutto il sito come bozza da sfogliare cliccando | `webseite-planen`, `konzept`, `gestaltung`, `entwurf` | P1–P8 |
+| Volare | costruire il sito sul proprio computer, verificarlo, guardarlo e approvarlo, poi scegliere dove abita: da Albatros o da sé | `webseite-bauen`, `lancieren` | P9–P11 |
+| Atterrare | preparare la gestione (messaggi, sorveglianza, copia di sicurezza), mettere online; nel percorso attività poi le prime clienti e i primi clienti | `betrieb`, `lancieren` | P12 e P13 |
+
+- **Tre momenti del sì**, e solo la persona dice sì: piano confermato, bozza con via libera per costruire, sito approvato. Tutto il resto è una scelta o un'ipotesi. «Sembra a posto» non è un sì.
+- **Gratis fino al proprio sito:** finché il sito non è costruito e approvato sul proprio computer, Albatros non costa niente. Solo quando deve andare in rete la persona sceglie: da Albatros (prezzi solo da `konto_status`) o da sé.
+- **Percorso attività:** le stesse tappe, in più nei punti giusti i metodi (strumento `methode`). **Sito esistente:** lo skill `webseite-modernisieren` comincia con l'inventario.
 
 ## Procedura con accesso
 
 ### 1. Interrogare il radar
 
-Chiama lo strumento `lage` di Albatros. La risposta ha queste parti (i nomi arrivano in tedesco):
+Prima di chiamare `lage`, guardi nella cartella del progetto cosa c'è già: `docs/projekt.md` e gli altri file di risultato in `docs/` (per esempio `recherche.md`, `plan.md`, `plan-pruefung.md`). Poi chiama lo strumento `lage` di Albatros, con questi dati:
 
-- **Jetzt dran** (cosa tocca ora): uno skill come identificativo (p. es. `pipeline`), un metodo, uno strumento oppure «warten» (aspettare).
+- `skills_stand`: il valore di `stand` sotto `metadata` in cima a questo file. Da lì Albatros capisce se i tuoi skill sono superati.
+- `belege` (prove): per ogni file di risultato che esiste, le righe che a inizio riga cominciano con un nome e due punti (`Projektname: …`, `Vorbilder: …`), alla lettera; al massimo 20 file, ognuno al massimo 50 righe di al massimo 300 caratteri. Per i file senza righe così (`AGENTS.md`, `design/skizze.html`) dai solo il nome con una lista vuota. Se `lage` nomina file che non hai dato, li leggi e li dai alla prossima chiamata.
+- `modus`: dalla riga `Modus:` in `docs/projekt.md`, quindi `machen` (fare) o `lernen` (imparare).
+- `projekt`: da lasciare fuori per il primo progetto della persona (come per `schritt_melden`); solo per un altro progetto il suo nome breve.
+- `anliegen` (richiesta), solo se è permesso: quello che la persona ti chiede in questo momento, riformulato in una frase, senza nomi, indirizzi e-mail, indirizzi o dati di accesso, al massimo 300 caratteri. È permesso se la persona ha acconsentito alla raccolta (vedi «Segnalare le lacune») o se `lage` lo segnala così. Altrimenti lasci fuori il campo.
+
+Se non c'è ancora un progetto, chiami `lage` solo con `skills_stand`. Se `lage` risponde «Ungültige Angaben» (dati non validi), lo chiami una volta senza dati.
+
+La risposta ha queste parti (i nomi arrivano in tedesco):
+
+- **Jetzt dran** (cosa tocca ora): uno skill come identificativo, spesso con una sezione (p. es. `webseite-planen`, Abschnitt «Research», sezione Ricerca), un metodo, uno strumento oppure «warten» (aspettare).
 - **Grund** (motivo): una frase sul perché.
+- **Offene Pflichtfragen** (domande obbligatorie aperte): le domande di questa fase a cui nessuno ha ancora risposto, nella lingua della persona, ognuna con il motivo e chi risponde.
 - **Hinweis** (avviso): al massimo due cose che la persona dovrebbe sapere.
 - **Danach** (dopo): cosa viene come prossima cosa.
 - **Stand** (stato): in breve, dove si trova la persona.
@@ -43,30 +70,41 @@ Leggi lo stato esattamente come è scritto. «Arbeiter am Fliessband bereit» (o
 
 La tua risposta inizia con il punto della situazione, in tre parti brevi e solo con dati di `lage`:
 
-- **Dove sei:** p. es. quale percorso, quale abbonamento e quante missioni sono fatte.
+- **Dove sei:** la tappa e la sezione a parole (p. es. «al decollo, nella ricerca»), quale percorso e quante missioni sono fatte.
 - **Cosa tocca adesso:** il passo e il suo motivo.
 - **Dopo:** cosa viene come prossima cosa.
 
-Nel primo punto della situazione di una conversazione apri l'isola della persona nel browser (`open https://albatros.build/it/cockpit/insel`, con il prefisso della lingua, qui `/it/`, in francese `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`), lì la sua casa cresce con ogni passo. In più c'è una frase sullo zaino: la persona ha con sé la sua IA, e con Claude Code, Codex, Gemini CLI e Cursor funziona tutto allo stesso modo. Chiama tutte e quattro per nome.
+Nel primo punto della situazione di una conversazione apri l'isola della persona nel browser (`open https://albatros.build/it/cockpit/insel`; Linux `xdg-open`, Windows `start`), lì la sua casa cresce con ogni passo. In più c'è una frase sullo zaino: la persona ha con sé la sua IA, e con Claude Code, Codex, Gemini CLI e Cursor funziona tutto allo stesso modo. Chiama tutte e quattro per nome.
 
-Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, di' la sua immagine in due o tre frasi e mostra il primo passo concreto. Poi ti fermi e aspetti la persona. Il resto dello skill lo fate dopo insieme, passo dopo passo. Per questa prima risposta leggi solo lo skill: ancora nessun file del progetto, nessun comando. È un unico messaggio breve, e il punto della situazione c'è dentro.
+Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, vai alla sezione indicata, di' la sua immagine in due o tre frasi e mostra il primo passo concreto o fai la prima domanda. Poi ti fermi e aspetti la persona. Il resto lo fate dopo insieme, passo dopo passo. Per questa prima risposta leggi solo lo skill e i file per le prove, nessun comando. È un unico messaggio breve, e il punto della situazione c'è dentro.
 
-- **Skill:** Leggi il file `../<identificativo>/SKILL.md` nello stesso plugin (cioè accanto a questa cartella), p. es. `../pipeline/SKILL.md`. In Claude Code funziona anche con lo skill `albatros-it:<identificativo>`. Gli identificativi sono uguali in ogni lingua.
+- **Skill:** Leggi il file `../<identificativo>/SKILL.md` nello stesso plugin (cioè accanto a questa cartella), p. es. `../webseite-planen/SKILL.md`, e segui la sezione che nomina `lage`. In Claude Code funziona anche con lo skill `albatros-it:<identificativo>`. Gli identificativi sono uguali in ogni lingua; i nomi delle sezioni `lage` li dà in tedesco, e gli skill in italiano li riportano tra parentesi.
+- **Skill che manca o più vecchio:** se il file non c'è, o se `lage` dice che la tua versione è più vecchia, prendi lo skill con `skill_holen` (`slug` come in `lage`, `sprache: it`) e segui il testo che restituisce.
 - **Metodo** (percorso attività): Prendilo con lo strumento `methode` e il nome indicato, e segui le sue istruzioni.
 - **warten** (aspettare): Dillo in modo onesto e breve, più o meno per quanto. Se va bene, usa il tempo per una domanda sul progetto. Poi richiama `lage`.
 - **Strumento `coach_fragen`:** Questo la persona non lo può risolvere da sola. Formula con lei la domanda e ponila con `coach_fragen`.
 
 Gli avvisi li dici alla persona, ma non la distraggono dal passo che tocca adesso.
 
-### 3. Dopo ogni passo riuscito chiedere di nuovo
+### 3. Le domande obbligatorie le fai tu
 
-Quando un passo è riuscito (una missione superata, un errore risolto, una serratura depositata), richiama `lage` prima di proporre il prossimo. Lo stato è cambiato, e solo il radar sa cosa tocca adesso. Chiedi brevemente alla persona se vuole continuare subito.
+La persona non deve conoscere le domande obbligatorie né nominarle: quelle che `lage` dà come aperte le fai tu di tua iniziativa, con parole tue e nella sua lingua, con il motivo in mezza frase. Al massimo due domande per messaggio, al massimo cinque alla persona per fase.
 
-Se `lage` indica due volte di fila lo stesso skill, anche se l'avete appena fatto: di solito manca ancora la verifica della missione (`mission_pruefen`). Verificala, poi di nuovo `lage`.
+- **Person** (la persona): risponde sempre lei, anche nel modo fare.
+- **Annahme** (ipotesi): proponi uno standard e lo scrivi come `[Annahme: …]`. Tutte le ipotesi di una fase la persona le conferma in un solo messaggio.
+- **KI** (l'IA): lo chiarisci da te (guardare, aprire, misurare) e mostri il risultato.
+
+Ogni risposta va nel file e nella riga che indica `lage`, a inizio riga con il suo nome tedesco. Alla prossima chiamata di `lage` fa parte delle prove.
+
+### 4. Dopo ogni passo riuscito chiedere di nuovo
+
+Quando un passo è riuscito (una sezione finita, una missione superata, un errore risolto), lo segnali con `schritt_melden`, come dice lo skill, e aggiorni `Stand:` e `Nächster Schritt:` in `docs/projekt.md`. Poi richiama `lage` prima di proporre il prossimo passo. Lo stato è cambiato, e solo il radar sa cosa tocca adesso. Chiedi brevemente alla persona se vuole continuare subito.
+
+Se `lage` indica due volte di fila lo stesso passo, anche se l'avete appena fatto: di solito manca ancora una riga nelle prove o la verifica della missione (`mission_pruefen`). Controlla entrambe, poi di nuovo `lage`.
 
 Se lavorate a lungo su un passo, ripeti in breve nel tuo ultimo messaggio il punto della situazione: dove si trova la persona, cosa tocca adesso, cosa viene dopo.
 
-### 4. Quando la persona vuole altro
+### 5. Quando la persona vuole altro
 
 È la persona a decidere dove vola. Se preferisce lavorare a qualcos'altro, prendi lo skill adatto dalla biblioteca qui sotto. Di' in una frase cosa consiglierebbe `lage` come prossima cosa, così non lo dimentica.
 
@@ -74,23 +112,74 @@ Se la persona manda l'indirizzo di un sito web esistente (https://…) o «Moder
 
 Se la persona vuole cambiare qualcosa sul suo sito finito («nuova data», «cambiare un testo», «sostituire un'immagine», «manca …»), segui lo skill `webseite-aendern`, anche se `lage` propone altro.
 
+### 6. Quando i tuoi skill sono superati
+
+Se `lage` dice «Albatros aktualisieren» (aggiornare Albatros), gli skill su questo computer sono più vecchi del piano di volo di Albatros. Dillo alla persona in una frase e, con il suo sì, prendi quelli nuovi:
+
+| IA | Come |
+|---|---|
+| Claude Code | `claude plugin marketplace update albatros` e `claude plugin update albatros-it@albatros`, poi la persona digita `/reload-plugins` |
+| Codex | `codex plugin marketplace upgrade albatros` e `codex plugin add albatros-it@albatros`, poi una nuova conversazione |
+| Gemini CLI, Cursor | `npx skills update -g -y`, poi riavviare il programma |
+
+Finché non ha funzionato, prendi lo skill che tocca adesso con `skill_holen`.
+
+## Imparare o fare (Lernen oder machen)
+
+Ogni progetto ha un modo, nella riga `Modus:` di `docs/projekt.md`. Di regola è **fare** (`machen`). Di' alla persona la differenza in una frase: «Fare è più veloce, imparare resta. Puoi cambiare in qualsiasi momento.»
+
+- **Fare:** fai tu il lavoro con il know-how degli skill e spieghi ogni passo in una frase con la sua immagine. Le domande a cui può rispondere solo la persona le fai comunque; il resto lo scrivi come `[Annahme: …]`. I momenti di apprendimento che nomina uno skill li offri («Vuoi farlo tu una volta?»), non li imponi.
+- **Imparare** (`lernen`): spieghi ogni passo con immagine e perché, e i momenti di apprendimento li fa la persona: digita il comando, scrive la riga, cambia il testo. Dici prima cosa succederà e aiuti quando si inceppa. Alla fine della fase fai la domanda di controllo della lezione: la missione della fase la riporta sotto «verstehen» (`mission_holen`); se non ne trovi, chiedi il nocciolo del momento di apprendimento. Solo dopo la risposta della persona segnali con `verstanden_melden`: `mission` è l'identificativo della missione (p. es. `flugschule-11-idee`), `art` è `kontrollfrage` (domanda di controllo), `selbst` se ha fatto il passo da sé, o `wiederholung` se più tardi ci è riuscita di nuovo. Mai al suo posto. Se la risposta non coglie il nocciolo, lo spieghi ancora una volta con l'immagine e richiedi più tardi.
+- **Cambiare in qualsiasi momento:** se la persona dice «lascia che lo faccia io» o «fallo tu e basta», cambi subito, scrivi il nuovo modo in `docs/projekt.md` e lo salvi con `modus_waehlen` come scelta di base per i suoi prossimi progetti, se lo strumento esiste.
+
+## Segnalare le lacune (Lücken melden)
+
+Albatros migliora se segnali dove manca il know-how. Per questo c'è lo strumento `luecke_melden`.
+
+**Quando** (`art`):
+
+- La persona chiede qualcosa che nessuno skill copre (`nicht_abgedeckt`).
+- Hai dovuto tirare a indovinare (`geraten`).
+- Uno skill non è chiaro (`skill_unklar`) o è sbagliato (`skill_falsch`).
+- Manca uno strumento che servirebbe (`werkzeug_fehlt`).
+- Albatros ha fatto un errore (`fehler_bei_albatros`).
+
+**Come:**
+
+- `frage`: in modo generale e riformulato, con parole tue, da 10 a 500 caratteri. Mai nomi, indirizzi e-mail, indirizzi, numeri di telefono, password o altri dati di accesso. Mai contenuti da una banca dati, da log o da `.env`. Quindi «Come collego un dominio il cui fornitore non permette voci proprie?» invece di quello che la persona ha scritto alla lettera.
+- In più `art`, `skill` (l'identificativo di cui si tratta), `phase` (come la nomina `lage`), `kontext` (cosa hai già provato, una frase, senza dati sulla persona) e `skills_stand`.
+- **La prima volta** chiami `luecke_melden` senza `einverstanden`. La risposta contiene una frase per la persona: dilla così com'è scritta, in italiano. Solo dopo il suo sì richiami lo strumento con `einverstanden: true`. Se dice di no, non segnali niente e vai avanti.
+- A una lacuna non arriva risposta. L'aiuto per la persona viene dal Coach (`coach_fragen`).
+- **Una falla nei dati** (dati di altri visibili, un accesso rivelato, dati persi) non è mai una lacuna: va subito al team con `coach_fragen` e `anliegen: datenpanne`.
+- Se manca `luecke_melden`, si va avanti senza.
+
 ## Senza accesso
 
 Se manca lo strumento `lage`, o se riporta «nicht angemeldet» (non hai effettuato l'accesso; errore 401, «Bitte zuerst bei Albatros anmelden»), la torre non vede la persona sul radar. Dillo onestamente, senza inventare uno stato:
 
-1. **La biblioteca è aperta.** Tutti gli skill si possono leggere liberamente. Mostra tutta la tabella qui sotto con gli identificativi esattamente come sono scritti (tra backtick, non tradotti), così la persona può scegliere da sola. Con l'identificativo qualsiasi IA trova lo skill.
-2. **Il controllore di volo ha bisogno dell'accesso.** Lo skill giusto al momento giusto, secondo il suo stato reale, c'è solo se Albatros la conosce. L'accesso è come la carta d'imbarco: nel browser si apre una finestra, lì la persona accede o si registra. La password la digita solo lì.
+1. **Le tre tappe con il prossimo passo.** Mostra il piano di volo in tre tappe (qui sopra) e nomina il prossimo passo secondo quello che c'è nella cartella del progetto: `Stand:` e `Nächster Schritt:` in `docs/projekt.md` e i file di risultato in `docs/`. Se non c'è ancora niente, il prossimo passo è l'idea (skill `webseite-planen`, sezione Idea). Di' che è il tuo sguardo nella cartella, non lo stato presso Albatros. Fino al sito finito sul proprio computer tutto funziona anche senza accesso; isola, libretto di volo, metodi e tutto quello che è in rete ne hanno bisogno.
+2. **Il controllore di volo ha bisogno dell'accesso.** Il passo giusto secondo il suo stato reale, le domande obbligatorie e l'isola ci sono solo se Albatros la conosce. L'accesso è come la carta d'imbarco: nel browser si apre una finestra, lì la persona accede o si registra. La password la digita solo lì.
    - L'accesso lo avvii tu, la persona non digita comandi. Come si fa in Claude Code, Codex, Gemini CLI e Cursor lo trovi nello skill `start`, passo 1 (`../start/SKILL.md`). Seguilo.
    - Poi chiamare `lage`. Chi è del tutto nuovo da Albatros: skill `start`.
-3. Se la persona sceglie uno skill dalla tabella, leggilo (`../<identificativo>/SKILL.md`) e seguilo. Anche lì gli strumenti di Albatros richiedono l'accesso. Quello che si può fare senza (pianificare, scrivere testi, spiegare) lo fai comunque.
+3. **La biblioteca su richiesta.** Se la persona vuole scegliere da sola o chiede tutti gli skill, mostra tutta la tabella qui sotto con gli identificativi esattamente come sono scritti (tra backtick, non tradotti). Con l'identificativo qualsiasi IA trova lo skill. Se ne sceglie uno, leggilo (`../<identificativo>/SKILL.md`) e seguilo. Anche lì gli strumenti di Albatros richiedono l'accesso. Quello che si può fare senza (pianificare, scrivere testi, spiegare, costruire sul proprio computer) lo fai comunque.
 
-Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente che Albatros al momento non risponde e offri la biblioteca. Più tardi riprova `lage`.
+Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente che Albatros al momento non risponde. Il prossimo passo secondo la cartella del progetto funziona comunque. Più tardi riprova `lage`.
 
 ### La biblioteca
 
 | Identificativo | Quando |
 |---|---|
-| `start` | Proprio all'inizio: scegliere il percorso, l'abbonamento, la chiave, la prima pagina |
+| `start` | Proprio all'inizio: collegarsi, scegliere il percorso, imparare o fare, poi si parte con l'idea |
+| `webseite-planen` | All'inizio di ogni progetto: l'idea con nome del progetto e schizzo, la ricerca, la pianta e la verifica del piano |
+| `webseite-modernisieren` | Rinnovare un sito web esistente: inventario di tutte le pagine e funzioni, poi pianta e verifica del piano, senza che una funzione vada persa |
+| `konzept` | Dopo il piano confermato: nome, tono, carattere e se ne fa parte un personaggio, prima di scegliere i colori |
+| `gestaltung` | Sistema di design con tavola dei campioni: colori, caratteri e pulsanti in un solo posto; oppure il sito deve essere più facile da usare e più bello |
+| `entwurf` | Progettare tutto il sito da sfogliare cliccando prima di costruirlo, e dare il via libera per costruire |
+| `inhalte` | Scrivere e scegliere testi e immagini per il sito |
+| `webseite-bauen` | Dalla bozza con via libera al sito finito sul tuo computer: costruire, verificare, guardare e approvare |
+| `lancieren` | Dopo l'approvazione: decidere dove abita il sito (da Albatros o da te) e metterlo online |
+| `betrieb` | Prima della messa online: preparare messaggi dei visitatori, sorveglianza, copia di sicurezza e statistiche |
+| `webseite-aendern` | Cambiare qualcosa sul sito finito: data, testo, immagine o una nuova pagina, nel sistema di design esistente, con verifica e approvazione |
 | `ssh-schluessel` | Ti serve la chiave per il server o per `git push` |
 | `server-kennenlernen` | Hai un server tuo e vuoi sapere cosa c'è sopra |
 | `git-logbuch` | Annotare le modifiche e mandarle al porto |
@@ -100,16 +189,6 @@ Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente
 | `kosten` | Quanto costa il mio progetto al mese, quale abbonamento fa per me |
 | `domain` | Trovare, comprare o collegare un indirizzo tuo come mionegozio.ch |
 | `landung` | Trasloco su un server tuo fuori da Albatros |
-| `webseite-bauen` | Dal piano al sito finito come in una piccola fabbrica, in nove passi: incarico, mockup, sistema di design, stack tecnico, PRD con criteri di collaudo, costruzione in locale, quattro verifiche, approvazione, porto, nastro trasportatore e online |
-| `lancieren` | Dopo l'approvazione: decidere dove abita il sito (da Albatros o da te) e metterlo online |
-| `betrieb` | Prima della messa online: preparare messaggi dei visitatori, sorveglianza, copia di sicurezza e statistiche |
-| `webseite-aendern` | Cambiare qualcosa sul sito finito: data, testo, immagine o una nuova pagina, nel sistema di design esistente, con verifica e approvazione |
-| `webseite-modernisieren` | Rinnovare un sito web esistente: inventario di tutte le pagine e funzioni, poi piano e aspetto |
-| `webseite-planen` | Prima di costruire: per chi, quali pagine, quali contenuti |
-| `konzept` | Dopo il piano confermato: nome, tono, carattere e se ne fa parte un personaggio, prima di scegliere i colori |
-| `entwurf` | Progettare tutto il sito da sfogliare cliccando prima di costruirlo, e dare il via libera per costruire |
-| `inhalte` | Scrivere e scegliere testi e immagini per il sito |
-| `gestaltung` | Il sito deve essere più facile da usare e più bello |
 | `cms` | Più avanti cambiare i contenuti da soli, senza codice |
 | `bausteine` | Il sito deve saper fare di più: lista di iscrizione, accesso per i membri, bacheca, CMS grande |
 | `seo-grundlagen` | Il sito deve farsi trovare su Google e simili |
@@ -117,8 +196,8 @@ Se Albatros risponde con un altro errore o non risponde affatto: di' onestamente
 | `recht-ch` | Impressum e dichiarazione sulla protezione dei dati per la Svizzera |
 | `statistik` | Contare chi arriva e cosa fanno i visitatori |
 
-Per il percorso attività ci sono in più i metodi (dall'idea fino ai primi numeri). Fanno parte dell'abbonamento e arrivano con lo strumento `methode`.
+Per il percorso attività ci sono in più i metodi (dall'idea fino ai primi numeri). Arrivano con lo strumento `methode`.
 
 ## Messaggio finale
 
-Il tuo ultimo messaggio in questo passo inizia con una frase sull'immagine «il controllore di volo nella torre di controllo», che ne ripete il nocciolo. Poi: dove si trova la persona, cosa tocca adesso e perché, e cosa viene dopo. Senza accesso invece: la biblioteca è aperta, il controllore di volo ha bisogno dell'accesso, ed ecco come si fa.
+Il tuo ultimo messaggio in questo passo inizia con una frase sull'immagine «il controllore di volo nella torre di controllo», che ne ripete il nocciolo. Poi: dove si trova la persona, cosa tocca adesso e perché, e cosa viene dopo. Senza accesso invece: le tre tappe con il prossimo passo, il controllore di volo ha bisogno dell'accesso, ed ecco come si fa.
