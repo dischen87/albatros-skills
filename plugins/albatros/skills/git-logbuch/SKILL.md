@@ -1,6 +1,6 @@
 ---
 name: git-logbuch
-description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (dem Git-Dienst von Albatros, code.aufwind.sh). Holt das Repo aus dem Hafen oder legt es auf dem Computer an, bevor es einen Hafen gibt (git init, später den Hafen als origin verbinden), führt durch die ersten Einträge (Commit) mit guten Notizen, schickt sie in den Hafen (Push) und prüft, dass die Kopie auf dem Albatros-Server in ~/projekt ankommt. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «Hafen», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
+description: 'Erklärt Git einer Person ohne Vorwissen mit dem Bild vom Logbuch an Bord und der Kopie im Hafen (dem Git-Dienst von Albatros, code.aufwind.sh). Führt durch die ersten Einträge (Commit) mit guten Notizen. Bis die Seite freigegeben ist, liegt das Logbuch nur auf dem Computer (git init, kein Push); erst beim Live schalten holt er das Repo aus dem Hafen oder verbindet das eigene als origin, schickt die Einträge in den Hafen (Push) und prüft, dass die Kopie auf dem Albatros-Server in ~/projekt ankommt. Regeln: nur auf main, nur eigene Dateien einzeln aufnehmen, nie force-push. Nutze den Skill bei «Git», «GitHub», «Hafen», «commit», «push», «pull», «Repo», «was ist ein Repository», «meine Änderungen sichern», «push abgelehnt», «Konflikt», und bevor du für die Person etwas committest.'
 metadata:
   stand: 0.2.0
 ---
@@ -45,6 +45,8 @@ Auf jedem Schiff gibt es ein Logbuch. Jeder Eintrag sagt: wer, wann, was und war
 
 ### 2. Das Logbuch holen
 
+**Zuerst: Ist die Seite schon freigegeben?** In den Hafen kommt das Logbuch erst, wenn die Person ihre Seite freigegeben hat (`Freigegeben:` mit Datum in `docs/prd.md`) und ihr sie live schaltet (Skill `lancieren`, Abschnitt «Live schalten»), oder wenn ihre Seite schon im Netz ist und sie etwas ändert (Skill `webseite-aendern`). Vorher folgst du dem Abschnitt «Logbuch ohne Hafen»: alles auf dem Computer, ohne Push, auch auf dem Weg Geschäft, wenn eine Methode «ins Logbuch» sagt.
+
 Gibt es schon ein Logbuch auf diesem Computer (auf dem Weg Webseite entsteht es beim Bau, Skill `webseite-bauen`), holst du nichts: Es wird mit dem Hafen verbunden (Abschnitt «Logbuch ohne Hafen»). Sonst gilt: Albatros hat dein Logbuch im Hafen schon angelegt, mit der Vorlage darin. Die Adresse nennt `konto_status`:
 
 ```bash
@@ -88,17 +90,21 @@ Fehlen die neuen Einträge, holst du sie von Hand: `ssh {name}@aufwind.sh 'git -
 
 ## Logbuch ohne Hafen
 
-Ein Logbuch braucht keinen Hafen, um anzufangen. Auf dem Weg Webseite entsteht es beim Bau auf dem Computer (Skill `webseite-bauen`), lange bevor die Seite einen Wohnort hat:
+Ein Logbuch braucht keinen Hafen, um anzufangen, und bis zur Freigabe ist das der einzige Weg. Auf dem Weg Webseite entsteht es beim Bau auf dem Computer (Skill `webseite-bauen`), lange bevor die Seite einen Wohnort hat; auf dem Weg Geschäft schon bei den ersten Methoden, wenn sie «ins Logbuch» sagen. Gibt es im Projektordner noch keines (`git status` meldet «not a git repository»), legst du es an:
 
 ```bash
 git init -b main                         # einmal, im Projektordner
 git add .gitignore docs design           # die eigenen Dateien und Ordner mit Namen
-git commit -m "Entwurf freigegeben: Plan, Konzept, Entwurf"
+git commit -m "Idee: Projektname, Satz und Skizze"
 ```
+
+Fehlt `.gitignore`, legst du sie vorher an, mindestens mit `.env`, `.env.*`, `!.env.example`, `node_modules/` und `dist/`. Danach kommt jeder fertige Schritt als eigener Eintrag dazu, nach den drei Regeln oben.
+
+**Kein Push vor der Freigabe.** Bis die Person ihre Seite freigegeben hat (`Freigegeben:` mit Datum in `docs/prd.md`) und ihr sie live schaltet (P13, Skill `lancieren`, Abschnitt «Live schalten»), geht nichts in den Hafen: kein `git clone` aus dem Hafen, kein `git remote add`, kein `git push`. Das gilt auf beiden Wegen, auch wenn im Hafen schon die Vorlage liegt. Mit Light ist jeder Push sofort im Netz, mit Pilot bringt ihn das Fliessband auf den Server: Was im Hafen liegt, kann online sein, bevor die Person Ja gesagt hat.
 
 Solange es keinen Hafen gibt, liegt das Logbuch nur auf diesem Computer. Fällt er ins Wasser, ist es weg: Dann braucht es eine zweite Kopie, zum Beispiel ein privates Repo (Skill `betrieb`, Sicherung).
 
-**Später den Hafen verbinden,** beim Live schalten (Skill `lancieren`): ohne neu zu klonen und ohne Dateien zu kopieren, sonst gehen die Einträge vom Bau verloren.
+**Erst beim Live schalten den Hafen verbinden** (Skill `lancieren`), nach der Freigabe: ohne neu zu klonen und ohne Dateien zu kopieren, sonst gehen die Einträge vom Bau verloren.
 
 - **Hafen von Albatros:** Dort liegt seit dem Wohnort die Vorlage, ein Eintrag mit eigenem Anfang. Du verbindest den Hafen als `origin` und nimmst die Vorlage einmal ins Logbuch auf. Wo beide dieselbe Datei haben, bleibt die eigene (`-X ours`):
   ```bash

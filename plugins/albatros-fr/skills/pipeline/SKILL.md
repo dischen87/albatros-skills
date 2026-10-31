@@ -3,7 +3,7 @@ name: pipeline
 description: "Explique le CI/CD à une personne sans connaissances préalables avec l'image du tapis roulant avec contrôle qualité, et le met en place : un workflow au port d'Albatros (Forgejo, code.aufwind.sh) démarre à chaque push sur main. L'ouvrier (runner) sur son propre serveur construit la page, la livre avec un contrôle de santé, la vérifie par l'adresse publique et revient sinon à la dernière bonne version. Utilise ce skill pour « pipeline », « CI/CD », « GitHub Actions », « Forgejo Actions », « workflow », « runner », « livrer automatiquement », « déployer », « comment ma modification arrive sur le serveur ? », « le tapis roulant est rouge », « le déploiement a échoué »."
 metadata:
   stand: 0.2.0
-  quelle: '4148e0142beb'
+  quelle: '9afeadd99f65'
 ---
 
 # Pipeline : le tapis roulant avec contrôle qualité
@@ -27,6 +27,7 @@ Chez toi, le tapis démarre dès que tu envoies une entrée au port (skill `git-
 - Tutoiement. Parcours le fichier du workflow avec la personne, poste par poste, avant qu'il ne tourne.
 - Le tapis roulant n'a besoin ni de clé ni de secret de la personne : l'ouvrier habite déjà sur son serveur. Sa clé de la maison n'a jamais sa place dans le tapis roulant.
 - Si le tapis est rouge : corriger la cause, ne jamais désactiver le contrôle.
+- **Pas avant la mise en ligne (P13).** Tu installes le tapis seulement quand la personne a validé son site (`Freigegeben:` avec la date dans `docs/prd.md`) et que vous le mettez en ligne (skill `lancieren`, partie 2, la mise en ligne). Ça vaut sur les deux parcours, même si une méthode du parcours entreprise parle du tapis roulant avant : jusque-là, tout reste sur l'ordinateur et rien ne va au port (skill `git-logbuch`, partie « Logbuch ohne Hafen »). Si la personne le demande plus tôt, tu expliques l'image et tu dis quand ce sera le moment. Un tapis qui tourne déjà parce que le site est déjà en ligne, tu t'en occupes à tout moment (partie « Quand le tapis est rouge »).
 
 ## Déroulement
 
@@ -34,7 +35,7 @@ Chez toi, le tapis démarre dès que tu envoies une entrée au port (skill `git-
 
 **Avec Light**, il n'y a pas de tapis roulant : après chaque push, Albatros publie directement le dossier `seite/` de `main`, sans construction et sans contrôle. Explique quand même l'image. Le tapis avec contrôle qualité fait partie de Pilot ; on le choisit avec le domicile (skill `lancieren`). Le fichier `deploy.yml` du modèle dort avec Light. Au passage à Pilot, Albatros met le tapis en marche et le fait tourner une fois tout de suite, pour que le propre serveur livre la page. La mission `flugschule-05-pipeline` fait partie de Pilot.
 
-**Avec Pilot :** `konto_status` donne le nom du serveur, l'adresse du port (`git@aufwind.sh:{name}/projekt.git`) et indique si l'ouvrier est prêt. Ne le demande pas à la personne. Le modèle d'Albatros contient déjà `.github/workflows/deploy.yml`, `compose.yaml` et `Dockerfile` ; sur le parcours site web, ils arrivent dans le journal de bord à la mise en ligne, quand celui-ci est relié au port (skill `lancieren`, partie 2). Lis-les avec la personne et compare avec l'essentiel ci-dessous. Dans le modèle, les commentaires et les messages sont en allemand ; ci-dessous, les commentaires sont traduits. Les noms des étapes et les messages restent tels quels, pour que le fichier corresponde au modèle ; traduis-les pour la personne. S'ils manquent, tu les crées, même si le dossier est encore vide, et tu dis ensuite ce qui manque encore (journal de bord au port, contenu de la page).
+**Avec Pilot :** `konto_status` donne le nom du serveur, l'adresse du port (`git@aufwind.sh:{name}/projekt.git`) et indique si l'ouvrier est prêt. Ne le demande pas à la personne. Le modèle d'Albatros contient déjà `.github/workflows/deploy.yml`, `compose.yaml` et `Dockerfile` ; sur les deux parcours, ils arrivent dans le journal de bord à la mise en ligne, quand celui-ci est relié au port (skill `lancieren`, partie 2). Lis-les avec la personne et compare avec l'essentiel ci-dessous. Dans le modèle, les commentaires et les messages sont en allemand ; ci-dessous, les commentaires sont traduits. Les noms des étapes et les messages restent tels quels, pour que le fichier corresponde au modèle ; traduis-les pour la personne. S'ils manquent, tu les crées, même si le dossier est encore vide, et tu dis ensuite ce qui manque encore (journal de bord au port, contenu de la page).
 
 Le conteneur du serveur web s'appelle `webseite` et écoute dans le serveur sur le port 80. Albatros dirige `https://{name}.aufwind.sh` vers lui. Sur un serveur tout neuf, la page d'accueil (service `willkommen`) occupe le port 80. Le tapis roulant la désactive avant le premier démarrage. Si tu démarres une fois à la main, d'abord `sudo systemctl disable --now willkommen`.
 
@@ -112,7 +113,7 @@ Explique poste par poste. Sur le serveur, on ne modifie rien à la main : l'é
 
 ### 3. Premier trajet
 
-Sur le parcours site web, le tapis roule pour la première fois à la mise en ligne, avec le site validé (skill `lancieren`, partie 2).
+Sur les deux parcours, le tapis roule pour la première fois à la mise en ligne, avec le site validé (skill `lancieren`, partie 2).
 
 1. Entrée dans le journal de bord, push (skill `git-logbuch`).
 2. Regarder dans le navigateur web : `https://code.aufwind.sh/{name}/projekt/actions`.
@@ -126,7 +127,7 @@ La personne glisse exprès une erreur qui fait échouer la construction (p. ex. 
 
 `mission_pruefen` avec `flugschule-05-pipeline`. La vérification regarde si le dernier passage de `deploy.yml` au port est vert, si le conteneur `webseite` tourne et si la page répond.
 
-## Quand le tapis est rouge
+## Quand le tapis est rouge (Wenn das Band rot ist)
 
 - **Quel poste ?** Dans le navigateur web, sous « Actions », ouvrir le passage rouge. La personne copie les dernières lignes dans le chat. Sur le serveur, tu regardes toi-même : `ssh {name}@aufwind.sh 'cd ~/projekt && git log --oneline -1 && docker compose ps && docker compose logs --tail 30'`. Lire ensemble, nommer la cause en une phrase.
 - **Le passage attend et ne démarre pas :** aucun ouvrier ne le prend. Le fichier contient-il exactement `runs-on: albatros` ? `konto_status` montre si l'ouvrier est prêt. Sinon `coach_fragen`.

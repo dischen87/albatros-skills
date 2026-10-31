@@ -1,9 +1,9 @@
 ---
 name: git-logbuch
-description: "Spiega Git a una persona senza conoscenze con l'immagine del diario di bordo sulla nave e della copia nel porto (il servizio Git di Albatros, code.aufwind.sh). Prende il repo dal porto o lo crea sul computer prima che ci sia un porto (git init, più tardi collegare il porto come origin), accompagna nelle prime voci (commit) con buone note, le manda al porto (push) e verifica che la copia arrivi sul server Albatros in ~/projekt. Regole: solo su main, solo i propri file aggiunti uno per uno, mai force-push. Usa lo skill con «Git», «GitHub», «porto», «commit», «push», «pull», «repo», «cos'è un repository?», «voglio salvare le mie modifiche», «il push è stato rifiutato», «conflitto», e prima di fare un commit per la persona."
+description: "Spiega Git a una persona senza conoscenze con l'immagine del diario di bordo sulla nave e della copia nel porto (il servizio Git di Albatros, code.aufwind.sh). Accompagna nelle prime voci (commit) con buone note. Finché il sito non è approvato, il diario di bordo resta solo sul computer (git init, nessun push); solo alla messa online prende il repo dal porto o vi collega il proprio come origin, manda le voci al porto (push) e verifica che la copia arrivi sul server Albatros in ~/projekt. Regole: solo su main, solo i propri file aggiunti uno per uno, mai force-push. Usa lo skill con «Git», «GitHub», «porto», «commit», «push», «pull», «repo», «cos'è un repository?», «voglio salvare le mie modifiche», «il push è stato rifiutato», «conflitto», e prima di fare un commit per la persona."
 metadata:
   stand: 0.2.0
-  quelle: '6ac493bbafdb'
+  quelle: '6cb54ed614fa'
 ---
 
 # Git: il diario di bordo sulla nave, con una copia nel porto
@@ -47,6 +47,8 @@ Su ogni nave c'è un diario di bordo. Ogni voce dice: chi, quando, cosa e perch�
 
 ### 2. Prendere il diario di bordo
 
+**Prima di tutto: il sito è già approvato?** Il diario di bordo va nel porto solo quando la persona ha approvato il suo sito (`Freigegeben:` con la data in `docs/prd.md`) e lo mettete online (skill `lancieren`, parte 2, la messa online), oppure quando il suo sito è già in rete e lei ci cambia qualcosa (skill `webseite-aendern`). Prima segui la parte «Logbuch ohne Hafen»: tutto sul computer, senza push, anche nel percorso attività quando un metodo dice «nel diario di bordo».
+
 Se c'è già un diario di bordo su questo computer (sul percorso sito web nasce con la costruzione, skill `webseite-bauen`), non prendi niente: viene collegato al porto (parte «Logbuch ohne Hafen»). Altrimenti: Albatros ha già creato il tuo diario di bordo nel porto, con dentro il modello. L'indirizzo lo indica `konto_status`:
 
 ```bash
@@ -88,19 +90,23 @@ Se mancano le nuove voci, le prendi a mano: `ssh {name}@aufwind.sh 'git -C ~/pro
 
 `mission_pruefen` con `flugschule-04-git-logbuch`. La verifica guarda se il diario di bordo ha almeno due voci su `main`: con Pilot in `~/projekt` sul server, con Light nel porto.
 
-## Logbuch ohne Hafen (il diario di bordo senza porto)
+## Il diario di bordo senza porto (Logbuch ohne Hafen)
 
-Un diario di bordo non ha bisogno di un porto per cominciare. Sul percorso sito web nasce con la costruzione, sul computer (skill `webseite-bauen`), molto prima che il sito abbia un domicilio:
+Un diario di bordo non ha bisogno di un porto per cominciare, e fino all'approvazione è l'unica strada. Sul percorso sito web nasce con la costruzione, sul computer (skill `webseite-bauen`), molto prima che il sito abbia un domicilio; nel percorso attività già con i primi metodi, quando dicono «nel diario di bordo». Se nella cartella del progetto non ce n'è ancora uno (`git status` risponde «not a git repository»), lo crei:
 
 ```bash
 git init -b main                         # una volta, nella cartella del progetto
 git add .gitignore docs design           # i propri file e cartelle, con il nome
-git commit -m "Bozza approvata: piano, concetto, bozza"
+git commit -m "Idea: nome del progetto, frase e schizzo"
 ```
+
+Se manca `.gitignore`, la crei prima, almeno con `.env`, `.env.*`, `!.env.example`, `node_modules/` e `dist/`. Poi ogni passo finito si aggiunge come voce a sé, secondo le tre regole qui sopra.
+
+**Nessun push prima dell'approvazione.** Finché la persona non ha approvato il suo sito (`Freigegeben:` con la data in `docs/prd.md`) e non lo mettete online (P13, skill `lancieren`, parte 2, la messa online), niente va nel porto: nessun `git clone` dal porto, nessun `git remote add`, nessun `git push`. Vale per entrambi i percorsi, anche se nel porto c'è già il modello. Con Light ogni push è subito in rete, con Pilot il nastro trasportatore lo porta sul server: quello che sta nel porto può essere online prima che la persona abbia detto sì.
 
 Finché non c'è un porto, il diario di bordo c'è solo su questo computer. Se cade in acqua, è perso: serve allora una seconda copia, per esempio un repository privato (skill `betrieb`, copia di sicurezza).
 
-**Collegare il porto più tardi,** alla messa online (skill `lancieren`): senza clonare di nuovo e senza copiare file, altrimenti le voci della costruzione vanno perse.
+**Collegare il porto solo alla messa online** (skill `lancieren`), dopo l'approvazione: senza clonare di nuovo e senza copiare file, altrimenti le voci della costruzione vanno perse.
 
 - **Porto di Albatros:** dal domicilio contiene il modello, una voce con un suo inizio. Colleghi il porto come `origin` e riprendi il modello una volta nel diario di bordo. Dove entrambi hanno lo stesso file, resta il proprio (`-X ours`):
   ```bash
