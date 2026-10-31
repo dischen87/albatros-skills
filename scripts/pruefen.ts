@@ -183,4 +183,4 @@ if (fehler.length) {
   console.error(fehler.join('\n'));
   process.exit(1);
 }
-console.log(`${skills.size} Skills, alle Missionen und der Fahrplan (${fahrplan?.phasen.length} Phasen) in Ordnung.`);
+console.log(`${skills.size} Skills und ${deutsch.size} Missionen in vier Sprachen und der Fahrplan (${fahrplan?.phasen.length} Phasen) in Ordnung.`);
