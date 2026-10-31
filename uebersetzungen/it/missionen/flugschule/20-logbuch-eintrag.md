@@ -21,7 +21,7 @@ La tua bozza ha il via libera per costruire. Adesso la tua IA ne costruisce il s
 ## Come procedi
 
 1. La tua IA controlla che la tua bozza abbia il via libera per costruire e apre il diario di bordo sul tuo computer.
-2. La prima voce la fai insieme: la tua IA ti mostra che cosa ci va, e tu digiti da te il comando `git commit`. Nel modo imparare fa parte del percorso.
+2. La prima voce la fai insieme: la tua IA ti mostra che cosa ci va e, se vuoi, digiti da te il comando `git commit`. Nel modo imparare fa parte del percorso.
 3. Scrive il modo di costruzione e il progetto (PRD) dalla tua bozza e propone quali indirizzi sono aperti senza accesso. Confermi tutti e due in un solo messaggio.
 4. Costruisce il sito e lo controlla in quattro ambiti. Ti mostra i rapporti con il semaforo.
 5. Ogni passo riuscito riceve una voce nel diario di bordo.

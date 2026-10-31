@@ -21,7 +21,7 @@ Your draft is approved for building. Now your AI builds the real site from it on
 ## How you go about it
 
 1. Your AI checks that your draft is approved for building, and opens the logbook on your computer.
-2. You make the first entry together: your AI shows you what goes into it, and you type the `git commit` command yourself. In learning mode, that's part of it.
+2. You make the first entry together: your AI shows you what goes into it and, if you like, you type the `git commit` command yourself. In learning mode, that's part of it.
 3. It writes the way of building and the building plan (PRD) from your draft, and suggests which addresses are open without signing in. You confirm both in one message.
 4. It builds the site and checks it in four areas. It shows you the reports with their traffic lights.
 5. Every step you finish gets an entry in the logbook.

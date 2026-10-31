@@ -30,7 +30,7 @@ Dein Entwurf ist zum Bauen freigegeben. Jetzt baut deine KI daraus die echte Sei
 ## So gehst du vor
 
 1. Deine KI prüft, dass dein Entwurf zum Bauen freigegeben ist, und legt das Logbuch auf deinem Computer an.
-2. Den ersten Eintrag machst du mit: Deine KI zeigt dir, was hineinkommt, und du tippst den Befehl `git commit` selbst. Im Modus lernen gehört das dazu.
+2. Den ersten Eintrag machst du mit: Deine KI zeigt dir, was hineinkommt, und wenn du willst, tippst du den Befehl `git commit` selbst. Im Modus lernen gehört das dazu.
 3. Sie schreibt die Bauweise und den Bauplan (PRD) aus deinem Entwurf und schlägt vor, welche Adressen ohne Anmeldung offen sind. Du bestätigst beides in einer Nachricht.
 4. Sie baut die Seite und prüft sie in vier Bereichen. Die Berichte mit Ampel zeigt sie dir.
 5. Jeder geschaffte Schritt bekommt einen Eintrag im Logbuch.

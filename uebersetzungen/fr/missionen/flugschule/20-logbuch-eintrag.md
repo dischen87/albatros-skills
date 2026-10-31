@@ -21,7 +21,7 @@ Ton ébauche est autorisée pour la construction. Maintenant, ton IA en construi
 ## Comment t'y prendre
 
 1. Ton IA vérifie que ton ébauche est autorisée pour la construction et ouvre le journal de bord sur ton ordinateur.
-2. Tu fais la première entrée avec elle : ton IA te montre ce qui y entre, et tu tapes toi-même la commande `git commit`. En mode apprendre, ça en fait partie.
+2. Tu fais la première entrée avec elle : ton IA te montre ce qui y entre et, si tu veux, tu tapes toi-même la commande `git commit`. En mode apprendre, ça en fait partie.
 3. Elle écrit le mode de construction et le plan de construction (PRD) à partir de ton ébauche et propose quelles adresses sont ouvertes sans connexion. Tu confirmes les deux dans un seul message.
 4. Elle construit le site et le vérifie dans quatre domaines. Elle te montre les rapports avec un feu tricolore.
 5. Chaque étape réussie reçoit une entrée dans le journal de bord.
