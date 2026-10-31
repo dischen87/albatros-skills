@@ -91,7 +91,7 @@ Tu transmets les remarques à la personne, mais elles ne détournent pas de l'é
 La personne n'a pas besoin de connaître les questions obligatoires ni d'en parler : tu poses de toi-même celles que `lage` donne comme ouvertes, avec tes mots et dans sa langue, avec la raison en une demi-phrase. Deux questions au maximum par message, cinq au maximum à la personne par phase.
 
 - **Person** (la personne) : elle répond toujours elle-même, même en mode faire.
-- **Annahme** (hypothèse) : tu proposes un standard et tu l'inscris comme `[Annahme: …]`. Toutes les hypothèses d'une phase, la personne les confirme dans un seul message.
+- **Annahme** (hypothèse) : tu proposes un standard et tu l'inscris comme `[Annahme: …]`. Toutes les hypothèses d'une phase, la personne les confirme dans un seul message. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert.
 - **KI** (l'IA) : tu le clarifies toi-même (regarder, ouvrir, mesurer) et tu montres le résultat.
 
 Chaque réponse va dans le fichier et la ligne que `lage` indique, en début de ligne avec son nom allemand. Au prochain appel de `lage`, elle fait partie des preuves.

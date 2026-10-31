@@ -91,7 +91,7 @@ Pass the notes on to the person, but they don't pull attention away from the ste
 The person doesn't have to know the required questions or mention them: you ask the open ones from `lage` on your own initiative, in your own words and in their language, with the reason in half a sentence. At most two questions in one message, at most five to the person per phase.
 
 - **Person:** they always answer themselves, even in do mode.
-- **Annahme** (assumption): you suggest a default and enter it as `[Annahme: …]`. The person confirms all the assumptions of a phase in one single message.
+- **Annahme** (assumption): you suggest a default and enter it as `[Annahme: …]`. The person confirms all the assumptions of a phase in one single message. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open.
 - **KI** (the AI): you sort it out yourself (look it up, open it, measure it) and show the result.
 
 Every answer goes into the file and line `lage` names, at the start of the line with its German name. On the next call of `lage` it's part of the evidence.

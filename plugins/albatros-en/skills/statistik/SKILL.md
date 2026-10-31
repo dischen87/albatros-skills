@@ -18,7 +18,7 @@ That's exactly how your website's statistics should work: a few clearly named ti
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”, no jargon. “Event” only after the picture of the tally sheet.
 - Data protection isn't an add-on. Every setting that stores more about people needs a reason and a sentence in the privacy policy (skill `recht-ch`).
 - The person creates the PostHog account themselves in the browser. They may give you the project key (starts with `phc_`): it's meant for the website and is public. Personal API keys (`phx_`) never belong in the code.

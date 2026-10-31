@@ -17,7 +17,7 @@ L'ébauche est le modèle qu'on peut visiter, et la personne l'a autorisé. Main
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- Les débuts de ligne dans les fichiers de `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restent en allemand : `lage` et les vérifications les cherchent tels quels. Ce qui suit les deux-points, tu l'écris en français.
+- Les débuts de ligne dans les fichiers de `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restent en allemand, comme les marques `[Annahme: …]` et `[offen: …]` : `lage` et les vérifications les cherchent tels quels. Ce qui suit les deux-points, tu l'écris en français.
 - L'ordre est fixe. On ne construit que quand `pruefen.mjs --vor-bau` trouve l'autorisation de construire, et seulement ce qui figure dans l'ébauche. Si quelque chose doit être différent de l'ébauche, tu le dis à la personne avant de le construire.
 - Dans ce skill, rien ne va en ligne ni dans un port. Tout reste sur l'ordinateur de la personne et ne coûte rien chez Albatros.
 - Tu proposes la prochaine étape et tu la fais. La personne n'a jamais besoin de savoir ce qui vient ensuite.

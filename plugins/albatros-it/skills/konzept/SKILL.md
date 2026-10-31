@@ -26,8 +26,8 @@ Fase P5 «Concetto di design e di marketing». Tocca a questa fase dopo il piano
 
 - Gli strumenti di Albatros rispondono in tedesco: tu riporti tutto in italiano e con la persona parli sempre italiano.
 - Del tu, frasi brevi, niente gergo tecnico. Ciò che la persona ha già detto (in `docs/projekt.md`, nel piano o nella conversazione) non lo richiedi: glielo rileggi e lo inserisci.
-- Al massimo due domande per messaggio. A cinque domande risponde solo la persona: nome, tono, carattere, personaggio e ciò che deve restare. Nucleo e linguaggio visivo li proponi tu e li inserisci come `[Ipotesi: …]`; la persona conferma tutte le ipotesi in un unico messaggio.
-- Ciò che la persona non ha detto compare come `[aperto: …]`, mai come una tua invenzione.
+- Al massimo due domande per messaggio. A cinque domande risponde solo la persona: nome, tono, carattere, personaggio e ciò che deve restare. Nucleo e linguaggio visivo li proponi tu e li inserisci come `[Annahme: …]` (ipotesi); la persona conferma tutte le ipotesi in un unico messaggio.
+- Ciò che la persona non ha detto compare come `[offen: …]` (aperto), mai come una tua invenzione. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto.
 - Il gusto lo decide la persona. Tu aiuti con coppie di opposti ed esempi, non con i colori preferiti.
 - Le immagini fatte con gli strumenti di immagini di Albatros costano credito: prima il prezzo, poi solo dopo il suo sì (sezione «Il personaggio»).
 
@@ -66,13 +66,13 @@ Questa domanda la fai sempre, anche se la persona non ne parla, in un messaggio 
 
 «Ci deve essere un personaggio che guida attraverso il tuo sito? Sì, no o più tardi.»
 
-Con il motivo in una frase: un personaggio rende un sito inconfondibile, ma va curato in ogni immagine. Non proponi una risposta, decide la persona. Finché non risponde, in `docs/konzept.md` c'è `Maskottchen: [aperto: domanda fatta il <GG.MM.AAAA>]`.
+Con il motivo in una frase: un personaggio rende un sito inconfondibile, ma va curato in ogni immagine. Non proponi una risposta, decide la persona. Finché non risponde, in `docs/konzept.md` c'è `Maskottchen: [offen: domanda fatta il <GG.MM.AAAA>]`.
 
 Con «sì» si continua con la sezione «Il personaggio». Con «no» o «più tardi» basta la riga. «Più tardi» vuol dire: il sito funziona senza personaggio, e la domanda torna dopo la messa online.
 
 ### 5. Nucleo e linguaggio visivo come proposta
 
-Da ciò che la persona ha detto proponi entrambi e li inserisci come `[Ipotesi: …]`:
+Da ciò che la persona ha detto proponi entrambi e li inserisci come `[Annahme: …]`:
 
 - **Nucleo** in tre frasi: per chi? Che cosa prometti (un risultato, non un aggettivo)? Perché proprio tu (con una prova)? Il nucleo è il metro per ogni testo e ogni immagine.
 - **Linguaggio visivo:** foto, illustrazioni, icone o un misto. Un sito senza immagini sembra un modello già pronto. Foto vere del luogo e delle persone battono qualsiasi immagine generata. Se ci sono foto, scrivi subito una breve lista di foto in `docs/inhalte.md` (sezione «Lista delle foto»: che cosa, dove, chi c'è sopra): le foto richiedono tempo, così la persona può già cominciare.

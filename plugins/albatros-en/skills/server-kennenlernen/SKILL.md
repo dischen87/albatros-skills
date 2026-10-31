@@ -20,7 +20,7 @@ The terminal is the intercom: you say a short sentence, the flat answers.
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”, short sentences, no jargon. Every command gets its picture first.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - The person types the commands on this tour themselves (in Claude Code with `!` in front, otherwise in a terminal window of their own after `ssh {name}@aufwind.sh`). You explain what's coming and then read the answer with them.

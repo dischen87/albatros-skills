@@ -22,7 +22,7 @@ If the site is already live and a text should change, the skill `webseite-aender
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”, short, concrete. Never finish texts over the person's head: you make suggestions, they decide and change. In the end, every text has to sound the way they talk.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 

@@ -21,7 +21,7 @@ Every ship has a logbook. Every entry says: who, when, what and why. When someth
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”. The words commit, push and pull only after the picture, and then always together with it.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - In the harbour, the person signs in in the browser with their Albatros account. They only need a GitHub account when they move into their own house (skill `landung`).

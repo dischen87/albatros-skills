@@ -20,7 +20,7 @@ Anyone who never moved in with Albatros builds straight on their own plot: the b
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”. Be honest about the effort: an own server often saves money, but costs time for upkeep.
 - The person rents and pays for the server themselves with the provider.
 - The old home only gets switched off once the new one is proven to work.

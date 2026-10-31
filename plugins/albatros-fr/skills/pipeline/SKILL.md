@@ -23,7 +23,7 @@ Chez toi, le tapis démarre dès que tu envoies une entrée au port (skill `git-
 ## Comment tu parles
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
-- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon, avec les hypothèses marquées (`[Hypothèse : …]`). Ne demande ce qui manque qu'à la fin.
+- **Ne pas seulement poser des questions :** s'il manque le projet ou une information, donne quand même les étapes concrètes ou écris le fichier comme brouillon, avec les hypothèses marquées `[Annahme: …]`. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert. Ne demande ce qui manque qu'à la fin.
 - Tutoiement. Parcours le fichier du workflow avec la personne, poste par poste, avant qu'il ne tourne.
 - Le tapis roulant n'a besoin ni de clé ni de secret de la personne : l'ouvrier habite déjà sur son serveur. Sa clé de la maison n'a jamais sa place dans le tapis roulant.
 - Si le tapis est rouge : corriger la cause, ne jamais désactiver le contrôle.

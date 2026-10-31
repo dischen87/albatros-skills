@@ -91,7 +91,7 @@ Gli avvisi li dici alla persona, ma non la distraggono dal passo che tocca adess
 La persona non deve conoscere le domande obbligatorie né nominarle: quelle che `lage` dà come aperte le fai tu di tua iniziativa, con parole tue e nella sua lingua, con il motivo in mezza frase. Al massimo due domande per messaggio, al massimo cinque alla persona per fase.
 
 - **Person** (la persona): risponde sempre lei, anche nel modo fare.
-- **Annahme** (ipotesi): proponi uno standard e lo scrivi come `[Annahme: …]`. Tutte le ipotesi di una fase la persona le conferma in un solo messaggio.
+- **Annahme** (ipotesi): proponi uno standard e lo scrivi come `[Annahme: …]`. Tutte le ipotesi di una fase la persona le conferma in un solo messaggio. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto.
 - **KI** (l'IA): lo chiarisci da te (guardare, aprire, misurare) e mostri il risultato.
 
 Ogni risposta va nel file e nella riga che indica `lage`, a inizio riga con il suo nome tedesco. Alla prossima chiamata di `lage` fa parte delle prove.

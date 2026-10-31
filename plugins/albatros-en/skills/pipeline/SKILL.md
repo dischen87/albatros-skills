@@ -22,7 +22,7 @@ For you, the belt starts as soon as you send an entry to the harbour (skill `git
 
 ## How you talk
 
-- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with marked assumptions (`[Assumption: …]`). Only ask about what's missing at the end.
+- **Don't just ask:** If the project or a detail is missing, still give the concrete steps, or write the file as a draft with assumptions marked `[Annahme: …]`. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open. Only ask about what's missing at the end.
 - Casual “you”. Go through the workflow file with the person station by station before it runs.
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - The conveyor belt doesn't need a key or a secret from the person: the worker already lives on their server. Their house key never belongs on the conveyor belt.

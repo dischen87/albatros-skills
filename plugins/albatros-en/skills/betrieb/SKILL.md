@@ -17,7 +17,7 @@ Before the first guests arrive, the letterbox is up, and someone empties it. The
 ## How you talk
 
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
-- The line starts in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) stay German: `lage` looks for them exactly like that. What comes after the colon you write in English.
+- The line starts in `docs/betrieb.md` (`Rückmeldungen:`, `Überwachung:`, `Sicherung:`, `Eingang:`, `Statistik:`) stay German, like the markers `[Annahme: …]` and `[offen: …]`: `lage` looks for them exactly like that. What comes after the colon you write in English.
 - Casual “you”, calm, concrete. Every answer becomes a line in `docs/betrieb.md`.
 - Feedback, entrance and statistics are the person's own decisions, in `machen` mode too. Monitoring you suggest and write down as `[Annahme: …]` (assumption). The backup you work out yourself and show. At most two questions per message.
 - You only name prices and terms of outside services from their pricing page. Accounts with outside services are created by the person themselves.

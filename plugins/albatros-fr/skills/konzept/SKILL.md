@@ -26,8 +26,8 @@ Phase P5 « Concept de design et de marketing ». C'est le tour de cette phase a
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
 - Tutoiement, phrases courtes, pas de jargon. Ce que la personne a déjà dit (dans `docs/projekt.md`, dans le plan ou dans la conversation), tu ne le redemandes pas : tu le lui relis et tu l'inscris.
-- Au plus deux questions par message. Cinq questions, seule la personne y répond : le nom, le ton, le caractère, le personnage et ce qui doit rester. Le cœur et le langage visuel, tu les proposes et tu les inscris comme `[Hypothèse : …]` ; la personne confirme toutes les hypothèses en un seul message.
-- Ce que la personne n'a pas dit figure comme `[ouvert : …]`, jamais comme ton invention.
+- Au plus deux questions par message. Cinq questions, seule la personne y répond : le nom, le ton, le caractère, le personnage et ce qui doit rester. Le cœur et le langage visuel, tu les proposes et tu les inscris comme `[Annahme: …]` (hypothèse) ; la personne confirme toutes les hypothèses en un seul message.
+- Ce que la personne n'a pas dit figure comme `[offen: …]` (ouvert), jamais comme ton invention. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert.
 - Les goûts, c'est la personne qui décide. Tu aides avec des paires d'opposés et des exemples, pas avec des couleurs préférées.
 - Les images faites avec les outils d'images d'Albatros coûtent du crédit : d'abord le prix, puis seulement après son oui (section « Le personnage »).
 
@@ -66,13 +66,13 @@ Cette question, tu la poses toujours, même si la personne n'en parle pas, dans 
 
 « Un personnage doit-il en faire partie, qui guide à travers ton site ? Oui, non ou plus tard. »
 
-Avec la raison en une phrase : un personnage rend un site unique, mais demande du soin dans chaque image. Tu ne proposes pas de réponse, c'est la personne qui décide. Tant qu'elle n'a pas répondu, `docs/konzept.md` contient `Maskottchen: [ouvert : question posée le <JJ.MM.AAAA>]`.
+Avec la raison en une phrase : un personnage rend un site unique, mais demande du soin dans chaque image. Tu ne proposes pas de réponse, c'est la personne qui décide. Tant qu'elle n'a pas répondu, `docs/konzept.md` contient `Maskottchen: [offen: question posée le <JJ.MM.AAAA>]`.
 
 Pour « oui », on continue avec la section « Le personnage ». Pour « non » ou « plus tard », la ligne suffit. « Plus tard » veut dire : le site fonctionne sans personnage, et la question revient après la mise en ligne.
 
 ### 5. Le cœur et le langage visuel comme proposition
 
-À partir de ce que la personne a dit, tu proposes les deux et tu les inscris comme `[Hypothèse : …]` :
+À partir de ce que la personne a dit, tu proposes les deux et tu les inscris comme `[Annahme: …]` :
 
 - **Le cœur** en trois phrases : pour qui ? Que promets-tu (un résultat, pas un adjectif) ? Pourquoi toi justement (avec une preuve) ? Le cœur est la mesure de chaque texte et de chaque image.
 - **Le langage visuel :** photos, illustrations, icônes ou un mélange. Un site sans images ressemble à un modèle tout fait. De vraies photos du lieu et des gens battent n'importe quelle image générée. S'il y a des photos, tu écris tout de suite une courte liste de photos dans `docs/inhalte.md` (section « Liste de photos » : quoi, où, qui est dessus) : les photos prennent du temps, la personne peut ainsi déjà commencer.
