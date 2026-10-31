@@ -9,7 +9,7 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 | `eingang.ts` | der Dienst (Bun, ohne Pakete) |
 | `eingang.json` | die Teile: Name, Ziel im internen Netz, Pfade, Zugang |
 | `pb_hooks/eingang.pb.js`, `pb_hooks/eingang.js` | Anmelden mit Cookie in PocketBase: `POST /api/eingang/anmelden`, `POST /api/eingang/abmelden`, `GET /api/eingang/pruefen` |
-| `pb_migrations/2_eingang.js` | Grenze für das Anmelden: 5 Versuche je Adresse in 60 Sekunden |
+| `pb_migrations/2_eingang.js` | Grenze für das Anmelden: 5 Versuche je Adresse in 60 Sekunden, über den Eingang und über `auth-with-password` |
 | `Dockerfile`, `compose.yaml` | Container `eingang` auf Port 80 (Ausschnitt für `include:`) |
 | `test.ts` | 34 Prüfungen gegen ein echtes PocketBase und Teile zum Schein: `bun bausteine/eingang/test.ts` |
 | `messen.ts` | Arbeitsspeicher und Antwortzeiten: `bun bausteine/eingang/messen.ts --anfragen 200000 --smol` |
@@ -54,7 +54,7 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 - Schreiben (alles ausser GET, HEAD, OPTIONS) aus einer fremden Seite: 403. Eigen ist ein `Origin` gleich der Adresse der Anfrage (Schema aus `ursprung`, Host von der Kante) oder einer aus `ursprung`. Mit Cookie nur mit eigenem `Origin` (fehlt er, 403). PocketBase prüft dasselbe noch einmal (zweite Schicht).
 - Geschützter Teil ohne Anmeldung: 401, im Browser eine kleine Seite mit dem Weg zur Anmeldung; falsche Rolle: 403. Antwortet PocketBase nicht innert 2 s: 503.
 - Hinter dem Login `Cache-Control: no-store`, `Vary: Cookie` und `X-Frame-Options: SAMEORIGIN`; überall `X-Content-Type-Options: nosniff`.
-- Grenzen je Adresse (IPv6 je /64): 600 Anfragen je Minute (`ANFRAGEN_PRO_MINUTE`), 10 Anmeldungen je Minute, dazu 5 Anmeldeversuche je Minute in PocketBase; Kopfzeilen bis 8 KB (sonst 431), Körper bis 10 MB (sonst 413, auch in Stücken). Die Adresse ist die der Verbindung, ausser sie steht in `VERTRAUTE_PROXYS` (Adressen oder Netze wie `10.0.0.0/8`); `*` heisst: Jede Verbindung kommt über einen Proxy, der `X-Forwarded-For` neu setzt. Auf einem Albatros-Server ist das die Kante (nur sie erreicht Port 80), darum steht in `compose.yaml` `*`.
+- Grenzen je Adresse (IPv6 je /64): 600 Anfragen je Minute (`ANFRAGEN_PRO_MINUTE`), 10 Anmeldeversuche je Minute (über den Eingang und über `auth-with-*` von PocketBase zusammen), dazu 5 je Minute und Adresse in PocketBase (`/api/eingang/anmelden` und `users:auth`); Kopfzeilen bis 8 KB (sonst 431), Körper bis 10 MB (sonst 413, auch in Stücken). Die Adresse ist die der Verbindung, ausser sie steht in `VERTRAUTE_PROXYS` (Adressen oder Netze wie `10.0.0.0/8`); `*` heisst: Jede Verbindung kommt über einen Proxy, der `X-Forwarded-For` neu setzt. Auf einem Albatros-Server ist das die Kante (nur sie erreicht Port 80), darum steht in `compose.yaml` `*`.
 - Protokolliert je Anfrage eine JSON-Zeile mit Zeit, Methode, Pfad ohne Kennungen (`/api/collections/mitteilungen/records/:id`), Teil, Status und Dauer. Nie Cookie, Token, Abfrage, Kopfzeilen oder Adressen.
 
 Das Cookie `__Host-sitzung` ist `HttpOnly`, `Secure`, `SameSite=Lax`, `Path=/`, ohne `Domain`, und gilt so lange wie das Token (5 Tage). Skripte im Browser lesen es nicht, und `auth-refresh` gilt mit ihm nicht, damit das Token nie in einer Antwort steht.

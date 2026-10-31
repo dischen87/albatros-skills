@@ -182,6 +182,16 @@ try {
   const e4 = await starten(konfig(`http://127.0.0.1:${pbPort}`), { VERTRAUTE_PROXYS: '127.0.0.1' });
   let nummer = 0;
   const neu = () => `192.0.2.${++nummer}`;
+  // Passwort raten über auth-with-password (der Weg ist durch den offenen Teil pocketbase erreichbar): dieselbe Grenze wie beim Anmelden
+  // über den Eingang, 5 Versuche je Adresse in 60 Sekunden. Langsamer als die Grenze *:auth von PocketBase (2 in 3 s), läuft nebenher.
+  const ratenLangsam = (async () => {
+    const r: number[] = [];
+    for (let i = 0; i < 6; i++) {
+      if (i) await Bun.sleep(1600);
+      r.push((await e4.holen('/api/collections/users/auth-with-password', { methode: 'POST', kopf: { ...json, 'x-forwarded-for': '198.51.100.60' }, koerper: JSON.stringify({ identity: 'anna@example.com', password: `falsch-${i}` }) })).status);
+    }
+    return r;
+  })();
   const suId = (await admin('GET', '/collections/_superusers')).id as string;
   const suKoerper = JSON.stringify({ identity: 'test@example.com', password: passwort });
   const schreibweisen = ['_SUPERUSERS', '_Superusers', suId, '_%C5%BFuperusers', '_MFAS'];
@@ -228,6 +238,13 @@ try {
   pruefe(domain.map((r) => r.status).join() === '204,204,200,204' && (domain[0]!.headers.get('set-cookie') ?? '').startsWith('__Host-sitzung=ey') && nichtDomain.every((r) => r.status === 403),
     `Über die eigene Domain (Host und Origin gleich): anmelden, Anfrage stellen, Passwort vergessen gehen (${domain.map((r) => r.status)}); fremder Ursprung, anderer Host oder http: 403 (${nichtDomain.map((r) => r.status)})`);
 
+  // Raten aus einem IPv6-Netz: PocketBase zählt je Adresse, der Eingang je /64, auch über auth-with-password
+  const netz64 = await Promise.all(Array.from({ length: 12 }, (_, i) => e4.holen('/api/collections/users/auth-with-password',
+    { methode: 'POST', kopf: { ...json, 'x-forwarded-for': `2001:db8:5:5::${(i + 1).toString(16)}` }, koerper: JSON.stringify({ identity: 'anna@example.com', password: `falsch-${i}` }) })));
+  const zaehlung = (r: Response[]) => Object.entries(r.reduce<Record<number, number>>((z, x) => ({ ...z, [x.status]: (z[x.status] ?? 0) + 1 }), {})).map(([s, n]) => `${n}×${s}`).join(' ');
+  pruefe(netz64.filter((r) => r.status === 400).length === 10 && netz64.filter((r) => r.status === 429).length === 2,
+    `Raten über auth-with-password aus 12 Adressen eines /64: der Eingang lässt 10 je Minute durch, dann 429 (${zaehlung(netz64)})`);
+
   // Pfade mit Tricks: entschieden wird auf dem aufgelösten Pfad
   const tricks: [string, number][] = [['GET /verein/../api/settings', 404], ['GET /verein/../intern/seite.html', 401], ['GET /verein/%2e%2e/intern/seite.html', 401], ['GET /intern%2fseite.html', 400],
     ['GET /intern/seite%2ehtml', 400], ['GET //api/settings', 400], ['GET /verein/..%5c..%5capi/settings', 400], ['GET /intern/%00', 400], ['GET /intern/%zz', 400], ['GET /Intern/seite.html', 200]];
@@ -258,6 +275,9 @@ try {
   for (let i = 0; i < 6; i++) versuche.push((await e2.holen('/api/eingang/anmelden', { methode: 'POST', kopf: { ...json, 'x-forwarded-for': '198.51.100.50' }, koerper: JSON.stringify({ email: 'anna@example.com', passwort: `falsch-${i}` }) })).status);
   pruefe(versuche.join() === '400,400,400,400,400,429', `Passwörter durchprobieren: nach 5 Fehlversuchen je Adresse 429 (${versuche.join()})`);
 
+  const langsam = await ratenLangsam;
+  pruefe(langsam.join() === '400,400,400,400,400,429', `Passwörter durchprobieren über auth-with-password: nach 5 Fehlversuchen je Adresse 429, auch langsam (${langsam.join()})`);
+
   // PocketBase antwortet nicht
   const e3 = await starten(konfig(`http://127.0.0.1:${haengt.port}`));
   const t0 = performance.now();
@@ -277,8 +297,10 @@ try {
   const alle = [...e1.zeilen, ...e2.zeilen, ...e3.zeilen].join('\n');
   pruefe(zeilen.length > 40 && zeilen.every((z) => { try { const j = JSON.parse(z); return j.methode && j.pfad && j.teil && j.status && typeof j.ms === 'number'; } catch { return false; } }),
     `Protokoll: eine JSON-Zeile je Anfrage mit Methode, Pfad, Teil, Status und Dauer (${zeilen.length} Zeilen)`);
-  pruefe(![wert.slice(10, 40), 'geheim', 'cookie', 'authorization', 'x-eingang', '127.0.0.1', '203.0.113', '198.51.100', ADRESSE, anna.id].some((x) => alle.includes(x)),
-    'Protokoll ohne Cookie, Token, Passwort, Abfrage, Kopfzeilen, Adressen und Record-IDs');
+  const verboten: [string, string][] = [['Token', wert.slice(10, 40)], ['Passwort', 'geheim'], ['Cookie', 'cookie'], ['Authorization', 'authorization'], ['Kopf', 'x-eingang'],
+    ['Adresse', '127.0.0.1'], ['Adresse', '203.0.113'], ['Adresse', '198.51.100'], ['Host', ADRESSE], ['Record-ID', anna.id]];
+  const gefunden = verboten.filter(([, x]) => alle.includes(x)).map(([n]) => n);
+  pruefe(!gefunden.length, `Protokoll ohne Cookie, Token, Passwort, Abfrage, Kopfzeilen, Adressen und Record-IDs${gefunden.length ? ` (gefunden: ${gefunden.join(', ')})` : ''}`);
 
   // eingang.json mit Fehlern: Der Eingang startet nicht und sagt, was fehlt
   const kaputt = await Promise.all([{ ...konfig(ziel), teile: teile(ziel).slice(1) }, { ...konfig(ziel), ursprung: 'https://NAME.aufwind.sh' }, { ...konfig(ziel), teile: [...teile(ziel), { name: 'doppelt', ziel, pfade: ['/intern/'], zugang: 'offen' }] }]

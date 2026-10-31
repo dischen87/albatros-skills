@@ -15,12 +15,14 @@ export const GRENZEN = {
   kopfBytes: 8 * 1024,              // alle Kopfzeilen zusammen (Bun selbst lehnt ab 16 KB ab)
   koerperBytes: 10 * 1024 * 1024,   // wie client_max_body_size in pocketbase/nginx.conf
   anfragenProMinute: 600,           // je Adresse; eine Seite mit Bildern braucht 20 bis 40 Anfragen
-  anmeldenProMinute: 10,            // je Adresse; PocketBase selbst erlaubt 5 in 60 Sekunden (pb_migrations/2_eingang.js)
+  anmeldenProMinute: 10,            // je Adresse, über den Eingang und auth-with-* zusammen; PocketBase selbst erlaubt 5 in 60 Sekunden (pb_migrations/2_eingang.js)
   pocketbaseMs: 2000,               // so lange darf die Prüfung der Anmeldung dauern, sonst 503
   teilMs: 60_000,                   // so lange darf ein Teil bis zur Antwort brauchen, sonst 504
 };
 // Verwaltung und Interna von PocketBase sind von aussen nie erreichbar (404), dazu jede Punktdatei ausser /.well-known/
 const VERWALTUNG = ['/_', '/admin', '/api/collections/_superusers', '/api/settings', '/api/backups', '/api/logs', '/api/crons', '/api/collections/meta'];
+// Anmeldeversuche zählen zusätzlich (anmeldenProMinute), über den Eingang und die Wege von PocketBase (auth-with-password, -otp, -oauth2)
+const ANMELDEN = /^\/api\/(eingang\/anmelden$|collections\/[^/]+\/auth-with-)/;
 const HOP = new Set(['connection', 'keep-alive', 'proxy-connection', 'transfer-encoding', 'te', 'trailer', 'upgrade', 'proxy-authorization', 'proxy-authenticate', 'host', 'content-length']);
 const NAME = /^[a-z0-9][a-z0-9-]{0,31}$/;
 
@@ -248,7 +250,7 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     const wer = adresse(verbindung, req.headers.get('x-forwarded-for'), vertraut!);
     const url = new URL(req.url);
     const pfad = pfadVon(url.pathname);
-    const warten = zaehle(`a:${netzVon(wer)}`, proMinute) || (pfad === '/api/eingang/anmelden' ? zaehle(`m:${netzVon(wer)}`, GRENZEN.anmeldenProMinute) : 0);
+    const warten = zaehle(`a:${netzVon(wer)}`, proMinute) || (pfad !== null && ANMELDEN.test(pfad) ? zaehle(`m:${netzVon(wer)}`, GRENZEN.anmeldenProMinute) : 0);
     if (warten) return { res: json(429, { 'retry-after': String(warten) }), teil: '-', pfad: '-' };
     if (pfad === null) return { res: json(400), teil: '-', pfad: '-' };
     const protokoll = ohneKennungen(pfad);
