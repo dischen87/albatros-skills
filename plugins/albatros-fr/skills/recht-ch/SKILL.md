@@ -3,7 +3,7 @@ name: recht-ch
 description: "Met en ordre sur le plan juridique un petit site web suisse, expliqué à des personnes sans connaissances préalables avec l'image de la plaque de sonnette et du règlement de maison : mentions légales (impressum, art. 3, al. 1, let. s, LCD), déclaration de protection des données selon la LPD révisée (devoir d'informer, art. 19), cookies (art. 45c LTC), connexion avec login (cookie, journaux, délais), quand le RGPD de l'UE s'ajoute, droits sur les images, e-mails publicitaires seulement avec consentement. Pas de conseil juridique. Utilise ce skill pour « impressum », « mentions légales », « protection des données », « déclaration de protection des données », « LPD », « RGPD », « bannière cookies », « est-ce que j'en ai besoin légalement ? », « qu'est-ce qui doit figurer sur mon site ? », « formulaire de contact et protection des données », « connexion et protection des données »."
 metadata:
   stand: 0.2.0
-  quelle: '4dba3685a5f0'
+  quelle: 'e1db985e5990'
 ---
 
 # Droit CH : la plaque de sonnette et le règlement de maison
@@ -35,7 +35,7 @@ Pose ces questions et note les réponses :
 - Où tournent les services ? Serveur Albatros (Allemagne/Finlande, UE), PostHog (UE), envoi d'e-mails, prestataire de paiement (souvent aux États-Unis).
 - Le site s'adresse-t-il aussi à des personnes dans l'UE (livraison, prix en euros, langue) ?
 
-### 2. Mentions légales (`/impressum`)
+### 2. Mentions légales (`/mentions-legales`)
 
 Obligatoires pour toute personne qui propose en ligne des marchandises, des œuvres ou des prestations (art. 3, al. 1, let. s, LCD) : des indications claires et complètes sur l'identité et l'adresse de contact, y compris l'e-mail. Recommandées aussi sans obligation.
 
@@ -44,7 +44,7 @@ Obligatoires pour toute personne qui propose en ligne des marchandises, des œuv
 - Adresse e-mail
 - si disponible : numéro IDE, inscription au registre du commerce, personne responsable
 
-### 3. Déclaration de protection des données (`/datenschutz`)
+### 3. Déclaration de protection des données (`/protection-des-donnees`)
 
 La loi sur la protection des données révisée (LPD, en vigueur depuis le 1er septembre 2023) exige que tu informes quand tu collectes des données personnelles (art. 19 LPD). C'est déjà le cas avec un formulaire de contact ou des statistiques avec adresses IP. Contenu :
 
@@ -57,7 +57,7 @@ La loi sur la protection des données révisée (LPD, en vigueur depuis le 1er s
 
 Si le site s'adresse aussi à des personnes dans l'UE, le RGPD peut s'appliquer en plus (art. 3, par. 2, RGPD). Dans ce cas, indique aussi la base légale pour chaque but.
 
-### 4. Cookies et statistiques
+### 4. Cookies et statistiques (Cookies und Statistik)
 
 - Suisse : qui place des cookies doit informer sur le traitement et son but, et dire comment les refuser (art. 45c LTC). Une mention dans la déclaration de protection des données suffit en général.
 - Public dans l'UE : pour les cookies qui ne sont pas nécessaires (statistiques, publicité), il faut un consentement préalable. Il faut alors une bannière avec un bouton « Refuser » de même valeur.
@@ -83,7 +83,7 @@ Uniquement des images à toi ou sous licence. Des personnes reconnaissables seul
 
 ### 8. Construire et relier les pages
 
-Mentions légales et protection des données comme pages à part, accessibles depuis le pied de chaque page. Une inscription dans le journal de bord (skill `git-logbuch`) ; en ligne, elles vont avec tout le site à la mise en ligne (skill `lancieren`). Note dans `docs/plan.md` : « Vérifier la déclaration de protection des données quand un nouveau service s'ajoute. »
+Mentions légales et protection des données comme pages à part, accessibles depuis le pied de chaque page, sous les adresses `/mentions-legales` et `/protection-des-donnees`, comme dans l'ébauche (skill `entwurf`) ; `pruefen.mjs` les trouve sous ces noms. Une inscription dans le journal de bord (skill `git-logbuch`) ; en ligne, elles vont avec tout le site à la mise en ligne (skill `lancieren`). Note dans `docs/plan.md` : « Vérifier la déclaration de protection des données quand un nouveau service s'ajoute. »
 
 ## Vérifier la mission
 

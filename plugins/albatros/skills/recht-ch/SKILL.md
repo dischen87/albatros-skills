@@ -81,7 +81,7 @@ Nur eigene oder lizenzierte Bilder. Erkennbare Personen nur mit Einverständnis.
 
 ### 8. Seiten bauen und verlinken
 
-Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar. Ein Eintrag ins Logbuch (Skill `git-logbuch`); ins Netz kommen sie mit der ganzen Seite beim Live schalten (Skill `lancieren`). In `docs/plan.md` notieren: «Datenschutzerklärung prüfen, wenn ein neuer Dienst dazukommt.»
+Impressum und Datenschutz als eigene Seiten, von jeder Seite im Fuss erreichbar, unter `/impressum` und `/datenschutz`, wie im Entwurf (Skill `entwurf`); `pruefen.mjs` findet sie unter diesen Namen. Ein Eintrag ins Logbuch (Skill `git-logbuch`); ins Netz kommen sie mit der ganzen Seite beim Live schalten (Skill `lancieren`). In `docs/plan.md` notieren: «Datenschutzerklärung prüfen, wenn ein neuer Dienst dazukommt.»
 
 ## Mission prüfen
 

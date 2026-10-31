@@ -3,7 +3,7 @@ name: recht-ch
 description: "Gets a small Swiss website legally in order, explained for people with no prior knowledge with the picture of the doorbell nameplate and house rules: legal notice (Impressum, UWG Art. 3 para. 1 let. s), privacy policy under the revised Swiss data protection act revDSG (duty to inform, Art. 19), cookies (Art. 45c FMG), logins (cookie, logs, retention), when the EU's GDPR comes in as well, picture rights, marketing emails only with consent. Not legal advice. Use this skill for “Impressum”, “legal notice”, “data protection”, “privacy policy”, “DSG”, “GDPR”, “DSGVO”, “cookie banner”, “do I legally need this”, “what has to be on my website”, “contact form and data protection”, “login and data protection”."
 metadata:
   stand: 0.2.0
-  quelle: '4dba3685a5f0'
+  quelle: 'e1db985e5990'
 ---
 
 # Swiss law: doorbell nameplate and house rules
@@ -35,7 +35,7 @@ Ask and write it down:
 - Where do the services run? Albatros server (Germany/Finland, EU), PostHog (EU), email sending, payment provider (often USA).
 - Is the site also aimed at people in the EU (delivery, prices in euros, language)?
 
-### 2. Legal notice (`/impressum`)
+### 2. Legal notice (`/legal-notice`)
 
 Mandatory for anyone offering goods, works or services online (UWG, the Swiss Unfair Competition Act, Art. 3 para. 1 let. s): clear and complete details of identity and contact address, including email. Recommended even when it isn't mandatory.
 
@@ -44,9 +44,7 @@ Mandatory for anyone offering goods, works or services online (UWG, the Swiss Un
 - Email address
 - if there is one: UID number (Swiss business identification number), Handelsregister entry, responsible person
 
-Keep the page addresses `/impressum` and `/datenschutz` as they are, even on an English site: the mission check looks for exactly these.
-
-### 3. Privacy policy (`/datenschutz`)
+### 3. Privacy policy (`/privacy`)
 
 The revised Data Protection Act (revDSG, the Swiss Federal Act on Data Protection, in force since 1 September 2023) requires you to inform people when you collect personal data (Art. 19). That already happens with a contact form or with statistics that use IP addresses. Contents:
 
@@ -59,7 +57,7 @@ The revised Data Protection Act (revDSG, the Swiss Federal Act on Data Protectio
 
 If the site is also aimed at people in the EU, the GDPR (General Data Protection Regulation, in German DSGVO) may apply as well (Art. 3(2) GDPR). Then also name the legal basis for each purpose.
 
-### 4. Cookies and statistics
+### 4. Cookies and statistics (Cookies und Statistik)
 
 - Switzerland: anyone who sets cookies has to inform people about the processing and its purpose, and say how to refuse them (Art. 45c FMG, the Swiss Telecommunications Act). A note in the privacy policy is usually enough for that.
 - EU audience: cookies that aren't necessary (statistics, advertising) need consent beforehand. Then a banner with an equally easy “Reject”.
@@ -85,7 +83,7 @@ Only your own or licensed pictures. Recognisable people only with their permissi
 
 ### 8. Build and link the pages
 
-Legal notice and privacy policy as pages of their own, reachable from the footer of every page. A logbook entry (skill `git-logbuch`); they go online with the whole site when going live (skill `lancieren`). Note in `docs/plan.md`: “Check the privacy policy whenever a new service is added.”
+Legal notice and privacy policy as pages of their own, reachable from the footer of every page, at `/legal-notice` and `/privacy`, as in the draft (skill `entwurf`); `pruefen.mjs` finds them under these names. A logbook entry (skill `git-logbuch`); they go online with the whole site when going live (skill `lancieren`). Note in `docs/plan.md`: “Check the privacy policy whenever a new service is added.”
 
 ## Check the mission
 

@@ -3,7 +3,7 @@ name: recht-ch
 description: "Mette in regola dal punto di vista legale un piccolo sito web svizzero, spiegato a persone senza conoscenze tecniche con l'immagine della targhetta del campanello e del regolamento della casa: impressum (art. 3 cpv. 1 lett. s LCSl), dichiarazione sulla protezione dei dati secondo la nLPD (obbligo d'informare, art. 19), cookie (art. 45c LTC), accesso con login (cookie, registri, termini), quando si aggiunge il RGPD (GDPR) dell'UE, diritti sulle immagini, e-mail pubblicitarie solo con consenso. Non è una consulenza legale. Usa lo skill con «impressum», «protezione dei dati», «privacy», «dichiarazione sulla protezione dei dati», «informativa sulla privacy», «LPD», «nLPD», «GDPR», «banner dei cookie», «mi serve per legge?», «cosa deve esserci sul mio sito», «modulo di contatto e privacy», «login e privacy»."
 metadata:
   stand: 0.2.0
-  quelle: '4dba3685a5f0'
+  quelle: 'e1db985e5990'
 ---
 
 # Diritto CH: targhetta del campanello e regolamento della casa
@@ -44,7 +44,7 @@ Obbligatorio per tutti quelli che offrono online merci, opere o prestazioni (art
 - Indirizzo e-mail
 - se presenti: numero IDI, iscrizione nel registro di commercio, persona responsabile
 
-### 3. Dichiarazione sulla protezione dei dati (`/datenschutz`)
+### 3. Dichiarazione sulla protezione dei dati (`/protezione-dei-dati`)
 
 La legge sulla protezione dei dati riveduta (nLPD, in vigore dal 1° settembre 2023) chiede che tu informi quando raccogli dati personali (art. 19 LPD). Succede già con un modulo di contatto o con statistiche che registrano gli indirizzi IP. Contenuto:
 
@@ -57,7 +57,7 @@ La legge sulla protezione dei dati riveduta (nLPD, in vigore dal 1° settembre 2
 
 Se il sito si rivolge anche a persone nell'UE, può valere in più il RGPD (GDPR) (art. 3 par. 2 RGPD). Allora indica anche la base giuridica per ogni scopo.
 
-### 4. Cookie e statistiche
+### 4. Cookie e statistiche (Cookies und Statistik)
 
 - Svizzera: chi imposta cookie deve informare sul trattamento e sul suo scopo e dire come rifiutarli (art. 45c LTC). Di solito basta un'indicazione nella dichiarazione sulla protezione dei dati.
 - Pubblico dell'UE: per i cookie non necessari (statistiche, pubblicità) serve prima un consenso. Allora un banner con un «Rifiuta» di pari valore.
@@ -83,11 +83,11 @@ Solo immagini proprie o con licenza. Persone riconoscibili solo con il loro cons
 
 ### 8. Costruire le pagine e collegarle
 
-Impressum e protezione dei dati come pagine a sé, raggiungibili da ogni pagina nel piè di pagina. Una voce nel diario di bordo (skill `git-logbuch`); online vanno con tutto il sito alla messa online (skill `lancieren`). In `docs/plan.md` annota: «Verificare la dichiarazione sulla protezione dei dati quando si aggiunge un nuovo servizio.»
+Impressum e protezione dei dati come pagine a sé, raggiungibili da ogni pagina nel piè di pagina, agli indirizzi `/impressum` e `/protezione-dei-dati`, come nella bozza (skill `entwurf`); `pruefen.mjs` le trova con questi nomi. Una voce nel diario di bordo (skill `git-logbuch`); online vanno con tutto il sito alla messa online (skill `lancieren`). In `docs/plan.md` annota: «Verificare la dichiarazione sulla protezione dei dati quando si aggiunge un nuovo servizio.»
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-07-recht-ch`. La verifica controlla sull'isola se il progetto è almeno al passo «Prüfung» (verifica; skill `webseite-bauen`, passo 5): impressum e protezione dei dati girano sul computer e sono collegati nel piè di ogni pagina. Dall'esterno li controlli tutti e due alla messa online (`pruefen.mjs --live`, skill `lancieren`); gli indirizzi `/impressum` e `/datenschutz` restano così, anche su un sito in italiano.
+`mission_pruefen` con `webseite-07-recht-ch`. La verifica controlla sull'isola se il progetto è almeno al passo «Prüfung» (verifica; skill `webseite-bauen`, passo 5): impressum e protezione dei dati girano sul computer e sono collegati nel piè di ogni pagina. Dall'esterno li controlli tutti e due alla messa online (`pruefen.mjs --live`, skill `lancieren`).
 
 ## Messaggio finale
 
