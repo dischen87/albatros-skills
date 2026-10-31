@@ -16,11 +16,13 @@ export const GRENZEN = {
   koerperBytes: 10 * 1024 * 1024,   // wie client_max_body_size in pocketbase/nginx.conf
   anfragenProMinute: 600,           // je Adresse; eine Seite mit Bildern braucht 20 bis 40 Anfragen
   anmeldenProMinute: 10,            // je Adresse, über den Eingang und auth-with-* zusammen; PocketBase selbst erlaubt 5 in 60 Sekunden (pb_migrations/2_eingang.js)
+  gleichzeitig: 20,                 // offene Anfragen je Adresse, bis die Antwort ganz durch ist, sonst 429 (Bun hält für alle zusammen 256 fetch)
   pocketbaseMs: 2000,               // so lange darf die Prüfung der Anmeldung dauern, sonst 503
-  teilMs: 60_000,                   // so lange darf ein Teil bis zur Antwort brauchen, sonst 504
+  teilMs: 60_000,                   // so lange darf ein Teil bis zur Antwort brauchen, sonst 504 (Bun.serve wartet darum länger, idleTimeout)
 };
-// Verwaltung und Interna von PocketBase sind von aussen nie erreichbar (404), dazu jede Punktdatei ausser /.well-known/
-const VERWALTUNG = ['/_', '/admin', '/api/collections/_superusers', '/api/settings', '/api/backups', '/api/logs', '/api/crons', '/api/collections/meta'];
+// Verwaltung und Interna von PocketBase sind von aussen nie erreichbar (404), dazu jede Punktdatei ausser /.well-known/. Auch die Echtzeit
+// (/api/realtime): Kein Rezept braucht sie, und jede Verbindung bliebe offen und hielte einen der Plätze für alle.
+const VERWALTUNG = ['/_', '/admin', '/api/collections/_superusers', '/api/settings', '/api/backups', '/api/logs', '/api/crons', '/api/collections/meta', '/api/realtime'];
 // Anmeldeversuche zählen zusätzlich (anmeldenProMinute), über den Eingang und die Wege von PocketBase (auth-with-password, -otp, -oauth2)
 const ANMELDEN = /^\/api\/(eingang\/anmelden$|collections\/[^/]+\/auth-with-)/;
 const HOP = new Set(['connection', 'keep-alive', 'proxy-connection', 'transfer-encoding', 'te', 'trailer', 'upgrade', 'proxy-authorization', 'proxy-authenticate', 'host', 'content-length']);
@@ -214,12 +216,30 @@ function seite(status: 401 | 403, anmeldeseite: string, zurueck: string) {
 // 15 Zeichen aus a-z und 0-9, nicht jede hat eine Ziffer.
 const ohneKennungen = (pfad: string) => pfad.split('/').map((s) => (/\d/.test(s) || s.length > 20 || /^[a-z0-9]{15}$/.test(s) ? ':id' : s)).join('/');
 
+// Der Körper geht unverändert durch. Ist er ganz durch, bricht er ab oder bricht die Besucherin ab, wird der Platz frei.
+function durch(koerper: ReadableStream<Uint8Array>, frei: () => void) {
+  const leser = koerper.getReader();
+  return new ReadableStream<Uint8Array>({
+    async pull(c) {
+      try {
+        const { done, value } = await leser.read();
+        if (done) { frei(); c.close(); } else c.enqueue(value);
+      } catch (err) {
+        frei();
+        c.error(err);
+      }
+    },
+    cancel(grund) { frei(); return leser.cancel(grund); },
+  });
+}
+
 export type Optionen = { vertraut?: string; anfragenProMinute?: number; jetzt?: () => number; log?: (zeile: string) => void };
 
 export function eingang(e: Einstellungen, o: Optionen = {}) {
   const vertraut = netze(o.vertraut);
   if (!vertraut) throw new Error('VERTRAUTE_PROXYS: Adressen oder Netze wie 10.0.0.0/8, durch Kommas getrennt, oder *');
   const zaehle = zaehler(o.jetzt ?? Date.now);
+  const laufend = new Map<string, number>(); // offene Anfragen je Adresse (IPv6 je /64); leer, sobald alle durch sind
   const proMinute = o.anfragenProMinute ?? GRENZEN.anfragenProMinute;
   const log = o.log ?? ((z: string) => console.log(z));
   const [hauptUrsprung] = e.urspruenge;
@@ -267,6 +287,34 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     const eigen = origin !== null && (e.urspruenge.has(origin) || origin === `${proto}://${url.host}`);
     if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method) && (origin !== null ? !eigen : cookie !== null)) return { res: json(403), teil: teil.name, pfad: protokoll };
 
+    // Ab hier geht es ins Netz (Prüfung bei PocketBase, der Teil). Je Adresse höchstens GRENZEN.gleichzeitig offene Anfragen, bis die
+    // Antwort ganz durch ist; sonst belegte eine Adresse mit langsamen Anfragen alle Plätze, die Bun für fetch hat, und alle warteten.
+    const netz = netzVon(wer);
+    if ((laufend.get(netz) ?? 0) >= GRENZEN.gleichzeitig) return { res: json(429, { 'retry-after': '5' }), teil: teil.name, pfad: protokoll };
+    const platz = belegen(netz);
+    req.signal.addEventListener('abort', platz.frei, { once: true });
+    try {
+      return await weiterleiten(req, url, wer, teil, pb, cookie, protokoll, platz);
+    } finally {
+      if (!platz.beimKoerper) platz.frei();
+    }
+  }
+
+  // Einen Platz belegen. frei() gibt ihn zurück (mehrmals schadet nicht); beimKoerper: Der Körper der Antwort gibt ihn frei, wenn er durch ist
+  function belegen(netz: string) {
+    laufend.set(netz, (laufend.get(netz) ?? 0) + 1);
+    let zurueck = false;
+    const platz = { beimKoerper: false, frei: () => {
+      if (zurueck) return;
+      zurueck = true;
+      const n = (laufend.get(netz) ?? 1) - 1;
+      if (n > 0) laufend.set(netz, n); else laufend.delete(netz);
+    } };
+    return platz;
+  }
+
+  async function weiterleiten(req: Request, url: URL, wer: string, teil: Teil, pb: boolean, cookie: string | null, protokoll: string,
+    platz: ReturnType<typeof belegen>): Promise<{ res: Response; teil: string; pfad: string }> {
     const authorization = req.headers.get('authorization');
     let angemeldet: { id: string; rolle: string } | null = null;
     if (teil.zugang !== 'offen') {
@@ -325,7 +373,9 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
       aus.append('vary', 'Cookie');
       if (!aus.has('x-frame-options')) aus.set('x-frame-options', 'SAMEORIGIN');
     }
-    return { res: new Response(res.body, { status: res.status, statusText: res.statusText, headers: aus }), teil: teil.name, pfad: protokoll };
+    const koerper = res.body ? durch(res.body, platz.frei) : null;
+    platz.beimKoerper = koerper !== null;
+    return { res: new Response(koerper, { status: res.status, statusText: res.statusText, headers: aus }), teil: teil.name, pfad: protokoll };
   }
 
   // Eine Zeile je Anfrage: Methode, Pfad ohne Kennungen, Teil, Status, Dauer. Nie Cookie, Token, Abfrage, Kopfzeilen oder Adressen.
@@ -356,6 +406,8 @@ if (import.meta.main) {
   const server = Bun.serve({
     port: Number(process.env.PORT ?? 8080),
     maxRequestBodySize: GRENZEN.koerperBytes,
+    // Bun schliesst eine Verbindung sonst nach 10 s ohne Daten, auch wenn ein Teil noch arbeitet: Die eigene Grenze (504) muss zuerst greifen
+    idleTimeout: Math.ceil(GRENZEN.teilMs / 1000) + 5,
     fetch: (req, s) => behandle(req, s.requestIP(req)?.address ?? ''),
   });
   console.log(JSON.stringify({ zeit: new Date().toISOString(), start: true, port: server.port, teile: e.wert.teile.map((t) => `${t.name} ${t.zugang}`) }));

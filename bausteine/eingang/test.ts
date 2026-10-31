@@ -7,6 +7,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } fro
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { einstellen, mailAttrappe, pocketbase, wurzelVon } from '../pocketbase/programm.ts';
+import { GRENZEN } from './eingang.ts';
 
 const hier = import.meta.dir, pb = wurzelVon(join(hier, '..', 'pocketbase'));
 const eingebaut = existsSync(join(pb, 'pb_hooks', 'eingang.pb.js'));
@@ -50,12 +51,29 @@ const teil = Bun.serve({
     return new Response(JSON.stringify({ pfad: u.pathname }), { headers: h });
   },
 });
-const haengt = Bun.serve({ port: 0, fetch: () => new Promise<Response>(() => {}) }); // PocketBase, das nie antwortet
+const haengt = Bun.serve({ hostname: '127.0.0.1', port: 0, fetch: () => new Promise<Response>(() => {}) }); // PocketBase, das nie antwortet
+// Ein Teil, der sich Zeit lässt: /langsam/<Sekunden> antwortet nach so vielen Sekunden, /langsam/halten erst, wenn der Test loslässt
+let loslassen = () => {};
+let halten = new Promise<void>((r) => { loslassen = r; });
+let gehalten = 0, gehaltenHoechstens = 0;
+const langsam = Bun.serve({
+  hostname: '127.0.0.1', port: 0, idleTimeout: 255,
+  async fetch(r) {
+    const was = new URL(r.url).pathname.split('/').pop()!;
+    if (was !== 'halten') await Bun.sleep(Number(was) * 1000);
+    else {
+      gehaltenHoechstens = Math.max(gehaltenHoechstens, ++gehalten);
+      await Promise.race([halten, Bun.sleep(30_000)]).finally(() => gehalten--);
+    }
+    return new Response('fertig');
+  },
+});
 const ziel = `http://127.0.0.1:${teil.port}`;
 const teile = (pocketbaseZiel: string) => [
   { name: 'pocketbase', ziel: pocketbaseZiel, pfade: ['/api/'], zugang: 'offen' },
   { name: 'intern', ziel, pfade: ['/intern/'], zugang: 'angemeldet' },
   { name: 'vorstand', ziel, pfade: ['/vorstand/'], zugang: 'rolle:vorstand' },
+  { name: 'langsam', ziel: `http://127.0.0.1:${langsam.port}`, pfade: ['/langsam/'], zugang: 'offen' },
   { name: 'webseite', ziel, pfade: ['/'], zugang: 'offen' },
 ];
 
@@ -77,17 +95,29 @@ async function starten(konfig: object, env: Record<string, string> = {}) {
   const basis = `http://127.0.0.1:${port}`;
   const holen = (pfad: string, o: { methode?: string; kopf?: Record<string, string>; koerper?: BodyInit } = {}) =>
     fetch(basis + pfad, { method: o.methode ?? 'GET', headers: { host: ADRESSE, ...o.kopf }, body: o.koerper, redirect: 'manual' });
-  // Rohe Anfragezeile, so wie sie im Netz ankommt (fetch würde .. und // selbst auflösen)
-  const roh = (zeile: string) => new Promise<number>((fertig) => {
+  // Rohe Anfragezeile, so wie sie im Netz ankommt (fetch würde .. und // selbst auflösen und bei Abbruch selbst wiederholen)
+  const roh = (zeile: string, kopf: Record<string, string> = {}) => new Promise<number>((fertig) => {
     let daten = '';
     Bun.connect({ hostname: '127.0.0.1', port, socket: {
-      open(s) { s.write(`${zeile} HTTP/1.1\r\nHost: ${ADRESSE}\r\nConnection: close\r\n\r\n`); },
+      open(s) { s.write(`${zeile} HTTP/1.1\r\nHost: ${ADRESSE}\r\n${Object.entries(kopf).map(([k, v]) => `${k}: ${v}\r\n`).join('')}Connection: close\r\n\r\n`); },
       data(_s, d) { daten += d.toString(); },
       close() { fertig(Number(/^HTTP\/1\.1 (\d{3})/.exec(daten)?.[1] ?? 0)); },
       error() { fertig(0); },
     } }).catch(() => fertig(0));
   });
-  return { holen, roh, zeilen, p };
+  // Eine Verbindung, die offen bleibt: status, sobald die Antwort beginnt (0 ohne Antwort); zu() bricht ab wie ein geschlossener Tab
+  const offen = (zeile: string, kopf: Record<string, string>) => {
+    let sock: { end(): void } | null = null, daten = '', fertig = (_: number) => {};
+    const status = new Promise<number>((r) => { fertig = r; });
+    Bun.connect({ hostname: '127.0.0.1', port, socket: {
+      open(s) { sock = s; s.write(`${zeile} HTTP/1.1\r\nHost: ${ADRESSE}\r\n${Object.entries(kopf).map(([k, v]) => `${k}: ${v}\r\n`).join('')}\r\n`); },
+      data(_s, d) { daten += d.toString(); const m = /^HTTP\/1\.1 (\d{3})/.exec(daten); if (m) fertig(Number(m[1])); },
+      close() { fertig(0); },
+      error() { fertig(0); },
+    } }).catch(() => fertig(0));
+    return { status, zu: () => sock?.end() };
+  };
+  return { holen, roh, offen, zeilen, p, port };
 }
 const konfig = (pocketbaseZiel: string) => ({ ursprung: EIGEN, anmeldeseite: '/mitglieder.html', teile: teile(pocketbaseZiel) });
 
@@ -207,6 +237,10 @@ try {
     }
     return r;
   })();
+  // Ein Teil braucht 15 s (etwa ein Hook, der beim Registrieren zwei Mails schickt): Die Antwort muss ankommen. Bun schliesst ruhige
+  // Verbindungen sonst nach 10 s, und die eigene Grenze (teilMs, 504 nach 60 s) griffe nie. Läuft ebenfalls nebenher.
+  const t15 = performance.now();
+  const fuenfzehn = e4.roh('GET /langsam/15', { 'X-Forwarded-For': '198.51.100.62' }).then((s) => ({ s, ms: performance.now() - t15 }));
   const suId = (await admin('GET', '/collections/_superusers')).id as string;
   const suKoerper = JSON.stringify({ identity: 'test@example.com', password: passwort });
   const schreibweisen = ['_SUPERUSERS', '_Superusers', suId, '_%C5%BFuperusers', '_MFAS'];
@@ -256,9 +290,38 @@ try {
   // Raten aus einem IPv6-Netz: PocketBase zählt je Adresse, der Eingang je /64, auch über auth-with-password
   const netz64 = await Promise.all(Array.from({ length: 12 }, (_, i) => e4.holen('/api/collections/users/auth-with-password',
     { methode: 'POST', kopf: { ...json, 'x-forwarded-for': `2001:db8:5:5::${(i + 1).toString(16)}` }, koerper: JSON.stringify({ identity: 'anna@example.com', password: `falsch-${i}` }) })));
-  const zaehlung = (r: Response[]) => Object.entries(r.reduce<Record<number, number>>((z, x) => ({ ...z, [x.status]: (z[x.status] ?? 0) + 1 }), {})).map(([s, n]) => `${n}×${s}`).join(' ');
+  const zaehlung = (r: number[]) => Object.entries(r.reduce<Record<number, number>>((z, s) => ({ ...z, [s]: (z[s] ?? 0) + 1 }), {})).map(([s, n]) => `${n}×${s}`).join(' ');
   pruefe(netz64.filter((r) => r.status === 400).length === 10 && netz64.filter((r) => r.status === 429).length === 2,
-    `Raten über auth-with-password aus 12 Adressen eines /64: der Eingang lässt 10 je Minute durch, dann 429 (${zaehlung(netz64)})`);
+    `Raten über auth-with-password aus 12 Adressen eines /64: der Eingang lässt 10 je Minute durch, dann 429 (${zaehlung(netz64.map((r) => r.status))})`);
+
+  // Gleichzeitig offene Anfragen je Adresse (IPv6 je /64) sind begrenzt, darüber 429. Ohne Grenze belegte eine Adresse mit 300 langsamen
+  // Anfragen alle 256 Plätze, die Bun für fetch hat, und jede andere Besucherin wartete, auch auf die Startseite.
+  const e5 = await starten(konfig(`http://127.0.0.1:${pbPort}`), { VERTRAUTE_PROXYS: '127.0.0.1' });
+  const viele = Array.from({ length: 300 }, () => e5.offen('GET /langsam/halten', { 'X-Forwarded-For': '203.0.113.66' }));
+  await Bun.sleep(1500);
+  const sofort = await Promise.all(viele.map((v) => Promise.race([v.status, Bun.sleep(5).then(() => -1)])));
+  const tb = performance.now();
+  const besucherin = await Promise.race([e5.roh('GET /verein/', { 'X-Forwarded-For': '198.51.100.77' }), Bun.sleep(3000).then(() => 0)]);
+  const besucherinMs = performance.now() - tb, beimTeil = gehaltenHoechstens;
+  loslassen();
+  const spaeter = await Promise.all(viele.map((v) => Promise.race([v.status, Bun.sleep(5000).then(() => 0)])));
+  for (const v of viele) v.zu();
+  pruefe(beimTeil <= GRENZEN.gleichzeitig && sofort.filter((s) => s === 429).length === 300 - beimTeil && spaeter.filter((s) => s === 200).length === beimTeil && besucherin === 200 && besucherinMs < 2000,
+    `Eine Adresse mit 300 langsamen Anfragen: ${beimTeil} beim Teil (höchstens ${GRENZEN.gleichzeitig}), ${sofort.filter((s) => s === 429).length}× sofort 429; eine andere Besucherin bekommt die Startseite (${besucherin || 'keine Antwort'} nach ${(besucherinMs / 1000).toFixed(1)} s)`);
+  const wieder: number[] = [];
+  for (let i = 0; i < 25; i++) { const r = await e5.holen('/verein/', { kopf: { 'x-forwarded-for': '203.0.113.66' } }); await r.text(); wieder.push(r.status); }
+  halten = new Promise<void>((r) => { loslassen = r; });
+  const abbrechen = Array.from({ length: 20 }, () => e5.offen('GET /langsam/halten', { 'X-Forwarded-For': '203.0.113.67' }));
+  await Bun.sleep(500);
+  for (const v of abbrechen) v.zu();
+  await Bun.sleep(500);
+  const nachAbbruch = await e5.holen('/verein/', { kopf: { 'x-forwarded-for': '203.0.113.67' } });
+  loslassen();
+  pruefe(wieder.every((s) => s === 200) && nachAbbruch.status === 200,
+    `Die Plätze werden frei, wenn die Antwort durch ist (25 nacheinander: ${zaehlung(wieder)}) und wenn die Besucherin abbricht (${nachAbbruch.status})`);
+  const echtzeit = await e5.holen('/api/realtime', { kopf: { accept: 'text/event-stream', 'x-forwarded-for': '198.51.100.78' } });
+  await echtzeit.body?.cancel();
+  pruefe(echtzeit.status === 404, `Echtzeit von PocketBase (/api/realtime): braucht kein Rezept, jede Verbindung bliebe offen, darum 404 (${echtzeit.status})`);
 
   // Pfade mit Tricks: entschieden wird auf dem aufgelösten Pfad
   const tricks: [string, number][] = [['GET /verein/../api/settings', 404], ['GET /verein/../intern/seite.html', 401], ['GET /verein/%2e%2e/intern/seite.html', 401], ['GET /intern%2fseite.html', 400],
@@ -290,8 +353,10 @@ try {
   for (let i = 0; i < 6; i++) versuche.push((await e2.holen('/api/eingang/anmelden', { methode: 'POST', kopf: { ...json, 'x-forwarded-for': '198.51.100.50' }, koerper: JSON.stringify({ email: 'anna@example.com', passwort: `falsch-${i}` }) })).status);
   pruefe(versuche.join() === '400,400,400,400,400,429', `Passwörter durchprobieren: nach 5 Fehlversuchen je Adresse 429 (${versuche.join()})`);
 
-  const langsam = await ratenLangsam;
-  pruefe(langsam.join() === '400,400,400,400,400,429', `Passwörter durchprobieren über auth-with-password: nach 5 Fehlversuchen je Adresse 429, auch langsam (${langsam.join()})`);
+  const geraten = await ratenLangsam;
+  pruefe(geraten.join() === '400,400,400,400,400,429', `Passwörter durchprobieren über auth-with-password: nach 5 Fehlversuchen je Adresse 429, auch langsam (${geraten.join()})`);
+  const f = await fuenfzehn;
+  pruefe(f.s === 200 && f.ms >= 14_500, `Ein Teil braucht 15 s: die Antwort kommt an (${f.s || 'keine Antwort'} nach ${(f.ms / 1000).toFixed(1)} s)`);
 
   // PocketBase antwortet nicht
   const e3 = await starten(konfig(`http://127.0.0.1:${haengt.port}`));
@@ -327,6 +392,8 @@ try {
   server.kill();
   teil.stop(true);
   haengt.stop(true);
+  loslassen();
+  langsam.stop(true);
   smtp.stop(true);
   const log = await new Response(server.stderr).text();
   if (fehler && log.trim()) console.log(log.slice(-2000));
