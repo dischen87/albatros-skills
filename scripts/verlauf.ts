@@ -1,5 +1,5 @@
 // Verlauf der Durchspiele: je Lauf eine Zeile JSON (Datum, Commits bzw. Pin, Fall, deterministische Punkte), nie Inhalte oder Angaben zur
-// Person. Der Trend vergleicht nur Läufe mit gleichem Fall, gleichen Phasen und gleichem Stand der Prüfungen (PUNKTE_STAND).
+// Person. Der Trend vergleicht nur Läufe mit gleichem Fall, gleichen Phasen, gleicher Umgebung und gleichem Stand der Prüfungen (PUNKTE_STAND).
 //   bun scripts/verlauf.ts [datei]                                   Trend je Fall, die letzten zehn Läufe
 //   bun scripts/verlauf.ts --anhaengen <ergebnis-ordner> [datei]     Zeile eines Laufs (verlauf-zeile.json) anhängen, z. B. aus dem
 //                                                                    Artefakt des Workflows «Durchspiel» von albatros
@@ -83,12 +83,13 @@ export const lesen = (datei: string): Zeile[] => (existsSync(datei) ? readFileSy
   } catch { return []; }
 });
 
-// Trend: je Fall, Phasen und Stand der Prüfungen die letzten Läufe, älteste zuerst, mit Anteil und den Prüfungen, die nicht voll sind
+// Trend: je Fall, Phasen, Umgebung (Attrappe, echt, trocken) und Stand der Prüfungen die letzten Läufe, älteste zuerst, mit Anteil und den
+// Prüfungen, die nicht voll sind
 export function trend(zeilen: Zeile[], anzahl = 10): string {
   if (!zeilen.length) return 'Noch keine Läufe im Verlauf.';
   const gruppen = new Map<string, Zeile[]>();
   for (const z of zeilen) {
-    const k = `${z.fall} ${z.ab}–${z.bis} (Prüfungen ${z.punkte_stand})`;
+    const k = `${z.fall} ${z.ab}–${z.bis}, ${z.umgebung} (Prüfungen ${z.punkte_stand})`;
     gruppen.set(k, [...(gruppen.get(k) ?? []), z]);
   }
   const aus: string[] = [];

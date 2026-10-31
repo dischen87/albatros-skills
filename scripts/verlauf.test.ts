@@ -49,8 +49,8 @@ test('anhaengen schreibt nur gültige Zeilen; Trend je Fall mit Anteil und offen
   const zeilen = lesen(datei);
   expect(zeilen.map((x) => x.skills)).toEqual(['aaaaaaa', 'bbbbbbb']);
   const t = trend(zeilen);
-  expect(t).toContain('lernen P1–P2 (Prüfungen 2026-10-31): 1 von 1 Läufen, 100 % → 100 %, zuletzt Exit 0');
-  expect(t).toContain('gratis-bis-lokal P1–P1 (Prüfungen 2026-10-31): 1 von 1 Läufen, 44 % → 44 %, zuletzt Exit 1');
+  expect(t).toContain('lernen P1–P2, attrappe (Prüfungen 2026-10-31): 1 von 1 Läufen, 100 % → 100 %, zuletzt Exit 0');
+  expect(t).toContain('gratis-bis-lokal P1–P1, attrappe (Prüfungen 2026-10-31): 1 von 1 Läufen, 44 % → 44 %, zuletzt Exit 1');
   expect(t).toMatch(/offen: lage-vor-arbeit 0\/1, lage-belege 0\/1/);
   expect(trend([])).toBe('Noch keine Läufe im Verlauf.');
 });
