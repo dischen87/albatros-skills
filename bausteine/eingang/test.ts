@@ -396,20 +396,26 @@ try {
   const imNetz = async (port: number) => (await Promise.all(netzAdressen.map((a) => fetch(`http://${a}:${port}/`, { signal: AbortSignal.timeout(2000) }).then(() => a, () => null)))).filter(Boolean);
   const e6 = await starten(konfig(ziel));
   const e6Netz = await imNetz(e6.port), e6Lokal = (await e6.holen('/verein/')).status;
-  const seiteLokal = mkdtempSync(join(tmp, 'seite-'));
-  writeFileSync(join(seiteLokal, 'index.html'), '<!doctype html><title>Probe</title><p>Probe</p>');
-  const pbLokal = 21000 + Math.floor(Math.random() * 1000), eingangLokal = 22000 + Math.floor(Math.random() * 1000);
-  // TMPDIR: lokal.ts legt seinen Ordner (Daten von PocketBase) dann in den Ordner dieses Tests, und der wird am Ende gelöscht
-  lokal = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal],
-    { env: { ...process.env, TMPDIR: tmp }, stdout: 'pipe', stderr: 'pipe' });
-  const ausgabe = new Response(lokal.stdout as ReadableStream).text();
-  for (let i = 0; i < 100 && !(await fetch(`http://127.0.0.1:${eingangLokal}/`).then((r) => r.ok, () => false)); i++) await Bun.sleep(100);
-  const lokalNetz = await imNetz(eingangLokal), lokalHier = await fetch(`http://localhost:${eingangLokal}/`).then((r) => r.status, () => 0);
-  lokal.kill('SIGINT'); // lokal.ts beendet PocketBase und den Eingang selbst
-  await lokal.exited;
-  const lokalText = await ausgabe;
+  // lokal.ts selbst nur ausserhalb von Windows: Dort lässt sich ihm kein Ctrl+C schicken, PocketBase und der Eingang liefen weiter
+  let lokalNetz: (string | null)[] = [], lokalHier = 200, lokalText = 'nichts davon ist im Netz';
+  const mitLokal = process.platform !== 'win32';
+  if (mitLokal) {
+    const seiteLokal = mkdtempSync(join(tmp, 'seite-'));
+    writeFileSync(join(seiteLokal, 'index.html'), '<!doctype html><title>Probe</title><p>Probe</p>');
+    const pbLokal = 21000 + Math.floor(Math.random() * 1000), eingangLokal = 22000 + Math.floor(Math.random() * 1000);
+    // TMPDIR: lokal.ts legt seinen Ordner (Daten von PocketBase) dann in den Ordner dieses Tests, und der wird am Ende gelöscht
+    lokal = Bun.spawn([process.execPath, join(pb, 'lokal.ts'), '--eingang', '--port', String(pbLokal), '--eingang-port', String(eingangLokal), '--seite', seiteLokal],
+      { env: { ...process.env, TMPDIR: tmp }, stdout: 'pipe', stderr: 'pipe' });
+    const ausgabe = new Response(lokal.stdout as ReadableStream).text();
+    for (let i = 0; i < 100 && !(await fetch(`http://127.0.0.1:${eingangLokal}/`).then((r) => r.ok, () => false)); i++) await Bun.sleep(100);
+    lokalNetz = await imNetz(eingangLokal);
+    lokalHier = await fetch(`http://localhost:${eingangLokal}/`).then((r) => r.status, () => 0);
+    lokal.kill('SIGINT'); // lokal.ts beendet PocketBase und den Eingang selbst
+    await lokal.exited;
+    lokalText = await ausgabe;
+  }
   pruefe(e6Lokal === 200 && !e6Netz.length && lokalHier === 200 && !lokalNetz.length && lokalText.includes('nichts davon ist im Netz'),
-    `Lokal nur auf diesem Computer: Eingang mit EINGANG_HOST und lokal.ts --eingang über localhost ${lokalHier}, über ${netzAdressen.length} Netzadressen ${[...e6Netz, ...lokalNetz].length ? `erreichbar (${[...e6Netz, ...lokalNetz].length}×)` : 'nicht erreichbar'}`);
+    `Lokal nur auf diesem Computer: Eingang mit EINGANG_HOST${mitLokal ? ` und lokal.ts --eingang über localhost ${lokalHier}` : ' (lokal.ts unter Windows nicht geprüft)'}, über ${netzAdressen.length} Netzadressen ${[...e6Netz, ...lokalNetz].length ? `erreichbar (${[...e6Netz, ...lokalNetz].length}×)` : 'nicht erreichbar'}`);
 } finally {
   for (const p of prozesse) p.kill();
   lokal?.kill('SIGINT');
