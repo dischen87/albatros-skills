@@ -2,5 +2,4 @@
 type: fixed
 ---
 
-Link zur Zahlungsseite (Light, CHF 15 pro Monat): https://albatros.build/abo/checkout/test-light
-Die Karte gibst du nur dort ein. Danach mit konto_status prüfen, ob das Abo aktiv ist.
+Bis zur fertigen Seite auf deinem Computer kostet Albatros nichts. Erst beim Wohnort wählst du: mit Albatros oder selbst. Du stehst bei Phase P1; den Link zum Abo gibt es ab P11. Will die Person das Abo trotzdem schon jetzt, ruf upgrade_link nach ihrem ausdrücklichen Ja nochmals mit bestaetigt: true auf.

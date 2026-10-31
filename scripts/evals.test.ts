@@ -83,7 +83,7 @@ describe('Muster gegen Sätze aus Skills und lage', async () => {
     expect((await muster('p6-mockup', 'reihenfolge-frage'))('Die Reihenfolge habe ich festgelegt. Welche Farbe magst du?')).toBe(false);
     expect((await muster('p4-plan-pruefen', 'ja-frage'))('Der Plan ist final bestätigt. Weiter zum Konzept?')).toBe(false);
     expect((await muster('p7-entwurf', 'durchklicken-frage'))('Was fehlt, ist der Bau. Soll ich bauen?')).toBe(false);
-    expect((await muster('anfrage', 'einwilligung-gefragt'))('Albatros darf das speichern. Passt das?')).toBe(false);
+    expect((await muster('luecke-ohne-skill', 'einwilligung-gefragt'))('Albatros darf das speichern. Passt das?')).toBe(false);
     const neu = await muster('p13-geaendert', 'neue-freigabe');
     expect(neu('Deine freigegebene Seite geht jetzt live.')).toBe(false);
     expect(neu('Schauen wir sie zuerst an, danach gibst du sie neu frei.')).toBe(true);
@@ -119,6 +119,18 @@ describe('Beispiel-Verläufe: jeder Grader ohne Modell lässt das gute durch und
       expect(ohne.filter((n) => !erkannt.has(n)), 'Grader ohne rotes Beispiel').toEqual([]);
     });
   }
+
+  // Gegenprüfung 31.10.2026 (anf-09): Meldet die KI die Idee, dann mit dem Projektnamen als titel; meldet sie nichts, prüft der Grader nichts
+  test('p1-idee titel: schritt_melden idee mit titel Sonnenhof besteht, ohne titel nicht, ohne Meldung besteht', async () => {
+    const f = alle.find((x) => x.name === 'p1-idee')!;
+    const titel = async (aufrufe: { tool: string; input: Record<string, unknown> }[]) =>
+      (await bewerte(f, { aufrufe, dateien: {}, antwort: 'Fertig.' })).find((e) => e.name === 'titel')!.bestanden;
+    expect(await titel([{ tool: 'schritt_melden', input: { schritt: 'idee', sprache: 'de', titel: 'Sonnenhof' } }])).toBe(true);
+    expect(await titel([{ tool: 'schritt_melden', input: { titel: 'Ferienwohnungen Sonnenhof', schritt: 'idee' } }])).toBe(true);
+    expect(await titel([{ tool: 'schritt_melden', input: { schritt: 'idee', sprache: 'de' } }])).toBe(false);
+    expect(await titel([{ tool: 'schritt_melden', input: { schritt: 'idee', titel: 'Hof' } }])).toBe(false);
+    expect(await titel([])).toBe(true);
+  });
 
   test('jeder Fahrplan-Fall hat Beispiele', () => {
     const ohne = alle.filter((f) => tags(f).includes('fahrplan') && !BEISPIELE[f.name]).map((f) => f.name);

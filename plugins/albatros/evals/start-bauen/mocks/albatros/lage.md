@@ -2,5 +2,6 @@
 type: fixed
 ---
 
-Jetzt dran: Skill `start`, Schritt 3 (was gebaut wird und welches Abo passt). Grund: Abo Gratis, noch keine Seite und kein Server.
-Stand: Weg noch nicht gewählt · Abo Gratis · keine Seite, kein Server, 0 Schlösser · 0 von 18 Missionen erledigt.
+Jetzt dran: Skill `start`. Grund: Du hast noch keinen Weg gewählt: eine Webseite oder ein Geschäft.
+Danach: Phase P1 «Idee verstehen» mit Skill `webseite-planen`, Abschnitt «Idee».
+Stand: Weg offen · Abo Gratis · Projekt projekt noch nicht auf der Insel · Phase P1 von 13 (geschafft nach Insel: keine).

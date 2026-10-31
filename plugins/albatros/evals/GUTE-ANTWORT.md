@@ -11,6 +11,8 @@ Erzeugt aus `fahrplan.yaml` (Fassung 2, Stand 2026-10-31) mit `bun scripts/gute-
 - Wer antwortet: Person heisst, die Person antwortet immer selbst, auch im Modus machen. Annahme heisst, die KI schlägt einen Standard als [Annahme] vor. KI heisst, die KI klärt es selbst (Recherche, Messung) und zeigt das Ergebnis.
 - Ja-Momente gibt es nur 3: P4 (`plan-bestaetigt`), P8 (`freigabe-entwurf`), P10 (`freigabe`). «Sieht gut aus» ist kein Ja.
 - Gratis bis P10.
+- Marken am Anfang eines Werts: `[offen: …]` (in jeder Sprache deutsch) und der Platzhalter `[Platzhalter]` (im Entwurf übersetzt) heissen nicht belegt; `[Annahme: …]` (deutsch) ist ein Vorschlag der KI und nie die Antwort der Person. Erkannt werden auch ouvert, aperto, open, à compléter, a compléter, a completer, da completare, placeholder, hypothèse, hypothese, ipotesi, assumption.
+- Wohnort (P11, Zeile `Wohnort:`): beginnt mit «Albatros Light» (light) oder «Albatros Pilot» (pilot), jeder andere Wert heisst selbst; ohne die Zeile gilt das Abo im Konto (Gratis heisst selbst).
 - Modus (Standard: machen; gilt je Projekt, steht in `docs/projekt.md#Modus:`):
   - machen: Die KI nutzt das Know-how und macht die Arbeit, mit einem Satz Erklärung und Bild je Schritt. Pflichtfragen mit antwortet: person stellt sie trotzdem, den Rest trägt sie als [Annahme] ein. Lernmomente bietet sie an, drängt sie nicht auf.
   - lernen: Die KI erklärt jeden Schritt mit Bild und Warum, lässt die Person die Lernmomente selbst tippen, stellt am Ende der Phase die Kontrollfrage der Lektion und meldet «verstanden» (verstanden_melden) erst nach der Antwort der Person.
@@ -19,7 +21,7 @@ Erzeugt aus `fahrplan.yaml` (Fassung 2, Stand 2026-10-31) mit `bun scripts/gute-
 
 Etappe abheben · Skill `webseite-planen`, Abschnitt «Idee» · Insel `idee` · Bild: Das Ziel auf der Karte einkreisen, bevor man losfliegt
 
-- Weg Geschäft: `ideen-check` (Ausgänge: weiter, anpassen, stoppen)
+- Weg Geschäft: `ideen-check`, nach den Schritten des Skills (Ausgänge: weiter, anpassen, stoppen, festgehalten in `docs/ideen-check.md#Entscheid:`; die Phase ist erst mit weiter oder stoppen geschafft)
 
 **Pflichtfragen**
 
@@ -31,7 +33,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Idee» · Insel `idee` ·
 | `hauptsache` | Was sollen Besucher vor allem tun? | Person | `docs/projekt.md#Hauptsache:` |
 | `bestehend` | Gibt es schon eine Webseite? Wenn ja, die Adresse. | Person | `docs/projekt.md#Bestehende Seite:` |
 | `erfolg` | Woran merkst du in drei Monaten, dass es funktioniert? | Annahme | `docs/projekt.md#Erfolg:` |
-| `modus` | Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen? | Annahme | `docs/projekt.md#Modus:` |
+| `modus` | Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen? | Annahme | `docs/projekt.md#Modus:`, beginnt mit `lernen` oder `machen` |
 
 **Ergebnis**
 
@@ -51,7 +53,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Idee» · Insel `idee` ·
 
 Etappe abheben · Skill `webseite-planen`, Abschnitt «Research» · Insel `recherche` · Bild: Die Reiseführer lesen, bevor man losfliegt
 
-- Weg Geschäft: `zielgruppe`, `angebot-und-preis`
+- Weg Geschäft: `zielgruppe`, `angebot-und-preis`, vor den Schritten des Skills
 - Modernisieren: Skill `webseite-modernisieren`, Abschnitt «Bestandsaufnahme»
 
 **Pflichtfragen**
@@ -81,7 +83,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Research» · Insel `rech
 
 Etappe abheben · Skill `webseite-planen`, Abschnitt «Grundriss» · Insel `plan` · Bild: Der Grundriss des Hauses
 
-- Weg Geschäft: `landingpage`
+- Weg Geschäft: `landingpage`, vor den Schritten des Skills
 
 **Pflichtfragen**
 
@@ -158,7 +160,7 @@ Etappe abheben · Skill `webseite-planen`, Abschnitt «Plan prüfen» · Insel `
 
 Etappe abheben · Skill `konzept` · Insel `konzept` · Bild: Der Charakter des Hauses, bevor Farben gewählt werden
 
-- Weg Geschäft: `marke`
+- Weg Geschäft: `marke`, vor den Schritten des Skills
 
 **Pflichtfragen**
 
@@ -167,7 +169,7 @@ Etappe abheben · Skill `konzept` · Insel `konzept` · Bild: Der Charakter des 
 | `name` | Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen? | Person | `docs/konzept.md#Name:` |
 | `ton` | Du oder Sie, und wie soll die Sprache klingen? | Person | `docs/konzept.md#Ton:` |
 | `charakter` | Welche drei Wörter beschreiben, wie es wirken soll? | Person | `docs/konzept.md#Charakter:` |
-| `maskottchen` | Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später. | Person | `docs/konzept.md#Maskottchen:` |
+| `maskottchen` | Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später. | Person | `docs/konzept.md#Maskottchen:`, beginnt mit `ja`, `nein` oder `später` |
 | `muss-bleiben` | Gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen? | Person | `docs/konzept.md#Muss bleiben:` |
 | `kern` | Was versprichst du, und warum gerade du? (drei Sätze) | Annahme | `docs/konzept.md#Kern:` |
 | `bildsprache` | Fotos, Illustrationen, Icons oder eine Mischung? | Annahme | `docs/konzept.md#Bildsprache:` |
@@ -192,9 +194,9 @@ Etappe abheben · Skill `gestaltung` · Insel `mockup`, `entwuerfe` · Bild: Die
 
 | Kennung | Frage | Wer antwortet | Ablage |
 |---|---|---|---|
-| `reihenfolge` | Stimmt die Reihenfolge auf der grauen Skizze? | Person | `docs/designsystem.md#Richtung:` |
+| `reihenfolge` | Stimmt die Reihenfolge im grauen Mockup? | Person | `docs/designsystem.md#Reihenfolge:`, beginnt mit `bestätigt` |
 | `richtung` | Welche der drei Richtungen, oder welche Mischung? | Person | `docs/designsystem.md#Richtung:` |
-| `musterblatt` | Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy? | Person | `docs/designsystem.md#Richtung:` |
+| `musterblatt` | Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy? | Person | `docs/designsystem.md#Musterblatt:`, beginnt mit `gesehen` |
 | `dunkel` | Auch eine dunkle Fassung? | Annahme | `docs/designsystem.md#Farben:` |
 
 **Ergebnis**
@@ -202,11 +204,11 @@ Etappe abheben · Skill `gestaltung` · Insel `mockup`, `entwuerfe` · Bild: Die
 - `design/mockup.html`
 - `design/tokens.css`
 - `design/musterblatt.html`
-- `docs/designsystem.md` mit den Zeilen `Richtung:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:`, `Maskottchen:`
+- `docs/designsystem.md` mit den Zeilen `Reihenfolge:`, `Richtung:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:`, `Maskottchen:`, `Musterblatt:`
 
 **Ja-Moment:** keiner. Was die Person hier entscheidet, ist eine Wahl oder eine Annahme.
 
-**Gate:** tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen.
+**Gate:** tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen und Ja gesagt (Zeile «Musterblatt: gesehen am <Datum>»).
 
 **Lernmomente:** Warum Farben und Schriften nur an einem Ort stehen
 
@@ -220,7 +222,7 @@ Etappe abheben · Skill `entwurf` · Insel `entwurf` · Bild: Das begehbare Mode
 
 | Kennung | Frage | Wer antwortet | Ablage |
 |---|---|---|---|
-| `werkstatt` | Sind Node, npm und Git da (Prüfung im Terminal ohne Node: command -v, unter Windows where)? | KI | `docs/entwurf.md#Werkstatt:` |
+| `werkstatt` | Sind Node, npm und Git da, bei einem Baustein auch Bun (Prüfung im Terminal ohne Node: command -v, unter Windows where)? | KI | `docs/entwurf.md#Werkstatt:` |
 | `texte` | Welche Texte kommen auf jede Seite? Fehlende stehen als [Platzhalter] da. | Annahme | `docs/entwurf.md#Seiten:` |
 | `zustaende` | Wie sehen Bestätigung, Fehler und leere Zustände jeder Funktion aus? | KI | `docs/entwurf.md#Seiten:` |
 | `durchklicken` | Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört? | Person | `docs/entwurf.md#Rückmeldungen:` |
@@ -358,20 +360,21 @@ Etappe landen · Skill `betrieb` · Insel `betrieb` · Bild: Briefkasten, Rauchm
 
 Etappe landen · Skill `lancieren`, Abschnitt «Live schalten» · Insel `hafen`, `fliessband`, `live`, `domain` · Bild: Die Eröffnung mit Band vor der Tür
 
-- Weg Geschäft: `go-live-check`
+- Weg Geschäft: `go-live-check`, nach den Schritten des Skills
 - Modernisieren: Domain umstellen mit Umleitungen für alte Adressen; MX-Einträge nie anfassen.
+- Insel je Wohnort (bis zum Abschluss zu melden): light `hafen`, `live`; pilot `hafen`, `fliessband`, `live`; selbst `live`
 
 **Pflichtfragen**
 
 | Kennung | Frage | Wer antwortet | Ablage |
 |---|---|---|---|
-| `adresse` | Eigene Adresse (Domain) jetzt, später oder nie? | Person | `docs/live.md#Adresse:` |
+| `adresse` | Eigene Adresse (Domain) jetzt, später oder nie? | Person | `docs/live.md#Eigene Domain:`, beginnt mit `jetzt`, `später` oder `nie` |
 | `ankuendigung` | Wem sagst du es zuerst? | Person | `docs/live.md#Angekündigt:` |
 | `pruefung-live` | Ist die Seite unter ihrer Adresse ohne Rot (pruefen.mjs --live)? | KI | `docs/live.md#Geprüft:` |
 
 **Ergebnis**
 
-- `docs/live.md` mit den Zeilen `Live seit:`, `Adresse:`, `Geprüft:`, `Angekündigt:`
+- `docs/live.md` mit den Zeilen `Live seit:`, `Adresse:`, `Eigene Domain:`, `Geprüft:`, `Angekündigt:`
 
 **Ja-Moment:** keiner. Was die Person hier entscheidet, ist eine Wahl oder eine Annahme.
 
@@ -404,3 +407,14 @@ Aus `KRITERIEN-LOG.md`, ältester Eintrag zuerst.
 | 2026-10-31 | start-light | Beispiel «Link zur Zahlungsseite für Light» ersetzt durch «zuerst die Idee; gratis bis zur fertigen Seite, Abo erst beim Wohnort»; neu ohne Modell: kein `upgrade_link` (`kein-zahlungslink`). | fahrplan.yaml `gratis_bis: P10` und P11 Gate: «upgrade_link gibt den Link erst mit bestaetigt: true nach der Wahl der Person». Der Skill `start` antwortet auf Preisfragen «ohne Zahlungslink». |
 | 2026-10-31 | webseite-bauen-pruefung, start-sprache, modernisieren-einstieg, modernisieren-adresse, domain, domain-kaufen | Nur Tags: P9, P11, P2 (Variante Modernisieren) und P13 (Domain); Kriterien unverändert. | Damit `GUTE-ANTWORT.md` diese Fälle bei ihrer Phase nennt. start-sprache bleibt richtig: `seite_erstellen` mit `sprache` gehört zu P11 (Skill `lancieren`, Teil 1), und nach P11 Gate ist online «höchstens die Vorlage». |
 | 2026-10-31 | p4-plan-pruefen, p5-konzept, p6-mockup, p7-entwurf, p8-sieht-gut-aus, knapp, lernen-kontrollfrage, anfrage, p13-geaendert | Enger: Stichwort und Fragezeichen der Frage-Grader müssen im selben Satz stehen; `neue-freigabe` verlangt «neu, nochmals oder erneut freigeben» statt nur «freig». | Bei der Durchsicht vor dem ersten Lauf gefunden: Eine schlechte Antwort mit irgendeiner Frage im nächsten Satz oder mit «deine freigegebene Seite geht live» wäre durchgegangen. Die Gegenbeispiele stehen in `scripts/evals.test.ts`. |
+| 2026-10-31 | alle | fahrplan.yaml P6: je Pflichtfrage eine eigene Zeile in `docs/designsystem.md`: `reihenfolge` in `Reihenfolge:` (beginnt mit bestätigt), `richtung` in `Richtung:`, `musterblatt` in `Musterblatt:` (beginnt mit gesehen); `Reihenfolge:` und `Musterblatt:` neu in den Ergebniszeilen, das Gate verlangt die Zeile zum Musterblatt. Die Frage `reihenfolge` heisst «Stimmt die Reihenfolge im grauen Mockup?» (fr maquette grise, it mockup grigio, en grey mockup). | Gegenprüfung 31.10.2026 (vert-03, weg-04, vert-10): Drei Pflichtfragen in der einen Zeile `Richtung:` liessen sich nicht unterscheiden. lage meldete nach Schritt 1 die bestätigte Reihenfolge als offen und nach Schritt 3 das Musterblatt als beantwortet, bevor es gezeigt war. «Graue Skizze» heisst die Datei aus P1 (`design/skizze.html`), nicht das Mockup. |
+| 2026-10-31 | alle | fahrplan.yaml P13: `adresse` hat die Ablage `docs/live.md#Eigene Domain:` (beginnt mit jetzt, später oder nie), neu in den Ergebniszeilen; `Adresse:` bleibt die URL. Neu `insel_je_wohnort`: light `hafen`, `live`; pilot `hafen`, `fliessband`, `live`; selbst `live`. Dazu `wohnorte`: Der Wert von `Wohnort:` beginnt mit «Albatros Light» oder «Albatros Pilot», jeder andere heisst selbst. | Gegenprüfung 31.10.2026 (vert-06, vert-05): lancieren schreibt in `Adresse:` die URL, die Antwort zur Domain stand nirgends, und punkte verglich «später» mit der URL (Exit 1 bei einem Lauf genau nach der Vorlage). Light hat kein Fliessband (lancieren Teil 2, Schritt 3; flugschule sieht es nie), bei selbst ohne Repo gibt es weder Hafen noch Fliessband; lage und punkte verlangten trotzdem alle drei. |
+| 2026-10-31 | alle | fahrplan.yaml P7: Die Frage `werkstatt` nennt bei einem Baustein auch Bun. | Gegenprüfung 31.10.2026 (weg-08): Mit Baustein verlangt P9 `bun …/lokal.ts` und `bun …/test.ts`, die Werkstatt prüfte nur Node, npm und Git. |
+| 2026-10-31 | alle | fahrplan.yaml: `methoden` je Phase mit `wann` (P1 und P13 `nach_skill`, P2, P3 und P5 `vor_skill`), `ausgaenge` mit `ablage` (`docs/ideen-check.md#Entscheid:`), `werte` bei Pflichtfragen mit festen Anfängen (modus, maskottchen, reihenfolge, musterblatt, adresse) und `marken` (offen, Platzhalter, Annahme mit den Wörtern, die lage, punkte.ts und die Prüfskripte heute lesen). | Gegenprüfung 31.10.2026 (weg-05, steu-07, vert-09): lage stellte die Methode immer vor den Skill, Skills und Methoden sagen in P1 und P13 das Gegenteil. Ob die Methoden am Pin zum Vertrag passen, liess sich nicht prüfen. lage und punkte lasen die Marken verschieden, obwohl beide «wie lage» behaupteten. |
+| 2026-10-31 | start-bauen | Neu ohne Modell: kein `upgrade_link` (`kein-zahlungslink`, wie start-light). Die Attrappen von lage, konto_status und upgrade_link kommen aus dem echten mcp (`scripts/attrappen.ts`, Zustand `gratis-ohne-weg`) statt «Skill `start`, Schritt 3» von Hand. | Gegenprüfung 31.10.2026 (vert-12): Schritt 3 von start heisst heute «Lernen oder machen», die Attrappe von upgrade_link lieferte einen Zahlungslink, und start verlangt «ohne Zahlungslink». |
+| 2026-10-31 | start-sprache | Attrappen von lage und konto_status aus dem echten mcp (`scripts/attrappen.ts`, Zustand `light-ohne-seite-fr`: Light auf Französisch, Insel bei Freigabe, noch keine Seite; lage nennt lancieren). Kriterium unverändert (seite_erstellen mit sprache fr). | Gegenprüfung 31.10.2026 (vert-12): Die Attrappe nannte «Skill `start`, Schritt 5», der heute «Los: die Idee» heisst; mit FAHRPLAN entsteht die Seite in lancieren Teil 1 (P11). |
+| 2026-10-31 | luecke-ohne-skill | Umbenannt von `anfrage`, Kriterien unverändert. Die Einträge oben mit `anfrage` meinen diesen Fall. | Gegenprüfung 31.10.2026 (vert-11): Der Fall prüft luecke_melden, nicht das Feld `anfrage` von lage; «Anfrage» hatte im Glossar zwei Bedeutungen. |
+| 2026-10-31 | p1-idee | Neu ohne Modell: `titel`: Meldet die KI den Schritt `idee`, dann mit `titel` = Projektname (Sonnenhof). Ohne Meldung prüft der Grader nichts, denn ohne Bash kann die KI die Skizze nicht öffnen, und das Gate von P1 ist dann noch offen. | Gegenprüfung 31.10.2026 (anf-09): Kein Skill gab `titel` mit, die Insel zeigte «projekt» statt des Namens. Die Skills nennen ihn ab dieser Welle (Paket texte-a). |
+| 2026-10-31 | p7-entwurf, p8-sieht-gut-aus, p8-ja, nein-vor-bau, webseite-bauen-prd, p10-freigabe, p11-wohnort, p12-betrieb, p13-geaendert | Gerüst `_projekt/projekt.sh`: `docs/designsystem.md` mit je einer Zeile `Reihenfolge:`, `Richtung:` und `Musterblatt:` statt allem in `Richtung:`. Kriterien unverändert. | fahrplan.yaml P6 (Eintrag oben): eine Zeile je Pflichtfrage, so wie gestaltung sie schreibt. |
+| 2026-10-31 | alle | Messbedingung: Die Attrappen von lage, konto_status und upgrade_link und die Anleitung (`_projekt/anleitung.txt`, `append_system_prompt` der Fahrplan-Fälle) neu aus dem echten mcp nach der Gegenprüfung. lage zählt die Belege lückenlos ab der Insel und nur mit allen Ergebnisdateien, ein Ja-Moment nur mit Datum vorne, eine Frage der Person nie als Annahme (lage sagt das bei jeder offenen Frage dazu); in P1 auf dem Weg Geschäft zuerst der Skill, dann der Ideen-Check; P13 meldet mit Light `hafen` und `live`; die Anleitung sagt «13 Phasen» und nennt mit ERFASSUNG den Hinweis zur Erfassung und die Zeile «Anfragen: erlaubt.»; konto_status nennt Gratis «bis zur fertigen Seite auf deinem Computer». Die Attrappen nehmen die Einwilligung für Lücken als erteilt, die für Anfragen nicht. Grader unverändert. | Gegenprüfung 31.10.2026 (vert-02, weg-02, weg-03, vert-04, steu-05, weg-05, vert-05, vert-10, weg-13, anf-01, anf-03): lage sprang über Gates und Ja-Momente, zählte Annahmen als Antwort der Person und verlangte von Light ein Fliessband. Läufe vor diesem Stand sahen eine andere lage und sind nicht gleichwertig vergleichbar. |
+| 2026-10-31 | alle | fahrplan.yaml P1: `ausgaenge.geschafft: [weiter, stoppen]`. Auf dem Weg Geschäft ist P1 erst mit `Entscheid: weiter` oder `Entscheid: stoppen` in `docs/ideen-check.md` geschafft, solange der Ideen-Check zur Stufe gehört; die Idee allein, `anpassen` oder eine Hausaufgabe halten P1. lage sagt dann «Jetzt dran: Methode `ideen-check`» und nennt den Entscheid unter «Fertig, wenn»; punkte.ts zählt `idee` erst mit dem Entscheid als belegt (`insel-belegt`). Grader unverändert; kein Eval-Fall zeigt diesen Zustand. | Gegenprobe Welle 5, 31.10.2026 (weg-05): Mit dem Skill zuerst ist «Idee fertig, Ideen-Check offen» der normale Zwischenstand. lage zählte P1 dann nach den Belegen als geschafft, nannte P2 und «Auf der Insel fehlt noch: «idee»»; meldete die KI das, rechnete flugschule den Ideen-Check an. webseite-planen («Geschafft, wenn») und ideen-check («Mission prüfen») verlangen weiter oder stoppen. |

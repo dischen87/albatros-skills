@@ -16,8 +16,8 @@
      "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
     },
     "belege": {
-     "description": "Zeilen aus den Dateien des Projekts, die lage als Ergebnis der Phase nennt (z. B. docs/projekt.md mit «Projektname: …»), höchstens 20 Dateien. Daran erkennt lage, welche Pflichtfragen noch offen sind.",
-     "maxItems": 20,
+     "description": "Zeilen aus den Dateien des Projekts, die lage als Ergebnis der Phase nennt (z. B. docs/projekt.md mit «Projektname: …»), je Datei, die es gibt; Dateien ohne solche Zeilen mit leerer Liste; höchstens 30 Dateien. Daran erkennt lage, welche Phasen geschafft und welche Pflichtfragen noch offen sind.",
+     "maxItems": 30,
      "type": "array",
      "items": {
       "type": "object",
@@ -43,7 +43,7 @@
      }
     },
     "anfrage": {
-     "description": "Worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten; nur, wenn die Person der Erfassung zugestimmt hat. Dient dazu, die Skills zu verbessern; niemand antwortet darauf. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), geht mit coach_fragen und anliegen.",
+     "description": "Nur, wenn lage die Zeile «Anfragen: erlaubt.» zeigt (die Person hat im Cockpit zugestimmt); sonst weglassen. Worum die Person dich gerade bittet, in einem Satz umformuliert, ohne Namen, E-Mail-Adressen, Adressen oder Zugangsdaten. Dient dazu, die Skills zu verbessern; niemand antwortet darauf. Was ein Mensch sehen muss (Rechnung, Konto, Datenpanne, Fehler bei Albatros), geht mit coach_fragen und anliegen.",
      "type": "string",
      "maxLength": 300
     },

@@ -86,10 +86,10 @@ export const BEISPIELE: Record<string, Beispiele> = {
       antwort: 'Das Ziel ist auf der Karte eingekreist. In docs/projekt.md steht deine Idee, AGENTS.md sagt jeder KI, wo ihr steht, und design/skizze.html zeigt die Startseite in Grau: Öffne sie mit einem Doppelklick. Als Erfolg habe ich «zwei Anfragen pro Monat in der Saison» vorgeschlagen. Passt das so?',
     },
     schlecht: [{
-      aufrufe: [melde('recherche'), LAGE],
+      aufrufe: [melde('idee'), melde('recherche'), LAGE],
       dateien: { 'docs/projekt.md': '# Hof\n\nProjektname: Hof\nErfolg: zehn Anfragen\nModus: lernen\n' },
       antwort: SCHLECHT_GESAGT,
-      faellt: ['lage-zuerst', 'zeilen-projekt', 'antworten-idee', 'erfolg-als-annahme', 'modus-machen', 'agents', 'skizze', 'insel-nicht-weiter', 'fragen', 'kein-scharfes-s', 'skill'],
+      faellt: ['lage-zuerst', 'zeilen-projekt', 'antworten-idee', 'erfolg-als-annahme', 'modus-machen', 'agents', 'skizze', 'insel-nicht-weiter', 'titel', 'fragen', 'kein-scharfes-s', 'skill'],
     }],
   },
 
@@ -454,7 +454,7 @@ Stand: 31.10.2026
     }],
   },
 
-  'anfrage': {
+  'luecke-ohne-skill': {
     gut: {
       aufrufe: [LAGE, { tool: 'luecke_melden', input: { frage: 'Wie lässt sich die Belegung einer Ferienwohnung auf der eigenen Seite automatisch mit dem Kalender einer Buchungsplattform abgleichen?', art: 'nicht_abgedeckt', skill: 'webseite-planen', phase: 'P3', skills_stand: '0.2.0' } }],
       antwort: 'Dafür hat Albatros noch kein Know-how, und ich will dir nichts erfinden. Ich möchte die Frage ohne deinen Namen an Albatros melden. Darf Albatros Fragen, die die Skills noch nicht abdecken, mit deinem Konto speichern, damit die Skills besser werden? Du kannst sie im Cockpit ansehen und löschen.',

@@ -12,7 +12,7 @@ Gleiche Begriffe überall: Skills, Missionen, Website, Videos. Wer übersetzt, n
 
 Anrede: Deutsch «du», Französisch «tu», Italienisch «tu», Englisch «you» (locker, nicht förmlich). Schweizer Schreibweise: Deutsch mit «ss», Französisch und Italienisch mit «» (wie in der Schweiz), Englisch britisch (colour, organise). Preise: «CHF 15» in allen Sprachen.
 
-Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `Freigegeben:` …) und die Marken `[Annahme: …]` und `[offen: …]` in jeder Sprache deutsch, damit `lage` und die Prüfskripte sie lesen; nach dem Doppelpunkt schreibt die KI in der Sprache der Person. Jede übersetzte `SKILL.md`, die die Marken nutzt, sagt das in einem Satz. Übersetzt ist nur der Platzhalter im Entwurf (`[à compléter]`, `[da completare]`, `[placeholder]`), denn ihn liest die Person auf der Seite.
+Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `Freigegeben:` …) und die Marken `[Annahme: …]` und `[offen: …]` in jeder Sprache deutsch, damit `lage` und die Prüfskripte sie lesen; nach dem Doppelpunkt schreibt die KI in der Sprache der Person. Jede übersetzte `SKILL.md`, die die Marken nutzt, sagt das in einem Satz. Übersetzt ist nur der Platzhalter im Entwurf (`[à compléter]`, `[da completare]`, `[placeholder]`), denn ihn liest die Person auf der Seite. Welche Wörter als Marke zählen, steht in `fahrplan.yaml` unter `marken`; dort steht auch, welche Werte am Anfang einer Zeile deutsch bleiben (`werte`, z. B. `Eigene Domain: später`).
 
 | Deutsch | Français | Italiano | English | Bedeutung |
 |---|---|---|---|---|
@@ -23,11 +23,13 @@ Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `
 | Lernen oder machen (Modus) | apprendre ou faire | imparare o fare | learn or do | Zeile `Modus:` in `docs/projekt.md` mit `lernen` oder `machen`, die Werte bleiben deutsch |
 | Lücken melden (`luecke_melden`) | signaler les lacunes | segnalare le lacune | reporting gaps | wo das Know-how fehlt, nur mit Einwilligung; niemand antwortet darauf |
 | Anfrage (Feld `anfrage` von `lage`) | demande | richiesta | request | worum die Person die KI gerade bittet, umformuliert, nur mit Einwilligung; was ein Mensch sehen muss, geht mit `coach_fragen` und `anliegen` |
-| Anfrage (eines Besuchers, «Platz anfragen») | demande | richiesta | enquiry | |
+| Besucheranfrage (eines Besuchers, «Platz anfragen») | demande d'un visiteur | richiesta di un visitatore | enquiry | was Besucher über die Seite der Person schicken; nicht dasselbe wie das Feld `anfrage` von `lage` |
 | Skill | skill | skill | skill | |
 | Mission | mission | missione | mission | |
 | Fahrplan (`fahrplan.yaml`) | plan de vol | piano di volo | flight plan | der feste Ablauf in 13 Phasen (P1 bis P13); die Phasen nennt nur `lage`, der Person zeigt die KI die Etappen |
 | Etappe | grande étape | tappa | stage | drei Etappen des Fahrplans; auf Französisch nicht «étape», das heisst schon Schritt |
+| Phase (P1 bis P13) | phase | fase | phase | einer der 13 Teile des Fahrplans, mit Skill, Ergebnis und Pflichtfragen; heisst nie «Schritt» |
+| Schritt (Insel-Schritt, `schritt_melden`) | étape (sur l'île) | passo (sull'isola) | step (on the island) | was die KI mit `schritt_melden` meldet, 19 Schritte von `idee` bis `domain`; eine Phase hat einen oder mehrere Schritte, P13 je nach Wohnort andere |
 | abheben · Idee und Produkt | décoller · l'idée et le produit | decollare · l'idea e il prodotto | take off · the idea and the product | Etappe 1 (P1 bis P8): bis zum Entwurf zum Durchklicken |
 | fliegen · bauen und freigeben | voler · construire et valider | volare · costruire e approvare | fly · build and release | Etappe 2 (P9 bis P11): die Seite auf dem eigenen Computer, Freigabe, Wohnort |
 | landen · live und der erste Fan | atterrir · la mise en ligne et le premier fan | atterrare · la messa online e il primo fan | land · going live and your first fan | Etappe 3 (P12, P13 und danach); in Missionen heisst das Feld `stufe` |
@@ -48,7 +50,7 @@ Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `
 | Hafen (code.aufwind.sh) | port | porto | harbour | wo das Logbuch liegt |
 | Fliessband (Pipeline) | tapis roulant | nastro trasportatore | conveyor belt | |
 | Adresse (name.aufwind.sh) | adresse | indirizzo | address | |
-| eigene Domain | propre domaine | dominio proprio | own domain | |
+| eigene Domain | propre domaine | dominio proprio | own domain | freiwillig (P13); die Zeile `Eigene Domain:` in `docs/live.md` beginnt mit `jetzt`, `später` oder `nie`, deutsch |
 | Zurück auf gestern (Snapshot) | retour à hier | ritorno a ieri | back to yesterday | |
 | Foto des Servers (Snapshot) | photo du serveur | foto del server | photo of the server | |
 | Coach · KI | Coach · IA | Coach · IA | Coach · AI | Kennzeichen der KI |
@@ -73,16 +75,17 @@ Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `
 | einen Altbau renovieren | rénover une vieille maison | ristrutturare una casa vecchia | renovating an old house | Bild für `webseite-modernisieren` |
 | Bestandsaufnahme · Bestandsplan (`docs/bestand.md`) | état des lieux · plan de l'état des lieux | inventario · piano dell'inventario | inventory · inventory plan | was die alte Seite hat |
 | der Rohbau in der eigenen Werkstatt | le gros œuvre dans ton propre atelier | il rustico nella tua officina | the shell in your own workshop | Bild für `webseite-bauen` (P9, P10) |
-| Skizze (`design/skizze.html`) | esquisse | schizzo | sketch | die graue Startseite aus P1; in P6 wird daraus das Mockup |
+| Skizze (`design/skizze.html`) | esquisse | schizzo | sketch | die graue Startseite aus P1; nur sie heisst «graue Skizze», in P6 wird daraus das graue Mockup |
 | zweite Meinung | deuxième avis | secondo parere | second opinion | P4: Prüfung des Plans in frischem Kontext gegen die feste Prüfliste |
-| Mockup (`design/mockup.html`) | maquette | mockup | mockup | P6, Skill `gestaltung`: die graue Startseite in ihrer Reihenfolge; Insel-Schritt `mockup` |
+| graues Mockup (`design/mockup.html`) | maquette grise | mockup grigio | grey mockup | P6, Skill `gestaltung`: die graue Startseite in ihrer Reihenfolge («Stimmt die Reihenfolge im grauen Mockup?», Zeile `Reihenfolge: bestätigt am <Datum>`); Insel-Schritt `mockup`; nie «Skizze» |
 | drei Richtungen | trois directions | tre direzioni | three directions | P6, `design/richtungen/`; Insel-Schritt `entwuerfe`, sobald das Musterblatt gesehen ist |
 | PRD (`docs/prd.md`) | PRD | PRD | PRD | P9, Skill `webseite-bauen`: der Bauplan, aus dem freigegebenen Entwurf abgeleitet, ohne eigene Unterschrift |
 | Insel (Cockpit) | île | isola | island | dort wächst pro Projekt ein Haus mit jedem Schritt |
 | Konzept (Skill `konzept`) | concept | concetto | concept | Charakter vor Farben |
-| Musterblatt | planche d'échantillons | tavola dei campioni | sample sheet | Farben, Schriften, Knöpfe und Felder auf einem Blatt |
+| Musterblatt | planche d'échantillons | tavola dei campioni | sample sheet | Farben, Schriften, Knöpfe und Felder auf einem Blatt; nach dem Ja der Person `Musterblatt: gesehen am <Datum>` in `docs/designsystem.md`, deutsch |
 | Entwurf (ganze Seite zum Durchklicken, Skill `entwurf`) | ébauche | bozza | draft | das begehbare Modell vor dem Rohbau (P7) |
-| Werkstatt (Node, npm und Git auf dem Computer) | atelier | officina | workshop | P7: vor dem Entwurf geprüft, ab da helfen Prüfskripte |
+| Modell (Bild für den Entwurf) | modèle | modello | model | das begehbare Modell des Hauses vor dem Rohbau (P7, Skill `entwurf`); auf Französisch «modèle», nicht «maquette», das ist das graue Mockup aus P6 |
+| Werkstatt (Node, npm und Git auf dem Computer, bei einem Baustein auch Bun) | atelier | officina | workshop | P7: vor dem Entwurf geprüft (Zeile `Werkstatt:`), ab da helfen Prüfskripte |
 | Attrappe (Seite eines Bausteins im Entwurf) | factice | simulazione | dummy | sieht aus wie echt, sendet aber nichts; gebaut wird sie in P9 |
 | [Platzhalter] | [à compléter] | [da completare] | [placeholder] | fehlender Text im Entwurf |
 | Freigabe zum Bauen | autorisation de construire | via libera per costruire | approval to build | Ja zum Entwurf (P8); `Freigegeben zum Bauen:` bleibt deutsch |

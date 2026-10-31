@@ -13,8 +13,19 @@
 #              annahme_ok  die KI schlägt einen Standard vor und trägt ihn als [Annahme] ein; die Person bestätigt alle
 #                          Annahmen einer Phase in einer einzigen Nachricht
 #              ki          die KI klärt es selbst (Recherche, Messung) und zeigt das Ergebnis
-#   ablage:    Datei und Zeilenanfang im Projekt der Person
+#   ablage:    Datei und Zeilenanfang im Projekt der Person; je Pflichtfrage eine eigene Zeile, damit sich die Antworten unterscheiden lassen
+#   werte:     (optional) der Wert beginnt mit einem dieser Wörter, deutsch in allen Sprachen wie der Zeilenname; danach darf ein Satz
+#              in der Sprache der Person folgen (z. B. «Eigene Domain: später, wenn die Saison läuft»)
 #   frage, warum: je Sprache (de, fr, it, en); die KI formuliert in ihren Worten, der Inhalt bleibt
+#
+# Phase:
+#   methoden:  Methoden des Wegs Geschäft (privates Repo albatros-methoden); wann sagt, ob sie vor den Schritten des Skills kommen
+#              (vor_skill) oder danach (nach_skill), so wie Skill und Methode es selbst beschreiben
+#   ausgaenge: wie die Phase auf dem Weg Geschäft enden kann; ablage ist die Zeile, in der die Methode der Phase den Ausgang festhält;
+#              geschafft sind die Ausgänge, mit denen die Phase geschafft ist. Gehört eine Methode der Phase zur Stufe, ist die Phase vorher
+#              nicht geschafft, auch wenn das Ergebnis des Skills steht (P1: Idee fertig, Entscheid fehlt, ist anpassen oder eine Hausaufgabe)
+#   insel_je_wohnort: (nur wo der Wohnort aus P11 die Schritte ändert) die Insel-Schritte, die die KI je Wohnort bis zum Abschluss
+#              meldet; weitere Schritte der Phase sind freiwillig (siehe wohnorte)
 
 version: 2
 stand: 2026-10-31
@@ -26,6 +37,23 @@ ja_momente:              # die drei Freigaben; alles andere ist eine Wahl oder e
   - { phase: P4, frage: plan-bestaetigt }
   - { phase: P8, frage: freigabe-entwurf }
   - { phase: P10, frage: freigabe }
+
+# Marken am Anfang eines Werts («Erfolg: [offen: …]»), so wie lage, scripts/punkte.ts und die Prüfskripte der Skills eine Zeile lesen.
+# Ohne Gross- und Kleinschreibung, Sternchen (Fettdruck) fallen vorher weg, nach dem Wort folgt kein Buchstabe und keine Ziffer.
+# In docs/ bleiben [offen …] und [Annahme …] in jeder Sprache deutsch (GLOSSAR.md); die übrigen Wörter nimmt Albatros nur hin, falls
+# eine KI sie doch übersetzt. Den Platzhalter im Entwurf liest die Person auf der Seite, darum ist er übersetzt.
+marken:
+  offen: [offen, ouvert, aperto, open]                                                # noch nicht beantwortet: die Zeile ist nicht belegt
+  platzhalter: [Platzhalter, à compléter, a compléter, a completer, da completare, placeholder]  # Text fehlt noch: nicht belegt
+  annahme: [Annahme, hypothèse, hypothese, ipotesi, assumption]                       # Vorschlag der KI: belegt, aber keine Antwort der Person
+
+# Wohnort aus P11 (Pflichtfrage wohnort, Zeile «Wohnort:» in docs/lancieren.md): Der Wert beginnt in allen Sprachen mit «Albatros Light»
+# oder «Albatros Pilot»; jeder andere belegte Wert heisst selbst (fr «par toi-même», it «da te», en «hosting it yourself»). Ohne
+# belegte Zeile gilt das Abo im Konto: light, pilot, Gratis heisst selbst. Der Wohnort bestimmt die Insel-Schritte von P13
+# (insel_je_wohnort); bei selbst meldet die KI hafen und fliessband nur, wo es sie gibt (Repo, Fliessband beim Anbieter).
+wohnorte:
+  light: 'Albatros Light'
+  pilot: 'Albatros Pilot'
 
 modus:
   standard: machen
@@ -44,7 +72,7 @@ phasen:
     bild: Das Ziel auf der Karte einkreisen, bevor man losfliegt
     skill: webseite-planen
     abschnitt: Idee
-    methoden: { geschaeft: [ideen-check] }
+    methoden: { geschaeft: [ideen-check], wann: nach_skill }     # webseite-planen Idee Schritt 7; ideen-check: Projektname und Skizze macht der Skill
     ergebnis:
       - datei: docs/projekt.md
         zeilen: ['Projektname:', 'In einem Satz:', 'Für wen:', 'Hauptsache:', 'Erfolg:', 'Bestehende Seite:', 'Modus:', 'Stand:', 'Nächster Schritt:']
@@ -52,7 +80,8 @@ phasen:
       - datei: design/skizze.html
     insel: [idee]
     lernmomente: ['Warum ein Projekt einen Namen braucht, bevor es etwas gibt', 'Eine Hauptsache statt fünf']
-    ausgaenge: { geschaeft: [weiter, anpassen, stoppen] }
+    # geschafft wie webseite-planen (Idee, «Geschafft, wenn») und ideen-check («Mission prüfen»): erst mit weiter oder stoppen
+    ausgaenge: { geschaeft: [weiter, anpassen, stoppen], geschafft: [weiter, stoppen], ablage: 'docs/ideen-check.md#Entscheid:' }
     pflichtfragen:
       - id: projektname
         bereich: ablauf
@@ -142,6 +171,7 @@ phasen:
         bereich: ablauf
         antwortet: annahme_ok
         ablage: 'docs/projekt.md#Modus:'
+        werte: [lernen, machen]
         frage:
           de: 'Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen?'
           fr: 'Est-ce que je le fais simplement et je t''explique chaque étape en une phrase, ou veux-tu apprendre toi-même les étapes importantes ?'
@@ -160,7 +190,7 @@ phasen:
     bild: Die Reiseführer lesen, bevor man losfliegt
     skill: webseite-planen
     abschnitt: Research
-    methoden: { geschaeft: [zielgruppe, angebot-und-preis] }
+    methoden: { geschaeft: [zielgruppe, angebot-und-preis], wann: vor_skill }   # webseite-planen Research: «Zuerst kommen die Methoden»
     varianten: { modernisieren: { skill: webseite-modernisieren, abschnitt: Bestandsaufnahme } }
     ergebnis:
       - datei: docs/recherche.md
@@ -260,7 +290,7 @@ phasen:
     bild: Der Grundriss des Hauses
     skill: webseite-planen
     abschnitt: Grundriss
-    methoden: { geschaeft: [landingpage] }
+    methoden: { geschaeft: [landingpage], wann: vor_skill }     # webseite-planen Grundriss: die Methode schreibt den Bauplan, dann die fehlenden Zeilen
     ergebnis:
       - datei: docs/plan.md
         zeilen: ['Projektname:', 'Seiten:', 'Funktionen:', 'Zugang:', 'Sprachen:', 'Setup:', 'Testing:', 'Release:', 'Pflege:', 'Stand:']
@@ -447,7 +477,7 @@ phasen:
     etappe: abheben
     bild: Der Charakter des Hauses, bevor Farben gewählt werden
     skill: konzept
-    methoden: { geschaeft: [marke] }
+    methoden: { geschaeft: [marke], wann: vor_skill }           # konzept: «Zuerst kommt die Methode marke»
     ergebnis:
       - datei: docs/konzept.md
         zeilen: ['Name:', 'Kern:', 'Ton:', 'Charakter:', 'Maskottchen:', 'Muss bleiben:', 'Bildsprache:']
@@ -500,6 +530,7 @@ phasen:
         bereich: design
         antwortet: person
         ablage: 'docs/konzept.md#Maskottchen:'
+        werte: [ja, nein, später]
         frage:
           de: 'Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später.'
           fr: 'Un personnage doit-il en faire partie, qui guide à travers ton site ? Oui, non ou plus tard.'
@@ -564,19 +595,20 @@ phasen:
       - datei: design/tokens.css
       - datei: design/musterblatt.html
       - datei: docs/designsystem.md
-        zeilen: ['Richtung:', 'Farben:', 'Schriften:', 'Abstände:', 'Komponenten:', 'Maskottchen:']
+        zeilen: ['Reihenfolge:', 'Richtung:', 'Farben:', 'Schriften:', 'Abstände:', 'Komponenten:', 'Maskottchen:', 'Musterblatt:']
     insel: [mockup, entwuerfe]
     lernmomente: ['Warum Farben und Schriften nur an einem Ort stehen']
     pflichtfragen:
       - id: reihenfolge
         bereich: struktur
         antwortet: person
-        ablage: 'docs/designsystem.md#Richtung:'
+        ablage: 'docs/designsystem.md#Reihenfolge:'
+        werte: [bestätigt]                        # «Reihenfolge: bestätigt am <Datum>» (gestaltung, Schritt 1)
         frage:
-          de: 'Stimmt die Reihenfolge auf der grauen Skizze?'
-          fr: 'L''ordre sur l''esquisse grise est-il juste ?'
-          it: 'L''ordine sullo schizzo grigio è giusto?'
-          en: 'Is the order on the grey sketch right?'
+          de: 'Stimmt die Reihenfolge im grauen Mockup?'
+          fr: 'L''ordre dans la maquette grise est-il juste ?'
+          it: 'L''ordine nel mockup grigio è giusto?'
+          en: 'Is the order in the grey mockup right?'
         warum:
           de: 'Aufbau vor Aussehen.'
           fr: 'La structure avant l''apparence.'
@@ -599,7 +631,8 @@ phasen:
       - id: musterblatt
         bereich: design
         antwortet: person
-        ablage: 'docs/designsystem.md#Richtung:'
+        ablage: 'docs/designsystem.md#Musterblatt:'
+        werte: [gesehen]                          # «Musterblatt: gesehen am <Datum>, passt» (gestaltung, Schritt 5, nach dem Ja)
         frage:
           de: 'Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?'
           fr: 'La planche d''échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ?'
@@ -624,7 +657,7 @@ phasen:
           fr: 'Beaucoup de natels affichent en sombre la nuit.'
           it: 'Molti telefonini di notte mostrano tutto scuro.'
           en: 'Many phones switch to dark at night.'
-    gate: 'tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen.'
+    gate: 'tokens.css und musterblatt.html existieren; das Musterblatt nutzt nur var(--…) aus tokens.css; die Person hat das Musterblatt gesehen und Ja gesagt (Zeile «Musterblatt: gesehen am <Datum>»).'
 
   - id: P7
     titel: Ganze Webseite entwerfen
@@ -643,10 +676,10 @@ phasen:
         antwortet: ki
         ablage: 'docs/entwurf.md#Werkstatt:'
         frage:
-          de: 'Sind Node, npm und Git da (Prüfung im Terminal ohne Node: command -v, unter Windows where)?'
-          fr: 'Node, npm et Git sont-ils là (vérification dans le terminal sans Node : command -v, sous Windows where) ?'
-          it: 'Ci sono Node, npm e Git (verifica nel terminale senza Node: command -v, su Windows where)?'
-          en: 'Are Node, npm and Git there (check in the terminal without Node: command -v, on Windows where)?'
+          de: 'Sind Node, npm und Git da, bei einem Baustein auch Bun (Prüfung im Terminal ohne Node: command -v, unter Windows where)?'
+          fr: 'Node, npm et Git sont-ils là, et Bun aussi avec une brique (vérification dans le terminal sans Node : command -v, sous Windows where) ?'
+          it: 'Ci sono Node, npm e Git, e con un blocco anche Bun (verifica nel terminale senza Node: command -v, su Windows where)?'
+          en: 'Are Node, npm and Git there, and Bun too with a building block (check in the terminal without Node: command -v, on Windows where)?'
         warum:
           de: 'Ab hier helfen Prüfskripte; wer ohne Werkzeug baut, sucht Fehler am falschen Ort.'
           fr: 'À partir d''ici, des scripts de vérification aident ; qui construit sans outils cherche les erreurs au mauvais endroit.'
@@ -911,17 +944,22 @@ phasen:
     bild: Die Eröffnung mit Band vor der Tür
     skill: lancieren
     abschnitt: Live schalten
-    methoden: { geschaeft: [go-live-check] }
+    methoden: { geschaeft: [go-live-check], wann: nach_skill }  # lancieren Schritt 6, wenn die Seite unter ihrer Adresse erreichbar ist
     varianten: { modernisieren: { zusatz: 'Domain umstellen mit Umleitungen für alte Adressen; MX-Einträge nie anfassen.' } }
     ergebnis:
       - datei: docs/live.md
-        zeilen: ['Live seit:', 'Adresse:', 'Geprüft:', 'Angekündigt:']
+        zeilen: ['Live seit:', 'Adresse:', 'Eigene Domain:', 'Geprüft:', 'Angekündigt:']
     insel: [hafen, fliessband, live, domain]
+    insel_je_wohnort:                           # gemeldet bis live (lancieren Teil 2); domain ist freiwillig
+      light: [hafen, live]                      # Light hat kein Fliessband: etwa eine Minute nach dem Push ist seite/ online
+      pilot: [hafen, fliessband, live]
+      selbst: [live]                            # hafen und fliessband nur, wo es sie gibt (Repo bei GitHub, Fliessband beim Anbieter)
     pflichtfragen:
       - id: adresse
         bereich: release
         antwortet: person
-        ablage: 'docs/live.md#Adresse:'
+        ablage: 'docs/live.md#Eigene Domain:'    # «Adresse:» bleibt die URL, die lancieren schreibt
+        werte: [jetzt, später, nie]
         frage:
           de: 'Eigene Adresse (Domain) jetzt, später oder nie?'
           fr: 'Ta propre adresse (domaine) maintenant, plus tard ou jamais ?'
