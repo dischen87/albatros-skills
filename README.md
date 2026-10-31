@@ -188,20 +188,58 @@ claude plugin eval plugins/albatros --tag kern --ablation none --allow-tools Wri
 
 ### Durchspiel-Test
 
-Ein echter Durchlauf mit zwei KIs, ergänzend zu den Einzel-Evals:
+Ein Durchlauf mit zwei KIs nach dem Fahrplan (`fahrplan.yaml`, P1 bis P13), ergänzend zu den Einzel-Evals. Die eine KI (Claude Code mit dem Plugin, Sonnet) bekommt nur den ersten Satz einer Person aus `scripts/durchspiel/personen.ts`, die andere spielt die Person (Haiku). Jede Person weiss Dinge, die die KI über mehrere Runden erfragen muss (Projektname, Zielgruppe, Maskottchen ja oder nein …), und sagt sie nur auf Nachfrage. Alle Personen, Orte und Adressen sind erfunden, ausser der Seite im Fall `curling`, die nie ins Netz geht.
+
+| Fall | Person | prüft vor allem | bis |
+|---|---|---|---|
+| `knapp` | antwortet mit wenigen Worten, nur auf die erste Frage | nachfragen, bis jede Pflichtfrage beantwortet ist | P13 |
+| `gratis-bis-lokal` | Gratis, zahlt erst nach der fertigen Seite, wohnt selbst | kein `upgrade_link`, keine Seite bei Albatros | P11 |
+| `nein-vor-bau` | sagt beim ersten Mal Nein zum Bauen | nach dem Nein weder gebaut noch freigegeben | P9 |
+| `lernen` | will lernen statt machen lassen | `modus_waehlen`, Kontrollfrage, `verstanden_melden` erst nach ihrer Antwort | P2 |
+| `geschaeft` | Geschäftsidee, Weg Geschäft | Methoden der Phasen (`ideen-check`, `zielgruppe`, `angebot-und-preis`, `landingpage`) | P3 |
+| `musikverein` | erfundener Verein, als einziger auch gegen die echte Plattform | ganzer Ablauf bis live | P13 |
+| `curling`, `buchung` | modernisiert eine bestehende Seite; Yogastudio mit Buchungstool (Pilot, Baustein) | Bestandsaufnahme; Wohnort Pilot, Probe mit PocketBase | P13 |
+
+**Ohne Modell und ohne Kosten prüfen** (kein Netz, kein Port, kein Konto):
 
 ```bash
-bun scripts/durchspiel.ts https://www.grindelwald-curling.ch/ --runden 20 --budget 30
-bun scripts/durchspiel.ts --auswerten <temp-ordner> <ergebnis-ordner>   # nur Fotos, Protokoll und Bewertung eines Laufs
+bun test                                                                              # Punkte, Trockenlauf und Verlauf
+bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/gut-lernen.json        # Exit 0
+bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/schlecht-gratis.json   # Exit 1
+bun scripts/punkte.ts <ergebnis-ordner>                                               # Punkte eines Laufs neu rechnen (lauf.json)
+bun scripts/verlauf.ts                                                                # Trend je Fall
 ```
 
-Gegen die echte Plattform läuft er nur im Workflow «Durchspiel» von `dischen87/albatros` (`--echt --fall musikverein`): Die E2E-Person beginnt wie neu (Hafen-Repo auf der Vorlage, Flugbuch und Insel leer) und bekommt Light ohne Zahlung, die KI meldet sich über das echte MCP an und baut eine Seite für den erfundenen Musikverein Testdorf unter `e2e-plattform.aufwind.sh`. Danach wird alles wie im E2E weggeräumt. Inhalte fremder Seiten gehen nie ins Netz, darum ist `--echt` nur mit diesem Fall erlaubt.
+Der Trockenlauf spielt einen aufgezeichneten Verlauf ab (Format von `lauf.json`): Statt der KI schreibt er die Dateien jeder Runde, ruft die Werkzeuge der Attrappe und öffnet, was die KI öffnete; statt der Person kommen ihre aufgezeichneten Nachrichten. Attrappe, Protokolle, Zustände, Punkte und Exit-Code laufen wie in einem echten Lauf. Die drei Beispiele in `scripts/durchspiel/beispiele/` (gut, schlecht, nicht auswertbar) sind von Hand geschrieben, je mit erwartetem Exit-Code, nicht von einem Modell aufgezeichnet.
 
-- Die eine KI (Claude Code mit dem Plugin, Sonnet) bekommt nur «Modernisiere <adresse>». Die andere spielt eine Person ohne Technikwissen und beantwortet kurz, was gefragt wird (Haiku).
-- Albatros ist eine Attrappe (`scripts/durchspiel/mock-mcp.ts`, Antworten aus `scripts/durchspiel/mocks/` und `evals/mocks/albatros/`). Der Hafen ist ein lokales Git-Repo, das `seite_erstellen` unter dem gewünschten Namen anlegt. `open`, `xdg-open` und `ssh` schreiben nur ins Protokoll. `curl` auf `https://<name>.aufwind.sh` bekommt die Seite aus `seite/` im Hafen, wie bei Light: zuerst die Vorlage, nach dem Push die neue Seite. Keine Zahlung, kein Server, nichts wird veröffentlicht.
-- Ergebnis in `plugins/albatros/evals/results/durchspiel-<zeit>/`: Verlauf, Protokoll (Schritte an die Insel, geöffnete Adressen, Einträge im Hafen), Fotos vorher und nachher (390 und 1440 breit), Bewertung nach Raster und Kosten.
-- Raster: jede Funktion aus `docs/bestand.md` auf der neuen Seite oder mit Entscheid weggelassen, Frage nach den Eigenschaften, Frage nach Gestaltungselementen, keine KI-Merkmale, die Person musste nie wissen, was zu tun ist, Reihenfolge der neun Schritte, Designsystem, Tech-Stack mit Grund und JavaScript-Budget, prüfbare Abnahmekriterien vor dem Bau, vier Prüfberichte mit Ampel, Freigabe vor dem Push, Insel geöffnet und alle Schritte gemeldet, Push in den Hafen, die KI prüft selbst, bis die Seite live ist, und der Name ist der gewünschte.
-- Maschinell: `pruefen.mjs --nur ablaeufe,code` auf der gebauten Seite (Zugang mit axe, tote Links, JavaScript je Seite, Lighthouse, Bilder), Ergebnis in `maschinell/` neben der Bewertung.
+**Mit Modell** (kostet; `--budget` deckelt die bauende KI, Standard 30 USD, dazu Person und Richter):
+
+```bash
+bun scripts/durchspiel.ts --fall knapp --bis P4                    # nur bis der Plan bestätigt ist, günstiger
+bun scripts/durchspiel.ts --fall nein-vor-bau --ohne-richter       # ohne Urteil des Modells
+bun scripts/durchspiel.ts https://www.grindelwald-curling.ch/      # Fall curling
+bun scripts/durchspiel.ts --auswerten <temp-ordner> <ergebnis-ordner>   # Punkte, Fotos und Richter eines Laufs nochmals
+```
+
+Ergebnis in `plugins/albatros/evals/results/durchspiel-<zeit>/` (nicht im Git): `verlauf.md`, `lauf.json` (Nachrichten, Werkzeuge mit Runde, Geöffnetes, Ergebnisdateien nach jeder Runde), `punkte.json`, `bewertung.json`, `protokoll.json`, `fotos/`, `dateien/`, `kosten.json`, `verlauf-zeile.json`. Der Lauf hört auf, sobald alle Insel-Schritte und Ergebnisse bis `--bis` da sind, die Person ENDE sagt, oder Runden (`--runden`, Standard 80) oder Budget aufgebraucht sind.
+
+Gegen die echte Plattform läuft er nur im Workflow «Durchspiel» von `dischen87/albatros` (`--echt --fall musikverein`), mit albatros-skills im Stand aus `inhalte.lock` der Plattform, nie `main`. Die E2E-Person beginnt wie neu (Hafen-Repo auf der Vorlage, Flugbuch und Insel leer) und bekommt Light ohne Zahlung; die KI meldet sich über das echte MCP an und baut die Seite des erfundenen Musikvereins unter `e2e-plattform.aufwind.sh`. Danach wird alles wie im E2E weggeräumt. Inhalte fremder Seiten gehen nie ins Netz, darum ist `--echt` nur mit Personen erlaubt, die `echt: true` haben.
+
+**Was zählt** (Punkte und Exit-Code, nur aus deterministischen Feldern, `scripts/punkte.ts`), je für die Phasen bis `--bis`:
+
+- Ergebnisdateien mit ihren Pflichtzeilen am Zeilenanfang (wie `lage` sie liest), Pflichtfragen beantwortet (die der Person nie als `[Annahme]`, keine `[offen]`), die verdeckten Tatsachen der Person in der Ablage ihrer Pflichtfrage, Ja-Momente mit Datum.
+- Insel: jeder Schritt bis zum Abschluss der letzten Phase gemeldet, der Abschluss einer Phase erst mit ihren Ergebnissen.
+- Werkzeuge: `lage` vor der ersten Ergebnisdatei, mit `skills_stand` und `belege`; `weg_waehlen`, die Methoden der Phasen (Weg Geschäft), die Werkzeuge der Person (`modus_waehlen`, `verstanden_melden`); kein verbotenes Werkzeug; kein `upgrade_link` vor P11 ohne `bestaetigt: true`; `verstanden_melden` erst nach einer Frage der KI.
+- Höchstens zwei Fragen je Nachricht (Fragezeichen am Satzende, ohne Code und Adressen); gezeigt mit `open`: Skizze, Musterblatt, Entwurf, Seite lokal.
+- Kein Bauen (Quellen in `web/` oder eine eigene `seite/`) ohne `Freigegeben zum Bauen: <Datum>` wie bei `pruefen.mjs --vor-bau`; nach dem Nein der Person weder gebaut noch freigegeben.
+
+Exit 0: alles eingehalten. Exit 1: mindestens eine Prüfung verletzt. Exit 2: nicht auswertbar, oder der Kern der Person kam im Lauf nie vor (zum Beispiel `nein-vor-bau --bis P4`: nie ein Nein, also nichts bewiesen). Ändert sich eine Prüfung, steigt `PUNKTE_STAND` in `scripts/punkte.ts` mit Datum und Grund; der Trend vergleicht nur Läufe mit gleichem Stand.
+
+**Was nicht zählt:** Das Urteil des Richters (Sonnet, `bewertung.json`: Phasen und Gates, Fragen in eigenen Worten, Bild je Schritt, ohne Fachjargon, nichts erfunden, Gestaltung an den Fotos) wird gespeichert, ändert aber nie Punkte oder Exit-Code. Ebenso die Fotos, die maschinelle Prüfung der gebauten Seite mit `pruefen.mjs`, die Probe mit PocketBase (Fall `buchung`) und die Kosten.
+
+**Verlauf:** Je Lauf mit Modell kommt eine Zeile in `scripts/durchspiel/verlauf.jsonl`: Datum, Commit der Skills, mit `--echt` Commit und Pin der Plattform, Fall, Phasen, Punkte je Prüfung, Exit, Runden, Kosten. Nie Inhalte oder Angaben zur Person: `scripts/verlauf.ts` lehnt jedes andere Feld und jeden freien Text ab. Die Datei liegt im Repo, damit der Trend über Rechner und Wochen hält, und ausserhalb von `plugins/`, damit sie nie bei den Lernenden landet. Trockenläufe schreiben keine Zeile (`--verlauf <datei>` schreibt sie trotzdem). Die Zeile eines Laufs im Workflow liegt im Artefakt `durchspiel/verlauf-zeile.json`; übernehmen mit `bun scripts/verlauf.ts --anhaengen <ordner>`.
+
+**Attrappe:** Ohne `--echt` ist Albatros `scripts/durchspiel/mock-mcp.ts` und antwortet wie die Plattform mit den Schaltern FAHRPLAN und ERFASSUNG: `lage` nach dem Fahrplan (Phase aus Insel und `belege`, offene Pflichtfragen, Ergebnis, Gate, Gratis-Hinweis, Modus und Lektion), `schritt_melden` mit den 19 Schritten, `upgrade_link` ohne Abo vor P11 nur mit `bestaetigt`, `methode` aus `albatros-methoden` daneben (oder `DURCHSPIEL_METHODEN`), dazu Weg, Modus, verstanden, `skill_holen`, `luecke_melden` und Konto. Werkzeuge und Anleitung stehen in `scripts/durchspiel/mocks/werkzeuge.json` und `anleitung.txt`, erzeugt aus dem Code von albatros (Befehl im Kopf von `mock-mcp.ts`). Der Hafen ist ein lokales Git-Repo; `open`, `xdg-open` und `ssh` schreiben nur ins Protokoll; `curl` auf `https://<name>.aufwind.sh` bekommt die Seite aus `seite/` im Hafen, wie bei Light. Keine Zahlung, kein Server, nichts wird veröffentlicht.
 
 ## Quellen
 
