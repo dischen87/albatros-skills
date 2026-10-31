@@ -3,7 +3,7 @@ name: domain
 description: "Finds, buys or connects an own domain (e.g. meinladen.ch) for the site or server at Albatros, with Light as with Pilot; optional, when going live (P13). Explains domain and DNS with the picture of an address in the phone book, suggests names, uses domain_suchen to search what's free and buys through Albatros with domain_kaufen (the person is the owner and only enters their details on the payment page). A domain the person already has gets connected with domain_verbinden: DNS records, the TXT proof _albatros and a check, until the site shows the padlock in the browser. Use this skill for “my own domain”, “my own address”, “buy a .ch”, “which domain is free”, “search for a domain”, “DNS”, “A record”, “CNAME”, “TXT record”, “my domain doesn't point to my site”, “certificate”, “https isn't working”."
 metadata:
   stand: 0.2.0
-  quelle: '7222e3d428b9'
+  quelle: 'ac1706205469'
 ---
 
 # Domain: your address in the phone book
@@ -77,7 +77,9 @@ If the answers match the values from step 4, call `domain_verbinden` again. Alba
 
 ### 7. Check the mission
 
-Open `https://<domain>` with the person. Once the site shows there with the padlock, you report `schritt_melden` with `domain` (Albatros sees it by itself too), check it again from outside (`node scripts/pruefen.mjs --live https://<domain>`) and write the domain into `docs/live.md` under `Adresse:`. Then `mission_pruefen` with `flugschule-09-domain`.
+Open `https://<domain>` with the person. Once the site shows there with the padlock, you report `schritt_melden` with `domain` (Albatros sees it by itself too), check it again from outside (`node scripts/pruefen.mjs --live https://<domain>`) and write into `docs/live.md` the domain under `Adresse:` and `Eigene Domain: jetzt, <domain>` (skill `lancieren`, step 5). Then `mission_pruefen` with `flugschule-09-domain`.
+
+**With a login** (a building block with sign-in, for example a members' area): the person now signs in once through `https://<domain>`, on the sign-in page. If that works, the site accepts sign-ins and forms through the domain too. If the page says the email or password is wrong although both are right, or a form doesn't go through on the domain, you ask the coach (`coach_fragen`) and say what you checked. Until then, the person signs in through `https://{name}.aufwind.sh`.
 
 ## When it gets stuck
 
