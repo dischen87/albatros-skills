@@ -6,7 +6,7 @@
 # - albatros erzeugt daraus packages/kit/src/fahrplan.ts (am Pin in albatros/inhalte.lock); flugschule, mcp und web importieren nur
 #   das Erzeugte. lage gibt die offenen Pflichtfragen der aktuellen Phase in der Sprache der Person an die KI weiter.
 # - scripts/gute-antwort.ts macht daraus plugins/albatros/evals/GUTE-ANTWORT.md, die Grundlage der Evals.
-# Ändern nur mit Datum und Grund im Abschnitt «Änderungen» von GUTE-ANTWORT.md.
+# Ändern nur mit Datum und Grund als neue Zeile in plugins/albatros/evals/KRITERIEN-LOG.md (GUTE-ANTWORT.md wird erzeugt).
 #
 # Pflichtfrage:
 #   antwortet: person      die Person beantwortet sie immer selbst, auch im Modus machen
@@ -41,7 +41,7 @@ phasen:
   - id: P1
     titel: Idee verstehen
     etappe: abheben
-    bild: Die Bordkarte, auf der steht, wohin die Reise geht
+    bild: Das Ziel auf der Karte einkreisen, bevor man losfliegt
     skill: webseite-planen
     abschnitt: Idee
     methoden: { geschaeft: [ideen-check] }

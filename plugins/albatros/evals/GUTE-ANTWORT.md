@@ -17,7 +17,7 @@ Erzeugt aus `fahrplan.yaml` (Fassung 2, Stand 2026-10-31) mit `bun scripts/gute-
 
 ## P1 Idee verstehen
 
-Etappe abheben · Skill `webseite-planen`, Abschnitt «Idee» · Insel `idee` · Bild: Die Bordkarte, auf der steht, wohin die Reise geht
+Etappe abheben · Skill `webseite-planen`, Abschnitt «Idee» · Insel `idee` · Bild: Das Ziel auf der Karte einkreisen, bevor man losfliegt
 
 - Weg Geschäft: `ideen-check` (Ausgänge: weiter, anpassen, stoppen)
 
