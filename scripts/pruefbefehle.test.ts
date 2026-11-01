@@ -10,7 +10,7 @@
 // Windows (findstr) läuft hier nicht; dort steht der Befehl so nah wie möglich daneben, den Rest entscheidet lage.
 import { afterAll, expect, test } from 'bun:test';
 import { Glob } from 'bun';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ladeFahrplan } from './fahrplan.ts';
@@ -154,6 +154,101 @@ test('Freigabe: mit Leerraum ausserhalb von ASCII nie frei, wo kit nicht frei sa
     }
   expect(unsicher).toEqual([]);
 }, MIT_PROZESSEN);
+
+// Nachbesserung Welle 7 (01.11.2026, Gegenprobe zu w7-26): Die erste Stufe nahm jede Zeile ohne Buchstaben vor «Freigegeben:» als letzte,
+// auch «| Freigegeben: | Datum |», «<!-- Freigegeben: noch nicht -->» oder «- [ ] Freigegeben: [offen]» unter der datierten Zeile; kit
+// zählt sie nicht (vorne fallen nur Leerraum, >, * und - weg). Der Befehl sagte dann «nicht frei», wo kit und der Befehl vor w7-26 «frei»
+// sagten (9 von 21 Zeilen der Gegenprobe, freigabe-neu-strenger.log). Jetzt zählen wie bei kit nur Leerraum, >, * und - davor, dazu jedes
+// Zeichen ausserhalb von ASCII (grep kennt mit LC_ALL=C keinen Unicode-Leerraum; so bleibt der Befehl nie freier als kit). Strenger als kit
+// bleibt er nur mit einem Zeichen ausserhalb von ASCII vor «Freigegeben:» oder direkt hinter einer Jahreszahl allein (STRENGER).
+const REALISTISCH: string[][] = [
+  ['Freigegeben: 31.10.2026, «Ja, so online»'], ['Freigegeben: 31.10.2026, « oui, c\'est bon »'], ['Freigegeben: 31.10.2026, “yes, ship it”'],
+  ['Freigegeben: 2026-10-31, «Ja»'], ['Freigegeben: 31. Oktober 2026, «Ja»'], ['**Freigegeben:** 31.10.2026, «Ja»'], ['- Freigegeben: 31.10.2026 ✓'],
+  ['Freigegeben: 2026 – «Ja»'], ['Freigegeben: 2026 «Ja»'], ['Freigegeben: 31.10.2026 — Anna: «passt»'],
+  ['Freigegeben: 31.10.2026, «Ja»', '| Freigegeben: | Datum |'], ['Freigegeben: 31.10.2026, «Ja»', '# Freigegeben: siehe unten'],
+  ['Freigegeben: 31.10.2026, «Ja»', '"Freigegeben: noch nicht" war der alte Stand'], ['Freigegeben: 31.10.2026, «Ja»', '(Freigegeben: noch nicht)'],
+  ['Freigegeben: 31.10.2026, «Ja»', '1. Freigegeben: noch nicht'], ['Freigegeben: 31.10.2026, «Ja»', '`Freigegeben:` kommt nach der Begehung'],
+  ['Freigegeben: 31.10.2026, «Ja»', '<!-- Freigegeben: noch nicht -->'], ['Freigegeben: 31.10.2026, «Ja»', '_Freigegeben:_ 31.10.2026'],
+  ['Freigegeben: 31.10.2026, «Ja»', '- [ ] Freigegeben: [offen]'], ['Freigegeben: 31.10.2026, «Ja»', '> Freigegeben: 01.11.2026, «Ja, nochmals»'],
+  ['Freigegeben: 31.10.2026, «Ja»', '+ Freigegeben: noch nicht'], ['Freigegeben: 31.10.2026, «Ja»', ': Freigegeben: noch nicht'],
+  ['Freigegeben: 31.10.2026, «Ja»', "'Freigegeben: noch nicht'"], ['Freigegeben: 31.10.2026, «Ja»', '~~Freigegeben: noch nicht~~'],
+];
+const STRENGER: string[][] = [['Freigegeben: 2026 ✓'], ['Freigegeben: 31.10.2026, «Ja»', '• Freigegeben: noch nicht'], ['Freigegeben: 31.10.2026, «Ja»', '«Freigegeben: noch nicht»']];
+test('Freigabe: Zeilen mit Satzzeichen vor «Freigegeben:» zählen wie bei kit nicht; strenger nur mit Zeichen ausserhalb von ASCII', async () => {
+  const gefunden = (await skills()).flatMap(({ datei, text }) => befehle(text, 'docs/prd.md').filter((b) => b.includes('Freigegeben')).map((b) => [datei, b] as const));
+  expect(gefunden.filter(([d]) => d.includes('/lancieren/')).length).toBeGreaterThanOrEqual(8);
+  const abweichungen: string[] = [];
+  for (const [datei, b] of gefunden)
+    for (const z of [...REALISTISCH, ...STRENGER]) {
+      const inhalt = `# PRD\n${z.join('\n')}\n`;
+      const [g, r] = [trifft(b, 'docs/prd.md', inhalt), jaBelegt(F, inhalt, 'Freigegeben:')];
+      const erwartet = STRENGER.includes(z) ? false : r;
+      if (g !== erwartet) abweichungen.push(`${datei}: ${JSON.stringify(z)} grep ${g ? 'frei' : 'nicht frei'}, erwartet ${erwartet ? 'frei' : 'nicht frei'} (kit ${r ? 'frei' : 'nicht frei'})`);
+    }
+  expect(abweichungen).toEqual([]);
+  // STRENGER ist wirklich strenger als kit (sonst gehört der Fall zu REALISTISCH)
+  expect(STRENGER.filter((z) => !jaBelegt(F, `# PRD\n${z.join('\n')}\n`, 'Freigegeben:'))).toEqual([]);
+}, MIT_PROZESSEN);
+
+// Nachbesserung Welle 7 (01.11.2026, Gegenprobe zu w7-26, freigabe-latin1.log): Eine docs/prd.md mit Bytes, die kein UTF-8 sind (Latin-1 aus
+// einem alten Editor). tr ohne LC_ALL=C meldet mit UTF-8-Sprache «Illegal byte sequence» und schneidet die Zeile davor ab (BSD): Eine
+// [Annahme] dahinter fiel weg, der Befehl sagte frei, kit (liest UTF-8, ungültige Bytes als U+FFFD) nicht frei. Schon vor w7-26 so.
+const L1 = (...teile: (string | number)[]) => new Uint8Array(teile.flatMap((t) => (typeof t === 'number' ? [t] : [...new TextEncoder().encode(t)])));
+const LATIN1: Uint8Array[] = [
+  L1('# PRD\nFreigegeben: 31.10.2026 ', 0xab, ' [Annahme: passt]\n'), L1('# PRD\nFreigegeben: 30.10.2026, Ja\nFreigegeben: 31.10.2026 M', 0xe4, 'rz [Annahme]\n'),
+  L1('# PRD\nFreigegeben: 30.10.2026, Ja\nFreigegeben: 31.10.2026 ', 0xe4, ' [ipotesi: s', 0xec, ']\n'), L1('# PRD\nFreigegeben: 31.10.2026, ', 0xab, 'Ja', 0xbb, ' [Annahme: passt]\n'),
+];
+test('Freigabe: docs/prd.md in Latin-1 nie frei, wo kit nicht frei sagt, in jeder Sprach-Einstellung', async () => {
+  const gefunden = (await skills()).flatMap(({ text }) => befehle(text, 'docs/prd.md').filter((b) => b.includes('Freigegeben')));
+  expect(gefunden.length).toBeGreaterThanOrEqual(8);
+  const ohne = Object.fromEntries(Object.entries(process.env).filter(([k]) => k !== 'LANG' && !k.startsWith('LC_')));
+  const sprachen: Record<string, Record<string, string | undefined>> = {
+    'des Rechners': process.env, 'ohne LANG': ohne, C: { ...ohne, LC_ALL: 'C' }, 'C.UTF-8': { ...ohne, LC_ALL: 'C.UTF-8' }, 'en_US.UTF-8': { ...ohne, LC_ALL: 'en_US.UTF-8' },
+  };
+  const unsicher: string[] = [];
+  for (const b of new Set(gefunden))
+    for (const bytes of LATIN1) {
+      expect(jaBelegt(F, new TextDecoder().decode(bytes), 'Freigegeben:')).toBe(false);
+      writeFileSync(join(ordner, 'docs/prd.md'), bytes);
+      for (const [name, env] of Object.entries(sprachen)) {
+        const r = Bun.spawnSync(['sh', '-c', b], { cwd: ordner, env });
+        if (r.exitCode > 1) throw new Error(`${b}: ${r.stderr.toString()}`);
+        if (r.stdout.toString().trim() !== '') unsicher.push(`${name}: ${JSON.stringify(new TextDecoder().decode(bytes))} grep frei, kit nicht frei (${b})`);
+      }
+    }
+  expect(unsicher).toEqual([]);
+}, MIT_PROZESSEN);
+
+// Nachbesserung Welle 7 (01.11.2026): In Claude Code ist grep in der Shell der KI (zsh) eine Funktion, die das eingebaute ugrep ruft (so im
+// Shell-Schnappschuss von Claude Code 2.1.309: ARGV0=ugrep "$CLAUDE_CODE_EXECPATH" -G --ignore-files --hidden -I …). Die Befehle der Skills
+// laufen bei Lernenden mit Claude Code also mit ugrep, nicht mit dem grep, das sh hier nimmt. ugrep kennt Unicode: [[:punct:]] ohne |, `, ~
+// und + (Symbole), ein leeres [^[:print:][:cntrl:]] ist ein Fehler. Gemessen vor dieser Nachbesserung mit 624 Dateien: ugrep 0 unsicher, 26
+// strenger als kit; danach 0 und 15 (welle7/skills/runde2/freigabe). Dieser Test läuft nur in Claude Code mit zsh; CI prüft sh mit GNU grep.
+const CC = process.env.CLAUDE_CODE_EXECPATH;
+const MIT_UGREP = !!CC && existsSync(CC) && Bun.which('zsh') !== null;
+test.skipIf(!MIT_UGREP)('Freigabe: auch mit dem grep von Claude Code (ugrep) nie frei, wo kit nicht frei sagt; die Zeilen der Gegenprobe wie kit', async () => {
+  const gefunden = new Set((await skills()).flatMap(({ text }) => befehle(text, 'docs/prd.md').filter((b) => b.includes('Freigegeben'))));
+  const funktion = `grep() { ARGV0=ugrep "${CC}" -G --ignore-files --hidden -I "$@"; }`;
+  const ohne = Object.fromEntries(Object.entries(process.env).filter(([k]) => k !== 'LANG' && !k.startsWith('LC_')));
+  const sprachen: Record<string, Record<string, string | undefined>> = { 'ohne LANG': ohne, C: { ...ohne, LC_ALL: 'C' }, 'C.UTF-8': { ...ohne, LC_ALL: 'C.UTF-8' }, 'en_US.UTF-8': { ...ohne, LC_ALL: 'en_US.UTF-8' } };
+  const text = (z: string[]) => new TextEncoder().encode(z.length ? `# PRD\n${z.join('\n')}\n` : '# PRD\n');
+  // gleich: muss wie kit urteilen; sonst nur nie freier als kit
+  const faelle: [Uint8Array, boolean][] = [...[...FREIGABEN, ...REALISTISCH].map((z) => [text(z), true] as [Uint8Array, boolean]),
+    ...[...UNICODE_LEERRAUM, ...STRENGER].map((z) => [text(z), false] as [Uint8Array, boolean]), ...LATIN1.map((b) => [b, false] as [Uint8Array, boolean])];
+  const falsch: string[] = [];
+  for (const b of gefunden)
+    for (const [bytes, gleich] of faelle) {
+      const k = jaBelegt(F, new TextDecoder().decode(bytes), 'Freigegeben:');
+      writeFileSync(join(ordner, 'docs/prd.md'), bytes);
+      for (const [name, env] of Object.entries(sprachen)) {
+        const r = Bun.spawnSync(['zsh', '-f', '-c', `${funktion}\n${b}`], { cwd: ordner, env });
+        if (r.exitCode > 1) throw new Error(`ugrep ${name}: ${r.stderr.toString()} (${b})`);
+        const g = r.stdout.toString().trim() !== '';
+        if ((g && !k) || (gleich && g !== k)) falsch.push(`ugrep ${name}: ${JSON.stringify(new TextDecoder().decode(bytes))} grep ${g ? 'frei' : 'nicht frei'}, kit ${k ? 'frei' : 'nicht frei'}`);
+      }
+    }
+  expect(falsch).toEqual([]);
+}, 120_000);
 
 // Zeilen «Eingang:» in docs/betrieb.md: nur das deutsche ja vorne, danach kein Buchstabe
 const EINGAENGE: [string, boolean][] = [
