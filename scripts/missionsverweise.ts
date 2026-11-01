@@ -52,8 +52,12 @@ const MIT: Record<string, string> = {
   de: 'mit|über|aus|von|per|via|durch', fr: 'avec|via|par|de|depuis|grâce à', it: 'con|via|tramite|da|dal|dallo|attraverso|mediante',
   en: 'with|via|using|from|through|by',
 };
+// Verneint ist auch das Verb davor (Welle 8, w8-47, 01.11.2026: «never come from», «do not come from», «non arrivano da», «non le prendi da»):
+// eine echte Verneinung bis zwei Wörter vor dem Wort für «mit». «ohne» und «nur» zählen weiter nur direkt davor, sonst würde «ohne Umweg mit
+// `mission_holen`» grün. Dazu englisch «n't» («isn't from», «don't come from»).
+const NEIN_VERB = String.raw`nicht|nie|niemals|kein\p{L}*|pas|jamais|non|mai|not|never|no|\p{L}*n[’']t`;
 const QUELLE_DAVOR = Object.fromEntries(Object.entries(MIT).map(([s, w]) => [s, new RegExp(
-  String.raw`(?:^|[^\p{L}])(?:(${NEIN})\s+)?(?:${w})\s+(?:(?:dem|l[’']|lo|the)\s*(?:Werkzeug|outil|strumento|tool)\s+)?$`, 'iu')]));
+  String.raw`(?:^|[^\p{L}])(?:(${NEIN}|\p{L}*n[’']t)\s+|(${NEIN_VERB})\s+(?:\p{L}+\s+){1,2})?(?:${w})\s+(?:(?:dem|l[’']|lo|the)\s*(?:Werkzeug|outil|strumento|tool)\s+)?$`, 'iu')]));
 // Satzgrenze: . ! ? : ; vor Leerraum, nicht nach einem einzelnen Buchstaben (z. B., e.g.)
 const SATZENDE = /(?<!(?:^|[\s(.])\p{L})[.!?:;](?=\s|$)/gu;
 function satzUm(text: string, stelle: number): string {
@@ -71,7 +75,7 @@ export function holenAlsQuelle(text: string, sprache = 'de'): number | null {
     const davor = text.slice(0, h.index);
     const klammer = davor.endsWith('(') && text.slice(h.index + h[0].length).startsWith(')');
     const mit = (QUELLE_DAVOR[sprache] ?? QUELLE_DAVOR.de!).exec(davor);
-    if (klammer || (mit && !mit[1]) || !VERNEINT.test(satzUm(text, h.index))) return h.index;
+    if (klammer || (mit && !mit[1] && !mit[2]) || !VERNEINT.test(satzUm(text, h.index))) return h.index;
   }
   return null;
 }

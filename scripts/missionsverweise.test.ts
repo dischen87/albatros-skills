@@ -189,6 +189,33 @@ test('Regel 5: mission_holen als Quelle der Kontrollfragen wird rot, auch ohne K
   for (const [s, f] of gruen) expect([s, f, missionsverweise([inSprache(s, f)], MS)]).toEqual([s, f, []]);
 });
 
+// Welle 8 (01.11.2026, w8-47; Gegenprobe 2 von Welle 7, runde2/regel5.log): Die englische Warnung «… never come from `mission_holen` …» wurde
+// rot, weil die Verneinung vor dem Verb steht und nicht direkt vor «from»; die deutsche «nie aus `mission_holen`» blieb grün. Eine echte
+// Verneinung bis zwei Wörter vor dem Wort für «mit» zählt jetzt; «ohne» und «nur» weiter nur direkt davor («ohne Umweg mit» bleibt rot, oben).
+test('Regel 5: verneintes Verb vor «from», «da», «de» ist eine Warnung, in jeder Sprache', () => {
+  const gruen: [string, string][] = [
+    ['en', 'Check questions never come from `mission_holen`: it only shows the next open mission.'],
+    ['en', 'The check questions do not come from `mission_holen`; it shows the next open mission.'],
+    ["en", "The check questions don't come from `mission_holen`, which shows the next open mission."],
+    ['en', 'The check questions never directly come from `mission_holen`.'],
+    ["en", "The check question isn't from `mission_holen`."],
+    ['de', 'Kontrollfragen kommen nie aus `mission_holen`: Es zeigt nur die nächste offene Mission.'],
+    ['fr', 'Les questions de contrôle ne viennent jamais de `mission_holen` : il ne montre que la prochaine mission ouverte.'],
+    ['it', 'Le domande di controllo non arrivano da `mission_holen`: mostra la prossima missione aperta.'],
+    ['it', 'Le domande di controllo non le prendi da `mission_holen`.'],
+  ];
+  for (const [s, f] of gruen) expect([s, f, missionsverweise([inSprache(s, f)], MS)]).toEqual([s, f, []]);
+  // rot bleiben: «ohne» (eine Präposition) vor einem Nomen, eine Verneinung weiter weg, eine Verneinung in einem anderen Satzteil
+  const rot: [string, string][] = [
+    ['de', 'Die Kontrollfragen holst du ohne Umweg mit `mission_holen`.'],
+    ['en', 'Without guessing, the check questions come from `mission_holen`.'],
+    ['en', 'Do not invent check questions from memory but from `mission_holen`.'],
+    ['en', 'You never guess the check questions: they come from `mission_holen`.'],
+    ['it', 'Non inventare: le domande di controllo le prendi da `mission_holen`.'],
+  ];
+  for (const [s, f] of rot) expect([s, f, missionsverweise([inSprache(s, f)], MS)]).toEqual([s, f, [expect.stringContaining('Kontrollfragen aus mission_holen')]]);
+});
+
 test('Regel 6: eine zitierte Frage hinter jeder Lektion zählt, egal ob dort Lektion, Mission oder nichts davor steht', () => {
   const id = 'flugschule-19-musterblatt';
   const fragen: Fragen = {
