@@ -295,6 +295,11 @@ try {
   await Bun.sleep(300);
   pruefe(anders.every((r) => r.status === 404) && mails === mailsVorher,
     `Verwaltung in anderer Schreibweise (_SUPERUSERS, _Superusers, ${suId}, _ſuperusers, _MFAS): anmelden, auth-methods und Passwort vergessen 404, keine Mail (${anders.map((r) => r.status)})`);
+  // Die 404 kommt vom Eingang selbst (vordere Schicht, verwaltung()), nicht erst von PocketBase (zweite Schicht, x-eingang-weg): Der Körper
+  // ist der des Eingangs, ohne «data» wie bei PocketBase. Sonst bliebe eine Lücke in verwaltung() grün (Gegenprobe 2 eingang, w6-49, 01.11.2026).
+  const koerper = await Promise.all(anders.map((r) => r.text()));
+  pruefe(koerper.every((k) => k === JSON.stringify({ status: 404, message: 'Nicht gefunden.' })),
+    `… und diese 404 gibt der Eingang selbst, nicht erst PocketBase (${[...new Set(koerper.map((k) => k.slice(0, 60)))].join(' | ')})`);
   const mitToken = await Promise.all([e4.holen('/api/collections/users/records', { kopf: { authorization: token, 'x-forwarded-for': neu() } }),
     e4.holen(`/api/collections/users/records/${bert.id}`, { methode: 'PATCH', kopf: { ...json, authorization: token, 'x-forwarded-for': neu() }, koerper: JSON.stringify({ freigegeben: true, rolle: 'vorstand' }) })]);
   const bertNachher = await admin('GET', `/collections/users/records/${bert.id}`);

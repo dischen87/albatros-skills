@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Plans a website with a person who has no prior knowledge, before anything gets designed or built, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md and a grey sketch of the home page), research (up to three comparable sites, obligations, existing content, docs/recherche.md), floor plan (pages, features, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion in a fresh context, docs/plan-pruefung.md, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Use this skill for “I want a website”, “plan my website”, “where do I start”, “what do I need for a website”, “which pages do I need”, “sitemap”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built on the website path."
 metadata:
   stand: 0.2.0
-  quelle: 'd76aaac88f86'
+  quelle: '501e96d6b453'
 ---
 
 # Plan your website: the floor plan
@@ -95,7 +95,7 @@ If the person has an account and their island isn't open yet in this conversatio
    - Nothing goes online without a release: no publishing and no push to the harbour before the person has released their site (`Freigegeben:` in `docs/prd.md`). After going live, every change needs its own yes.
    - Prices only from `konto_status`, never from memory.
    - At most two questions in one message. Whatever you can suggest yourself is marked `[Annahme: …]` (assumption), whatever is open `[offen: …]`. These markers and the line names in `docs/` stay in German. Don't make anything up.
-   - After every step that's done: update `Stand:` and `Nächster Schritt:` in `docs/projekt.md`, `schritt_melden`, then call `lage` again.
+   - After every step that's done: update `Stand:` and `Nächster Schritt:` in `docs/projekt.md`, `schritt_melden` (with `titel`, the value of the line `Projektname:`, once it exists), then call `lage` again.
    - Passwords, card numbers and private keys never go into the chat or into a file in the project. Secrets live in `.env`, and `.env` is in `.gitignore`.
    - Casual “you”, everyday language, in English. A technical word only comes in with its picture.
    ```

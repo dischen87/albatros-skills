@@ -3,7 +3,7 @@ name: betrieb
 description: "Prepara con una persona senza conoscenze tecniche la gestione del suo sito, prima che arrivino gli ospiti (P12): come la contattano i visitatori e chi legge i messaggi e quanto spesso, chi lo viene a sapere quando il sito non risponde (una sorveglianza semplice e gratuita), come si torna a ieri (foto del server con Pilot, il diario di bordo con Light, una copia di sicurezza propria se te ne occupi tu), se serve un ingresso con accesso (solo con un server proprio, skill bausteine) e se si conta chi arriva (skill statistik, con consenso dove serve). Il risultato è docs/betrieb.md. Usa lo skill dopo il domicilio (lancieren) e con «gestione», «sorveglianza», «copia di sicurezza», «backup», «messaggi dei visitatori», «chi legge il modulo», «e se il sito non funziona più?»."
 metadata:
   stand: 0.2.0
-  quelle: 'c01d87a8eccd'
+  quelle: '7d86dfefd03f'
 ---
 
 # Gestione: prima che arrivino gli ospiti
@@ -96,7 +96,7 @@ Statistik: …
 Stand: <data>
 ```
 
-Quando ogni riga ha una risposta, fai la voce nel diario di bordo (`git add docs/betrieb.md && git commit -m "Gestione: bucalettere, rilevatore di fumo, copia di sicurezza"`) e segnali `schritt_melden` con `betrieb` e `sprache`. Se lo strumento manca o non conosce il passo, si va avanti senza isola. Nel modo `lernen` fai le domande di controllo della missione `flugschule-17-betrieb` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
+Quando ogni riga ha una risposta, fai la voce nel diario di bordo (`git add docs/betrieb.md && git commit -m "Gestione: bucalettere, rilevatore di fumo, copia di sicurezza"`) e segnali `schritt_melden` con `betrieb` e `sprache`. Se lo strumento manca o non conosce il passo, si va avanti senza isola. Nel modo `lernen` fai adesso le domande di controllo della lezione `flugschule-17-betrieb`: «Perché un messaggio che nessuno legge è peggio di nessun messaggio?», «Come torni a ieri?» e «Chi deve accorgersi per primo che il tuo sito non risponde?» Segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
 
 Poi viene la messa online: skill `lancieren`, parte 2.
 

@@ -46,11 +46,14 @@ if (args.includes('--vor-bau')) {
   const md = join(WURZEL, 'docs', 'entwurf.md');
   const zeilen = existsSync(md) ? readFileSync(md, 'utf8').split('\n').map((z) => z.replace(/^[\s>*-]*/, '')).filter((z) => z.startsWith('Freigegeben zum Bauen:')) : [];
   const freigabe = zeilen.at(-1)?.slice('Freigegeben zum Bauen:'.length).replace(/\*/g, '').trim() ?? '';
-  // Ein Datum steht vorne (31.10.2026, 2026-10-31, 31. Oktober 2026); leer, «[offen …]» oder «<Datum>» ist keine Freigabe
+  // Ein Datum steht vorne (31.10.2026, 2026-10-31, 31. Oktober 2026); leer, «[offen …]» oder «<Datum>» ist keine Freigabe. Eine Annahme
+  // irgendwo im Wert auch nicht, auch hinter dem Datum (wie albatros kit jaBelegt; Marken wie marken.annahme in fahrplan.yaml, 01.11.2026)
   const datiert = /^\d{1,4}[./\- ]/.test(freigabe) && /\b(19|20)\d\d\b/.test(freigabe);
+  const annahme = /\[(?:Annahme|hypothèse|hypothese|ipotesi|assumption)(?![\p{L}\p{N}])/iu.test(freigabe);
   const luecken = [
     !existsSync(md) ? 'docs/entwurf.md fehlt: zuerst die ganze Seite entwerfen und freigeben lassen (Skill entwurf).'
-      : !datiert && 'docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>». Gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).',
+      : !datiert ? 'docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>». Gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).'
+      : annahme && 'docs/entwurf.md: Die Zeile «Freigegeben zum Bauen:» trägt eine [Annahme]. Eine Annahme ist kein Ja; gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).',
     !existsSync(join(ENTWURF, 'index.html')) && 'design/entwurf/index.html fehlt: gebaut wird aus dem Entwurf (Skill entwurf).',
     !existsSync(join(WURZEL, 'design', 'tokens.css')) && 'design/tokens.css fehlt: Farben, Schriften und Abstände kommen aus dem Designsystem (Skill gestaltung).',
   ].filter(Boolean);
@@ -92,9 +95,12 @@ const statisch = async (wurzel) => {
   return { adresse: `http://127.0.0.1:${s.address().port}`, zu: () => s.close() };
 };
 // Impressum und Datenschutz in den vier Sprachen der Skills (Pfade aus recht-ch: /impressum, /mentions-legales, /legal-notice;
-// /datenschutz, /protection-des-donnees, /protezione-dei-dati, /privacy), für Seiten wie für Links (Adresse und Text des Links)
+// /datenschutz, /protection-des-donnees, /protezione-dei-dati, /privacy), für Seiten wie für Links (Adresse und Text des Links).
+// «informativa» allein ist kein Datenschutz (Informativa cookie, Informativa corsi), nur mit den Daten direkt dahinter: «Informativa sul
+// trattamento dei dati», «informativa-dati-personali» (Gegenprobe texte-b, 01.11.2026). Direkt, weil der Linktest alle Links einer Seite
+// hintereinander liest und «dati» sonst aus einem anderen Link käme.
 const IMPRESSUM = /impressum|imprint|legal|mentions|colophon/i;
-const DATENSCHUTZ = /datenschutz|privacy|confidentialit|protection.des.donn|protezione|informativa/i;
+const DATENSCHUTZ = /datenschutz|privacy|confidentialit|protection.des.donn|protezione|informativa[\s_-]+((sul|sulla|sui)[\s_-]+)?(trattamento|dati)/i;
 
 // Ergebnis: je Bereich eine Ampel (die schlechteste ihrer Punkte) und die Punkte
 // hinweis: etwas, das die KI selbst tun muss (Fotos anschauen, Formular ausprobieren); ändert die Ampel nicht

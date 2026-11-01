@@ -17,6 +17,10 @@ const fahrplan = plan.fahrplan;
 const PHASEN = new Set(fahrplan.phasen.map((p) => p.id));
 const alle = await Promise.all(faelle().map(ladeFall));
 const tags = (f: { kopf: Record<string, unknown> }) => ((f.kopf.tags as string[] | undefined) ?? []).map(String);
+// Tests, die Prozesse starten (scaffold.sh, bun attrappen.ts, node), dauern je nach Last auf dem Rechner verschieden lang: Der Vergleich der
+// Attrappen brauchte allein 1,2 s und mit vier ganzen Läufen gleichzeitig 4,2 bis 4,4 s, knapp unter den 5 s von bun test (01.11.2026,
+// lauf3/suite-parallel4.log; der Freigabe-Test in pruefbefehle.test.ts lief so in das Timeout). Darum für sie ein eigenes Timeout.
+const MIT_PROZESSEN = 30_000;
 
 describe('Fälle laden wie in plugin eval 2.1.309', () => {
   test.each(alle.map((f) => [f.name, f] as const))('%s', async (_, f) => {
@@ -117,7 +121,7 @@ describe('Beispiel-Verläufe: jeder Grader ohne Modell lässt das gute durch und
         }
       }
       expect(ohne.filter((n) => !erkannt.has(n)), 'Grader ohne rotes Beispiel').toEqual([]);
-    });
+    }, MIT_PROZESSEN);
   }
 
   // Gegenprüfung 31.10.2026 (anf-09): Meldet die KI die Idee, dann mit dem Projektnamen als titel; meldet sie nichts, prüft der Grader nichts
@@ -130,7 +134,7 @@ describe('Beispiel-Verläufe: jeder Grader ohne Modell lässt das gute durch und
     expect(await titel([{ tool: 'schritt_melden', input: { schritt: 'idee', sprache: 'de' } }])).toBe(false);
     expect(await titel([{ tool: 'schritt_melden', input: { schritt: 'idee', titel: 'Hof' } }])).toBe(false);
     expect(await titel([])).toBe(true);
-  });
+  }, MIT_PROZESSEN);
 
   test('jeder Fahrplan-Fall hat Beispiele', () => {
     const ohne = alle.filter((f) => tags(f).includes('fahrplan') && !BEISPIELE[f.name]).map((f) => f.name);
@@ -181,7 +185,7 @@ describe('Attrappen der Werkzeuge', () => {
     const r = Bun.spawnSync(['bun', `${wurzel}scripts/attrappen.ts`, '--pruefen'], { env: { ...process.env, ALBATROS: albatros }, stderr: 'pipe', stdout: 'pipe' });
     expect(r.stderr.toString().split('\n').filter((z) => z && !z.includes('"level":"info"')).join('\n')).toBe('');
     expect(r.exitCode).toBe(0);
-  });
+  }, MIT_PROZESSEN);
 });
 
 describe('Gerüste wie nach dem Fahrplan', () => {
@@ -201,12 +205,12 @@ describe('Gerüste wie nach dem Fahrplan', () => {
     const r = lauf('p8-ja', [node!, join(wurzel, 'plugins/albatros/skills/entwurf/entwurf-pruefen.mjs'), '.']);
     expect(r.code, r.text).toBe(0);
     expect(r.text).toContain('Ergebnis: grün');
-  });
+  }, MIT_PROZESSEN);
   test.skipIf(!node)('ohne Freigabe (bis P7) sperrt pruefen.mjs --vor-bau, mit Freigabe (bis P8) nicht', () => {
     const pruefen = join(wurzel, 'plugins/albatros/skills/webseite-bauen/pruefen.mjs');
     expect(lauf('nein-vor-bau', [node!, pruefen, '--vor-bau']).code).toBe(2);
     expect(lauf('webseite-bauen-prd', [node!, pruefen, '--vor-bau']).code).toBe(0);
-  });
+  }, MIT_PROZESSEN);
   test('glob wie plugin eval', () => {
     expect(glob('**/prd.md').test('docs/prd.md')).toBe(true);
     expect(glob('**/prd.md').test('prd.md')).toBe(true);

@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.2.0
-  quelle: 'acb53511503d'
+  quelle: 'a2a3f2a880b5'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -106,7 +106,7 @@ S'il manque quelque chose, tu aides à l'installer comme dans le skill `entwurf`
   ```
 - Règles comme dans le skill `git-logbuch` : seulement `main`, seulement ses propres fichiers et dossiers, nommés (jamais `git add .` ni `git add -A`), jamais `--force`.
 
-**Moment d'apprentissage « ce qu'est une entrée dans le journal de bord » :** une phrase avec l'image du journal de bord. En mode `lernen`, la personne tape elle-même la commande `git commit` pour la première entrée, ensuite tu annonces `verstanden_melden` (mission `webseite-02-bauen`, type `selbst`). En mode `machen`, tu le proposes.
+**Moment d'apprentissage « ce qu'est une entrée dans le journal de bord » :** une phrase avec l'image du journal de bord. En mode `lernen`, la personne tape elle-même la commande `git commit` pour la première entrée, ensuite tu annonces `verstanden_melden` (mission `flugschule-20-logbuch-eintrag`, type `selbst`). En mode `machen`, tu le proposes.
 
 ### 2. Mode de construction (`docs/stack.md`)
 
@@ -194,7 +194,7 @@ Tirés de docs/plan.md (Testing:) et de l'ébauche ; validés avec l'ébauche.
 /docs/plan.md   404     # les documents de travail ne vont pas en ligne
 ```
 
-Avec une brique, ses portes s'ajoutent. S'il y a une entrée devant (skill `bausteine`, partie « Ein Eingang für alles? »), ce sont par exemple `/intern/ 401`, `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : les pages protégées demandent une connexion, et la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase (par exemple `/api/collections/users/records`) répondent aux visiteurs 200 avec une liste vide, pas 401 ni 403 ; si tu mets une telle liste dans `docs/tueren.txt`, c'est avec 200.
+Avec une brique, ses portes s'ajoutent. S'il y a une entrée devant (skill `bausteine`, partie « Ein Eingang für alles? »), ce sont par exemple `/intern/ 401`, `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : les pages protégées demandent une connexion, et la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase avec une règle (par exemple `/api/collections/users/records`) répondent aux visiteurs 200 avec une liste vide, pas 401 ni 403 ; les listes réservées à l'administration (par exemple `/api/collections/anmeldungen/records`) répondent 403. Toutes les portes par recette, avec le statut pour `docs/tueren.txt`, sont dans le skill `bausteine`, partie « Türen der Bausteine ». Avec la recette `buchungen`, `/verwaltung/` est la page « Mes réservations » et répond 200 (les réservations, seule la personne connectée avec le compte de l'administration les voit) ; la ligne `/verwaltung 404` de l'exemple ci-dessus ne convient alors pas.
 
 **Un message pour les hypothèses :** montre le PRD à la personne en trois ou quatre phrases, ouvre le fichier et présente le mode de construction et les portes comme hypothèses, par exemple : « Je construis avec Astro, sans brique, et seules l'accueil, l'offre, la demande, les mentions légales et la protection des données sont ouvertes. C'est juste ? » Après son oui, tu enlèves `[Annahme: …]`, tu fais l'entrée dans le journal de bord (`git add docs && git commit -m "PRD tiré de l'ébauche, mode de construction et portes"`), tu annonces `prd` et tu construis.
 
@@ -270,7 +270,7 @@ Ensuite, tu écris quatre rapports, d'une page chacun, dans la langue de la pers
 
 Ensuite, tu passes en revue les critères d'acceptation de `docs/prd.md` : tu coches ceux qui sont remplis (`- [x]`) et tu notes brièvement où ou avec quoi ils ont été vérifiés. Ce qui n'est pas rempli reste ouvert, avec une raison.
 
-Rouge veut dire : corriger, reconstruire, revérifier, jusqu'à ce que plus rien ne soit rouge. Jaune seulement avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même. Quand les quatre rapports sont dans `docs/pruefung/` et que plus rien n'est rouge, tu fais l'entrée dans le journal de bord (`git add docs web seite && git commit -m "Vérification : quatre rapports, rien de rouge"`) et tu annonces `pruefung`.
+Rouge veut dire : corriger, reconstruire, revérifier, jusqu'à ce que plus rien ne soit rouge. Jaune seulement avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même. Quand les quatre rapports sont dans `docs/pruefung/` et que plus rien n'est rouge, tu fais l'entrée dans le journal de bord (`git add docs web seite && git commit -m "Vérification : quatre rapports, rien de rouge"`) et tu annonces `pruefung`. En mode `lernen`, tu poses maintenant la question de contrôle de la leçon `flugschule-20-logbuch-eintrag` : « Qu'est-ce qu'une entrée dans le journal de bord (commit), et pourquoi chaque étape en reçoit-elle une ? » Si `lage` a donné d'autres leçons dans cette phase (sur le parcours site web, l'accessibilité et le droit), tu poses aussi leurs questions. Tu n'annonces `verstanden_melden` (type `kontrollfrage`, chaque fois avec la mission de la question) qu'après la réponse de la personne.
 
 ### 6. Validation (Freigabe) : la visite (`schritt: freigabe`)
 
@@ -282,7 +282,7 @@ Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut
    node scripts/pruefen.mjs --vergleich
    ```
    Il compare pour chaque page les titres, les entrées du menu et les sections avec `design/entwurf/` et signale chaque écart en jaune, avec l'endroit (page, quoi, numéro dans l'ébauche et dans la construction). Pour chaque écart, tu ouvres les deux côte à côte (`open design/entwurf/<page>.html` et `open http://localhost:4321/<page>/`). Si c'est une erreur de construction, tu construis comme dans l'ébauche et tu compares à nouveau. Si c'est voulu (par exemple un vrai texte au lieu de `[à compléter]`), tu le dis à la personne, et elle décide. On continue seulement quand plus aucun écart n'est ouvert.
-3. **Moment d'apprentissage « changer soi-même un texte et le voir en local ».** En mode `lernen`, il est obligatoire, en mode `machen` tu le proposes en une phrase. La personne ouvre le fichier d'une page dans un éditeur de texte (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open` ; les listes comme les dates sont dans `web/src/data/`), change une phrase et enregistre. Tu reconstruis (`(cd web && npm run build)`), elle recharge l'aperçu et voit son changement. Puis elle décide : le garder (entrée dans le journal de bord, `pruefen.mjs` à nouveau, rien de rouge) ou revenir en arrière avec `git restore <fichier>`. Si elle l'a fait elle-même, tu annonces `verstanden_melden` (mission `webseite-02-bauen`, type `selbst`).
+3. **Moment d'apprentissage « changer soi-même un texte et le voir en local ».** En mode `lernen`, il est obligatoire, en mode `machen` tu le proposes en une phrase. La personne ouvre le fichier d'une page dans un éditeur de texte (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open` ; les listes comme les dates sont dans `web/src/data/`), change une phrase et enregistre. Tu reconstruis (`(cd web && npm run build)`), elle recharge l'aperçu et voit son changement. Puis elle décide : le garder (entrée dans le journal de bord, `pruefen.mjs` à nouveau, rien de rouge) ou revenir en arrière avec `git restore <fichier>`. Si elle l'a fait elle-même, tu annonces `verstanden_melden` (mission `flugschule-21-text-aendern`, type `selbst`).
 4. **Ce qui a été vu va dans `docs/prd.md`,** sous les critères d'acceptation (débuts de ligne en allemand) :
    ```
    Lokal gesehen: <date>, sur le natel (photos en 390 px) et sur l'ordinateur (aperçu)
@@ -294,7 +294,7 @@ Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut
    git add docs/prd.md && git commit -m "Site validé" && git tag -f freigegeben
    ```
    À la mise en ligne, le tag `freigegeben` montre si quelque chose a encore changé sur le site depuis.
-7. Annonce `freigabe`. En mode `lernen`, tu poses maintenant les questions de contrôle de la mission `webseite-02-bauen` (`mission_holen`) et tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+7. Annonce `freigabe`. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-21-text-aendern` : « Comment changes-tu toi-même un texte de ton site, et comment vois-tu le changement avant qu'il aille en ligne ? » et « Pourquoi vois-tu ton site d'abord sur ton ordinateur, avant qu'il aille en ligne ? » Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
 
 Si la personne veut encore changer quelque chose avant la validation : un texte, une image ou une date, on revient à l'étape 4, puis vérification et visite à nouveau. Une nouvelle page ou une nouvelle fonction est un complément : d'abord dans `docs/plan.md`, puis une ébauche des pages modifiées et une nouvelle autorisation de construire (skill `entwurf`), et seulement ensuite la construction.
 
@@ -316,7 +316,7 @@ Ensuite vient le skill `lancieren` : où le site doit-il habiter ? Appelle `
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-02-bauen`, dès que `freigabe` est annoncé. La vérification regarde sur l'île si le projet est au moins à l'étape « Freigabe » (validation).
+`mission_pruefen` avec `flugschule-20-logbuch-eintrag`, dès que `pruefung` est annoncé, et avec `flugschule-21-text-aendern`, dès que `freigabe` est annoncé. La vérification regarde sur l'île si le projet est au moins à cette étape. Sur le parcours site web, il y a en plus la mission facultative `webseite-02-bauen` : si la personne a mis à jour elle-même une liste comme les dates, tu la vérifies aussi après la validation.
 
 ## Message de fin
 

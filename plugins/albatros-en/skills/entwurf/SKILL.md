@@ -43,7 +43,7 @@ Like every workshop, model-making needs tools: before you start, you check they'
 Read `Modus:` in `docs/projekt.md`; if the line is missing, `machen` (do) applies.
 
 - **machen (do):** You do the work and explain each step in one sentence with its picture. You offer the learning moment: “Right now a change is one sentence; after the build it's a rebuild. Want to change a sentence on the home page yourself and see how quick that is?”
-- **lernen (learn):** You explain each step with its picture and the why. The person does the learning moment themselves: they change a sentence in `design/entwurf/index.html` and reload the page (then `verstanden_melden` with `mission: flugschule-15-entwurf` and `art: selbst`). At the end you ask the check question of the lesson `flugschule-15-entwurf`: “Why does your AI draft the whole site before it builds?” Only after their answer do you report `art: kontrollfrage`. If the tool is missing, you carry on without it.
+- **lernen (learn):** You explain each step with its picture and the why. The person does the learning moment themselves: they change a sentence in `design/entwurf/index.html` and reload the page (then `verstanden_melden` with `mission: flugschule-15-entwurf` and `art: selbst`). At the end you ask the check question of the lesson `flugschule-15-entwurf`: “Why does your AI draft the whole site before building it?” Only after their answer do you report `art: kontrollfrage`. If the tool is missing, you carry on without it.
 
 ## Steps
 

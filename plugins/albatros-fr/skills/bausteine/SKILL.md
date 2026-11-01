@@ -3,7 +3,7 @@ name: bausteine
 description: "Découvre avec une personne sans connaissances préalables ce que sa page doit savoir faire, et installe les briques toutes faites qui conviennent, d'abord sur son ordinateur : liste d'inscription, réservations, espace membres avec connexion et activation, tableau d'affichage (PocketBase), une entrée avec une seule connexion pour plusieurs parties ou un grand CMS (Strapi avec Postgres), avec la mémoire vive mesurée. Explique avec l'image des éléments préfabriqués dans la construction d'une maison. Utilise ce skill pour « inscription », « liste d'inscription », « réservation », « réserver un cours », « prendre rendez-vous », « enregistrer un formulaire », « connexion », « espace membres », « espace admin », « gérer les utilisateurs », « rôles », « entrée », « base de données », « Strapi », « CMS », « PocketBase », « brique », « qu'est-ce qui tient sur mon serveur ? », et quand une page doit savoir faire plus que montrer des textes et des images."
 metadata:
   stand: 0.2.0
-  quelle: '0a3abd265736'
+  quelle: 'd66c4610d5d1'
 ---
 
 # Briques : des éléments préfabriqués pour ta page
@@ -44,7 +44,7 @@ Une question par message, et seulement autant qu'il en faut pour que la réponse
 | Les visiteurs réservent une place ou un rendez-vous (cours, visite guidée, rendez-vous chez le coiffeur), je veux voir les réservations et pouvoir les annuler | **Réservations** (PocketBase, recette `buchungen`) | Pilot | environ 20 MB |
 | Des membres se connectent et voient un espace à eux ; qui est nouveau fait une demande, et je l'active | **Espace membres avec connexion** (PocketBase, recette `mitglieder`) | Pilot | environ 20 MB |
 | D'autres s'occupent des actualités ou de l'agenda dans le navigateur web | **Tableau d'affichage** (PocketBase, recette `pinnwand`) | Pilot | environ 20 MB |
-| Plusieurs parties ont besoin de la même connexion, ou un espace n'est que pour un rôle (par exemple le comité) | **Entrée** (brique `eingang`, avec la recette `mitglieder`), section 7 | Pilot | 20 MB, sous pleine charge jusqu'à 69 MB |
+| Plusieurs parties ont besoin de la même connexion, ou un espace n'est que pour un rôle (par exemple le comité) | **Entrée** (brique `eingang`, avec la recette `mitglieder`), section 7 | Pilot | 20 MB, sous pleine charge jusqu'à 129 MB (limite du conteneur 128 MB) |
 | Beaucoup de types de contenu, plusieurs rôles, gestion des images, plus tard une app | **Grand CMS** (Strapi avec Postgres) | Pilot | environ 200 MB, construction jusqu'à 2,5 GB |
 
 Recommande toujours le plus petit qui suffit. Plusieurs langues, à elles seules, ne sont jamais une raison pour une brique. PocketBase couvre à la fois la liste d'inscription, la connexion et le tableau d'affichage, et il ne tourne qu'une seule fois. Strapi ne vaut la peine que quand PocketBase devient trop petit.
@@ -60,7 +60,7 @@ Un serveur avec Pilot a 4 GB de mémoire vive et 40 GB d'espace disque, sans esp
 | Charge de base : système, Docker, ouvrier du tapis roulant | 150 MB, prévu 0,5 GB | brièvement plus | – |
 | Site web tiré du modèle | 10 MB | bref | petit |
 | PocketBase (toutes les recettes ensemble) | 20 MB | bref | 40 MB |
-| Entrée | 20 MB, sous pleine charge jusqu'à 69 MB | bref | petit |
+| Entrée | 20 MB, sous pleine charge jusqu'à 129 MB, limitée à 128 MB dans le conteneur | bref | petit |
 | Strapi avec Postgres | 150 MB + 55 MB | pic à 2,5 GB, première construction environ 7 minutes | 1,4 GB |
 
 Il reste donc environ 3,5 GB pour les briques. Site web, PocketBase et Strapi ensemble ont besoin d'environ 250 MB en fonctionnement. Ça ne devient serré que pendant la construction, c'est pourquoi le tapis roulant construit une tâche après l'autre. Les programmes qui ont besoin à eux seuls de plus de 1 GB n'ont pas leur place sur le serveur, par exemple Keycloak, Supabase, Logto, Mattermost ou la reconnaissance de texte (OCR). Pour une connexion à toi, prends PocketBase.
@@ -96,7 +96,7 @@ Dans le skill `lancieren`, partie 2, après la validation de la page et avant le
      - bausteine/pocketbase/compose.yaml
    ```
    Le site web transmet lui-même les demandes : le modèle lit chaque `bausteine/*/nginx.conf`. Si le projet est plus ancien que les briques (pas de `nginx.conf` dans le projet), va chercher `Dockerfile` et `nginx.conf` dans `vorlage/` du même dépôt.
-   **Avec connexion, l'étape entrée :** si `docs/betrieb.md` dit `Eingang: ja` (section 7), `- bausteine/eingang/compose.yaml` s'ajoute sous `include:`, et pour le service `webseite`, `ports:` et `- "80:80"` disparaissent : le site web n'est alors plus accessible que derrière l'entrée. Sans connexion, ou si les règles de PocketBase suffisent, `compose.yaml` reste comme dans le modèle. Le skill `lancieren` nomme cette étape dès le domicile.
+   **Avec connexion, l'étape entrée :** si `docs/betrieb.md` dit `Eingang: ja` (section 7 ; `grep -E '^Eingang: ja([^[:alpha:]]|$)' docs/betrieb.md` montre la ligne, « Eingang: jamais » ne compte pas), `- bausteine/eingang/compose.yaml` s'ajoute sous `include:`, et pour le service `webseite`, `ports:` et `- "80:80"` disparaissent : le site web n'est alors plus accessible que derrière l'entrée. Sans connexion, ou si les règles de PocketBase suffisent, `compose.yaml` reste comme dans le modèle. Le skill `lancieren` nomme cette étape dès le domicile.
 3. **Au port.** Le tapis roulant construit et livre (skill `pipeline`). Si la construction échoue, l'ancienne page reste en ligne.
 4. **Vérifier** sur le serveur : `docker ps` affiche la brique comme `healthy`. Ensuite, tu vérifies chaque porte de l'extérieur : `node scripts/pruefen.mjs --tueren <adresse>` avec les portes ci-dessous, avec l'entrée aussi les chemins protégés 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 et la page d'accueil 200. Ensuite le premier compte de l'administration et les e-mails (section 5).
 
@@ -213,7 +213,7 @@ Ces règles décident s'il en faut une, dans cet ordre :
 
 La réponse va dans `docs/betrieb.md`, à la ligne `Eingang:` (skill `betrieb`). Sa valeur commence toujours par le mot allemand `ja` ou `nicht nötig`, même si la personne parle une autre langue ; ensuite vient la raison dans sa langue, par exemple `Eingang: ja – /intern/ et les messages de PocketBase demandent la même connexion` ou `Eingang: nicht nötig – seulement la recette mitglieder, les règles de PocketBase suffisent`. Le skill `lancieren` n'installe l'entrée qu'avec `Eingang: ja`. Les portes du site (`docs/tueren.txt` : ouvertes, seulement avec connexion, jamais) deviennent les parties dans `bausteine/eingang/eingang.json`.
 
-**Coûts :** pas d'argent en plus, elle tourne avec le reste sur le serveur Pilot. Mémoire : 20 MB au repos, sous pleine charge jusqu'à 69 MB (mesuré le 31.10.2026 sur un Mac, pas encore sur le serveur) ; chaque appel d'une partie protégée interroge PocketBase, ça coûte presque une milliseconde. Et un élément de plus à entretenir (version de Bun dans le `Dockerfile`).
+**Coûts :** pas d'argent en plus, elle tourne avec le reste sur le serveur Pilot. Mémoire : 20 MB au repos ; sous pleine charge avec de petites pages jusqu'à 69 MB, avec beaucoup d'images à la fois (20 pages de 60 images) jusqu'à 129 MB, et si des visiteuses téléchargent de gros fichiers sans les lire jusqu'au bout, encore plus (mesuré avec trois adresses : 208 MB). Mesuré le 31.10 et le 01.11.2026 sur un Mac. Le conteneur est limité à 128 MB (`mem_limit`) ; s'il redémarre alors et combien il lui faut sur le serveur, ce n'est pas encore mesuré ; chaque appel d'une partie protégée interroge PocketBase, ça coûte presque une milliseconde. Et un élément de plus à entretenir (version de Bun dans le `Dockerfile`).
 
 **Installer,** d'abord en local comme chaque brique (section 4), pas à pas dans `bausteine/eingang/README.md` :
 

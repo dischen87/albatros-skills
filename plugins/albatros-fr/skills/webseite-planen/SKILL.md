@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web avant le design et la construction, en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md et une esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, contenus existants, docs/recherche.md), plan de la maison (pages, fonctions, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis dans un contexte neuf, docs/plan-pruefung.md, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction sur le parcours site web."
 metadata:
   stand: 0.2.0
-  quelle: 'd76aaac88f86'
+  quelle: '501e96d6b453'
 ---
 
 # Planifier le site web : le plan de la maison
@@ -95,7 +95,7 @@ Si la personne a un compte et que son île n'est pas encore ouverte dans cette c
    - Rien ne va sur Internet sans validation : pas de publication et pas de push au port avant que la personne ait validé son site (`Freigegeben:` dans `docs/prd.md`). Après la mise en ligne, chaque changement a besoin de son propre oui.
    - Les prix seulement d'après `konto_status`, jamais de mémoire.
    - Deux questions au maximum par message. Ce que tu peux proposer toi-même est noté `[Annahme: …]` (hypothèse), ce qui est ouvert `[offen: …]`. Ces marques et les noms des lignes dans `docs/` restent en allemand. Ne rien inventer.
-   - Après chaque étape réussie : mettre à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`, `schritt_melden`, puis rappeler `lage`.
+   - Après chaque étape réussie : mettre à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`, `schritt_melden` (avec `titel`, la valeur de la ligne `Projektname:`, dès qu'elle existe), puis rappeler `lage`.
    - Les mots de passe, les numéros de carte et les clés privées ne vont jamais dans le chat ni dans un fichier du projet. Les secrets sont dans `.env`, et `.env` est dans `.gitignore`.
    - Tutoiement, langage de tous les jours, en français. Un mot technique n'arrive qu'avec son image.
    ```

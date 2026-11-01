@@ -2,7 +2,8 @@
 // stehen (abschnitt, auch in varianten), und Skills zeigen mit deutschen Namen auf Abschnitte anderer Skills
 // («Skill `lancieren`, Teil 2, «Selbst, ohne Repo»»). Damit die KI den Abschnitt in jeder Sprache findet, steht jeder dieser Namen
 // im Ziel-Skill jeder Sprache in einer Überschrift: deutsch so, übersetzt als Überschrift oder in Klammern («## Autorisation (Freigabe)»).
-// Als Überschrift zählt eine Zeile mit # oder ein fetter Anfang (**Name:** …), nie etwas in einem Codeblock oder in `…`.
+// Als Überschrift zählt nur eine Zeile mit #, nie etwas in einem Codeblock oder in `…`, und der Name steht dort als ganzer Kopf oder als
+// «(Name)». Bis Welle 6 zählten auch fette Anfänge (**Name:** …) und Teilwörter; das gab falsches Grün (w6-45, 01.11.2026).
 import { Glob } from 'bun';
 import type { Phase } from './fahrplan.ts';
 
@@ -25,23 +26,27 @@ export function ohneCode(text: string): string[] {
   });
 }
 
-// Text der Überschriften: Zeilen mit # und fette Anfänge von Zeilen und Listenpunkten, ohne `…` und mit einfachen Leerzeichen
+// Text der Überschriften: nur Zeilen mit #, ohne `…` und mit einfachen Leerzeichen. Fette Anfänge (**Name:** …) zählen nicht: In entwurf
+// standen «Freigabe» in drei fetten Listenanfängen, und die Umbenennung von «## Freigabe» blieb grün (Gegenprobe texte-b, Welle 5).
 export function ueberschriften(text: string): string[] {
   return ohneCode(text).flatMap((z) => {
-    const kopf = /^#{1,6}\s+(.*)$/.exec(z)?.[1] ?? /^\s*(?:[-*+]\s+|\d+\.\s+)?\*\*(.+?)\*\*/.exec(z)?.[1];
+    const kopf = /^#{1,6}\s+(.*)$/.exec(z)?.[1];
     return kopf === undefined ? [] : [kopf.replace(/`[^`]*`/g, ' ').replace(/\s+/g, ' ').trim()];
   });
 }
 
-// Steht der Name als ganzes Stück in einer Überschrift (gross und klein egal, davor und danach kein Buchstabe und keine Ziffer)?
+const klein = (s: string) => s.replace(/\s+/g, ' ').trim().toLowerCase();
+// Kopf ohne Beiwerk: ohne Nummer vorne («6. », «3a. »), ohne «Teil 2: » davor, ohne Klammern am Ende («(Phase P13, …)»)
+const kern = (k: string) => {
+  let t = k.replace(/^\d+[a-z]?\.\s+/i, '').replace(/^(?:Teil|Partie|Parte|Part)\s+\d+\s*:\s+/i, '');
+  while (/\s*\([^()]*\)\s*$/.test(t)) t = t.replace(/\s*\([^()]*\)\s*$/, '');
+  return t;
+};
+// Trägt eine Überschrift den Namen (gross und klein egal)? Als ganzer Kopf ohne Beiwerk, als Titel vor einem Untertitel («Freigabe: die
+// Begehung», «Strapi : le grand CMS») oder als «(Name)» («Autorisation (Freigabe)»). Ein Teilwort zählt nicht («Die Freigabe der Seite»).
 export function findet(koepfe: string[], name: string): boolean {
-  const n = name.replace(/\s+/g, ' ').trim().toLowerCase();
-  const rand = (c: string | undefined) => c === undefined || !/[\p{L}\p{N}]/u.test(c);
-  return koepfe.some((k) => {
-    const t = k.toLowerCase();
-    for (let i = t.indexOf(n); i >= 0; i = t.indexOf(n, i + 1)) if (rand(t[i - 1]) && rand(t[i + n.length])) return true;
-    return false;
-  });
+  const n = klein(name);
+  return koepfe.some((k) => klein(k).includes(`(${n})`) || klein(kern(k)) === n || klein(kern(k).split(/\s*:\s/)[0]!) === n);
 }
 
 // Querverweise in einem deutschen Skill: «Skill `x`, Abschnitt «Name»», «Skill `x` (Abschnitt «Name»)», «Skill `x`, Teil 2, «Name»

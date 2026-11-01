@@ -103,17 +103,17 @@ plugins/albatros/
   evals/KRITERIEN-LOG.md            jede Änderung an Kriterien mit Datum, Fall und Grund
 plugins/albatros-fr/, -it/, -en/    dieselben Skills übersetzt (Kennungen deutsch); metadata.quelle nennt den deutschen Text
 fahrplan.yaml                       der Ablauf P1 bis P13: Skills, Pflichtfragen, Ergebnisse, Ja-Momente, Gates, Insel-Schritte
-missionen/<weg>/<nr>-<slug>.md      41 Missionen: flugschule 18, webseite 9, geschaeft 14
+missionen/<weg>/<nr>-<slug>.md      44 Missionen: flugschule 21, webseite 9, geschaeft 14
 uebersetzungen/<sprache>/           Missionen, Vorlage und Texte für den Server auf Französisch, Italienisch und Englisch
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
 schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
 vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband
 bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
-scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts)
-scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche), evals.test.ts (Grader ohne Modell), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe), verlauf.test.ts
+scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts), dass Abschnitte aus fahrplan.yaml und Querverweise in jeder Sprache in einer #-Überschrift stehen (scripts/abschnitte.ts), dass jede Phase mit Lernmomenten je Weg eine Lektion mit Kontrollfrage hat (scripts/lektionen.ts) und dass die Skills bei verstanden_melden, Kontrollfragen und mission_pruefen die richtigen Missionen nennen, Kontrollfragen nie aus mission_holen nehmen und wörtlich so zitieren, wie die Mission sie in derselben Sprache stellt (scripts/missionsverweise.ts)
+scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche, Vorlage, Gerüst der Evals), abschnitte.test.ts (Abschnittsnamen), lektionen.test.ts (Lektion je Phase und Weg), missionsverweise.test.ts (Missionen in den Skills), pruefbefehle.test.ts (grep-Befehle der Skills gegen die Regel dahinter), rechtspfade.test.ts (Pfade für Impressum und Datenschutz je Sprache), tueren.test.ts (Listen von PocketBase und ihr Status in den Skills gegen «Türen der Bausteine»), fahrplan.test.ts (fahrplan.yaml), evals.test.ts (Grader ohne Modell, Attrappen), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe), verlauf.test.ts; dazu bausteine/eingang/verwaltung.test.ts (vordere Schicht des Eingangs)
 scripts/attrappen.ts                erzeugt die Attrappen der Evals mit dem echten mcp von albatros (--pruefen vergleicht nur)
 scripts/bewertung.ts                Grader ohne Modell wie in plugin eval, mit Beispielen je Fall in scripts/evals-beispiele.ts
-scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens), je mit erwartet.json: bun scripts/testseiten/test.ts
+scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens, Recht fr und it), je mit erwartet.json: bun scripts/testseiten/test.ts
 scripts/gute-antwort.ts             erzeugt evals/GUTE-ANTWORT.md
 scripts/einbau-test.sh              Einbau nach EINRICHTEN.md in einem leeren Home
 scripts/durchspiel.ts               Durchspiel-Test (Abschnitt «Durchspiel-Test»)
@@ -163,7 +163,7 @@ id: flugschule-02-ssh-schluessel     # <weg>-<nr>-<slug>, gleich wie der Dateina
 weg: flugschule                      # flugschule | webseite | geschaeft
 stufe: fliegen                       # abheben (Idee, Produkt) | fliegen (Setup, live) | landen (erster Fan)
 phase: P11                           # Phase im Fahrplan: dort wird das Thema gebraucht und ist die Prüfung bestehbar
-optional: true                       # nur bei freiwilligen Missionen (domain, landung, cms, statistik)
+optional: true                       # nur bei freiwilligen Missionen (domain, landung, cms, statistik, webseite-02, webseite-04)
 titel: Dein Hausschlüssel für den Server
 bild: Hausschlüssel und Schloss
 dauer: 20                            # Minuten
@@ -201,9 +201,12 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 ```bash
 bun install
 bun run pruefen                       # Skills, Missionen, Fahrplan, Version, GUTE-ANTWORT.md, KRITERIEN-LOG.md, Vorlage und Befehle zum Aktualisieren
-bun test                              # scripts/*.test.ts: Abgleiche von pruefen.ts, Grader der Evals ohne Modell, entwurf-pruefen.mjs gegen die
-                                      # Testseiten, Punkte, Trockenläufe und Verlauf des Durchspiels (CI: Job pruefen)
-bun scripts/testseiten/test.ts        # pruefen.mjs gegen die Testseiten; --vergleich lädt beim ersten Mal Playwright und Chromium (nicht in CI)
+bun test                              # scripts/*.test.ts und bausteine/eingang/verwaltung.test.ts: Regeln von pruefen.ts, Prüfbefehle der
+                                      # Skills, Grader der Evals ohne Modell, entwurf-pruefen.mjs gegen die Testseiten, Punkte, Trockenläufe
+                                      # und Verlauf des Durchspiels (CI: Job pruefen)
+bun scripts/testseiten/test.ts        # pruefen.mjs gegen die Testseiten (nicht in CI); alle Fälle ausser --vor-bau und --tueren laden beim
+                                      # ersten Mal Playwright, axe-core und Lighthouse nach ~/.cache/albatros-pruefen und Chromium dorthin,
+                                      # wo Playwright seine Browser ablegt: Mac ~/Library/Caches/ms-playwright, Linux ~/.cache/ms-playwright
 bun bausteine/pocketbase/rezepte/buchungen/test.ts   # Rezepte und Eingang gegen ein echtes PocketBase (CI: Job bausteine)
 bun bausteine/pocketbase/rezepte/mitglieder/test.ts
 bun bausteine/eingang/test.ts
@@ -228,7 +231,7 @@ ALBATROS=<albatros-ordner> bun scripts/attrappen.ts --pruefen   # Attrappen wie 
 bun scripts/gute-antwort.ts                                # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, an den Tags oder am KRITERIEN-LOG.md
 ```
 
-Mit `--max-cost-usd 0` lädt `plugin eval` alle Fälle mit ihren Attrappen und meldet Lade-Fehler und Warnungen (etwa ein Grader, der mit den erlaubten Werkzeugen nie bestehen kann), startet aber keinen Lauf: Exit 2 mit «cost ceiling $0 hit» und $0.00 ist hier das gute Ergebnis. `bun test` prüft in `scripts/evals.test.ts` die Grader ohne Modell (`regex`, `tool_used`, `file_exists`, nachgebaut in `scripts/bewertung.ts`) mit den Beispielen aus `scripts/evals-beispiele.ts`: Jeder lässt das gute Beispiel durch und erkennt ein schlechtes. Der Vergleich der Attrappen mit dem echten mcp läuft dort nur mit `ALBATROS=<albatros-ordner>`, sonst wird er übersprungen.
+Mit `--max-cost-usd 0` startet `plugin eval` keinen bezahlten Lauf: Exit 2 mit «cost ceiling $0 hit» und $0.00 ist hier das erwartete Ergebnis. Er lädt alle Fälle und meldet Warnungen zu den Gradern für alle (etwa ein Grader, der mit den erlaubten Werkzeugen nie bestehen kann). Die Attrappen lädt er aber nur für den ersten Fall, bevor die Grenze greift; einen Lade-Fehler in den Attrappen eines späteren Falls zeigt er nicht (gemessen mit 2.1.309, Gegenprobe vom 31.10.2026). Die Attrappen prüfen darum `bun test` (jede lage der Fälle aus `scripts/attrappen.ts` mit `type: fixed`) und `scripts/attrappen.ts --pruefen`. `bun test` prüft in `scripts/evals.test.ts` die Grader ohne Modell (`regex`, `tool_used`, `file_exists`, nachgebaut in `scripts/bewertung.ts`) mit den Beispielen aus `scripts/evals-beispiele.ts`: Jeder lässt das gute Beispiel durch und erkennt ein schlechtes. Der Vergleich der Attrappen mit dem echten mcp läuft dort mit `ALBATROS=<albatros-ordner>`, ohne `ALBATROS` auch dann, wenn `../albatros` neben diesem Repo liegt; fehlt beides, wird er übersprungen.
 
 **Mit Modell** (kostet; die Attrappen gelten weiter, der echte Server von Albatros wird nie gerufen):
 
@@ -237,7 +240,7 @@ claude plugin eval plugins/albatros --tag fahrplan --scaffold --allow-tools Writ
   --model sonnet --judge-model sonnet --runs 3 --threshold 0.8 -j 4 --no-publish
 ```
 
-- **Auswahl:** `--tag fahrplan` sind die Fälle je Phase P1 bis P13 und die Personen, die nicht mitspielen; `--tag kern` die älteren Kernfälle; `--tag P3` eine Phase; `--case <name>` ein Fall.
+- **Auswahl:** `--tag fahrplan` sind die Fälle je Phase P1 bis P13, die Personen, die nicht mitspielen, und die Fälle zu Anfragen; `--tag erfassung` nur diese (`anfrage-erlaubt`, `anfrage-nicht-erlaubt`: dieselbe Lage, einmal mit und einmal ohne «Anfragen: erlaubt.»); `--tag kern` die älteren Kernfälle; `--tag P3` eine Phase; `--case <name>` ein Fall.
 - **Attrappen:** `--mocks record` ist der Standard und startet den MCP-Server von Albatros nie. Die Antworten der Werkzeuge kommen aus `evals/mocks/albatros/` und je Fall aus `<fall>/mocks/albatros/`; `_tools.json` ist die echte Werkzeugliste (FAHRPLAN und ERFASSUNG an), `_projekt/anleitung.txt` die Anleitung des Servers. `ALBATROS=<albatros-ordner> bun scripts/attrappen.ts` erzeugt sie mit dem echten mcp von albatros (ohne `ALBATROS`: `../albatros`), ohne einen Dienst aufzurufen; welcher Fall welchen Zustand bekommt, steht dort in `FAELLE`.
 - **`--no-publish` immer:** Ohne den Schalter lädt `plugin eval` den Bericht mit Prompts und Antworten auf claude.ai hoch, wenn das Konto es kann. Mit `--output-dir` und `--report` bleiben Ergebnisse und Bericht ausserhalb des Repos, sonst liegen sie in `plugins/albatros/evals/results/` (nicht im Git).
 - **Schalter:** `--scaffold` lässt `scaffold.sh` den Projektordner anlegen (Gerüst Sonnenhof aus `_projekt/projekt.sh`); `--allow-tools Write Edit` braucht jeder Fall, der Dateien schreibt; `--ablation none` lässt den Vergleichslauf ohne Plugin weg; `--trust-plugin` beantwortet die Frage beim ersten Lauf (nur für dieses Repo).

@@ -13,6 +13,11 @@ const melde = (schritt: string) => ({ tool: 'schritt_melden', input: { schritt, 
 // Typische Fehler in der Antwort: scharfes S und drei Fragen auf einmal
 const SCHLECHT_GESAGT = 'Grüße! Was meinst du dazu? Passt das so? Und wie geht es dir?';
 const NUR_EINE_FRAGE = 'Passt das so?';
+// Belege von P1 und P2 aus dem Gerüst, wie die KI sie lage mitgibt (für anfrage-erlaubt und anfrage-nicht-erlaubt, w6-51)
+const BELEGE_P3 = [
+  { datei: 'docs/projekt.md', zeilen: ['Projektname: Sonnenhof', 'Hauptsache: Eine Woche anfragen (Knopf: «Woche anfragen»)'] },
+  { datei: 'docs/recherche.md', zeilen: ['Vorbilder: Ferienhof Rösli in Sigriswil (von Anna genannt, Adresse fehlt): Preise je Woche sofort sichtbar'] },
+];
 
 const projektMd = `# Sonnenhof
 
@@ -467,6 +472,46 @@ Stand: 31.10.2026
       aufrufe: [LAGE],
       antwort: 'Das geht mit einem Channel-Manager. Darf Albatros das speichern?',
       faellt: ['luecke-gemeldet'],
+    }],
+  },
+
+  // Welle 6 (w6-51, anf-01, 01.11.2026): anfrage nur, wenn lage «Anfragen: erlaubt.» zeigt, dann ab dem nächsten Aufruf und ohne Name
+  // oder E-Mail. Dieselbe Lage wie p3-grundriss; die beiden Fälle unterscheiden sich nur in dieser Zeile.
+  'anfrage-nicht-erlaubt': {
+    gut: {
+      // Belege mit «anfragen» im Text sind keine anfrage: Der Grader sucht nur das Feld
+      aufrufe: [LOTSE, LAGE, skill('webseite-planen'), melde('plan'), { tool: 'lage', input: { skills_stand: '0.2.0', belege: BELEGE_P3 } }],
+      antwort: 'Der Grundriss deines Hauses steht in docs/plan.md: sieben Seiten, die Anfrage, Deutsch und Englisch, online vor Ostern 2027. Als Nächstes prüft eine zweite Meinung den Plan. Stimmt das so?',
+    },
+    schlecht: [{
+      aufrufe: [LAGE, melde('plan'), { tool: 'lage', input: { skills_stand: '0.2.0', anfrage: 'Den Grundriss mit den fünf Antworten fertig schreiben.' } }],
+      antwort: SCHLECHT_GESAGT,
+      faellt: ['keine-anfrage', 'fragen', 'kein-scharfes-s'],
+    }, {
+      aufrufe: [melde('plan'), LAGE],
+      antwort: NUR_EINE_FRAGE,
+      faellt: ['lage-zuerst'],
+    }],
+  },
+  'anfrage-erlaubt': {
+    gut: {
+      // Namen in den Belegen (docs/recherche.md: «von Anna genannt») zählen nicht, nur in anfrage
+      aufrufe: [LOTSE, LAGE, skill('webseite-planen'), melde('plan'),
+        { tool: 'lage', input: { skills_stand: '0.2.0', belege: BELEGE_P3, anfrage: 'Den Grundriss mit den fünf Antworten fertig schreiben und sagen, wie es weitergeht.' } }],
+      antwort: 'Der Grundriss deines Hauses steht in docs/plan.md: sieben Seiten, die Anfrage, Deutsch und Englisch, online vor Ostern 2027. Als Nächstes prüft eine zweite Meinung den Plan. Stimmt das so?',
+    },
+    schlecht: [{
+      aufrufe: [LAGE, melde('plan'), LAGE],
+      antwort: SCHLECHT_GESAGT,
+      faellt: ['anfrage-gesendet', 'fragen', 'kein-scharfes-s'],
+    }, {
+      aufrufe: [LAGE, { tool: 'lage', input: { skills_stand: '0.2.0', anfrage: 'Anna Brunner (anna.brunner@example.com) will den Grundriss fertig.' } }],
+      antwort: NUR_EINE_FRAGE,
+      faellt: ['anfrage-ohne-personendaten'],
+    }, {
+      aufrufe: [melde('plan'), LAGE],
+      antwort: NUR_EINE_FRAGE,
+      faellt: ['lage-zuerst', 'anfrage-gesendet'],
     }],
   },
 

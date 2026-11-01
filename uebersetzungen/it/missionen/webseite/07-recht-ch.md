@@ -27,5 +27,5 @@ L'impressum è la targhetta del tuo campanello: chi abita qui? La dichiarazione 
 
 ## Ce l'hai fatta quando
 
-- le tue pagine `/impressum` e `/datenschutz` funzionano sul tuo computer e sono collegate a piè di ogni pagina
+- le tue pagine `/impressum` e `/protezione-dei-dati` funzionano sul tuo computer e sono collegate a piè di ogni pagina
 - e sulla tua isola è raggiunto il passo «Verifica». Alla messa online la tua IA controlla di nuovo le due pagine dall'esterno.

@@ -1,0 +1,8 @@
+{
+ "befehl": ["--nur", "sicherheit,ablaeufe"],
+ "exit": 1,
+ "messwerte": "messwerte.json",
+ "ampel": { "sicherheit": "rot", "ablaeufe": "rot" },
+ "punkte": ["Impressum: /impressum", "Seite Datenschutz fehlt (Pflicht in der Schweiz und der EU)", "/: kein Link zur Datenschutzerklärung (gehört auf jede Seite, Skill recht-ch)"],
+ "nicht": ["Datenschutz: /informativa-cookie", "kein Link zum Impressum"]
+}
