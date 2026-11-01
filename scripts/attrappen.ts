@@ -17,12 +17,17 @@ const A = resolve(process.env.ALBATROS ?? `${wurzel}../albatros`);
 
 type Antwort = { status: number; body: unknown };
 type Zustand = { antworten: Record<string, Antwort>; eingabe: Record<string, unknown> };
-type Fall = { zustand?: string; insel?: string; werkzeuge?: Record<string, Record<string, unknown>>; mission?: { id: string; erledigt: number } };
+type Einwilligung = 'ja' | 'nein' | 'offen';
+type Fall = {
+  zustand?: string; insel?: string; werkzeuge?: Record<string, Record<string, unknown>>; mission?: { id: string; erledigt: number };
+  einwilligung?: { erfassung: Einwilligung; anfragen: Einwilligung };
+};
 
 // Welcher Fall welchen Zustand bekommt. zustand: einer der 12 Zustände aus lage-attrappen.ts, unverändert. insel: eigener Zustand
 // (Gratis, Weg Webseite, das Hauptprojekt «Sonnenhof» auf der Insel bei diesem Schritt), Eingabe wie von der KI aus dem Gerüst.
 // werkzeuge: weitere Werkzeuge, die im selben Zustand mit diesen Argumenten gerendert werden. mission: die aktuelle Mission im Flugbuch
-// (aus missionen/ in diesem Repo) und wie viele erledigt sind; dazu wird mission_holen gerendert.
+// (aus missionen/ in diesem Repo) und wie viele erledigt sind; dazu wird mission_holen gerendert. einwilligung: was konto für die
+// Erfassung antwortet (GET /cockpit/erfassung), sonst EINWILLIGUNG unten.
 export const FAELLE: Record<string, Fall> = {
   'p1-idee': { zustand: 'gratis-ohne-projekt' },
   'p2-research': { insel: 'idee' },
@@ -47,16 +52,20 @@ export const FAELLE: Record<string, Fall> = {
   // Gegenprüfung 31.10.2026 (vert-12): statt der alten Texte von Hand («Skill `start`, Schritt 5» bzw. «Schritt 3») das echte lage
   'start-sprache': { zustand: 'light-ohne-seite-fr', werkzeuge: { konto_status: {} } },
   'start-bauen': { zustand: 'gratis-ohne-weg', werkzeuge: { konto_status: {}, upgrade_link: { stufe: 'light' } } },
+  // Welle 6 (w6-51, anf-01, 01.11.2026): dieselbe Lage wie p3-grundriss, einmal ohne und einmal mit der Einwilligung für Anfragen
+  'anfrage-nicht-erlaubt': { insel: 'recherche' },
+  'anfrage-erlaubt': { insel: 'recherche', einwilligung: { erfassung: 'ja', anfragen: 'ja' } },
 };
 
-// Was konto für Preise und Abo antwortet (in den Zuständen der Attrappen fehlt es, weil lage es nicht braucht). Dazu die Einwilligungen
-// (Welle 5, 31.10.2026: lage liest sie mit ERFASSUNG): Lücken ja, Anfragen nicht erteilt, also ohne «Hinweis zur Erfassung» und ohne
-// «Anfragen: erlaubt.», damit die Fälle das prüfen, wofür sie gebaut sind
+// Was konto für Preise und Abo antwortet (in den Zuständen der Attrappen fehlt es, weil lage es nicht braucht)
 const KONTO_EXTRA: Record<string, Antwort> = {
   'GET /web/stufen': { status: 200, body: [{ stufe: 'gratis', leistung: { preisChfMonat: 0 } }, { stufe: 'light', leistung: { preisChfMonat: 15 } }, { stufe: 'pilot', leistung: { preisChfMonat: 40 } }] },
   'POST /cockpit/abo/checkout': { status: 200, body: { url: 'https://checkout.stripe.com/c/pay/cs_test_albatros_light' } },
-  'GET /cockpit/erfassung': { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } },
 };
+// Die Einwilligungen (Welle 5, 31.10.2026: lage liest sie mit ERFASSUNG), wenn ein Fall nichts anderes sagt: Lücken ja, Anfragen nicht
+// erteilt, also ohne «Hinweis zur Erfassung» und ohne «Anfragen: erlaubt.», damit die Fälle das prüfen, wofür sie gebaut sind. Bis Welle 6
+// galt das für alle Fälle in KONTO_EXTRA; seit 01.11.2026 (w6-51) je Fall, damit anfrage-erlaubt die Zeile «Anfragen: erlaubt.» zeigt.
+const EINWILLIGUNG: NonNullable<Fall['einwilligung']> = { erfassung: 'ja', anfragen: 'offen' };
 const SCHALTER_AN = { FAHRPLAN: true, ERFASSUNG: true };
 
 async function main() {
@@ -90,8 +99,9 @@ async function main() {
     return (await r.json()) as { result?: Record<string, unknown>; error?: unknown };
   }
 
-  async function werkzeug(z: Zustand, name: string, args: Record<string, unknown>) {
-    const b = await rpc({ ...z.antworten, ...KONTO_EXTRA }, 'tools/call', { name, arguments: args });
+  async function werkzeug(z: Zustand, name: string, args: Record<string, unknown>, einwilligung = EINWILLIGUNG) {
+    const erfassung: Antwort = { status: 200, body: einwilligung };
+    const b = await rpc({ ...z.antworten, ...KONTO_EXTRA, 'GET /cockpit/erfassung': erfassung }, 'tools/call', { name, arguments: args });
     const r = b.result as { content?: { text: string }[]; isError?: boolean } | undefined;
     const text = r?.content?.[0]?.text;
     if (!text) throw new Error(`${name}: keine Antwort (${JSON.stringify(b)})`);
@@ -179,7 +189,7 @@ async function main() {
   for (const [fall, f] of Object.entries(FAELLE)) {
     if (!(await Bun.file(`${EVALS}${fall}/prompt.md`).exists())) throw new Error(`${fall}: Fall fehlt (${EVALS}${fall}/prompt.md)`);
     const z = await zustandFuer(fall, f);
-    const lage = await werkzeug(z, 'lage', z.eingabe);
+    const lage = await werkzeug(z, 'lage', z.eingabe, f.einwilligung);
     // Die weiteren Werkzeuge sehen dazu die aktuelle Mission; lage bleibt genau wie in lage-attrappen.ts
     const ich = z.antworten['GET /cockpit/ich']?.body;
     const sprache = typeof ich === 'object' && ich !== null && 'sprache' in ich && typeof ich.sprache === 'string' ? ich.sprache : 'de';
@@ -187,7 +197,7 @@ async function main() {
     const mit: Zustand = buch ? { ...z, antworten: { ...z.antworten, 'GET /cockpit/flugbuch': buch, [`GET /cockpit/flugbuch?sprache=${sprache}`]: buch } } : z;
     soll.set(`${EVALS}${fall}/mocks/albatros/lage.md`, attrappe(lage.text, lage.fehler));
     for (const [name, args] of Object.entries({ ...f.werkzeuge, ...(f.mission ? { mission_holen: {} } : {}) })) {
-      const w = await werkzeug(mit, name, args);
+      const w = await werkzeug(mit, name, args, f.einwilligung);
       soll.set(`${EVALS}${fall}/mocks/albatros/${name}.md`, attrappe(w.text, w.fehler));
     }
   }
