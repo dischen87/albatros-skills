@@ -9,7 +9,7 @@ Pflichtfragen offen: fuer-wen: Für wen ist es gedacht? (die Person antwortet, e
 Pflichtfragen offen: hauptsache: Was sollen Besucher vor allem tun? (die Person antwortet, eine [Annahme] zählt nicht)
 Pflichtfragen offen: bestehend: Gibt es schon eine Webseite? Wenn ja, die Adresse. (die Person antwortet, eine [Annahme] zählt nicht)
 Pflichtfragen offen: erfolg: Woran merkst du in drei Monaten, dass es funktioniert? (als [Annahme] vorschlagen)
-Pflichtfragen offen: modus: Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen? (als [Annahme] vorschlagen)
+Pflichtfragen offen: modus: Soll ich es einfach machen und dir jeden Schritt in einem Satz erklären, oder willst du die wichtigen Schritte selbst lernen? (als [Annahme] vorschlagen; der Wert in «Modus:» beginnt mit lernen oder machen; diese Wörter bleiben deutsch)
 Ergebnis: docs/projekt.md mit «Projektname:», «In einem Satz:», «Für wen:», «Hauptsache:», «Erfolg:», «Bestehende Seite:», «Modus:», «Stand:», «Nächster Schritt:»; AGENTS.md; design/skizze.html.
 Fertig, wenn: docs/projekt.md hat alle Zeilen; Projektname nicht leer; die Skizze der Startseite ist geöffnet worden. Dann schritt_melden mit «idee».
 Hinweis: Bis zur fertigen Seite auf deinem Computer kostet Albatros nichts. Erst beim Wohnort wählst du: mit Albatros oder selbst.

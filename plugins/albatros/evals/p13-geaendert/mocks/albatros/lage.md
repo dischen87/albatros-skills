@@ -3,7 +3,7 @@ type: fixed
 ---
 
 Jetzt dran: Skill `lancieren`, Abschnitt «Live schalten». Grund: Phase P13 «Live schalten» (Etappe landen), Bild: Die Eröffnung mit Band vor der Tür.
-Pflichtfragen offen: adresse: Eigene Adresse (Domain) jetzt, später oder nie? (die Person antwortet, eine [Annahme] zählt nicht)
+Pflichtfragen offen: adresse: Eigene Adresse (Domain) jetzt, später oder nie? (die Person antwortet, eine [Annahme] zählt nicht; der Wert in «Eigene Domain:» beginnt mit jetzt, später oder nie; diese Wörter bleiben deutsch)
 Pflichtfragen offen: ankuendigung: Wem sagst du es zuerst? (die Person antwortet, eine [Annahme] zählt nicht)
 Pflichtfragen offen: pruefung-live: Ist die Seite unter ihrer Adresse ohne Rot (pruefen.mjs --live)? (klärst du selbst)
 Ergebnis: docs/live.md mit «Live seit:», «Adresse:», «Eigene Domain:», «Geprüft:», «Angekündigt:».

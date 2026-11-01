@@ -433,7 +433,7 @@
  },
  {
   "name": "schritt_melden",
-  "description": "Meldet, dass ein Projekt der Person einen Schritt weiter ist; auf ihrer Insel im Cockpit wächst dann das Gebäude. Schritte nach dem Fahrplan in dieser Reihenfolge: idee (P1), recherche (P2), plan (P3), plan-geprueft (P4), konzept (P5), mockup, entwuerfe (P6), entwurf (P7), entwurf-freigegeben (P8), prd, lokal, pruefung (P9), freigabe (P10), wohnort (P11), betrieb (P12), hafen, fliessband, live, domain (P13). Erst nach dem ausdrücklichen Ja der Person: plan-geprueft, entwurf-freigegeben, freigabe. Nur vorwärts: Ein früherer oder derselbe Schritt ändert nichts. hafen, fliessband, live und domain sieht Albatros auch selbst. Das Hauptprojekt heisst ab P1 projekt; titel ist sein Name, wie ihn die Person nennt (Zeile «Projektname:» in docs/projekt.md). Gibt die Adresse der Insel zurück: beim Start einmal im Browser öffnen, sie lädt danach selbst nach.",
+  "description": "Meldet, dass ein Projekt der Person einen Schritt weiter ist; auf ihrer Insel im Cockpit wächst dann das Gebäude. Schritte nach dem Fahrplan in dieser Reihenfolge: idee (P1), recherche (P2), plan (P3), plan-geprueft (P4), konzept (P5), mockup, entwuerfe (P6), entwurf (P7), entwurf-freigegeben (P8), prd, lokal, pruefung (P9), freigabe (P10), wohnort (P11), betrieb (P12), hafen, fliessband, live, domain (P13). Erst nach dem ausdrücklichen Ja der Person: plan-geprueft, entwurf-freigegeben, freigabe. Nur vorwärts: Ein früherer oder derselbe Schritt ändert nichts. hafen, fliessband, live und domain sieht Albatros auch selbst. Das Hauptprojekt heisst ab P1 projekt; titel ist sein Name, wie ihn die Person nennt (Zeile «Projektname:» in docs/projekt.md), auf der Insel höchstens 80 Zeichen (Längeres kürzt Albatros). Gibt die Adresse der Insel zurück: beim Start einmal im Browser öffnen, sie lädt danach selbst nach.",
   "inputSchema": {
    "type": "object",
    "properties": {
@@ -467,10 +467,10 @@
      "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
     },
     "titel": {
-     "description": "Name des Projekts, wie die Person es nennt (Projektname aus docs/projekt.md), höchstens 80 Zeichen; erscheint auf der Insel.",
+     "description": "Name des Projekts, wie die Person es nennt (Projektname aus docs/projekt.md), in einer Zeile; erscheint auf der Insel. Über 80 Zeichen kürzt Albatros an einer Wortgrenze auf 80 Zeichen mit «…»; höchstens 300 Zeichen.",
      "type": "string",
      "minLength": 1,
-     "maxLength": 80,
+     "maxLength": 300,
      "pattern": "^[^\\u0000-\\u001f]*$"
     },
     "sprache": {

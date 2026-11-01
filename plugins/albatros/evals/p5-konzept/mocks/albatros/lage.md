@@ -6,7 +6,7 @@ Jetzt dran: Skill `konzept`. Grund: Phase P5 «Design- und Marketing-Konzept» (
 Pflichtfragen offen: name: Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen? (die Person antwortet, eine [Annahme] zählt nicht)
 Pflichtfragen offen: ton: Du oder Sie, und wie soll die Sprache klingen? (die Person antwortet, eine [Annahme] zählt nicht)
 Pflichtfragen offen: charakter: Welche drei Wörter beschreiben, wie es wirken soll? (die Person antwortet, eine [Annahme] zählt nicht)
-Pflichtfragen offen: maskottchen: Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später. (die Person antwortet, eine [Annahme] zählt nicht)
+Pflichtfragen offen: maskottchen: Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später. (die Person antwortet, eine [Annahme] zählt nicht; der Wert in «Maskottchen:» beginnt mit ja, nein oder später; diese Wörter bleiben deutsch)
 Pflichtfragen offen: muss-bleiben: Gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen? (die Person antwortet, eine [Annahme] zählt nicht)
 Pflichtfragen offen: kern: Was versprichst du, und warum gerade du? (drei Sätze) (als [Annahme] vorschlagen)
 Pflichtfragen offen: bildsprache: Fotos, Illustrationen, Icons oder eine Mischung? (als [Annahme] vorschlagen)
