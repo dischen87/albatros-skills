@@ -93,7 +93,7 @@ Statistik: …
 Stand: <Datum>
 ```
 
-Hat jede Zeile eine Antwort, machst du den Eintrag ins Logbuch (`git add docs/betrieb.md && git commit -m "Betrieb: Briefkasten, Rauchmelder, Sicherung"`) und meldest `schritt_melden` mit `betrieb` und `sprache`. Fehlt das Werkzeug oder kennt es den Schritt nicht, geht es ohne Insel weiter. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-17-betrieb`: «Warum ist eine Rückmeldung, die niemand liest, schlimmer als keine?», «Wie kommst du auf gestern zurück?» und «Wer soll es zuerst merken, wenn deine Seite nicht antwortet?» `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach der Antwort der Person.
+Hat jede Zeile eine Antwort, machst du den Eintrag ins Logbuch (`git add docs/betrieb.md && git commit -m "Betrieb: Briefkasten, Rauchmelder, Sicherung"`) und meldest `schritt_melden` mit `betrieb` und `sprache`. Fehlt das Werkzeug oder kennt es den Schritt nicht, geht es ohne Insel weiter. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-17-betrieb`, höchstens zwei in einer Nachricht (andere Fragen mitgezählt): zuerst «Warum ist eine Rückmeldung, die niemand liest, schlimmer als keine?» und «Wie kommst du auf gestern zurück?», nach der Antwort der Person «Wer soll es zuerst merken, wenn deine Seite nicht antwortet?» `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach ihren Antworten.
 
 Danach kommt das Live schalten: Skill `lancieren`, Teil 2.
 

@@ -91,7 +91,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (bei selbst: das Repo bei GitHub, oder 
 Gewählt: <Datum>
 ```
 
-Steht die Adresse bei «selbst» erst nach dem ersten Hochladen fest, steht dort `[offen: kommt beim Live schalten]`. Dann der Eintrag ins Logbuch (`git add docs/lancieren.md && git commit -m "Wohnort: <Wohnort>"`) und `schritt_melden` mit `wohnort` und `sprache`. Fehlt das Werkzeug oder kennt es den Schritt nicht, geht es ohne Insel weiter.
+Steht die Adresse bei «selbst» erst nach dem ersten Hochladen fest, steht dort `[offen: kommt beim Live schalten]`. Dann der Eintrag ins Logbuch (`git add docs/lancieren.md && git commit -m "Wohnort: <Wohnort>"`) und `schritt_melden` mit `wohnort` und `sprache`. Fehlt das Werkzeug oder kennt es den Schritt nicht, geht es ohne Insel weiter. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-16-wohnort`, höchstens zwei in einer Nachricht (andere Fragen mitgezählt): zuerst «Was unterscheidet Light, Pilot und «selbst»?» und «Was ist ein SSH-Schlüssel, in einem Satz?», nach der Antwort der Person «Ist deine Seite nach diesem Schritt schon im Netz?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `wohnort` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach ihren Antworten.
 
 Weiter geht es mit dem Skill `betrieb`: Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen.
 
@@ -231,7 +231,7 @@ Geprüft: <Datum>, pruefen.mjs --live ohne Rot, Türen wie erwartet (docs/pruefu
 Angekündigt: <Datum>, <wem>
 ```
 
-Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Welche Seite geht beim Live schalten ins Netz?», «Wann ist deine Seite wirklich live?» und «Warum sagst du es jemandem zuerst?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `live` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach der Antwort der Person.
+Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`, höchstens zwei in einer Nachricht (andere Fragen mitgezählt): zuerst «Welche Seite geht beim Live schalten ins Netz?» und «Wann ist deine Seite wirklich live?», nach der Antwort der Person «Warum sagst du es jemandem zuerst?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `live` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach ihren Antworten.
 
 Wünscht die Person danach etwas anders, gilt der Skill `webseite-aendern`: klein (lokal ändern, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe zum Bauen, bauen, zeigen, Freigabe, Push).
 

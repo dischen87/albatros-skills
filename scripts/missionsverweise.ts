@@ -21,6 +21,10 @@
 //    uebersetzungen/<sprache>/missionen/, verstehen.frage). Es zählt die Mission, die zuletzt vor der Frage steht.
 // Regel 5 und 6 hängen seit Welle 7 (01.11.2026, w7-24) nicht mehr an einem Wortlaut: In en blieben «…, which you fetch with
 // `mission_holen`» und «mission `id`: “…?”» grün (Gegenprobe texte, runde2/repro/mutation-kontrollfragen-r2b.log).
+// 7. Zitiert ein Absatz mehr Kontrollfragen, als in eine Nachricht dürfen (fragen_je_nachricht in fahrplan.yaml, Grader fragen.md der
+//    Evals lernen-*), sagt er in seiner Sprache, dass höchstens so viele in eine Nachricht kommen («höchstens zwei», «au plus deux»,
+//    «al massimo due», «at most two»); die übrigen kommen nach der Antwort der Person (Welle 7, 01.11.2026, w7-22: betrieb und lancieren
+//    zitierten drei Fragen mit «stellst du jetzt»).
 import type { LektionsMission } from './lektionen.ts';
 
 export type VerweisMission = LektionsMission & { skill: string };
@@ -74,6 +78,19 @@ export function holenAlsQuelle(text: string, sprache = 'de'): number | null {
 // Regel 6: Missionen im Absatz (wie bei verstanden_melden auch «`mission: x`»), die Frage gehört zur letzten davor.
 // Gefragt: «…» (de, fr, it; darin eine Ebene «…» wie «Was unterscheidet Light, Pilot und «selbst»?»), “…” oder "…" (en), am Ende ein Fragezeichen
 const MISSION = new RegExp(String.raw`\`(?:mission: )?(${ID})\``, 'g');
+// Regel 7: «höchstens <Zahl>» je Sprache, als Wort oder Ziffer
+const ZAHLWORT: Record<string, Record<number, string>> = {
+  de: { 1: 'eine', 2: 'zwei', 3: 'drei' }, fr: { 1: 'une', 2: 'deux', 3: 'trois' }, it: { 1: 'una', 2: 'due', 3: 'tre' }, en: { 1: 'one', 2: 'two', 3: 'three' },
+};
+const BEISPIEL: Record<string, string> = { de: 'höchstens', fr: 'au plus', it: 'al massimo', en: 'at most' };
+const hoechstens = (sprache: string, n: number) => {
+  const z = `(?:${n}|${ZAHLWORT[sprache]?.[n] ?? n})`;
+  const muster: Record<string, string> = {
+    de: `höchstens ${z}`, fr: `(?:au plus|au maximum|pas plus de) ${z}|${z} au (?:plus|maximum)`, it: `(?:al massimo|non più di|massimo) ${z}`,
+    en: `(?:at most|no more than) ${z}|${z} at most`,
+  };
+  return new RegExp(`(?<![\\p{L}])(?:${muster[sprache] ?? muster.de})(?![\\p{L}])`, 'iu');
+};
 const GEFRAGT = /«((?:[^«»\n]|«[^«»\n]*»)*)»|“((?:[^“”\n]|“[^“”\n]*”)*)”|"([^"\n]*)"/g;
 
 const istLektion = (m: VerweisMission) => !m.optional && (m.verstehen?.length ?? 0) > 0;
@@ -100,7 +117,7 @@ export function bloecke(text: string): { start: number; text: string }[] {
   return aus;
 }
 
-export function missionsverweise(skills: SkillText[], missionen: VerweisMission[], fragen: Fragen = {}): string[] {
+export function missionsverweise(skills: SkillText[], missionen: VerweisMission[], fragen: Fragen = {}, jeNachricht = 2): string[] {
   const nachId = new Map(missionen.map((m) => [m.id, m]));
   const deutsch = new Map(missionen.map((m) => [m.id, (m.verstehen ?? []).map((v) => (v as { frage?: string }).frage ?? '')]));
   const fehler: string[] = [];
@@ -139,14 +156,21 @@ export function missionsverweise(skills: SkillText[], missionen: VerweisMission[
           + 'verstanden_melden erst nach der Antwort der Person');
       if (!jeLektion) continue;
       const missionenIm = [...b.text.matchAll(MISSION)];
+      let zitiert = 0;
       for (const q of b.text.matchAll(GEFRAGT)) {
         const gefragt = glatt(q[1] ?? q[2] ?? q[3] ?? '');
         const zu = missionenIm.filter((m) => m.index < q.index).at(-1)?.[1];
         const soll = zu ? jeLektion.get(zu) : undefined;
-        if (gefragt.endsWith('?') && soll?.length && !soll.some((f) => glatt(f) === gefragt))
+        if (!gefragt.endsWith('?') || !soll?.length) continue;
+        zitiert++;
+        if (!soll.some((f) => glatt(f) === gefragt))
           fehler.push(`${datei}:${zeile(text, b.start + q.index)}: Kontrollfrage «${gefragt}» steht so nicht in der Lektion «${zu}» (${sprache}); `
             + `wörtlich: ${soll.map((f) => `«${glatt(f)}»`).join(' oder ')}`);
       }
+      if (zitiert > jeNachricht && !hoechstens(sprache, jeNachricht).test(b.text))
+        fehler.push(`${datei}:${zeile(text, b.start)}: ${zitiert} Kontrollfragen in einem Absatz, aber höchstens ${jeNachricht} Fragen in einer Nachricht `
+          + `(fragen_je_nachricht); sag im Absatz, dass höchstens ${jeNachricht} in eine Nachricht kommen («${BEISPIEL[sprache] ?? BEISPIEL.de} ${ZAHLWORT[sprache]?.[jeNachricht] ?? jeNachricht}») `
+          + 'und die übrigen nach der Antwort der Person');
     }
   }
   return fehler;

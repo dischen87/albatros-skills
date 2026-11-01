@@ -3,7 +3,7 @@ name: lancieren
 description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: 'af3dd6986d6d'
+  quelle: 'b0a0497d0cde'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -94,7 +94,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (par toi-même : le dépôt chez GitHub
 Gewählt: <date>
 ```
 
-Si, par toi-même, l'adresse n'est connue qu'après le premier téléversement, il y a `[offen: kommt beim Live schalten]` (ouvert : vient à la mise en ligne). Ensuite, l'entrée dans le journal de bord (`git add docs/lancieren.md && git commit -m "Domicile : <domicile>"`) et `schritt_melden` avec `wohnort` et `sprache`. Si l'outil manque ou ne connaît pas l'étape, on continue sans île.
+Si, par toi-même, l'adresse n'est connue qu'après le premier téléversement, il y a `[offen: kommt beim Live schalten]` (ouvert : vient à la mise en ligne). Ensuite, l'entrée dans le journal de bord (`git add docs/lancieren.md && git commit -m "Domicile : <domicile>"`) et `schritt_melden` avec `wohnort` et `sprache`. Si l'outil manque ou ne connaît pas l'étape, on continue sans île. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-16-wohnort`, au maximum deux par message (autres questions comprises) : d'abord « Qu'est-ce qui distingue Light, Pilot et « par toi-même » ? » et « Qu'est-ce qu'une clé SSH, en une phrase ? », après la réponse de la personne « Ton site est-il déjà en ligne après cette étape ? » Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `wohnort`. Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après ses réponses.
 
 On continue avec le skill `betrieb` : boîte aux lettres, détecteur de fumée et porte d'entrée, avant que les invités arrivent.
 
@@ -234,7 +234,7 @@ Geprüft: <date>, pruefen.mjs --live sans rouge, portes comme prévu (docs/pruef
 Angekündigt: <date>, <à qui>
 ```
 
-Après `Eigene Domain:` vient d'abord `jetzt`, `später` ou `nie`, en allemand, comme la personne a répondu à l'étape 5 ; `Adresse:` est toujours l'adresse sur Internet. Ensuite, l'entrée dans le journal de bord, le push comme plus haut, et la mission. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-18-live-schalten` : « Quel site va en ligne lors de la mise en ligne ? », « Quand ton site est-il vraiment en ligne ? » et « Pourquoi le dis-tu d'abord à quelqu'un ? » Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `live`. Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+Après `Eigene Domain:` vient d'abord `jetzt`, `später` ou `nie`, en allemand, comme la personne a répondu à l'étape 5 ; `Adresse:` est toujours l'adresse sur Internet. Ensuite, l'entrée dans le journal de bord, le push comme plus haut, et la mission. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-18-live-schalten`, au maximum deux par message (autres questions comprises) : d'abord « Quel site va en ligne lors de la mise en ligne ? » et « Quand ton site est-il vraiment en ligne ? », après la réponse de la personne « Pourquoi le dis-tu d'abord à quelqu'un ? » Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `live`. Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après ses réponses.
 
 Si la personne veut ensuite autre chose, le skill `webseite-aendern` s'applique : petit (changer en local, montrer, validation, push) ou grand (complément au plan, ébauche, autorisation de construire, construire, montrer, validation, push).
 

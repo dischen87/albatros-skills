@@ -218,3 +218,40 @@ test('Regel 6: eine zitierte Frage hinter jeder Lektion zählt, egal ob dort Lek
   ];
   for (const [s, t] of gruen) expect([s, t, missionsverweise([inSprache(s, t)], MS, fragen)]).toEqual([s, t, []]);
 });
+
+// Regel 7 (Welle 7, 01.11.2026, w7-22): Höchstens zwei Fragen in einer Nachricht (fragen_je_nachricht in fahrplan.yaml, Grader fragen.md in
+// lernen-kontrollfrage). Zitiert ein Absatz mehr Kontrollfragen, sagt er, dass höchstens zwei in eine Nachricht kommen; betrieb und lancieren
+// zitierten drei mit «stellst du jetzt» (Gegenprobe texte, Runde 2).
+test('Regel 7: mehr als zwei zitierte Kontrollfragen in einem Absatz nur mit «höchstens zwei» in derselben Sprache', () => {
+  const drei = ['Warum A?', 'Wie B?', 'Wer C?'];
+  const ms: VerweisMission[] = [...MS, { id: 'flugschule-18-live-schalten', weg: 'flugschule', phase: 'P13', skill: 'lancieren', verstehen: drei.map((frage) => ({ frage, kern: 'x' })) }];
+  const fragen: Fragen = {
+    de: new Map([['flugschule-18-live-schalten', drei], ['flugschule-19-musterblatt', ['Warum D?']]]),
+    fr: new Map([['flugschule-18-live-schalten', ['Pourquoi A ?', 'Comment B ?', 'Qui C ?']]]),
+    it: new Map([['flugschule-18-live-schalten', ['Perché A?', 'Come B?', 'Chi C?']]]),
+    en: new Map([['flugschule-18-live-schalten', ['Why A?', 'How B?', 'Who C?']]]),
+  };
+  const lancieren = (sprache: string, text: string): SkillText => ({ ...inSprache(sprache, text), datei: inSprache(sprache, text).datei.replace('gestaltung', 'lancieren'), slug: 'lancieren', text: `\`flugschule-18-live-schalten\`\n\n${text}\n` });
+  const rot: [string, string][] = [
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Warum A?», «Wie B?» und «Wer C?»'],
+    ['fr', 'En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-18-live-schalten` : « Pourquoi A ? », « Comment B ? » et « Qui C ? »'],
+    ['it', 'Nel modo `lernen` fai adesso le domande di controllo della lezione `flugschule-18-live-schalten`: «Perché A?», «Come B?» e «Chi C?»'],
+    ['en', 'In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`: “Why A?”, “How B?” and “Who C?”'],
+    // Fragen mehrerer Lektionen zählen zusammen
+    ['de', 'Die Kontrollfrage der Lektion `flugschule-19-musterblatt`: «Warum D?», dazu die Lektion `flugschule-18-live-schalten` mit «Warum A?» und «Wie B?»'],
+    // Die Grenze in einer anderen Sprache zählt nicht
+    ['fr', 'Tu poses les questions de contrôle de la leçon `flugschule-18-live-schalten`, höchstens zwei : « Pourquoi A ? », « Comment B ? » et « Qui C ? »'],
+  ];
+  for (const [s, t] of rot)
+    expect([s, t, missionsverweise([lancieren(s, t)], ms, fragen)]).toEqual([s, t, [expect.stringContaining('Kontrollfragen in einem Absatz, aber höchstens 2 Fragen in einer Nachricht')]]);
+  const gruen: [string, string][] = [
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`, höchstens zwei in einer Nachricht: zuerst «Warum A?» und «Wie B?», nach der Antwort der Person «Wer C?»'],
+    ['fr', 'En mode `lernen`, tu poses les questions de contrôle de la leçon `flugschule-18-live-schalten`, au plus deux par message : « Pourquoi A ? » et « Comment B ? », puis « Qui C ? »'],
+    ['it', 'Nel modo `lernen` fai le domande di controllo della lezione `flugschule-18-live-schalten`, al massimo due per messaggio: «Perché A?» e «Come B?», poi «Chi C?»'],
+    ['en', 'In `lernen` mode you ask the check questions of the lesson `flugschule-18-live-schalten`, at most two in one message: “Why A?” and “How B?”, then “Who C?”'],
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Warum A?» und «Wie B?»'],
+  ];
+  for (const [s, t] of gruen) expect([s, t, missionsverweise([lancieren(s, t)], ms, fragen)]).toEqual([s, t, []]);
+  // Die Grenze kommt aus dem Fahrplan: mit drei je Nachricht sind drei Fragen ohne Satz erlaubt
+  expect(missionsverweise([lancieren('de', rot[0]![1])], ms, fragen, 3)).toEqual([]);
+});

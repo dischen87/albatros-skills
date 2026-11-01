@@ -3,7 +3,7 @@ name: lancieren
 description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: 'af3dd6986d6d'
+  quelle: 'b0a0497d0cde'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -94,7 +94,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (da te: il repository su GitHub, oppure
 Gewählt: <data>
 ```
 
-Se da te l'indirizzo si sa solo dopo il primo caricamento, c'è `[offen: kommt beim Live schalten]` (aperto: arriva alla messa online). Poi la voce nel diario di bordo (`git add docs/lancieren.md && git commit -m "Domicilio: <domicilio>"`) e `schritt_melden` con `wohnort` e `sprache`. Se lo strumento manca o non conosce il passo, si va avanti senza isola.
+Se da te l'indirizzo si sa solo dopo il primo caricamento, c'è `[offen: kommt beim Live schalten]` (aperto: arriva alla messa online). Poi la voce nel diario di bordo (`git add docs/lancieren.md && git commit -m "Domicilio: <domicilio>"`) e `schritt_melden` con `wohnort` e `sprache`. Se lo strumento manca o non conosce il passo, si va avanti senza isola. Nel modo `lernen` fai adesso le domande di controllo della lezione `flugschule-16-wohnort`, al massimo due per messaggio (contando anche le altre domande): prima «Che cosa distingue Light, Pilot e «da te»?» e «Che cos'è una chiave SSH, in una frase?», dopo la risposta della persona «Dopo questo passo il tuo sito è già online?» Stanno qui perché `lage` e `mission_holen` non le mostrano più dopo `wohnort`. Segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo le sue risposte.
 
 Si va avanti con lo skill `betrieb`: bucalettere, rilevatore di fumo e porta di casa, prima che arrivino gli ospiti.
 
@@ -234,7 +234,7 @@ Geprüft: <data>, pruefen.mjs --live senza rosso, porte come previsto (docs/prue
 Angekündigt: <data>, <a chi>
 ```
 
-Dopo `Eigene Domain:` viene prima `jetzt`, `später` o `nie`, in tedesco, come la persona ha risposto al passo 5; `Adresse:` è sempre l'indirizzo in rete. Poi la voce nel diario di bordo, il push come sopra, e la missione. Nel modo `lernen` fai adesso le domande di controllo della lezione `flugschule-18-live-schalten`: «Quale sito va online alla messa online?», «Quando il tuo sito è davvero online?» e «Perché lo dici prima a qualcuno?» Stanno qui perché `lage` e `mission_holen` non le mostrano più dopo `live`. Segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
+Dopo `Eigene Domain:` viene prima `jetzt`, `später` o `nie`, in tedesco, come la persona ha risposto al passo 5; `Adresse:` è sempre l'indirizzo in rete. Poi la voce nel diario di bordo, il push come sopra, e la missione. Nel modo `lernen` fai adesso le domande di controllo della lezione `flugschule-18-live-schalten`, al massimo due per messaggio (contando anche le altre domande): prima «Quale sito va online alla messa online?» e «Quando il tuo sito è davvero online?», dopo la risposta della persona «Perché lo dici prima a qualcuno?» Stanno qui perché `lage` e `mission_holen` non le mostrano più dopo `live`. Segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo le sue risposte.
 
 Se dopo la persona vuole qualcosa di diverso, vale lo skill `webseite-aendern`: piccolo (cambiare in locale, mostrare, approvazione, push) o grande (aggiunta al piano, bozza, via libera per costruire, costruire, mostrare, approvazione, push).
 

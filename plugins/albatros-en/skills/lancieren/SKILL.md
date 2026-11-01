@@ -3,7 +3,7 @@ name: lancieren
 description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
   stand: 0.2.0
-  quelle: 'af3dd6986d6d'
+  quelle: 'b0a0497d0cde'
 ---
 
 # Launch: where it lives and the opening
@@ -94,7 +94,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (hosting it yourself: the repository on
 Gewählt: <date>
 ```
 
-If, when hosting it yourself, the address is only known after the first upload, it says `[offen: kommt beim Live schalten]` (open: comes when going live). Then the logbook entry (`git add docs/lancieren.md && git commit -m "Where it lives: <place>"`) and `schritt_melden` with `wohnort` and `sprache`. If the tool is missing or doesn't know the step, you carry on without the island.
+If, when hosting it yourself, the address is only known after the first upload, it says `[offen: kommt beim Live schalten]` (open: comes when going live). Then the logbook entry (`git add docs/lancieren.md && git commit -m "Where it lives: <place>"`) and `schritt_melden` with `wohnort` and `sprache`. If the tool is missing or doesn't know the step, you carry on without the island. In `lernen` mode you now ask the check questions of the lesson `flugschule-16-wohnort`, at most two in one message (counting any other questions): first “What's the difference between Light, Pilot and hosting it yourself?” and “What is an SSH key, in one sentence?”, after the person's answer “Is your site on the web after this step?” They're here because `lage` and `mission_holen` no longer show them after `wohnort`. You only report `verstanden_melden` (kind `kontrollfrage`) after their answers.
 
 Next comes the skill `betrieb`: letterbox, smoke alarm and front door, before the guests arrive.
 
@@ -234,7 +234,7 @@ Geprüft: <date>, pruefen.mjs --live without red, doors as expected (docs/pruefu
 Angekündigt: <date>, <whom>
 ```
 
-After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`: “Which site goes onto the web when you go live?”, “When is your site really live?” and “Why do you tell someone first?” They're here because `lage` and `mission_holen` no longer show them after `live`. You only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
+After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`, at most two in one message (counting any other questions): first “Which site goes onto the web when you go live?” and “When is your site really live?”, after the person's answer “Why do you tell someone first?” They're here because `lage` and `mission_holen` no longer show them after `live`. You only report `verstanden_melden` (kind `kontrollfrage`) after their answers.
 
 If the person wants something different afterwards, the skill `webseite-aendern` applies: small (change locally, show, release, push) or big (addition to the plan, draft, approval to build, build, show, release, push).
 
