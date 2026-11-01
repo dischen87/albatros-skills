@@ -11,7 +11,7 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 | `pb_hooks/eingang.pb.js`, `pb_hooks/eingang.js` | Anmelden mit Cookie in PocketBase: `POST /api/eingang/anmelden`, `POST /api/eingang/abmelden`, `GET /api/eingang/pruefen` |
 | `pb_migrations/2_eingang.js` | Grenze für das Anmelden: 5 Versuche je Adresse in 60 Sekunden, über den Eingang und über `auth-with-password` |
 | `Dockerfile`, `compose.yaml` | Container `eingang` auf Port 80 (Ausschnitt für `include:`) |
-| `test.ts` | 51 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
+| `test.ts` | 52 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
 | `messen.ts` | Arbeitsspeicher und Antwortzeiten: `bun bausteine/eingang/messen.ts --anfragen 200000 --smol`; mit gehaltenen Anfragen: `--gehalten 1100 --fetch-plaetze 1024` (wartende dazu: `--je-adresse 120`); Seiten mit vielen Bildern: `--bilder 60 --seiten 20 --fetch-plaetze 1024 --smol` |
 
 ## eingang.json
@@ -117,7 +117,7 @@ Statt eines eigenen Dienstes könnte nginx im Container `webseite` die Tür sein
 | Ursprung beim Schreiben | Liste in `eingang.json` | `map $http_origin` und `if`, in `location` heikel |
 | 503 nach 2 s | so gebaut und getestet | `auth_request` meldet bei einem Fehler 500; 503 braucht `error_page`-Umwege |
 | Protokoll ohne Adressen | so gebaut und getestet | eigenes `log_format` ohne `$remote_addr` und mit `$uri` statt `$request_uri` |
-| Test | `test.ts` mit 51 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
+| Test | `test.ts` mit 52 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
 
 Fazit: nginx spart 20 bis 69 MB (mit vielen grossen Bildern auf einmal bis 129 MB, mit ungelesenen Downloads mehr) und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
 
@@ -126,7 +126,7 @@ Fazit: nginx spart 20 bis 69 MB (mit vielen grossen Bildern auf einmal bis 129 M
 - Nur mit eigenem Server (Pilot); mit Light läuft auf dem Server kein Programm.
 - Das Rezept `buchungen` meldet «Meine Buchungen» (`verwaltung.html`) über `/api/collections/_superusers` an. Das sperrt der Eingang, und ein Token der Verwaltung gilt durch ihn nicht: Hinter ihm geht «Meine Buchungen» nur über den Tunnel, bis die Seite über eine Rolle angemeldet wird (nicht gebaut).
 - Kein internes Geheimnis zu den Teilen, anders als bei amouk: Ein Teil kann eine Anfrage durch den Eingang nicht von einer direkten mit gefälschtem `x-eingang-rolle` unterscheiden. Auf einem Albatros-Server kommt niemand direkt zu einem Teil: Nur der Eingang hat einen Port (die Webseite verliert `ports:` beim Einbau, eigene Teile bekommen keine), und die Firewall der Server (`nftables` der Flotte) lässt von aussen nur SSH durch, Web nur über die Kante; Server erreichen einander nicht. Offen bleibt ein anderer Container im eigenen Stack, der übernommen wurde, und ein Umzug auf einen eigenen Server, wo Docker-Ports die Firewall umgehen (Skill `landung`): Dort gilt erst recht, dass kein Teil ausser dem Eingang `ports:` hat. Ein Geheimnis, das jeder Teil prüft, ist nicht gebaut.
-- Abmelden löscht das Cookie in diesem Browser, widerruft die Sitzung aber nicht: Eine Kopie des Tokens bleibt gültig, bis es abläuft (5 Tage). Überall abmelden: ein neues Passwort setzen («Passwort vergessen?»). Widerrufen liesse sich beim Abmelden (neuer `tokenKey` des Mitglieds); dann wären alle Geräte dieses Mitglieds abgemeldet. Das ist nicht gebaut und noch nicht entschieden.
+- Abmelden widerruft die Sitzung (neuer `tokenKey` des Mitglieds): Danach gilt kein Token dieses Mitglieds mehr, auch nicht auf anderen Geräten. Wer sich auf dem Handy abmeldet, ist also auch am Computer abgemeldet.
 - Die Mail «Neue Anmeldung» von PocketBase kommt bei der Anmeldung über den Eingang nicht, und die Anmeldung in zwei Schritten (MFA) geht über ihn nicht.
 - WebSockets gehen nicht durch, und die Echtzeit von PocketBase (`/api/realtime`, Server-Sent Events) sperrt er (404): Kein Rezept braucht sie, und jede Verbindung bliebe offen. Braucht ein eigener Teil sie, `/api/realtime` in `VERWALTUNG` (eingang.ts) streichen; sie zählt dann zu den 20 offenen Anfragen je Adresse.
 - Gegen viele Adressen zugleich hilft die Grenze je Adresse nicht: 52 Adressen mit je 20 langsamen Anfragen belegen alle 1024 Plätze für fetch, dann warten alle (gemessen mit `messen.ts --gehalten 1100 --fetch-plaetze 1024`). Mehr Plätze kosten Speicher: 4096 belegte brauchten 89 MB, zu nah an `mem_limit` 128 MB. Sind die 2000 Wartenden über alle Adressen voll, bekommt auch eine Seite mit vielen Bildern wieder 429 für alles über 20.

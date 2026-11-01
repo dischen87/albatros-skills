@@ -3,7 +3,7 @@ name: bausteine
 description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti, prima sul suo computer: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso e abilitazione, bacheca (PocketBase), un ingresso con un solo accesso per più parti o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «ruoli», «ingresso», «banca dati», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 metadata:
   stand: 0.2.0
-  quelle: 'd66c4610d5d1'
+  quelle: '4a6539330144'
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -223,7 +223,7 @@ La risposta va in `docs/betrieb.md`, alla riga `Eingang:` (skill `betrieb`). Il 
 4. `bun bausteine/eingang/test.ts` segnala «Alles grün», poi `bun bausteine/pocketbase/lokal.ts --eingang`: la persona apre una pagina protetta senza accesso, accede, torna indietro ed esce.
 5. Al lancio (skill `lancieren`, parte 2): in `compose.yaml` sotto `include:` la riga `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` cancellare le righe `ports:` e `- "80:80"`, altrimenti si potrebbe aggirare l'ingresso. Il sito è allora raggiungibile solo dietro l'ingresso. Poi verificare ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` con le «porte dei blocchi» (sezione 4): `/intern/` dà 401, `/_/` e `/api/collections/_SUPERUSERS/auth-methods` danno 404, la pagina iniziale 200.
 
-**Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'amministrazione, in qualsiasi grafia. Chiude anche il tempo reale di PocketBase (`/api/realtime`), nessuna ricetta ne ha bisogno. Uscire vale per un dispositivo; uscire ovunque vuol dire impostare una nuova password.
+**Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'amministrazione, in qualsiasi grafia. Chiude anche il tempo reale di PocketBase (`/api/realtime`), nessuna ricetta ne ha bisogno. Uscire vale per tutti i dispositivi: chi esce sul telefono è uscito anche sul computer.
 
 ## Trappole
 

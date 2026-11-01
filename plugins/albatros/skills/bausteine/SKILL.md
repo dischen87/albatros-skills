@@ -221,7 +221,7 @@ Die Antwort kommt in `docs/betrieb.md` in die Zeile `Eingang:` (Skill `betrieb`)
 4. `bun bausteine/eingang/test.ts` meldet «Alles grün», dann `bun bausteine/pocketbase/lokal.ts --eingang`: Die Person öffnet eine geschützte Seite ohne Anmeldung, meldet sich an, kommt zurück und meldet sich wieder ab.
 5. Beim Lancieren (Skill `lancieren`, Teil 2): in `compose.yaml` unter `include:` die Zeile `- bausteine/eingang/compose.yaml`, und beim Dienst `webseite` die Zeilen `ports:` und `- "80:80"` löschen, sonst käme man am Eingang vorbei. Die Webseite ist dann nur noch hinter dem Eingang erreichbar. Danach von aussen jede Tür prüfen: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` mit den «Türen der Bausteine» (Abschnitt 4): `/intern/` gibt 401, `/_/` und `/api/collections/_SUPERUSERS/auth-methods` geben 404, die Startseite 200.
 
-**Was er nicht kann:** Hinter dem Eingang geht «Meine Buchungen» (Rezept `buchungen`) nur über den Tunnel, weil er die Verwaltung von aussen sperrt, in jeder Schreibweise. Die Echtzeit von PocketBase (`/api/realtime`) sperrt er auch, kein Rezept braucht sie. Abmelden gilt je Gerät; überall abmelden heisst: ein neues Passwort setzen.
+**Was er nicht kann:** Hinter dem Eingang geht «Meine Buchungen» (Rezept `buchungen`) nur über den Tunnel, weil er die Verwaltung von aussen sperrt, in jeder Schreibweise. Die Echtzeit von PocketBase (`/api/realtime`) sperrt er auch, kein Rezept braucht sie. Abmelden gilt für alle Geräte: Wer sich auf dem Handy abmeldet, ist auch am Computer abgemeldet.
 
 ## Stolpersteine
 

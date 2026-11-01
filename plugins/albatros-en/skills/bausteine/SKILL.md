@@ -3,7 +3,7 @@ name: bausteine
 description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks, first on their own computer: a sign-up list, bookings for classes and appointments, a members' area with login and approval, a noticeboard (PocketBase), an entrance with one login for several parts, or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “roles”, “entrance”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 metadata:
   stand: 0.2.0
-  quelle: 'd66c4610d5d1'
+  quelle: '4a6539330144'
 ---
 
 # Building blocks: prefab parts for your site
@@ -223,7 +223,7 @@ The answer goes into `docs/betrieb.md`, on the line `Eingang:` (skill `betrieb`)
 4. `bun bausteine/eingang/test.ts` reports “Alles grün”, then `bun bausteine/pocketbase/lokal.ts --eingang`: the person opens a protected page without signing in, signs in, comes back and signs out again.
 5. At launch (skill `lancieren`, part 2): in `compose.yaml` under `include:`, the line `- bausteine/eingang/compose.yaml`, and for the service `webseite`, delete the lines `ports:` and `- "80:80"`, otherwise people could get round the entrance. The website can then only be reached behind the entrance. Then check every door from outside: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` with the “doors of the building blocks” (section 4): `/intern/` gives 401, `/_/` and `/api/collections/_SUPERUSERS/auth-methods` give 404, the home page 200.
 
-**What it can't do:** behind the entrance, “My bookings” (recipe `buchungen`) only works through the tunnel, because the entrance closes the admin area from outside, however it's spelled. It also blocks PocketBase's realtime feature (`/api/realtime`); no recipe needs it. Signing out applies to one device; signing out everywhere means setting a new password.
+**What it can't do:** behind the entrance, “My bookings” (recipe `buchungen`) only works through the tunnel, because the entrance closes the admin area from outside, however it's spelled. It also blocks PocketBase's realtime feature (`/api/realtime`); no recipe needs it. Signing out applies to all devices: signing out on the phone also signs you out on the computer.
 
 ## Stumbling blocks
 

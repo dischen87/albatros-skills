@@ -3,7 +3,7 @@ name: bausteine
 description: "Découvre avec une personne sans connaissances préalables ce que sa page doit savoir faire, et installe les briques toutes faites qui conviennent, d'abord sur son ordinateur : liste d'inscription, réservations, espace membres avec connexion et activation, tableau d'affichage (PocketBase), une entrée avec une seule connexion pour plusieurs parties ou un grand CMS (Strapi avec Postgres), avec la mémoire vive mesurée. Explique avec l'image des éléments préfabriqués dans la construction d'une maison. Utilise ce skill pour « inscription », « liste d'inscription », « réservation », « réserver un cours », « prendre rendez-vous », « enregistrer un formulaire », « connexion », « espace membres », « espace admin », « gérer les utilisateurs », « rôles », « entrée », « base de données », « Strapi », « CMS », « PocketBase », « brique », « qu'est-ce qui tient sur mon serveur ? », et quand une page doit savoir faire plus que montrer des textes et des images."
 metadata:
   stand: 0.2.0
-  quelle: 'd66c4610d5d1'
+  quelle: '4a6539330144'
 ---
 
 # Briques : des éléments préfabriqués pour ta page
@@ -223,7 +223,7 @@ La réponse va dans `docs/betrieb.md`, à la ligne `Eingang:` (skill `betrieb`).
 4. `bun bausteine/eingang/test.ts` annonce « Alles grün », puis `bun bausteine/pocketbase/lokal.ts --eingang` : la personne ouvre une page protégée sans être connectée, se connecte, revient et se déconnecte.
 5. Au lancement (skill `lancieren`, partie 2) : dans `compose.yaml`, sous `include:`, la ligne `- bausteine/eingang/compose.yaml`, et pour le service `webseite`, effacer les lignes `ports:` et `- "80:80"`, sinon on pourrait contourner l'entrée. Le site web n'est alors plus accessible que derrière l'entrée. Ensuite, vérifier chaque porte depuis l'extérieur : `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` avec les « portes des briques » (section 4) : `/intern/` donne 401, `/_/` et `/api/collections/_SUPERUSERS/auth-methods` donnent 404, la page d'accueil 200.
 
-**Ce qu'elle ne sait pas faire :** derrière l'entrée, « Mes réservations » (recette `buchungen`) ne marche que par le tunnel, parce qu'elle ferme l'administration depuis l'extérieur, quelle que soit l'écriture. Elle ferme aussi le temps réel de PocketBase (`/api/realtime`), aucune recette n'en a besoin. Se déconnecter vaut pour un appareil ; se déconnecter partout, c'est choisir un nouveau mot de passe.
+**Ce qu'elle ne sait pas faire :** derrière l'entrée, « Mes réservations » (recette `buchungen`) ne marche que par le tunnel, parce qu'elle ferme l'administration depuis l'extérieur, quelle que soit l'écriture. Elle ferme aussi le temps réel de PocketBase (`/api/realtime`), aucune recette n'en a besoin. Se déconnecter vaut pour tous les appareils : qui se déconnecte sur son téléphone l'est aussi sur son ordinateur.
 
 ## Pièges
 

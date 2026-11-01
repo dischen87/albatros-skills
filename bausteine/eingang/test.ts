@@ -448,6 +448,8 @@ try {
 
   const ab = await holen('/api/eingang/abmelden', { methode: 'POST', kopf: { origin: EIGEN, cookie } });
   pruefe(ab.status === 204 && /^__Host-sitzung=;.*Max-Age=0/.test(ab.headers.get('set-cookie') ?? ''), 'Abmelden löscht das Cookie');
+  const kopie = await holen('/intern/seite.html', { kopf: { cookie } });
+  pruefe(kopie.status === 401, `Abmelden widerruft die Sitzung: eine Kopie des Cookies gilt danach nicht mehr (${kopie.status})`);
 
   // Grenzen je Adresse, hinter einem vertrauten Proxy
   const e2 = await starten(konfig(`http://127.0.0.1:${pbPort}`), { VERTRAUTE_PROXYS: '127.0.0.1', ANFRAGEN_PRO_MINUTE: '20' });

@@ -40,6 +40,12 @@ routerAdd("POST", "/api/eingang/anmelden", (e) => {
 
 routerAdd("POST", "/api/eingang/abmelden", (e) => {
   const h = require(`${__hooks}/eingang.js`);
+  // Abmelden widerruft die Sitzung: Ein neuer tokenKey macht jedes Token dieses Mitglieds ungültig, auf allen Geräten. Fremde Seiten
+  // kommen nicht bis hierher (Schreiben mit dem Cookie nur von der eigenen Seite, routerUse oben).
+  if (e.auth && e.auth.collection().name === "users") {
+    e.auth.refreshTokenKey();
+    e.app.save(e.auth);
+  }
   e.response.header().add("Set-Cookie", h.cookie("", 0));
   return e.noContent(204);
 });
