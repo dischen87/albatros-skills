@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.2.0
-  quelle: '303806817acb'
+  quelle: '4889933f238f'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -194,7 +194,7 @@ Tirés de docs/plan.md (Testing:) et de l'ébauche ; validés avec l'ébauche.
 /docs/plan.md   404     # les documents de travail ne vont pas en ligne
 ```
 
-Avec une brique, ses portes s'ajoutent. S'il y a une entrée devant (skill `bausteine`, partie « Ein Eingang für alles? »), ce sont par exemple `/intern/ 401`, `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : les pages protégées demandent une connexion, et la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase (par exemple `/api/collections/users/records`) répondent aux visiteurs 200 avec une liste vide, pas 401 ni 403 ; si tu mets une telle liste dans `docs/tueren.txt`, c'est avec 200.
+Avec une brique, ses portes s'ajoutent. S'il y a une entrée devant (skill `bausteine`, partie « Ein Eingang für alles? »), ce sont par exemple `/intern/ 401`, `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : les pages protégées demandent une connexion, et la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase (par exemple `/api/collections/users/records`) répondent aux visiteurs 200 avec une liste vide, pas 401 ni 403 ; si tu mets une telle liste dans `docs/tueren.txt`, c'est avec 200. Toutes les portes par recette sont dans le skill `bausteine`, partie « Türen der Bausteine ». Avec la recette `buchungen`, `/verwaltung/` est la page « Mes réservations » et répond 200 (les réservations, seule la personne connectée avec le compte de l'administration les voit) ; la ligne `/verwaltung 404` de l'exemple ci-dessus ne convient alors pas.
 
 **Un message pour les hypothèses :** montre le PRD à la personne en trois ou quatre phrases, ouvre le fichier et présente le mode de construction et les portes comme hypothèses, par exemple : « Je construis avec Astro, sans brique, et seules l'accueil, l'offre, la demande, les mentions légales et la protection des données sont ouvertes. C'est juste ? » Après son oui, tu enlèves `[Annahme: …]`, tu fais l'entrée dans le journal de bord (`git add docs && git commit -m "PRD tiré de l'ébauche, mode de construction et portes"`), tu annonces `prd` et tu construis.
 
