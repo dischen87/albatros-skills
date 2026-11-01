@@ -3,7 +3,7 @@ name: lancieren
 description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: '0908f74407a1'
+  quelle: 'e9950364778b'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -32,9 +32,9 @@ La maison est construite, réceptionnée et validée. Maintenant viennent deux c
 ```bash
 # la dernière ligne « Freigegeben: » compte : devant, une date avec l'année, nulle part une [Annahme]
 grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
   | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows : findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
@@ -107,9 +107,9 @@ Seulement quand `docs/betrieb.md` a toutes ses lignes (skill `betrieb`). S'il ma
 ```bash
 # la validation de la visite, comme dans la partie 1, étape 1 (la commande pour Windows y est aussi)
 grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
   | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # vide : rien de non enregistré sur le site
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```

@@ -3,7 +3,7 @@ name: lancieren
 description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: '0908f74407a1'
+  quelle: 'e9950364778b'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -32,9 +32,9 @@ La casa è costruita, collaudata e approvata. Adesso vengono due cose, in quest'
 ```bash
 # conta l'ultima riga «Freigegeben:»: davanti una data con l'anno, da nessuna parte una [Annahme]
 grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
   | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
@@ -107,9 +107,9 @@ Solo quando `docs/betrieb.md` ha tutte le righe (skill `betrieb`). Se manca, vai
 ```bash
 # l'approvazione del sopralluogo, come nella parte 1, passo 1 (lì c'è anche il comando per Windows)
 grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
   | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # vuoto: niente di non salvato sul sito
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```

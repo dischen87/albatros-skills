@@ -29,9 +29,9 @@ Das Haus ist gebaut, abgenommen und freigegeben. Jetzt kommen zwei Dinge, in die
 ```bash
 # die letzte Zeile «Freigegeben:» zählt: vorne ein Datum mit Jahr, nirgends eine [Annahme]
 grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
   | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
@@ -104,9 +104,9 @@ Erst wenn `docs/betrieb.md` alle Zeilen hat (Skill `betrieb`). Fehlt sie, gehst 
 ```bash
 # die Freigabe aus der Begehung, wie in Teil 1, Schritt 1 (dort auch der Befehl für Windows)
 grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
   | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # leer: nichts Ungespeichertes an der Seite
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```

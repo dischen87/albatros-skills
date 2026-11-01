@@ -52,8 +52,9 @@ const skills = async () => {
   for (const datei of new Glob('plugins/*/skills/*/SKILL.md').scanSync(wurzel)) s.push({ datei, text: await Bun.file(wurzel + datei).text() });
   return s;
 };
-// Trifft der Befehl, wenn die Datei `ziel` diesen Inhalt hat? Wie in den Skills: Er zeigt eine Zeile. Einmal mit der Sprache des Rechners
-// (meist UTF-8), einmal mit LC_ALL=C; beide Male muss dasselbe herauskommen.
+// Trifft der Befehl, wenn die Datei `ziel` diesen Inhalt hat? Wie in den Skills: Er zeigt eine Zeile. Mit der Sprache des Rechners, mit
+// LC_ALL=C.UTF-8 und mit LC_ALL=C; jedes Mal muss dasselbe herauskommen. C.UTF-8 steht seit 01.11.2026 ausdrücklich dabei: Ohne LANG (wie
+// in der Umgebung der Agenten) liefen vorher beide Male wie C, und was grep -i mit UTF-8 anders macht, blieb ungeprüft.
 // Derselbe Befehl steht in vier Sprachen und in lancieren zweimal (Teil 1 und 2), wörtlich gleich: Er läuft je Wortlaut und Inhalt nur
 // einmal, das Urteil gilt für jede Stelle mit diesem Wortlaut (gleicher Befehl, gleiche Datei, gleiches sh: gleiches Ergebnis). Vorher
 // startete der Freigabe-Test 448 sh-Aufrufe (8 Befehle × 28 Fälle × 2 Sprach-Einstellungen), brauchte allein 2,3 s und lief mit 12
@@ -64,14 +65,15 @@ const trifft = (befehl: string, ziel: string, inhalt: string) => {
   const bekannt = urteile.get(schluessel);
   if (bekannt !== undefined) return bekannt;
   writeFileSync(join(ordner, ziel), inhalt);
-  const [utf8, c] = [process.env, { ...process.env, LC_ALL: 'C' }].map((env) => {
+  const sprachen = { [`des Rechners (${process.env.LC_ALL || process.env.LANG || 'ohne LANG'})`]: process.env, 'C.UTF-8': { ...process.env, LC_ALL: 'C.UTF-8' }, C: { ...process.env, LC_ALL: 'C' } };
+  const je = Object.entries(sprachen).map(([name, env]) => {
     const r = Bun.spawnSync(['sh', '-c', befehl], { cwd: ordner, env });
     if (r.exitCode > 1) throw new Error(`${befehl}: ${r.stderr.toString()}`);
-    return r.stdout.toString().trim() !== '';
+    return [name, r.stdout.toString().trim() !== ''] as const;
   });
-  if (utf8 !== c) throw new Error(`${befehl}: mit LC_ALL=C anders als mit ${process.env.LC_ALL ?? process.env.LANG ?? 'ohne LANG'} bei ${JSON.stringify(inhalt)}`);
-  urteile.set(schluessel, utf8!);
-  return utf8!;
+  if (new Set(je.map(([, u]) => u)).size > 1) throw new Error(`${befehl}: je nach Sprache anders bei ${JSON.stringify(inhalt)}: ${je.map(([n, u]) => `${n} ${u ? 'trifft' : 'trifft nicht'}`).join(', ')}`);
+  urteile.set(schluessel, je[0]![1]);
+  return je[0]![1];
 };
 // Diese Tests starten Prozesse (sh, grep, tail, tr); wie lange das dauert, hängt von der Last auf dem Rechner ab, nicht vom geprüften Text.
 // Darum ein eigenes Timeout statt der 5 s von bun test (01.11.2026, Gegenprobe texte: auf dem geteilten Rechner zufällig rot).
@@ -88,6 +90,13 @@ const FREIGABEN: string[][] = [
   ['Freigegeben: ja, am 31.10.2026'], ['Freigegeben: 1 Seite fehlt noch'], ['Freigegeben: pas encore'], ['Freigegeben: 12/31/2026, yes'],
   ['Freigegeben: 30.10.2026, «Ja»', 'Freigegeben: [offen: neue Rückmeldung]'], ['Freigegeben: 30.10.2026, «Ja»', 'Freigegeben: 02.11.2026, «Ja, neu»'],
   ['Freigegeben:'], [], ['Freigegeben zum Bauen: 31.10.2026'], ['Abgeleitet aus: docs/entwurf.md', 'Freigegeben:\t31.10.2026, «Ja»'],
+  // Grenzfälle der Gegenprobe texte (01.11.2026, repro/w6-43-rand.ts): Das Datum zählt nur direkt hinter dem ersten «Freigegeben:» der Zeile
+  // (vorher nahm der Befehl ein zweites weiter hinten), Leerraum am Ende zählt nicht (kit schneidet ihn ab), und eine Annahme-Marke in
+  // Grossbuchstaben mit Akzent gilt auch mit LC_ALL=C (dort kennt grep -i nur a bis z)
+  ['Freigegeben: [offen] (Freigegeben: 31.10.2026 war der alte Stand)'], ['Freigegeben: noch nicht, Freigegeben: 31.10.2026 kommt erst'],
+  ['Freigegeben: 2026 '], ['Freigegeben: 2026 \t'], ['Freigegeben: 2026'], ['Freigegeben: 31 Oktober 2026, «Ja»'], [' Freigegeben: 31.10.2026, «Ja»'],
+  ['Freigegeben: 31.10.2026, «Ja»\r'], ['Freigegeben: 31.10.2026 [HYPOTHÈSE : relu]'], ['Freigegeben: 31.10.2026 [HypothÈse : relu]'],
+  ['Freigegeben: [HYPOTHÈSE : oui] 31.10.2026'], ['Freigegeben: 31.10.2026, «Ja»', '* Freigegeben: noch nicht'],
 ];
 
 test('Freigabe: jeder Befehl in lancieren (vier Sprachen, Teil 1 und 2) urteilt wie kit jaBelegt', async () => {
