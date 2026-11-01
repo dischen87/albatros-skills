@@ -11,7 +11,8 @@
 //   <werkzeug>.server.md, .seite.md, .<abo>.md. Platzhalter: {repo}, {name} (Name der Seite), {stand} (zuletzt veröffentlicht), {stufe}.
 // Umgebung: DURCHSPIEL_STAND (Stand der Skills im Lauf mit fahrplan.yaml, missionen/, plugins/albatros), DURCHSPIEL_FALL, DURCHSPIEL_STUFE
 // (gratis, light, pilot), DURCHSPIEL_SCHLOESSER, DURCHSPIEL_LOG (jeder Aufruf als JSON-Zeile mit Runde), DURCHSPIEL_RUNDE (Datei mit der
-// Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo).
+// Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo),
+// DURCHSPIEL_BAUSERVICE=on (Bauservice wie mit dem Schalter BAUSERVICE: auftrag_anlegen und in lage die Zeile «Angebot:», unten bei «Bauservice»).
 // Beschreibungen und Parameter der Werkzeuge und die Anleitung wie beim echten Dienst mit FAHRPLAN und ERFASSUNG (mocks/werkzeuge.json,
 // mocks/anleitung.txt); Eingaben prüft sie auf jeder Ebene wie zod im echten Dienst (auch in Listen und Objekten darin, unten bei «Eingaben
 // wie zod») und antwortet wie er mit «Ungültige Angaben»; ein Werkzeug, das sie nicht anbietet, und eine unbekannte Methode sind wie dort
@@ -29,7 +30,7 @@ import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } 
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
 import {
-  ausgangZaehlt, belegt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wertPasst,
+  AUFTRAG, ausgangZaehlt, belegt, bisAbschluss, ohneFett, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wertPasst,
   wohnortVon, type Fuer,
 } from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
@@ -104,6 +105,17 @@ const mitMethoden = (p: Phase, skillText: string, ms: string[]) => (!ms.length ?
 // die Person nur im Cockpit, im Durchspiel also nie
 const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Werkzeuge deine KI aufruft, nie deine Unterhaltung mit ihr. Lücken und Anfragen nur, wenn du sie erlaubst. Ansehen und widersprechen kannst du unter https://albatros.build/cockpit/daten.';
 
+// ———— Bauservice (Welle 8, w8-44, 01.11.2026; Konzept «Albatros baut es für dich», 3.1) ————
+// Mit DURCHSPIEL_BAUSERVICE=on wie lage mit FAHRPLAN und BAUSERVICE: R1 «Angebot:» einmal, sobald P4 geschafft ist (bauen_lassen in
+// fahrplan.yaml: ab, nur_modus, setup_beginnt, ohne Zeile «Bauen lassen:», ohne Auftrag, ohne Server und Pilot); R1b mit «Bauen lassen:
+// albatros» nach P5 die Übergabe (Skill konzept), nie P6; R2 mit offenem Auftrag «warten auf Albatros», nie P6 bis P10. Die Beträge wie
+// konto (stufen.ts AUFTRAG, GET /web/auftrag). Den Wortlaut von lage und auftrag_anlegen baut albatros (Paket auftrag); hier steht, was die
+// Skills und scripts/punkte.ts brauchen: die Zeile «Angebot:» mit den Beträgen, die Übergabe und das Warten.
+const BAUSERVICE = process.env.DURCHSPIEL_BAUSERVICE === 'on';
+const ANGEBOT = `Angebot: Albatros kann die Seite für die Person bauen: Entwürfe zur Wahl, dann eine Vorschau der ganzen Seite; bezahlt wird erst, wenn sie die Seite will: CHF ${AUFTRAG.einmaligChf} einmalig, danach Light für CHF ${AUFTRAG.aboChfMonat} im Monat. Sag es ihr einmal mit diesen Beträgen und schreib ihre Wahl in docs/projekt.md: «Bauen lassen: selbst (TT.MM.JJJJ)» oder «Bauen lassen: albatros (TT.MM.JJJJ)».`;
+const [BL_DATEI, BL_ZEILE] = F.bauen_lassen.quelle.split('#') as [string, string];
+const beginntMitWort = (w: string | null, wort: string) => w !== null && new RegExp(`^${wort}(?![\\p{L}\\p{N}])`, 'iu').test(ohneFett(w));
+
 type Mission = {
   id: string; weg: string; titel: string; skill?: string; phase?: string; optional?: boolean; abo?: string;
   pruefung?: { typ: string; schritt?: string }[]; verstehen?: { frage: string; kern: string }[];
@@ -165,6 +177,11 @@ function lage(a: Args): Antwort {
   };
   const zeilen: string[] = [];
   const hinweise: string[] = [];
+  // Bauservice (oben): Stand des Auftrags in der Attrappe, Wahl der Person in docs/projekt.md
+  const auftrag = merk('auftrag');
+  const wahl = wert(dateien[BL_DATEI], BL_ZEILE);
+  const wartet = BAUSERVICE && auftrag !== null && auftrag !== 'zurueckgezogen' && auftrag !== 'live';
+  const uebergabe = BAUSERVICE && !auftrag && beginntMitWort(wahl, 'albatros') && erledigt > phaseIndex(F, F.bauen_lassen.ab);
   const ss = typeof a.skills_stand === 'string' && /^\d+\.\d+\.\d+$/.test(a.skills_stand) ? a.skills_stand : null;
   if (!ss || neuer(SKILLS_STAND, ss)) {
     zeilen.push(`Deine Albatros-Skills sind veraltet (auf diesem Computer: ${ss ?? 'unbekannt'}, aktuell: ${SKILLS_STAND}). Gib bei lage skills_stand mit (metadata.stand in deinen Skills); fehlt dir ein Skill, hol ihn mit skill_holen.`);
@@ -181,6 +198,12 @@ function lage(a: Args): Antwort {
   } else if (e?.art === 'hausaufgabe') {
     [jetzt, grund] = [`warten bis ${e.bis}`, `Dein Ideen-Check hat eine Hausaufgabe offen bis ${e.bis}. Erst mit ihrem Ergebnis entscheidet ihr: weiter, anpassen oder stoppen.`];
     danach = `${methodeText(['ideen-check'])} mit dem Ergebnis der Hausaufgabe`;
+  } else if (wartet) {
+    [jetzt, grund] = ['warten auf Albatros', `Dein Auftrag #1 ist bei Albatros (Stand ${auftrag}): Das Team macht Entwürfe zur Wahl, danach eine Vorschau. Bis dahin baust du nicht selbst weiter; daneben kannst du Texte und Fotos sammeln (${skill('inhalte')}).`];
+    danach = 'im Cockpit unter «Dein Auftrag» die Richtung wählen';
+  } else if (uebergabe) {
+    [jetzt, grund] = [`${skill('konzept')}, Abschnitt «Übergabe an Albatros»`, 'Die Person lässt Albatros bauen (Bauen lassen: albatros), und ihr Konzept steht: Jetzt geht der Auftrag an Albatros, statt dass du selbst gestaltest.'];
+    danach = 'warten auf Albatros: Entwürfe zur Wahl im Cockpit';
   } else if (p) {
     phaseDran = true;
     const f = fuer(p);
@@ -215,6 +238,9 @@ function lage(a: Args): Antwort {
     const ausgang = ausgangZaehlt(F, p, fuerWeg) ? ` Auf dem Weg Geschäft dazu ${ausgangText(p)}.` : '';
     zeilen.push(`Fertig, wenn: ${p.gate}${ausgang} Dann schritt_melden mit ${melden.map((x) => `«${x}»`).join(', ')}${melden.length > 1 ? ', je sobald geschafft' : ''}.`);
     if (st === 'gratis' && erledigt <= gratisBis) zeilen.push(`Hinweis: ${GRATIS_HINWEIS}`);
+    // R1: einmal, sobald P4 geschafft ist, nur im Modus machen, mit «Setup:» ab statisch, ohne Wahl, ohne Auftrag, ohne Server und Pilot
+    if (BAUSERVICE && p.id === F.bauen_lassen.ab && modus === F.bauen_lassen.nur_modus && !auftrag && wahl === null
+      && beginntMitWort(wert(dateien['docs/plan.md'], 'Setup:'), F.bauen_lassen.setup_beginnt) && st !== 'pilot' && !merk('server')) zeilen.push(ANGEBOT);
     zeilen.push(`Modus: ${modus}. ${F.modus[modus]}`);
     if (modus === 'lernen') zeilen.push(...lektion(p, weg, st));
   }
@@ -410,6 +436,14 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
       `Hinterlegte Schlösser: ${n ? `${n} (ssh-ed25519 …@laptop)` : 'keine (Werkzeug schluessel_hinterlegen)'}. Guthaben für Bilder: CHF 5.00.`,
     ].join(' ') };
   },
+  // Wie mcp auftrag_anlegen (Schnittstelle I4) und konto POST /cockpit/auftraege: ein offener Auftrag je Person (409 wörtlich wie konto)
+  auftrag_anlegen: () => {
+    if (!BAUSERVICE) return { fehler: true, text: 'Den Bauservice gibt es gerade nicht.' };
+    const offen = merk('auftrag');
+    if (offen && offen !== 'zurueckgezogen' && offen !== 'live') return { fehler: true, text: 'Du hast schon einen offenen Auftrag.' };
+    setze('auftrag', 'briefing');
+    return { text: `Auftrag #1 angelegt (Stand briefing). Betrag: CHF ${AUFTRAG.einmaligChf} einmalig, danach Light für CHF ${AUFTRAG.aboChfMonat} im Monat; bezahlt wird erst bei der Vorschau. Im Cockpit: https://albatros.build/cockpit/auftrag` };
+  },
   schluessel_hinterlegen: (a) => {
     if (!/^(ssh-ed25519|ssh-rsa|ecdsa-sha2-nistp256) [A-Za-z0-9+/=]{20,}/.test(String(a.schluessel).trim())) {
       return { fehler: true, text: 'Das ist kein öffentlicher Schlüssel. Gib nur den Inhalt der Datei mit .pub am Ende mit, nie den privaten Schlüssel.' };
@@ -442,7 +476,18 @@ type Schema = { name: string; description: string; inputSchema: Knoten };
 const ECHT: Schema[] = JSON.parse(readFileSync(join(wurzel, 'scripts/durchspiel/mocks/werkzeuge.json'), 'utf8'));
 const ANLEITUNG = readFileSync(join(wurzel, 'scripts/durchspiel/mocks/anleitung.txt'), 'utf8').trim();
 const mitText = (n: string) => [...(fallOrdner ? [fallOrdner] : []), ...ordner].some((o) => existsSync(join(o, `${n}.md`)));
-const werkzeuge = ECHT.filter((w) => MIT_ZUSTAND[w.name] || mitText(w.name));
+// auftrag_anlegen nur mit Bauservice. werkzeuge.json kommt aus mcp mit FAHRPLAN und ERFASSUNG, ohne BAUSERVICE; bis es die Eingabe von dort
+// gibt, steht sie hier wie I4: bestaetigt true und die Felder von Briefing in albatros services/konto/src/auftraege.ts (trim, Längen)
+const text1 = (max: number): Knoten => ({ type: 'string', minLength: 1, maxLength: max });
+const AUFTRAG_WERKZEUG: Schema = ECHT.find((w) => w.name === 'auftrag_anlegen') ?? {
+  name: 'auftrag_anlegen',
+  description: 'Nur nach dem ausdrücklichen Ja der Person zur Zusammenfassung (bestaetigt: true): legt den Auftrag «Albatros baut deine Webseite» an, mit dem Briefing aus ihren Dateien (ohne Namen von Dritten, ohne Zugangsdaten). Antwort mit Nummer, Betrag aus konto und Link ins Cockpit.',
+  inputSchema: { type: 'object', required: ['bestaetigt', 'name', 'wofuer', 'fuerWen', 'seiten', 'stil'], properties: {
+    bestaetigt: { enum: [true] }, name: text1(120), wofuer: text1(2000), fuerWen: text1(2000), seiten: text1(2000),
+    adresse: { type: 'string', maxLength: 300 }, stil: text1(2000), material: { type: 'string', maxLength: 4000 },
+  } },
+};
+const werkzeuge = [...ECHT.filter((w) => w.name !== 'auftrag_anlegen' && (MIT_ZUSTAND[w.name] || mitText(w.name))), ...(BAUSERVICE ? [AUFTRAG_WERKZEUG] : [])];
 
 // ———— Eingaben wie zod im echten Dienst ————
 // werkzeuge.json trägt die Eingaben von mcp als JSON Schema (z.toJSONSchema). Die Attrappe prüft sie wie zod 4 (mcp: zod 4.6.7,
@@ -465,7 +510,7 @@ const MUSTER_MELDUNG: Record<string, string> = {
   '^[a-z0-9][a-z0-9-]{0,39}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 40 Zeichen',
   '^[a-z0-9][a-z0-9-]{0,63}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 64 Zeichen',
 };
-const GETRIMMT = new Set(['schritt_melden.titel']);
+const GETRIMMT = new Set(['schritt_melden.titel', ...['name', 'wofuer', 'fuerWen', 'seiten', 'adresse', 'stil', 'material'].map((f) => `auftrag_anlegen.${f}`)]);
 type Fund = { pfad: (string | number)[]; text: string; weiter?: boolean }; // weiter wie issue.continue bei zod: false hält alles Weitere an
 const artVon = (v: unknown) => (v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v);
 const alsWert = (v: unknown) => (typeof v === 'string' ? `"${v}"` : String(v));
@@ -553,7 +598,9 @@ process.stdin.on('data', (d) => {
       const r: Antwort = !w ? { fehler: true, text: `Unbekanntes Werkzeug: ${name}` } : fehler.length ? { fehler: true, text: `Ungültige Angaben: ${fehler.join(', ')}` }
         : antwort(name, a) ?? { fehler: true, text: `Werkzeug ${name} gibt es nicht.` };
       process.stderr.write(`[attrappe] ${name} ${JSON.stringify(roh ?? {})}\n`);
-      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false })}\n`);
+      // angebot: lage zeigte die Zeile «Angebot:» (Bauservice); scripts/punkte.ts zählt, wann und wie oft
+      const angebot = name === 'lage' && /^Angebot: /m.test(r.text);
+      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false, ...(angebot ? { angebot } : {}) })}\n`);
       senden(w ? { jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } }
         : { jsonrpc: '2.0', id: m.id, error: { code: -32602, message: r.text } });
     } else if (m.method === 'ping') {

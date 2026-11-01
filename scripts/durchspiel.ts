@@ -63,7 +63,7 @@ const seiteName = () => (existsSync(join(HAFEN, 'seite')) ? readFileSync(join(HA
 // Umgebung der Attrappe, für .mcp.json und --trocken
 const ATTRAPPE = {
   DURCHSPIEL_LOG: LOG, DURCHSPIEL_HAFEN: HAFEN, DURCHSPIEL_FALL: FALL, DURCHSPIEL_STAND: STAND, DURCHSPIEL_RUNDE: RUNDE,
-  DURCHSPIEL_STUFE: persona.stufe, DURCHSPIEL_SCHLOESSER: String(persona.schloesser),
+  DURCHSPIEL_STUFE: persona.stufe, DURCHSPIEL_SCHLOESSER: String(persona.schloesser), ...(persona.bauservice ? { DURCHSPIEL_BAUSERVICE: 'on' } : {}),
   ...(process.env.DURCHSPIEL_METHODEN ? { DURCHSPIEL_METHODEN: process.env.DURCHSPIEL_METHODEN } : {}),
 };
 
@@ -172,8 +172,8 @@ const ausTranskript = () => {
   return aufrufe.map(({ id, ...a }) => (fehler.has(id) ? { ...a, fehler: true } : a));
 };
 const aufrufe = (): Aufruf[] => (ECHT ? ausTranskript() : lies(LOG).split('\n').filter((z) => z.startsWith('{')).flatMap((z) => {
-  const x = JSON.parse(z) as { zeit: string; runde: number | null; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean };
-  return [{ runde: x.runde ?? rundeZu(x.zeit), werkzeug: x.werkzeug, argumente: x.argumente, ...(x.fehler ? { fehler: true } : {}) }];
+  const x = JSON.parse(z) as { zeit: string; runde: number | null; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean };
+  return [{ runde: x.runde ?? rundeZu(x.zeit), werkzeug: x.werkzeug, argumente: x.argumente, ...(x.fehler ? { fehler: true } : {}), ...(x.angebot ? { angebot: true } : {}) }];
 }));
 const geoeffnet = (): Geoeffnet[] => lies(GEOEFFNET).split('\n').filter(Boolean).map((z) => {
   const m = /^(\d+) (.*)$/.exec(z);
@@ -230,9 +230,11 @@ let kostenPerson = 0;
 let ende = AUSWERTEN ? 'ausgewertet' : 'runden';
 // Ziel erreicht: alle Insel-Schritte bis --bis gemeldet und alle Ergebnisse mit Pflichtzeilen da (dann hört der Lauf auf, wie die Punkte)
 const laufBisher = (): Lauf => ({ fall: FALL, bis: BIS, nachrichten: verlauf.map(({ wer, text: t }) => ({ wer, text: t })), aufrufe: aufrufe(), geoeffnet: geoeffnet(), zustaende });
+// Bauservice mit albatros (Welle 8, w8-44): erst nach der Übergabe (auftrag_anlegen), die nach P5 kommt
 const zielErreicht = () => {
   const p = punkte(laufBisher(), F, persona, { bis: BIS });
-  return ['insel', 'ergebnisse'].every((id) => p.pruefungen.find((x) => x.id === id)?.ok === true);
+  const uebergeben = persona.bauservice?.bauen !== 'albatros' || p.pruefungen.find((x) => x.id === 'nach-uebergabe')?.ok !== null;
+  return ['insel', 'ergebnisse'].every((id) => p.pruefungen.find((x) => x.id === id)?.ok === true) && uebergeben;
 };
 // Die KI ergänzt im Skill ssh-schluessel das echte ~/.ssh/config: Nach dem Spiel kommt der alte Stand zurück, ihre Fassung in die Ergebnisse
 const SSH_CONFIG = join(homedir(), '.ssh/config'), sshVorher = !AUSWERTEN && !ECHT && !TROCKEN && existsSync(SSH_CONFIG) ? readFileSync(SSH_CONFIG, 'utf8') : null;

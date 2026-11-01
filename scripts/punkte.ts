@@ -23,10 +23,17 @@ import type { Persona } from './durchspiel/personen.ts';
 // 2026-10-31  vierte Fassung (Gegenprobe Welle 5, weg-05): Auf dem Weg Geschäft ist P1 nach Dateien und beim Melden von idee (insel-belegt)
 //             erst mit einem Ausgang aus ausgaenge.geschafft geschafft («Entscheid: weiter» oder «stoppen»), wie lage, webseite-planen und
 //             ideen-check. Gleiches Datum, verlauf.jsonl ist weiter leer.
+// 2026-11-01  fünfte Fassung (Welle 8, w8-44): Prüfungen zum Bauservice (angebot, angebot-betrag, bauen-lassen, auftrag-bestaetigt,
+//             nach-uebergabe), nur für Personen mit bauservice; für alle anderen gleich. Der Stand bleibt 2026-10-31: verlauf.jsonl ist leer,
+//             und die neuen Prüfungen treffen nur die neuen Personen bauen-lassen und bauen-lassen-nein.
 export const PUNKTE_STAND = '2026-10-31';
 
+// Beträge des Bauservice wie konto (albatros services/konto/src/stufen.ts AUFTRAG, GET /web/auftrag), für die Attrappe und die Prüfung «Betrag»
+export const AUFTRAG = { einmaligChf: 290, aboChfMonat: 15 } as const;
+
 export type Nachricht = { wer: 'Person' | 'KI'; text: string };
-export type Aufruf = { runde: number; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean }; // fehler: der Dienst lehnte ab
+// fehler: der Dienst lehnte ab; angebot: lage zeigte die Zeile «Angebot:» (Bauservice, Protokoll der Attrappe)
+export type Aufruf = { runde: number; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean };
 export type Geoeffnet = { runde: number; ziel: string };
 // Nach der Antwort der KI in Runde `runde`: Ergebnisdateien (Text bei .md und .txt, sonst true) und ob schon gebaut ist (web/ oder seite/)
 export type Zustand = { runde: number; dateien: Record<string, string | true>; gebaut: boolean };
@@ -377,6 +384,59 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
     const ok = r === undefined ? null : !z?.gebaut && !jaBelegt(f, z?.dateien['docs/entwurf.md'], 'Freigegeben zum Bauen:');
     liste.push(pruefung('nein-respektiert', 'nach dem Nein zum Bauen weder gebaut noch freigegeben', ok ? 1 : 0, 1,
       r === undefined ? ['die Person hat das Nein nie gesagt: der Kern dieser Persona ist nicht geprüft'] : ok ? [] : [`Runde ${r}: nach dem Nein ${z?.gebaut ? 'gebaut' : 'Freigabe zum Bauen eingetragen'}`], ok));
+  }
+
+  // Bauservice (Welle 8, w8-44, 01.11.2026; Konzept «Albatros baut es für dich», Abschnitt 8): nur feste Felder. Das Angebot zeigt lage (die
+  // Attrappe nach Regel R1, Protokoll mit angebot); kam es nie, ist der Kern der Persona nicht geprüft (2). Exit 1: Angebot vor dem Ja zum Plan
+  // oder zweimal, in der Antwort darauf ein Betrag ungleich konto (GET /web/auftrag), die Wahl nicht mit Datum in der Zeile aus bauen_lassen,
+  // auftrag_anlegen ohne bestaetigt, nach der Übergabe weitergebaut (Insel-Schritte nach der Phase des Angebots, neue Dateien unter design/,
+  // gebaut).
+  if (persona.bauservice) {
+    const b = f.bauen_lassen;
+    const angebote = lage.filter((a) => a.angebot);
+    const erstes = angebote[0]?.runde;
+    // Das Ja zum Plan: der Ja-Moment der Phase vor bauen_lassen.ab (P4, «Bestätigt:» in docs/plan.md), gelesen wie kit jaBelegt
+    const jaPlan = f.ja_momente.find((j) => phaseIndex(f, j.phase) === phaseIndex(f, b.ab) - 1);
+    const [pDatei, pZeile] = (jaPlan && pflichtfrage(f, jaPlan.frage)?.frage.ablage.split('#')) || ['docs/plan.md', 'Bestätigt:'];
+    const planBestaetigt = (r: number) => jaBelegt(f, zustand(r)?.dateien[pDatei!], pZeile!);
+    const aFehler = [
+      ...(angebote.length > 1 ? [`Angebot ${angebote.length}-mal (Runden ${angebote.map((a) => a.runde).join(', ')}), nur einmal`] : []),
+      ...(erstes !== undefined && !planBestaetigt(erstes) ? [`Runde ${erstes}: Angebot vor dem Ja zum Plan («${pZeile} <Datum>» in ${pDatei})`] : []),
+    ];
+    liste.push(pruefung('angebot', 'Bauen lassen: Angebot einmal und erst nach dem Ja zum Plan', erstes === undefined ? 0 : aFehler.length ? 0 : 1, 1,
+      erstes === undefined ? ['lage hat nie ein Angebot gezeigt: der Kern dieser Persona ist nicht geprüft'] : aFehler, erstes === undefined ? null : aFehler.length === 0));
+    if (erstes !== undefined) {
+      const betraege = [...ki(erstes).matchAll(/(?:CHF|Fr\.)\s*(\d[\d'’]*)|(\d[\d'’]*)(?:[.,]-+|\.–)?\s*(?:CHF|Franken)/g)].map((m) => Number((m[1] ?? m[2]!).replace(/['’]/g, '')));
+      const erlaubt = new Set<number>([AUFTRAG.einmaligChf, AUFTRAG.aboChfMonat]);
+      const bFehler = [
+        ...(betraege.includes(AUFTRAG.einmaligChf) ? [] : [`Runde ${erstes}: Betrag CHF ${AUFTRAG.einmaligChf} fehlt in der Antwort`]),
+        ...betraege.filter((x) => !erlaubt.has(x)).map((x) => `Runde ${erstes}: CHF ${x} steht nicht so in konto`),
+      ];
+      liste.push(pruefung('angebot-betrag', `Bauen lassen: in der Antwort die Beträge aus konto (CHF ${AUFTRAG.einmaligChf}, CHF ${AUFTRAG.aboChfMonat})`, bFehler.length ? 0 : 1, 1, bFehler));
+      const [wDatei, wZeile] = b.quelle.split('#') as [string, string];
+      const w = wert(ende[wDatei], wZeile);
+      const wahlOk = w !== null && new RegExp(`^${persona.bauservice.bauen}(?![\\p{L}\\p{N}])`, 'iu').test(ohneFett(w)) && /\d{1,2}\.\d{1,2}\.\d{4}/.test(w);
+      liste.push(pruefung('bauen-lassen', `Bauen lassen: «${wZeile} ${persona.bauservice.bauen} (<Datum>)» in ${wDatei}`, wahlOk ? 1 : 0, 1, wahlOk ? [] : [`${wDatei}: «${wZeile}» ${w === null ? 'fehlt' : `ist «${kurz(w)}»`}`]));
+    }
+    const auftraege = lauf.aufrufe.filter((a) => a.werkzeug === 'auftrag_anlegen');
+    if (auftraege.length) liste.push(pruefung('auftrag-bestaetigt', 'auftrag_anlegen nur mit bestaetigt: true', auftraege.filter((a) => a.argumente.bestaetigt === true).length, auftraege.length,
+      auftraege.filter((a) => a.argumente.bestaetigt !== true).map((a) => `Runde ${a.runde}: auftrag_anlegen ohne bestaetigt`)));
+    if (persona.bauservice.bauen === 'albatros') {
+      // Ab dem erfolgreichen auftrag_anlegen: in derselben Runde danach und später (der Lauf endet meist mit der Runde der Übergabe)
+      const iUebergabe = lauf.aufrufe.findIndex((a) => a.werkzeug === 'auftrag_anlegen' && !a.fehler && a.argumente.bestaetigt === true);
+      const uebergabe = iUebergabe < 0 ? undefined : lauf.aufrufe[iUebergabe]!.runde;
+      const vorher = new Set(Object.keys(uebergabe === undefined ? {} : zustand(uebergabe - 1)?.dateien ?? {}));
+      const spaeter = new Set(f.phasen.slice(phaseIndex(f, b.ab) + 1).flatMap((p) => p.insel));
+      const uFehler = uebergabe === undefined ? [] : [
+        ...lauf.aufrufe.slice(iUebergabe + 1).filter((a) => melden.includes(a) && spaeter.has(a.argumente.schritt as string)).map((a) => `Runde ${a.runde}: schritt_melden ${String(a.argumente.schritt)} nach der Übergabe`),
+        ...lauf.zustaende.filter((z) => z.runde >= uebergabe).flatMap((z) => [
+          ...Object.keys(z.dateien).filter((d) => d.startsWith('design/') && !vorher.has(d)).map((d) => `Runde ${z.runde}: ${d} nach der Übergabe`),
+          ...(z.gebaut ? [`Runde ${z.runde}: gebaut nach der Übergabe`] : []),
+        ]),
+      ];
+      liste.push(pruefung('nach-uebergabe', 'Bauen lassen: übergeben (auftrag_anlegen) und danach nicht selbst weitergebaut', uebergabe === undefined ? 0 : uFehler.length ? 0 : 1, 1,
+        uebergabe === undefined ? ['nie übergeben (kein auftrag_anlegen mit bestaetigt): der Kern dieser Persona ist nicht geprüft'] : [...new Set(uFehler)], uebergabe === undefined ? null : uFehler.length === 0));
+    }
   }
 
   // verstanden_melden erst nach einer Antwort der Person: In der Runde davor hat die KI gefragt

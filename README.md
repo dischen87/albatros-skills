@@ -267,6 +267,7 @@ Ein Durchlauf mit zwei KIs nach dem Fahrplan (`fahrplan.yaml`, P1 bis P13), erg�
 | `geschaeft` | Geschäftsidee, Weg Geschäft | Methoden der Phasen (`ideen-check`, `zielgruppe`, `angebot-und-preis`, `landingpage`) | P3 |
 | `musikverein` | erfundener Verein, als einziger auch gegen die echte Plattform | ganzer Ablauf bis live | P13 |
 | `curling`, `buchung` | modernisiert eine bestehende Seite; Yogastudio mit Buchungstool (Pilot, Baustein) | Bestandsaufnahme; Wohnort Pilot, Probe mit PocketBase | P13 |
+| `bauen-lassen`, `bauen-lassen-nein` | Bauservice (Attrappe mit `DURCHSPIEL_BAUSERVICE=on`): lässt Albatros bauen; baut selbst weiter | Angebot einmal nach dem Ja zum Plan, Betrag nur aus konto (CHF 290, CHF 15), Wahl in `Bauen lassen:`, `auftrag_anlegen` nur mit `bestaetigt`, nach der Übergabe nicht weitergebaut | P5 |
 
 **Ohne Modell und ohne Kosten prüfen** (kein Netz, kein Port, kein Konto):
 
@@ -275,11 +276,12 @@ bun test                                                                        
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/gut-lernen.json        # Exit 0
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/schlecht-gratis.json   # Exit 1
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/offen-nein-vor-bau.json --ergebnis <ordner>   # Exit 2, Ergebnis ausserhalb des Repos
+bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/bauen-lassen.json --ergebnis <ordner>   # Exit 0, ebenso bauen-lassen-nein; bauen-lassen-schlecht Exit 1
 bun scripts/punkte.ts <ergebnis-ordner>                                               # Punkte eines Laufs neu rechnen (lauf.json)
 bun scripts/verlauf.ts                                                                # Trend je Fall
 ```
 
-Der Trockenlauf spielt einen aufgezeichneten Verlauf ab (Format von `lauf.json`): Statt der KI schreibt er die Dateien jeder Runde, ruft die Werkzeuge der Attrappe und öffnet, was die KI öffnete; statt der Person kommen ihre aufgezeichneten Nachrichten. Attrappe, Protokolle, Zustände, Punkte und Exit-Code laufen wie in einem echten Lauf. Die drei Beispiele in `scripts/durchspiel/beispiele/` (gut, schlecht, nicht auswertbar) sind von Hand geschrieben, je mit erwartetem Exit-Code, nicht von einem Modell aufgezeichnet.
+Der Trockenlauf spielt einen aufgezeichneten Verlauf ab (Format von `lauf.json`): Statt der KI schreibt er die Dateien jeder Runde, ruft die Werkzeuge der Attrappe und öffnet, was die KI öffnete; statt der Person kommen ihre aufgezeichneten Nachrichten. Attrappe, Protokolle, Zustände, Punkte und Exit-Code laufen wie in einem echten Lauf. Die Beispiele in `scripts/durchspiel/beispiele/` (gut, schlecht, nicht auswertbar; seit 01.11.2026 dazu drei zum Bauservice) sind von Hand geschrieben, je mit erwartetem Exit-Code, nicht von einem Modell aufgezeichnet.
 
 **Mit Modell** (kostet; `--budget` deckelt die bauende KI, Standard 30 USD, dazu Person und Richter):
 
