@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza approvata (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: 'acb53511503d'
+  quelle: '303806817acb'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -106,7 +106,7 @@ Se manca qualcosa, aiuti a installarlo come nello skill `entwurf` (l'officina) e
   ```
 - Regole come nello skill `git-logbuch`: solo `main`, solo i propri file e cartelle, con il nome (mai `git add .` né `git add -A`), mai `--force`.
 
-**Momento di apprendimento «che cos'è una voce nel diario di bordo»:** una frase con l'immagine del diario di bordo. Nel modo `lernen` la persona digita lei stessa il comando `git commit` per la prima voce, poi segnali `verstanden_melden` (missione `webseite-02-bauen`, tipo `selbst`). Nel modo `machen` lo offri.
+**Momento di apprendimento «che cos'è una voce nel diario di bordo»:** una frase con l'immagine del diario di bordo. Nel modo `lernen` la persona digita lei stessa il comando `git commit` per la prima voce, poi segnali `verstanden_melden` (missione `flugschule-20-logbuch-eintrag`, tipo `selbst`). Nel modo `machen` lo offri.
 
 ### 2. Modo di costruzione (`docs/stack.md`)
 
@@ -270,7 +270,7 @@ Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
 Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: spunti quelli soddisfatti (`- [x]`) e annoti brevemente dove o con che cosa li hai controllati. Quello che non è soddisfatto resta aperto, con un motivo.
 
-Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`.
+Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`. Nel modo `lernen` adesso fai la domanda di controllo della missione `flugschule-20-logbuch-eintrag` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
 
 ### 6. Approvazione (Freigabe): il sopralluogo (`schritt: freigabe`)
 
@@ -282,7 +282,7 @@ Adesso la persona passa lei stessa per la sua casa. Decide se può andare online
    node scripts/pruefen.mjs --vergleich
    ```
    Confronta per ogni pagina titoli, voci del menu e sezioni con `design/entwurf/` e segnala ogni differenza in giallo, con il punto (pagina, che cosa, numero nella bozza e nella costruzione). Per ogni differenza apri le due affiancate (`open design/entwurf/<pagina>.html` e `open http://localhost:4321/<pagina>/`). Se è un errore della costruzione, costruisci come nella bozza e confronti di nuovo. Se è voluto (per esempio un testo vero al posto di `[da completare]`), lo dici alla persona, e decide lei. Si va avanti solo quando non resta più nessuna differenza aperta.
-3. **Momento di apprendimento «cambiare da sé un testo e vederlo in locale».** Nel modo `lernen` è obbligatorio, nel modo `machen` lo offri in una frase. La persona apre il file di una pagina in un editor di testo (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; le liste come gli appuntamenti stanno in `web/src/data/`), cambia una frase e salva. Tu ricostruisci (`(cd web && npm run build)`), lei ricarica l'anteprima e vede la sua modifica. Poi decide: tenerla (voce nel diario di bordo, di nuovo `pruefen.mjs`, niente rosso) o tornare indietro con `git restore <file>`. Se l'ha fatto lei, segnali `verstanden_melden` (missione `webseite-02-bauen`, tipo `selbst`).
+3. **Momento di apprendimento «cambiare da sé un testo e vederlo in locale».** Nel modo `lernen` è obbligatorio, nel modo `machen` lo offri in una frase. La persona apre il file di una pagina in un editor di testo (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; le liste come gli appuntamenti stanno in `web/src/data/`), cambia una frase e salva. Tu ricostruisci (`(cd web && npm run build)`), lei ricarica l'anteprima e vede la sua modifica. Poi decide: tenerla (voce nel diario di bordo, di nuovo `pruefen.mjs`, niente rosso) o tornare indietro con `git restore <file>`. Se l'ha fatto lei, segnali `verstanden_melden` (missione `flugschule-21-text-aendern`, tipo `selbst`).
 4. **Quello che si è visto va in `docs/prd.md`,** sotto i criteri di collaudo (inizi di riga in tedesco):
    ```
    Lokal gesehen: <data>, sul telefonino (foto a 390 px) e sul computer (anteprima)
@@ -294,7 +294,7 @@ Adesso la persona passa lei stessa per la sua casa. Decide se può andare online
    git add docs/prd.md && git commit -m "Sito approvato" && git tag -f freigegeben
    ```
    Alla messa online il tag `freigegeben` mostra se da allora sul sito è cambiato ancora qualcosa.
-7. Segnala `freigabe`. Nel modo `lernen` adesso fai le domande di controllo della missione `webseite-02-bauen` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
+7. Segnala `freigabe`. Nel modo `lernen` adesso fai le domande di controllo della missione `flugschule-21-text-aendern` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
 
 Se prima dell'approvazione la persona vuole ancora cambiare qualcosa: un testo, un'immagine o un appuntamento, si torna al passo 4, poi di nuovo controllo e sopralluogo. Una nuova pagina o una nuova funzione è un'aggiunta: prima in `docs/plan.md`, poi una bozza delle pagine cambiate e un nuovo via libera per costruire (skill `entwurf`), solo dopo la costruzione.
 
@@ -316,7 +316,7 @@ Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo
 
 ## Verificare la missione
 
-`mission_pruefen` con `webseite-02-bauen`, appena è segnalato `freigabe`. La verifica guarda sull'isola se il progetto è almeno al passo «Freigabe» (approvazione).
+`mission_pruefen` con `flugschule-20-logbuch-eintrag`, appena è segnalato `pruefung`, e con `flugschule-21-text-aendern`, appena è segnalato `freigabe`. La verifica guarda sull'isola se il progetto è almeno a quel passo. Sul percorso sito web c'è in più la missione facoltativa `webseite-02-bauen`: se la persona ha aggiornato da sé una lista come gli appuntamenti, verifichi anche quella dopo l'approvazione.
 
 ## Messaggio finale
 

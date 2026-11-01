@@ -43,7 +43,7 @@ Phase P6 «Designsystem mit Beispiel». Dran, wenn `docs/konzept.md` alle sieben
 - **Fragen an die Person:** «Stimmt die Reihenfolge im grauen Mockup?», «Welche der drei Richtungen, oder welche Mischung?», «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» und die Frage nach Gestaltungselementen. Jede der drei Antworten hat ihre eigene Zeile (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Eine Annahme gibt es dafür nicht: Bis die Person geantwortet hat, steht dort `[offen: …]`. «Auch eine dunkle Fassung?» schlägst du als `[Annahme: ja, hell und dunkel]` vor, denn viele Handys zeigen nachts dunkel.
 - **Insel:** `mockup`, sobald die Reihenfolge stimmt; `entwuerfe`, sobald die Person das Musterblatt gesehen hat und es passt.
 
-**Modus:** Lies `Modus:` in `docs/projekt.md` (fehlt die Zeile, gilt `machen`). Der Lernmoment dieser Phase ist «Warum Farben und Schriften nur an einem Ort stehen»: Die Person ändert selbst eine Farbe in `design/tokens.css`, lädt das Musterblatt neu und sieht, wie sie sich überall ändert. Im Modus `lernen` macht sie das selbst (danach `verstanden_melden` mit `mission: webseite-04-gestaltung` und `art: selbst`), und am Ende stellst du die Kontrollfrage der Lektion: «Warum stehen Farben und Schriften nur an einem Ort?» Erst nach ihrer Antwort meldest du `art: kontrollfrage`. Im Modus `machen` bietest du den Lernmoment an und erklärst jeden Schritt in einem Satz mit seinem Bild. Fehlt das Werkzeug `verstanden_melden`, geht es ohne weiter.
+**Modus:** Lies `Modus:` in `docs/projekt.md` (fehlt die Zeile, gilt `machen`). Der Lernmoment dieser Phase ist «Warum Farben und Schriften nur an einem Ort stehen»: Die Person ändert selbst eine Farbe in `design/tokens.css`, lädt das Musterblatt neu und sieht, wie sie sich überall ändert. Im Modus `lernen` macht sie das selbst (danach `verstanden_melden` mit `mission: flugschule-19-musterblatt` und `art: selbst`), und am Ende stellst du die Kontrollfragen der Lektion `flugschule-19-musterblatt` (`mission_holen`), etwa «Warum stehen Farben und Schriften nur an einem Ort?» Erst nach ihrer Antwort meldest du `art: kontrollfrage`. Im Modus `machen` bietest du den Lernmoment an und erklärst jeden Schritt in einem Satz mit seinem Bild. Fehlt das Werkzeug `verstanden_melden`, geht es ohne weiter.
 
 ### 1. Das Mockup aus der Skizze (`schritt: mockup`)
 
@@ -301,7 +301,7 @@ Jedes Foto selbst anschauen und mit dem Entwurf vergleichen: Hat der Text auf de
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-04-gestaltung`. Die Prüfung schaut, ob das Projekt auf der Insel mindestens beim Schritt «Entwürfe» steht; im Fahrplan meldest du ihn erst, wenn die Person das Musterblatt gesehen hat.
+`mission_pruefen` mit `flugschule-19-musterblatt`. Die Prüfung schaut, ob das Projekt auf der Insel mindestens beim Schritt «Entwürfe» steht; im Fahrplan meldest du ihn erst, wenn die Person das Musterblatt gesehen hat. Auf dem Weg Webseite gibt es dazu die freiwillige Mission `webseite-04-gestaltung` (Gestaltungselemente): Hat die Person Gestaltungselemente gewählt, prüfst du auch sie mit `mission_pruefen`.
 
 ## Schlussnachricht
 

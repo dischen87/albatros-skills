@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge. In the flight plan (P6): a grey mockup (“Is the order right?”), three clearly different directions from the concept, a check against the AI look, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. Always with the question about design elements (icons, photos, mascot, 3D; image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “mascot”, “3D”."
 metadata:
   stand: 0.2.0
-  quelle: 'd264ba19b721'
+  quelle: '26d5ada41225'
 ---
 
 # Design: first the foundations, then the facade
@@ -45,7 +45,7 @@ Phase P6 “Design system with an example”. It's due once `docs/konzept.md` ha
 - **Questions for the person:** “Is the order in the grey mockup right?”, “Which of the three directions, or which mix?”, “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” and the question about design elements. Each of the three answers has its own line (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). There's no assumption for these: until the person has answered, the line says `[offen: …]`. “A dark version too?” you suggest as `[Annahme: yes, light and dark]`, because many phones switch to dark at night.
 - **Island:** `mockup` as soon as the order is right; `entwuerfe` as soon as the person has seen the sample sheet and is happy with it.
 
-**Mode:** Read `Modus:` in `docs/projekt.md` (if the line is missing, `machen`, do, applies). The learning moment of this phase is “Why colours and fonts live in one place only”: the person changes a colour in `design/tokens.css` themselves, reloads the sample sheet and sees it change everywhere. In mode `lernen` (learn) they do it themselves (then `verstanden_melden` with `mission: webseite-04-gestaltung` and `art: selbst`), and at the end you ask the check question of the lesson: “Why do colours and fonts live in one place only?” Only after their answer do you report `art: kontrollfrage`. In mode `machen` (do) you offer the learning moment and explain each step in one sentence with its picture. If the tool `verstanden_melden` is missing, you carry on without it.
+**Mode:** Read `Modus:` in `docs/projekt.md` (if the line is missing, `machen`, do, applies). The learning moment of this phase is “Why colours and fonts live in one place only”: the person changes a colour in `design/tokens.css` themselves, reloads the sample sheet and sees it change everywhere. In mode `lernen` (learn) they do it themselves (then `verstanden_melden` with `mission: flugschule-19-musterblatt` and `art: selbst`), and at the end you ask the check questions of the lesson `flugschule-19-musterblatt` (`mission_holen`), for example “Why do colours and fonts live in one place only?” Only after their answer do you report `art: kontrollfrage`. In mode `machen` (do) you offer the learning moment and explain each step in one sentence with its picture. If the tool `verstanden_melden` is missing, you carry on without it.
 
 ### 1. The mockup from the sketch (`schritt: mockup`)
 
@@ -303,7 +303,7 @@ Look at every screenshot yourself and compare it with the draft: on the phone, d
 
 ## Check the mission
 
-`mission_pruefen` with `webseite-04-gestaltung`. The check looks at whether the project has reached at least the step “Drafts” on the island; in the flight plan you only report it once the person has seen the sample sheet.
+`mission_pruefen` with `flugschule-19-musterblatt`. The check looks at whether the project has reached at least the step “Drafts” on the island; in the flight plan you only report it once the person has seen the sample sheet. On the website path there's also the optional mission `webseite-04-gestaltung` (design elements): if the person chose design elements, you check it too with `mission_pruefen`.
 
 ## Final message
 

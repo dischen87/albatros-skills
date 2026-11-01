@@ -103,7 +103,7 @@ Fehlt etwas, hilfst du beim Installieren wie im Skill `entwurf` (Werkstatt) und 
   ```
 - Regeln wie im Skill `git-logbuch`: nur `main`, nur die eigenen Dateien und Ordner mit Namen aufnehmen (nie `git add .` oder `git add -A`), nie `--force`.
 
-**Lernmoment «Was ein Logbuch-Eintrag ist»:** ein Satz mit dem Bild vom Logbuch an Bord. Im Modus `lernen` tippt die Person den Befehl `git commit` beim ersten Eintrag selbst, danach meldest du mit `verstanden_melden` (Mission `webseite-02-bauen`, Art `selbst`). Im Modus `machen` bietest du es an.
+**Lernmoment «Was ein Logbuch-Eintrag ist»:** ein Satz mit dem Bild vom Logbuch an Bord. Im Modus `lernen` tippt die Person den Befehl `git commit` beim ersten Eintrag selbst, danach meldest du mit `verstanden_melden` (Mission `flugschule-20-logbuch-eintrag`, Art `selbst`). Im Modus `machen` bietest du es an.
 
 ### 2. Bauweise (`docs/stack.md`)
 
@@ -267,7 +267,7 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
 Dann gehst du die Abnahmekriterien in `docs/prd.md` durch: Erfüllte hakst du ab (`- [x]`) und schreibst kurz dazu, wo oder womit geprüft. Was nicht erfüllt ist, bleibt offen, mit Grund.
 
-Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, machst du den Eintrag ins Logbuch (`git add docs web seite && git commit -m "Prüfung: vier Berichte, nichts rot"`) und meldest `pruefung`.
+Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, machst du den Eintrag ins Logbuch (`git add docs web seite && git commit -m "Prüfung: vier Berichte, nichts rot"`) und meldest `pruefung`. Im Modus `lernen` stellst du jetzt die Kontrollfrage der Mission `flugschule-20-logbuch-eintrag` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
 
 ### 6. Freigabe: die Begehung (`schritt: freigabe`)
 
@@ -279,7 +279,7 @@ Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz 
    node scripts/pruefen.mjs --vergleich
    ```
    Es vergleicht je Seite Überschriften, Menüpunkte und Abschnitte mit `design/entwurf/` und meldet jede Abweichung gelb, mit Stelle (Seite, was, Nummer im Entwurf und im Bau). Zu jeder Abweichung öffnest du beide nebeneinander (`open design/entwurf/<seite>.html` und `open http://localhost:4321/<seite>/`). Ist es ein Fehler im Bau, baust du es wie im Entwurf und vergleichst nochmals. Ist es gewollt (zum Beispiel ein echter Text statt `[Platzhalter]`), sagst du es der Person, und sie entscheidet. Erst wenn keine Abweichung mehr offen ist, geht es weiter.
-3. **Lernmoment «einen Text selbst ändern und lokal sehen».** Im Modus `lernen` ist er Pflicht, im Modus `machen` bietest du ihn in einem Satz an. Die Person öffnet die Datei einer Seite in einem Texteditor (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; Listen wie Termine stehen in `web/src/data/`), ändert einen Satz und speichert. Du baust neu (`(cd web && npm run build)`), sie lädt die Vorschau neu und sieht ihre Änderung. Dann entscheidet sie: behalten (Eintrag ins Logbuch, `pruefen.mjs` nochmals, nichts rot) oder zurück mit `git restore <datei>`. Hat sie es selbst gemacht, meldest du `verstanden_melden` (Mission `webseite-02-bauen`, Art `selbst`).
+3. **Lernmoment «einen Text selbst ändern und lokal sehen».** Im Modus `lernen` ist er Pflicht, im Modus `machen` bietest du ihn in einem Satz an. Die Person öffnet die Datei einer Seite in einem Texteditor (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; Listen wie Termine stehen in `web/src/data/`), ändert einen Satz und speichert. Du baust neu (`(cd web && npm run build)`), sie lädt die Vorschau neu und sieht ihre Änderung. Dann entscheidet sie: behalten (Eintrag ins Logbuch, `pruefen.mjs` nochmals, nichts rot) oder zurück mit `git restore <datei>`. Hat sie es selbst gemacht, meldest du `verstanden_melden` (Mission `flugschule-21-text-aendern`, Art `selbst`).
 4. **Was gesehen ist, kommt in `docs/prd.md`,** unter die Abnahmekriterien:
    ```
    Lokal gesehen: <Datum>, auf dem Handy (Fotos 390 px) und am Computer (Vorschau)
@@ -291,7 +291,7 @@ Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz 
    git add docs/prd.md && git commit -m "Seite freigegeben" && git tag -f freigegeben
    ```
    Beim Live schalten zeigt der Tag `freigegeben`, ob seither noch etwas an der Seite geändert hat.
-7. Melde `freigabe`. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Mission `webseite-02-bauen` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
+7. Melde `freigabe`. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Mission `flugschule-21-text-aendern` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
 
 Will die Person vor der Freigabe noch etwas ändern: Ein Text, ein Bild oder ein Termin geht zurück zu Schritt 4, dann Prüfen und Begehung nochmals. Eine neue Seite oder eine neue Funktion ist ein Nachtrag: zuerst in `docs/plan.md`, dann ein Entwurf der geänderten Seiten und eine neue Freigabe zum Bauen (Skill `entwurf`), erst dann gebaut.
 
@@ -313,7 +313,7 @@ Danach kommt der Skill `lancieren`: Wo soll die Seite wohnen? Ruf `lage` auf, we
 
 ## Mission prüfen
 
-`mission_pruefen` mit `webseite-02-bauen`, sobald `freigabe` gemeldet ist. Die Prüfung schaut auf der Insel, ob das Projekt mindestens beim Schritt «Freigabe» steht.
+`mission_pruefen` mit `flugschule-20-logbuch-eintrag`, sobald `pruefung` gemeldet ist, und mit `flugschule-21-text-aendern`, sobald `freigabe` gemeldet ist. Die Prüfung schaut auf der Insel, ob das Projekt mindestens bei diesem Schritt steht. Auf dem Weg Webseite gibt es dazu die freiwillige Mission `webseite-02-bauen`: Hat die Person eine Liste wie Termine selbst nachgeführt, prüfst du auch sie nach der Freigabe.
 
 ## Schlussnachricht
 

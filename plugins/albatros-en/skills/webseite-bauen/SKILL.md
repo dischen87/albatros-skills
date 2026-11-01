@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: 'acb53511503d'
+  quelle: '303806817acb'
 ---
 
 # Building the website: the shell in your own workshop
@@ -106,7 +106,7 @@ If something is missing, you help install it as in the skill `entwurf` (the work
   ```
 - Rules as in the skill `git-logbuch`: only `main`, only your own files and folders, by name (never `git add .` or `git add -A`), never `--force`.
 
-**Learning moment “what a logbook entry is”:** one sentence with the picture of the logbook. In `lernen` mode, the person types the `git commit` command for the first entry themselves; afterwards you report `verstanden_melden` (mission `webseite-02-bauen`, kind `selbst`). In `machen` mode, you offer it.
+**Learning moment “what a logbook entry is”:** one sentence with the picture of the logbook. In `lernen` mode, the person types the `git commit` command for the first entry themselves; afterwards you report `verstanden_melden` (mission `flugschule-20-logbuch-eintrag`, kind `selbst`). In `machen` mode, you offer it.
 
 ### 2. Way of building (`docs/stack.md`)
 
@@ -270,7 +270,7 @@ After that you write four reports, one page each, in the person's language:
 
 Then you go through the acceptance criteria in `docs/prd.md`: you tick off the ones that are met (`- [x]`) and note briefly where or how they were checked. Whatever isn't met stays open, with a reason.
 
-Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you make the logbook entry (`git add docs web seite && git commit -m "Check: four reports, nothing red"`) and report `pruefung`.
+Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you make the logbook entry (`git add docs web seite && git commit -m "Check: four reports, nothing red"`) and report `pruefung`. In `lernen` mode you now ask the check question of the mission `flugschule-20-logbuch-eintrag` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
 ### 6. Release (Freigabe): the walk-through (`schritt: freigabe`)
 
@@ -282,7 +282,7 @@ Now the person walks through their house themselves. They decide whether it may 
    node scripts/pruefen.mjs --vergleich
    ```
    For every page it compares headings, menu items and sections with `design/entwurf/` and marks every difference yellow, with its place (page, what, number in the draft and in the build). For every difference you open both side by side (`open design/entwurf/<page>.html` and `open http://localhost:4321/<page>/`). If it's a mistake in the build, you build it as in the draft and compare again. If it's intended (for example a real text instead of `[placeholder]`), you tell the person, and they decide. You only move on once no difference is left open.
-3. **Learning moment “changing a text yourself and seeing it locally”.** In `lernen` mode it's a must, in `machen` mode you offer it in one sentence. The person opens a page's file in a text editor (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; lists such as dates are in `web/src/data/`), changes a sentence and saves. You build again (`(cd web && npm run build)`), they reload the preview and see their change. Then they decide: keep it (logbook entry, `pruefen.mjs` again, nothing red) or go back with `git restore <file>`. If they did it themselves, you report `verstanden_melden` (mission `webseite-02-bauen`, kind `selbst`).
+3. **Learning moment “changing a text yourself and seeing it locally”.** In `lernen` mode it's a must, in `machen` mode you offer it in one sentence. The person opens a page's file in a text editor (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; lists such as dates are in `web/src/data/`), changes a sentence and saves. You build again (`(cd web && npm run build)`), they reload the preview and see their change. Then they decide: keep it (logbook entry, `pruefen.mjs` again, nothing red) or go back with `git restore <file>`. If they did it themselves, you report `verstanden_melden` (mission `flugschule-21-text-aendern`, kind `selbst`).
 4. **What was seen goes into `docs/prd.md`,** under the acceptance criteria (line starts in German):
    ```
    Lokal gesehen: <date>, on a phone (390 px screenshots) and on a computer (preview)
@@ -294,7 +294,7 @@ Now the person walks through their house themselves. They decide whether it may 
    git add docs/prd.md && git commit -m "Site released" && git tag -f freigegeben
    ```
    When going live, the tag `freigegeben` shows whether anything about the site has changed since.
-7. Report `freigabe`. In `lernen` mode you now ask the check questions of the mission `webseite-02-bauen` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
+7. Report `freigabe`. In `lernen` mode you now ask the check questions of the mission `flugschule-21-text-aendern` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
 If the person wants to change something before the release: a text, a picture or a date goes back to step 4, then the check and the walk-through again. A new page or a new feature is an addition: first in `docs/plan.md`, then a draft of the changed pages and a new approval to build (skill `entwurf`), and only then is it built.
 
@@ -316,7 +316,7 @@ Next comes the skill `lancieren`: where should the site live? Call `lage` if the
 
 ## Checking the mission
 
-`mission_pruefen` with `webseite-02-bauen`, as soon as `freigabe` is reported. The check looks on the island whether the project has reached at least the step “Freigabe” (release).
+`mission_pruefen` with `flugschule-20-logbuch-eintrag` as soon as `pruefung` is reported, and with `flugschule-21-text-aendern` as soon as `freigabe` is reported. The check looks on the island whether the project has reached at least that step. On the website path there's also the optional mission `webseite-02-bauen`: if the person updated a list such as dates themselves, you check it too after the release.
 
 ## Final message
 

@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site. Dans le plan de vol (P6) : maquette grise (« L'ordre est-il juste ? »), trois directions bien différentes tirées du concept, vérification contre le look IA, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Toujours avec la question des éléments graphiques (icônes, photos, mascotte, 3D ; outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « icônes », « mascotte », « 3D »."
 metadata:
   stand: 0.2.0
-  quelle: 'd264ba19b721'
+  quelle: '26d5ada41225'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -45,7 +45,7 @@ Phase P6 « Système de design avec exemple ». C'est son tour quand `docs/konze
 - **Questions à la personne :** « L'ordre dans la maquette grise est-il juste ? », « Laquelle des trois directions, ou quel mélange ? », « La planche d'échantillons convient-elle : couleurs, polices, boutons, champs, cartes et en-tête sur le natel ? » et la question des éléments graphiques. Chacune des trois réponses a sa propre ligne (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Pas d'hypothèse ici : tant que la personne n'a pas répondu, il y a `[offen: …]`. « Aussi une version sombre ? », tu la proposes comme `[Annahme: oui, claire et sombre]`, parce que beaucoup de natels affichent en sombre la nuit.
 - **Île :** `mockup` dès que l'ordre est juste ; `entwuerfe` dès que la personne a vu la planche d'échantillons et qu'elle lui convient.
 
-**Mode :** Lis `Modus:` dans `docs/projekt.md` (si la ligne manque, c'est `machen`, faire, qui vaut). Le moment d'apprentissage de cette phase, c'est « Pourquoi les couleurs et les polices ne sont qu'à un seul endroit » : la personne change elle-même une couleur dans `design/tokens.css`, recharge la planche d'échantillons et voit qu'elle change partout. En mode `lernen` (apprendre), elle le fait elle-même (ensuite `verstanden_melden` avec `mission: webseite-04-gestaltung` et `art: selbst`), et à la fin, tu poses la question de contrôle de la leçon : « Pourquoi les couleurs et les polices ne sont-elles qu'à un seul endroit ? » Seulement après sa réponse, tu annonces `art: kontrollfrage`. En mode `machen` (faire), tu proposes le moment d'apprentissage et tu expliques chaque étape en une phrase avec son image. Si l'outil `verstanden_melden` manque, on continue sans.
+**Mode :** Lis `Modus:` dans `docs/projekt.md` (si la ligne manque, c'est `machen`, faire, qui vaut). Le moment d'apprentissage de cette phase, c'est « Pourquoi les couleurs et les polices ne sont qu'à un seul endroit » : la personne change elle-même une couleur dans `design/tokens.css`, recharge la planche d'échantillons et voit qu'elle change partout. En mode `lernen` (apprendre), elle le fait elle-même (ensuite `verstanden_melden` avec `mission: flugschule-19-musterblatt` et `art: selbst`), et à la fin, tu poses les questions de contrôle de la leçon `flugschule-19-musterblatt` (`mission_holen`), par exemple « Pourquoi les couleurs et les polices ne sont-elles qu'à un seul endroit ? » Seulement après sa réponse, tu annonces `art: kontrollfrage`. En mode `machen` (faire), tu proposes le moment d'apprentissage et tu expliques chaque étape en une phrase avec son image. Si l'outil `verstanden_melden` manque, on continue sans.
 
 ### 1. La maquette à partir de l'esquisse (`schritt: mockup`)
 
@@ -303,7 +303,7 @@ Regarde toi-même chaque photo et compare-la avec l'ébauche : sur le natel, le 
 
 ## Vérifier la mission
 
-`mission_pruefen` avec `webseite-04-gestaltung`. La vérification regarde si le projet est au moins à l'étape « Ébauches » sur l'île ; dans le plan de vol, tu ne l'annonces que quand la personne a vu la planche d'échantillons.
+`mission_pruefen` avec `flugschule-19-musterblatt`. La vérification regarde si le projet est au moins à l'étape « Ébauches » sur l'île ; dans le plan de vol, tu ne l'annonces que quand la personne a vu la planche d'échantillons. Sur le parcours site web, il y a en plus la mission facultative `webseite-04-gestaltung` (éléments graphiques) : si la personne a choisi des éléments graphiques, tu la vérifies aussi avec `mission_pruefen`.
 
 ## Message final
 

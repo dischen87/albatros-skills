@@ -3,7 +3,7 @@ name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito. Nel piano di volo (P6): mockup grigio («L'ordine è giusto?»), tre direzioni chiaramente diverse dal concetto, controllo contro l'aspetto da IA, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Sempre con la domanda sugli elementi grafici (icone, foto, mascotte, 3D; strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «mascotte», «3D»."
 metadata:
   stand: 0.2.0
-  quelle: 'd264ba19b721'
+  quelle: '26d5ada41225'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -45,7 +45,7 @@ Fase P6 «Sistema di design con esempio». Tocca a questa fase quando `docs/konz
 - **Domande alla persona:** «L'ordine nel mockup grigio è giusto?», «Quale delle tre direzioni, o quale combinazione?», «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» e la domanda sugli elementi grafici. Ognuna delle tre risposte ha la sua riga (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Qui non ci sono ipotesi: finché la persona non ha risposto, c'è `[offen: …]`. «Anche una versione scura?» la proponi come `[Annahme: sì, chiara e scura]`, perché molti telefonini di notte mostrano tutto scuro.
 - **Isola:** `mockup` appena l'ordine è giusto; `entwuerfe` appena la persona ha visto la tavola dei campioni e le va bene.
 
-**Modo:** Leggi `Modus:` in `docs/projekt.md` (se la riga manca, vale `machen`, fare). Il momento di apprendimento di questa fase è «Perché colori e caratteri stanno in un solo posto»: la persona cambia lei stessa un colore in `design/tokens.css`, ricarica la tavola dei campioni e vede che cambia dappertutto. Nel modo `lernen` (imparare) lo fa da sola (poi `verstanden_melden` con `mission: webseite-04-gestaltung` e `art: selbst`), e alla fine fai la domanda di controllo della lezione: «Perché colori e caratteri stanno in un solo posto?» Solo dopo la sua risposta annunci `art: kontrollfrage`. Nel modo `machen` (fare) offri il momento di apprendimento e spieghi ogni passo in una frase con la sua immagine. Se lo strumento `verstanden_melden` manca, si continua senza.
+**Modo:** Leggi `Modus:` in `docs/projekt.md` (se la riga manca, vale `machen`, fare). Il momento di apprendimento di questa fase è «Perché colori e caratteri stanno in un solo posto»: la persona cambia lei stessa un colore in `design/tokens.css`, ricarica la tavola dei campioni e vede che cambia dappertutto. Nel modo `lernen` (imparare) lo fa da sola (poi `verstanden_melden` con `mission: flugschule-19-musterblatt` e `art: selbst`), e alla fine fai le domande di controllo della lezione `flugschule-19-musterblatt` (`mission_holen`), per esempio «Perché colori e caratteri stanno in un solo posto?» Solo dopo la sua risposta annunci `art: kontrollfrage`. Nel modo `machen` (fare) offri il momento di apprendimento e spieghi ogni passo in una frase con la sua immagine. Se lo strumento `verstanden_melden` manca, si continua senza.
 
 ### 1. Il mockup dallo schizzo (`schritt: mockup`)
 
@@ -303,7 +303,7 @@ Guarda tu stesso ogni foto e confrontala con la bozza: sul telefonino il testo h
 
 ## Verifica la missione
 
-`mission_pruefen` con `webseite-04-gestaltung`. La verifica guarda se il progetto è almeno al passo «Bozze» sull'isola; nel piano di volo lo annunci solo quando la persona ha visto la tavola dei campioni.
+`mission_pruefen` con `flugschule-19-musterblatt`. La verifica guarda se il progetto è almeno al passo «Bozze» sull'isola; nel piano di volo lo annunci solo quando la persona ha visto la tavola dei campioni. Sul percorso sito web c'è in più la missione facoltativa `webseite-04-gestaltung` (elementi grafici): se la persona ha scelto degli elementi grafici, verifichi anche quella con `mission_pruefen`.
 
 ## Messaggio finale
 
