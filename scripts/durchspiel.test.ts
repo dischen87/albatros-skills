@@ -162,6 +162,10 @@ test.skipIf(!existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`))('
   const mcp: Record<string, unknown> = await import(`${albatros}/services/mcp/src/app.ts`);
   const { ZUSTAENDE } = (await import(`${albatros}/services/mcp/scripts/lage-attrappen.ts`)) as { ZUSTAENDE: Record<string, { antworten: Record<string, { status: number; body: unknown }>; eingabe: Record<string, unknown> }> };
   const createApp = mcp.createApp as (deps: Record<string, unknown>) => { request: (pfad: string, init: RequestInit) => Promise<Response> };
+  // Die Antworten zum Schein unten erkennen den Weg ohne Abfrage: mcp hängt je nach Stand ?sprache=… an (albatros Welle 7, sicht-06: POST
+  // /cockpit/verstanden?sprache=de; vorher ohne). Nachbesserung 01.11.2026: Der Vergleich wurde gegen albatros-w7 rot («Nicht gefunden.»),
+  // obwohl die Attrappe gleich antwortete. Die Zustände von lage-attrappen.ts tragen die Abfrage im Schlüssel und gelten weiter genau.
+  const ohneAbfrage = (p: string) => p.split('?')[0]!;
   const schalter = { ...(kit.ALLE_AUS as Record<string, boolean>), FAHRPLAN: true, ERFASSUNG: true };
   const echt = async (antworten: (m: string, p: string, b: unknown) => { status: number; body: unknown } | undefined, name: string, args: Record<string, unknown>): Promise<Ergebnis> => {
     const app = createApp({
@@ -176,7 +180,7 @@ test.skipIf(!existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`))('
   };
   // Eingaben und alle Schritte der Insel der Reihe nach (flugschule sagt jedes Mal neu), mit langem titel
   const schritte = geladen.fahrplan.insel.map((s) => ['schritt_melden', { schritt: s, titel: LANG, sprache: 'de' }] as [string, Record<string, unknown>]);
-  const insel = (m: string, p: string, b: unknown) => (m === 'POST' && p === '/cockpit/insel/schritt'
+  const insel = (m: string, p: string, b: unknown) => (m === 'POST' && ohneAbfrage(p) === '/cockpit/insel/schritt'
     ? { status: 200, body: { projekt: (b as { projekt?: string }).projekt ?? 'projekt', schritt: (b as { schritt: string }).schritt, neu: true } } : undefined);
   const mock = await attrappe([...EINGABEN, ...schritte]);
   const erwartet: Ergebnis[] = [];
@@ -187,7 +191,7 @@ test.skipIf(!existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`))('
   const z = ZUSTAENDE['gratis-ohne-projekt']!;
   for (const zeilen of [['Projektname: Sonnenhof'], ['Projektname: Sonnenhof', 'Modus: faire']]) {
     const args = { ...z.eingabe, belege: [{ datei: 'docs/projekt.md', zeilen }] };
-    const e = await echt((m, p) => z.antworten[`${m} ${p}`] ?? (m === 'GET' && p === '/cockpit/erfassung' ? { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } } : undefined), 'lage', args);
+    const e = await echt((m, p) => z.antworten[`${m} ${p}`] ?? (m === 'GET' && ohneAbfrage(p) === '/cockpit/erfassung' ? { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } } : undefined), 'lage', args);
     const [a] = await attrappe([['lage', args]], { stufe: 'gratis', dateien: { weg: 'webseite', erfassung: 'ja' } });
     const offen = (t: string) => t.split('\n').filter((x) => x.startsWith('Pflichtfragen offen:'));
     expect([zeilen, offen(a!.text)]).toEqual([zeilen, offen(e.text)]);
@@ -197,7 +201,7 @@ test.skipIf(!existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`))('
   const ab = morgen();
   const gemeldet = { mission: 'flugschule-11-idee', titel: 'Wohin die Reise geht', art: 'kontrollfrage', neu: true, am: new Date().toISOString(), wiederholungAb: ab, faellig: [] };
   const [v] = await attrappe([['verstanden_melden', { mission: 'flugschule-11-idee', art: 'kontrollfrage' }]]);
-  expect(v).toEqual(await echt((m, p) => (m === 'POST' && p === '/cockpit/verstanden' ? { status: 200, body: gemeldet } : undefined), 'verstanden_melden', { mission: 'flugschule-11-idee', art: 'kontrollfrage' }));
+  expect(v).toEqual(await echt((m, p) => (m === 'POST' && ohneAbfrage(p) === '/cockpit/verstanden' ? { status: 200, body: gemeldet } : undefined), 'verstanden_melden', { mission: 'flugschule-11-idee', art: 'kontrollfrage' }));
 
   // Feste Sätze wörtlich: flugschule (lernen.ts, erfassung.ts, app.ts) und mcp (erfassen.ts); OHNE_WIEDERHOLUNG erst, wenn mcp es hat (w7-01)
   const quelle = (pfad: string) => readFileSync(`${albatros}/${pfad}`, 'utf8');
