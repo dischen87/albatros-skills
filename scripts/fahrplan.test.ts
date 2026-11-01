@@ -90,3 +90,25 @@ describe('Stufe einer Mission gleich der Etappe ihrer Phase', () => {
     expect(stufeFehler(F.phasen, { stufe: 'landen', phase: 'P99' })).toBeNull();
   });
 });
+
+// Schnittstelle I2 (Bauservice, 01.11.2026): der Block bauen_lassen genau so, im Schema Pflicht
+describe('bauen_lassen', () => {
+  test('im Vertrag wie in der Schnittstelle I2', () => {
+    expect(F.bauen_lassen).toEqual({ ab: 'P5', quelle: 'docs/projekt.md#Bauen lassen:', werte: ['selbst', 'albatros'], nur_modus: 'machen', setup_beginnt: 'statisch' });
+    // Die Zeile ist keine Pflichtzeile: Sie hält kein Gate auf
+    expect(F.phasen.some((p) => p.ergebnis.some((e) => e.zeilen?.includes('Bauen lassen:')))).toBe(false);
+    // Die Pflichtfrage setup bekommt keine werte (I3: ältere Projekte bleiben gültig)
+    expect(F.phasen.flatMap((p) => p.pflichtfragen).find((q) => q.id === 'setup')?.werte).toBeUndefined();
+  });
+  test('fehlt der Block oder ein Feld, lädt der Fahrplan nicht', async () => {
+    const ohne = kopie() as Partial<Fahrplan>;
+    delete ohne.bauen_lassen;
+    expect(await lade(ohne)).toContain("must have required property 'bauen_lassen'");
+    const ohneModus = kopie();
+    delete (ohneModus.bauen_lassen as Partial<Fahrplan['bauen_lassen']>).nur_modus;
+    expect(await lade(ohneModus)).toContain("/bauen_lassen must have required property 'nur_modus'");
+    const leer = kopie();
+    leer.bauen_lassen.werte = [];
+    expect(await lade(leer)).toContain('/bauen_lassen/werte must NOT have fewer than 1 items');
+  });
+});

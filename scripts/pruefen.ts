@@ -162,6 +162,15 @@ if (fahrplan) {
   if (inPhasen.join() !== fahrplan.insel.join()) f(`insel muss genau phasen[].insel in derselben Reihenfolge sein (${inPhasen.join(', ')})`);
   const alt = ALTE_INSEL.map((s) => fahrplan.insel.indexOf(s));
   if (alt.some((i, n) => i < 0 || (n > 0 && i <= alt[n - 1]!))) f(`insel: die zehn alten Schritte fehlen oder stehen nicht in alter Reihenfolge (${ALTE_INSEL.join(' < ')})`);
+  // Bauen lassen (Schnittstelle I2, 01.11.2026): ab einer Phase des Fahrplans; die Wahl steht in einer Ergebnisdatei, aber nie als Pflichtzeile
+  // (sonst hielte das Gate eine Phase auf, bis die Person den Bauservice beantwortet); «Setup:» ist eine Pflichtfrage vor dieser Phase
+  const b = fahrplan.bauen_lassen;
+  const [bDatei, bZeile] = b.quelle.split('#') as [string, string | undefined];
+  if (!ids.includes(b.ab)) f(`bauen_lassen.ab: ${b.ab} ist keine Phase`);
+  if (!bZeile || !fahrplan.phasen.some((p) => p.ergebnis.some((e) => e.datei === bDatei))) f(`bauen_lassen.quelle: ${b.quelle} braucht eine Zeile in einer Ergebnisdatei`);
+  if (fahrplan.phasen.some((p) => p.ergebnis.some((e) => e.datei === bDatei && e.zeilen?.includes(bZeile ?? '')))) f(`bauen_lassen.quelle: «${bZeile}» darf keine Pflichtzeile sein`);
+  const setup = fahrplan.phasen.findIndex((p) => p.pflichtfragen.some((q) => q.ablage === 'docs/plan.md#Setup:'));
+  if (setup < 0 || setup >= ids.indexOf(b.ab)) f(`bauen_lassen: «Setup:» in docs/plan.md muss eine Pflichtfrage vor ${b.ab} sein`);
 }
 
 // Abschnittsnamen (scripts/abschnitte.ts): Was lage aus fahrplan.yaml nennt und worauf deutsche Skills verweisen, steht im Ziel-Skill

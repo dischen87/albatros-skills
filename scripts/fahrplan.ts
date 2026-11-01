@@ -46,6 +46,8 @@ export type Fahrplan = {
   marken: { offen: string[]; platzhalter: string[]; annahme: string[] };
   wohnorte: { light: string; pilot: string };
   modus: { standard: 'machen' | 'lernen'; quelle: string; machen: string; lernen: string };
+  // Bauservice (01.11.2026): ab dieser Phase einmal das Angebot von lage; Wahl in quelle, Wert aus werte (selbst, albatros)
+  bauen_lassen: { ab: string; quelle: string; werte: string[]; nur_modus: 'machen' | 'lernen'; setup_beginnt: string };
   phasen: Phase[];
   nach_live: { aendern: { skill: string; klein: string[]; gross: string[] }; landen: JeWeg };
   insel: string[];
