@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: 'd4e0b583501a'
+  quelle: 'a2a3f2a880b5'
 ---
 
 # Building the website: the shell in your own workshop
@@ -194,7 +194,7 @@ Derived from docs/plan.md (Testing:) and the draft; approved with the draft.
 /docs/plan.md   404     # working documents don't belong on the web
 ```
 
-With a building block, its doors are added. If there's an entrance in front (skill `bausteine`, part “Ein Eingang für alles?”), these are for example `/intern/ 401`, `/_/ 404` and `/api/collections/_SUPERUSERS/auth-methods 404`: protected pages ask for a sign-in, and the admin sign-in stays closed from outside. PocketBase lists (for example `/api/collections/users/records`) answer guests with 200 and an empty list, not 401 or 403; if you put a list like that into `docs/tueren.txt`, then with 200. All doors per recipe are in the skill `bausteine`, part “Türen der Bausteine”. With the recipe `buchungen`, `/verwaltung/` is the page “My bookings” and answers 200 (only someone signed in with the admin account sees the bookings in it); the line `/verwaltung 404` from the example above doesn't fit then.
+With a building block, its doors are added. If there's an entrance in front (skill `bausteine`, part “Ein Eingang für alles?”), these are for example `/intern/ 401`, `/_/ 404` and `/api/collections/_SUPERUSERS/auth-methods 404`: protected pages ask for a sign-in, and the admin sign-in stays closed from outside. PocketBase lists with a rule (for example `/api/collections/users/records`) answer guests with 200 and an empty list, not 401 or 403; lists only for the admin area (for example `/api/collections/anmeldungen/records`) answer 403. All doors per recipe, with the status for `docs/tueren.txt`, are in the skill `bausteine`, part “Türen der Bausteine”. With the recipe `buchungen`, `/verwaltung/` is the page “My bookings” and answers 200 (only someone signed in with the admin account sees the bookings in it); the line `/verwaltung 404` from the example above doesn't fit then.
 
 **One message for the assumptions:** show the person the PRD in three or four sentences, open the file and put the way of building and the doors to them as assumptions, for example: “I'm building with Astro, without a building block, and only home, offer, enquiry, legal notice and privacy policy are open. Is that right?” After their yes, you remove `[Annahme: …]`, make the logbook entry (`git add docs && git commit -m "PRD from the draft, way of building and doors"`), report `prd` and build.
 

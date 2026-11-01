@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza approvata (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: 'd4e0b583501a'
+  quelle: 'a2a3f2a880b5'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -194,7 +194,7 @@ Ricavati da docs/plan.md (Testing:) e dalla bozza; approvati con la bozza.
 /docs/plan.md   404     # i documenti di lavoro non vanno in rete
 ```
 
-Con un blocco si aggiungono le sue porte. Se davanti c'è un ingresso (skill `bausteine`, parte «Ein Eingang für alles?»), sono per esempio `/intern/ 401`, `/_/ 404` e `/api/collections/_SUPERUSERS/auth-methods 404`: le pagine protette chiedono l'accesso, e l'accesso dell'amministrazione resta chiuso dall'esterno. Le liste di PocketBase (per esempio `/api/collections/users/records`) rispondono agli ospiti con 200 e una lista vuota, non con 401 o 403; se metti una lista così in `docs/tueren.txt`, allora con 200. Tutte le porte per ricetta stanno nello skill `bausteine`, parte «Türen der Bausteine». Con la ricetta `buchungen`, `/verwaltung/` è la pagina «Le mie prenotazioni» e risponde 200 (le prenotazioni le vede solo chi accede con l'account dell'amministrazione); la riga `/verwaltung 404` dell'esempio qui sopra allora non va bene.
+Con un blocco si aggiungono le sue porte. Se davanti c'è un ingresso (skill `bausteine`, parte «Ein Eingang für alles?»), sono per esempio `/intern/ 401`, `/_/ 404` e `/api/collections/_SUPERUSERS/auth-methods 404`: le pagine protette chiedono l'accesso, e l'accesso dell'amministrazione resta chiuso dall'esterno. Le liste di PocketBase con una regola (per esempio `/api/collections/users/records`) rispondono agli ospiti con 200 e una lista vuota, non con 401 o 403; le liste riservate all'amministrazione (per esempio `/api/collections/anmeldungen/records`) rispondono 403. Tutte le porte per ricetta, con lo stato per `docs/tueren.txt`, stanno nello skill `bausteine`, parte «Türen der Bausteine». Con la ricetta `buchungen`, `/verwaltung/` è la pagina «Le mie prenotazioni» e risponde 200 (le prenotazioni le vede solo chi accede con l'account dell'amministrazione); la riga `/verwaltung 404` dell'esempio qui sopra allora non va bene.
 
 **Un messaggio per le ipotesi:** mostra il PRD alla persona in tre o quattro frasi, apri il file e presenta modo di costruzione e porte come ipotesi, per esempio: «Costruisco con Astro, senza blocchi, e aperte sono solo home, offerta, richiesta, impressum e protezione dei dati. Va bene così?» Dopo il suo sì togli `[Annahme: …]`, fai la voce nel diario di bordo (`git add docs && git commit -m "PRD dalla bozza, modo di costruzione e porte"`), segnali `prd` e costruisci.
 
