@@ -117,7 +117,9 @@ git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigeg
 
 ### 2. In den Hafen oder zum Anbieter (`schritt: hafen`)
 
-**Bei Albatros:** Im Hafen liegt seit dem Wohnort die Vorlage, ein Eintrag. Das Logbuch auf dem Computer hat einen eigenen Anfang. Du verbindest die beiden, ohne neu zu klonen und ohne Dateien zu kopieren (Skill `git-logbuch`, Abschnitt «Logbuch ohne Hafen»):
+#### Bei Albatros
+
+Im Hafen liegt seit dem Wohnort die Vorlage, ein Eintrag. Das Logbuch auf dem Computer hat einen eigenen Anfang. Du verbindest die beiden, ohne neu zu klonen und ohne Dateien zu kopieren (Skill `git-logbuch`, Abschnitt «Logbuch ohne Hafen»):
 
 ```bash
 git remote -v                                                    # gibt es schon ein origin? dann statt origin den Namen hafen
@@ -137,7 +139,9 @@ git push -u origin main
 
 Dann öffnest du den Hafen im Browser (`open https://code.aufwind.sh/<name>/projekt`) und meldest `hafen`.
 
-**Selbst, mit GitHub:** Die Person meldet sich mit `gh auth login` im Browser an. Für GitHub Pages legst du vorher das Fliessband an, `.github/workflows/seite.yml`:
+#### Selbst, mit GitHub
+
+Die Person meldet sich mit `gh auth login` im Browser an. Für GitHub Pages legst du vorher das Fliessband an, `.github/workflows/seite.yml`:
 
 ```yaml
 name: Seite
@@ -170,7 +174,9 @@ jobs:
 
 Dann das Logbuch mitnehmen: `gh repo create <repo> --private --source . --remote origin --push` (für GitHub Pages ohne bezahltes Konto `--public`, nachdem die Person weiss, dass dann auch `docs/` öffentlich ist). Bei GitHub Pages stellt die Person unter Settings, Pages die Quelle auf «GitHub Actions». Dann meldest du `hafen`.
 
-**Selbst, ohne Repo:** Du lädst `seite/` direkt hoch, nachdem sich die Person im Browser angemeldet hat: `npx netlify-cli deploy --dir=seite --prod` oder `npx wrangler pages deploy seite --project-name=<name>`. Das Logbuch bleibt auf dem Computer; seine Sicherung steht in `docs/betrieb.md`. Einen Hafen gibt es dann nicht, `hafen` meldest du nicht.
+#### Selbst, ohne Repo
+
+Du lädst `seite/` direkt hoch, nachdem sich die Person im Browser angemeldet hat: `npx netlify-cli deploy --dir=seite --prod` oder `npx wrangler pages deploy seite --project-name=<name>`. Das Logbuch bleibt auf dem Computer; seine Sicherung steht in `docs/betrieb.md`. Einen Hafen gibt es dann nicht, `hafen` meldest du nicht.
 
 ### 3. Fliessband (`schritt: fliessband`)
 
@@ -192,7 +198,10 @@ Die Adresse steht in `docs/lancieren.md` (`Adresse:`). Live ist erst, was von au
 
 - **Mit Eingang:** In `docs/tueren.txt` stehen die geschützten Pfade mit 401 (ohne Anmeldung, zum Beispiel `/intern/ 401`), dazu `/_/ 404` und `/api/collections/_SUPERUSERS/auth-methods 404`: Die Anmeldung der Verwaltung bleibt von aussen zu. Listen von PocketBase mit einer Regel (zum Beispiel `/api/collections/users/records`) geben Gästen 200 mit einer leeren Liste, nicht 401 oder 403; alle Türen je Rezept stehen im Skill `bausteine`, Abschnitt «Türen der Bausteine». Stammt die Datei noch vom Bau ohne Eingang, passt du sie vor der Prüfung an. Erst wenn `--tueren` genau das zeigt und die Startseite 200 gibt, steht die Seite wirklich hinter dem Eingang.
 - **Mit einem Baustein ist «live» noch nicht «fertig»:** Erst wenn die Daten drin sind (zum Beispiel die Kurse) und eine Testbuchung im Netz ihre Mail an die eigene Adresse gebracht hat (Skill `bausteine`), sagst du der Person, dass sie den Link teilen kann. Bis dahin sagst du ehrlich, was noch fehlt.
-- **Nach drei Minuten noch nicht da:** Mit Light zeigt `konto_status`, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil `seite/` in einer `.gitignore` steht. Mit Pilot schaust du unter «Actions» nach (Skill `pipeline`), bei «selbst» in der Liste der Auslieferungen des Anbieters. Beheben, neuer Eintrag, pushen, nochmals prüfen. Ändert die Behebung die Seite selbst, zeigst du sie der Person zuerst und holst die Freigabe neu. Geht es dann immer noch nicht, sagst du, was du geprüft hast, und fragst den Coach (`coach_fragen`).
+
+#### Nach drei Minuten noch nicht da
+
+Mit Light zeigt `konto_status`, ob der neueste Stand online ist oder was fehlt. Oft fehlt `seite/index.html` im Hafen, weil `seite/` in einer `.gitignore` steht. Mit Pilot schaust du unter «Actions» nach (Skill `pipeline`), bei «selbst» in der Liste der Auslieferungen des Anbieters. Beheben, neuer Eintrag, pushen, nochmals prüfen. Ändert die Behebung die Seite selbst, zeigst du sie der Person zuerst und holst die Freigabe neu. Geht es dann immer noch nicht, sagst du, was du geprüft hast, und fragst den Coach (`coach_fragen`).
 
 ### 5. Eine eigene Adresse, freiwillig (`schritt: domain`)
 

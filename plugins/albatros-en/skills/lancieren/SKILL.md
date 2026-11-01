@@ -3,7 +3,7 @@ name: lancieren
 description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
   stand: 0.2.0
-  quelle: '5c7371e031ce'
+  quelle: '0908f74407a1'
 ---
 
 # Launch: where it lives and the opening
@@ -120,7 +120,9 @@ git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigeg
 
 ### 2. To the harbour or the provider (`schritt: hafen`)
 
-**With Albatros:** since the place was chosen, the harbour holds the template, one entry. The logbook on the computer has a beginning of its own. You connect the two without cloning again and without copying files (skill `git-logbuch`, part “Logbuch ohne Hafen”):
+#### With Albatros
+
+Since the place was chosen, the harbour holds the template, one entry. The logbook on the computer has a beginning of its own. You connect the two without cloning again and without copying files (skill `git-logbuch`, part “Logbuch ohne Hafen”):
 
 ```bash
 git remote -v                                                    # is there already an origin? then use the name hafen instead of origin
@@ -140,7 +142,9 @@ git push -u origin main
 
 Then you open the harbour in the browser (`open https://code.aufwind.sh/<name>/projekt`) and report `hafen`.
 
-**Hosting it yourself, with GitHub (Selbst, mit GitHub):** the person signs in with `gh auth login` in the browser. For GitHub Pages, you first create the conveyor belt, `.github/workflows/seite.yml`:
+#### Hosting it yourself, with GitHub (Selbst, mit GitHub)
+
+The person signs in with `gh auth login` in the browser. For GitHub Pages, you first create the conveyor belt, `.github/workflows/seite.yml`:
 
 ```yaml
 name: Seite
@@ -173,7 +177,9 @@ jobs:
 
 Then take the logbook along: `gh repo create <repo> --private --source . --remote origin --push` (for GitHub Pages without a paid account `--public`, once the person knows that `docs/` is then public too). For GitHub Pages, the person sets the source to “GitHub Actions” under Settings, Pages. Then you report `hafen`.
 
-**Hosting it yourself, without a repository (Selbst, ohne Repo):** you upload `seite/` directly, after the person has signed in in the browser: `npx netlify-cli deploy --dir=seite --prod` or `npx wrangler pages deploy seite --project-name=<name>`. The logbook stays on the computer; its backup is noted in `docs/betrieb.md`. Then there's no harbour, and you don't report `hafen`.
+#### Hosting it yourself, without a repository (Selbst, ohne Repo)
+
+You upload `seite/` directly, after the person has signed in in the browser: `npx netlify-cli deploy --dir=seite --prod` or `npx wrangler pages deploy seite --project-name=<name>`. The logbook stays on the computer; its backup is noted in `docs/betrieb.md`. Then there's no harbour, and you don't report `hafen`.
 
 ### 3. Conveyor belt (`schritt: fliessband`)
 
@@ -195,7 +201,10 @@ The address is in `docs/lancieren.md` (`Adresse:`). Only what's been checked fro
 
 - **With the entrance:** `docs/tueren.txt` lists the protected paths with 401 (without signing in, for example `/intern/ 401`), plus `/_/ 404` and `/api/collections/_SUPERUSERS/auth-methods 404`: the admin sign-in stays closed from outside. PocketBase lists with a rule (for example `/api/collections/users/records`) answer guests with 200 and an empty list, not 401 or 403; all doors per recipe are in the skill `bausteine`, part “Türen der Bausteine”. If the file still dates from the build without an entrance, you adjust it before the check. Only when `--tueren` shows exactly that and the home page gives 200 is the site really behind the entrance.
 - **With a building block, “live” isn't “done” yet:** only once the data is in (for example the courses) and a test booking on the web has brought its email to the person's own address (skill `bausteine`) do you tell the person they can share the link. Until then, you say honestly what's still missing.
-- **Still not there after three minutes (Nach drei Minuten noch nicht da):** with Light, `konto_status` shows whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour because `seite/` is listed in a `.gitignore`. With Pilot you look under “Actions” (skill `pipeline`), when hosting it yourself in the provider's list of deploys. Fix it, new entry, push, check again. If the fix changes the site itself, you show it to the person first and get the release again. If it still doesn't work, you say what you checked and ask the coach (`coach_fragen`).
+
+#### Still not there after three minutes (Nach drei Minuten noch nicht da)
+
+With Light, `konto_status` shows whether the newest state is online or what's missing. Often `seite/index.html` is missing in the harbour because `seite/` is listed in a `.gitignore`. With Pilot you look under “Actions” (skill `pipeline`), when hosting it yourself in the provider's list of deploys. Fix it, new entry, push, check again. If the fix changes the site itself, you show it to the person first and get the release again. If it still doesn't work, you say what you checked and ask the coach (`coach_fragen`).
 
 ### 5. Your own address, optional (`schritt: domain`)
 

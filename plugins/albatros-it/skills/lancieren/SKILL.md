@@ -3,7 +3,7 @@ name: lancieren
 description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: '5c7371e031ce'
+  quelle: '0908f74407a1'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -120,7 +120,9 @@ git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigeg
 
 ### 2. Nel porto o dal fornitore (`schritt: hafen`)
 
-**Da Albatros:** nel porto c'è dal domicilio il modello, una voce. Il diario di bordo sul computer ha un suo inizio. Colleghi i due, senza clonare di nuovo e senza copiare file (skill `git-logbuch`, parte «Logbuch ohne Hafen»):
+#### Da Albatros
+
+Nel porto c'è dal domicilio il modello, una voce. Il diario di bordo sul computer ha un suo inizio. Colleghi i due, senza clonare di nuovo e senza copiare file (skill `git-logbuch`, parte «Logbuch ohne Hafen»):
 
 ```bash
 git remote -v                                                    # c'è già un origin? allora il nome hafen invece di origin
@@ -140,7 +142,9 @@ git push -u origin main
 
 Poi apri il porto nel browser (`open https://code.aufwind.sh/<name>/projekt`) e segnali `hafen`.
 
-**Da te, con GitHub (Selbst, mit GitHub):** la persona fa l'accesso con `gh auth login` nel browser. Per GitHub Pages prima crei il nastro trasportatore, `.github/workflows/seite.yml`:
+#### Da te, con GitHub (Selbst, mit GitHub)
+
+La persona fa l'accesso con `gh auth login` nel browser. Per GitHub Pages prima crei il nastro trasportatore, `.github/workflows/seite.yml`:
 
 ```yaml
 name: Seite
@@ -173,7 +177,9 @@ jobs:
 
 Poi portare il diario di bordo: `gh repo create <repo> --private --source . --remote origin --push` (per GitHub Pages senza conto a pagamento `--public`, dopo che la persona sa che allora anche `docs/` è pubblico). Per GitHub Pages la persona imposta sotto Settings, Pages la fonte su «GitHub Actions». Poi segnali `hafen`.
 
-**Da te, senza repository (Selbst, ohne Repo):** carichi `seite/` direttamente, dopo che la persona ha fatto l'accesso nel browser: `npx netlify-cli deploy --dir=seite --prod` o `npx wrangler pages deploy seite --project-name=<name>`. Il diario di bordo resta sul computer; la sua copia di sicurezza sta in `docs/betrieb.md`. Un porto allora non c'è, `hafen` non lo segnali.
+#### Da te, senza repository (Selbst, ohne Repo)
+
+Carichi `seite/` direttamente, dopo che la persona ha fatto l'accesso nel browser: `npx netlify-cli deploy --dir=seite --prod` o `npx wrangler pages deploy seite --project-name=<name>`. Il diario di bordo resta sul computer; la sua copia di sicurezza sta in `docs/betrieb.md`. Un porto allora non c'è, `hafen` non lo segnali.
 
 ### 3. Nastro trasportatore (`schritt: fliessband`)
 
@@ -195,7 +201,10 @@ L'indirizzo sta in `docs/lancieren.md` (`Adresse:`). È online solo ciò che è 
 
 - **Con l'ingresso:** in `docs/tueren.txt` ci sono i percorsi protetti con 401 (senza accesso, per esempio `/intern/ 401`), in più `/_/ 404` e `/api/collections/_SUPERUSERS/auth-methods 404`: l'accesso dell'amministrazione resta chiuso dall'esterno. Le liste di PocketBase con una regola (per esempio `/api/collections/users/records`) rispondono agli ospiti con 200 e una lista vuota, non con 401 o 403; tutte le porte per ricetta stanno nello skill `bausteine`, parte «Türen der Bausteine». Se il file è ancora quello della costruzione senza ingresso, lo adatti prima della verifica. Solo quando `--tueren` mostra esattamente questo e la pagina iniziale dà 200, il sito sta davvero dietro l'ingresso.
 - **Con un blocco «online» non vuol dire ancora «finito»:** solo quando i dati ci sono (per esempio i corsi) e una prenotazione di prova in rete ha portato la sua e-mail al proprio indirizzo (skill `bausteine`), dici alla persona che può condividere il link. Fino ad allora dici onestamente che cosa manca ancora.
-- **Dopo tre minuti non c'è ancora (Nach drei Minuten noch nicht da):** con Light `konto_status` mostra se l'ultimo stato è online o che cosa manca. Spesso nel porto manca `seite/index.html`, perché `seite/` sta in un `.gitignore`. Con Pilot guardi sotto «Actions» (skill `pipeline`), da te nella lista delle consegne del fornitore. Correggere, nuova voce, push, ricontrollare. Se la correzione cambia il sito stesso, prima lo mostri alla persona e ottieni di nuovo l'approvazione. Se ancora non va, dici che cosa hai controllato e chiedi al coach (`coach_fragen`).
+
+#### Dopo tre minuti non c'è ancora (Nach drei Minuten noch nicht da)
+
+Con Light `konto_status` mostra se l'ultimo stato è online o che cosa manca. Spesso nel porto manca `seite/index.html`, perché `seite/` sta in un `.gitignore`. Con Pilot guardi sotto «Actions» (skill `pipeline`), da te nella lista delle consegne del fornitore. Correggere, nuova voce, push, ricontrollare. Se la correzione cambia il sito stesso, prima lo mostri alla persona e ottieni di nuovo l'approvazione. Se ancora non va, dici che cosa hai controllato e chiedi al coach (`coach_fragen`).
 
 ### 5. Un indirizzo tuo, facoltativo (`schritt: domain`)
 

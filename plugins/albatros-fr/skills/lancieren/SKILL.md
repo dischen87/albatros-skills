@@ -3,7 +3,7 @@ name: lancieren
 description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: '5c7371e031ce'
+  quelle: '0908f74407a1'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -120,7 +120,9 @@ git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigeg
 
 ### 2. Au port ou chez le fournisseur (`schritt: hafen`)
 
-**Chez Albatros :** au port, il y a depuis le domicile le modèle, une entrée. Le journal de bord sur l'ordinateur a son propre début. Tu relies les deux, sans cloner à nouveau et sans copier de fichiers (skill `git-logbuch`, partie « Logbuch ohne Hafen ») :
+#### Chez Albatros
+
+Au port, il y a depuis le domicile le modèle, une entrée. Le journal de bord sur l'ordinateur a son propre début. Tu relies les deux, sans cloner à nouveau et sans copier de fichiers (skill `git-logbuch`, partie « Logbuch ohne Hafen ») :
 
 ```bash
 git remote -v                                                    # y a-t-il déjà un origin ? alors le nom hafen au lieu d'origin
@@ -140,7 +142,9 @@ git push -u origin main
 
 Ensuite, tu ouvres le port dans le navigateur (`open https://code.aufwind.sh/<name>/projekt`) et tu annonces `hafen`.
 
-**Par toi-même, avec GitHub (Selbst, mit GitHub) :** la personne se connecte avec `gh auth login` dans le navigateur. Pour GitHub Pages, tu crées avant le tapis roulant, `.github/workflows/seite.yml` :
+#### Par toi-même, avec GitHub (Selbst, mit GitHub)
+
+La personne se connecte avec `gh auth login` dans le navigateur. Pour GitHub Pages, tu crées avant le tapis roulant, `.github/workflows/seite.yml` :
 
 ```yaml
 name: Seite
@@ -173,7 +177,9 @@ jobs:
 
 Ensuite, emporter le journal de bord : `gh repo create <depot> --private --source . --remote origin --push` (pour GitHub Pages sans compte payant `--public`, après que la personne sait qu'alors `docs/` est aussi public). Pour GitHub Pages, la personne règle sous Settings, Pages la source sur « GitHub Actions ». Ensuite, tu annonces `hafen`.
 
-**Par toi-même, sans dépôt (Selbst, ohne Repo) :** tu téléverses `seite/` directement, après que la personne s'est connectée dans le navigateur : `npx netlify-cli deploy --dir=seite --prod` ou `npx wrangler pages deploy seite --project-name=<name>`. Le journal de bord reste sur l'ordinateur ; sa sauvegarde figure dans `docs/betrieb.md`. Il n'y a alors pas de port, tu n'annonces pas `hafen`.
+#### Par toi-même, sans dépôt (Selbst, ohne Repo)
+
+Tu téléverses `seite/` directement, après que la personne s'est connectée dans le navigateur : `npx netlify-cli deploy --dir=seite --prod` ou `npx wrangler pages deploy seite --project-name=<name>`. Le journal de bord reste sur l'ordinateur ; sa sauvegarde figure dans `docs/betrieb.md`. Il n'y a alors pas de port, tu n'annonces pas `hafen`.
 
 ### 3. Tapis roulant (`schritt: fliessband`)
 
@@ -195,7 +201,10 @@ L'adresse figure dans `docs/lancieren.md` (`Adresse:`). N'est en ligne que ce qu
 
 - **Avec l'entrée :** dans `docs/tueren.txt` figurent les chemins protégés avec 401 (sans connexion, par exemple `/intern/ 401`), en plus `/_/ 404` et `/api/collections/_SUPERUSERS/auth-methods 404` : la connexion de l'administration reste fermée depuis l'extérieur. Les listes de PocketBase avec une règle (par exemple `/api/collections/users/records`) répondent aux visiteurs 200 avec une liste vide, pas 401 ni 403 ; toutes les portes par recette sont dans le skill `bausteine`, partie « Türen der Bausteine ». Si le fichier date encore de la construction sans entrée, tu l'adaptes avant la vérification. C'est seulement quand `--tueren` montre exactement cela et que la page d'accueil donne 200 que le site est vraiment derrière l'entrée.
 - **Avec une brique, « en ligne » n'est pas encore « terminé » :** seulement quand les données sont dedans (par exemple les cours) et qu'une réservation de test en ligne a apporté son e-mail à sa propre adresse (skill `bausteine`), tu dis à la personne qu'elle peut partager le lien. D'ici là, tu dis honnêtement ce qui manque encore.
-- **Toujours pas là après trois minutes (Nach drei Minuten noch nicht da) :** avec Light, `konto_status` montre si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port parce que `seite/` figure dans un `.gitignore`. Avec Pilot, tu regardes sous « Actions » (skill `pipeline`), par toi-même dans la liste des livraisons du fournisseur. Corriger, nouvelle entrée, pousser, revérifier. Si la correction change le site lui-même, tu le montres d'abord à la personne et tu obtiens à nouveau la validation. Si ça ne marche toujours pas, tu dis ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
+
+#### Toujours pas là après trois minutes (Nach drei Minuten noch nicht da)
+
+Avec Light, `konto_status` montre si le dernier état est en ligne ou ce qui manque. Souvent, `seite/index.html` manque au port parce que `seite/` figure dans un `.gitignore`. Avec Pilot, tu regardes sous « Actions » (skill `pipeline`), par toi-même dans la liste des livraisons du fournisseur. Corriger, nouvelle entrée, pousser, revérifier. Si la correction change le site lui-même, tu le montres d'abord à la personne et tu obtiens à nouveau la validation. Si ça ne marche toujours pas, tu dis ce que tu as vérifié et tu demandes au coach (`coach_fragen`).
 
 ### 5. Une propre adresse, facultative (`schritt: domain`)
 
