@@ -11,7 +11,7 @@ Eine Tür für alle Teile einer Seite, wie der Empfang in einem Haus mit mehrere
 | `pb_hooks/eingang.pb.js`, `pb_hooks/eingang.js` | Anmelden mit Cookie in PocketBase: `POST /api/eingang/anmelden`, `POST /api/eingang/abmelden`, `GET /api/eingang/pruefen` |
 | `pb_migrations/2_eingang.js` | Grenze für das Anmelden: 5 Versuche je Adresse in 60 Sekunden, über den Eingang und über `auth-with-password` |
 | `Dockerfile`, `compose.yaml` | Container `eingang` auf Port 80 (Ausschnitt für `include:`) |
-| `test.ts` | 50 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
+| `test.ts` | 51 Prüfungen gegen ein echtes PocketBase und Teile zum Schein (etwa 20 Sekunden): `bun bausteine/eingang/test.ts` |
 | `messen.ts` | Arbeitsspeicher und Antwortzeiten: `bun bausteine/eingang/messen.ts --anfragen 200000 --smol`; mit gehaltenen Anfragen: `--gehalten 1100 --fetch-plaetze 1024` (wartende dazu: `--je-adresse 120`); Seiten mit vielen Bildern: `--bilder 60 --seiten 20 --fetch-plaetze 1024 --smol` |
 
 ## eingang.json
@@ -116,7 +116,7 @@ Statt eines eigenen Dienstes könnte nginx im Container `webseite` die Tür sein
 | Ursprung beim Schreiben | Liste in `eingang.json` | `map $http_origin` und `if`, in `location` heikel |
 | 503 nach 2 s | so gebaut und getestet | `auth_request` meldet bei einem Fehler 500; 503 braucht `error_page`-Umwege |
 | Protokoll ohne Adressen | so gebaut und getestet | eigenes `log_format` ohne `$remote_addr` und mit `$uri` statt `$request_uri` |
-| Test | `test.ts` mit 50 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
+| Test | `test.ts` mit 51 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
 
 Fazit: nginx spart 20 bis 69 MB (mit vielen grossen Bildern auf einmal bis 129 MB) und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
 
