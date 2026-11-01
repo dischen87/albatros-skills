@@ -3,7 +3,7 @@ name: bausteine
 description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti, prima sul suo computer: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso e abilitazione, bacheca (PocketBase), un ingresso con un solo accesso per più parti o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «ruoli», «ingresso», «banca dati», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 metadata:
   stand: 0.2.0
-  quelle: '4b332f8bb0fe'
+  quelle: 'd66c4610d5d1'
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -44,7 +44,7 @@ Una domanda per messaggio, solo quante ne servono perché la risposta sia chiara
 | I visitatori prenotano un posto o un appuntamento (corso, visita guidata, appuntamento dal parrucchiere), voglio vedere le prenotazioni e poterle annullare | **Prenotazioni** (PocketBase, ricetta `buchungen`) | Pilot | circa 20 MB |
 | I membri accedono e vedono un'area tutta loro; chi è nuovo fa una richiesta, e io lo abilito | **Area membri con accesso** (PocketBase, ricetta `mitglieder`) | Pilot | circa 20 MB |
 | Altri curano news o appuntamenti nel browser | **Bacheca** (PocketBase, ricetta `pinnwand`) | Pilot | circa 20 MB |
-| Più parti hanno bisogno dello stesso accesso, o un'area è solo per un ruolo (per esempio il comitato) | **Ingresso** (blocco `eingang`, con la ricetta `mitglieder`), sezione 7 | Pilot | 20 MB, a pieno carico fino a 69 MB |
+| Più parti hanno bisogno dello stesso accesso, o un'area è solo per un ruolo (per esempio il comitato) | **Ingresso** (blocco `eingang`, con la ricetta `mitglieder`), sezione 7 | Pilot | 20 MB, a pieno carico fino a 129 MB (limite del container 128 MB) |
 | Molti tipi di contenuto, più ruoli, gestione delle immagini, più tardi un'app | **CMS grande** (Strapi con Postgres) | Pilot | circa 200 MB, costruzione fino a 2,5 GB |
 
 Consiglia sempre il più piccolo che basta. Più lingue da sole non sono mai un motivo per un blocco. PocketBase copre insieme lista di iscrizione, accesso e bacheca, e gira una volta sola. Strapi conviene solo quando PocketBase diventa troppo piccolo.
@@ -60,7 +60,7 @@ Un server con Pilot ha 4 GB di memoria di lavoro (RAM) e 40 GB di spazio, senza 
 | Carico di base: sistema, Docker, operaio del nastro trasportatore | 150 MB, previsti 0,5 GB | per poco di più | – |
 | Sito dal modello | 10 MB | breve | poco |
 | PocketBase (tutte le ricette insieme) | 20 MB | breve | 40 MB |
-| Ingresso | 20 MB, a pieno carico fino a 69 MB | breve | poco |
+| Ingresso | 20 MB, a pieno carico fino a 129 MB, nel container limitato a 128 MB | breve | poco |
 | Strapi con Postgres | 150 MB + 55 MB | picco 2,5 GB, prima costruzione circa 7 minuti | 1,4 GB |
 
 Per i blocchi restano quindi circa 3,5 GB. Sito, PocketBase e Strapi insieme, in funzione, usano circa 250 MB. Si fa stretto solo durante la costruzione, per questo il nastro trasportatore costruisce un lavoro dopo l'altro. Sul server non vanno programmi che da soli usano più di 1 GB, per esempio Keycloak, Supabase, Logto, Mattermost o il riconoscimento del testo (OCR). Per un accesso proprio prendi PocketBase.
@@ -213,7 +213,7 @@ Se serve lo decidono queste regole, in quest'ordine:
 
 La risposta va in `docs/betrieb.md`, alla riga `Eingang:` (skill `betrieb`). Il suo valore comincia sempre con la parola tedesca `ja` o `nicht nötig`, anche se la persona parla un'altra lingua; dopo viene il motivo nella sua lingua, per esempio `Eingang: ja – /intern/ e le comunicazioni da PocketBase richiedono lo stesso accesso` o `Eingang: nicht nötig – solo la ricetta mitglieder, bastano le regole di PocketBase`. Lo skill `lancieren` monta l'ingresso solo con `Eingang: ja`. Le porte del sito (`docs/tueren.txt`: aperte, solo con accesso, mai) diventano le parti in `bausteine/eingang/eingang.json`.
 
-**Costi:** niente soldi in più, gira insieme al resto sul server Pilot. Memoria: 20 MB a riposo, a pieno carico fino a 69 MB (misurato il 31.10.2026 su un Mac, sul server non ancora); ogni chiamata a una parte protetta interroga PocketBase, costa quasi un millisecondo. In più un elemento da curare (versione di Bun nel `Dockerfile`).
+**Costi:** niente soldi in più, gira insieme al resto sul server Pilot. Memoria: 20 MB a riposo; a pieno carico con pagine piccole fino a 69 MB, con molte immagini insieme (20 pagine da 60 immagini) fino a 129 MB, e se dei visitatori scaricano file grandi senza leggerli fino in fondo, ancora di più (misurato con tre indirizzi: 208 MB). Misurato il 31.10 e l'01.11.2026 su un Mac. Il container è limitato a 128 MB (`mem_limit`); se allora riparte e quanto gli serve sul server, non è ancora misurato; ogni chiamata a una parte protetta interroga PocketBase, costa quasi un millisecondo. In più un elemento da curare (versione di Bun nel `Dockerfile`).
 
 **Montare,** prima in locale come ogni blocco (sezione 4), passo per passo in `bausteine/eingang/README.md`:
 

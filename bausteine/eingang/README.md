@@ -96,6 +96,7 @@ Seiten mit vielen Bildern (`messen.ts --bilder`, je Bild 100 KB, alle Bilder ein
 
 - Der Körper jeder Antwort geht durch einen Strom in JavaScript, damit der Platz erst frei wird, wenn er ganz durch ist. Das kostet: Vorher waren es 29 600 statt 16 000 Anfragen je Sekunde und im Median 1,2 statt 2,5 ms (offen), gemessen am selben Tag mit je 100 000 Anfragen. Für eine Vereinsseite (höchstens 600 Anfragen je Minute und Adresse) spielt das keine Rolle; dafür blockiert eine einzelne Adresse nicht mehr alle.
 - Ehrlich dazu: Mit vielen grossen Antworten zugleich kostet derselbe Strom Speicher. 20 Seiten mit je 60 Bildern in derselben Zehntelsekunde brachten den Eingang auf 86–129 MB statt 61–67 MB mit dem Körper direkt, also bis an `mem_limit` 128 MB (RSS auf dem Mac; ob der Container dabei neu startet, ist nicht gemessen). Andere Ströme (`type: 'direct'`, `TransformStream`, `highWaterMark: 0`) brachten nichts (105–125 MB). Eine Seite mit 60 Bildern allein braucht nichts zusätzlich.
+- Ehrlich dazu: Besucherinnen, die grosse Antworten nicht lesen (ein langsamer oder angehaltener Download), halten den Speicher, solange die Verbindung offen ist (gemessen mindestens 75 s; `idleTimeout` greift beim hängenden Schreiben nicht, für den Körper gibt es keine Zeitgrenze). Je 20 Downloads à 5 MB von einer Adresse, niemand liest (`g06d-langsam-lesen.ts` der Gegenprobe Welle 5): 1 Adresse 104–107 MB, 2 Adressen 156–163 MB, 3 Adressen 203–208 MB (31.10.2026, nachgemessen 01.11.2026, RSS auf dem Mac). Schon zwei Adressen kommen über `mem_limit` 128 MB; ob der Container dann neu startet, ist nicht gemessen (Entscheid eing-neu-03).
 - Wer wartet, kostet rund 5 KB (gemessen ohne die Grenze für alle zusammen: 1000 beim Teil und 5000 wartend 69 MB, nur die 1000 beim Teil 46 MB). Darum warten höchstens 2000 zusammen, rund 10 MB.
 - Kein Leck: 100 000 und 200 000 Anfragen endeten auf derselben Höhe (55–57 MB). Was der Speicher einmal hatte, gibt Bun in 5 Sekunden nicht zurück (RSS bleibt auf der Spitze).
 - Die Prüfung bei PocketBase kostet je geschützte Anfrage knapp 1 ms (Median 3,4 statt 2,5 ms).
@@ -109,7 +110,7 @@ Statt eines eigenen Dienstes könnte nginx im Container `webseite` die Tür sein
 
 | | Bun-Eingang | nginx `auth_request` |
 |---|---|---|
-| Speicher | 20 MB im Leerlauf, 56–69 MB unter Volllast mit kleinen Seiten, 93–129 MB mit 1200 Bildern à 100 KB auf einmal (gemessen) | kein zusätzlicher Prozess; nginx in `webseite` braucht rund 10 MB (gemessen am 28.10.2026), der Zuschlag für `auth_request` ist geschätzt, nicht gemessen |
+| Speicher | 20 MB im Leerlauf, 56–69 MB unter Volllast mit kleinen Seiten, 86–129 MB mit 1200 Bildern à 100 KB auf einmal, mit ungelesenen Downloads mehr (bis 208 MB, gemessen) | kein zusätzlicher Prozess; nginx in `webseite` braucht rund 10 MB (gemessen am 28.10.2026), der Zuschlag für `auth_request` ist geschätzt, nicht gemessen |
 | Prüfung bei PocketBase | je Anfrage an einen geschützten Teil, knapp 1 ms (gemessen) | ebenso je Anfrage |
 | Fremde `x-eingang-*` | alle mit dem Präfix weg | nur einzeln mit `proxy_set_header … ""`; eine neue Kopfzeile ginge durch, bis jemand die Konfiguration nachführt |
 | Pfade | eine Funktion: aufgelöst, einmal dekodiert, Tricks abgelehnt, getestet | nginx löst selbst auf (`merge_slashes`, `..`, `%2F`); Entscheid über `location` mit Vorrangregeln (`=`, `^~`, Regex, Präfix), Fehler leicht und schwer zu sehen |
@@ -118,7 +119,7 @@ Statt eines eigenen Dienstes könnte nginx im Container `webseite` die Tür sein
 | Protokoll ohne Adressen | so gebaut und getestet | eigenes `log_format` ohne `$remote_addr` und mit `$uri` statt `$request_uri` |
 | Test | `test.ts` mit 51 Prüfungen, `bun` reicht | dieselben Prüfungen über HTTP gingen, brauchen aber nginx im Test (in CI installierbar) |
 
-Fazit: nginx spart 20 bis 69 MB (mit vielen grossen Bildern auf einmal bis 129 MB) und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
+Fazit: nginx spart 20 bis 69 MB (mit vielen grossen Bildern auf einmal bis 129 MB, mit ungelesenen Downloads mehr) und einen Container. Der Bun-Eingang kostet diesen Speicher, ist dafür an einer Stelle in derselben Sprache wie der Rest geprüft und vollständig getestet. Der Entscheid liegt bei Mathias (Plan, Entscheidungen 5).
 
 ## Grenzen
 

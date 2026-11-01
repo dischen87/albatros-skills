@@ -42,7 +42,7 @@ Eine Frage pro Nachricht, nur so viele, bis die Antwort klar ist:
 | Besucher buchen einen Platz oder Termin (Kurs, Führung, Termin beim Coiffeur), ich will die Buchungen sehen und absagen können | **Buchungen** (PocketBase, Rezept `buchungen`) | Pilot | etwa 20 MB |
 | Mitglieder melden sich an und sehen einen eigenen Bereich; wer neu ist, fragt an, und ich schalte frei | **Mitgliederbereich mit Login** (PocketBase, Rezept `mitglieder`) | Pilot | etwa 20 MB |
 | Andere pflegen News oder Termine im Browser | **Pinnwand** (PocketBase, Rezept `pinnwand`) | Pilot | etwa 20 MB |
-| Mehrere Teile brauchen dasselbe Login, oder ein Bereich ist nur für eine Rolle (zum Beispiel den Vorstand) | **Eingang** (Baustein `eingang`, mit dem Rezept `mitglieder`), Abschnitt 7 | Pilot | 20 MB, unter Volllast bis 69 MB |
+| Mehrere Teile brauchen dasselbe Login, oder ein Bereich ist nur für eine Rolle (zum Beispiel den Vorstand) | **Eingang** (Baustein `eingang`, mit dem Rezept `mitglieder`), Abschnitt 7 | Pilot | 20 MB, unter Volllast bis 129 MB (Grenze im Container 128 MB) |
 | Viele Inhaltstypen, mehrere Rollen, Bilderverwaltung, später eine App | **Grosses CMS** (Strapi mit Postgres) | Pilot | etwa 200 MB, Bau bis 2,5 GB |
 
 Empfiehl immer das Kleinste, das reicht. Mehrere Sprachen allein sind nie ein Grund für einen Baustein. PocketBase deckt Anmeldeliste, Login und Pinnwand zusammen ab, es läuft nur einmal. Strapi lohnt sich erst, wenn PocketBase zu klein wird.
@@ -58,7 +58,7 @@ Ein Server mit Pilot hat 4 GB Arbeitsspeicher und 40 GB Platz, ohne Auslagerungs
 | Grundlast: System, Docker, Arbeiter am Fliessband | 150 MB, eingeplant 0,5 GB | kurz mehr | – |
 | Webseite aus der Vorlage | 10 MB | kurz | klein |
 | PocketBase (alle Rezepte zusammen) | 20 MB | kurz | 40 MB |
-| Eingang | 20 MB, unter Volllast bis 69 MB | kurz | klein |
+| Eingang | 20 MB, unter Volllast bis 129 MB, im Container begrenzt auf 128 MB | kurz | klein |
 | Strapi mit Postgres | 150 MB + 55 MB | Spitze 2,5 GB, erster Bau etwa 7 Minuten | 1,4 GB |
 
 Für Bausteine bleiben also etwa 3,5 GB. Webseite, PocketBase und Strapi zusammen brauchen im Betrieb etwa 250 MB. Eng wird es nur beim Bauen, darum baut das Fliessband einen Auftrag nach dem anderen. Nicht auf den Server gehören Programme, die allein mehr als 1 GB brauchen, zum Beispiel Keycloak, Supabase, Logto, Mattermost oder Texterkennung (OCR). Für ein eigenes Login nimm PocketBase.
@@ -211,7 +211,7 @@ Ob es ihn braucht, entscheiden diese Regeln, in dieser Reihenfolge:
 
 Die Antwort kommt in `docs/betrieb.md` in die Zeile `Eingang:` (Skill `betrieb`). Ihr Wert beginnt immer mit dem deutschen `ja` oder `nicht nötig`, auch wenn die Person eine andere Sprache spricht; danach folgt der Grund in ihrer Sprache, zum Beispiel `Eingang: ja – /intern/ und die Mitteilungen aus PocketBase brauchen dieselbe Anmeldung` oder `Eingang: nicht nötig – nur das Rezept mitglieder, die Regeln von PocketBase reichen`. Nur bei `Eingang: ja` baut der Skill `lancieren` den Eingang ein. Die Türen der Seite (`docs/tueren.txt`: offen, nur mit Anmeldung, nie) werden zu den Teilen in `bausteine/eingang/eingang.json`.
 
-**Kosten:** kein Geld extra, er läuft auf dem Pilot-Server mit. Speicher: 20 MB im Leerlauf, unter Volllast bis 69 MB (gemessen am 31.10.2026 auf einem Mac, auf dem Server noch nicht); jeder Aufruf eines geschützten Teils fragt PocketBase, das kostet knapp eine Millisekunde. Dazu ein Teil mehr, das gepflegt wird (Bun-Version im `Dockerfile`).
+**Kosten:** kein Geld extra, er läuft auf dem Pilot-Server mit. Speicher: 20 MB im Leerlauf; unter Volllast mit kleinen Seiten bis 69 MB, mit vielen Bildern auf einmal (20 Seiten mit je 60 Bildern) bis 129 MB, und wenn Besucherinnen grosse Dateien laden und nicht zu Ende lesen, noch mehr (mit drei Adressen gemessen 208 MB). Gemessen am 31.10. und 01.11.2026 auf einem Mac. Der Container ist auf 128 MB begrenzt (`mem_limit`); ob er dann neu startet und wie viel er auf dem Server braucht, ist noch nicht gemessen; jeder Aufruf eines geschützten Teils fragt PocketBase, das kostet knapp eine Millisekunde. Dazu ein Teil mehr, das gepflegt wird (Bun-Version im `Dockerfile`).
 
 **Einbauen,** zuerst lokal wie jeder Baustein (Abschnitt 4), Schritt für Schritt in `bausteine/eingang/README.md`:
 

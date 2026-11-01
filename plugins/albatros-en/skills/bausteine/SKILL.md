@@ -3,7 +3,7 @@ name: bausteine
 description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks, first on their own computer: a sign-up list, bookings for classes and appointments, a members' area with login and approval, a noticeboard (PocketBase), an entrance with one login for several parts, or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “roles”, “entrance”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 metadata:
   stand: 0.2.0
-  quelle: '4b332f8bb0fe'
+  quelle: 'd66c4610d5d1'
 ---
 
 # Building blocks: prefab parts for your site
@@ -44,7 +44,7 @@ One question per message, only as many as it takes for the answer to be clear:
 | Visitors book a place or an appointment (class, guided tour, hairdresser's appointment), I want to see the bookings and be able to cancel them | **Bookings** (PocketBase, recipe `buchungen`) | Pilot | about 20 MB |
 | Members log in and see an area of their own; anyone new sends a request, and I approve them | **Members' area with login** (PocketBase, recipe `mitglieder`) | Pilot | about 20 MB |
 | Others look after news or dates in the browser | **Noticeboard** (PocketBase, recipe `pinnwand`) | Pilot | about 20 MB |
-| Several parts need the same login, or an area is only for one role (for example the committee) | **Entrance** (building block `eingang`, with the recipe `mitglieder`), section 7 | Pilot | 20 MB, up to 69 MB under full load |
+| Several parts need the same login, or an area is only for one role (for example the committee) | **Entrance** (building block `eingang`, with the recipe `mitglieder`), section 7 | Pilot | 20 MB, up to 129 MB under full load (container limit 128 MB) |
 | Lots of content types, several roles, image management, an app later | **Big CMS** (Strapi with Postgres) | Pilot | about 200 MB, build up to 2.5 GB |
 
 Always recommend the smallest thing that's enough. Several languages on their own are never a reason for a building block. PocketBase covers the sign-up list, login and noticeboard together; it only runs once. Strapi is only worth it once PocketBase gets too small.
@@ -60,7 +60,7 @@ A server with Pilot has 4 GB of memory (RAM) and 40 GB of space, without swap sp
 | Base load: system, Docker, worker on the conveyor belt | 150 MB, 0.5 GB planned | briefly more | – |
 | Website from the template | 10 MB | brief | small |
 | PocketBase (all recipes together) | 20 MB | brief | 40 MB |
-| Entrance | 20 MB, up to 69 MB under full load | brief | small |
+| Entrance | 20 MB, up to 129 MB under full load, capped at 128 MB in the container | brief | small |
 | Strapi with Postgres | 150 MB + 55 MB | peak 2.5 GB, first build about 7 minutes | 1.4 GB |
 
 That leaves about 3.5 GB for building blocks. Website, PocketBase and Strapi together need about 250 MB while running. It only gets tight while building, which is why the conveyor belt builds one job after another. Programs that need more than 1 GB on their own don't belong on the server, for example Keycloak, Supabase, Logto, Mattermost or text recognition (OCR). For a login of your own, take PocketBase.
@@ -213,7 +213,7 @@ These rules decide whether it's needed, in this order:
 
 The answer goes into `docs/betrieb.md`, on the line `Eingang:` (skill `betrieb`). Its value always starts with the German word `ja` or `nicht nötig`, even if the person speaks another language; after that comes the reason in their language, for example `Eingang: ja – /intern/ and the messages from PocketBase need the same sign-in` or `Eingang: nicht nötig – only the recipe mitglieder, PocketBase's rules are enough`. The skill `lancieren` only builds in the entrance with `Eingang: ja`. The site's doors (`docs/tueren.txt`: open, only after signing in, never) become the parts in `bausteine/eingang/eingang.json`.
 
-**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle, up to 69 MB under full load (measured on 31.10.2026 on a Mac, not yet on the server); every call to a protected part asks PocketBase, which costs almost a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
+**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle; under full load with small pages up to 69 MB, with many images at once (20 pages of 60 images each) up to 129 MB, and if visitors download large files without reading them to the end, even more (measured with three addresses: 208 MB). Measured on 31.10 and 01.11.2026 on a Mac. The container is capped at 128 MB (`mem_limit`); whether it then restarts and how much it needs on the server is not measured yet; every call to a protected part asks PocketBase, which costs almost a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
 
 **Building it in,** locally first like every building block (section 4), step by step in `bausteine/eingang/README.md`:
 
