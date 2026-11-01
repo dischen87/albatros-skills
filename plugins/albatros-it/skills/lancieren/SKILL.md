@@ -3,7 +3,7 @@ name: lancieren
 description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: '03efe9b03d67'
+  quelle: 'd75f241bcaf6'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -30,16 +30,13 @@ La casa è costruita, collaudata e approvata. Adesso vengono due cose, in quest'
 ### 1. Il sito è approvato?
 
 ```bash
-# conta l'ultima riga «Freigegeben:»: davanti una data con l'anno, da nessuna parte una [Annahme]
-# LC_ALL=C: uguale su ogni computer; davanti a «Freigegeben:» solo spazi, >, * o -, contano solo gli spazi normali
-LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
-  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
-  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
-# Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
+# conta l'ultima riga «Freigegeben:» in docs/prd.md: davanti una data con l'anno, da nessuna parte una [Annahme] (la stessa regola di Albatros)
+cp <cartella di questo skill>/../webseite-bauen/pruefen.mjs scripts/   # la versione più recente, quelle vecchie non conoscono --freigabe
+# cartella sconosciuta: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
+node scripts/pruefen.mjs --freigabe
 ```
 
-Se non mostra nessuna riga, il sito non è ancora approvato: la riga manca, o nell'ultima riga `Freigegeben:` davanti non c'è una data con l'anno (per esempio «non ancora» o «manca ancora 1 pagina»), o c'è una `[Annahme: …]`. Se una riga `Freigegeben:` con la data c'è comunque, è d'intralcio un segno speciale, per esempio uno spazio non divisibile, «•» o «✓»: in questa riga davanti alla data o dentro, oppure davanti a `Freigegeben:` in una riga più in basso (il comando prende allora quella come ultima). Nella riga con la data sostituisci uno spazio speciale con uno spazio normale e togli gli altri segni speciali davanti alla data; la data e le parole della persona restano, poi controlli di nuovo. Se il segno è in una riga più in basso, chiedi alla persona se l'approvazione vale ancora; solo dopo il suo sì scrivi alla fine una nuova riga `Freigegeben: <GG.MM.AAAA>, «<le sue parole>»`. Su Windows `findstr` mostra ogni riga che corrisponde; conta solo se è l'ultima riga `Freigegeben:` in `docs/prd.md`. Allora lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione. Ma `docs/lancieren.md` lo scrivi e `wohnort` lo segnali solo dopo l'approvazione: altrimenti il piano di volo conta il domicilio, e la domanda sull'approvazione salta.
+Il sito è approvato solo se il comando finisce con 0 e mostra «Seite freigegeben: …» (sito approvato); così giudica allo stesso modo su ogni computer, anche su Windows. Altrimenti finisce con 2 e dice perché: la riga manca, nell'ultima riga `Freigegeben:` davanti non c'è una data con l'anno (per esempio «non ancora» o «manca ancora 1 pagina»), o c'è una `[Annahme: …]`. Se mostra altro, per esempio un rapporto su tutto il sito, `scripts/pruefen.mjs` è una versione vecchia: prendila come sopra e controlla di nuovo. Se il sito non è approvato, lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione. Ma `docs/lancieren.md` lo scrivi e `wohnort` lo segnali solo dopo l'approvazione: altrimenti il piano di volo conta il domicilio, e la domanda sull'approvazione salta.
 
 ### 2. La domanda, sempre la stessa
 
@@ -106,16 +103,14 @@ Solo quando `docs/betrieb.md` ha tutte le righe (skill `betrieb`). Se manca, vai
 ### 1. Solo il sito approvato
 
 ```bash
-# l'approvazione del sopralluogo, come nella parte 1, passo 1 (lì c'è anche il comando per Windows)
-LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
-  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
-  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+# l'approvazione del sopralluogo, come nella parte 1, passo 1
+cp <cartella di questo skill>/../webseite-bauen/pruefen.mjs scripts/   # la versione più recente, quelle vecchie non conoscono --freigabe
+node scripts/pruefen.mjs --freigabe
 git status --short seite web design                       # vuoto: niente di non salvato sul sito
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
 
-- **Nessuna riga `Freigegeben:` con la data davanti:** niente va online. Ritorno allo skill `webseite-bauen`, passo 6.
+- **Nessun «Seite freigegeben: …»** (`pruefen.mjs --freigabe` finisce con 2): niente va online. Ritorno allo skill `webseite-bauen`, passo 6.
 - **Cambiato dopo l'approvazione** (nessun output «Seite wie freigegeben», sito come approvato): la persona guarda il sito cambiato in locale e lo approva di nuovo (nuova riga `Freigegeben:`, `git tag -f freigegeben`). Solo dopo si va avanti.
 - **Nessun tag `freigegeben`** (progetti più vecchi): mostra il sito in locale alla persona e chiedi: «È esattamente il sito che hai approvato?» Dopo il sì metti il tag (`git tag freigegeben`).
 

@@ -27,16 +27,13 @@ Das Haus ist gebaut, abgenommen und freigegeben. Jetzt kommen zwei Dinge, in die
 ### 1. Ist die Seite freigegeben?
 
 ```bash
-# die letzte Zeile «Freigegeben:» zählt: vorne ein Datum mit Jahr, nirgends eine [Annahme]
-# LC_ALL=C: auf jedem Rechner gleich; vor «Freigegeben:» nur Leerraum, >, * oder -, es zählen nur normale Leerzeichen
-LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
-  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
-  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
-# Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
+# die letzte Zeile «Freigegeben:» in docs/prd.md zählt: vorne ein Datum mit Jahr, nirgends eine [Annahme] (dieselbe Regel wie bei Albatros)
+cp <Ordner dieses Skills>/../webseite-bauen/pruefen.mjs scripts/   # die neuste Fassung, ältere kennen --freigabe nicht
+# Ordner unbekannt: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
+node scripts/pruefen.mjs --freigabe
 ```
 
-Zeigt das keine Zeile, ist die Seite noch nicht freigegeben: Die Zeile fehlt, oder in der letzten Zeile `Freigegeben:` steht vorne kein Datum mit Jahr (zum Beispiel «noch nicht» oder «1 Seite fehlt noch»), oder darin steht eine `[Annahme: …]`. Steht eine Zeile `Freigegeben:` mit Datum doch da, steht ein besonderes Zeichen im Weg, etwa ein geschütztes Leerzeichen, «•» oder «✓»: in dieser Zeile vor oder im Datum, oder vor `Freigegeben:` in einer Zeile weiter unten (die nimmt der Befehl dann als letzte). In der Zeile mit Datum ersetzt du ein besonderes Leerzeichen durch ein normales und lässt andere besondere Zeichen vor dem Datum weg; Datum und Worte der Person bleiben, dann prüfst du nochmals. Steht es in einer Zeile weiter unten, fragst du die Person, ob die Freigabe gilt; erst mit ihrem Ja schreibst du ans Ende eine neue Zeile `Freigegeben: <TT.MM.JJJJ>, «<ihre Worte>»`. Unter Windows zeigt `findstr` jede passende Zeile; sie zählt nur, wenn sie die letzte Zeile `Freigegeben:` in `docs/prd.md` ist. Dann sagst du ehrlich: Zuerst kommt die Begehung mit Freigabe (Skill `webseite-bauen`, Schritt 6). Will die Person den Wohnort trotzdem schon wählen, geht das; einziehen wird die Seite erst nach der Freigabe. `docs/lancieren.md` schreibst du und `wohnort` meldest du aber erst nach der Freigabe: Sonst zählt der Fahrplan den Wohnort, und die Frage nach der Freigabe fällt weg.
+Freigegeben ist die Seite nur, wenn der Befehl mit 0 endet und «Seite freigegeben: …» zeigt; so urteilt er auf jedem Rechner gleich, auch unter Windows. Sonst endet er mit 2 und sagt, warum: Die Zeile fehlt, in der letzten Zeile `Freigegeben:` steht vorne kein Datum mit Jahr (zum Beispiel «noch nicht» oder «1 Seite fehlt noch»), oder darin steht eine `[Annahme: …]`. Zeigt er etwas anderes, etwa einen Bericht über die ganze Seite, ist `scripts/pruefen.mjs` eine alte Fassung: Hol sie wie oben und prüf nochmals. Ist die Seite nicht freigegeben, sagst du ehrlich: Zuerst kommt die Begehung mit Freigabe (Skill `webseite-bauen`, Schritt 6). Will die Person den Wohnort trotzdem schon wählen, geht das; einziehen wird die Seite erst nach der Freigabe. `docs/lancieren.md` schreibst du und `wohnort` meldest du aber erst nach der Freigabe: Sonst zählt der Fahrplan den Wohnort, und die Frage nach der Freigabe fällt weg.
 
 ### 2. Die Frage, immer dieselbe
 
@@ -103,16 +100,14 @@ Erst wenn `docs/betrieb.md` alle Zeilen hat (Skill `betrieb`). Fehlt sie, gehst 
 ### 1. Nur die freigegebene Seite
 
 ```bash
-# die Freigabe aus der Begehung, wie in Teil 1, Schritt 1 (dort auch der Befehl für Windows)
-LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
-  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
-  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+# die Freigabe aus der Begehung, wie in Teil 1, Schritt 1
+cp <Ordner dieses Skills>/../webseite-bauen/pruefen.mjs scripts/   # die neuste Fassung, ältere kennen --freigabe nicht
+node scripts/pruefen.mjs --freigabe
 git status --short seite web design                       # leer: nichts Ungespeichertes an der Seite
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
 
-- **Keine Zeile `Freigegeben:` mit Datum vorne:** Es geht nichts ins Netz. Zurück zum Skill `webseite-bauen`, Schritt 6.
+- **Nicht «Seite freigegeben: …»** (`pruefen.mjs --freigabe` endet mit 2): Es geht nichts ins Netz. Zurück zum Skill `webseite-bauen`, Schritt 6.
 - **Seit der Freigabe geändert** (keine Ausgabe «Seite wie freigegeben»): Die Person schaut sich die geänderte Seite lokal an und gibt sie neu frei (neue Zeile `Freigegeben:`, `git tag -f freigegeben`). Erst dann weiter.
 - **Kein Tag `freigegeben`** (ältere Projekte): Zeig der Person die Seite lokal und frag: «Ist das genau die Seite, die du freigegeben hast?» Nach dem Ja setzt du den Tag (`git tag freigegeben`).
 
