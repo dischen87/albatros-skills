@@ -3,7 +3,7 @@ name: lancieren
 description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: 'b0a0497d0cde'
+  quelle: 'b3011b51e2a8'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -31,14 +31,15 @@ La casa è costruita, collaudata e approvata. Adesso vengono due cose, in quest'
 
 ```bash
 # conta l'ultima riga «Freigegeben:»: davanti una data con l'anno, da nessuna parte una [Annahme]
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+# LC_ALL=C: uguale su ogni computer; contano solo gli spazi normali
+LC_ALL=C grep -E '^[^[:alnum:]]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
-Se non mostra nessuna riga, il sito non è ancora approvato: la riga manca, o nell'ultima riga `Freigegeben:` davanti non c'è una data con l'anno (per esempio «non ancora» o «manca ancora 1 pagina»), o c'è una `[Annahme: …]`. Su Windows `findstr` mostra ogni riga che corrisponde; conta solo se è l'ultima riga `Freigegeben:` in `docs/prd.md`. Allora lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione. Ma `docs/lancieren.md` lo scrivi e `wohnort` lo segnali solo dopo l'approvazione: altrimenti il piano di volo conta il domicilio, e la domanda sull'approvazione salta.
+Se non mostra nessuna riga, il sito non è ancora approvato: la riga manca, o nell'ultima riga `Freigegeben:` davanti non c'è una data con l'anno (per esempio «non ancora» o «manca ancora 1 pagina»), o c'è una `[Annahme: …]`. Se l'ultima riga `Freigegeben:` con la data c'è comunque, davanti o dentro c'è un segno speciale, per esempio uno spazio non divisibile: sostituiscilo con uno spazio normale, non cambiare nient'altro nella riga e controlla di nuovo. Su Windows `findstr` mostra ogni riga che corrisponde; conta solo se è l'ultima riga `Freigegeben:` in `docs/prd.md`. Allora lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione. Ma `docs/lancieren.md` lo scrivi e `wohnort` lo segnali solo dopo l'approvazione: altrimenti il piano di volo conta il domicilio, e la domanda sull'approvazione salta.
 
 ### 2. La domanda, sempre la stessa
 
@@ -106,10 +107,10 @@ Solo quando `docs/betrieb.md` ha tutte le righe (skill `betrieb`). Se manca, vai
 
 ```bash
 # l'approvazione del sopralluogo, come nella parte 1, passo 1 (lì c'è anche il comando per Windows)
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+LC_ALL=C grep -E '^[^[:alnum:]]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # vuoto: niente di non salvato sul sito
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
