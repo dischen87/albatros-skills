@@ -27,5 +27,5 @@ The legal notice (Impressum) is your doorbell nameplate: who lives here? The pri
 
 ## Done when
 
-- your `/impressum` and `/datenschutz` pages work on your computer and are linked in the footer of every page
+- your `/legal-notice` and `/privacy` pages work on your computer and are linked in the footer of every page
 - and the “Checks” step is reached on your island. When you go live, your AI checks both pages again from outside.

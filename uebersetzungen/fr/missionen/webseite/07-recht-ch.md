@@ -27,5 +27,5 @@ Les mentions légales (impressum) sont ta plaque de sonnette : qui habite ici�
 
 ## Réussi quand
 
-- tes pages `/impressum` et `/datenschutz` fonctionnent sur ton ordinateur et sont liées en pied de chaque page
+- tes pages `/mentions-legales` et `/protection-des-donnees` fonctionnent sur ton ordinateur et sont liées en pied de chaque page
 - et l'étape « Vérification » est atteinte sur ton île. Lors de la mise en ligne, ton IA vérifie encore les deux pages de l'extérieur.
