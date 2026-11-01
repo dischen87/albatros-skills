@@ -3,7 +3,7 @@ name: bausteine
 description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks, first on their own computer: a sign-up list, bookings for classes and appointments, a members' area with login and approval, a noticeboard (PocketBase), an entrance with one login for several parts, or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “roles”, “entrance”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 metadata:
   stand: 0.2.0
-  quelle: '0a3abd265736'
+  quelle: '4b332f8bb0fe'
 ---
 
 # Building blocks: prefab parts for your site
@@ -96,7 +96,7 @@ In the skill `lancieren`, part 2, after the site has been released and before th
      - bausteine/pocketbase/compose.yaml
    ```
    The website passes the requests on itself: the template reads every `bausteine/*/nginx.conf`. If the project is older than the building blocks (no `nginx.conf` in the project), get `Dockerfile` and `nginx.conf` from `vorlage/` in the same repository.
-   **With a login, the entrance step:** if `docs/betrieb.md` says `Eingang: ja` (section 7), `- bausteine/eingang/compose.yaml` goes under `include:` too, and for the service `webseite` the lines `ports:` and `- "80:80"` go: then the website can only be reached behind the entrance. Without a login, or if PocketBase's rules are enough, `compose.yaml` stays as in the template. The skill `lancieren` already names this step when choosing where the site lives.
+   **With a login, the entrance step:** if `docs/betrieb.md` says `Eingang: ja` (section 7; `grep -E '^Eingang: ja([^[:alpha:]]|$)' docs/betrieb.md` shows the line, “Eingang: jamais” doesn't count), `- bausteine/eingang/compose.yaml` goes under `include:` too, and for the service `webseite` the lines `ports:` and `- "80:80"` go: then the website can only be reached behind the entrance. Without a login, or if PocketBase's rules are enough, `compose.yaml` stays as in the template. The skill `lancieren` already names this step when choosing where the site lives.
 3. **To the harbour.** The conveyor belt builds and delivers (skill `pipeline`). If the build fails, the old site stays online.
 4. **Check** on the server: `docker ps` shows the building block as `healthy`. Then you check every door from outside: `node scripts/pruefen.mjs --tueren <address>` with the doors below, and with the entrance also protected paths 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 and the home page 200. Then the first account for the admin area and the emails (section 5).
 

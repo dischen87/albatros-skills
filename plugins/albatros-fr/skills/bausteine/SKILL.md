@@ -3,7 +3,7 @@ name: bausteine
 description: "Découvre avec une personne sans connaissances préalables ce que sa page doit savoir faire, et installe les briques toutes faites qui conviennent, d'abord sur son ordinateur : liste d'inscription, réservations, espace membres avec connexion et activation, tableau d'affichage (PocketBase), une entrée avec une seule connexion pour plusieurs parties ou un grand CMS (Strapi avec Postgres), avec la mémoire vive mesurée. Explique avec l'image des éléments préfabriqués dans la construction d'une maison. Utilise ce skill pour « inscription », « liste d'inscription », « réservation », « réserver un cours », « prendre rendez-vous », « enregistrer un formulaire », « connexion », « espace membres », « espace admin », « gérer les utilisateurs », « rôles », « entrée », « base de données », « Strapi », « CMS », « PocketBase », « brique », « qu'est-ce qui tient sur mon serveur ? », et quand une page doit savoir faire plus que montrer des textes et des images."
 metadata:
   stand: 0.2.0
-  quelle: '0a3abd265736'
+  quelle: '4b332f8bb0fe'
 ---
 
 # Briques : des éléments préfabriqués pour ta page
@@ -96,7 +96,7 @@ Dans le skill `lancieren`, partie 2, après la validation de la page et avant le
      - bausteine/pocketbase/compose.yaml
    ```
    Le site web transmet lui-même les demandes : le modèle lit chaque `bausteine/*/nginx.conf`. Si le projet est plus ancien que les briques (pas de `nginx.conf` dans le projet), va chercher `Dockerfile` et `nginx.conf` dans `vorlage/` du même dépôt.
-   **Avec connexion, l'étape entrée :** si `docs/betrieb.md` dit `Eingang: ja` (section 7), `- bausteine/eingang/compose.yaml` s'ajoute sous `include:`, et pour le service `webseite`, `ports:` et `- "80:80"` disparaissent : le site web n'est alors plus accessible que derrière l'entrée. Sans connexion, ou si les règles de PocketBase suffisent, `compose.yaml` reste comme dans le modèle. Le skill `lancieren` nomme cette étape dès le domicile.
+   **Avec connexion, l'étape entrée :** si `docs/betrieb.md` dit `Eingang: ja` (section 7 ; `grep -E '^Eingang: ja([^[:alpha:]]|$)' docs/betrieb.md` montre la ligne, « Eingang: jamais » ne compte pas), `- bausteine/eingang/compose.yaml` s'ajoute sous `include:`, et pour le service `webseite`, `ports:` et `- "80:80"` disparaissent : le site web n'est alors plus accessible que derrière l'entrée. Sans connexion, ou si les règles de PocketBase suffisent, `compose.yaml` reste comme dans le modèle. Le skill `lancieren` nomme cette étape dès le domicile.
 3. **Au port.** Le tapis roulant construit et livre (skill `pipeline`). Si la construction échoue, l'ancienne page reste en ligne.
 4. **Vérifier** sur le serveur : `docker ps` affiche la brique comme `healthy`. Ensuite, tu vérifies chaque porte de l'extérieur : `node scripts/pruefen.mjs --tueren <adresse>` avec les portes ci-dessous, avec l'entrée aussi les chemins protégés 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 et la page d'accueil 200. Ensuite le premier compte de l'administration et les e-mails (section 5).
 

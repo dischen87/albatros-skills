@@ -3,7 +3,7 @@ name: bausteine
 description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti, prima sul suo computer: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso e abilitazione, bacheca (PocketBase), un ingresso con un solo accesso per più parti o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «ruoli», «ingresso», «banca dati», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 metadata:
   stand: 0.2.0
-  quelle: '0a3abd265736'
+  quelle: '4b332f8bb0fe'
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -96,7 +96,7 @@ Nello skill `lancieren`, parte 2, dopo l'approvazione del sito e prima del push 
      - bausteine/pocketbase/compose.yaml
    ```
    Il sito inoltra da solo le richieste: il modello legge ogni `bausteine/*/nginx.conf`. Se il progetto è più vecchio dei blocchi (nessun `nginx.conf` nel progetto), prendi `Dockerfile` e `nginx.conf` da `vorlage/` nello stesso repository.
-   **Con accesso, il passo ingresso:** se in `docs/betrieb.md` c'è `Eingang: ja` (sezione 7), sotto `include:` si aggiunge `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` spariscono `ports:` e `- "80:80"`: allora il sito è raggiungibile solo dietro l'ingresso. Senza accesso, o se bastano le regole di PocketBase, `compose.yaml` resta come nel modello. Lo skill `lancieren` nomina questo passo già al domicilio.
+   **Con accesso, il passo ingresso:** se in `docs/betrieb.md` c'è `Eingang: ja` (sezione 7; `grep -E '^Eingang: ja([^[:alpha:]]|$)' docs/betrieb.md` mostra la riga, «Eingang: jamais» non conta), sotto `include:` si aggiunge `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` spariscono `ports:` e `- "80:80"`: allora il sito è raggiungibile solo dietro l'ingresso. Senza accesso, o se bastano le regole di PocketBase, `compose.yaml` resta come nel modello. Lo skill `lancieren` nomina questo passo già al domicilio.
 3. **Al porto.** Il nastro trasportatore costruisce e consegna (skill `pipeline`). Se la costruzione non riesce, il vecchio sito resta online.
 4. **Verificare** sul server: `docker ps` mostra il blocco come `healthy`. Poi verifichi ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren <indirizzo>` con le porte qui sotto, con l'ingresso anche i percorsi protetti 401, `/_/` 404, `/api/collections/_SUPERUSERS/auth-methods` 404 e la pagina iniziale 200. Poi il primo account dell'amministrazione e le e-mail (sezione 5).
 

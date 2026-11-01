@@ -3,7 +3,7 @@ name: lancieren
 description: "Mette online il sito approvato di una persona senza conoscenze tecniche, in due parti. Domicilio (P11): sempre la stessa domanda, Albatros (Light senza blocchi, Pilot con un blocco) o da te, prezzi solo da konto_status, upgrade_link con bestaetigt solo dopo la scelta, chiave SSH, seite_erstellen o server_erstellen; da te GitHub Pages, Cloudflare Pages, Netlify o un server proprio. Messa online (P13): solo con «Freigegeben:» il sito approvato nel porto o dal fornitore, con blocco e accesso l'ingresso davanti, verifica dall'esterno (pruefen.mjs --live e --tueren), dominio facoltativo, go-live-check sul percorso attività, annuncio. Risultato: docs/lancieren.md, docs/live.md. Usa lo skill dopo l'approvazione e con «mettere online», «pubblicare», «lanciare», «dove deve abitare il mio sito», «scegliere un abbonamento», «ospitarlo da me»."
 metadata:
   stand: 0.2.0
-  quelle: 'c7d9c34f25b9'
+  quelle: '5c7371e031ce'
 ---
 
 # Lanciare: il domicilio e l'inaugurazione
@@ -30,10 +30,15 @@ La casa è costruita, collaudata e approvata. Adesso vengono due cose, in quest'
 ### 1. Il sito è approvato?
 
 ```bash
-grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md        # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md
+# conta l'ultima riga «Freigegeben:»: davanti una data con l'anno, da nessuna parte una [Annahme]
+grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
+  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+# Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
-Se non mostra nessuna riga, il sito non è ancora approvato: la riga manca, o davanti non c'è una data (per esempio `[Annahme: …]` o «non ancora»). Allora lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione. Ma `docs/lancieren.md` lo scrivi e `wohnort` lo segnali solo dopo l'approvazione: altrimenti il piano di volo conta il domicilio, e la domanda sull'approvazione salta.
+Se non mostra nessuna riga, il sito non è ancora approvato: la riga manca, o nell'ultima riga `Freigegeben:` davanti non c'è una data con l'anno (per esempio «non ancora» o «manca ancora 1 pagina»), o c'è una `[Annahme: …]`. Su Windows `findstr` mostra ogni riga che corrisponde; conta solo se è l'ultima riga `Freigegeben:` in `docs/prd.md`. Allora lo dici onestamente: prima viene il sopralluogo con l'approvazione (skill `webseite-bauen`, passo 6). Se la persona vuole comunque già scegliere il domicilio, si può; il sito ci entra solo dopo l'approvazione. Ma `docs/lancieren.md` lo scrivi e `wohnort` lo segnali solo dopo l'approvazione: altrimenti il piano di volo conta il domicilio, e la domanda sull'approvazione salta.
 
 ### 2. La domanda, sempre la stessa
 
@@ -100,7 +105,11 @@ Solo quando `docs/betrieb.md` ha tutte le righe (skill `betrieb`). Se manca, vai
 ### 1. Solo il sito approvato
 
 ```bash
-grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md            # l'approvazione del sopralluogo, con la data davanti
+# l'approvazione del sopralluogo, come nella parte 1, passo 1 (lì c'è anche il comando per Windows)
+grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
+  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # vuoto: niente di non salvato sul sito
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
@@ -123,7 +132,7 @@ git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
 
 Dillo alla persona con l'immagine: il modello viene ripreso una volta nel diario di bordo. Dove entrambi hanno lo stesso file (`seite/index.html`, `.gitignore`), resta il suo. Si aggiungono i file che servono al nastro trasportatore di Pilot (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`); con Light dormono. Se dopo l'unione non c'è «Seite unverändert» (sito invariato), non fai il push e guardi con `git diff freigegeben HEAD -- seite`.
 
-**Con un blocco (Pilot), prima del push:** adesso nel diario di bordo c'è il `compose.yaml` del modello, e agganci i blocchi come nello skill `bausteine`, sezione 4 «Al lancio, con Pilot»: prima una foto del server (strumento `snapshot`, nome `vor-baustein`), poi `include:` in `compose.yaml`. Se in `docs/betrieb.md` c'è `Eingang: ja` (`grep -E '^Eingang: ja' docs/betrieb.md` mostra la riga), si aggiunge il passo **ingresso**: la riga `- bausteine/eingang/compose.yaml` sotto `include:`, e nel servizio `webseite` spariscono le righe `ports:` e `- "80:80"`. La porta 80 è allora dell'ingresso, il sito è raggiungibile solo dietro di lui. Prima `bun bausteine/eingang/test.ts` deve segnalare «Alles grün». Senza accesso, o con `Eingang: nicht nötig`, `compose.yaml` resta come nel modello. Poi una voce nel diario di bordo.
+**Con un blocco (Pilot), prima del push:** adesso nel diario di bordo c'è il `compose.yaml` del modello, e agganci i blocchi come nello skill `bausteine`, sezione 4 «Al lancio, con Pilot»: prima una foto del server (strumento `snapshot`, nome `vor-baustein`), poi `include:` in `compose.yaml`. Se in `docs/betrieb.md` c'è `Eingang: ja` (`grep -E '^Eingang: ja([^[:alpha:]]|$)' docs/betrieb.md` mostra la riga), si aggiunge il passo **ingresso**: la riga `- bausteine/eingang/compose.yaml` sotto `include:`, e nel servizio `webseite` spariscono le righe `ports:` e `- "80:80"`. La porta 80 è allora dell'ingresso, il sito è raggiungibile solo dietro di lui. Prima `bun bausteine/eingang/test.ts` deve segnalare «Alles grün». Senza accesso, o con `Eingang: nicht nötig`, `compose.yaml` resta come nel modello. Poi una voce nel diario di bordo.
 
 ```bash
 git push -u origin main

@@ -3,7 +3,7 @@ name: lancieren
 description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: 'c7d9c34f25b9'
+  quelle: '5c7371e031ce'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -30,10 +30,15 @@ La maison est construite, réceptionnée et validée. Maintenant viennent deux c
 ### 1. Le site est-il validé ?
 
 ```bash
-grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md        # Windows : findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md
+# la dernière ligne « Freigegeben: » compte : devant, une date avec l'année, nulle part une [Annahme]
+grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
+  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
+# Windows : findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
-Si ça ne montre aucune ligne, le site n'est pas encore validé : la ligne manque, ou il n'y a pas de date devant (par exemple `[Annahme: …]` ou « pas encore »). Alors tu le dis honnêtement : d'abord vient la visite avec la validation (skill `webseite-bauen`, étape 6). Si la personne veut quand même déjà choisir le domicile, c'est possible ; le site n'emménagera qu'après la validation. Mais tu n'écris `docs/lancieren.md` et tu n'annonces `wohnort` qu'après la validation : sinon le plan de vol compte le domicile, et la question de la validation disparaît.
+Si ça ne montre aucune ligne, le site n'est pas encore validé : la ligne manque, ou dans la dernière ligne `Freigegeben:`, il n'y a pas de date avec l'année devant (par exemple « pas encore » ou « il manque encore 1 page »), ou il y a une `[Annahme: …]`. Sous Windows, `findstr` montre chaque ligne qui correspond ; elle ne compte que si c'est la dernière ligne `Freigegeben:` de `docs/prd.md`. Alors tu le dis honnêtement : d'abord vient la visite avec la validation (skill `webseite-bauen`, étape 6). Si la personne veut quand même déjà choisir le domicile, c'est possible ; le site n'emménagera qu'après la validation. Mais tu n'écris `docs/lancieren.md` et tu n'annonces `wohnort` qu'après la validation : sinon le plan de vol compte le domicile, et la question de la validation disparaît.
 
 ### 2. La question, toujours la même
 
@@ -100,7 +105,11 @@ Seulement quand `docs/betrieb.md` a toutes ses lignes (skill `betrieb`). S'il ma
 ### 1. Seulement le site validé
 
 ```bash
-grep -m1 -E '^Freigegeben: [0-9]' docs/prd.md            # la validation de la visite, avec la date devant
+# la validation de la visite, comme dans la partie 1, étape 1 (la commande pour Windows y est aussi)
+grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
+  | grep -E 'Freigegeben:[[:space:]]*[0-9]{1,4}[./ -]' \
+  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | grep -v -i -E '\[(annahme|hypothèse|hypothese|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # vide : rien de non enregistré sur le site
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
@@ -123,7 +132,7 @@ git diff --quiet freigegeben HEAD -- seite && echo "Seite unverändert"
 
 Dis-le à la personne avec l'image : le modèle est repris une fois dans le journal de bord. Là où les deux ont le même fichier (`seite/index.html`, `.gitignore`), c'est le sien qui reste. S'y ajoutent les fichiers dont le tapis roulant de Pilot a besoin (`Dockerfile`, `compose.yaml`, `nginx.conf`, `.github/workflows/deploy.yml`) ; avec Light, ils dorment. Si, après la fusion, il n'y a pas « Seite unverändert » (site inchangé), tu ne pousses pas et tu regardes avec `git diff freigegeben HEAD -- seite`.
 
-**Avec une brique (Pilot), avant le push :** maintenant, le `compose.yaml` du modèle est dans le journal de bord, et tu branches les briques comme dans le skill `bausteine`, section 4 « Au lancement, avec Pilot » : d'abord une photo du serveur (outil `snapshot`, nom `vor-baustein`), puis `include:` dans `compose.yaml`. Si `docs/betrieb.md` dit `Eingang: ja` (`grep -E '^Eingang: ja' docs/betrieb.md` montre la ligne), l'étape **entrée** s'y ajoute : la ligne `- bausteine/eingang/compose.yaml` sous `include:`, et pour le service `webseite`, les lignes `ports:` et `- "80:80"` disparaissent. Le port 80 est alors à l'entrée, le site web n'est plus accessible que derrière elle. Avant, `bun bausteine/eingang/test.ts` doit annoncer « Alles grün ». Sans connexion, ou avec `Eingang: nicht nötig`, `compose.yaml` reste comme dans le modèle. Ensuite, tu l'inscris dans le journal de bord.
+**Avec une brique (Pilot), avant le push :** maintenant, le `compose.yaml` du modèle est dans le journal de bord, et tu branches les briques comme dans le skill `bausteine`, section 4 « Au lancement, avec Pilot » : d'abord une photo du serveur (outil `snapshot`, nom `vor-baustein`), puis `include:` dans `compose.yaml`. Si `docs/betrieb.md` dit `Eingang: ja` (`grep -E '^Eingang: ja([^[:alpha:]]|$)' docs/betrieb.md` montre la ligne), l'étape **entrée** s'y ajoute : la ligne `- bausteine/eingang/compose.yaml` sous `include:`, et pour le service `webseite`, les lignes `ports:` et `- "80:80"` disparaissent. Le port 80 est alors à l'entrée, le site web n'est plus accessible que derrière elle. Avant, `bun bausteine/eingang/test.ts` doit annoncer « Alles grün ». Sans connexion, ou avec `Eingang: nicht nötig`, `compose.yaml` reste comme dans le modèle. Ensuite, tu l'inscris dans le journal de bord.
 
 ```bash
 git push -u origin main
