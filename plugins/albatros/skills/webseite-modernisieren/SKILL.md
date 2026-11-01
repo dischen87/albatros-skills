@@ -101,7 +101,7 @@ Sag in einfachen Worten, was du gefunden hast, kurz und mit Zahlen: wie viele Se
 
 Wer die Seite pflegt, fragst du später im Grundriss. Den Rest der Idee schlägst du aus der alten Seite vor, und die Person bestätigt ihn in einer Nachricht: Projektname (meist der Name der alten Seite), In einem Satz, Für wen, Hauptsache, Erfolg und Modus (machen). Dann schreibst du wie im Skill `webseite-planen`, Abschnitt Idee (Schritte 4 bis 6): `docs/projekt.md` mit `Bestehende Seite: <Adresse>`, `AGENTS.md` mit `CLAUDE.md` und `GEMINI.md`, und die graue Skizze `design/skizze.html` der neuen Startseite, in der schon steht, was bleiben muss. Öffne sie im Browser.
 
-Dann `schritt_melden` mit `idee` und `titel`, dem Wert der Zeile `Projektname:` in `docs/projekt.md`, danach `mission_pruefen` mit `flugschule-11-idee`.
+Dann `schritt_melden` mit `idee` und `titel`, dem Wert der Zeile `Projektname:` in `docs/projekt.md` (antwortet es «Ungültige Angaben» wegen `titel`, meldest du `idee` gleich nochmals ohne `titel`, wie im Skill `webseite-planen`), danach `mission_pruefen` mit `flugschule-11-idee`.
 
 ## Research aus dem Bestand
 

@@ -1,16 +1,16 @@
 ---
 name: webseite-bauen
-description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza approvata (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
+description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: 'a2a3f2a880b5'
+  quelle: '99f07c378614'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
 
 ## L'immagine
 
-La bozza è il modello in cui si può entrare, e la persona l'ha approvato. Adesso, nella sua officina, cioè sul suo computer, ne nasce il rustico: con le stesse stanze, porte e finestre del modello. Degli esperti ne fanno il collaudo, poi la persona ci passa dentro di persona, sul telefonino e sul computer (il sopralluogo), e lo approva. Un diario di bordo tiene ogni passo di lavoro. Niente va ancora online: dove sta la casa, lo decide dopo, al lancio.
+La bozza è il modello in cui si può entrare, e la persona gli ha dato il via libera. Adesso, nella sua officina, cioè sul suo computer, ne nasce il rustico: con le stesse stanze, porte e finestre del modello. Degli esperti ne fanno il collaudo, poi la persona ci passa dentro di persona, sul telefonino e sul computer (il sopralluogo), e lo approva. Un diario di bordo tiene ogni passo di lavoro. Niente va ancora online: dove sta la casa, lo decide dopo, al lancio.
 
 **Come usare l'immagine:** una frase sull'immagine nella tua prima risposta. A ogni nuovo passo, una frase con la sua immagine (nella tabella più sotto), che cosa nasce e a che cosa serve.
 
@@ -58,7 +58,7 @@ Dopo ogni passo riuscito che ha una voce nella colonna «Isola», chiami lo stru
 
 ## I passi
 
-### 0. Prima di costruire: la bozza è approvata?
+### 0. Prima di costruire: la bozza ha il via libera?
 
 Lo script di controllo `pruefen.mjs` si trova in questo skill. Copialo nel progetto, poi controlla se si può costruire:
 
@@ -69,7 +69,7 @@ node scripts/pruefen.mjs --vor-bau
 ```
 
 - **Finisce con 0:** c'è la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, …` in `docs/entwurf.md`, la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
-- **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza via libera per costruire allo skill `entwurf` (parte «Freigabe», l'approvazione), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. La riga `Freigegeben zum Bauen:` non la scrivi mai tu, nemmeno «al volo»: c'è solo dopo il sì della persona alla bozza.
+- **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza via libera per costruire allo skill `entwurf` (parte «Freigabe», il via libera), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. La riga `Freigegeben zum Bauen:` non la scrivi mai tu, nemmeno «al volo»: c'è solo dopo il sì della persona alla bozza.
 
 ### 1. Officina e diario di bordo
 
@@ -102,7 +102,7 @@ Se manca qualcosa, aiuti a installarlo come nello skill `entwurf` (l'officina) e
   git status
   git add .gitignore AGENTS.md docs design scripts       # solo quello che c'è
   git diff --cached --stat
-  git commit -m "Bozza approvata: piano, concetto, bozza"
+  git commit -m "Bozza con via libera: piano, concetto, bozza"
   ```
 - Regole come nello skill `git-logbuch`: solo `main`, solo i propri file e cartelle, con il nome (mai `git add .` né `git add -A`), mai `--force`.
 
@@ -129,7 +129,7 @@ La persona conferma il modo di costruzione insieme alle porte (passo 3), in un s
 
 ### 3. PRD con accesso e porte (`schritt: prd`)
 
-Il PRD è il progetto di costruzione su una pagina. È ricavato dalla bozza approvata: la persona ha già firmato con la bozza, perciò per il PRD non c'è un collaudo a parte. Per scriverlo leggi `docs/projekt.md`, `docs/plan.md`, `docs/konzept.md`, `docs/designsystem.md`, `docs/entwurf.md` e ogni pagina in `design/entwurf/`. Scrivi `docs/prd.md`:
+Il PRD è il progetto di costruzione su una pagina. È ricavato dalla bozza con via libera: la persona ha già firmato con la bozza, perciò per il PRD non c'è un collaudo a parte. Per scriverlo leggi `docs/projekt.md`, `docs/plan.md`, `docs/konzept.md`, `docs/designsystem.md`, `docs/entwurf.md` e ogni pagina in `design/entwurf/`. Scrivi `docs/prd.md`:
 
 ```markdown
 # PRD: <nome del progetto>
@@ -154,7 +154,7 @@ Le porte stanno in docs/tueren.txt e si controllano con pruefen.mjs --tueren.
 
 ## Criteri di collaudo
 
-Ricavati da docs/plan.md (Testing:) e dalla bozza; approvati con la bozza.
+Ricavati da docs/plan.md (Testing:) e dalla bozza; il via libera è quello della bozza.
 
 ### Home
 - [ ] Titoli, menu e sezioni come in design/entwurf/index.html (pruefen.mjs --vergleich)
@@ -270,7 +270,7 @@ Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
 Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: spunti quelli soddisfatti (`- [x]`) e annoti brevemente dove o con che cosa li hai controllati. Quello che non è soddisfatto resta aperto, con un motivo.
 
-Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`. Nel modo `lernen` adesso fai la domanda di controllo della lezione `flugschule-20-logbuch-eintrag`: «Che cos'è una voce nel diario di bordo (commit), e perché ogni passo ne riceve una?» Se `lage` ha riportato altre lezioni in questa fase (sul percorso sito web accessibilità e diritto), fai anche le loro domande. Segnali `verstanden_melden` (tipo `kontrollfrage`, ogni volta con la missione della domanda) solo dopo la risposta della persona.
+Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`. Nel modo `lernen` adesso fai la domanda di controllo della lezione `flugschule-20-logbuch-eintrag`: «Che cos'è una voce nel diario di bordo (commit), e perché ogni passo ne riceve una?» Sul percorso sito web `lage` riporta in questa fase anche le lezioni `webseite-06-barrierefreiheit` («A chi serve una rampa accanto alla scala sul tuo sito?») e `webseite-07-recht-ch` («Che cosa dice la targhetta del campanello del tuo sito (impressum), e che cosa il regolamento della casa (protezione dei dati)?»). Al massimo due domande per messaggio (contando anche le altre domande): le altre le fai dopo la risposta della persona. Segnali `verstanden_melden` (tipo `kontrollfrage`, ogni volta con la missione della domanda) solo dopo le sue risposte.
 
 ### 6. Approvazione (Freigabe): il sopralluogo (`schritt: freigabe`)
 
@@ -302,7 +302,7 @@ Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo
 
 ## Trappole
 
-- Costruire senza `pruefen.mjs --vor-bau`, o scrivere tu la riga `Freigegeben zum Bauen:`: si costruisce allora quello che nessuno ha approvato.
+- Costruire senza `pruefen.mjs --vor-bau`, o scrivere tu la riga `Freigegeben zum Bauen:`: si costruisce allora quello a cui nessuno ha dato il via libera.
 - Reinventare il markup invece di riprenderlo dalla bozza: al sopralluogo la persona vede allora qualcos'altro che nel modello.
 - Un secondo `tokens.css` in `web/`: allora ci sono due verità, e una presto è sbagliata.
 - Criteri di collaudo che non si possono controllare («bello», «moderno»): scrivi da che cosa si vede o si misura.

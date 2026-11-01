@@ -3,7 +3,7 @@ name: lancieren
 description: "Met en ligne le site validé d'une personne sans connaissances préalables, en deux parties. Domicile (P11) : toujours la même question, Albatros (Light sans brique, Pilot avec brique) ou par soi-même, prix seulement depuis konto_status, upgrade_link avec bestaetigt seulement après le choix, clé SSH, seite_erstellen ou server_erstellen ; par soi-même GitHub Pages, Cloudflare Pages, Netlify ou un propre serveur. Mise en ligne (P13) : seulement avec « Freigegeben: », le site validé au port ou chez le fournisseur, avec brique et connexion l'entrée devant, vérification de l'extérieur (pruefen.mjs --live et --tueren), domaine facultatif, go-live-check sur le parcours entreprise, annonce. Résultat : docs/lancieren.md, docs/live.md. Utilise ce skill après la validation et pour « mettre en ligne », « publier », « lancer », « où doit habiter mon site », « choisir un abonnement », « héberger moi-même »."
 metadata:
   stand: 0.2.0
-  quelle: 'af3dd6986d6d'
+  quelle: '03efe9b03d67'
 ---
 
 # Lancer : le domicile et l'inauguration
@@ -31,14 +31,15 @@ La maison est construite, réceptionnée et validée. Maintenant viennent deux c
 
 ```bash
 # la dernière ligne « Freigegeben: » compte : devant, une date avec l'année, nulle part une [Annahme]
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+# LC_ALL=C : pareil sur chaque ordinateur ; devant « Freigegeben: », seulement des espaces, >, * ou -, seuls les espaces normaux comptent
+LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows : findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
-Si ça ne montre aucune ligne, le site n'est pas encore validé : la ligne manque, ou dans la dernière ligne `Freigegeben:`, il n'y a pas de date avec l'année devant (par exemple « pas encore » ou « il manque encore 1 page »), ou il y a une `[Annahme: …]`. Sous Windows, `findstr` montre chaque ligne qui correspond ; elle ne compte que si c'est la dernière ligne `Freigegeben:` de `docs/prd.md`. Alors tu le dis honnêtement : d'abord vient la visite avec la validation (skill `webseite-bauen`, étape 6). Si la personne veut quand même déjà choisir le domicile, c'est possible ; le site n'emménagera qu'après la validation. Mais tu n'écris `docs/lancieren.md` et tu n'annonces `wohnort` qu'après la validation : sinon le plan de vol compte le domicile, et la question de la validation disparaît.
+Si ça ne montre aucune ligne, le site n'est pas encore validé : la ligne manque, ou dans la dernière ligne `Freigegeben:`, il n'y a pas de date avec l'année devant (par exemple « pas encore » ou « il manque encore 1 page »), ou il y a une `[Annahme: …]`. Si une ligne `Freigegeben:` avec une date est pourtant là, un signe spécial gêne, par exemple une espace insécable, « • » ou « ✓ » : dans cette ligne devant la date ou dedans, ou devant `Freigegeben:` dans une ligne plus bas (la commande prend alors celle-ci comme la dernière). Dans la ligne avec la date, tu remplaces une espace spéciale par une espace normale et tu enlèves les autres signes spéciaux devant la date ; la date et les mots de la personne restent, puis tu vérifies encore une fois. Si le signe est dans une ligne plus bas, tu demandes à la personne si la validation est toujours valable ; seulement après son oui, tu écris à la fin une nouvelle ligne `Freigegeben: <JJ.MM.AAAA>, « <ses mots> »`. Sous Windows, `findstr` montre chaque ligne qui correspond ; elle ne compte que si c'est la dernière ligne `Freigegeben:` de `docs/prd.md`. Alors tu le dis honnêtement : d'abord vient la visite avec la validation (skill `webseite-bauen`, étape 6). Si la personne veut quand même déjà choisir le domicile, c'est possible ; le site n'emménagera qu'après la validation. Mais tu n'écris `docs/lancieren.md` et tu n'annonces `wohnort` qu'après la validation : sinon le plan de vol compte le domicile, et la question de la validation disparaît.
 
 ### 2. La question, toujours la même
 
@@ -94,7 +95,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (par toi-même : le dépôt chez GitHub
 Gewählt: <date>
 ```
 
-Si, par toi-même, l'adresse n'est connue qu'après le premier téléversement, il y a `[offen: kommt beim Live schalten]` (ouvert : vient à la mise en ligne). Ensuite, l'entrée dans le journal de bord (`git add docs/lancieren.md && git commit -m "Domicile : <domicile>"`) et `schritt_melden` avec `wohnort` et `sprache`. Si l'outil manque ou ne connaît pas l'étape, on continue sans île.
+Si, par toi-même, l'adresse n'est connue qu'après le premier téléversement, il y a `[offen: kommt beim Live schalten]` (ouvert : vient à la mise en ligne). Ensuite, l'entrée dans le journal de bord (`git add docs/lancieren.md && git commit -m "Domicile : <domicile>"`) et `schritt_melden` avec `wohnort` et `sprache`. Si l'outil manque ou ne connaît pas l'étape, on continue sans île. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-16-wohnort`, au maximum deux par message (autres questions comprises) : d'abord « Qu'est-ce qui distingue Light, Pilot et « par toi-même » ? » et « Qu'est-ce qu'une clé SSH, en une phrase ? », après la réponse de la personne « Ton site est-il déjà en ligne après cette étape ? » Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `wohnort`. Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après ses réponses.
 
 On continue avec le skill `betrieb` : boîte aux lettres, détecteur de fumée et porte d'entrée, avant que les invités arrivent.
 
@@ -106,10 +107,10 @@ Seulement quand `docs/betrieb.md` a toutes ses lignes (skill `betrieb`). S'il ma
 
 ```bash
 # la validation de la visite, comme dans la partie 1, étape 1 (la commande pour Windows y est aussi)
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # vide : rien de non enregistré sur le site
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
@@ -234,7 +235,7 @@ Geprüft: <date>, pruefen.mjs --live sans rouge, portes comme prévu (docs/pruef
 Angekündigt: <date>, <à qui>
 ```
 
-Après `Eigene Domain:` vient d'abord `jetzt`, `später` ou `nie`, en allemand, comme la personne a répondu à l'étape 5 ; `Adresse:` est toujours l'adresse sur Internet. Ensuite, l'entrée dans le journal de bord, le push comme plus haut, et la mission. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-18-live-schalten` : « Quel site va en ligne lors de la mise en ligne ? », « Quand ton site est-il vraiment en ligne ? » et « Pourquoi le dis-tu d'abord à quelqu'un ? » Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `live`. Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+Après `Eigene Domain:` vient d'abord `jetzt`, `später` ou `nie`, en allemand, comme la personne a répondu à l'étape 5 ; `Adresse:` est toujours l'adresse sur Internet. Ensuite, l'entrée dans le journal de bord, le push comme plus haut, et la mission. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-18-live-schalten`, au maximum deux par message (autres questions comprises) : d'abord « Quel site va en ligne lors de la mise en ligne ? » et « Quand ton site est-il vraiment en ligne ? », après la réponse de la personne « Pourquoi le dis-tu d'abord à quelqu'un ? » Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `live`. Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après ses réponses.
 
 Si la personne veut ensuite autre chose, le skill `webseite-aendern` s'applique : petit (changer en local, montrer, validation, push) ou grand (complément au plan, ébauche, autorisation de construire, construire, montrer, validation, push).
 

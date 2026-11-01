@@ -13,7 +13,12 @@
 // (gratis, light, pilot), DURCHSPIEL_SCHLOESSER, DURCHSPIEL_LOG (jeder Aufruf als JSON-Zeile mit Runde), DURCHSPIEL_RUNDE (Datei mit der
 // Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo).
 // Beschreibungen und Parameter der Werkzeuge und die Anleitung wie beim echten Dienst mit FAHRPLAN und ERFASSUNG (mocks/werkzeuge.json,
-// mocks/anleitung.txt); fehlt ein Pflichtfeld oder ist ein Wert nicht erlaubt, antwortet die Attrappe wie er mit «Ungültige Angaben».
+// mocks/anleitung.txt); Eingaben prüft sie auf jeder Ebene wie zod im echten Dienst (auch in Listen und Objekten darin, unten bei «Eingaben
+// wie zod») und antwortet wie er mit «Ungültige Angaben»; ein Werkzeug, das sie nicht anbietet, und eine unbekannte Methode sind wie dort
+// Fehler von JSON-RPC (-32602, -32601). Seit Welle 7 (01.11.2026, Sichtung sicht-05, w7-20) auch wie er: titel
+// gekürzt (kuerzeTitel) und Schritte mit ihrem Namen auf der Insel, verstanden_melden mit den Regeln und Sätzen von flugschule (409),
+// coach_fragen ohne Abo mit dem Satz von mcp, luecke_melden mit dem Satz von flugschule, offene Pflichtfragen mit den deutschen
+// Anfangswörtern wie lage. scripts/durchspiel.test.ts vergleicht das mit dem echten mcp, wenn albatros daneben liegt.
 // Neu erzeugen im Repo albatros, Ordner services/mcp, mit Z=…/albatros-skills/scripts/durchspiel/mocks:
 //   bun -e "import { z } from 'zod'; import { WERKZEUGE } from './src/werkzeuge.ts'; import { anleitung } from './src/lage.ts';
 //     const an = { FAHRPLAN: true, ERFASSUNG: true }; const liste = WERKZEUGE.filter((w) => (!w.nurMit || an[w.nurMit]) && (!w.nurOhne || !an[w.nurOhne]))
@@ -24,7 +29,8 @@ import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } 
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
 import {
-  ausgangZaehlt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wohnortVon, type Fuer,
+  ausgangZaehlt, belegt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wertPasst,
+  wohnortVon, type Fuer,
 } from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
 
@@ -110,6 +116,17 @@ const missionen: Mission[] = ['flugschule', 'webseite', 'geschaeft'].flatMap((w)
   });
 });
 
+// Pflichtfragen mit werte (modus, maskottchen, reihenfolge, musterblatt, adresse) wie werteHinweis in lage (w6-21; w7-20, 01.11.2026): steht
+// ein Wert da, der nicht mit einem der Wörter beginnt, sagt es die Zeile; fehlt er oder ist er offen, nennt sie die Wörter
+const oder = (w: readonly string[]) => (w.length > 1 ? `${w.slice(0, -1).join(', ')} oder ${w.at(-1)}` : w.join(''));
+const werteHinweis = (q: Pflichtfrage, dateien: Record<string, string>): string => {
+  const [datei, anfang] = q.ablage.split('#') as [string, string | undefined];
+  if (!q.werte?.length || !anfang) return '';
+  const w = wert(dateien[datei], anfang);
+  if (belegt(F, w) && !wertPasst(F, q, w)) return `; Zeile «${anfang}» beginnt nicht mit ${oder(q.werte)}; diese Wörter bleiben deutsch`;
+  return belegt(F, w) ? '' : `; der Wert in «${anfang}» beginnt mit ${oder(q.werte)}; diese Wörter bleiben deutsch`;
+};
+
 function lektion(p: Phase, weg: string | null, st: string): string[] {
   const zeilen = p.lernmomente?.length ? [`Lernmomente: ${p.lernmomente.join('; ')}.`] : [];
   const verstanden = (merk('verstanden') ?? '').split('\n').filter(Boolean).map((z) => z.split(' '));
@@ -191,7 +208,7 @@ function lage(a: Args): Antwort {
   }
   zeilen.push(`Jetzt dran: ${jetzt}. Grund: ${grund}`, ...(merk('erfassung') ? [] : [HINWEIS_ERFASSUNG]), ...hinweise.slice(0, 2).map((h) => `Hinweis: ${h}`));
   if (phaseDran && p) {
-    for (const q of p.pflichtfragen.filter((x) => !frageBelegt(F, p, x, dateien))) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)})`);
+    for (const q of p.pflichtfragen.filter((x) => !frageBelegt(F, p, x, dateien))) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)}${werteHinweis(q, dateien)})`);
     zeilen.push(`Ergebnis: ${p.ergebnis.map((x) => (x.zeilen?.length ? `${x.datei} mit ${x.zeilen.map((z) => `«${z}»`).join(', ')}` : x.datei)).join('; ')}.`);
     // In P13 je Wohnort (fahrplan.yaml: insel_je_wohnort), aus «Wohnort:» in den Belegen, sonst aus dem Abo der Attrappe
     const melden = bisAbschluss(F, p, wohnort);
@@ -217,7 +234,55 @@ function lage(a: Args): Antwort {
 }
 
 // ———— Weitere Werkzeuge mit Zustand ————
-const ART: Record<string, string> = { selbst: 'selbst gemacht', kontrollfrage: 'Kontrollfrage beantwortet', wiederholung: 'wiederholt' };
+// Namen der Schritte für Texte an die Person, wie INSEL_NAMEN in albatros packages/kit/src/phasen.ts
+const INSEL_NAMEN: Record<string, string> = {
+  idee: 'Idee', recherche: 'Recherche', plan: 'Plan', 'plan-geprueft': 'Plan geprüft', konzept: 'Konzept', mockup: 'Graues Mockup', entwuerfe: 'Entwürfe',
+  entwurf: 'Entwurf', 'entwurf-freigegeben': 'Entwurf freigegeben', prd: 'Bauplan', lokal: 'Rohbau', pruefung: 'Prüfung', freigabe: 'Freigabe',
+  wohnort: 'Wohnort', betrieb: 'Betrieb', hafen: 'Hafen', fliessband: 'Fliessband', live: 'Live', domain: 'Eigene Adresse',
+};
+// Name des Projekts auf der Insel wie kuerzeTitel in albatros services/mcp/src/werkzeuge.ts (w6-20, an Grenzen ganzer Zeichen seit w7-05):
+// bis 80 Zeichen, sonst an der letzten Wortgrenze vor der Grenze mit «…»
+const ZEICHEN = new Intl.Segmenter('de', { granularity: 'grapheme' });
+function kuerzeTitel(titel: string, max = 80): string {
+  if (titel.length <= max) return titel;
+  let s = '';
+  for (const { segment } of ZEICHEN.segment(titel)) {
+    if (s.length + segment.length > max - 1) break; // Platz für «…»
+    s += segment;
+  }
+  if (!/^\s/.test(titel.slice(s.length))) {
+    const grenze = s.search(/\s\S*$/);
+    if (grenze > max / 2) s = s.slice(0, grenze);
+  }
+  return `${s.replace(/[\s,;:.\-–—(/]+$/u, '') || s}…`;
+}
+// verstanden_melden wie flugschule (services/flugschule/src/lernen.ts) und mcp (services/mcp/src/lernen.ts): Je Mission und Art einmal;
+// wiederholung nur für Missionen mit Kontrollfragen, erst nach einem ersten verstanden und frühestens am Tag danach, sonst 409 und nichts
+// gespeichert. Die Attrappe merkt sich je Eintrag den Tag in Zürich (Datei verstanden: «<mission> <art> <JJJJ-MM-TT>»).
+const ART: Record<string, string> = { selbst: 'selbst gemacht', kontrollfrage: 'Kontrollfrage beantwortet', wiederholung: 'später nochmals gekonnt' };
+const KEINE_WIEDERHOLUNG = 'Diese Mission hat keine Kontrollfragen, eine Wiederholung gibt es dafür nicht. Gespeichert ist nichts.';
+const NOCH_NICHTS = 'Wiederholen geht erst, wenn die Lektion einmal verstanden ist (selbst oder kontrollfrage). Gespeichert ist nichts.';
+// Ohne Wiederholung (wiederholungAb null) wie mcp seit w7-01 (Welle 7): nach einer Wiederholung «wiederholt», ohne Kontrollfragen «keine»
+const OHNE_WIEDERHOLUNG = {
+  wiederholt: 'Diese Lektion ist wiederholt; eine weitere Wiederholung braucht es nicht.',
+  keine: 'Für diese Lektion steht keine Wiederholung an (die Mission hat keine Kontrollfragen, oder sie ist schon wiederholt); stell dazu keine Frage aus «verstehen».',
+};
+const NACHFRAGEN = 'Stell dann eine Frage aus «verstehen» dieser Mission (im Modus machen nur als Angebot), ohne die Antwort vorzusagen; beantwortet die Person sie in eigenen Worten, meldest du verstanden_melden mit art: wiederholung.';
+const tagZuerich = (d: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(d);
+const tagCh = (iso: string) => iso.split('-').reverse().map(Number).join('.');
+const tagDanach = (iso: string) => { const d = new Date(`${iso}T00:00:00Z`); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
+type Verstanden = { art: string; tag: string };
+const verstandenVon = (id: string): Verstanden[] => (merk('verstanden') ?? '').split('\n').map((z) => z.split(' '))
+  .filter(([m]) => m === id).map(([, art, tag]) => ({ art: art ?? '', tag: tag ?? tagZuerich(new Date()) }));
+// Wie flugschule wiederholungAb: ab dem Tag nach dem ersten verstanden, bis eine wiederholung gemeldet ist
+const wiederholungAb = (e: Verstanden[]) => (e.some((x) => x.art === 'wiederholung') || !e.length ? null : tagDanach(e.map((x) => x.tag).sort()[0]!));
+// coach_fragen und luecke_melden wie mcp (services/mcp/src/erfassen.ts) und flugschule (app.ts, erfassung.ts) mit ERFASSUNG
+const COACH_ABO = 'Der Coach gehört zum Abo. Deckt kein Skill die Frage ab, melde sie mit luecke_melden an Albatros (mit dem Einverständnis der Person); dann werden die Skills besser.';
+const BEIM_TEAM = 'Deine Frage ist beim Albatros-Team. Die Antwort kommt per Mail und steht danach auch hier.';
+const FRAGE = 'Frag die Person zuerst mit diesem Satz: «Darf Albatros Fragen, die die Skills noch nicht abdecken, mit deinem Konto speichern, damit die Skills besser werden? Du kannst sie im Cockpit ansehen und löschen.» Ruf luecke_melden danach nochmals auf: bei Ja mit einverstanden: true, bei Nein mit einverstanden: false.';
+const NEIN = 'Albatros speichert keine Meldungen von dir, weil du das abgelehnt hast. Ändern kannst du das jederzeit im Cockpit.';
+const GESPEICHERT = 'Gespeichert, danke: Damit werden die Skills von Albatros besser. Die Person sieht ihre Meldungen im Cockpit und kann sie dort löschen.';
+
 const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
   lage,
   schritt_melden: (a) => {
@@ -226,10 +291,13 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
     const vorher = projekt === 'projekt' ? insel() : merk(`insel-${projekt}`);
     const neu = rang(s) > rang(vorher);
     if (neu) setze(projekt === 'projekt' ? 'insel' : `insel-${projekt}`, s);
-    const phase = F.phasen.find((p) => p.insel.includes(s))!;
+    const jetzt = neu ? s : vorher!;
+    const wo = `«${INSEL_NAMEN[jetzt]}» (${jetzt}, Phase ${F.phasen.find((p) => p.insel.includes(jetzt))!.id})`;
     const adresse = `https://albatros.build${a.sprache && a.sprache !== 'de' ? `/${String(a.sprache)}` : ''}/cockpit/insel`;
-    return { text: neu ? `Auf der Insel steht ${projekt} jetzt bei «${s}» (${s}, Phase ${phase.id}). Ruf lage erneut auf. Insel: ${adresse}`
-      : `${projekt} war schon bei «${vorher}»; nichts geändert, diesen Schritt nicht nochmals melden. Insel: ${adresse}` };
+    const titel = typeof a.titel === 'string' && a.titel ? kuerzeTitel(a.titel) : undefined;
+    const gekuerzt = titel && titel !== a.titel ? ` Der Name ist auf der Insel gekürzt: «${titel}».` : '';
+    return { text: neu ? `Auf der Insel steht ${projekt} jetzt bei ${wo}.${gekuerzt} Ruf lage erneut auf. Insel: ${adresse}`
+      : `${projekt} war schon bei ${wo}; nichts geändert, diesen Schritt nicht nochmals melden.${gekuerzt} Insel: ${adresse}` };
   },
   weg_waehlen: (a) => { setze('weg', String(a.weg)); return { text: `Weg gespeichert: ${a.weg === 'webseite' ? 'Webseite' : 'Geschäft'}.` }; },
   modus_waehlen: (a) => {
@@ -240,10 +308,26 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
   },
   verstanden_melden: (a) => {
     const m = missionen.find((x) => x.id === a.mission);
-    if (!m) return { fehler: true, text: `Die Mission ${String(a.mission)} gibt es nicht. Nimm die Kennung, wie lage oder mission_holen sie nennt.` };
-    const schon = (merk('verstanden') ?? '').split('\n').includes(`${m.id} ${String(a.art)}`);
-    if (!schon && HAFEN) appendFileSync(join(HAFEN, 'verstanden'), `${m.id} ${String(a.art)}\n`);
-    return { text: `${schon ? 'War schon notiert' : 'Notiert'}: «verstanden» für ${m.id} («${m.titel}»), ${ART[String(a.art)]}.\nWiederholung: in etwa einer Woche, zu Beginn einer Sitzung.` };
+    if (!m) return { fehler: true, text: 'Diese Mission gibt es nicht.' };
+    const art = String(a.art);
+    const mit = (m.verstehen?.length ?? 0) > 0;
+    const bisher = verstandenVon(m.id);
+    const heute = tagZuerich(new Date());
+    if (art === 'wiederholung') {
+      if (!mit) return { fehler: true, text: KEINE_WIEDERHOLUNG };
+      const ab = wiederholungAb(bisher);
+      if (!bisher.some((x) => x.art === 'wiederholung')) {
+        if (ab === null) return { fehler: true, text: NOCH_NICHTS };
+        if (ab > heute) return { fehler: true, text: `Wiederholen geht ab ${tagCh(ab)}, vorher ist die Lektion noch frisch. Gespeichert ist nichts.` };
+      }
+    }
+    const schon = bisher.some((x) => x.art === art);
+    if (!schon && HAFEN) appendFileSync(join(HAFEN, 'verstanden'), `${m.id} ${art} ${heute}\n`);
+    const ab = mit ? wiederholungAb(schon ? bisher : [...bisher, { art, tag: heute }]) : null;
+    return { text: [`${schon ? 'War schon notiert' : 'Notiert'}: «verstanden» für ${m.id} («${m.titel}»), ${ART[art]}.`,
+      ab === null ? OHNE_WIEDERHOLUNG[art === 'wiederholung' ? 'wiederholt' : 'keine']
+        : ab <= heute ? `Wiederholung: schon fällig, zu Beginn der nächsten Sitzung. ${NACHFRAGEN}` : `Wiederholung: ab ${tagCh(ab)}, zu Beginn einer Sitzung. ${NACHFRAGEN}`,
+    ].join('\n') };
   },
   // Missionen wie flugschule: Prüfung insel besteht, sobald der Schritt auf der Insel steht; andere Prüfungen (Datei, http, git) kann die
   // Attrappe nicht sehen und lässt sie gelten
@@ -271,14 +355,29 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
     }
     return { text: `Skill ${String(a.slug)} in der aktuellen Fassung von Albatros. Folge dieser Anleitung statt einer älteren Kopie.\n\n${readFileSync(f, 'utf8').replace(/^---[\s\S]*?---\s*/, '')}` };
   },
-  // Mit einverstanden ist die Einwilligung gesetzt (wie flugschule über konto): danach kein Hinweis zur Erfassung mehr in lage
+  // Einwilligung wie flugschule über konto (erfassung.ts): offen fragt mit dem festen Satz (409), true setzt ja, false setzt nein (403 und nie
+  // mehr gespeichert); danach kein Hinweis zur Erfassung mehr in lage
   luecke_melden: (a) => {
-    if (a.einverstanden === undefined) {
-      return { fehler: true, text: 'Bevor Albatros Meldungen speichert, frag die Person: «Darf Albatros solche Fragen mit deinem Konto speichern, damit die Skills besser werden? Du siehst sie im Cockpit und kannst sie dort löschen.» Ruf luecke_melden danach mit einverstanden: true oder false nochmals auf.' };
+    if (merk('erfassung') === 'nein') return { fehler: true, text: NEIN };
+    if (a.einverstanden === false) {
+      setze('erfassung', 'nein');
+      return { fehler: true, text: NEIN };
     }
-    setze('erfassung', a.einverstanden === false ? 'nein' : 'ja');
-    return a.einverstanden === false ? { text: 'Nichts gespeichert. Albatros speichert keine Meldungen mehr von dieser Person.' }
-      : { text: 'Gespeichert, danke: Damit werden die Skills von Albatros besser. Die Person sieht ihre Meldungen im Cockpit und kann sie dort löschen.' };
+    if (merk('erfassung') !== 'ja') {
+      if (a.einverstanden !== true) return { fehler: true, text: FRAGE };
+      setze('erfassung', 'ja');
+    }
+    return { text: GESPEICHERT };
+  },
+  // Pflichtmeldungen (anliegen) gehen auch ohne Abo ans Team; sonst ohne Abo 403 (mcp: COACH_ABO), mit Abo der feste Text der Attrappe
+  coach_fragen: (a) => {
+    if (a.anliegen) return { text: BEIM_TEAM };
+    if (stufe() === 'gratis') return { fehler: true, text: COACH_ABO };
+    for (const o of ordner) {
+      const t = text(o, 'coach_fragen', a);
+      if (t !== null) return { text: t };
+    }
+    return { text: 'Der Coach hat geantwortet (Attrappe).' };
   },
   upgrade_link: (a) => {
     const ziel = a.stufe === 'light' ? 'light' : 'pilot';
@@ -337,22 +436,96 @@ function antwort(werkzeug: string, a: Args): Antwort | null {
   return null;
 }
 
-type Schema = { name: string; description: string; inputSchema: { required?: string[]; properties?: Record<string, { type?: string; enum?: unknown[] }> } };
+type Knoten = { type?: string; enum?: unknown[]; minLength?: number; maxLength?: number; pattern?: string; minItems?: number; maxItems?: number;
+  items?: Knoten; properties?: Record<string, Knoten>; required?: string[]; default?: unknown };
+type Schema = { name: string; description: string; inputSchema: Knoten };
 const ECHT: Schema[] = JSON.parse(readFileSync(join(wurzel, 'scripts/durchspiel/mocks/werkzeuge.json'), 'utf8'));
 const ANLEITUNG = readFileSync(join(wurzel, 'scripts/durchspiel/mocks/anleitung.txt'), 'utf8').trim();
 const mitText = (n: string) => [...(fallOrdner ? [fallOrdner] : []), ...ordner].some((o) => existsSync(join(o, `${n}.md`)));
 const werkzeuge = ECHT.filter((w) => MIT_ZUSTAND[w.name] || mitText(w.name));
-// Wie zod im echten Dienst: Pflichtfelder, erlaubte Werte (schritt_melden: die 19 Schritte der Insel), Typ
-const ungueltig = (name: string, a: Args) => {
-  const s = ECHT.find((w) => w.name === name)?.inputSchema;
-  const fehlt = (s?.required ?? []).filter((k) => a[k] === undefined).map((k) => `${k}: Invalid input: expected string, received undefined`);
-  const falsch = Object.entries(s?.properties ?? {}).flatMap(([k, p]) => {
-    if (a[k] === undefined) return [];
-    if (p.enum && !p.enum.includes(a[k])) return [`${k}: Invalid option: expected one of ${p.enum.map((x) => `"${String(x)}"`).join('|')}`];
-    if (p.type && p.type !== 'array' && p.type !== 'object' && typeof a[k] !== p.type) return [`${k}: Invalid input: expected ${p.type}, received ${typeof a[k]}`];
-    return [];
-  });
-  return [...fehlt, ...falsch];
+
+// ———— Eingaben wie zod im echten Dienst ————
+// werkzeuge.json trägt die Eingaben von mcp als JSON Schema (z.toJSONSchema). Die Attrappe prüft sie wie zod 4 (mcp: zod 4.6.7,
+// nachgebaut aus zod/v4/core schemas.js, checks.js und locales/en.js) und antwortet wie mcp mit «Ungültige Angaben: <pfad>: <meldung>, …»,
+// der Pfad mit Punkten (belege.0.zeilen.0), ohne Pfad «Eingabe». Nachbesserung Welle 7 (01.11.2026, Gegenprobe zu sicht-05): Vorher
+// prüfte die Attrappe nur die oberste Ebene; verschachtelte Felder (belege[].zeilen[], wuensche[]), minItems und null («received null»)
+// wichen vom echten Dienst ab. Wie zod:
+// - Falscher Typ: «Invalid input: expected <typ>, received <art>» (art: null, array, object, string, number, boolean, undefined).
+// - Erlaubte Werte (enum): «Invalid option: expected one of "a"|"b"» für jede andere Eingabe, auch für null und ein fehlendes Pflichtfeld.
+// - Text: zuerst .trim() (nur Felder in GETRIMMT), dann die Länge in Codepunkten (ein Emoji zählt 1), dann das Muster; jeder Fund zählt.
+//   Ist der Typ falsch, prüft zod nur noch die Länge, und nur wenn der Wert eine hat (eine Liste: «expected array to have <=300 items»).
+// - Liste: Länger als maxItems gibt nur diesen Fund, die Einträge prüft zod dann nicht. Sonst die Einträge (pfad.0, pfad.1, …), danach die
+//   Länge; hatte ein Eintrag schon eine zu lange Liste, nicht mehr.
+// - Objekt: die Felder in der Reihenfolge des Schemas. Fehlt ein freiwilliges Feld, nichts (mit default: der Wert); fehlt ein Pflichtfeld,
+//   prüft zod undefined. Unbekannte Felder fallen weg, wie bei zod.
+// Was das JSON Schema nicht trägt, steht hier: eigene Meldungen von mcp zu Mustern (services/mcp/src/werkzeuge.ts, gemeinsam.ts) und
+// .trim(). scripts/durchspiel.test.ts vergleicht das mit dem echten mcp für Grenzwerte jedes Felds; weicht etwas ab, wird er rot.
+const MUSTER_MELDUNG: Record<string, string> = {
+  '^[^\\u0000-\\u001f]*$': 'Ohne Zeilenumbrüche',
+  '^[a-z0-9][a-z0-9-]{0,39}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 40 Zeichen',
+  '^[a-z0-9][a-z0-9-]{0,63}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 64 Zeichen',
+};
+const GETRIMMT = new Set(['schritt_melden.titel']);
+type Fund = { pfad: (string | number)[]; text: string; weiter?: boolean }; // weiter wie issue.continue bei zod: false hält alles Weitere an
+const artVon = (v: unknown) => (v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v);
+const alsWert = (v: unknown) => (typeof v === 'string' ? `"${v}"` : String(v));
+// Länge wie zod $ZodCheckMinLength/$ZodCheckMaxLength: für jeden Wert mit length (auch nach falschem Typ), Text in Codepunkten
+const EINHEIT: Record<string, string> = { string: 'characters', array: 'items' };
+function laengen(min: number | undefined, max: number | undefined, v: unknown, pfad: Fund['pfad'], funde: Fund[]) {
+  for (const [grenze, zuKlein] of [[min, true], [max, false]] as const) {
+    if (grenze === undefined || funde.some((f) => f.weiter === false) || v === null || v === undefined || (v as { length?: unknown }).length === undefined) continue;
+    const roh = (v as { length: number }).length;
+    const n = typeof v === 'string' && (zuKlein ? roh >= grenze && roh < grenze * 2 : roh > grenze) ? [...v].length : roh;
+    if (zuKlein ? n >= grenze : n <= grenze) continue;
+    const herkunft = Array.isArray(v) ? 'array' : typeof v === 'string' ? 'string' : 'unknown';
+    const e = EINHEIT[herkunft];
+    const satz = zuKlein ? `Too small: expected ${herkunft} to ${e ? 'have ' : 'be '}>=${grenze}` : `Too big: expected ${herkunft} to ${e ? 'have ' : 'be '}<=${grenze}`;
+    funde.push({ pfad, text: e ? `${satz} ${e}` : satz, weiter: true });
+  }
+}
+function pruefe(s: Knoten, roh: unknown, pfad: Fund['pfad'], feld: string): { funde: Fund[]; wert: unknown } {
+  const funde: Fund[] = [];
+  if (s.enum) {
+    if (!s.enum.includes(roh)) funde.push({ pfad, text: s.enum.length === 1 ? `Invalid input: expected ${alsWert(s.enum[0])}` : `Invalid option: expected one of ${s.enum.map(alsWert).join('|')}` });
+    return { funde, wert: roh };
+  }
+  const falsch = (typ: string) => funde.push({ pfad, text: `Invalid input: expected ${typ}, received ${artVon(roh)}` });
+  if (s.type === 'object') {
+    if (typeof roh !== 'object' || roh === null || Array.isArray(roh)) { falsch('object'); return { funde, wert: roh }; }
+    const wert: Args = {};
+    for (const [k, p] of Object.entries(s.properties ?? {})) {
+      if (!(k in roh) && !s.required?.includes(k)) { if (p.default !== undefined) wert[k] = p.default; continue; }
+      const r = pruefe(p, (roh as Args)[k], [...pfad, k], `${feld}.${k}`);
+      funde.push(...r.funde);
+      if (r.wert !== undefined) wert[k] = r.wert;
+    }
+    return { funde, wert };
+  }
+  if (s.type === 'array') {
+    if (Array.isArray(roh) && s.maxItems !== undefined && roh.length > s.maxItems) return { funde: [{ pfad, text: `Too big: expected array to have <=${s.maxItems} items`, weiter: false }], wert: roh };
+    let wert = roh;
+    if (!Array.isArray(roh)) falsch('array');
+    else wert = roh.map((x, i) => { const r = pruefe(s.items ?? {}, x, [...pfad, i], feld); funde.push(...r.funde); return r.wert; });
+    laengen(s.minItems, s.maxItems, wert, pfad, funde);
+    return { funde, wert };
+  }
+  if (s.type === 'string') {
+    let wert = roh;
+    if (typeof roh !== 'string') falsch('string');
+    else if (GETRIMMT.has(feld)) wert = roh.trim();
+    laengen(s.minLength, s.maxLength, wert, pfad, funde);
+    if (typeof wert === 'string' && s.pattern !== undefined && !new RegExp(s.pattern).test(wert)) {
+      funde.push({ pfad, text: MUSTER_MELDUNG[s.pattern] ?? `Invalid string: must match pattern /${s.pattern}/`, weiter: true });
+    }
+    return { funde, wert };
+  }
+  if (s.type === 'boolean' && typeof roh !== 'boolean') falsch('boolean');
+  return { funde, wert: roh };
+}
+// Wie mcp (app.ts): arguments fehlt oder ist null: {}; Meldung je Fund «<pfad>: <meldung>», ohne Pfad «Eingabe»
+const ungueltig = (w: Schema, roh: unknown): { fehler: string[]; a: Args } => {
+  const r = pruefe(w.inputSchema, roh ?? {}, [], w.name);
+  return { fehler: r.funde.map((f) => `${f.pfad.join('.') || 'Eingabe'}: ${f.text}`), a: r.wert as Args };
 };
 
 const runde = () => { const f = process.env.DURCHSPIEL_RUNDE; return f && existsSync(f) ? Number(readFileSync(f, 'utf8').trim()) : null; };
@@ -372,16 +545,21 @@ process.stdin.on('data', (d) => {
     } else if (m.method === 'tools/list') {
       senden({ jsonrpc: '2.0', id: m.id, result: { tools: werkzeuge } });
     } else if (m.method === 'tools/call') {
-      const name = String(m.params?.name ?? '');
-      const a: Args = m.params?.arguments ?? {};
-      const fehler = ungueltig(name, a);
-      const r: Antwort = fehler.length ? { fehler: true, text: `Ungültige Angaben: ${fehler.join(', ')}` }
-        : werkzeuge.some((w) => w.name === name) ? antwort(name, a) ?? { fehler: true, text: `Werkzeug ${name} gibt es nicht.` } : { fehler: true, text: `Werkzeug ${name} gibt es nicht.` };
-      process.stderr.write(`[attrappe] ${name} ${JSON.stringify(a)}\n`);
-      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: a, fehler: r.fehler ?? false })}\n`);
-      senden({ jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } });
-    } else {
+      // Wie mcp (app.ts): ein Werkzeug, das die Attrappe nicht anbietet, ist ein Fehler von JSON-RPC (-32602), keine Antwort des Werkzeugs
+      const name = String(m.params?.name);
+      const roh: unknown = m.params?.arguments;
+      const w = werkzeuge.find((x) => x.name === name);
+      const { fehler, a } = w ? ungueltig(w, roh) : { fehler: [], a: {} };
+      const r: Antwort = !w ? { fehler: true, text: `Unbekanntes Werkzeug: ${name}` } : fehler.length ? { fehler: true, text: `Ungültige Angaben: ${fehler.join(', ')}` }
+        : antwort(name, a) ?? { fehler: true, text: `Werkzeug ${name} gibt es nicht.` };
+      process.stderr.write(`[attrappe] ${name} ${JSON.stringify(roh ?? {})}\n`);
+      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false })}\n`);
+      senden(w ? { jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } }
+        : { jsonrpc: '2.0', id: m.id, error: { code: -32602, message: r.text } });
+    } else if (m.method === 'ping') {
       senden({ jsonrpc: '2.0', id: m.id, result: {} });
+    } else {
+      senden({ jsonrpc: '2.0', id: m.id, error: { code: -32601, message: `Unbekannte Methode: ${String(m.method)}` } }); // wie mcp
     }
   }
 });

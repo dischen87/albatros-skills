@@ -4,6 +4,8 @@
 // - Aktualisieren: die Tabelle «| KI | Befehle |» im Abschnitt «Aktualisieren» der README hat dieselben Zeilen wie die Tabelle im
 //   Lotse (de). albatros liest die README genau so (aktualisierenAus in packages/kit/src/fahrplan-vertrag.ts) und erzeugt daraus
 //   AKTUALISIEREN, das lage bei veralteten Skills nennt.
+// - titel bei schritt_melden: wie mcp ihn annimmt (titelAusweg, unten).
+// - Begriffe wie im GLOSSAR.md: auf Italienisch die Freigabe zum Bauen (P8) nie «approvata» (bozzaApprovata, unten).
 
 export type Befehle = { ki: string; befehle: string }[];
 
@@ -85,4 +87,29 @@ export function vorlageGegenSkill(skill: string, vorlage: Record<'AGENTS.md' | '
     if (rest.at(-1) !== verweis) aus.push(`${datei}: letzte Zeile muss ${verweis} sein`);
   }
   return aus;
+}
+
+// Ein abgelehnter titel kostet nie den Schritt (Welle 7, 01.11.2026, w7-21). mcp nimmt titel bis 300 Zeichen und kürzt ihn auf der Insel
+// auf 80; mit Zeilenumbruch (oder einem anderen Steuerzeichen) oder über 300 Zeichen antwortet schritt_melden «Ungültige Angaben» und
+// schickt den Schritt gar nicht an flugschule (Nachbau mit dem echten mcp: …/scratchpad/welle7/skills/w7-21/titel-echt.log). Wer titel bei
+// schritt_melden nennt, sagt darum in seiner Sprache, dass der Schritt dann gleich nochmals ohne titel kommt; null: in Ordnung.
+const OHNE_TITEL: Record<string, string> = { de: 'ohne `titel`', fr: 'sans `titel`', it: 'senza `titel`', en: 'without `titel`' };
+export function titelAusweg(datei: string, text: string): string | null {
+  if (!text.includes('`titel`') || !text.includes('`schritt_melden`')) return null;
+  const sprache = /plugins\/albatros-(fr|it|en)\//.exec(datei)?.[1] ?? 'de';
+  const ohne = OHNE_TITEL[sprache]!;
+  return text.includes(ohne) ? null
+    : `${datei}: nennt \`titel\` bei \`schritt_melden\`, aber nicht, dass der Schritt nach «Ungültige Angaben» wegen \`titel\` gleich nochmals ${ohne} kommt; sonst fehlt er auf der Insel`;
+}
+
+// GLOSSAR.md unterscheidet die Freigabe zum Bauen (P8: «via libera per costruire») von der Freigabe in P10 («approvazione»); das Web sagt
+// seit w6-24 «Bozza con via libera». webseite-bauen (it) nannte P8 trotzdem «bozza approvata», auch im Eintrag ins Logbuch der Person
+// (Sichtung Welle 7, sicht-08, 01.11.2026). Gemeldet wird jeder Satz eines italienischen Skills, der die Bozza und «approvat…» verbindet,
+// ausser «via libera» oder «sito» steht dazwischen («bozza con via libera per costruire, sito approvato»: dort ist der Sito approvato).
+const LUECKE = String.raw`(?:(?!via libera|\bsito\b)[^.!?\n]){0,60}?`;
+const BOZZA_APPROVATA = new RegExp(String.raw`\bbozz[ae]\b${LUECKE}\bapprovat\p{L}*|\bapprovat\p{L}*${LUECKE}\bbozz[ae]\b`, 'giu');
+export function bozzaApprovata(datei: string, text: string): string[] {
+  if (!/plugins\/albatros-it\//.test(datei)) return [];
+  return [...text.matchAll(BOZZA_APPROVATA)].map((t) => `${datei}:${text.slice(0, t.index).split('\n').length}: «${t[0]}»: `
+    + 'die Freigabe zum Bauen heisst auf Italienisch «via libera per costruire» (bozza con via libera), «approvazione» ist die Freigabe in P10 (GLOSSAR.md)');
 }

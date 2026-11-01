@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Plans a website with a person who has no prior knowledge, before anything gets designed or built, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md and a grey sketch of the home page), research (up to three comparable sites, obligations, existing content, docs/recherche.md), floor plan (pages, features, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion in a fresh context, docs/plan-pruefung.md, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Use this skill for “I want a website”, “plan my website”, “where do I start”, “what do I need for a website”, “which pages do I need”, “sitemap”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built on the website path."
 metadata:
   stand: 0.2.0
-  quelle: '501e96d6b453'
+  quelle: '58f8cf3c1cd8'
 ---
 
 # Plan your website: the floor plan
@@ -45,7 +45,7 @@ If the person wants the whole plan straight away, write the missing files in one
 ## After every section
 
 1. Update the lines `Stand:` (status) and `Nächster Schritt:` (next step) in `docs/projekt.md`.
-2. `schritt_melden` with the step from the table above, `titel` (the value of the line `Projektname:` in `docs/projekt.md`, as the person calls their project) and `sprache: en`. With `titel`, the island shows the house with that name instead of “projekt”. For the person's first project you leave out `projekt`: it later becomes the logbook in the harbour. Only for another project do you give a short name made of lowercase letters, digits and “-”. Tell the person in one sentence that their house on the island has grown. If the tool answers “Ungültige Angaben” (invalid details) or “unbekannt” (unknown), or it's missing, carry on without the island.
+2. `schritt_melden` with the step from the table above, `titel` (the value of the line `Projektname:` in `docs/projekt.md`, as the person calls their project) and `sprache: en`. With `titel`, the island shows the house with that name instead of “projekt”; Albatros accepts it up to 300 characters and shortens it to 80 there. For the person's first project you leave out `projekt`: it later becomes the logbook in the harbour. Only for another project do you give a short name made of lowercase letters, digits and “-”. Tell the person in one sentence that their house on the island has grown. If the tool answers “Ungültige Angaben” (invalid details) because of `titel` (for example a line break or more than 300 characters), report the same step again straight away without `titel`: the step counts, the name is secondary. If it otherwise answers “Ungültige Angaben” or “unbekannt” (unknown), or it's missing, carry on without the island.
 3. Check the mission of the section (below, “Checking the mission”), then call `lage` again (skill `lotse`) and follow whatever is up now.
 
 If the person has an account and their island isn't open yet in this conversation, open it once: `open https://albatros.build/en/cockpit/insel` (Linux `xdg-open`, Windows `start`). A house grows there with every step.

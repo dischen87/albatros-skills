@@ -3,7 +3,7 @@ name: bausteine
 description: "Découvre avec une personne sans connaissances préalables ce que sa page doit savoir faire, et installe les briques toutes faites qui conviennent, d'abord sur son ordinateur : liste d'inscription, réservations, espace membres avec connexion et activation, tableau d'affichage (PocketBase), une entrée avec une seule connexion pour plusieurs parties ou un grand CMS (Strapi avec Postgres), avec la mémoire vive mesurée. Explique avec l'image des éléments préfabriqués dans la construction d'une maison. Utilise ce skill pour « inscription », « liste d'inscription », « réservation », « réserver un cours », « prendre rendez-vous », « enregistrer un formulaire », « connexion », « espace membres », « espace admin », « gérer les utilisateurs », « rôles », « entrée », « base de données », « Strapi », « CMS », « PocketBase », « brique », « qu'est-ce qui tient sur mon serveur ? », et quand une page doit savoir faire plus que montrer des textes et des images."
 metadata:
   stand: 0.2.0
-  quelle: 'd66c4610d5d1'
+  quelle: '4e2db5c391a1'
 ---
 
 # Briques : des éléments préfabriqués pour ta page
@@ -213,7 +213,7 @@ Ces règles décident s'il en faut une, dans cet ordre :
 
 La réponse va dans `docs/betrieb.md`, à la ligne `Eingang:` (skill `betrieb`). Sa valeur commence toujours par le mot allemand `ja` ou `nicht nötig`, même si la personne parle une autre langue ; ensuite vient la raison dans sa langue, par exemple `Eingang: ja – /intern/ et les messages de PocketBase demandent la même connexion` ou `Eingang: nicht nötig – seulement la recette mitglieder, les règles de PocketBase suffisent`. Le skill `lancieren` n'installe l'entrée qu'avec `Eingang: ja`. Les portes du site (`docs/tueren.txt` : ouvertes, seulement avec connexion, jamais) deviennent les parties dans `bausteine/eingang/eingang.json`.
 
-**Coûts :** pas d'argent en plus, elle tourne avec le reste sur le serveur Pilot. Mémoire : 20 MB au repos ; sous pleine charge avec de petites pages jusqu'à 69 MB, avec beaucoup d'images à la fois (20 pages de 60 images) jusqu'à 129 MB, et si des visiteuses téléchargent de gros fichiers sans les lire jusqu'au bout, encore plus (mesuré avec trois adresses : 208 MB). Mesuré le 31.10 et le 01.11.2026 sur un Mac. Le conteneur est limité à 128 MB (`mem_limit`) ; s'il redémarre alors et combien il lui faut sur le serveur, ce n'est pas encore mesuré ; chaque appel d'une partie protégée interroge PocketBase, ça coûte presque une milliseconde. Et un élément de plus à entretenir (version de Bun dans le `Dockerfile`).
+**Coûts :** pas d'argent en plus, elle tourne avec le reste sur le serveur Pilot. Mémoire : 20 MB au repos ; sous pleine charge avec de petites pages jusqu'à 69 MB, avec beaucoup d'images à la fois (20 pages de 60 images) jusqu'à 129 MB, et si des visiteuses téléchargent de gros fichiers sans les lire jusqu'au bout : les gros fichiers attendent de la place en mémoire, ainsi on est resté à 44–52 MB avec trois adresses (avant 208 MB) ; seules les réponses sans taille connue prennent encore plus (jusqu'à 215 MB). Mesuré le 31.10 et le 01.11.2026 sur un Mac. Le conteneur est limité à 128 MB (`mem_limit`) ; s'il redémarre alors et combien il lui faut sur le serveur, ce n'est pas encore mesuré ; chaque appel d'une partie protégée interroge PocketBase, ça coûte presque une milliseconde. Et un élément de plus à entretenir (version de Bun dans le `Dockerfile`).
 
 **Installer,** d'abord en local comme chaque brique (section 4), pas à pas dans `bausteine/eingang/README.md` :
 

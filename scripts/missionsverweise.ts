@@ -12,9 +12,19 @@
 // Lektion. Nach dem Schritt, der die Phase abschliesst, ist das schon eine Mission der nächsten Phase; mit Light oder Pilot ist es in P11
 // bis P13 schon vorher eine ohne Kontrollfrage (flugschule route(): in der Phase nach Weg und ID, flugschule-01 vor -16, -06/-07 vor -17,
 // -04 vor -18; Nachbau lauf3/mission-holen-aktuell.ts). verstanden_melden nimmt die Mission dagegen ausdrücklich an.
-// 5. Kontrollfragen kommen nie «(`mission_holen`)»: kein Absatz oder Listenpunkt mit einer Kontrollfrage nennt mission_holen als Quelle.
-// 6. Steht eine Kontrollfrage wörtlich im Skill («…?» hinter «Lektion `id`» im selben Absatz), ist sie Wort für Wort eine Frage dieser
-//    Lektion in der Sprache des Skills (missionen/ bzw. uebersetzungen/<sprache>/missionen/, verstehen.frage).
+// 5. Kontrollfragen kommen nie aus mission_holen: kein Absatz oder Listenpunkt mit einer Kontrollfrage nennt mission_holen als Quelle.
+//    Quelle ist es in Klammern «(`mission_holen`)», direkt nach «mit, über, aus, von» (with, using, from, avec, par, con, tramite …) ohne
+//    Verneinung davor, und in jedem Satz ohne Verneinung oder «nur» («…, die du mit `mission_holen` holst», «`mission_holen` liefert sie»).
+//    Erlaubt ist die Warnung: «`mission_holen` zeigt nur die nächste offene Mission», «weil `lage` und `mission_holen` sie nicht mehr zeigen».
+// 6. Steht eine Kontrollfrage wörtlich im Skill («…?» hinter einer Lektion `id` im selben Absatz, egal ob «Lektion», «Mission» oder nichts
+//    davor steht), ist sie Wort für Wort eine Frage dieser Lektion in der Sprache des Skills (missionen/ bzw.
+//    uebersetzungen/<sprache>/missionen/, verstehen.frage). Es zählt die Mission, die zuletzt vor der Frage steht.
+// Regel 5 und 6 hängen seit Welle 7 (01.11.2026, w7-24) nicht mehr an einem Wortlaut: In en blieben «…, which you fetch with
+// `mission_holen`» und «mission `id`: “…?”» grün (Gegenprobe texte, runde2/repro/mutation-kontrollfragen-r2b.log).
+// 7. Zitiert ein Absatz mehr Kontrollfragen, als in eine Nachricht dürfen (fragen_je_nachricht in fahrplan.yaml, Grader fragen.md der
+//    Evals lernen-*), sagt er in seiner Sprache, dass höchstens so viele in eine Nachricht kommen («höchstens zwei», «au plus deux»,
+//    «al massimo due», «at most two»); die übrigen kommen nach der Antwort der Person (Welle 7, 01.11.2026, w7-22: betrieb und lancieren
+//    zitierten drei Fragen mit «stellst du jetzt»).
 import type { LektionsMission } from './lektionen.ts';
 
 export type VerweisMission = LektionsMission & { skill: string };
@@ -32,9 +42,56 @@ const ALS_LEKTION = [
 ];
 const GEPRUEFT = new RegExp(String.raw`\`mission_pruefen\`[^\`\n]{0,20}\`(${ID})\``, 'g');
 const KONTROLLFRAGE = /Kontrollfrage|questions? de contrôle|domand[ae] di controllo|check questions?/i;
-const AUS_HOLEN = '(`mission_holen`)';
-// Gefragt: «…» (de, fr, it) oder “…” (en), am Ende ein Fragezeichen
-const GEFRAGT = /«([^»\n]*)»|“([^”\n]*)”/g;
+// Regel 5: mission_holen im Absatz, und woran man die Quelle erkennt (Klammern, ein Wort für «mit» davor, ein Satz ohne Verneinung).
+// Verneinung und «nur» in allen vier Sprachen (ein Skill zitiert auch deutsche Wörter); die Wörter für «mit» je Sprache, weil «da» im
+// Deutschen etwas anderes heisst als im Italienischen.
+const HOLEN = /`mission_holen`/g;
+const NEIN = String.raw`nicht|nie|nur|kein\p{L}*|ohne|ne|pas|jamais|seulement|uniquement|sans|non|mai|solo|soltanto|senza|not|never|no|only|without`;
+const VERNEINT = new RegExp(String.raw`(?<![\p{L}\p{N}])(?:(?:${NEIN})(?![\p{L}\p{N}])|n[’'](?=\p{L}))|n[’']t(?![\p{L}\p{N}])`, 'iu');
+const MIT: Record<string, string> = {
+  de: 'mit|über|aus|von|per|via|durch', fr: 'avec|via|par|de|depuis|grâce à', it: 'con|via|tramite|da|dal|dallo|attraverso|mediante',
+  en: 'with|via|using|from|through|by',
+};
+const QUELLE_DAVOR = Object.fromEntries(Object.entries(MIT).map(([s, w]) => [s, new RegExp(
+  String.raw`(?:^|[^\p{L}])(?:(${NEIN})\s+)?(?:${w})\s+(?:(?:dem|l[’']|lo|the)\s*(?:Werkzeug|outil|strumento|tool)\s+)?$`, 'iu')]));
+// Satzgrenze: . ! ? : ; vor Leerraum, nicht nach einem einzelnen Buchstaben (z. B., e.g.)
+const SATZENDE = /(?<!(?:^|[\s(.])\p{L})[.!?:;](?=\s|$)/gu;
+function satzUm(text: string, stelle: number): string {
+  let [von, bis] = [0, text.length];
+  for (const e of text.matchAll(SATZENDE)) {
+    if (e.index < stelle) von = e.index + 1;
+    else { bis = e.index; break; }
+  }
+  return text.slice(von, bis);
+}
+// Stelle, an der der Absatz mission_holen als Quelle der Kontrollfragen nennt; null: nur als Warnung oder gar nicht
+export function holenAlsQuelle(text: string, sprache = 'de'): number | null {
+  if (!KONTROLLFRAGE.test(text)) return null;
+  for (const h of text.matchAll(HOLEN)) {
+    const davor = text.slice(0, h.index);
+    const klammer = davor.endsWith('(') && text.slice(h.index + h[0].length).startsWith(')');
+    const mit = (QUELLE_DAVOR[sprache] ?? QUELLE_DAVOR.de!).exec(davor);
+    if (klammer || (mit && !mit[1]) || !VERNEINT.test(satzUm(text, h.index))) return h.index;
+  }
+  return null;
+}
+// Regel 6: Missionen im Absatz (wie bei verstanden_melden auch «`mission: x`»), die Frage gehört zur letzten davor.
+// Gefragt: «…» (de, fr, it; darin eine Ebene «…» wie «Was unterscheidet Light, Pilot und «selbst»?»), “…” oder "…" (en), am Ende ein Fragezeichen
+const MISSION = new RegExp(String.raw`\`(?:mission: )?(${ID})\``, 'g');
+// Regel 7: «höchstens <Zahl>» je Sprache, als Wort oder Ziffer
+const ZAHLWORT: Record<string, Record<number, string>> = {
+  de: { 1: 'eine', 2: 'zwei', 3: 'drei' }, fr: { 1: 'une', 2: 'deux', 3: 'trois' }, it: { 1: 'una', 2: 'due', 3: 'tre' }, en: { 1: 'one', 2: 'two', 3: 'three' },
+};
+const BEISPIEL: Record<string, string> = { de: 'höchstens', fr: 'au plus', it: 'al massimo', en: 'at most' };
+const hoechstens = (sprache: string, n: number) => {
+  const z = `(?:${n}|${ZAHLWORT[sprache]?.[n] ?? n})`;
+  const muster: Record<string, string> = {
+    de: `höchstens ${z}`, fr: `(?:au plus|au maximum|pas plus de) ${z}|${z} au (?:plus|maximum)`, it: `(?:al massimo|non più di|massimo) ${z}`,
+    en: `(?:at most|no more than) ${z}|${z} at most`,
+  };
+  return new RegExp(`(?<![\\p{L}])(?:${muster[sprache] ?? muster.de})(?![\\p{L}])`, 'iu');
+};
+const GEFRAGT = /«((?:[^«»\n]|«[^«»\n]*»)*)»|“((?:[^“”\n]|“[^“”\n]*”)*)”|"([^"\n]*)"/g;
 
 const istLektion = (m: VerweisMission) => !m.optional && (m.verstehen?.length ?? 0) > 0;
 const zeile = (text: string, stelle: number) => text.slice(0, stelle).split('\n').length;
@@ -60,7 +117,7 @@ export function bloecke(text: string): { start: number; text: string }[] {
   return aus;
 }
 
-export function missionsverweise(skills: SkillText[], missionen: VerweisMission[], fragen: Fragen = {}): string[] {
+export function missionsverweise(skills: SkillText[], missionen: VerweisMission[], fragen: Fragen = {}, jeNachricht = 2): string[] {
   const nachId = new Map(missionen.map((m) => [m.id, m]));
   const deutsch = new Map(missionen.map((m) => [m.id, (m.verstehen ?? []).map((v) => (v as { frage?: string }).frage ?? '')]));
   const fehler: string[] = [];
@@ -89,21 +146,31 @@ export function missionsverweise(skills: SkillText[], missionen: VerweisMission[
     const sprache = spracheVon(datei);
     const jeLektion = sprache === 'de' ? (fragen.de ?? deutsch) : fragen[sprache];
     for (const b of bloecke(text)) {
-      if (KONTROLLFRAGE.test(b.text) && b.text.includes(AUS_HOLEN))
-        fehler.push(`${datei}:${zeile(text, b.start + b.text.indexOf(AUS_HOLEN))}: Kontrollfragen aus mission_holen; es zeigt die nächste offene `
-          + 'Mission, nicht die Lektion (nach dem letzten Schritt der Phase schon die nächste Phase). Die Fragen der Lektion wörtlich in den Skill, '
-          + 'den Kern einer guten Antwort nennt lage («Kontrollfrage am Ende der Phase»), gestellt vor dem letzten Schritt der Phase');
+      // Die Reihenfolge der Skills und Evals (Entscheid texte, Welle 6; w7-23, 01.11.2026): die Frage zusammen mit dem letzten Schritt der
+      // Phase, in derselben Antwort (lernen-kontrollfrage), verstanden_melden erst nach der Antwort der Person (lernen-verstanden)
+      const holen = holenAlsQuelle(b.text, sprache);
+      if (holen !== null)
+        fehler.push(`${datei}:${zeile(text, b.start + holen)}: Kontrollfragen aus mission_holen; es zeigt die nächste offene Mission, nicht die `
+          + 'Lektion (nach dem letzten Schritt der Phase schon die nächste Phase). Die Fragen der Lektion wörtlich in den Skill, den Kern einer guten '
+          + 'Antwort nennt lage («Kontrollfrage am Ende der Phase»); gestellt in derselben Antwort wie der letzte Schritt der Phase, '
+          + 'verstanden_melden erst nach der Antwort der Person');
       if (!jeLektion) continue;
-      for (const l of b.text.matchAll(LEKTION)) {
-        const soll = jeLektion.get(l[1]!);
-        if (!soll?.length) continue;
-        for (const q of b.text.slice(l.index + l[0].length).matchAll(GEFRAGT)) {
-          const gefragt = glatt(q[1] ?? q[2] ?? '');
-          if (gefragt.endsWith('?') && !soll.some((f) => glatt(f) === gefragt))
-            fehler.push(`${datei}:${zeile(text, b.start + l.index + l[0].length + q.index)}: Kontrollfrage «${gefragt}» steht so nicht in der Lektion `
-              + `«${l[1]}» (${sprache}); wörtlich: ${soll.map((f) => `«${glatt(f)}»`).join(' oder ')}`);
-        }
+      const missionenIm = [...b.text.matchAll(MISSION)];
+      let zitiert = 0;
+      for (const q of b.text.matchAll(GEFRAGT)) {
+        const gefragt = glatt(q[1] ?? q[2] ?? q[3] ?? '');
+        const zu = missionenIm.filter((m) => m.index < q.index).at(-1)?.[1];
+        const soll = zu ? jeLektion.get(zu) : undefined;
+        if (!gefragt.endsWith('?') || !soll?.length) continue;
+        zitiert++;
+        if (!soll.some((f) => glatt(f) === gefragt))
+          fehler.push(`${datei}:${zeile(text, b.start + q.index)}: Kontrollfrage «${gefragt}» steht so nicht in der Lektion «${zu}» (${sprache}); `
+            + `wörtlich: ${soll.map((f) => `«${glatt(f)}»`).join(' oder ')}`);
       }
+      if (zitiert > jeNachricht && !hoechstens(sprache, jeNachricht).test(b.text))
+        fehler.push(`${datei}:${zeile(text, b.start)}: ${zitiert} Kontrollfragen in einem Absatz, aber höchstens ${jeNachricht} Fragen in einer Nachricht `
+          + `(fragen_je_nachricht); sag im Absatz, dass höchstens ${jeNachricht} in eine Nachricht kommen («${BEISPIEL[sprache] ?? BEISPIEL.de} ${ZAHLWORT[sprache]?.[jeNachricht] ?? jeNachricht}») `
+          + 'und die übrigen nach der Antwort der Person');
     }
   }
   return fehler;

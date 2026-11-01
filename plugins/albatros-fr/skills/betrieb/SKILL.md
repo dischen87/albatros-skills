@@ -3,7 +3,7 @@ name: betrieb
 description: "Prépare avec une personne sans connaissances préalables l'exploitation de son site, avant que les invités arrivent (P12) : comment les visiteurs la contactent et qui le lit à quelle fréquence, qui est prévenu quand le site ne répond pas (une surveillance simple et gratuite), comment revenir à hier (photos du serveur avec Pilot, le journal de bord avec Light, une propre sauvegarde par soi-même), si une entrée avec connexion est nécessaire (seulement avec un propre serveur, skill bausteine) et si on compte qui vient (skill statistik, avec consentement là où il le faut). Le résultat est docs/betrieb.md. Utilise ce skill après le domicile (lancieren) et pour « exploitation », « surveillance », « sauvegarde », « backup », « retours », « qui lit le formulaire », « et si le site tombe en panne ? »."
 metadata:
   stand: 0.2.0
-  quelle: '7d86dfefd03f'
+  quelle: 'b68eee2fb444'
 ---
 
 # Exploitation : avant que les invités arrivent
@@ -96,7 +96,7 @@ Statistik: …
 Stand: <date>
 ```
 
-Quand chaque ligne a une réponse, tu fais l'entrée dans le journal de bord (`git add docs/betrieb.md && git commit -m "Exploitation : boîte aux lettres, détecteur de fumée, sauvegarde"`) et tu annonces `schritt_melden` avec `betrieb` et `sprache`. Si l'outil manque ou ne connaît pas l'étape, on continue sans île. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-17-betrieb` : « Pourquoi un message que personne ne lit est-il pire que pas de message du tout ? », « Comment reviens-tu à hier ? » et « Qui doit remarquer en premier que ton site ne répond pas ? » Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+Quand chaque ligne a une réponse, tu fais l'entrée dans le journal de bord (`git add docs/betrieb.md && git commit -m "Exploitation : boîte aux lettres, détecteur de fumée, sauvegarde"`) et tu annonces `schritt_melden` avec `betrieb` et `sprache`. Si l'outil manque ou ne connaît pas l'étape, on continue sans île. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-17-betrieb`, au maximum deux par message (autres questions comprises) : d'abord « Pourquoi un message que personne ne lit est-il pire que pas de message du tout ? » et « Comment reviens-tu à hier ? », après la réponse de la personne « Qui doit remarquer en premier que ton site ne répond pas ? » Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après ses réponses.
 
 Ensuite vient la mise en ligne : skill `lancieren`, partie 2.
 

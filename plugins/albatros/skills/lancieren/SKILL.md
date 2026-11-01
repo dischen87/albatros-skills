@@ -28,14 +28,15 @@ Das Haus ist gebaut, abgenommen und freigegeben. Jetzt kommen zwei Dinge, in die
 
 ```bash
 # die letzte Zeile «Freigegeben:» zählt: vorne ein Datum mit Jahr, nirgends eine [Annahme]
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+# LC_ALL=C: auf jedem Rechner gleich; vor «Freigegeben:» nur Leerraum, >, * oder -, es zählen nur normale Leerzeichen
+LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
-Zeigt das keine Zeile, ist die Seite noch nicht freigegeben: Die Zeile fehlt, oder in der letzten Zeile `Freigegeben:` steht vorne kein Datum mit Jahr (zum Beispiel «noch nicht» oder «1 Seite fehlt noch»), oder darin steht eine `[Annahme: …]`. Unter Windows zeigt `findstr` jede passende Zeile; sie zählt nur, wenn sie die letzte Zeile `Freigegeben:` in `docs/prd.md` ist. Dann sagst du ehrlich: Zuerst kommt die Begehung mit Freigabe (Skill `webseite-bauen`, Schritt 6). Will die Person den Wohnort trotzdem schon wählen, geht das; einziehen wird die Seite erst nach der Freigabe. `docs/lancieren.md` schreibst du und `wohnort` meldest du aber erst nach der Freigabe: Sonst zählt der Fahrplan den Wohnort, und die Frage nach der Freigabe fällt weg.
+Zeigt das keine Zeile, ist die Seite noch nicht freigegeben: Die Zeile fehlt, oder in der letzten Zeile `Freigegeben:` steht vorne kein Datum mit Jahr (zum Beispiel «noch nicht» oder «1 Seite fehlt noch»), oder darin steht eine `[Annahme: …]`. Steht eine Zeile `Freigegeben:` mit Datum doch da, steht ein besonderes Zeichen im Weg, etwa ein geschütztes Leerzeichen, «•» oder «✓»: in dieser Zeile vor oder im Datum, oder vor `Freigegeben:` in einer Zeile weiter unten (die nimmt der Befehl dann als letzte). In der Zeile mit Datum ersetzt du ein besonderes Leerzeichen durch ein normales und lässt andere besondere Zeichen vor dem Datum weg; Datum und Worte der Person bleiben, dann prüfst du nochmals. Steht es in einer Zeile weiter unten, fragst du die Person, ob die Freigabe gilt; erst mit ihrem Ja schreibst du ans Ende eine neue Zeile `Freigegeben: <TT.MM.JJJJ>, «<ihre Worte>»`. Unter Windows zeigt `findstr` jede passende Zeile; sie zählt nur, wenn sie die letzte Zeile `Freigegeben:` in `docs/prd.md` ist. Dann sagst du ehrlich: Zuerst kommt die Begehung mit Freigabe (Skill `webseite-bauen`, Schritt 6). Will die Person den Wohnort trotzdem schon wählen, geht das; einziehen wird die Seite erst nach der Freigabe. `docs/lancieren.md` schreibst du und `wohnort` meldest du aber erst nach der Freigabe: Sonst zählt der Fahrplan den Wohnort, und die Frage nach der Freigabe fällt weg.
 
 ### 2. Die Frage, immer dieselbe
 
@@ -91,7 +92,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (bei selbst: das Repo bei GitHub, oder 
 Gewählt: <Datum>
 ```
 
-Steht die Adresse bei «selbst» erst nach dem ersten Hochladen fest, steht dort `[offen: kommt beim Live schalten]`. Dann der Eintrag ins Logbuch (`git add docs/lancieren.md && git commit -m "Wohnort: <Wohnort>"`) und `schritt_melden` mit `wohnort` und `sprache`. Fehlt das Werkzeug oder kennt es den Schritt nicht, geht es ohne Insel weiter.
+Steht die Adresse bei «selbst» erst nach dem ersten Hochladen fest, steht dort `[offen: kommt beim Live schalten]`. Dann der Eintrag ins Logbuch (`git add docs/lancieren.md && git commit -m "Wohnort: <Wohnort>"`) und `schritt_melden` mit `wohnort` und `sprache`. Fehlt das Werkzeug oder kennt es den Schritt nicht, geht es ohne Insel weiter. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-16-wohnort`, höchstens zwei in einer Nachricht (andere Fragen mitgezählt): zuerst «Was unterscheidet Light, Pilot und «selbst»?» und «Was ist ein SSH-Schlüssel, in einem Satz?», nach der Antwort der Person «Ist deine Seite nach diesem Schritt schon im Netz?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `wohnort` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach ihren Antworten.
 
 Weiter geht es mit dem Skill `betrieb`: Briefkasten, Rauchmelder und Haustür, bevor die Gäste kommen.
 
@@ -103,10 +104,10 @@ Erst wenn `docs/betrieb.md` alle Zeilen hat (Skill `betrieb`). Fehlt sie, gehst 
 
 ```bash
 # die Freigabe aus der Begehung, wie in Teil 1, Schritt 1 (dort auch der Befehl für Windows)
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # leer: nichts Ungespeichertes an der Seite
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
@@ -231,7 +232,7 @@ Geprüft: <Datum>, pruefen.mjs --live ohne Rot, Türen wie erwartet (docs/pruefu
 Angekündigt: <Datum>, <wem>
 ```
 
-Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Welche Seite geht beim Live schalten ins Netz?», «Wann ist deine Seite wirklich live?» und «Warum sagst du es jemandem zuerst?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `live` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach der Antwort der Person.
+Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`, höchstens zwei in einer Nachricht (andere Fragen mitgezählt): zuerst «Welche Seite geht beim Live schalten ins Netz?» und «Wann ist deine Seite wirklich live?», nach der Antwort der Person «Warum sagst du es jemandem zuerst?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `live` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach ihren Antworten.
 
 Wünscht die Person danach etwas anders, gilt der Skill `webseite-aendern`: klein (lokal ändern, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe zum Bauen, bauen, zeigen, Freigabe, Push).
 

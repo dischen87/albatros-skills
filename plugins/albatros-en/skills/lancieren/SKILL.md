@@ -3,7 +3,7 @@ name: lancieren
 description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
   stand: 0.2.0
-  quelle: 'af3dd6986d6d'
+  quelle: '03efe9b03d67'
 ---
 
 # Launch: where it lives and the opening
@@ -31,14 +31,15 @@ The house is built, inspected and released. Now two things follow, in this order
 
 ```bash
 # the last line “Freigegeben:” counts: a date with a year at the front, no [Annahme] anywhere
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+# LC_ALL=C: the same on every computer; before “Freigegeben:” only spaces, >, * or -, only normal spaces count
+LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 # Windows: findstr /r /b /c:"Freigegeben: [0-9]" docs\prd.md | findstr /r /c:"19[0-9][0-9]" /c:"20[0-9][0-9]" | findstr /v /i /l /c:"[annahme" /c:"[hypoth" /c:"[ipotesi" /c:"[assumption"
 ```
 
-If that shows no line, the site isn't released yet: the line is missing, or the last line `Freigegeben:` has no date with a year at the front (for example “not yet” or “1 page still missing”), or it has an `[Annahme: …]`. On Windows, `findstr` shows every matching line; it only counts if it's the last line `Freigegeben:` in `docs/prd.md`. Then you say so honestly: first comes the walk-through with the release (skill `webseite-bauen`, step 6). If the person still wants to choose where it lives already, that's fine; the site only moves in after the release. But you only write `docs/lancieren.md` and report `wohnort` after the release: otherwise the flight plan counts where it lives, and the question about the release drops out.
+If that shows no line, the site isn't released yet: the line is missing, or the last line `Freigegeben:` has no date with a year at the front (for example “not yet” or “1 page still missing”), or it has an `[Annahme: …]`. If a line `Freigegeben:` with a date is there after all, a special character is in the way, for example a non-breaking space, “•” or “✓”: in that line before or in the date, or before `Freigegeben:` in a line further down (the command then takes that one as the last). In the line with the date, replace a special space with a normal one and leave out other special characters before the date; the date and the person's words stay, then check again. If it's in a line further down, ask the person whether the release still holds; only after their yes do you write a new line `Freigegeben: <DD.MM.YYYY>, “<their words>”` at the end. On Windows, `findstr` shows every matching line; it only counts if it's the last line `Freigegeben:` in `docs/prd.md`. Then you say so honestly: first comes the walk-through with the release (skill `webseite-bauen`, step 6). If the person still wants to choose where it lives already, that's fine; the site only moves in after the release. But you only write `docs/lancieren.md` and report `wohnort` after the release: otherwise the flight plan counts where it lives, and the question about the release drops out.
 
 ### 2. The question, always the same
 
@@ -94,7 +95,7 @@ Hafen: git@aufwind.sh:<name>/projekt.git (hosting it yourself: the repository on
 Gewählt: <date>
 ```
 
-If, when hosting it yourself, the address is only known after the first upload, it says `[offen: kommt beim Live schalten]` (open: comes when going live). Then the logbook entry (`git add docs/lancieren.md && git commit -m "Where it lives: <place>"`) and `schritt_melden` with `wohnort` and `sprache`. If the tool is missing or doesn't know the step, you carry on without the island.
+If, when hosting it yourself, the address is only known after the first upload, it says `[offen: kommt beim Live schalten]` (open: comes when going live). Then the logbook entry (`git add docs/lancieren.md && git commit -m "Where it lives: <place>"`) and `schritt_melden` with `wohnort` and `sprache`. If the tool is missing or doesn't know the step, you carry on without the island. In `lernen` mode you now ask the check questions of the lesson `flugschule-16-wohnort`, at most two in one message (counting any other questions): first “What's the difference between Light, Pilot and hosting it yourself?” and “What is an SSH key, in one sentence?”, after the person's answer “Is your site on the web after this step?” They're here because `lage` and `mission_holen` no longer show them after `wohnort`. You only report `verstanden_melden` (kind `kontrollfrage`) after their answers.
 
 Next comes the skill `betrieb`: letterbox, smoke alarm and front door, before the guests arrive.
 
@@ -106,10 +107,10 @@ Only once `docs/betrieb.md` has all its lines (skill `betrieb`). If it's missing
 
 ```bash
 # the release from the walk-through, as in part 1, step 1 (the Windows command is there too)
-grep -E '^[[:space:]>*-]*Freigegeben:' docs/prd.md | tail -n 1 | tr -d '*' \
-  | grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[^[:space:]])' \
-  | grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
-  | grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
+LC_ALL=C grep -E '^([^ -~]|[[:space:]>*-])*Freigegeben:' docs/prd.md | tail -n 1 | LC_ALL=C tr -d '*' \
+  | LC_ALL=C grep -E '^[[:space:]>-]*Freigegeben:[[:space:]]*[0-9]{1,4}([./-]| .*[[:graph:]])' \
+  | LC_ALL=C grep -E '(^|[^A-Za-z0-9_])(19|20)[0-9]{2}([^A-Za-z0-9_]|$)' \
+  | LC_ALL=C grep -v -i -E '\[(annahme|hypoth(e|è|È)se|ipotesi|assumption)([^[:alnum:]]|$)'
 git status --short seite web design                       # empty: nothing unsaved on the site
 git diff --quiet freigegeben HEAD -- seite web design && echo "Seite wie freigegeben"
 ```
@@ -234,7 +235,7 @@ Geprüft: <date>, pruefen.mjs --live without red, doors as expected (docs/pruefu
 Angekündigt: <date>, <whom>
 ```
 
-After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`: “Which site goes onto the web when you go live?”, “When is your site really live?” and “Why do you tell someone first?” They're here because `lage` and `mission_holen` no longer show them after `live`. You only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
+After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`, at most two in one message (counting any other questions): first “Which site goes onto the web when you go live?” and “When is your site really live?”, after the person's answer “Why do you tell someone first?” They're here because `lage` and `mission_holen` no longer show them after `live`. You only report `verstanden_melden` (kind `kontrollfrage`) after their answers.
 
 If the person wants something different afterwards, the skill `webseite-aendern` applies: small (change locally, show, release, push) or big (addition to the plan, draft, approval to build, build, show, release, push).
 

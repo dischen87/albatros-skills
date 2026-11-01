@@ -1,6 +1,7 @@
 // Abgleiche aus scripts/abgleich.ts, die pruefen.ts nutzt: die echten Dateien sind gleich, und jede Abweichung wird rot.
 import { expect, test } from 'bun:test';
-import { agentsBlock, type Befehle, befehleAusReadme, befehleAusSkill, unterschiede, vorlageGegenSkill } from './abgleich.ts';
+import { Glob } from 'bun';
+import { agentsBlock, type Befehle, befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const lies = (pfad: string) => Bun.file(wurzel + pfad).text();
@@ -74,4 +75,36 @@ test('Gerüst der Evals: AGENTS.md in projekt.sh ist gleich wie vorlage/AGENTS.m
   const sh = await lies('plugins/albatros/evals/_projekt/projekt.sh');
   const agents = /cat > AGENTS\.md <<'EOF'\n([\s\S]*?\n)EOF\n/.exec(sh)?.[1];
   expect(agents).toBe(await lies('vorlage/AGENTS.md'));
+});
+
+// Welle 7, w7-21 (01.11.2026): mcp lehnt titel mit Zeilenumbruch oder über 300 Zeichen mit «Ungültige Angaben» ab und meldet den Schritt dann
+// nicht; webseite-planen sagte «geht es ohne Insel weiter», und der Schritt fehlte. Jeder Skill, der titel nennt, sagt den Ausweg.
+test('titel bei schritt_melden: jeder Skill, der ihn nennt, sagt in seiner Sprache, dass der Schritt dann ohne titel nochmals kommt', async () => {
+  const mitTitel: string[] = [];
+  for (const d of new Glob('plugins/*/skills/*/SKILL.md').scanSync(wurzel)) {
+    const text = await lies(d);
+    if (!text.includes('`titel`')) continue;
+    mitTitel.push(d.split('/').slice(1, 4).join('/'));
+    expect([d, titelAusweg(d, text)]).toEqual([d, null]);
+  }
+  expect(mitTitel.sort()).toEqual(['albatros', 'albatros-en', 'albatros-fr', 'albatros-it']
+    .flatMap((p) => ['lotse', 'webseite-modernisieren', 'webseite-planen'].map((s) => `${p}/skills/${s}`)).sort());
+  // rot: der Satz fehlt, oder er steht in einer anderen Sprache
+  expect(titelAusweg('plugins/albatros/skills/lotse/SKILL.md', 'Bei jedem `schritt_melden` gibst du `titel` mit.')).toContain('nochmals ohne `titel`');
+  expect(titelAusweg('plugins/albatros-fr/skills/lotse/SKILL.md', '`schritt_melden` avec `titel`; sonst nochmals ohne `titel`.')).toContain('nochmals sans `titel`');
+  expect(titelAusweg('plugins/albatros-en/skills/x/SKILL.md', '`schritt_melden` with `titel`, else again without `titel`.')).toBeNull();
+  expect(titelAusweg('plugins/albatros/skills/gestaltung/SKILL.md', '`schritt_melden` mit `schritt: mockup`.')).toBeNull();
+});
+
+// Sichtung Welle 7, sicht-08 (01.11.2026): GLOSSAR.md trennt «via libera per costruire» (P8) von «approvazione» (P10)
+test('Italienisch: die Bozza hat den via libera, nie «approvata»; die Skills halten sich daran', async () => {
+  for (const d of new Glob('plugins/albatros-it/skills/*/SKILL.md').scanSync(wurzel)) expect([d, bozzaApprovata(d, await lies(d))]).toEqual([d, []]);
+  const it = 'plugins/albatros-it/skills/webseite-bauen/SKILL.md';
+  for (const rot of ['### 0. Prima di costruire: la bozza è approvata?', 'git commit -m "Bozza approvata: piano, concetto, bozza"',
+    'È ricavato dalla bozza approvata: la persona ha già firmato.', 'La bozza è il modello in cui si può entrare, e la persona l\'ha approvato.'])
+    expect([rot, bozzaApprovata(it, rot).length]).toEqual([rot, 1]);
+  for (const gruen of ['### 0. Prima di costruire: la bozza ha il via libera?', 'Il sito approvato va online.', 'La bozza è pronta. Il sito è approvato in P10.'])
+    expect([gruen, bozzaApprovata(it, gruen)]).toEqual([gruen, []]);
+  // Nur Italienisch: «approvata» kommt in anderen Sprachen nicht vor, «approved draft» ist im Englischen richtig (approval to build)
+  expect(bozzaApprovata('plugins/albatros-en/skills/webseite-bauen/SKILL.md', 'bozza approvata')).toEqual([]);
 });

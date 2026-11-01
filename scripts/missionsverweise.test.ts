@@ -141,3 +141,117 @@ test('Kontrollfragen im Skill: wörtlich wie in der Mission derselben Sprache, s
   // Ohne Fragen für eine Sprache (hier en) prüft Regel 6 dort nichts; der Test der echten Skills verlangt sie für alle vier Sprachen
   expect(missionsverweise(rot[2]!, MS, fragen)).toEqual([]);
 });
+
+// Welle 7 (01.11.2026, w7-23): Skills und Evals stellen die Kontrollfrage zusammen mit dem letzten Schritt der Phase, in derselben Antwort
+// (lernen-kontrollfrage: schritt_melden plan-geprueft und die Frage; Entscheid texte, Welle 6). Die Meldung von Regel 5 verlangte das Gegenteil.
+test('Regel 5: die Meldung nennt die Reihenfolge der Skills und Evals, nicht «vor dem letzten Schritt»', () => {
+  const r = missionsverweise([gestaltung(`${gut}\nAm Ende stellst du die Kontrollfrage der Mission \`flugschule-19-musterblatt\` (\`mission_holen\`).\n`)], MS);
+  expect(r).toEqual([expect.stringContaining('Kontrollfragen aus mission_holen')]);
+  expect(r[0]).not.toContain('vor dem letzten Schritt');
+  expect(r[0]).toContain('in derselben Antwort wie der letzte Schritt der Phase');
+});
+
+// Welle 7 (01.11.2026, w7-24): Regel 5 und 6 hängen nicht an einem Wortlaut. Die Gegenprobe texte liess in en «…, which you fetch with
+// `mission_holen`» (Regel 5) und «mission `id`: “…?”» (Regel 6) grün durch (runde2/repro/mutation-kontrollfragen-r2b.log).
+const inSprache = (sprache: string, text: string): SkillText =>
+  ({ datei: `plugins/albatros${sprache === 'de' ? '' : `-${sprache}`}/skills/gestaltung/SKILL.md`, slug: 'gestaltung', text: `${gut}\n${text}\n` });
+test('Regel 5: mission_holen als Quelle der Kontrollfragen wird rot, auch ohne Klammern und in jeder Sprache', () => {
+  const rot: [string, string][] = [
+    ['en', 'In `lernen` mode you ask the check questions of the mission `flugschule-17-betrieb`, which you fetch with `mission_holen`.'],
+    ['en', 'In `lernen` mode you ask the check questions using `mission_holen`.'],
+    ['en', 'The check questions come from `mission_holen`, so ask them now.'],
+    ['en', "Don't guess: ask the check questions you get from the tool `mission_holen`."],
+    ['de', 'Im Modus `lernen` stellst du die Kontrollfragen der Mission `flugschule-17-betrieb`, die du mit `mission_holen` holst.'],
+    ['de', 'Am Ende der Phase stellst du die Kontrollfragen. Sie liefert dir `mission_holen`.'],
+    ['de', 'Frag nicht lange: Die Kontrollfragen holst du über `mission_holen`.'],
+    ['de', 'Die Kontrollfragen holst du ohne Umweg mit `mission_holen`.'],
+    ['fr', 'En mode `lernen`, tu poses les questions de contrôle de la mission `flugschule-17-betrieb`, que tu récupères avec `mission_holen`.'],
+    ['fr', "Tu n'inventes rien : les questions de contrôle viennent de `mission_holen`."],
+    ['it', 'Nel modo `lernen` fai le domande di controllo della missione `flugschule-17-betrieb`, che prendi con `mission_holen`.'],
+    ['it', 'Non inventare: le domande di controllo le prendi da `mission_holen`.'],
+  ];
+  for (const [s, f] of rot) expect([s, f, missionsverweise([inSprache(s, f)], MS)]).toEqual([s, f, [expect.stringContaining('Kontrollfragen aus mission_holen')]]);
+  // Grün bleibt die Warnung, wie sie in lotse und lancieren steht (vier Sprachen), und mission_holen ohne Kontrollfrage im Absatz
+  const gruen: [string, string][] = [
+    ['de', 'Am Ende der Phase stellst du die Kontrollfragen der Lektion. Merk dir die Mission dazu: Nach dem letzten Schritt der Phase zeigt `lage` schon die nächste Phase, und `mission_holen` zeigt nur die nächste offene Mission, oft eine ohne Kontrollfrage.'],
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion. Sie stehen hier, weil `lage` und `mission_holen` sie nach `live` nicht mehr zeigen.'],
+    ['en', 'At the end of the phase, you ask the check questions of the lesson: after the last step of the phase, `lage` already shows the next phase, and `mission_holen` only shows the next open mission, often one without check questions.'],
+    ['en', "In `lernen` mode you now ask the check questions of the lesson. They're here because `lage` and `mission_holen` no longer show them after `live`."],
+    ['fr', 'À la fin de la phase, tu poses les questions de contrôle : après la dernière étape de la phase, `lage` montre déjà la phase suivante, et `mission_holen` ne montre que la prochaine mission ouverte, souvent une sans question de contrôle.'],
+    ['fr', 'Tu poses les questions de contrôle. Elles sont ici parce que `lage` et `mission_holen` ne les montrent plus après `live`.'],
+    ['fr', "Tu poses les questions de contrôle : `mission_holen` n'affiche que la prochaine mission ouverte."],
+    ['it', 'Alla fine della fase fai le domande di controllo: dopo l\'ultimo passo della fase `lage` mostra già la fase seguente, e `mission_holen` mostra solo la prossima missione aperta, spesso una senza domande di controllo.'],
+    ['it', 'Fai le domande di controllo. Stanno qui perché `lage` e `mission_holen` non le mostrano più dopo `live`.'],
+    ['de', 'Die Kontrollfragen holst du nicht mit `mission_holen`: Es zeigt z. B. nach dem letzten Schritt schon die nächste Phase.'],
+    ['de', 'Die Kontrollfragen stehen hier, da `mission_holen` sie nicht zeigt.'],
+    ['de', 'Die Kontrollfragen stehen in der Lektion; die aktuelle Mission zeigt dir das Werkzeug `mission_holen`, aber ohne Fragen.'],
+  ];
+  for (const [s, f] of gruen) expect([s, f, missionsverweise([inSprache(s, f)], MS)]).toEqual([s, f, []]);
+});
+
+test('Regel 6: eine zitierte Frage hinter jeder Lektion zählt, egal ob dort Lektion, Mission oder nichts davor steht', () => {
+  const id = 'flugschule-19-musterblatt';
+  const fragen: Fragen = {
+    de: new Map([[id, ['Warum stehen Farben und Schriften deiner Seite nur an einem Ort?', 'Was unterscheidet Light, Pilot und «selbst»?']]]),
+    fr: new Map([[id, ["Pourquoi les couleurs et les polices de ton site ne sont-elles qu'à un seul endroit ?", 'Qu\'est-ce qui distingue Light, Pilot et « par toi-même » ?']]]),
+    it: new Map([[id, ['Perché i colori e i caratteri del tuo sito stanno in un solo posto?', 'Che cosa distingue Light, Pilot e «da te»?']]]),
+    en: new Map([[id, ["Why do your site's colours and fonts live in one place only?"]]]),
+  };
+  const rot: [string, string][] = [
+    ['en', `you ask the check questions of the mission \`${id}\`: “Why are the colours in one place?”`],
+    ['en', `you ask the check questions of \`${id}\`: "Why are the colours in one place?"`],
+    ['de', `stellst du die Kontrollfragen der Mission \`${id}\`: «Warum stehen die Farben an einem Ort?»`],
+    ['fr', `tu poses les questions de contrôle de la mission \`${id}\` : « Pourquoi les couleurs sont-elles à un seul endroit ? »`],
+    ['it', `fai le domande di controllo della missione \`${id}\`: «Perché i colori stanno in un solo posto?»`],
+    ['de', `stellst du die Kontrollfragen der Lektion \`${id}\`: «Was unterscheidet Light, Pilot und «Albatros»?»`],
+  ];
+  for (const [s, t] of rot) expect([s, t, missionsverweise([inSprache(s, t)], MS, fragen)]).toEqual([s, t, [expect.stringContaining(`steht so nicht in der Lektion «${id}» (${s})`)]]);
+  const gruen: [string, string][] = [
+    ['en', `you ask the check questions of the mission \`${id}\`: “Why do your site's colours and fonts live in one place only?”`],
+    ['de', `stellst du die Kontrollfragen der Mission \`${id}\`: «Was unterscheidet Light, Pilot und «selbst»?» und «Warum stehen Farben und Schriften deiner Seite nur an einem Ort?»`],
+    ['fr', `tu poses les questions de contrôle de la mission \`${id}\` : « Qu'est-ce qui distingue Light, Pilot et « par toi-même » ? »`],
+    ['it', `fai le domande di controllo della missione \`${id}\`: «Che cosa distingue Light, Pilot e «da te»?»`],
+    // Eine Frage vor jeder Mission im Absatz ist keine Kontrollfrage einer Lektion
+    ['de', `Frag: «Passt das Musterblatt?» Danach \`verstanden_melden\` mit \`mission: ${id}\` und \`art: selbst\`.`],
+    // Hinter einer Mission ohne Kontrollfragen zählt die Frage nicht
+    ['de', 'Mit Pilot die Übung (Mission `flugschule-06-zurueck-auf-gestern`). Frag: «Siehst du das Foto von gestern?»'],
+  ];
+  for (const [s, t] of gruen) expect([s, t, missionsverweise([inSprache(s, t)], MS, fragen)]).toEqual([s, t, []]);
+});
+
+// Regel 7 (Welle 7, 01.11.2026, w7-22): Höchstens zwei Fragen in einer Nachricht (fragen_je_nachricht in fahrplan.yaml, Grader fragen.md in
+// lernen-kontrollfrage). Zitiert ein Absatz mehr Kontrollfragen, sagt er, dass höchstens zwei in eine Nachricht kommen; betrieb und lancieren
+// zitierten drei mit «stellst du jetzt» (Gegenprobe texte, Runde 2).
+test('Regel 7: mehr als zwei zitierte Kontrollfragen in einem Absatz nur mit «höchstens zwei» in derselben Sprache', () => {
+  const drei = ['Warum A?', 'Wie B?', 'Wer C?'];
+  const ms: VerweisMission[] = [...MS, { id: 'flugschule-18-live-schalten', weg: 'flugschule', phase: 'P13', skill: 'lancieren', verstehen: drei.map((frage) => ({ frage, kern: 'x' })) }];
+  const fragen: Fragen = {
+    de: new Map([['flugschule-18-live-schalten', drei], ['flugschule-19-musterblatt', ['Warum D?']]]),
+    fr: new Map([['flugschule-18-live-schalten', ['Pourquoi A ?', 'Comment B ?', 'Qui C ?']]]),
+    it: new Map([['flugschule-18-live-schalten', ['Perché A?', 'Come B?', 'Chi C?']]]),
+    en: new Map([['flugschule-18-live-schalten', ['Why A?', 'How B?', 'Who C?']]]),
+  };
+  const lancieren = (sprache: string, text: string): SkillText => ({ ...inSprache(sprache, text), datei: inSprache(sprache, text).datei.replace('gestaltung', 'lancieren'), slug: 'lancieren', text: `\`flugschule-18-live-schalten\`\n\n${text}\n` });
+  const rot: [string, string][] = [
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Warum A?», «Wie B?» und «Wer C?»'],
+    ['fr', 'En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-18-live-schalten` : « Pourquoi A ? », « Comment B ? » et « Qui C ? »'],
+    ['it', 'Nel modo `lernen` fai adesso le domande di controllo della lezione `flugschule-18-live-schalten`: «Perché A?», «Come B?» e «Chi C?»'],
+    ['en', 'In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`: “Why A?”, “How B?” and “Who C?”'],
+    // Fragen mehrerer Lektionen zählen zusammen
+    ['de', 'Die Kontrollfrage der Lektion `flugschule-19-musterblatt`: «Warum D?», dazu die Lektion `flugschule-18-live-schalten` mit «Warum A?» und «Wie B?»'],
+    // Die Grenze in einer anderen Sprache zählt nicht
+    ['fr', 'Tu poses les questions de contrôle de la leçon `flugschule-18-live-schalten`, höchstens zwei : « Pourquoi A ? », « Comment B ? » et « Qui C ? »'],
+  ];
+  for (const [s, t] of rot)
+    expect([s, t, missionsverweise([lancieren(s, t)], ms, fragen)]).toEqual([s, t, [expect.stringContaining('Kontrollfragen in einem Absatz, aber höchstens 2 Fragen in einer Nachricht')]]);
+  const gruen: [string, string][] = [
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`, höchstens zwei in einer Nachricht: zuerst «Warum A?» und «Wie B?», nach der Antwort der Person «Wer C?»'],
+    ['fr', 'En mode `lernen`, tu poses les questions de contrôle de la leçon `flugschule-18-live-schalten`, au plus deux par message : « Pourquoi A ? » et « Comment B ? », puis « Qui C ? »'],
+    ['it', 'Nel modo `lernen` fai le domande di controllo della lezione `flugschule-18-live-schalten`, al massimo due per messaggio: «Perché A?» e «Come B?», poi «Chi C?»'],
+    ['en', 'In `lernen` mode you ask the check questions of the lesson `flugschule-18-live-schalten`, at most two in one message: “Why A?” and “How B?”, then “Who C?”'],
+    ['de', 'Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Warum A?» und «Wie B?»'],
+  ];
+  for (const [s, t] of gruen) expect([s, t, missionsverweise([lancieren(s, t)], ms, fragen)]).toEqual([s, t, []]);
+  // Die Grenze kommt aus dem Fahrplan: mit drei je Nachricht sind drei Fragen ohne Satz erlaubt
+  expect(missionsverweise([lancieren('de', rot[0]![1])], ms, fragen, 3)).toEqual([]);
+});

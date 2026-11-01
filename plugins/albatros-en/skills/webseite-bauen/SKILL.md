@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: 'a2a3f2a880b5'
+  quelle: '99f07c378614'
 ---
 
 # Building the website: the shell in your own workshop
@@ -270,7 +270,7 @@ After that you write four reports, one page each, in the person's language:
 
 Then you go through the acceptance criteria in `docs/prd.md`: you tick off the ones that are met (`- [x]`) and note briefly where or how they were checked. Whatever isn't met stays open, with a reason.
 
-Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you make the logbook entry (`git add docs web seite && git commit -m "Check: four reports, nothing red"`) and report `pruefung`. In `lernen` mode you now ask the check question of the lesson `flugschule-20-logbuch-eintrag`: “What is an entry in the logbook (a commit), and why does every step get one?” If `lage` named more lessons in this phase (on the website path, accessibility and the law), you ask their questions too. You only report `verstanden_melden` (kind `kontrollfrage`, each time with the mission of the question) after the person's answer.
+Red means: fix it, build again, check again, until nothing is red any more. Yellow is only allowed with a reason under “Open”. You only write “all green” once you've looked at the screenshots yourself. Once the four reports are in `docs/pruefung/` and nothing is red any more, you make the logbook entry (`git add docs web seite && git commit -m "Check: four reports, nothing red"`) and report `pruefung`. In `lernen` mode you now ask the check question of the lesson `flugschule-20-logbuch-eintrag`: “What is an entry in the logbook (a commit), and why does every step get one?” On the website path, `lage` also names the lessons `webseite-06-barrierefreiheit` (“Who does a ramp next to the stairs help on your site?”) and `webseite-07-recht-ch` (“What does your site's doorbell nameplate (legal notice) say, and what do the house rules (privacy policy) say?”) in this phase. At most two questions in one message (counting any other questions): you ask the rest after the person's answer. You only report `verstanden_melden` (kind `kontrollfrage`, each time with the mission of the question) after their answers.
 
 ### 6. Release (Freigabe): the walk-through (`schritt: freigabe`)
 
