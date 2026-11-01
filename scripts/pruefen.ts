@@ -8,7 +8,7 @@ import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 import { pruefeAbschnittsnamen } from './abschnitte.ts';
-import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
+import { ALTE_INSEL, ladeFahrplan, stufeFehler } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
 import { ladeFragen, missionsverweise, type SkillText } from './missionsverweise.ts';
@@ -17,6 +17,7 @@ import { hoeher, quelle } from './stand.ts';
 type Mission = {
   id: string;
   weg: string;
+  stufe: 'abheben' | 'fliegen' | 'landen';
   phase: string;
   optional?: boolean;
   abo?: 'light' | 'pilot';
@@ -194,6 +195,9 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
   if (!gueltig) continue;
   deutsch.set(datei, k);
   if (!fahrplan) continue;
+  // Stufe gleich Etappe der Phase (Entscheid stufe-etappe, 01.11.2026, scripts/fahrplan.ts)
+  const stufe = stufeFehler(fahrplan.phasen, k);
+  if (stufe) fehler.push(`${datei}: ${stufe}`);
   // Der Insel-Schritt gehört zur Phase der Mission; bis gratis_bis arbeitet die Person nur auf ihrem Computer, ohne Server und Hafen
   for (const p of k.pruefung)
     if (p.typ === 'insel' && inselPhase.get(p.schritt ?? '') !== k.phase)

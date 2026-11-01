@@ -1,7 +1,7 @@
 ---
 id: webseite-05-cms
 weg: webseite
-stufe: fliegen
+stufe: landen
 phase: P12
 optional: true
 titel: Eine Pinnwand für deine Inhalte

@@ -14,7 +14,7 @@
     },
     "weg": { "enum": ["flugschule", "webseite", "geschaeft"] },
     "stufe": {
-      "description": "abheben = Idee und Produkt; fliegen = Setup und live gehen; landen = der erste Fan (sichtbar werden, erste Kundinnen und Kunden gewinnen).",
+      "description": "Die Etappe der Phase (phasen[].etappe in fahrplan.yaml); scripts/pruefen.ts verlangt genau sie. abheben = Idee bis Freigabe zum Bauen (P1 bis P8); fliegen = lokal bauen, freigeben und Wohnort einrichten (P9 bis P11); landen = Betrieb vorbereiten und live schalten (P12, P13), danach sichtbar werden und erste Kundinnen und Kunden gewinnen.",
       "enum": ["abheben", "fliegen", "landen"]
     },
     "phase": {

@@ -90,6 +90,14 @@ export function vertragsFehler(f: Fahrplan): string[] {
   }
   return fehler;
 }
+
+// Stufe einer Mission gleich der Etappe ihrer Phase (Entscheid stufe-etappe, 01.11.2026), für pruefen.ts: Ohne FAHRPLAN ordnen Bibliothek
+// und Flugbuch nach stufe, mit FAHRPLAN nach der Etappe der Phase; so stehen sie in beiden Fällen gleich. null: in Ordnung
+export function stufeFehler(phasen: Pick<Phase, 'id' | 'etappe'>[], m: { stufe?: unknown; phase?: unknown }): string | null {
+  const etappe = phasen.find((p) => p.id === m.phase)?.etappe;
+  return etappe && m.stufe !== etappe ? `stufe muss ${etappe} sein, die Etappe der Phase ${m.phase} in fahrplan.yaml (nicht ${m.stufe})` : null;
+}
+
 const teilfolge = (teil: string[], ganz: string[]) => {
   let i = 0;
   for (const s of ganz) if (s === teil[i]) i++;

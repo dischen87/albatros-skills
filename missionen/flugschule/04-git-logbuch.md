@@ -1,7 +1,7 @@
 ---
 id: flugschule-04-git-logbuch
 weg: flugschule
-stufe: fliegen
+stufe: landen
 phase: P13
 titel: Dein Logbuch mit Git
 bild: Das Logbuch an Bord, mit einer Kopie im Hafen

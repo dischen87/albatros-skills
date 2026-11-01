@@ -8,7 +8,7 @@ Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen:
 - **fliegen:** die Seite auf dem eigenen Computer bauen, prüfen und freigeben, dann den Wohnort wählen (P9 bis P11)
 - **landen:** Betrieb vorbereiten, live schalten und der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen (P12, P13 und danach)
 
-Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` trägt dieselben drei Namen (Abschnitt «Missionen»).
+Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` ist die Etappe dieser Phase, mit denselben drei Namen (Abschnitt «Missionen»; `pruefen.ts` prüft das seit 01.11.2026).
 
 Dieses Repo enthält:
 
@@ -161,7 +161,7 @@ Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er 
 ---
 id: flugschule-02-ssh-schluessel     # <weg>-<nr>-<slug>, gleich wie der Dateiname
 weg: flugschule                      # flugschule | webseite | geschaeft
-stufe: fliegen                       # abheben (Idee, Produkt) | fliegen (Setup, live) | landen (erster Fan)
+stufe: fliegen                       # Etappe der Phase: abheben (P1 bis P8) | fliegen (P9 bis P11) | landen (P12, P13)
 phase: P11                           # Phase im Fahrplan: dort wird das Thema gebraucht und ist die Prüfung bestehbar
 optional: true                       # nur bei freiwilligen Missionen (domain, landung, cms, statistik, webseite-02, webseite-04)
 titel: Dein Hausschlüssel für den Server

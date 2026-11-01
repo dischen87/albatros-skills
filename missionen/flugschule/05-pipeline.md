@@ -1,7 +1,7 @@
 ---
 id: flugschule-05-pipeline
 weg: flugschule
-stufe: fliegen
+stufe: landen
 phase: P13
 titel: Das Fliessband für deine Seite
 bild: Fliessband mit Qualitätskontrolle
