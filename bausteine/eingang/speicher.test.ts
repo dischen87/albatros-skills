@@ -40,8 +40,8 @@ afterAll(() => { tuer.stop(true); teil.stop(true); });
 
 // Eine Besucherin, die liest: Status, Zahl der Bytes (-1, wenn der Körper abbricht), ETag und das erste Byte; Status 0, wenn die Verbindung
 // vor den Kopfzeilen zugeht
-async function lies(pfad: string, adresse: string) {
-  const r = await fetch(`http://127.0.0.1:${tuer.port}${pfad}`, { headers: { host: 'verein.example', 'x-forwarded-for': adresse }, signal: AbortSignal.timeout(10_000) })
+async function lies(pfad: string, adresse: string, port = tuer.port) {
+  const r = await fetch(`http://127.0.0.1:${port}${pfad}`, { headers: { host: 'verein.example', 'x-forwarded-for': adresse }, signal: AbortSignal.timeout(10_000) })
     .catch(() => null);
   if (!r) return { status: 0, bytes: -1, etag: null, byte: -1 };
   const b = await r.arrayBuffer().then((x) => new Uint8Array(x), () => null);
@@ -49,8 +49,8 @@ async function lies(pfad: string, adresse: string) {
 }
 const ganz = { status: 200, bytes: GROSS, etag: '"1"', byte: 66 };
 // Eine Besucherin, die nach dem ersten Stück nicht weiterliest (angehaltener Download): Status aus der ersten Zeile, zu() schliesst
-function haelt(pfad: string, adresse: string) {
-  const s = connect({ host: '127.0.0.1', port: tuer.port }, () => s.write(`GET ${pfad} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: ${adresse}\r\n\r\n`));
+function haelt(pfad: string, adresse: string, port = tuer.port) {
+  const s = connect({ host: '127.0.0.1', port }, () => s.write(`GET ${pfad} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: ${adresse}\r\n\r\n`));
   const status = new Promise<number>((fertig) => {
     s.once('data', (d: Buffer) => { s.pause(); fertig(Number(d.toString().split(' ')[1])); });
     s.on('close', () => fertig(0));
@@ -59,6 +59,26 @@ function haelt(pfad: string, adresse: string) {
   return { status, zu: () => s.destroy() };
 }
 const zu = async (liste: { zu: () => void }[]) => { for (const x of liste) x.zu(); await Bun.sleep(200); };
+// Eine Besucherin, die stetig, aber langsam liest (rate Bytes je Sekunde). Über TCP mit pause(), damit sie wirklich nur so schnell abnimmt
+// (fetch läse alles sofort in den Speicher). ganz: mit Länge so viele Bytes wie content-length, in Stücken bis zum letzten, leeren Stück
+function liestLangsam(pfad: string, adresse: string, rate: number, port = tuer.port) {
+  return new Promise<{ status: number; ganz: boolean }>((fertig) => {
+    let kopf = '', bytes = 0, ende = '', zu = false;
+    const s = connect({ host: '127.0.0.1', port }, () => s.write(`GET ${pfad} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: ${adresse}\r\nConnection: close\r\n\r\n`));
+    s.on('data', (d: Buffer) => {
+      if (!kopf) { const i = d.indexOf('\r\n\r\n'); kopf = d.subarray(0, i).toString(); bytes += d.length - i - 4; } else bytes += d.length;
+      ende = (ende + d.subarray(-5).toString('latin1')).slice(-5);
+      s.pause();
+      setTimeout(() => { if (!zu) s.resume(); }, (d.length / rate) * 1000);
+    });
+    s.on('close', () => {
+      zu = true;
+      const laenge = /content-length: *(\d+)/i.exec(kopf)?.[1];
+      fertig({ status: Number(kopf.split(' ')[1] ?? 0), ganz: laenge !== undefined ? Number(laenge) === bytes : ende === '0\r\n\r\n' });
+    });
+    s.on('error', () => {});
+  });
+}
 
 test('grosse Körper: je Adresse nur so viel wie Platz ist, die übrigen warten ohne offene Antwort vom Teil; eine andere Adresse geht', async () => {
   const a = Array.from({ length: 5 }, (_, i) => haelt(`/gross/a${i}`, '203.0.113.1'));
@@ -106,4 +126,25 @@ test('liefert der Teil beim zweiten Mal etwas anderes, bekommt die Besucherin ni
   const passt = r.bytes === -1 || (r.status === 200 && r.bytes === GROSS && ((r.etag === '"a"' && r.byte === 0x61) || (r.etag === '"b"' && r.byte === 0x62)));
   expect([r.status, r.etag, r.byte, passt]).toEqual([r.status, r.etag, r.byte, true]);
   expect(anfragen.get('/anders/1')).toBeGreaterThanOrEqual(2);
+}, 20_000);
+
+// Nachbesserung Welle 7 (01.11.2026, Gegenprobe zu w7-28): Ein grosser Körper, der warten musste und nochmals geholt wird, brach nach teilMs
+// ab, wenn die Besucherin länger las (die Frist hing am Körper). Die Frist gilt wie bei der ersten Anfrage nur bis zu den Kopfzeilen.
+test('auch wer warten musste, darf langsamer lesen, als die Frist (teilMs) dauert: Sie gilt bis zu den Kopfzeilen, nicht für den Körper', async () => {
+  // Eigener Eingang mit kurzer Frist, 300 ms; die Besucherinnen lesen 4 MB je Sekunde, brauchen für 8 MB also rund 2 s
+  const kurz = eingang(e.wert, { vertraut: '127.0.0.1', grenzen: { grossBytes: 64 * 1024, koerperJeAdresse: GROSS, koerperAlle: 2 * GROSS, teilMs: 300 }, log: () => {} });
+  const tuerKurz = Bun.serve({ hostname: '127.0.0.1', port: 0, idleTimeout: 60, fetch: (req, s) => kurz(req, s.requestIP(req)?.address ?? '') });
+  try {
+    const halter = haelt('/gross/f0', '203.0.113.5', tuerKurz.port);
+    await halter.status;
+    const wartete = liestLangsam('/gross/f1', '203.0.113.5', 4 * MB, tuerKurz.port);
+    await Bun.sleep(200);
+    halter.zu();
+    const sofort = liestLangsam('/gross/f2', '203.0.113.6', 4 * MB, tuerKurz.port);
+    expect(await Promise.all([wartete, sofort])).toEqual([{ status: 200, ganz: true }, { status: 200, ganz: true }]);
+    // Die erste hat wirklich gewartet: Ihr Körper kam aus der zweiten Anfrage an den Teil
+    expect([anfragen.get('/gross/f1'), anfragen.get('/gross/f2')]).toEqual([2, 1]);
+  } finally {
+    tuerKurz.stop(true);
+  }
 }, 20_000);

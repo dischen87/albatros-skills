@@ -364,6 +364,23 @@ function durch(koerper: ReadableStream<Uint8Array>, frei: () => void, speicher?:
   });
 }
 
+// Eine Anfrage an einen Teil, für die erste Anfrage (weiterleiten) wie für nochmals(): Die Frist (bis) gilt, bis die Kopfzeilen der Antwort
+// da sind, nicht für ihren Körper; eine Besucherin darf langsam lesen. Geht die Besucherin, bricht die Anfrage ab, auch mitten im Körper.
+// (Welle 7, Nachbesserung 01.11.2026: nochmals() hatte die Frist am Körper und schnitt langsame Besucherinnen nach teilMs ab.)
+async function anTeil(adresse: string, init: RequestInit, besucherin: AbortSignal, bis: number): Promise<{ ok: true; res: Response } | { ok: false; zeit: boolean }> {
+  const halt = new AbortController();
+  const uhr = setTimeout(() => halt.abort(new DOMException('Zeit abgelaufen', 'TimeoutError')), Math.max(0, bis - performance.now()));
+  if (besucherin.aborted) halt.abort();
+  else besucherin.addEventListener('abort', () => halt.abort(), { once: true });
+  try {
+    return { ok: true, res: await fetch(adresse, { ...init, signal: halt.signal }) };
+  } catch {
+    return { ok: false, zeit: halt.signal.reason instanceof DOMException && halt.signal.reason.name === 'TimeoutError' };
+  } finally {
+    clearTimeout(uhr);
+  }
+}
+
 // grenzen: nur für den Test (kürzere Frist, weniger Wartende als in GRENZEN)
 export type Optionen = { vertraut?: string; anfragenProMinute?: number;
   grenzen?: Partial<Pick<typeof GRENZEN, 'teilMs' | 'wartendAlle' | 'grossBytes' | 'koerperJeAdresse' | 'koerperAlle'>>;
@@ -473,19 +490,12 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     if (pb) kopf.set('x-eingang-weg', 'aussen');
     if (angemeldet) { kopf.set('x-eingang-benutzer', angemeldet.id); kopf.set('x-eingang-rolle', angemeldet.rolle); }
 
-    const halt = new AbortController();
-    const uhr = setTimeout(() => halt.abort(new DOMException('Zeit abgelaufen', 'TimeoutError')), Math.max(0, frist - performance.now()));
-    req.signal.addEventListener('abort', () => halt.abort());
-    let res: Response;
-    try {
-      res = await fetch(`${teil.ziel}${url.pathname}${url.search}`, {
-        method: req.method, headers: kopf, body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body, redirect: 'manual', signal: halt.signal, decompress: false,
-      } as RequestInit);
-    } catch {
-      return { res: json(halt.signal.reason instanceof DOMException && halt.signal.reason.name === 'TimeoutError' ? 504 : 502), teil: teil.name, pfad: protokoll };
-    } finally {
-      clearTimeout(uhr);
-    }
+    const adresseTeil = `${teil.ziel}${url.pathname}${url.search}`;
+    const antwort = await anTeil(adresseTeil, {
+      method: req.method, headers: kopf, body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body, redirect: 'manual', decompress: false,
+    } as RequestInit, req.signal, frist);
+    if (!antwort.ok) return { res: json(antwort.zeit ? 504 : 502), teil: teil.name, pfad: protokoll };
+    const res = antwort.res;
 
     // Antwort: keine x-eingang-* nach aussen; die Sitzung setzt nur PocketBase; hinter dem Login nichts im Zwischenspeicher
     const aus = new Headers();
@@ -503,9 +513,11 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     // (Status, Länge, ETag, Last-Modified), bricht der Körper ab, statt etwas anderes zu liefern, als die Kopfzeilen sagen
     const laenge = Number(res.headers.get('content-length'));
     const gross = req.method === 'GET' && res.body !== null && Number.isFinite(laenge) && laenge >= g.grossBytes;
+    // (die Frist teilMs gilt wieder nur bis zu den Kopfzeilen, anTeil oben)
     const nochmals = async () => {
-      const signal = AbortSignal.any([req.signal, AbortSignal.timeout(g.teilMs)]);
-      const neu = await fetch(`${teil.ziel}${url.pathname}${url.search}`, { method: 'GET', headers: kopf, redirect: 'manual', signal, decompress: false } as RequestInit);
+      const a = await anTeil(adresseTeil, { method: 'GET', headers: kopf, redirect: 'manual', decompress: false } as RequestInit, req.signal, performance.now() + g.teilMs);
+      if (!a.ok) throw new Error(a.zeit ? 'Der Teil antwortet nicht rechtzeitig' : 'Der Teil antwortet nicht');
+      const neu = a.res;
       const gleich = ['content-length', 'etag', 'last-modified'].every((k) => neu.headers.get(k) === res.headers.get(k));
       if (neu.status !== res.status || !gleich || !neu.body) { await neu.body?.cancel(); throw new Error('Der Teil liefert jetzt eine andere Antwort'); }
       return neu.body;
