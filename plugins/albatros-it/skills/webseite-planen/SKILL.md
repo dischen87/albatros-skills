@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Pianifica con una persona senza conoscenze tecniche il suo sito web prima del design e della costruzione, in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md e uno schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, contenuti esistenti, docs/recherche.md), pianta (pagine, funzioni, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere in un contesto nuovo, docs/plan-pruefung.md, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill con «voglio un sito web», «pianificare un sito web», «da dove comincio», «cosa mi serve per un sito web», «quali pagine mi servono», «sitemap», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione sul percorso sito web."
 metadata:
   stand: 0.2.0
-  quelle: 'd76aaac88f86'
+  quelle: '501e96d6b453'
 ---
 
 # Pianificare il sito web: la pianta
@@ -95,7 +95,7 @@ Se la persona ha un account e la sua isola non è ancora aperta in questa conver
    - Niente va in rete senza approvazione: nessuna pubblicazione e nessun push nel porto prima che la persona abbia approvato il suo sito (`Freigegeben:` in `docs/prd.md`). Dopo la messa online ogni modifica ha bisogno del suo sì.
    - I prezzi solo da `konto_status`, mai a memoria.
    - Al massimo due domande per messaggio. Quello che puoi proporre da te è segnato `[Annahme: …]` (ipotesi), quello che è aperto `[offen: …]`. Questi segni e i nomi delle righe in `docs/` restano in tedesco. Non inventare niente.
-   - Dopo ogni passo riuscito: aggiornare `Stand:` e `Nächster Schritt:` in `docs/projekt.md`, `schritt_melden`, poi di nuovo `lage`.
+   - Dopo ogni passo riuscito: aggiornare `Stand:` e `Nächster Schritt:` in `docs/projekt.md`, `schritt_melden` (con `titel`, il valore della riga `Projektname:`, appena c'è), poi di nuovo `lage`.
    - Password, numeri di carta e chiavi private non vanno mai nella chat né in un file del progetto. I segreti stanno in `.env`, e `.env` sta in `.gitignore`.
    - Dare del tu, linguaggio di tutti i giorni, in italiano. Una parola tecnica arriva solo con la sua immagine.
    ```

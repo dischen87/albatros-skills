@@ -56,3 +56,22 @@ test('Vorlage: geänderte Zeile, fehlende Datei, fremde erste Zeile oder falsche
   expect(vorlageGegenSkill(skill, { ...echt, 'GEMINI.md': echt['GEMINI.md'].replace('@./AGENTS.md', '@AGENTS.md') })).toEqual(['GEMINI.md: letzte Zeile muss @./AGENTS.md sein']);
   expect(vorlageGegenSkill(skill.replace('**`AGENTS.md`**', '`AGENTS.md`'), echt)).toEqual(['Block «**`AGENTS.md`**» mit ```markdown fehlt in webseite-planen']);
 });
+
+// Welle 6, w6-52 (01.11.2026): Die Vorlage nannte schritt_melden ohne titel; der lotse und webseite-planen geben titel bei jedem
+// schritt_melden mit (Wert der Zeile «Projektname:»), damit die Insel das Haus mit dem Namen des Projekts zeigt. Vorlage und Block in
+// webseite-planen sind gleich (Test oben); hier: Die Regel nennt titel, in jeder Sprache.
+test('Vorlage je Sprache: die Regel nach jedem Schritt nennt schritt_melden mit titel aus «Projektname:»', async () => {
+  for (const [, ordner] of SPRACHEN) {
+    const regel = (await lies(`${ordner}/AGENTS.md`)).split('\n').filter((z) => z.includes('`schritt_melden`') && z.includes('`Stand:`'));
+    expect([ordner, regel.length]).toEqual([ordner, 1]);
+    expect([ordner, regel[0]!.includes('`titel`') && regel[0]!.includes('`Projektname:`')]).toEqual([ordner, true]);
+  }
+});
+
+// Welle 6, w6-52 (01.11.2026): Das Gerüst der Evals (plugins/albatros/evals/_projekt/projekt.sh) legt AGENTS.md so an, wie webseite-planen
+// es in P1 schreibt, also gleich wie vorlage/AGENTS.md. Ändert sich die Vorlage, zieht das Gerüst mit.
+test('Gerüst der Evals: AGENTS.md in projekt.sh ist gleich wie vorlage/AGENTS.md', async () => {
+  const sh = await lies('plugins/albatros/evals/_projekt/projekt.sh');
+  const agents = /cat > AGENTS\.md <<'EOF'\n([\s\S]*?\n)EOF\n/.exec(sh)?.[1];
+  expect(agents).toBe(await lies('vorlage/AGENTS.md'));
+});

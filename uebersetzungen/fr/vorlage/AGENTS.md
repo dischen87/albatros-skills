@@ -12,6 +12,6 @@ Lis `docs/projekt.md` (état, prochaine étape), puis appelle `lage` (Albatros).
 - Rien ne va sur Internet sans validation : pas de publication et pas de push au port avant que la personne ait validé son site (`Freigegeben:` dans `docs/prd.md`). Après la mise en ligne, chaque changement a besoin de son propre oui.
 - Les prix seulement d'après `konto_status`, jamais de mémoire.
 - Deux questions au maximum par message. Ce que tu peux proposer toi-même est noté `[Annahme: …]` (hypothèse), ce qui est ouvert `[offen: …]`. Ces marques et les noms des lignes dans `docs/` restent en allemand. Ne rien inventer.
-- Après chaque étape réussie : mettre à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`, `schritt_melden`, puis rappeler `lage`.
+- Après chaque étape réussie : mettre à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`, `schritt_melden` (avec `titel`, la valeur de la ligne `Projektname:`, dès qu'elle existe), puis rappeler `lage`.
 - Les mots de passe, les numéros de carte et les clés privées ne vont jamais dans le chat ni dans un fichier du projet. Les secrets sont dans `.env`, et `.env` est dans `.gitignore`.
 - Tutoiement, langage de tous les jours, en français. Un mot technique n'arrive qu'avec son image.
