@@ -24,9 +24,6 @@ export const GRENZEN = {
   pocketbaseMs: 2000,               // so lange darf die Prüfung der Anmeldung dauern, sonst 503
   teilMs: 60_000,                   // so lange darf eine Anfrage ab Ankunft bis zur Antwort brauchen, Warten auf einen Platz eingeschlossen, sonst
                                     // 504 (oder 429, wenn sie bis dahin keinen Platz bekam). Bun.serve wartet darum länger (idleTimeout)
-  grossBytes: 256 * 1024,           // ab dieser Länge (content-length) wartet der Körper einer Antwort auf Platz im Speicher (koerper unten)
-  koerperJeAdresse: 8 * 1024 * 1024, // so viele Bytes grosser Körper sind je Adresse unterwegs, mindestens einer
-  koerperAlle: 32 * 1024 * 1024,    // und über alle Adressen zusammen, mindestens einer (mem_limit 128m, Leerlauf rund 20 MB)
 };
 // Verwaltung und Interna von PocketBase sind von aussen nie erreichbar (404), dazu jede Punktdatei ausser /.well-known/. Auch die Echtzeit
 // (/api/realtime): Kein Rezept braucht sie, und jede Verbindung bliebe offen und hielte einen der Plätze für alle.
@@ -235,66 +232,6 @@ function plaetze(g: Pick<typeof GRENZEN, 'gleichzeitig' | 'wartend' | 'wartendAl
   };
 }
 
-// Platz im Speicher für grosse Körper (ab GRENZEN.grossBytes, nach content-length). Bun liest den Körper einer Antwort vom Teil in den
-// Speicher, so schnell der Teil liefert, sobald der Eingang ihn zu lesen beginnt, auch wenn die Besucherin langsam oder gar nicht liest; und
-// schon eine Antwort, deren Körper niemand liest, hält rund 1 MB (gemessen 01.11.2026 in Welle 7, w7-28; Zahlen im README, «Gemessen»).
-// Darum geht ein grosser Körper nur, wenn er passt: je Adresse höchstens g.koerperJeAdresse und über alle g.koerperAlle Bytes, die noch
-// durch müssen; einer geht immer. Passt er nicht, gehen die Kopfzeilen trotzdem hinaus (die Frist ist eingehalten), der Körper vom Teil
-// wird verworfen, und wenn Platz frei ist, holt der Eingang ihn nochmals (nur GET, gleiche Länge und gleiches ETag, sonst bricht er ab).
-// Je weiter die Besucherin liest, desto mehr wird frei. Kleine Körper (Bilder einer Galerie, Seiten, JSON) und solche ohne Länge warten nie.
-type Koerper = { versuche: () => boolean; warte: () => Promise<boolean>; durch: (n: number) => void; ende: () => void };
-function koerper(g: Pick<typeof GRENZEN, 'koerperJeAdresse' | 'koerperAlle'>) {
-  const je = new Map<string, number>();
-  let alle = 0;
-  const warten: { netz: string; laenge: number; los: () => void }[] = [];
-  const passt = (netz: string, n: number) => {
-    const a = je.get(netz) ?? 0;
-    return (a === 0 || a + n <= g.koerperJeAdresse) && (alle === 0 || alle + n <= g.koerperAlle);
-  };
-  const nimm = (netz: string, n: number) => { je.set(netz, (je.get(netz) ?? 0) + n); alle += n; };
-  const gib = (netz: string, n: number) => {
-    if (n <= 0) return;
-    const a = (je.get(netz) ?? 0) - n;
-    if (a <= 0) je.delete(netz); else je.set(netz, a);
-    alle -= n;
-    // Wer jetzt passt, darf los, der Reihe nach; wer noch nicht passt, wartet weiter
-    for (let i = 0; i < warten.length;) {
-      const w = warten[i]!;
-      if (passt(w.netz, w.laenge)) { warten.splice(i, 1); nimm(w.netz, w.laenge); w.los(); } else i++;
-    }
-  };
-  return (netz: string, laenge: number): Koerper => {
-    let rest = 0; // Bytes, die dieser Körper im Budget hält
-    let zustand: 'neu' | 'wartet' | 'laeuft' | 'ende' = 'neu';
-    let eintrag: (typeof warten)[number] | null = null;
-    let fertig: (ok: boolean) => void = () => {};
-    return {
-      versuche: () => {
-        if (zustand !== 'neu' || !passt(netz, laenge)) return false;
-        nimm(netz, laenge); rest = laenge; zustand = 'laeuft';
-        return true;
-      },
-      warte: () => {
-        if (zustand !== 'neu') return Promise.resolve(zustand === 'laeuft');
-        zustand = 'wartet';
-        return new Promise<boolean>((r) => {
-          fertig = r;
-          eintrag = { netz, laenge, los: () => { rest = laenge; zustand = 'laeuft'; r(true); } };
-          warten.push(eintrag);
-        });
-      },
-      durch: (n) => { const m = Math.min(n, rest); rest -= m; gib(netz, m); },
-      ende: () => {
-        if (zustand === 'wartet' && eintrag) { const i = warten.indexOf(eintrag); if (i >= 0) warten.splice(i, 1); fertig(false); }
-        zustand = 'ende';
-        const m = rest;
-        rest = 0;
-        gib(netz, m);
-      },
-    };
-  };
-}
-
 const cookieWert = (kopf: string | null, name: string) => {
   for (const teil of (kopf ?? '').split(';')) {
     const i = teil.indexOf('=');
@@ -332,58 +269,25 @@ function seite(status: 401 | 403, anmeldeseite: string, zurueck: string) {
 // 15 Zeichen aus a-z und 0-9, nicht jede hat eine Ziffer.
 const ohneKennungen = (pfad: string) => pfad.split('/').map((s) => (/\d/.test(s) || s.length > 20 || /^[a-z0-9]{15}$/.test(s) ? ':id' : s)).join('/');
 
-// Der Körper geht unverändert durch. Ist er ganz durch, bricht er ab oder bricht die Besucherin ab, wird der Platz frei. Ein grosser Körper
-// (speicher) beginnt erst, wenn er Platz im Speicher hat (koerper oben), und gibt ihn frei, so weit er durch ist; musste er warten, holt
-// nochmals() ihn danach neu vom Teil.
-function durch(koerper: ReadableStream<Uint8Array>, frei: () => void, speicher?: Koerper, nochmals?: () => Promise<ReadableStream<Uint8Array>>) {
-  // Den Leser erst holen, wenn der Körper beginnen darf: Schon getReader() lässt fetch weiter lesen (gemessen, w7-28)
-  let leser: ReadableStreamDefaultReader<Uint8Array> | null = null;
-  let verworfen = false;
-  const fertig = () => { speicher?.ende(); frei(); };
+// Der Körper geht unverändert durch. Ist er ganz durch, bricht er ab oder bricht die Besucherin ab, wird der Platz frei.
+function durch(koerper: ReadableStream<Uint8Array>, frei: () => void) {
+  const leser = koerper.getReader();
   return new ReadableStream<Uint8Array>({
     async pull(c) {
       try {
-        if (!leser) {
-          let quelle = koerper;
-          if (speicher && nochmals && !speicher.versuche()) {
-            verworfen = true;
-            await koerper.cancel().catch(() => {}); // keine offene Antwort vom Teil, solange er wartet
-            if (!(await speicher.warte())) return; // abgebrochen, während er wartete
-            quelle = await nochmals();
-          }
-          leser = quelle.getReader();
-        }
         const { done, value } = await leser.read();
-        if (done) { fertig(); c.close(); } else { speicher?.durch(value.length); c.enqueue(value); }
+        if (done) { frei(); c.close(); } else c.enqueue(value);
       } catch (err) {
-        fertig();
+        frei();
         c.error(err);
       }
     },
-    cancel(grund) { fertig(); return leser ? leser.cancel(grund) : verworfen ? undefined : koerper.cancel(grund).catch(() => {}); },
+    cancel(grund) { frei(); return leser.cancel(grund); },
   });
 }
 
-// Eine Anfrage an einen Teil, für die erste Anfrage (weiterleiten) wie für nochmals(): Die Frist (bis) gilt, bis die Kopfzeilen der Antwort
-// da sind, nicht für ihren Körper; eine Besucherin darf langsam lesen. Geht die Besucherin, bricht die Anfrage ab, auch mitten im Körper.
-// (Welle 7, Nachbesserung 01.11.2026: nochmals() hatte die Frist am Körper und schnitt langsame Besucherinnen nach teilMs ab.)
-async function anTeil(adresse: string, init: RequestInit, besucherin: AbortSignal, bis: number): Promise<{ ok: true; res: Response } | { ok: false; zeit: boolean }> {
-  const halt = new AbortController();
-  const uhr = setTimeout(() => halt.abort(new DOMException('Zeit abgelaufen', 'TimeoutError')), Math.max(0, bis - performance.now()));
-  if (besucherin.aborted) halt.abort();
-  else besucherin.addEventListener('abort', () => halt.abort(), { once: true });
-  try {
-    return { ok: true, res: await fetch(adresse, { ...init, signal: halt.signal }) };
-  } catch {
-    return { ok: false, zeit: halt.signal.reason instanceof DOMException && halt.signal.reason.name === 'TimeoutError' };
-  } finally {
-    clearTimeout(uhr);
-  }
-}
-
 // grenzen: nur für den Test (kürzere Frist, weniger Wartende als in GRENZEN)
-export type Optionen = { vertraut?: string; anfragenProMinute?: number;
-  grenzen?: Partial<Pick<typeof GRENZEN, 'teilMs' | 'wartendAlle' | 'grossBytes' | 'koerperJeAdresse' | 'koerperAlle'>>;
+export type Optionen = { vertraut?: string; anfragenProMinute?: number; grenzen?: Partial<Pick<typeof GRENZEN, 'teilMs' | 'wartendAlle'>>;
   jetzt?: () => number; log?: (zeile: string) => void };
 
 export function eingang(e: Einstellungen, o: Optionen = {}) {
@@ -392,7 +296,6 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
   const g = { ...GRENZEN, ...o.grenzen };
   const zaehle = zaehler(o.jetzt ?? Date.now);
   const platzFuer = plaetze(g);
-  const speicherFuer = koerper(g);
   const proMinute = o.anfragenProMinute ?? GRENZEN.anfragenProMinute;
   const log = o.log ?? ((z: string) => console.log(z));
   const [hauptUrsprung] = e.urspruenge;
@@ -490,12 +393,19 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     if (pb) kopf.set('x-eingang-weg', 'aussen');
     if (angemeldet) { kopf.set('x-eingang-benutzer', angemeldet.id); kopf.set('x-eingang-rolle', angemeldet.rolle); }
 
-    const adresseTeil = `${teil.ziel}${url.pathname}${url.search}`;
-    const antwort = await anTeil(adresseTeil, {
-      method: req.method, headers: kopf, body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body, redirect: 'manual', decompress: false,
-    } as RequestInit, req.signal, frist);
-    if (!antwort.ok) return { res: json(antwort.zeit ? 504 : 502), teil: teil.name, pfad: protokoll };
-    const res = antwort.res;
+    const halt = new AbortController();
+    const uhr = setTimeout(() => halt.abort(new DOMException('Zeit abgelaufen', 'TimeoutError')), Math.max(0, frist - performance.now()));
+    req.signal.addEventListener('abort', () => halt.abort());
+    let res: Response;
+    try {
+      res = await fetch(`${teil.ziel}${url.pathname}${url.search}`, {
+        method: req.method, headers: kopf, body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body, redirect: 'manual', signal: halt.signal, decompress: false,
+      } as RequestInit);
+    } catch {
+      return { res: json(halt.signal.reason instanceof DOMException && halt.signal.reason.name === 'TimeoutError' ? 504 : 502), teil: teil.name, pfad: protokoll };
+    } finally {
+      clearTimeout(uhr);
+    }
 
     // Antwort: keine x-eingang-* nach aussen; die Sitzung setzt nur PocketBase; hinter dem Login nichts im Zwischenspeicher
     const aus = new Headers();
@@ -509,20 +419,7 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
       aus.append('vary', 'Cookie');
       if (!aus.has('x-frame-options')) aus.set('x-frame-options', 'SAMEORIGIN');
     }
-    // Grosse Körper nach Platz im Speicher (koerper oben): nur GET, nochmals geholt mit denselben Köpfen; ist die Antwort dann eine andere
-    // (Status, Länge, ETag, Last-Modified), bricht der Körper ab, statt etwas anderes zu liefern, als die Kopfzeilen sagen
-    const laenge = Number(res.headers.get('content-length'));
-    const gross = req.method === 'GET' && res.body !== null && Number.isFinite(laenge) && laenge >= g.grossBytes;
-    // (die Frist teilMs gilt wieder nur bis zu den Kopfzeilen, anTeil oben)
-    const nochmals = async () => {
-      const a = await anTeil(adresseTeil, { method: 'GET', headers: kopf, redirect: 'manual', decompress: false } as RequestInit, req.signal, performance.now() + g.teilMs);
-      if (!a.ok) throw new Error(a.zeit ? 'Der Teil antwortet nicht rechtzeitig' : 'Der Teil antwortet nicht');
-      const neu = a.res;
-      const gleich = ['content-length', 'etag', 'last-modified'].every((k) => neu.headers.get(k) === res.headers.get(k));
-      if (neu.status !== res.status || !gleich || !neu.body) { await neu.body?.cancel(); throw new Error('Der Teil liefert jetzt eine andere Antwort'); }
-      return neu.body;
-    };
-    const koerper = res.body ? durch(res.body, platz.frei, gross ? speicherFuer(netzVon(wer), laenge) : undefined, gross ? nochmals : undefined) : null;
+    const koerper = res.body ? durch(res.body, platz.frei) : null;
     platz.beimKoerper = koerper !== null;
     return { res: new Response(koerper, { status: res.status, statusText: res.statusText, headers: aus }), teil: teil.name, pfad: protokoll };
   }
