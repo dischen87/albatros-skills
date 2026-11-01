@@ -11,5 +11,6 @@ Modus: lernen. Die KI erklärt jeden Schritt mit Bild und Warum, lässt die Pers
 Lernmomente: Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten.
 Lektion: Mission flugschule-13-plan-pruefen («Die zweite Meinung zum Plan»), verstanden: noch nicht.
 Kontrollfrage am Ende der Phase: Warum prüft deine KI deinen Plan in einem frischen Gespräch? Kern einer guten Antwort: Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten. Ein frischer Blick ohne die Vorgeschichte findet, was der erste übersehen hat. Danach verstanden_melden mit mission flugschule-13-plan-pruefen.
+Kontrollfrage am Ende der Phase: Was heisst es, wenn ein Punkt der Prüfliste «Risiko» ist? Kern einer guten Antwort: Der Plan geht so, aber an dieser Stelle kann es schiefgehen. Du entscheidest bewusst, ob ihr es ändert oder das Risiko tragt. Danach verstanden_melden mit mission flugschule-13-plan-pruefen.
 Danach: Phase P5 «Design- und Marketing-Konzept» mit Skill `konzept`.
 Stand: Weg Webseite · Abo Gratis · Projekt projekt («Sonnenhof») auf der Insel bei «Plan» · Phase P4 von 13 (geschafft nach Insel: bis P3).

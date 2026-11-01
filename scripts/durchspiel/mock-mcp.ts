@@ -102,7 +102,7 @@ const mitMethoden = (p: Phase, skillText: string, ms: string[]) => (!ms.length ?
   : p.methoden?.wann === 'nach_skill' ? `${skillText}, dann ${methodeText(ms)}, sobald der Skill sie nennt` : `${methodeText(ms)}, dann ${skillText}`);
 // Erfassung wie Albatros mit ERFASSUNG: solange die Person nichts gesagt hat (luecke_melden ohne einverstanden), der Hinweis; Anfragen erlaubt
 // die Person nur im Cockpit, im Durchspiel also nie
-const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Werkzeuge deine KI aufruft, nie Inhalte. Ansehen und widersprechen kannst du unter https://albatros.build/cockpit/daten.';
+const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Werkzeuge deine KI aufruft, nie deine Unterhaltung mit ihr. Lücken und Anfragen nur, wenn du sie erlaubst. Ansehen und widersprechen kannst du unter https://albatros.build/cockpit/daten.';
 
 type Mission = {
   id: string; weg: string; titel: string; skill?: string; phase?: string; optional?: boolean; abo?: string;

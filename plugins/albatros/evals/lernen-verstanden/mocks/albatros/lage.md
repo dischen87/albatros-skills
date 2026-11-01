@@ -17,5 +17,6 @@ Modus: lernen. Die KI erklärt jeden Schritt mit Bild und Warum, lässt die Pers
 Lernmomente: Charakter vor Farben.
 Lektion: Mission flugschule-14-konzept («Charakter vor Farben»), verstanden: noch nicht.
 Kontrollfrage am Ende der Phase: Warum legst du den Charakter deiner Seite vor den Farben fest? Kern einer guten Antwort: Aus dem Charakter entstehen die Richtungen für die Gestaltung. Lieblingsfarben allein ergeben noch keine Seite, die zu dir passt. Danach verstanden_melden mit mission flugschule-14-konzept.
+Kontrollfrage am Ende der Phase: Was bedeutet eine Figur, die durch deine Seite führt? Kern einer guten Antwort: Sie macht deine Seite unverwechselbar, braucht aber in jedem Bild Pflege. Darum entscheidest du bewusst: ja, nein oder später. Danach verstanden_melden mit mission flugschule-14-konzept.
 Danach: Phase P6 «Designsystem mit Beispiel» mit Skill `gestaltung`.
 Stand: Weg Webseite · Abo Gratis · Projekt projekt («Sonnenhof») auf der Insel bei «Plan geprüft» · Phase P5 von 13 (geschafft nach Insel: bis P4).

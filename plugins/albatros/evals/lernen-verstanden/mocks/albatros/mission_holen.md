@@ -31,7 +31,7 @@ Auf dem Weg Geschäft kommt zuerst die Marke: Kern, Ton und ein Name, den deine 
 - `docs/konzept.md` alle Zeilen hat und beim Maskottchen ja, nein oder später steht
 - und auf deiner Insel der Schritt «Konzept» erreicht ist.
 
-Kontrollfragen der Lektion (im Modus lernen am Ende der Phase; die Antwort nicht vorsagen, die Person antwortet in eigenen Worten, danach verstanden_melden mit mission flugschule-14-konzept und art kontrollfrage):
+Kontrollfragen dieser Mission, der Lektion von Phase P5 (im Modus lernen am Ende von P5; die Antwort nicht vorsagen, die Person antwortet in eigenen Worten, danach verstanden_melden mit mission flugschule-14-konzept und art kontrollfrage):
 1. Warum legst du den Charakter deiner Seite vor den Farben fest?
    Kern einer guten Antwort: Aus dem Charakter entstehen die Richtungen für die Gestaltung. Lieblingsfarben allein ergeben noch keine Seite, die zu dir passt.
 2. Was bedeutet eine Figur, die durch deine Seite führt?

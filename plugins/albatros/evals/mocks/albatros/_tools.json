@@ -299,7 +299,7 @@
     },
     {
       "name": "mission_holen",
-      "description": "Gibt die nächste offene Mission nach dem Fahrplan: Titel, Bild, Phase, passender Skill, Prüfung, Anleitung und die Kontrollfragen der Lektion mit dem Kern einer guten Antwort (im Modus lernen am Ende der Phase stellen). Titel, Text und Fragen in der Sprache der Person. {name} im Text steht für den Servernamen.",
+      "description": "Gibt die nächste offene Mission nach dem Fahrplan: Titel, Bild, Phase, passender Skill, Prüfung, Anleitung und, falls sie welche hat, ihre Kontrollfragen mit dem Kern einer guten Antwort. Am Ende einer Phase ist das oft schon eine Mission der nächsten Phase. Die Lektion der aktuellen Phase und ihre Kontrollfragen nennt lage (Modus lernen). Titel, Text und Fragen in der Sprache der Person. {name} im Text steht für den Servernamen.",
       "inputSchema": {
         "type": "object",
         "properties": {}
