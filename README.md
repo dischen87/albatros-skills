@@ -227,7 +227,7 @@ Ein Eval-Fall prüft, was die KI mit den Skills tut: ein Satz der Person (`promp
 claude plugin eval plugins/albatros --tag fahrplan --scaffold --allow-tools Write Edit --ablation none \
   --max-cost-usd 0 --no-publish --trust-plugin --output-dir <ordner> --report <ordner>/bericht.html
 bun test                                                   # Grader ohne Modell: je Fall ein gutes und mindestens ein schlechtes Beispiel
-ALBATROS=<albatros-ordner> bun scripts/attrappen.ts --pruefen   # Attrappen wie aus dem echten mcp erzeugt? Schreibt nichts, Exit 1 bei Abweichung
+ALBATROS=<albatros-ordner> bun scripts/attrappen.ts --pruefen   # Attrappen wie aus dem echten mcp erzeugt, Missionen der lage-Attrappen wie missionen/? Schreibt nichts, Exit 1 bei Abweichung
 bun scripts/gute-antwort.ts                                # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, an den Tags oder am KRITERIEN-LOG.md
 ```
 
