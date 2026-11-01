@@ -3,7 +3,7 @@ name: bausteine
 description: "Works out with a person who has no prior knowledge what their site should be able to do, and builds in the matching ready-made building blocks, first on their own computer: a sign-up list, bookings for classes and appointments, a members' area with login and approval, a noticeboard (PocketBase), an entrance with one login for several parts, or a big CMS (Strapi with Postgres), with measured memory (RAM). Explains it with the picture of prefab parts when building a house. Use this skill for “sign-up”, “sign-up list”, “booking”, “booking tool”, “book a class”, “book an appointment”, “reservation”, “reserve a place”, “save a form”, “login”, “members' area”, “admin area”, “manage users”, “roles”, “entrance”, “database”, “Strapi”, “CMS”, “PocketBase”, “building block”, “what fits on my server”, “is my server big enough”, and whenever a site should do more than show text and pictures."
 metadata:
   stand: 0.2.0
-  quelle: '4a6539330144'
+  quelle: '31f83e2eb94b'
 ---
 
 # Building blocks: prefab parts for your site
@@ -213,7 +213,7 @@ These rules decide whether it's needed, in this order:
 
 The answer goes into `docs/betrieb.md`, on the line `Eingang:` (skill `betrieb`). Its value always starts with the German word `ja` or `nicht nötig`, even if the person speaks another language; after that comes the reason in their language, for example `Eingang: ja – /intern/ and the messages from PocketBase need the same sign-in` or `Eingang: nicht nötig – only the recipe mitglieder, PocketBase's rules are enough`. The skill `lancieren` only builds in the entrance with `Eingang: ja`. The site's doors (`docs/tueren.txt`: open, only after signing in, never) become the parts in `bausteine/eingang/eingang.json`.
 
-**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle; under full load with small pages up to 69 MB, with many images at once (20 pages of 60 images each) up to 129 MB, and if visitors download large files without reading them to the end, even more (measured with three addresses: 208 MB). Measured on 31.10 and 01.11.2026 on a Mac. The container is capped at 128 MB (`mem_limit`); whether it then restarts and how much it needs on the server is not measured yet; every call to a protected part asks PocketBase, which costs almost a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
+**Costs:** no extra money, it runs alongside everything else on the Pilot server. Memory: 20 MB when idle; under full load with small pages up to 69 MB, with many images at once (20 pages of 60 images each) up to 129 MB, and if visitors download large files without reading them to the end: from the website (nginx) and from PocketBase, the entrance fetches large files in pieces, measured with three addresses up to 59 MB; from a part of your own that can't serve ranges, more (measured 201 MB). Measured on 31.10 and 01.11.2026 on a Mac. The container is capped at 128 MB (`mem_limit`); whether it then restarts and how much it needs on the server is not measured yet; every call to a protected part asks PocketBase, which costs almost a millisecond. Plus one more part to look after (the Bun version in the `Dockerfile`).
 
 **Building it in,** locally first like every building block (section 4), step by step in `bausteine/eingang/README.md`:
 
