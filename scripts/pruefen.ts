@@ -12,7 +12,7 @@ import { ALTE_INSEL, ladeFahrplan, stufeFehler } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
 import { ladeFragen, missionsverweise, type SkillText } from './missionsverweise.ts';
-import { hoeher, quelle } from './stand.ts';
+import { hoeher, KOPF_SCHLUESSEL, KOPF_STAND, kopfzeileStand, quelle } from './stand.ts';
 
 type Mission = {
   id: string;
@@ -53,6 +53,12 @@ for (const p of (await Bun.file(wurzel + '.claude-plugin/marketplace.json').json
   if (p.version !== VERSION) fehler.push(`.claude-plugin/marketplace.json: ${p.name} hat version ${p.version}, nicht ${VERSION}`);
   const eigen = (await Bun.file(`${wurzel}${p.source}/.claude-plugin/plugin.json`).json()).version;
   if (eigen !== VERSION) fehler.push(`${p.source.replace(/^\.\//, '')}/.claude-plugin/plugin.json: version ${eigen}, nicht ${VERSION}`);
+  // Kopfzeile mit dem Stand (I1) für Claude Code (headers) und Codex (http_headers), gleich version und damit metadata.stand (scripts/stand.ts)
+  const mcp: unknown = await Bun.file(`${wurzel}${p.source}/.mcp.json`).json().catch(() => null);
+  for (const s of KOPF_SCHLUESSEL) {
+    const kopf = kopfzeileStand(mcp, s);
+    if (kopf !== VERSION) fehler.push(`${p.source.replace(/^\.\//, '')}/.mcp.json: ${s}.${KOPF_STAND} ist ${kopf ?? 'leer'}, nicht ${VERSION} (version in plugin.json)`);
+  }
 }
 // Ändert sich etwas unter plugins/*/skills, steigt die Version gegenüber origin/main (sonst behalten alte Installationen den alten Stand
 // ohne es zu merken). Ohne origin/main, etwa in einer flachen Kopie, entfällt diese Prüfung.

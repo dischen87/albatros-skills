@@ -71,6 +71,8 @@ Die Skills liegen als Kopie auf dem Computer der Person. Ist die Kopie älter al
 | Gemini CLI | `npx skills update -g -y`, dann Gemini CLI neu starten |
 | Cursor | `npx skills update -g -y`, dann Cursor neu starten |
 
+Woher `lage` den Stand kennt: Jedes Plugin schickt ihn bei jedem Aufruf selbst mit, als Kopfzeile `X-Albatros-Skills-Stand` in seiner `.mcp.json`, gleich `version` in `plugin.json` und `metadata.stand` der Skills (`bun run pruefen` verlangt das). Sie steht dort zweimal: unter `headers` für Claude Code und unter `http_headers` für Codex, denn Codex liest aus der `.mcp.json` eines Plugins nur diesen Schlüssel. Gemessen am 01.11.2026 ohne Modell gegen einen Server auf 127.0.0.1: Claude Code 2.1.118 und 2.1.309 (`--plugin-dir`, `mcp list`) schicken sie bei `initialize` und jeder weiteren Anfrage, Codex 0.166.0 (Plugin aus einem lokalen Marktplatz, `mcp list`) bei seinen Anfragen an den Server; ein Aufruf von `lage` in einer Sitzung ist nicht gemessen. albatros nimmt die Kopfzeile, wenn `lage` ohne `skills_stand` kommt; `skills_stand` im Aufruf geht vor. Bei Gemini CLI und Cursor kommen Skills (`npx skills`) und Verbindung getrennt: Eine feste Kopfzeile in deren Verbindung bliebe nach `npx skills update` auf dem alten Stand stehen. Dort schickt die KI `skills_stand` mit (`metadata.stand` des Skills, Skills `start` und `lotse`).
+
 albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`: In den Befehlen für Claude Code und Codex steht dann dieser Name statt `albatros@albatros`, der Marktplatz heisst immer `albatros`, und `npx skills update -g -y` gilt für alle Sprachen. Die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
 
 ## Sprachen
@@ -92,7 +94,7 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 .claude-plugin/marketplace.json     Marktplatz «albatros» mit vier Plugins: albatros (Deutsch), albatros-fr, albatros-it, albatros-en
 plugins/albatros/
   .claude-plugin/plugin.json
-  .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
+  .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk), mit der Kopfzeile X-Albatros-Skills-Stand (Abschnitt «Aktualisieren»)
   skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
   skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
   skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9, P10, P13): vier Bereiche, --vor-bau, --tueren, --vergleich, --live

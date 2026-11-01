@@ -2,7 +2,13 @@
   "mcpServers": {
     "albatros": {
       "type": "http",
-      "url": "https://mcp.albatros.build"
+      "url": "https://mcp.albatros.build",
+      "headers": {
+        "X-Albatros-Skills-Stand": "0.2.0"
+      },
+      "http_headers": {
+        "X-Albatros-Skills-Stand": "0.2.0"
+      }
     }
   }
 }
