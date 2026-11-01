@@ -565,4 +565,22 @@ Stand: 31.10.2026
       faellt: ['skill', 'konto', 'kein-zahlungslink'],
     }],
   },
+
+  // Welle 8 (01.11.2026, w8-43, Entscheid start-ruft-lage): start ruft lage auf, bevor es mit der Idee losgeht (KRITERIEN-LOG.md)
+  start: {
+    gut: {
+      aufrufe: [skill('start'), { tool: 'konto_status' }, { tool: 'weg_waehlen', input: { weg: 'webseite' } }, LAGE],
+      antwort: 'Willkommen an Bord! Deine KI fliegt im Rucksack mit, ob Claude Code, Codex, Gemini CLI oder Cursor. Bis du deine Seite auf deinem Computer siehst, kostet Albatros nichts. Als Erstes braucht dein Projekt einen Namen: Wie soll es heissen?',
+    },
+    schlecht: [{
+      aufrufe: [],
+      antwort: 'Kauf zuerst einen Server.',
+      faellt: ['skill', 'konto', 'weg', 'lage'],
+    }, {
+      // wie vor Welle 8: verbunden, Weg gewählt, dann ohne lage direkt in die Idee
+      aufrufe: [skill('start'), { tool: 'konto_status' }, { tool: 'weg_waehlen', input: { weg: 'webseite' } }, skill('webseite-planen')],
+      antwort: 'Wie soll dein Projekt heissen?',
+      faellt: ['lage'],
+    }],
+  },
 };

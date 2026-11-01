@@ -3,7 +3,7 @@ name: start
 description: "Lance Albatros pour une personne sans connaissances techniques : relie son IA à Albatros (connexion dans le navigateur web), demande si elle veut un site web ou une entreprise, clarifie apprendre ou faire et mène tout de suite à la première section du plan de vol, l'idée avec le nom du projet et une première esquisse. Jusqu'à ce que le site existe sur son propre ordinateur, Albatros ne coûte rien ; abonnement, clé et site sur Internet ne viennent qu'avec le skill lancieren. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « combien coûte Albatros ? », « est-ce que j'ai besoin d'un serveur ? », et quand quelqu'un parle d'Albatros mais n'est pas encore connecté ou n'a pas encore choisi de parcours."
 metadata:
   stand: 0.2.0
-  quelle: 'ffff386d3bb3'
+  quelle: '3eeae30dc6fd'
 ---
 
 # Start : monter à bord
@@ -76,7 +76,14 @@ Si la personne demande les prix ou si elle a besoin d'un serveur à elle, tu ré
 
 ### 5. C'est parti : l'idée
 
-Sans autres questions, tu continues tout de suite avec le skill `webseite-planen`, section Idée (`../webseite-planen/SKILL.md`, dans Claude Code `albatros-fr:webseite-planen`). Sur le parcours entreprise aussi, ça commence là ; ensuite vient la méthode `ideen-check`. Ta réponse se termine par le nom du projet : une proposition ou la question (« Un nom de travail suffit, il peut même être choisi au hasard. »).
+Avant de commencer avec l'idée, appelle `lage` d'Albatros, avec `skills_stand` : la valeur de `stand` sous `metadata` en haut de ce fichier. S'il y a déjà `docs/projekt.md` dans le dossier du projet, tu donnes ses lignes comme `belege`, comme le skill `lotse` le décrit pour `lage`. Ainsi, tu connais l'état réel avant de commencer :
+
+- Si `lage` nomme « Jetzt dran: `webseite-planen`, Abschnitt «Idee» » (à faire maintenant : section Idée), c'est là que ça commence, comme plus bas. S'il nomme autre chose parce que la personne est déjà plus loin, tu suis ce qu'il nomme.
+- Si `Hinweis zur Erfassung:` (remarque sur la saisie) est là, tu la dis une fois à la personne, en français, en entier et avec l'adresse.
+- Si `Anfragen: erlaubt.` (demandes autorisées) est là, tu donnes `anfrage` à partir de l'appel suivant (skill `lotse`).
+- Si `lage` manque ou qu'Albatros ne répond pas, tu commences l'idée sans `lage`.
+
+Sans autres questions, tu continues ensuite avec le skill `webseite-planen`, section Idée (`../webseite-planen/SKILL.md`, dans Claude Code `albatros-fr:webseite-planen`). Sur le parcours entreprise aussi, ça commence là ; ensuite vient la méthode `ideen-check`. Ta réponse se termine par le nom du projet : une proposition ou la question (« Un nom de travail suffit, il peut même être choisi au hasard. »).
 
 À partir d'ici, le skill `lotse` t'accompagne (`../lotse/SKILL.md`, dans Claude Code `albatros-fr:lotse`) : après chaque section réussie, il appelle `lage`. Dis à la personne qu'à l'avenir, elle peut simplement demander « On fait quoi ensuite ? ».
 

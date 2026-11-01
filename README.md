@@ -128,7 +128,7 @@ Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran i
 | Wann | Skill | Bild |
 |---|---|---|
 | immer | `lotse` | der Fluglotse im Turm: sagt nach dem echten Stand, was jetzt dran ist |
-| Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, dann los mit der Idee |
+| Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, `lage` fragen, dann los mit der Idee |
 | P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss, Plan prüfen) |
 | P2, P4, P13 | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite, keine Funktion geht ohne Entscheid verloren, Umleitungen beim Livegang |
 | P5 | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden; Maskottchen ja, nein oder später |
