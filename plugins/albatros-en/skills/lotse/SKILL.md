@@ -3,7 +3,7 @@ name: lotse
 description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server, mission), then follows exactly the skill and section that are up now; after every step they finish, it asks again. Shows the flight plan in three stages (take off, fly, land), asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and, on request, the open library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”), the matching topic skill comes first."
 metadata:
   stand: 0.2.0
-  quelle: 'a85bc07e08c8'
+  quelle: '2438fd74b074'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -87,6 +87,8 @@ Straight after that, in the same answer, you start on the step: read the skill, 
 - **Tool `coach_fragen`:** The person can't sort this out on their own. Word the question together with them and ask it with `coach_fragen`.
 
 Pass the notes on to the person, but they don't pull attention away from the step that's up now.
+
+**Having it built (Bauen lassen):** If `lage` shows a line `Angebot:` (offer), say it once, with the amount from `lage`, and write the person's choice in `docs/projekt.md` (skill `webseite-planen`, section “Checking the plan”). If `lage` names an open order with Albatros (waiting for Albatros, choosing the direction in the cockpit, looking at the preview), you don't carry on building yourself, even if the person asks how to go on: show them the way to the cockpit and help them alongside with texts and photos (skill `inhalte`). Paying in the cockpit is their release of the site; they enter card details only there, never in the chat.
 
 ### 3. You ask the required questions yourself
 

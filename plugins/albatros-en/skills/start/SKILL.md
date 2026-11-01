@@ -3,7 +3,7 @@ name: start
 description: "Starts Albatros for someone with no technical background: connects their AI to Albatros (sign-in in the browser), asks whether they want a website or a business, sorts out learn or do, and leads straight into the first section of the flight plan, the idea with a project name and a first sketch. Until the site exists on their own computer, Albatros costs nothing; subscription, key and the site on the web only come with the skill lancieren. Use this skill on /albatros-en:start, “start Albatros”, “I want a website”, “I've got a business idea”, “how do I get started?”, “I'm new here”, “how much does Albatros cost?”, “do I need a server?”, and whenever someone mentions Albatros but isn't connected yet or hasn't chosen a path."
 metadata:
   stand: 0.2.0
-  quelle: '3eeae30dc6fd'
+  quelle: 'c97168526c5a'
 ---
 
 # Start: going on board
@@ -73,6 +73,8 @@ If the person chooses, save their choice with `modus_waehlen` (`machen` for do o
 Say it in one sentence, exactly like this: “Until you see your site on your own computer, Albatros costs nothing. Only when it's meant to go online do you choose.” Only Albatros is free: the subscription for the AI (see the rucksack) always comes on top.
 
 If the person asks about prices or whether they need a server of their own, answer briefly and without a payment link: for going online there will later be three ways: **Light** (a site made of texts and pictures, without a server of your own), **Pilot** (a server of your own, needed as soon as a program runs on the site: a sign-up list, bookings with places, a login for members) or **self-hosted** (the person puts the site online somewhere else). For a site made of texts and pictures Light is enough, in several languages too. You only give prices from `konto_status`, never from memory. They only have to decide once their site is finished and released (skill `lancieren`).
+
+Only if the person asks whether Albatros can build the site for them: yes, that works as soon as their plan is ready; then Albatros offers it to them, with the price, and they only pay once they like the finished preview. Don't bring it up yourself here, and there's no link and no payment here.
 
 ### 5. Off you go: the idea
 

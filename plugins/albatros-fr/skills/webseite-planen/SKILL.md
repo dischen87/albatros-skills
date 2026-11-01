@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web avant le design et la construction, en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md et une esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, contenus existants, docs/recherche.md), plan de la maison (pages, fonctions, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis dans un contexte neuf, docs/plan-pruefung.md, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction sur le parcours site web."
 metadata:
   stand: 0.2.0
-  quelle: '58f8cf3c1cd8'
+  quelle: '75a09c46731f'
 ---
 
 # Planifier le site web : le plan de la maison
@@ -184,7 +184,7 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
    - Qui modifiera plus tard les textes et les dates, et à quelle fréquence ?
 2. **Le reste, tu le proposes avec une raison, comme standard plutôt que comme question :**
    - `Seiten:` (pages) Pour le premier vol, cinq à sept au maximum, mentions légales et protection des données comprises. Un départ qui a fait ses preuves : accueil (qui, quoi, pour qui, et le bouton vers la chose principale), offre, à propos, contact, mentions légales et protection des données. Chaque page doit être entretenue.
-   - `Setup:` (mise en place) Le standard, c'est un site sans services propres : textes et images, aussi en plusieurs langues, des listes comme les dates sous forme de fichier dans le projet, les demandes par e-mail. Il ne faut une brique que pour une liste d'inscription, des réservations avec places, une connexion ou un tableau d'affichage pour d'autres (skill `bausteine`, plus tard avec un serveur à soi). Un système pour gérer les contenus (skill `cms`) ne vient que lorsque quelqu'un sans connaissances techniques modifie régulièrement des contenus.
+   - `Setup:` (mise en place) Le standard, c'est un site sans services propres : textes et images, aussi en plusieurs langues, des listes comme les dates sous forme de fichier dans le projet, les demandes par e-mail. Il ne faut une brique que pour une liste d'inscription, des réservations avec places, une connexion ou un tableau d'affichage pour d'autres (skill `bausteine`, plus tard avec un serveur à soi). Un système pour gérer les contenus (skill `cms`) ne vient que lorsque quelqu'un sans connaissances techniques modifie régulièrement des contenus. La valeur commence par le mot allemand `statisch` (site sans services propres) ou `baustein` (avec liste d'inscription, réservation, connexion ou tableau d'affichage), puis une phrase dans la langue de la personne ; les mots restent en allemand, Albatros ne lit que le premier.
    - `Testing:` (vérification) à quoi vous reconnaîtrez que c'est terminé : trois à cinq phrases qu'on peut vérifier, à partir de la chose principale. Par exemple : « Sur le natel, on voit sans défiler de quoi il s'agit, et le bouton « Demander une place ». » « Une demande arrive, et qui demande reçoit une confirmation. » « Les mentions légales et la protection des données sont accessibles depuis chaque page. »
    - `Release:` (mise en ligne) la date ou l'occasion de la personne, et en plus, comme standard, le chemin vers Internet : la personne voit d'abord son site sur son ordinateur et le valide, puis elle choisit où le site habite (chez Albatros ou par elle-même), puis il est mis en ligne. Avant la validation, rien ne va sur Internet.
 3. **Écrire `docs/plan.md`.** `Funktionen` = fonctions, `Zugang` = accès, `Sprachen` = langues, `Pflege` = entretien :
@@ -199,7 +199,7 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
    Funktionen: chose principale « … » : … ; confirmation : … ; erreur : …
    Zugang: …
    Sprachen: …
-   Setup: [Annahme: site sans services propres, parce que …]
+   Setup: [Annahme: statisch, site sans services propres, parce que …]
    Testing: [Annahme: … ; … ; …]
    Release: <date ou occasion> ; chemin vers Internet : voir sur l'ordinateur, validation, choisir le domicile, mise en ligne
    Pflege: …
@@ -268,6 +268,8 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
 **Moment d'apprentissage :** qui a écrit le plan voit le moins bien ses lacunes.
 
 **Réussi quand** chaque point de la liste de contrôle est ok, risque ou ouvert avec l'endroit et que `docs/plan.md` a la ligne `Bestätigt:` avec le oui de la personne. Ensuite `schritt_melden` avec `plan-geprueft`. Ensuite vient le caractère du site (skill `konzept`), encore avant les couleurs et le code.
+
+**Faire construire (Bauen lassen) :** Si `lage` montre ensuite une ligne `Angebot:` (offre), tu la dis une fois à la personne, avec le montant exactement comme `lage` le donne, jamais de mémoire. À peu près ainsi : « Ton plan est prêt. À partir d'ici, on conçoit et on construit. Tu peux continuer avec moi toi-même : jusqu'à ce que ton site soit terminé sur ton ordinateur, Albatros ne coûte rien. Ou Albatros le construit pour toi : tu reçois des ébauches à choisir, puis un aperçu de tout ton site. Tu ne paies que quand tu veux le site : <montant de lage>. Dans les deux cas, viennent maintenant cinq questions sur le caractère de ton site. Qu'est-ce que tu préfères ? » Tu écris son choix tout de suite dans `docs/projekt.md` : `Bauen lassen: selbst (<JJ.MM.AAAA>)` ou `Bauen lassen: albatros (<JJ.MM.AAAA>)` ; les mots `selbst` et `albatros` restent en allemand. Ainsi, l'offre ne revient pas. Sans ligne `Angebot:`, tu n'en dis rien ; si la personne demande elle-même si Albatros peut construire, tu nommes ce chemin une fois, avec le montant de `konto_status`. Avec `albatros`, on continue quand même d'abord avec le concept, puis vient la remise (skill `konzept`, section « Remise à Albatros »).
 
 ## Ce que tu épargnes à la personne
 

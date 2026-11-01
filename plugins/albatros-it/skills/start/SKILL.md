@@ -3,7 +3,7 @@ name: start
 description: "Avvia Albatros per una persona senza conoscenze tecniche: collega la sua IA ad Albatros (accesso dal browser), chiede se vuole un sito web o un'attività, chiarisce imparare o fare e porta subito alla prima sezione del piano di volo, l'idea con il nome del progetto e un primo schizzo. Finché il sito non c'è sul proprio computer, Albatros non costa niente; abbonamento, chiave e sito in rete arrivano solo con lo skill lancieren. Usa lo skill con /albatros-it:start, «avvia Albatros», «voglio un sito web», «voglio fare un sito», «ho un'idea imprenditoriale», «ho un'idea per un'attività», «da dove comincio?», «sono nuovo qui», «quanto costa Albatros?», «mi serve un server?», e quando qualcuno nomina Albatros ma non è ancora collegato o non ha ancora scelto un percorso."
 metadata:
   stand: 0.2.0
-  quelle: '3eeae30dc6fd'
+  quelle: 'c97168526c5a'
 ---
 
 # Start: salire a bordo
@@ -73,6 +73,8 @@ Se la persona sceglie, salvi la sua scelta con `modus_waehlen` (`machen` per far
 Dillo in una frase, esattamente così: «Finché non vedi il tuo sito sul tuo computer, Albatros non costa niente. Solo quando deve andare in rete, scegli.» Gratis è solo Albatros: l'abbonamento dell'IA (vedi lo zaino) si aggiunge sempre.
 
 Se la persona chiede i prezzi o se le serve un server suo, rispondi in breve e senza link di pagamento: per la rete ci saranno più tardi tre strade: **Light** (un sito di testi e immagini, senza server proprio), **Pilot** (un server tuo, necessario appena sul sito gira un programma: lista di iscrizione, prenotazioni con posti, accesso per i membri) o **da te** (la persona mette il sito in rete altrove). Per un sito di testi e immagini basta Light, anche in più lingue. I prezzi li dici solo da `konto_status`, mai a memoria. Deve decidere solo quando il suo sito è finito e approvato (skill `lancieren`).
+
+Solo se la persona chiede se Albatros può costruire il sito per lei: sì, si può, appena il suo piano è pronto; allora Albatros glielo offre, con il prezzo, e si paga solo quando l'anteprima finita le piace. Di tua iniziativa qui non ne parli, e qui non ci sono né link né pagamento.
 
 ### 5. Si parte: l'idea
 

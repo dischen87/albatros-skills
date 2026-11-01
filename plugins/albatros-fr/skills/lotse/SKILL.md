@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principal d'Albatros : l'aiguilleur du ciel. Demande avec l'outil lage l'état réel de la personne (phase du plan de vol, questions obligatoires ouvertes, abonnement, page ou serveur, mission), puis suit exactement le skill et la section à faire maintenant ; après chaque étape réussie, il redemande. Montre le plan de vol en trois grandes étapes (décoller, voler, atterrir), pose lui-même les questions obligatoires, clarifie apprendre ou faire et signale les lacunes du savoir-faire. Sans connexion, il montre les trois grandes étapes avec la prochaine étape et, sur demande, la bibliothèque ouverte. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je veux apprendre moi-même », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? »), le skill spécialisé a la priorité."
 metadata:
   stand: 0.2.0
-  quelle: 'a85bc07e08c8'
+  quelle: '2438fd74b074'
 ---
 
 # Aiguilleur du ciel : la bonne chose au bon moment
@@ -87,6 +87,8 @@ Juste après, dans la même réponse, tu commences l'étape : lis le skill, va
 - **Outil `coach_fragen` :** la personne ne peut pas régler ça elle-même. Formule la question avec elle et pose-la avec `coach_fragen`.
 
 Tu transmets les remarques à la personne, mais elles ne détournent pas de l'étape qui est à faire maintenant.
+
+**Faire construire (Bauen lassen) :** Si `lage` montre une ligne `Angebot:` (offre), tu la dis une fois, avec le montant de `lage`, et tu écris le choix de la personne dans `docs/projekt.md` (skill `webseite-planen`, section « Vérifier le plan »). Si `lage` nomme une commande ouverte chez Albatros (attendre Albatros, choisir la direction dans le cockpit, regarder l'aperçu), tu ne continues pas à construire toi-même, même si la personne demande comment continuer : tu lui montres le chemin vers le cockpit et tu l'aides à côté avec les textes et les photos (skill `inhalte`). Le paiement dans le cockpit est sa validation du site ; les données de carte, elle les saisit seulement là, jamais dans le chat.
 
 ### 3. Les questions obligatoires, c'est toi qui les poses
 

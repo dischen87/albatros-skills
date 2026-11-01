@@ -3,7 +3,7 @@ name: konzept
 description: "Chiarisce con una persona senza conoscenze tecniche, dopo il piano confermato, il carattere del suo sito prima di scegliere i colori (piano di volo P5): nome verso l'esterno, nucleo in tre frasi, tono (tu o Lei), tre parole per l'effetto, ciò che deve restare, linguaggio visivo e sempre la domanda se ne fa parte un personaggio (mascotte): sì, no o più tardi. Sul percorso attività prima con il metodo marke. Immagini del personaggio solo dopo aver indicato il prezzo e ricevuto un sì. Il risultato è docs/konzept.md. Usa questo skill dopo webseite-planen (piano confermato) e con «concetto», «marchio», «carattere», «tono», «mascotte», «personaggio», «che effetto deve fare il mio sito»."
 metadata:
   stand: 0.2.0
-  quelle: '02a20c500e11'
+  quelle: '50593266c6ff'
 ---
 
 # Concetto: il carattere prima dei colori
@@ -59,6 +59,8 @@ Se il progetto deve chiamarsi in un altro modo, proponi da tre a cinque nomi e l
 - «Ci sono un logo, un colore aziendale o un carattere che devono restare?» Perché: ciò che deve restare è la cornice per tutte le direzioni. Se non c'è niente, si scrive «niente».
 
 I colori preferiti vanno sotto `Muss bleiben:` solo se devono davvero restare. Altrimenti li annoti sotto la riga come desiderio; in P6 si vedrà se si adattano al carattere.
+
+Se in `docs/projekt.md` c'è la riga `Bauen lassen: albatros`, dopo la domanda su logo, colore della casa e carattere aggiungi: «Metti il logo e le foto nella cartella design/bilder.»
 
 ### 4. Il personaggio: sì, no o più tardi
 
@@ -124,6 +126,17 @@ Se il credito non basta, o la persona non vuole (ancora) un'immagine, il persona
 
 Quando tutto è in `docs/konzept.md` e `Maskottchen:` comincia con `ja`, `nein` o `später`, chiami lo strumento `schritt_melden` con `schritt: konzept` e `sprache: it`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se Albatros non conosce ancora il passo, si continua senza isola, `docs/konzept.md` ne è la prova. Dopo chiami di nuovo `lage` (skill `lotse`).
 
+## Consegna ad Albatros (Übergabe an Albatros)
+
+Solo se in `docs/projekt.md` c'è `Bauen lassen: albatros` (la persona ha accettato l'offerta di `lage`) e `lage` nomina questa sezione, cioè quando `docs/konzept.md` è pronto. Allora non progetti e non costruisci più tu: Albatros fa il mockup, le bozze e tutto il sito come anteprima, la persona sceglie nel cockpit.
+
+1. **Riassunto.** Leggi `docs/projekt.md`, `docs/recherche.md`, `docs/plan.md` (con i criteri di accettazione sotto `Testing:`), `docs/plan-pruefung.md` e `docs/konzept.md`. Di' alla persona in un messaggio che cosa invii, più o meno così: «Questo lo mando ad Albatros: il tuo piano con pagine, funzioni e i tuoi criteri di accettazione, la tua ricerca e il tuo concetto. Il tuo sito riceve l'indirizzo <nome del progetto>.aufwind.sh; puoi cambiarlo fino al pagamento. Password e dati di accesso non ci sono. Il team di Albatros lo legge, e a costruire aiuta un'IA (Claude di Anthropic). Finché non paghi è tutto senza impegno, e puoi continuare da te in qualsiasi momento. Lo mando?» Il nome nell'indirizzo lo scrivi minuscolo, senza spazi né accenti.
+2. **Solo dopo il suo sì esplicito** chiami `auftrag_anlegen` con `bestaetigt: true`, più i campi del briefing presi dai suoi file: `name` (da `Name:` in `docs/konzept.md`), `wofuer` (`In einem Satz:` e `Hauptsache:`), `fuerWen` (`Für wen:`), `seiten` (`Seiten:`, `Funktionen:` e i criteri di accettazione da `Testing:`), `adresse` solo per un sito esistente (`Bestehende Seite:`), `stil` (`Ton:`, `Charakter:`, `Maskottchen:`, `Muss bleiben:`, modelli con cosa riprendere e cosa evitare), `material` (contenuti esistenti e obblighi dalla ricerca). Senza nomi di altre persone, senza numeri di telefono, indirizzi, password o dati di accesso. «Sembra bello» non è un sì; senza sì non mandi niente.
+3. **Dopo** le dici che cosa annuncia `auftrag_anlegen`: il numero, l'importo esattamente come lo dice Albatros e la strada verso il cockpit, più o meno: «Fatto: l'incarico n. <numero> è da Albatros. Nel cockpit, sotto «Il tuo incarico», scegli la cartella del tuo progetto, così il team vede anche le tue foto. Poi ricevi delle bozze tra cui scegliere. Non devi più costruire niente.» Un importo a memoria non lo dici mai. Se Albatros segnala un errore (per esempio un incarico già aperto, o il servizio di costruzione al momento non è disponibile), lo riferisci parola per parola e non ti metti a costruire.
+4. Da qui in poi non costruisci più tu, anche se la persona lo chiede: niente mockup, niente bozze, niente codice. `lage` dice che cosa tocca (per esempio scegliere nel cockpit o aspettare Albatros). Nel frattempo lei può raccogliere testi e foto (skill `inhalte`). Se cambia idea, ritira l'incarico nel cockpit; poi il piano di volo continua con lei.
+
+Se la persona sceglie `Bauen lassen: selbst`, questa sezione non c'è: si continua con il sistema di design (skill `gestaltung`).
+
 ## Trappole
 
 - **Prima i colori:** allora il sito piace alla persona, ma non dice niente ai visitatori. I colori vengono in P6, dal carattere.
@@ -138,4 +151,4 @@ Quando tutto è in `docs/konzept.md` e `Maskottchen:` comincia con `ja`, `nein` 
 
 ## Messaggio finale
 
-Il tuo ultimo messaggio in questo passo comincia con una frase sull'immagine «il carattere prima dei colori», che ripete l'essenziale. Poi: che cosa è fatto, dove si trova il risultato (`docs/konzept.md`), che cosa resta aperto (spesso la risposta sul personaggio o una foto) e che cosa viene dopo: il sistema di design con la tavola dei campioni in P6 (skill `gestaltung`).
+Il tuo ultimo messaggio in questo passo comincia con una frase sull'immagine «il carattere prima dei colori», che ripete l'essenziale. Poi: che cosa è fatto, dove si trova il risultato (`docs/konzept.md`), che cosa resta aperto (spesso la risposta sul personaggio o una foto) e che cosa viene dopo: il sistema di design con la tavola dei campioni in P6 (skill `gestaltung`), oppure con `Bauen lassen: albatros` la consegna ad Albatros (sezione qui sopra).

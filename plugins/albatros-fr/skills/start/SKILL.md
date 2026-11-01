@@ -3,7 +3,7 @@ name: start
 description: "Lance Albatros pour une personne sans connaissances techniques : relie son IA à Albatros (connexion dans le navigateur web), demande si elle veut un site web ou une entreprise, clarifie apprendre ou faire et mène tout de suite à la première section du plan de vol, l'idée avec le nom du projet et une première esquisse. Jusqu'à ce que le site existe sur son propre ordinateur, Albatros ne coûte rien ; abonnement, clé et site sur Internet ne viennent qu'avec le skill lancieren. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « combien coûte Albatros ? », « est-ce que j'ai besoin d'un serveur ? », et quand quelqu'un parle d'Albatros mais n'est pas encore connecté ou n'a pas encore choisi de parcours."
 metadata:
   stand: 0.2.0
-  quelle: '3eeae30dc6fd'
+  quelle: 'c97168526c5a'
 ---
 
 # Start : monter à bord
@@ -73,6 +73,8 @@ Si la personne choisit, tu enregistres son choix avec `modus_waehlen` (`machen` 
 Dis-le en une phrase, exactement ainsi : « Jusqu'à ce que tu voies ton site sur ton ordinateur, Albatros ne coûte rien. C'est seulement quand il doit aller sur Internet que tu choisis. » Seul Albatros est gratuit : l'abonnement de l'IA (voir le sac à dos) s'y ajoute toujours.
 
 Si la personne demande les prix ou si elle a besoin d'un serveur à elle, tu réponds brièvement et sans lien de paiement : pour Internet, il y aura plus tard trois chemins : **Light** (un site fait de textes et d'images, sans serveur à soi), **Pilot** (un serveur à soi, nécessaire dès qu'un programme tourne sur le site : liste d'inscription, réservations avec places, connexion pour les membres) ou **par toi-même** (la personne met le site en ligne ailleurs). Pour un site fait de textes et d'images, Light suffit, aussi avec plusieurs langues. Les prix, tu les donnes seulement d'après `konto_status`, jamais de mémoire. Elle n'a à décider que lorsque son site est terminé et validé (skill `lancieren`).
+
+Seulement si la personne demande si Albatros peut construire le site pour elle : oui, c'est possible dès que son plan est prêt ; alors Albatros le lui propose, avec le prix, et on ne paie que quand l'aperçu terminé lui plaît. De toi-même, tu n'en parles pas ici, et ici il n'y a ni lien ni paiement.
 
 ### 5. C'est parti : l'idée
 

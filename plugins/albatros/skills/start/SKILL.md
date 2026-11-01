@@ -72,6 +72,8 @@ Sag es in einem Satz, genau so: «Bis du deine Seite auf deinem Computer siehst,
 
 Fragt die Person nach Preisen oder ob sie einen eigenen Server braucht, antwortest du kurz und ohne Zahlungslink: Fürs Netz gibt es später drei Wege: **Light** (eine Seite aus Texten und Bildern, ohne eigenen Server), **Pilot** (ein eigener Server, nötig, sobald auf der Seite ein Programm läuft: Anmeldeliste, Buchungen mit Plätzen, Login für Mitglieder) oder **selbst** (die Person bringt die Seite woanders ins Netz). Für eine Seite aus Texten und Bildern reicht Light, auch mit mehreren Sprachen. Preise nennst du nur aus `konto_status`, nie aus dem Gedächtnis. Entscheiden muss sie erst, wenn ihre Seite fertig und freigegeben ist (Skill `lancieren`).
 
+Nur wenn die Person fragt, ob Albatros die Seite für sie bauen kann: Ja, das geht, sobald ihr Plan steht; dann bietet Albatros es ihr an, mit dem Preis, und bezahlt wird erst, wenn ihr die fertige Vorschau gefällt. Von dir aus erwähnst du es hier nicht, und hier gibt es weder Link noch Zahlung.
+
 ### 5. Los: die Idee
 
 Bevor es mit der Idee losgeht, ruf `lage` von Albatros auf, mit `skills_stand`: dem Wert von `stand` unter `metadata` oben in dieser Datei. Gibt es im Projektordner schon `docs/projekt.md`, gibst du ihre Zeilen als `belege` mit, so wie der Skill `lotse` es für `lage` beschreibt. So kennst du den echten Stand, bevor du anfängst:

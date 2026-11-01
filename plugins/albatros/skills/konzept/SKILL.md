@@ -58,6 +58,8 @@ Soll das Projekt anders heissen, schlägst du drei bis fünf Namen vor, die Pers
 
 Lieblingsfarben kommen nur unter `Muss bleiben:`, wenn sie wirklich bleiben müssen. Sonst notierst du sie unter der Zeile als Wunsch; in P6 zeigt sich, ob sie zum Charakter passen.
 
+Steht in `docs/projekt.md` die Zeile `Bauen lassen: albatros`, sagst du nach der Frage nach Logo, Hausfarbe und Schrift dazu: «Leg Logo und Fotos in den Ordner design/bilder.»
+
 ### 4. Die Figur: ja, nein oder später
 
 Diese Frage stellst du immer, auch wenn die Person nicht danach fragt, in einer eigenen Nachricht:
@@ -122,6 +124,17 @@ Reicht das Guthaben nicht, oder will die Person (noch) kein Bild, bleibt die Fig
 
 Steht alles in `docs/konzept.md` und beginnt `Maskottchen:` mit `ja`, `nein` oder `später`, rufst du das Werkzeug `schritt_melden` mit `schritt: konzept` und `sprache: de` auf. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; kennt Albatros den Schritt noch nicht, geht es ohne Insel weiter, `docs/konzept.md` ist der Beleg. Danach rufst du `lage` erneut auf (Skill `lotse`).
 
+## Übergabe an Albatros
+
+Nur wenn in `docs/projekt.md` `Bauen lassen: albatros` steht (die Person hat das Angebot von `lage` angenommen) und `lage` diesen Abschnitt nennt, also wenn `docs/konzept.md` steht. Dann gestaltest und baust du nicht selbst weiter: Albatros macht Mockup, Entwürfe und die ganze Seite als Vorschau, die Person wählt im Cockpit.
+
+1. **Zusammenfassung.** Lies `docs/projekt.md`, `docs/recherche.md`, `docs/plan.md` (mit den Abnahmekriterien unter `Testing:`), `docs/plan-pruefung.md` und `docs/konzept.md`. Sag der Person in einer Nachricht, was du schickst, etwa so: «Das schicke ich an Albatros: deinen Plan mit Seiten, Funktionen und deinen Abnahmekriterien, deine Recherche und dein Konzept. Deine Seite bekommt die Adresse <Projektname>.aufwind.sh; ändern kannst du sie bis zum Bezahlen. Passwörter und Zugangsdaten sind nicht dabei. Das Albatros-Team liest es, und beim Bauen hilft eine KI (Claude von Anthropic). Bis du bezahlst, ist alles unverbindlich, und du kannst jederzeit selbst weiterbauen. Soll ich es schicken?» Den Namen in der Adresse schreibst du klein, ohne Leerzeichen und Umlaute.
+2. **Erst nach ihrem ausdrücklichen Ja** rufst du `auftrag_anlegen` mit `bestaetigt: true` auf, dazu die Felder des Briefings aus ihren Dateien: `name` (aus `Name:` in `docs/konzept.md`), `wofuer` (`In einem Satz:` und `Hauptsache:`), `fuerWen` (`Für wen:`), `seiten` (`Seiten:`, `Funktionen:` und die Abnahmekriterien aus `Testing:`), `adresse` nur bei einer bestehenden Seite (`Bestehende Seite:`), `stil` (`Ton:`, `Charakter:`, `Maskottchen:`, `Muss bleiben:`, Vorbilder mit Übernehmen und Vermeiden), `material` (vorhandene Inhalte und Pflichten aus der Recherche). Ohne Namen anderer Menschen, ohne Telefonnummern, Adressen, Passwörter oder Zugangsdaten. «Sieht gut aus» ist kein Ja; ohne Ja schickst du nichts.
+3. **Danach** sagst du ihr, was `auftrag_anlegen` meldet: die Nummer, den Betrag genau so, wie Albatros ihn nennt, und den Weg ins Cockpit, etwa: «Erledigt: Auftrag #<Nummer> ist bei Albatros. Wähl im Cockpit unter «Dein Auftrag» deinen Projektordner, dann sieht das Team auch deine Fotos. Als Nächstes bekommst du Entwürfe zur Wahl. Bauen musst du nichts mehr.» Einen Betrag aus dem Gedächtnis nennst du nie. Meldet Albatros einen Fehler (zum Beispiel schon ein offener Auftrag, oder der Bauservice ist gerade nicht verfügbar), gibst du ihn wörtlich weiter und baust nicht los.
+4. Ab hier baust du nicht selbst weiter, auch wenn die Person fragt: kein Mockup, keine Entwürfe, kein Code. `lage` sagt, was dran ist (zum Beispiel im Cockpit wählen oder warten auf Albatros). Daneben kann sie Texte und Fotos sammeln (Skill `inhalte`). Will sie es sich anders überlegen, zieht sie den Auftrag im Cockpit zurück; danach geht der Fahrplan mit ihr weiter.
+
+Wählt die Person `Bauen lassen: selbst`, gibt es diesen Abschnitt nicht: Es geht weiter mit dem Designsystem (Skill `gestaltung`).
+
 ## Stolpersteine
 
 - **Farben zuerst:** Dann gefällt die Seite der Person, sagt aber den Besuchern nichts. Farben kommen in P6 aus dem Charakter.
@@ -136,4 +149,4 @@ Steht alles in `docs/konzept.md` und beginnt `Maskottchen:` mit `ja`, `nein` ode
 
 ## Schlussnachricht
 
-Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Charakter vor Farben», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt (`docs/konzept.md`), was noch offen ist (oft die Antwort zur Figur oder ein Foto) und was als Nächstes kommt: das Designsystem mit Musterblatt in P6 (Skill `gestaltung`).
+Deine letzte Nachricht in diesem Schritt beginnt mit einem Satz zum Bild «Charakter vor Farben», der den Kern noch einmal sagt. Danach: was geschafft ist, wo das Ergebnis liegt (`docs/konzept.md`), was noch offen ist (oft die Antwort zur Figur oder ein Foto) und was als Nächstes kommt: das Designsystem mit Musterblatt in P6 (Skill `gestaltung`), oder mit `Bauen lassen: albatros` die Übergabe an Albatros (Abschnitt oben).

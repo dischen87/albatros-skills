@@ -182,7 +182,7 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
    - Wer ändert später Texte und Termine, und wie oft?
 2. **Den Rest schlägst du begründet vor, als Standard statt als Frage:**
    - `Seiten:` Für den ersten Flug höchstens fünf bis sieben, Impressum und Datenschutz zählen mit. Ein bewährter Start: Startseite (wer, was, für wen, und der Knopf zur Hauptsache), Angebot, Über uns, Kontakt, Impressum und Datenschutz. Jede Seite muss gepflegt werden.
-   - `Setup:` Standard ist eine Seite ohne eigene Dienste: Texte und Bilder, auch in mehreren Sprachen, Listen wie Termine als Datei im Projekt, Anfragen per Mail. Erst eine Anmeldeliste, Buchungen mit Plätzen, ein Login oder eine Pinnwand für andere braucht einen Baustein (Skill `bausteine`, später mit eigenem Server). Ein System zur Inhaltspflege (Skill `cms`) kommt erst, wenn regelmässig jemand ohne Technik Inhalte ändert.
+   - `Setup:` Standard ist eine Seite ohne eigene Dienste: Texte und Bilder, auch in mehreren Sprachen, Listen wie Termine als Datei im Projekt, Anfragen per Mail. Erst eine Anmeldeliste, Buchungen mit Plätzen, ein Login oder eine Pinnwand für andere braucht einen Baustein (Skill `bausteine`, später mit eigenem Server). Ein System zur Inhaltspflege (Skill `cms`) kommt erst, wenn regelmässig jemand ohne Technik Inhalte ändert. Der Wert beginnt mit dem deutschen Wort `statisch` (Seite ohne eigene Dienste) oder `baustein` (mit Anmeldeliste, Buchung, Login oder Pinnwand), danach ein Satz in der Sprache der Person; die Wörter bleiben deutsch, Albatros liest nur das erste.
    - `Testing:` woran ihr erkennt, dass es fertig ist: drei bis fünf Sätze, die man prüfen kann, ausgehend von der Hauptsache. Zum Beispiel: «Am Handy sieht man ohne Scrollen, worum es geht, und den Knopf «Platz anfragen».» «Eine Anfrage kommt an, und wer anfragt, bekommt eine Bestätigung.» «Impressum und Datenschutz sind von jeder Seite aus erreichbar.»
    - `Release:` das Datum oder der Anlass der Person, und dazu der Weg ins Netz als Standard: Die Person sieht ihre Seite zuerst auf ihrem Computer und gibt sie frei, dann wählt sie, wo die Seite wohnt (bei Albatros oder selbst), dann geht sie live. Vor der Freigabe geht nichts ins Netz.
 3. **`docs/plan.md`** schreiben:
@@ -197,7 +197,7 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
    Funktionen: Hauptsache «…»: …; Bestätigung: …; Fehler: …
    Zugang: …
    Sprachen: …
-   Setup: [Annahme: Seite ohne eigene Dienste, weil …]
+   Setup: [Annahme: statisch, Seite ohne eigene Dienste, weil …]
    Testing: [Annahme: …; …; …]
    Release: <Datum oder Anlass>; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live
    Pflege: …
@@ -266,6 +266,8 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
 **Lernmoment:** Wer den Plan geschrieben hat, sieht seine Lücken am schlechtesten.
 
 **Geschafft, wenn** jeder Punkt der Prüfliste ok, Risiko oder offen mit Stelle ist und `docs/plan.md` die Zeile `Bestätigt:` mit dem Ja der Person hat. Dann `schritt_melden` mit `plan-geprueft`. Als Nächstes kommt der Charakter der Seite (Skill `konzept`), noch vor Farben und Code.
+
+**Bauen lassen:** Zeigt `lage` danach eine Zeile `Angebot:`, sagst du es der Person einmal, mit dem Betrag genau so, wie `lage` ihn nennt, nie aus dem Gedächtnis. Etwa so: «Dein Plan steht. Ab hier wird gestaltet und gebaut. Du kannst mit mir selbst weiterbauen: Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts. Oder Albatros baut sie für dich: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: <Betrag aus lage>. So oder so kommen jetzt fünf Fragen zum Charakter deiner Seite. Was ist dir lieber?» Ihre Wahl schreibst du gleich in `docs/projekt.md`: `Bauen lassen: selbst (<TT.MM.JJJJ>)` oder `Bauen lassen: albatros (<TT.MM.JJJJ>)`; die Wörter `selbst` und `albatros` bleiben deutsch. Dann kommt das Angebot nicht wieder. Ohne Zeile `Angebot:` sagst du nichts dazu; fragt die Person selbst, ob Albatros bauen kann, nennst du den Weg einmal, mit dem Betrag aus `konto_status`. Mit `albatros` geht es trotzdem zuerst mit dem Konzept weiter, danach kommt die Übergabe (Skill `konzept`, Abschnitt «Übergabe an Albatros»).
 
 ## Was du der Person ersparst
 

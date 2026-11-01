@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Plans a website with a person who has no prior knowledge, before anything gets designed or built, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md and a grey sketch of the home page), research (up to three comparable sites, obligations, existing content, docs/recherche.md), floor plan (pages, features, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion in a fresh context, docs/plan-pruefung.md, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Use this skill for “I want a website”, “plan my website”, “where do I start”, “what do I need for a website”, “which pages do I need”, “sitemap”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built on the website path."
 metadata:
   stand: 0.2.0
-  quelle: '58f8cf3c1cd8'
+  quelle: '75a09c46731f'
 ---
 
 # Plan your website: the floor plan
@@ -184,7 +184,7 @@ You start without asking first. The one question to the person is which texts, p
    - Who will change texts and dates later, and how often?
 2. **You suggest the rest with a reason, as a default rather than a question:**
    - `Seiten:` (pages) For the first flight five to seven at most, counting the legal notice and the privacy policy. A tried and tested start: home page (who, what, for whom, and the button for the main thing), offer, about us, contact, legal notice and privacy. Every page has to be looked after.
-   - `Setup:` The default is a site without its own services: texts and pictures, in several languages too, lists like dates as a file in the project, enquiries by email. Only a sign-up list, bookings with places, a login or a noticeboard for others needs a building block (skill `bausteine`, later with your own server). A system for managing content (skill `cms`) only comes once someone without technical knowledge changes content regularly.
+   - `Setup:` The default is a site without its own services: texts and pictures, in several languages too, lists like dates as a file in the project, enquiries by email. Only a sign-up list, bookings with places, a login or a noticeboard for others needs a building block (skill `bausteine`, later with your own server). A system for managing content (skill `cms`) only comes once someone without technical knowledge changes content regularly. The value starts with the German word `statisch` (site without its own services) or `baustein` (with sign-up list, booking, login or noticeboard), followed by a sentence in the person's language; the words stay in German, Albatros only reads the first one.
    - `Testing:` how you'll know it's finished: three to five sentences you can check, starting from the main thing. For example: “On a phone you can see what it's about without scrolling, and the button “Ask for a place”.” “An enquiry arrives, and whoever sends it gets a confirmation.” “The legal notice and privacy policy can be reached from every page.”
    - `Release:` the person's date or occasion, plus the way online as the default: the person sees their site on their own computer first and releases it, then chooses where the site lives (with Albatros or self-hosted), then it goes live. Nothing goes online before the release.
 3. **Write `docs/plan.md`.** `Funktionen` = features, `Zugang` = access, `Sprachen` = languages, `Pflege` = upkeep:
@@ -199,7 +199,7 @@ You start without asking first. The one question to the person is which texts, p
    Funktionen: main thing “…”: …; confirmation: …; error: …
    Zugang: …
    Sprachen: …
-   Setup: [Annahme: site without its own services, because …]
+   Setup: [Annahme: statisch, site without its own services, because …]
    Testing: [Annahme: …; …; …]
    Release: <date or occasion>; way online: view on the computer, release, choose where it lives, live
    Pflege: …
@@ -268,6 +268,8 @@ You start without asking first. The one question to the person is which texts, p
 **Learning moment:** whoever wrote the plan is worst at seeing its gaps.
 
 **Done when** every point on the checklist is ok, risk or open with its place, and `docs/plan.md` has the line `Bestätigt:` with the person's yes. Then `schritt_melden` with `plan-geprueft`. Next comes the character of the site (skill `konzept`), still before colours and code.
+
+**Having it built (Bauen lassen):** If `lage` then shows a line `Angebot:` (offer), tell the person once, with the amount exactly as `lage` gives it, never from memory. Roughly like this: “Your plan is ready. From here on, it's designed and built. You can carry on building it yourself with me: until your site is finished on your computer, Albatros costs nothing. Or Albatros builds it for you: you get drafts to choose from and then a preview of your whole site. You only pay once you want the site: <amount from lage>. Either way, five questions about the character of your site come next. Which would you prefer?” Write their choice straight into `docs/projekt.md`: `Bauen lassen: selbst (<DD.MM.YYYY>)` or `Bauen lassen: albatros (<DD.MM.YYYY>)`; the words `selbst` and `albatros` stay in German. That way the offer doesn't come back. Without a line `Angebot:`, say nothing about it; if the person asks on their own whether Albatros can build it, name this way once, with the amount from `konto_status`. With `albatros`, it still carries on with the concept first, then comes the handover (skill `konzept`, section “Handing over to Albatros”).
 
 ## What you spare the person
 
