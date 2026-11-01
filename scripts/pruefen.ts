@@ -6,7 +6,7 @@ import Ajv from 'ajv/dist/2020';
 import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
-import { befehleAusReadme, befehleAusSkill, unterschiede, vorlageGegenSkill } from './abgleich.ts';
+import { befehleAusReadme, befehleAusSkill, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 import { pruefeAbschnittsnamen } from './abschnitte.ts';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
@@ -213,6 +213,11 @@ const skillTexte: SkillText[] = [];
 for await (const datei of new Glob('plugins/*/skills/*/SKILL.md').scan(wurzel))
   skillTexte.push({ datei, slug: datei.split('/').at(-2)!, text: await Bun.file(wurzel + datei).text() });
 fehler.push(...missionsverweise(skillTexte, [...deutsch.values()], await ladeFragen(wurzel), fahrplan?.fragen_je_nachricht));
+// titel bei schritt_melden: nach «Ungültige Angaben» wegen titel nochmals ohne titel, sonst fehlt der Schritt auf der Insel (scripts/abgleich.ts)
+for (const { datei, text } of skillTexte) {
+  const f = titelAusweg(datei, text);
+  if (f) fehler.push(f);
+}
 
 // Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md
 // sind in jeder Sprache gleich: Sie geben keinen Text aus, den die Person liest, ohne dass die KI ihn erklärt.

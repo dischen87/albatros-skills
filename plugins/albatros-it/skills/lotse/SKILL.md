@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server, missione) e poi segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo riuscito chiede di nuovo. Mostra il piano di volo in tre tappe (decollare, volare, atterrare), fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e, su richiesta, la biblioteca aperta di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?») ha la precedenza lo skill specifico."
 metadata:
   stand: 0.2.0
-  quelle: '66a67772442c'
+  quelle: 'a85bc07e08c8'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto
@@ -100,7 +100,7 @@ Ogni risposta va nel file e nella riga che indica `lage`, a inizio riga con il s
 
 ### 4. Dopo ogni passo riuscito chiedere di nuovo
 
-Quando un passo è riuscito (una sezione finita, una missione superata, un errore risolto), lo segnali con `schritt_melden`, come dice lo skill, e aggiorni `Stand:` e `Nächster Schritt:` in `docs/projekt.md`. Se in `docs/projekt.md` c'è la riga `Projektname:`, a ogni `schritt_melden` dai il suo valore come `titel`, così l'isola mostra la casa con il nome del progetto invece di «projekt». Poi richiama `lage` prima di proporre il prossimo passo. Lo stato è cambiato, e solo il radar sa cosa tocca adesso. Chiedi brevemente alla persona se vuole continuare subito.
+Quando un passo è riuscito (una sezione finita, una missione superata, un errore risolto), lo segnali con `schritt_melden`, come dice lo skill, e aggiorni `Stand:` e `Nächster Schritt:` in `docs/projekt.md`. Se in `docs/projekt.md` c'è la riga `Projektname:`, a ogni `schritt_melden` dai il suo valore come `titel`, così l'isola mostra la casa con il nome del progetto invece di «projekt». Albatros lo accetta fino a 300 caratteri e sull'isola lo accorcia a 80; la risposta dice allora come si chiama lì. Se `schritt_melden` risponde «Ungültige Angaben» (dati non validi) per via di `titel` (per esempio un a capo o più di 300 caratteri), segnali subito di nuovo lo stesso passo senza `titel`, così sull'isola non manca. Poi richiama `lage` prima di proporre il prossimo passo. Lo stato è cambiato, e solo il radar sa cosa tocca adesso. Chiedi brevemente alla persona se vuole continuare subito.
 
 Se `lage` indica due volte di fila lo stesso passo, anche se l'avete appena fatto: di solito manca ancora una riga nelle prove o la verifica della missione (`mission_pruefen`). Controlla entrambe, poi di nuovo `lage`.
 

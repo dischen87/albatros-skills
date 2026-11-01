@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Pianifica con una persona senza conoscenze tecniche il suo sito web prima del design e della costruzione, in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md e uno schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, contenuti esistenti, docs/recherche.md), pianta (pagine, funzioni, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere in un contesto nuovo, docs/plan-pruefung.md, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill con «voglio un sito web», «pianificare un sito web», «da dove comincio», «cosa mi serve per un sito web», «quali pagine mi servono», «sitemap», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione sul percorso sito web."
 metadata:
   stand: 0.2.0
-  quelle: '501e96d6b453'
+  quelle: '58f8cf3c1cd8'
 ---
 
 # Pianificare il sito web: la pianta
@@ -45,7 +45,7 @@ Se la persona vuole subito il piano intero, scrivi in una volta i file che manca
 ## Dopo ogni sezione
 
 1. Aggiornare in `docs/projekt.md` le righe `Stand:` (stato) e `Nächster Schritt:` (prossimo passo).
-2. `schritt_melden` con il passo della tabella qui sopra, `titel` (il valore della riga `Projektname:` in `docs/projekt.md`, come la persona chiama il suo progetto) e `sprache: it`. Con `titel` l'isola mostra la casa con questo nome invece di «projekt». Per il primo progetto della persona lasci fuori `projekt`: più tardi diventa il diario di bordo nel porto. Solo per un altro progetto dai un nome breve di lettere minuscole, cifre e «-». Di' alla persona in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi) o «unbekannt» (sconosciuto), o se manca, si continua senza isola.
+2. `schritt_melden` con il passo della tabella qui sopra, `titel` (il valore della riga `Projektname:` in `docs/projekt.md`, come la persona chiama il suo progetto) e `sprache: it`. Con `titel` l'isola mostra la casa con questo nome invece di «projekt»; Albatros lo accetta fino a 300 caratteri e lì lo accorcia a 80. Per il primo progetto della persona lasci fuori `projekt`: più tardi diventa il diario di bordo nel porto. Solo per un altro progetto dai un nome breve di lettere minuscole, cifre e «-». Di' alla persona in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi) per via di `titel` (per esempio un a capo o più di 300 caratteri), segnali subito di nuovo lo stesso passo senza `titel`: conta il passo, il nome è secondario. Se risponde altrimenti «Ungültige Angaben» o «unbekannt» (sconosciuto), o se manca, si continua senza isola.
 3. Verificare la missione della sezione (qui sotto, «Verificare la missione»), poi richiamare `lage` (skill `lotse`) e seguire quello che tocca adesso.
 
 Se la persona ha un account e la sua isola non è ancora aperta in questa conversazione, la apri una volta: `open https://albatros.build/it/cockpit/insel` (Linux `xdg-open`, Windows `start`). Lì a ogni passo cresce una casa.

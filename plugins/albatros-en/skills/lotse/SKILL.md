@@ -3,7 +3,7 @@ name: lotse
 description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server, mission), then follows exactly the skill and section that are up now; after every step they finish, it asks again. Shows the flight plan in three stages (take off, fly, land), asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and, on request, the open library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”), the matching topic skill comes first."
 metadata:
   stand: 0.2.0
-  quelle: '66a67772442c'
+  quelle: 'a85bc07e08c8'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -100,7 +100,7 @@ Every answer goes into the file and line `lage` names, at the start of the line 
 
 ### 4. Ask again after every step that's done
 
-Once a step is done (a section finished, a mission passed, an error fixed), report it with `schritt_melden` as the skill says, and update `Stand:` and `Nächster Schritt:` in `docs/projekt.md`. If `docs/projekt.md` has the line `Projektname:`, pass its value as `titel` with every `schritt_melden`, so the island shows the house with the project's name instead of “projekt”. Then call `lage` again before you suggest the next step. The status has changed, and only the radar knows what's up now. Briefly ask the person whether they want to carry on straight away.
+Once a step is done (a section finished, a mission passed, an error fixed), report it with `schritt_melden` as the skill says, and update `Stand:` and `Nächster Schritt:` in `docs/projekt.md`. If `docs/projekt.md` has the line `Projektname:`, pass its value as `titel` with every `schritt_melden`, so the island shows the house with the project's name instead of “projekt”. Albatros accepts it up to 300 characters and shortens it to 80 on the island; the answer then says what it's called there. If `schritt_melden` answers “Ungültige Angaben” (invalid details) because of `titel` (for example a line break or more than 300 characters), report the same step again straight away without `titel`, so it isn't missing on the island. Then call `lage` again before you suggest the next step. The status has changed, and only the radar knows what's up now. Briefly ask the person whether they want to carry on straight away.
 
 If `lage` names the same step twice in a row although you've just done it: usually a line is still missing from the evidence, or the mission check (`mission_pruefen`). Check both, then `lage` again.
 

@@ -3,7 +3,7 @@ name: webseite-modernisieren
 description: "Modernises an existing website (club, shop, practice, old Jimdo, Wix or WordPress site) for a person with no prior knowledge, as a variant of the flight plan. Gets going straight away with the inventory, without asking first: all pages, every feature (forms, sign-ups, dates, PDFs, prices, galleries, maps, languages) and all content, with screenshots of the old site in docs/bestand.md. After that it only asks what only the person knows, above all what has to stay, and leads via the floor plan and checking the plan (no feature gets lost without a decision) to the new site; when going live, the domain moves over with redirects and the email stays untouched. Use this skill for “Modernise …”, “modernise our website”, “our site is out of date”, “renew the website”, “relaunch”, “move away from Jimdo, Wix or WordPress”, “redo the old site”, and straight away when someone just sends the address of a website (https://…) with no other words."
 metadata:
   stand: 0.2.0
-  quelle: '8efafe8b2bdf'
+  quelle: 'e407114c3bdd'
 ---
 
 # Modernise a website: renovating an old house
@@ -103,7 +103,7 @@ Say in simple words what you found, briefly and with numbers: how many pages, wh
 
 Who looks after the site, you ask later, in the floor plan. The rest of the idea you suggest from the old site, and the person confirms it in one message: project name (usually the name of the old site), in one sentence, who it's for, main thing, success and mode (do). Then you write, as in the skill `webseite-planen`, section Idea (steps 4 to 6): `docs/projekt.md` with `Bestehende Seite: <address>`, `AGENTS.md` with `CLAUDE.md` and `GEMINI.md`, and the grey sketch `design/skizze.html` of the new home page, which already shows what has to stay. Open it in the browser.
 
-Then `schritt_melden` with `idee` and `titel`, the value of the line `Projektname:` in `docs/projekt.md`, and after that `mission_pruefen` with `flugschule-11-idee`.
+Then `schritt_melden` with `idee` and `titel`, the value of the line `Projektname:` in `docs/projekt.md` (if it answers “Ungültige Angaben” because of `titel`, report `idee` again straight away without `titel`, as in the skill `webseite-planen`), and after that `mission_pruefen` with `flugschule-11-idee`.
 
 ## Research from the inventory
 

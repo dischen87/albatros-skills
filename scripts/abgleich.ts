@@ -4,6 +4,7 @@
 // - Aktualisieren: die Tabelle «| KI | Befehle |» im Abschnitt «Aktualisieren» der README hat dieselben Zeilen wie die Tabelle im
 //   Lotse (de). albatros liest die README genau so (aktualisierenAus in packages/kit/src/fahrplan-vertrag.ts) und erzeugt daraus
 //   AKTUALISIEREN, das lage bei veralteten Skills nennt.
+// - titel bei schritt_melden: wie mcp ihn annimmt (titelAusweg, unten).
 
 export type Befehle = { ki: string; befehle: string }[];
 
@@ -85,4 +86,17 @@ export function vorlageGegenSkill(skill: string, vorlage: Record<'AGENTS.md' | '
     if (rest.at(-1) !== verweis) aus.push(`${datei}: letzte Zeile muss ${verweis} sein`);
   }
   return aus;
+}
+
+// Ein abgelehnter titel kostet nie den Schritt (Welle 7, 01.11.2026, w7-21). mcp nimmt titel bis 300 Zeichen und kürzt ihn auf der Insel
+// auf 80; mit Zeilenumbruch (oder einem anderen Steuerzeichen) oder über 300 Zeichen antwortet schritt_melden «Ungültige Angaben» und
+// schickt den Schritt gar nicht an flugschule (Nachbau mit dem echten mcp: …/scratchpad/welle7/skills/w7-21/titel-echt.log). Wer titel bei
+// schritt_melden nennt, sagt darum in seiner Sprache, dass der Schritt dann gleich nochmals ohne titel kommt; null: in Ordnung.
+const OHNE_TITEL: Record<string, string> = { de: 'ohne `titel`', fr: 'sans `titel`', it: 'senza `titel`', en: 'without `titel`' };
+export function titelAusweg(datei: string, text: string): string | null {
+  if (!text.includes('`titel`') || !text.includes('`schritt_melden`')) return null;
+  const sprache = /plugins\/albatros-(fr|it|en)\//.exec(datei)?.[1] ?? 'de';
+  const ohne = OHNE_TITEL[sprache]!;
+  return text.includes(ohne) ? null
+    : `${datei}: nennt \`titel\` bei \`schritt_melden\`, aber nicht, dass der Schritt nach «Ungültige Angaben» wegen \`titel\` gleich nochmals ${ohne} kommt; sonst fehlt er auf der Insel`;
 }

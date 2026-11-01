@@ -3,7 +3,7 @@ name: webseite-modernisieren
 description: "Modernise un site web existant (association, magasin, cabinet, ancien site Jimdo, Wix ou WordPress) pour une personne sans connaissances préalables, comme variante du plan de vol. Commence tout de suite, sans poser de question, par l'état des lieux : toutes les pages, chaque fonction (formulaires, inscriptions, dates, PDF, prix, galeries, cartes, langues) et tous les contenus, avec des photos de l'ancien site dans docs/bestand.md. Ne demande ensuite que ce que seule la personne sait, surtout ce qui doit rester, et mène par le plan de la maison et la vérification du plan (aucune fonction ne se perd sans décision) jusqu'au nouveau site ; à la mise en ligne, le domaine déménage avec des redirections, l'e-mail reste intact. Utilise ce skill quand on dit « Modernise … », « notre site est dépassé », « renouveler le site web », « relaunch », « quitter Jimdo, Wix ou WordPress », « refaire l'ancien site », et tout de suite quand quelqu'un envoie seulement l'adresse d'un site web (https://…), sans autres mots."
 metadata:
   stand: 0.2.0
-  quelle: '8efafe8b2bdf'
+  quelle: 'e407114c3bdd'
 ---
 
 # Moderniser un site web : rénover une vieille maison
@@ -103,7 +103,7 @@ Dis avec des mots simples ce que tu as trouvé, brièvement et avec des chiffres
 
 Qui s'occupe du site, tu le demandes plus tard, dans le plan de la maison. Le reste de l'idée, tu le proposes d'après l'ancien site, et la personne le confirme dans un seul message : nom du projet (le plus souvent le nom de l'ancien site), en une phrase, pour qui, chose principale, succès et mode (faire). Ensuite, tu écris comme dans le skill `webseite-planen`, section Idée (étapes 4 à 6) : `docs/projekt.md` avec `Bestehende Seite: <adresse>`, `AGENTS.md` avec `CLAUDE.md` et `GEMINI.md`, et l'esquisse grise `design/skizze.html` de la nouvelle page d'accueil, où figure déjà ce qui doit rester. Ouvre-la dans le navigateur web.
 
-Ensuite `schritt_melden` avec `idee` et `titel`, la valeur de la ligne `Projektname:` dans `docs/projekt.md`, puis `mission_pruefen` avec `flugschule-11-idee`.
+Ensuite `schritt_melden` avec `idee` et `titel`, la valeur de la ligne `Projektname:` dans `docs/projekt.md` (s'il répond « Ungültige Angaben » à cause de `titel`, tu annonces aussitôt `idee` une nouvelle fois sans `titel`, comme dans le skill `webseite-planen`), puis `mission_pruefen` avec `flugschule-11-idee`.
 
 ## La recherche à partir de l'état des lieux
 

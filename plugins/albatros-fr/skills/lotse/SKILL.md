@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principal d'Albatros : l'aiguilleur du ciel. Demande avec l'outil lage l'état réel de la personne (phase du plan de vol, questions obligatoires ouvertes, abonnement, page ou serveur, mission), puis suit exactement le skill et la section à faire maintenant ; après chaque étape réussie, il redemande. Montre le plan de vol en trois grandes étapes (décoller, voler, atterrir), pose lui-même les questions obligatoires, clarifie apprendre ou faire et signale les lacunes du savoir-faire. Sans connexion, il montre les trois grandes étapes avec la prochaine étape et, sur demande, la bibliothèque ouverte. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je veux apprendre moi-même », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? »), le skill spécialisé a la priorité."
 metadata:
   stand: 0.2.0
-  quelle: '66a67772442c'
+  quelle: 'a85bc07e08c8'
 ---
 
 # Aiguilleur du ciel : la bonne chose au bon moment
@@ -100,7 +100,7 @@ Chaque réponse va dans le fichier et la ligne que `lage` indique, en début de 
 
 ### 4. Redemander après chaque étape réussie
 
-Quand une étape est réussie (une section terminée, une mission validée, une erreur corrigée), tu l'annonces avec `schritt_melden`, comme le skill le dit, et tu mets à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`. Si `docs/projekt.md` a la ligne `Projektname:`, tu donnes sa valeur comme `titel` à chaque `schritt_melden`, pour que l'île montre la maison avec le nom du projet au lieu de « projekt ». Ensuite, rappelle `lage` avant de proposer l'étape suivante. L'état a changé, et seul le radar sait ce qui est à faire maintenant. Demande brièvement à la personne si elle veut continuer tout de suite.
+Quand une étape est réussie (une section terminée, une mission validée, une erreur corrigée), tu l'annonces avec `schritt_melden`, comme le skill le dit, et tu mets à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`. Si `docs/projekt.md` a la ligne `Projektname:`, tu donnes sa valeur comme `titel` à chaque `schritt_melden`, pour que l'île montre la maison avec le nom du projet au lieu de « projekt ». Albatros l'accepte jusqu'à 300 caractères et le raccourcit à 80 sur l'île ; la réponse dit alors comment il s'y appelle. Si `schritt_melden` répond « Ungültige Angaben » (données non valables) à cause de `titel` (par exemple un saut de ligne ou plus de 300 caractères), tu annonces aussitôt la même étape une nouvelle fois sans `titel`, pour qu'elle ne manque pas sur l'île. Ensuite, rappelle `lage` avant de proposer l'étape suivante. L'état a changé, et seul le radar sait ce qui est à faire maintenant. Demande brièvement à la personne si elle veut continuer tout de suite.
 
 Si `lage` donne deux fois de suite la même étape alors que vous venez de la faire : en général, il manque encore une ligne dans les preuves ou la validation de la mission (`mission_pruefen`). Vérifie les deux, puis rappelle `lage`.
 
