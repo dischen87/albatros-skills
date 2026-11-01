@@ -43,7 +43,7 @@ Comme tout atelier, la construction du modèle a besoin d'outils : avant de comm
 Lis `Modus:` dans `docs/projekt.md` ; si la ligne manque, c'est `machen` (faire) qui vaut.
 
 - **machen (faire) :** Tu fais le travail et tu expliques chaque étape en une phrase avec son image. Le moment d'apprentissage, tu le proposes : « Maintenant, un changement tient en une phrase ; après la construction, c'est une transformation. Tu veux changer toi-même une phrase sur la page d'accueil et voir comme ça va vite ? »
-- **lernen (apprendre) :** Tu expliques chaque étape avec l'image et le pourquoi. Le moment d'apprentissage, c'est la personne qui le fait : elle change une phrase dans `design/entwurf/index.html` et recharge la page (ensuite `verstanden_melden` avec `mission: flugschule-15-entwurf` et `art: selbst`). À la fin, tu poses la question de contrôle de la leçon `flugschule-15-entwurf` : « Pourquoi ton IA conçoit-elle tout le site avant de construire ? » Seulement après sa réponse, tu annonces `art: kontrollfrage`. Si l'outil manque, on continue sans.
+- **lernen (apprendre) :** Tu expliques chaque étape avec l'image et le pourquoi. Le moment d'apprentissage, c'est la personne qui le fait : elle change une phrase dans `design/entwurf/index.html` et recharge la page (ensuite `verstanden_melden` avec `mission: flugschule-15-entwurf` et `art: selbst`). À la fin, tu poses la question de contrôle de la leçon `flugschule-15-entwurf` : « Pourquoi ton IA dessine-t-elle tout le site avant de le construire ? » Seulement après sa réponse, tu annonces `art: kontrollfrage`. Si l'outil manque, on continue sans.
 
 ## Déroulement
 

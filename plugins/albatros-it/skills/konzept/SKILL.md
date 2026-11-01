@@ -36,7 +36,7 @@ Fase P5 «Concetto di design e di marketing». Tocca a questa fase dopo il piano
 Leggi la riga `Modus:` in `docs/projekt.md`; se manca, vale `machen` (fare).
 
 - **machen (fare):** Fai tu il lavoro e spieghi ogni passo in una frase con la sua immagine. Le cinque domande alla persona le fai comunque. Il momento di apprendimento lo offri senza insistere: «Il carattere prima dei colori. Vuoi vedere perché lo stesso colore fa un effetto del tutto diverso per una panetteria e per un'avvocata?»
-- **lernen (imparare):** Spieghi ogni passo con l'immagine e il perché. Le tre parole del carattere le trova la persona; tu aiuti solo con coppie di opposti. Alla fine fai la domanda di controllo della lezione `flugschule-14-konzept`: «Perché stabilisci il carattere del tuo sito prima dei colori?» Solo dopo la sua risposta chiami `verstanden_melden` con `mission: flugschule-14-konzept` e `art: kontrollfrage`. Se lo strumento manca, si continua senza.
+- **lernen (imparare):** Spieghi ogni passo con l'immagine e il perché. Le tre parole del carattere le trova la persona; tu aiuti solo con coppie di opposti. Alla fine fai la domanda di controllo della lezione `flugschule-14-konzept`: «Perché fissi il carattere del tuo sito prima dei colori?» Solo dopo la sua risposta chiami `verstanden_melden` con `mission: flugschule-14-konzept` e `art: kontrollfrage`. Se lo strumento manca, si continua senza.
 
 ## Procedura
 

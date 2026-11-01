@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.2.0
-  quelle: '4889933f238f'
+  quelle: 'd4e0b583501a'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -270,7 +270,7 @@ Ensuite, tu écris quatre rapports, d'une page chacun, dans la langue de la pers
 
 Ensuite, tu passes en revue les critères d'acceptation de `docs/prd.md` : tu coches ceux qui sont remplis (`- [x]`) et tu notes brièvement où ou avec quoi ils ont été vérifiés. Ce qui n'est pas rempli reste ouvert, avec une raison.
 
-Rouge veut dire : corriger, reconstruire, revérifier, jusqu'à ce que plus rien ne soit rouge. Jaune seulement avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même. Quand les quatre rapports sont dans `docs/pruefung/` et que plus rien n'est rouge, tu fais l'entrée dans le journal de bord (`git add docs web seite && git commit -m "Vérification : quatre rapports, rien de rouge"`) et tu annonces `pruefung`. En mode `lernen`, tu poses maintenant la question de contrôle de la mission `flugschule-20-logbuch-eintrag` (`mission_holen`) et tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+Rouge veut dire : corriger, reconstruire, revérifier, jusqu'à ce que plus rien ne soit rouge. Jaune seulement avec une raison sous « Ouvert ». « Tout vert », tu ne l'écris qu'après avoir regardé les photos toi-même. Quand les quatre rapports sont dans `docs/pruefung/` et que plus rien n'est rouge, tu fais l'entrée dans le journal de bord (`git add docs web seite && git commit -m "Vérification : quatre rapports, rien de rouge"`) et tu annonces `pruefung`. En mode `lernen`, tu poses maintenant la question de contrôle de la leçon `flugschule-20-logbuch-eintrag` : « Qu'est-ce qu'une entrée dans le journal de bord (commit), et pourquoi chaque étape en reçoit-elle une ? » Si `lage` a donné d'autres leçons dans cette phase (sur le parcours site web, l'accessibilité et le droit), tu poses aussi leurs questions. Tu n'annonces `verstanden_melden` (type `kontrollfrage`, chaque fois avec la mission de la question) qu'après la réponse de la personne.
 
 ### 6. Validation (Freigabe) : la visite (`schritt: freigabe`)
 
@@ -294,7 +294,7 @@ Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut
    git add docs/prd.md && git commit -m "Site validé" && git tag -f freigegeben
    ```
    À la mise en ligne, le tag `freigegeben` montre si quelque chose a encore changé sur le site depuis.
-7. Annonce `freigabe`. En mode `lernen`, tu poses maintenant les questions de contrôle de la mission `flugschule-21-text-aendern` (`mission_holen`) et tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
+7. Annonce `freigabe`. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-21-text-aendern` : « Comment changes-tu toi-même un texte de ton site, et comment vois-tu le changement avant qu'il aille en ligne ? » et « Pourquoi vois-tu ton site d'abord sur ton ordinateur, avant qu'il aille en ligne ? » Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
 
 Si la personne veut encore changer quelque chose avant la validation : un texte, une image ou une date, on revient à l'étape 4, puis vérification et visite à nouveau. Une nouvelle page ou une nouvelle fonction est un complément : d'abord dans `docs/plan.md`, puis une ébauche des pages modifiées et une nouvelle autorisation de construire (skill `entwurf`), et seulement ensuite la construction.
 

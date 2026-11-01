@@ -36,7 +36,7 @@ Phase P5 “Design and marketing concept”. It's due after the confirmed plan: 
 Read the line `Modus:` in `docs/projekt.md`; if it's missing, `machen` (do) applies.
 
 - **machen (do):** You do the work and explain each step in one sentence with its picture. You still ask the person the five questions. You offer the learning moment without pushing: “Character before colours. Want to see why the same colour comes across completely differently for a bakery and for a lawyer?”
-- **lernen (learn):** You explain each step with its picture and the why. The person finds the three words for the character themselves; you only help with pairs of opposites. At the end you ask the check question of the lesson `flugschule-14-konzept`: “Why do you settle the character of your site before the colours?” Only after their answer do you call `verstanden_melden` with `mission: flugschule-14-konzept` and `art: kontrollfrage`. If the tool is missing, you carry on without it.
+- **lernen (learn):** You explain each step with its picture and the why. The person finds the three words for the character themselves; you only help with pairs of opposites. At the end you ask the check question of the lesson `flugschule-14-konzept`: “Why do you settle your site's character before its colours?” Only after their answer do you call `verstanden_melden` with `mission: flugschule-14-konzept` and `art: kontrollfrage`. If the tool is missing, you carry on without it.
 
 ## Steps
 

@@ -3,7 +3,7 @@ name: betrieb
 description: "Prepares running the site with a person who has no prior knowledge, before the guests arrive (P12): how visitors get in touch and who reads it how often, who finds out when the site stops responding (simple, free monitoring), how to get back to yesterday (photos of the server with Pilot, the logbook with Light, a backup of your own when hosting it yourself), whether an entrance with sign-in is needed (only with your own server, skill bausteine) and whether visitors are counted (skill statistik, with consent where it's required). The result is docs/betrieb.md. Use this skill after choosing where the site lives (lancieren) and for “running it”, “monitoring”, “backup”, “feedback”, “who reads the form”, “what if the site goes down?”."
 metadata:
   stand: 0.2.0
-  quelle: 'c01d87a8eccd'
+  quelle: '7d86dfefd03f'
 ---
 
 # Running it: before the guests arrive
@@ -96,7 +96,7 @@ Statistik: …
 Stand: <date>
 ```
 
-Once every line has an answer, you make the logbook entry (`git add docs/betrieb.md && git commit -m "Running it: letterbox, smoke alarm, backup"`) and report `schritt_melden` with `betrieb` and `sprache`. If the tool is missing or doesn't know the step, you carry on without the island. In `lernen` mode you ask the check questions of the mission `flugschule-17-betrieb` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
+Once every line has an answer, you make the logbook entry (`git add docs/betrieb.md && git commit -m "Running it: letterbox, smoke alarm, backup"`) and report `schritt_melden` with `betrieb` and `sprache`. If the tool is missing or doesn't know the step, you carry on without the island. In `lernen` mode you now ask the check questions of the lesson `flugschule-17-betrieb`: “Why is feedback nobody reads worse than none?”, “How do you get back to yesterday?” and “Who should be first to notice when your site stops responding?” You only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
 Next comes going live: skill `lancieren`, part 2.
 

@@ -2,7 +2,7 @@
 // Sprachen, und jeder falsche Verweis auf eine Mission wird rot.
 import { expect, test } from 'bun:test';
 import { Glob } from 'bun';
-import { missionsverweise, type SkillText, type VerweisMission } from './missionsverweise.ts';
+import { bloecke, ladeFragen, missionsverweise, type Fragen, type SkillText, type VerweisMission } from './missionsverweise.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const missionen = async () => {
@@ -21,7 +21,12 @@ const skills = async () => {
 test('echte Skills in vier Sprachen: verstanden_melden, Kontrollfragen und mission_pruefen zeigen auf die Lektionen', async () => {
   const s = await skills();
   expect(s.length).toBe(4 * 27);
-  expect(missionsverweise(s, await missionen())).toEqual([]);
+  // Kontrollfragen aus missionen/ und uebersetzungen/<sprache>/missionen/; jede Lektion hat sie in jeder Sprache (sonst prüft Regel 6 nichts)
+  const fragen = await ladeFragen(wurzel);
+  const lektionen = (await missionen()).filter((m) => !m.optional && (m.verstehen?.length ?? 0) > 0);
+  for (const sprache of ['de', 'fr', 'it', 'en'])
+    for (const m of lektionen) expect([sprache, m.id, fragen[sprache]?.get(m.id)?.length]).toEqual([sprache, m.id, m.verstehen!.length]);
+  expect(missionsverweise(s, await missionen(), fragen)).toEqual([]);
 });
 
 test('echte Skills: gestaltung und webseite-bauen nennen ihre Lektionen flugschule-19, -20 und -21 in jeder Sprache', async () => {
@@ -68,7 +73,9 @@ test('verstanden_melden auf einer freiwilligen Mission oder einer ohne verstehen
   ];
   for (const f of faelle) {
     const r = missionsverweise([gestaltung(`${gut}\n${f}\n`)], MS);
-    expect([f, r.length]).toEqual([f, 1]);
+    // Seit 01.11.2026 meldet die Form «(`mission_holen`)» in einem Satz mit Kontrollfragen zusätzlich die Quelle (Regel 5): dort zwei Meldungen
+    const holen = f.includes('(`mission_holen`)') ? 1 : 0;
+    expect([f, r.length]).toEqual([f, 1 + holen]);
     expect(r[0]).toContain('aber lage nennt sie nie als Lektion');
   }
 });
@@ -85,4 +92,52 @@ test('eine Lektion, die ihr Skill nicht nennt, und eine unbekannte Mission werde
   ]);
   expect(missionsverweise([gestaltung(`${gut}Siehe \`flugschule-99-gibts-nicht\`.\n`)], MS))
     .toEqual(['plugins/albatros/skills/gestaltung/SKILL.md:4: Mission «flugschule-99-gibts-nicht» gibt es nicht in missionen/']);
+});
+
+// Regel 5 (Nachbesserung texte, 01.11.2026): mission_holen zeigt die nächste offene Mission, nicht die Lektion; nach dem letzten Schritt der
+// Phase schon die nächste Phase, mit Light oder Pilot in P11 bis P13 oft schon vorher eine ohne Kontrollfrage (lauf3/mission-holen-aktuell.log)
+test('Kontrollfragen «(`mission_holen`)» werden rot, in jeder Sprache; mission_holen ohne Kontrollfrage oder nur erwähnt bleibt grün', () => {
+  const rot = [
+    'Im Modus `lernen` stellst du jetzt die Kontrollfrage der Mission `flugschule-19-musterblatt` (`mission_holen`) und meldest erst danach.',
+    'À la fin de la phase, tu poses la question de contrôle de la leçon : la mission de la phase la donne sous « verstehen » (`mission_holen`) ; si tu n\'en trouves pas…',
+    'Nel modo `lernen` fai le domande di controllo della missione `flugschule-19-musterblatt` (`mission_holen`) e segnali…',
+    '7. Report `freigabe`. In `lernen` mode you now ask the check questions of the mission `flugschule-19-musterblatt` (`mission_holen`) and only…',
+  ];
+  for (const f of rot) {
+    const r = missionsverweise([gestaltung(`${gut}\n${f}\n`)], MS);
+    expect([f, r]).toEqual([f, [expect.stringContaining('Kontrollfragen aus mission_holen')]]);
+  }
+  const gruen = [
+    'Die aktuelle Mission zeigt dir das Werkzeug (`mission_holen`).',
+    'Nach dem letzten Schritt zeigt `lage` schon die nächste Phase, und `mission_holen` zeigt nur die nächste offene Mission, oft eine ohne Kontrollfrage.',
+  ];
+  for (const f of gruen) expect([f, missionsverweise([gestaltung(`${gut}\n${f}\n`)], MS)]).toEqual([f, []]);
+  // Der Absatz zählt, nicht die Zeile: ein Listenpunkt mit Kontrollfrage, ein anderer mit mission_holen
+  expect(missionsverweise([gestaltung(`${gut}\n- Am Ende die Kontrollfrage.\n- Die Mission (\`mission_holen\`).\n`)], MS)).toEqual([]);
+  expect(bloecke('a\nb\n\n- c\n  d\n- e\n# f\ng').map((b) => b.text)).toEqual(['a\nb', '- c\n  d', '- e', '# f\ng']);
+});
+
+// Regel 6 (01.11.2026): Steht eine Kontrollfrage wörtlich hinter «Lektion `id`», ist sie eine Frage dieser Lektion in der Sprache des Skills
+test('Kontrollfragen im Skill: wörtlich wie in der Mission derselben Sprache, sonst rot', () => {
+  const fragen: Fragen = {
+    de: new Map([['flugschule-19-musterblatt', ['Warum stehen Farben und Schriften deiner Seite nur an einem Ort?']]]),
+    fr: new Map([['flugschule-19-musterblatt', ["Pourquoi les couleurs et les polices de ton site ne sont-elles qu'à un seul endroit ?"]]]),
+  };
+  const fr = (text: string): SkillText => ({ datei: 'plugins/albatros-fr/skills/gestaltung/SKILL.md', slug: 'gestaltung', text });
+  const wort = 'Am Ende stellst du die Kontrollfragen der Lektion `flugschule-19-musterblatt`: «Warum stehen Farben und Schriften deiner Seite nur an einem Ort?»';
+  expect(missionsverweise([gestaltung(`${gut}\n${wort}\n`)], MS, fragen)).toEqual([]);
+  // Französische Typografie: geschützte Leerzeichen (U+202F, U+00A0) zählen wie ein Leerzeichen
+  const frWort = "tu poses les questions de contrôle de la leçon `flugschule-19-musterblatt`\u202f: «\u202fPourquoi les couleurs et les polices de ton site ne sont-elles qu'à un seul\u00a0endroit\u202f?\u202f»";
+  expect(missionsverweise([fr(`${gut}\n${frWort}\n`)], MS, fragen)).toEqual([]);
+  // Ein Zitat ohne Fragezeichen ist keine Kontrollfrage
+  expect(missionsverweise([gestaltung(`${gut}\nZur Lektion \`flugschule-19-musterblatt\` gehört das Bild «Farbfächer».\n`)], MS, fragen)).toEqual([]);
+  const rot = [
+    [gestaltung(`${gut}\nKontrollfragen der Lektion \`flugschule-19-musterblatt\`, etwa «Warum stehen Farben und Schriften nur an einem Ort?»\n`)], // umformuliert
+    [fr(`${gut}\nla question de contrôle de la leçon \`flugschule-19-musterblatt\` : « Warum stehen Farben und Schriften deiner Seite nur an einem Ort? »\n`)], // falsche Sprache
+    [{ datei: 'plugins/albatros-en/skills/gestaltung/SKILL.md', slug: 'gestaltung', text: `${gut}\nthe check questions of the lesson \`flugschule-19-musterblatt\`: “Why?”\n` }],
+  ] as SkillText[][];
+  expect(missionsverweise(rot[0]!, MS, fragen)).toEqual([expect.stringContaining('steht so nicht in der Lektion «flugschule-19-musterblatt» (de)')]);
+  expect(missionsverweise(rot[1]!, MS, fragen)).toEqual([expect.stringContaining('steht so nicht in der Lektion «flugschule-19-musterblatt» (fr)')]);
+  // Ohne Fragen für eine Sprache (hier en) prüft Regel 6 dort nichts; der Test der echten Skills verlangt sie für alle vier Sprachen
+  expect(missionsverweise(rot[2]!, MS, fragen)).toEqual([]);
 });

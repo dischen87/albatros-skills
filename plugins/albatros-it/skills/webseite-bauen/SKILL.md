@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza approvata (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: '4889933f238f'
+  quelle: 'd4e0b583501a'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -270,7 +270,7 @@ Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
 Poi passi in rassegna i criteri di collaudo in `docs/prd.md`: spunti quelli soddisfatti (`- [x]`) e annoti brevemente dove o con che cosa li hai controllati. Quello che non è soddisfatto resta aperto, con un motivo.
 
-Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`. Nel modo `lernen` adesso fai la domanda di controllo della missione `flugschule-20-logbuch-eintrag` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
+Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più niente di rosso. Il giallo solo con un motivo sotto «Aperto». «Tutto verde» lo scrivi solo dopo aver guardato tu le foto. Quando i quattro rapporti stanno in `docs/pruefung/` e niente è più rosso, fai la voce nel diario di bordo (`git add docs web seite && git commit -m "Controllo: quattro rapporti, niente rosso"`) e segnali `pruefung`. Nel modo `lernen` adesso fai la domanda di controllo della lezione `flugschule-20-logbuch-eintrag`: «Che cos'è una voce nel diario di bordo (commit), e perché ogni passo ne riceve una?» Se `lage` ha riportato altre lezioni in questa fase (sul percorso sito web accessibilità e diritto), fai anche le loro domande. Segnali `verstanden_melden` (tipo `kontrollfrage`, ogni volta con la missione della domanda) solo dopo la risposta della persona.
 
 ### 6. Approvazione (Freigabe): il sopralluogo (`schritt: freigabe`)
 
@@ -294,7 +294,7 @@ Adesso la persona passa lei stessa per la sua casa. Decide se può andare online
    git add docs/prd.md && git commit -m "Sito approvato" && git tag -f freigegeben
    ```
    Alla messa online il tag `freigegeben` mostra se da allora sul sito è cambiato ancora qualcosa.
-7. Segnala `freigabe`. Nel modo `lernen` adesso fai le domande di controllo della missione `flugschule-21-text-aendern` (`mission_holen`) e segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
+7. Segnala `freigabe`. Nel modo `lernen` adesso fai le domande di controllo della lezione `flugschule-21-text-aendern`: «Come cambi da te un testo del tuo sito, e come vedi la modifica prima che vada online?» e «Perché vedi il tuo sito prima sul tuo computer, prima che vada online?» Segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
 
 Se prima dell'approvazione la persona vuole ancora cambiare qualcosa: un testo, un'immagine o un appuntamento, si torna al passo 4, poi di nuovo controllo e sopralluogo. Una nuova pagina o una nuova funzione è un'aggiunta: prima in `docs/plan.md`, poi una bozza delle pagine cambiate e un nuovo via libera per costruire (skill `entwurf`), solo dopo la costruzione.
 

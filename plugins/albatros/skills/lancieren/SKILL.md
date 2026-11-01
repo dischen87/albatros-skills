@@ -231,7 +231,7 @@ Geprüft: <Datum>, pruefen.mjs --live ohne Rot, Türen wie erwartet (docs/pruefu
 Angekündigt: <Datum>, <wem>
 ```
 
-Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du die Kontrollfragen der Mission `flugschule-18-live-schalten` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
+Hinter `Eigene Domain:` steht zuerst `jetzt`, `später` oder `nie`, so wie die Person in Schritt 5 geantwortet hat; `Adresse:` ist immer die Adresse im Netz. Dann der Eintrag ins Logbuch, Push wie oben, und die Mission. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-18-live-schalten`: «Welche Seite geht beim Live schalten ins Netz?», «Wann ist deine Seite wirklich live?» und «Warum sagst du es jemandem zuerst?» Sie stehen hier, weil `lage` und `mission_holen` sie nach `live` nicht mehr zeigen. `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach der Antwort der Person.
 
 Wünscht die Person danach etwas anders, gilt der Skill `webseite-aendern`: klein (lokal ändern, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe zum Bauen, bauen, zeigen, Freigabe, Push).
 

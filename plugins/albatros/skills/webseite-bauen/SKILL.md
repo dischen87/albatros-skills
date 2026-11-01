@@ -267,7 +267,7 @@ Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
 Dann gehst du die Abnahmekriterien in `docs/prd.md` durch: Erfüllte hakst du ab (`- [x]`) und schreibst kurz dazu, wo oder womit geprüft. Was nicht erfüllt ist, bleibt offen, mit Grund.
 
-Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, machst du den Eintrag ins Logbuch (`git add docs web seite && git commit -m "Prüfung: vier Berichte, nichts rot"`) und meldest `pruefung`. Im Modus `lernen` stellst du jetzt die Kontrollfrage der Mission `flugschule-20-logbuch-eintrag` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
+Rot heisst: beheben, neu bauen, nochmals prüfen, bis nichts mehr rot ist. Gelb geht nur mit Grund unter «Offen». «Alles grün» schreibst du erst, wenn du die Fotos selbst angeschaut hast. Liegen die vier Berichte in `docs/pruefung/` und ist nichts mehr rot, machst du den Eintrag ins Logbuch (`git add docs web seite && git commit -m "Prüfung: vier Berichte, nichts rot"`) und meldest `pruefung`. Im Modus `lernen` stellst du jetzt die Kontrollfrage der Lektion `flugschule-20-logbuch-eintrag`: «Was ist ein Eintrag im Logbuch (Commit), und warum bekommt jeder Schritt einen?» Hat `lage` in dieser Phase weitere Lektionen genannt (auf dem Weg Webseite Barrierefreiheit und Recht), stellst du auch ihre Fragen. `verstanden_melden` (Art `kontrollfrage`, je mit der Mission der Frage) meldest du erst nach der Antwort der Person.
 
 ### 6. Freigabe: die Begehung (`schritt: freigabe`)
 
@@ -291,7 +291,7 @@ Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz 
    git add docs/prd.md && git commit -m "Seite freigegeben" && git tag -f freigegeben
    ```
    Beim Live schalten zeigt der Tag `freigegeben`, ob seither noch etwas an der Seite geändert hat.
-7. Melde `freigabe`. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Mission `flugschule-21-text-aendern` (`mission_holen`) und meldest `verstanden_melden` (Art `kontrollfrage`) erst nach der Antwort der Person.
+7. Melde `freigabe`. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-21-text-aendern`: «Wie änderst du selbst einen Text auf deiner Seite, und wie siehst du die Änderung, bevor sie ins Netz geht?» und «Warum siehst du deine Seite zuerst auf deinem Computer, bevor sie ins Netz geht?» `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach der Antwort der Person.
 
 Will die Person vor der Freigabe noch etwas ändern: Ein Text, ein Bild oder ein Termin geht zurück zu Schritt 4, dann Prüfen und Begehung nochmals. Eine neue Seite oder eine neue Funktion ist ein Nachtrag: zuerst in `docs/plan.md`, dann ein Entwurf der geänderten Seiten und eine neue Freigabe zum Bauen (Skill `entwurf`), erst dann gebaut.
 

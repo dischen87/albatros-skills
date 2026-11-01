@@ -11,7 +11,7 @@ import { pruefeAbschnittsnamen } from './abschnitte.ts';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
-import { missionsverweise, type SkillText } from './missionsverweise.ts';
+import { ladeFragen, missionsverweise, type SkillText } from './missionsverweise.ts';
 import { hoeher, quelle } from './stand.ts';
 
 type Mission = {
@@ -206,11 +206,12 @@ for (const weg of ['flugschule', 'webseite', 'geschaeft'])
 // Lektion je Phase und Weg (scripts/lektionen.ts): Wo der Fahrplan Lernmomente hat, zeigt lage im Modus lernen eine Kontrollfrage
 if (fahrplan) for (const f of lektionenFehlen(fahrplan.phasen, [...deutsch.values()])) fehler.push(`missionen: ${f}`);
 // Verweise der Skills auf Missionen (scripts/missionsverweise.ts), in jeder Sprache: verstanden_melden und Kontrollfragen nur mit einer
-// Lektion, mission_pruefen zuerst mit der Pflicht-Mission, jede Lektion in ihrem Skill genannt
+// Lektion, mission_pruefen zuerst mit der Pflicht-Mission, jede Lektion in ihrem Skill genannt, Kontrollfragen nie aus mission_holen und,
+// wo sie wörtlich im Skill stehen, gleich wie in der Mission derselben Sprache (seit 01.11.2026)
 const skillTexte: SkillText[] = [];
 for await (const datei of new Glob('plugins/*/skills/*/SKILL.md').scan(wurzel))
   skillTexte.push({ datei, slug: datei.split('/').at(-2)!, text: await Bun.file(wurzel + datei).text() });
-fehler.push(...missionsverweise(skillTexte, [...deutsch.values()]));
+fehler.push(...missionsverweise(skillTexte, [...deutsch.values()], await ladeFragen(wurzel)));
 
 // Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md
 // sind in jeder Sprache gleich: Sie geben keinen Text aus, den die Person liest, ohne dass die KI ihn erklärt.

@@ -3,7 +3,7 @@ name: lancieren
 description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
   stand: 0.2.0
-  quelle: 'e9950364778b'
+  quelle: 'af3dd6986d6d'
 ---
 
 # Launch: where it lives and the opening
@@ -234,7 +234,7 @@ Geprüft: <date>, pruefen.mjs --live without red, doors as expected (docs/pruefu
 Angekündigt: <date>, <whom>
 ```
 
-After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you ask the check questions of the mission `flugschule-18-live-schalten` (`mission_holen`) and only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
+After `Eigene Domain:` comes first `jetzt`, `später` or `nie` (now, later, never), in German, as the person answered in step 5; `Adresse:` is always the address on the web. Then the logbook entry, the push as above, and the mission. In `lernen` mode you now ask the check questions of the lesson `flugschule-18-live-schalten`: “Which site goes onto the web when you go live?”, “When is your site really live?” and “Why do you tell someone first?” They're here because `lage` and `mission_holen` no longer show them after `live`. You only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
 If the person wants something different afterwards, the skill `webseite-aendern` applies: small (change locally, show, release, push) or big (addition to the plan, draft, approval to build, build, show, release, push).
 
