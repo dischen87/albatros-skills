@@ -1,0 +1,8 @@
+{
+ "befehl": ["--nur", "sicherheit,ablaeufe"],
+ "exit": 0,
+ "messwerte": "messwerte.json",
+ "ampel": { "sicherheit": "grün", "ablaeufe": "grün" },
+ "punkte": ["Impressum: /impressum", "Datenschutz: /informativa-trattamento-dati"],
+ "nicht": ["Seite Datenschutz fehlt", "Seite Impressum fehlt", "kein Link zur Datenschutzerklärung", "kein Link zum Impressum"]
+}
