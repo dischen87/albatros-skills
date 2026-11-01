@@ -54,16 +54,28 @@ const skills = async () => {
 };
 // Trifft der Befehl, wenn die Datei `ziel` diesen Inhalt hat? Wie in den Skills: Er zeigt eine Zeile. Einmal mit der Sprache des Rechners
 // (meist UTF-8), einmal mit LC_ALL=C; beide Male muss dasselbe herauskommen.
+// Derselbe Befehl steht in vier Sprachen und in lancieren zweimal (Teil 1 und 2), wörtlich gleich: Er läuft je Wortlaut und Inhalt nur
+// einmal, das Urteil gilt für jede Stelle mit diesem Wortlaut (gleicher Befehl, gleiche Datei, gleiches sh: gleiches Ergebnis). Vorher
+// startete der Freigabe-Test 448 sh-Aufrufe (8 Befehle × 28 Fälle × 2 Sprach-Einstellungen), brauchte allein 2,3 s und lief mit 12
+// gleichzeitigen Läufen 12 von 12 Mal in das Timeout von 5 s (Gegenprobe texte, 01.11.2026; Messung lauf3/pruefbefehle-parallel12-vorher.log).
+const urteile = new Map<string, boolean>();
 const trifft = (befehl: string, ziel: string, inhalt: string) => {
+  const schluessel = JSON.stringify([befehl, ziel, inhalt]);
+  const bekannt = urteile.get(schluessel);
+  if (bekannt !== undefined) return bekannt;
   writeFileSync(join(ordner, ziel), inhalt);
-  const urteile = [process.env, { ...process.env, LC_ALL: 'C' }].map((env) => {
+  const [utf8, c] = [process.env, { ...process.env, LC_ALL: 'C' }].map((env) => {
     const r = Bun.spawnSync(['sh', '-c', befehl], { cwd: ordner, env });
     if (r.exitCode > 1) throw new Error(`${befehl}: ${r.stderr.toString()}`);
     return r.stdout.toString().trim() !== '';
   });
-  if (urteile[0] !== urteile[1]) throw new Error(`${befehl}: mit LC_ALL=C anders als mit ${process.env.LC_ALL ?? process.env.LANG ?? 'ohne LANG'}`);
-  return urteile[0]!;
+  if (utf8 !== c) throw new Error(`${befehl}: mit LC_ALL=C anders als mit ${process.env.LC_ALL ?? process.env.LANG ?? 'ohne LANG'} bei ${JSON.stringify(inhalt)}`);
+  urteile.set(schluessel, utf8!);
+  return utf8!;
 };
+// Diese Tests starten Prozesse (sh, grep, tail, tr); wie lange das dauert, hängt von der Last auf dem Rechner ab, nicht vom geprüften Text.
+// Darum ein eigenes Timeout statt der 5 s von bun test (01.11.2026, Gegenprobe texte: auf dem geteilten Rechner zufällig rot).
+const MIT_PROZESSEN = 30_000;
 
 // Zeilen in docs/prd.md (je Fall die ganze Datei) und was kit jaBelegt dazu sagt; dazu die Fälle aus der Gegenprobe und aus w6-43
 const FREIGABEN: string[][] = [
@@ -91,7 +103,7 @@ test('Freigabe: jeder Befehl in lancieren (vier Sprachen, Teil 1 und 2) urteilt 
       if (g !== r) abweichungen.push(`${datei}: ${JSON.stringify(z)} grep ${g ? 'frei' : 'nicht frei'}, Regel ${r ? 'frei' : 'nicht frei'} (${b})`);
     }
   expect(abweichungen).toEqual([]);
-});
+}, MIT_PROZESSEN);
 
 // Zeilen «Eingang:» in docs/betrieb.md: nur das deutsche ja vorne, danach kein Buchstabe
 const EINGAENGE: [string, boolean][] = [
@@ -109,7 +121,7 @@ test('Eingang: jeder Befehl in den Skills (vier Sprachen) nimmt nur das deutsche
     for (const [z, ja] of EINGAENGE)
       if (trifft(b, 'docs/betrieb.md', `Rückmeldungen: Formular\n${z}\nStatistik: nein\n`) !== ja) abweichungen.push(`${datei}: «${z}» ${ja ? 'nicht erkannt' : 'als ja genommen'} (${b})`);
   expect(abweichungen).toEqual([]);
-});
+}, MIT_PROZESSEN);
 
 test('befehle(): Codeblock mit \\ und Kommentar, Befehl in `…`, andere Dateien nicht', () => {
   const text = "Text `grep -E '^Eingang: ja' docs/betrieb.md` und `grep x docs/plan.md`.\n```bash\ngrep -E 'a' docs/prd.md | tail -n 1 \\\n  | grep -v b   # Kommentar\ngit status\n```\n";
