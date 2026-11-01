@@ -84,7 +84,7 @@ In fondo a `docs/prd.md`, dopo la riga `Freigegeben:` della prima costruzione, l
 - [ ] Solo valori del sistema di design, i criteri di collaudo precedenti restano validi
 ```
 
-Per una richiesta grande sopra c'è `Abgeleitet aus: docs/entwurf.md (Nachtrag <GG.MM.AAAA>, Freigegeben zum Bauen: <GG.MM.AAAA>)`: i criteri seguono dalla bozza che la persona ha approvato. Per una piccola li mostri al passo 5 insieme al risultato.
+Per una richiesta grande sopra c'è `Abgeleitet aus: docs/entwurf.md (Nachtrag <GG.MM.AAAA>, Freigegeben zum Bauen: <GG.MM.AAAA>)`: i criteri seguono dalla bozza a cui la persona ha dato il via libera. Per una piccola li mostri al passo 5 insieme al risultato.
 
 ### 5. Cambiare, costruire, controllare, mostrare prima e dopo
 

@@ -165,7 +165,7 @@ La riga `Freigegeben zum Bauen:` (via libera per costruire) si aggiunge solo con
 
 ## Via libera (Freigabe)
 
-La seconda immagine: la firma sotto il modello. Si costruisce solo ciò che la persona ha visto e approvato.
+La seconda immagine: la firma sotto il modello. Si costruisce solo ciò che la persona ha visto e a cui ha dato il via libera.
 
 Dille in tre o quattro frasi che cosa c'è nella bozza (le pagine, le funzioni con i loro stati, ciò che è ancora da completare), apri la pagina iniziale e chiedi esattamente così:
 

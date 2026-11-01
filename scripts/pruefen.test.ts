@@ -1,7 +1,7 @@
 // Abgleiche aus scripts/abgleich.ts, die pruefen.ts nutzt: die echten Dateien sind gleich, und jede Abweichung wird rot.
 import { expect, test } from 'bun:test';
 import { Glob } from 'bun';
-import { agentsBlock, type Befehle, befehleAusReadme, befehleAusSkill, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
+import { agentsBlock, type Befehle, befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const lies = (pfad: string) => Bun.file(wurzel + pfad).text();
@@ -94,4 +94,17 @@ test('titel bei schritt_melden: jeder Skill, der ihn nennt, sagt in seiner Sprac
   expect(titelAusweg('plugins/albatros-fr/skills/lotse/SKILL.md', '`schritt_melden` avec `titel`; sonst nochmals ohne `titel`.')).toContain('nochmals sans `titel`');
   expect(titelAusweg('plugins/albatros-en/skills/x/SKILL.md', '`schritt_melden` with `titel`, else again without `titel`.')).toBeNull();
   expect(titelAusweg('plugins/albatros/skills/gestaltung/SKILL.md', '`schritt_melden` mit `schritt: mockup`.')).toBeNull();
+});
+
+// Sichtung Welle 7, sicht-08 (01.11.2026): GLOSSAR.md trennt «via libera per costruire» (P8) von «approvazione» (P10)
+test('Italienisch: die Bozza hat den via libera, nie «approvata»; die Skills halten sich daran', async () => {
+  for (const d of new Glob('plugins/albatros-it/skills/*/SKILL.md').scanSync(wurzel)) expect([d, bozzaApprovata(d, await lies(d))]).toEqual([d, []]);
+  const it = 'plugins/albatros-it/skills/webseite-bauen/SKILL.md';
+  for (const rot of ['### 0. Prima di costruire: la bozza è approvata?', 'git commit -m "Bozza approvata: piano, concetto, bozza"',
+    'È ricavato dalla bozza approvata: la persona ha già firmato.', 'La bozza è il modello in cui si può entrare, e la persona l\'ha approvato.'])
+    expect([rot, bozzaApprovata(it, rot).length]).toEqual([rot, 1]);
+  for (const gruen of ['### 0. Prima di costruire: la bozza ha il via libera?', 'Il sito approvato va online.', 'La bozza è pronta. Il sito è approvato in P10.'])
+    expect([gruen, bozzaApprovata(it, gruen)]).toEqual([gruen, []]);
+  // Nur Italienisch: «approvata» kommt in anderen Sprachen nicht vor, «approved draft» ist im Englischen richtig (approval to build)
+  expect(bozzaApprovata('plugins/albatros-en/skills/webseite-bauen/SKILL.md', 'bozza approvata')).toEqual([]);
 });

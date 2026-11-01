@@ -6,7 +6,7 @@ import Ajv from 'ajv/dist/2020';
 import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
-import { befehleAusReadme, befehleAusSkill, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
+import { befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 import { pruefeAbschnittsnamen } from './abschnitte.ts';
 import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
@@ -217,6 +217,7 @@ fehler.push(...missionsverweise(skillTexte, [...deutsch.values()], await ladeFra
 for (const { datei, text } of skillTexte) {
   const f = titelAusweg(datei, text);
   if (f) fehler.push(f);
+  fehler.push(...bozzaApprovata(datei, text)); // Begriffe wie im GLOSSAR.md (P8 auf Italienisch)
 }
 
 // Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md
