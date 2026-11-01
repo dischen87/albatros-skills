@@ -49,18 +49,21 @@ describe('durchspiel.ts --trocken', () => {
 // fragte bei luecke_melden mit einem eigenen Satz und nannte bei offenen Pflichtfragen mit werte die deutschen Anfangswörter nicht
 // (Nachstellung: welle7/sichtung/mock-mcp.out gegen echt-mcp.out). Die KI im Durchspiel lernte so anderes als bei der echten Plattform.
 type Ergebnis = { fehler: boolean; text: string };
-async function attrappe(aufrufe: [string, Record<string, unknown>][], o: { stufe?: string; dateien?: Record<string, string> } = {}): Promise<Ergebnis[]> {
+// Antwort von JSON-RPC als Ergebnis: ein Fehler von JSON-RPC (unbekanntes Werkzeug, unbekannte Methode) als «JSON-RPC <code>: <message>»
+type Rpc = { result?: { content: { text: string }[]; isError?: boolean }; error?: { code: number; message: string } };
+const alsErgebnis = (m: Rpc): Ergebnis => (m.result ? { fehler: m.result.isError === true, text: m.result.content[0]!.text } : { fehler: true, text: `JSON-RPC ${m.error?.code}: ${m.error?.message}` });
+async function attrappe(aufrufe: [string, unknown][], o: { stufe?: string; dateien?: Record<string, string>; methode?: string } = {}): Promise<Ergebnis[]> {
   const hafen = mkdtempSync(join(ordner, 'hafen-'));
   for (const [d, w] of Object.entries(o.dateien ?? {})) writeFileSync(join(hafen, d), w);
   const env = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('DURCHSPIEL_')));
   const p = Bun.spawn(['bun', join(wurzel, 'scripts/durchspiel/mock-mcp.ts')], {
     cwd: wurzel, stdin: 'pipe', stdout: 'pipe', stderr: 'ignore', env: { ...env, DURCHSPIEL_HAFEN: hafen, DURCHSPIEL_STUFE: o.stufe ?? 'light' },
   });
-  p.stdin.write(`${aufrufe.map(([name, a], i) => JSON.stringify({ jsonrpc: '2.0', id: i + 1, method: 'tools/call', params: { name, arguments: a } })).join('\n')}\n`);
+  p.stdin.write(`${aufrufe.map(([name, a], i) => JSON.stringify({ jsonrpc: '2.0', id: i + 1, method: o.methode ?? 'tools/call', params: { name, arguments: a } })).join('\n')}\n`);
   p.stdin.end();
-  const aus = (await new Response(p.stdout).text()).trim().split('\n').map((z) => JSON.parse(z) as { result: { content: { text: string }[]; isError?: boolean } });
+  const aus = (await new Response(p.stdout).text()).trim().split('\n').map((z) => alsErgebnis(JSON.parse(z) as Rpc));
   await p.exited;
-  return aus.map((m) => ({ fehler: m.result.isError === true, text: m.result.content[0]!.text }));
+  return aus;
 }
 const tagZuerich = (d: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(d);
 const tagCh = (iso: string) => iso.split('-').reverse().map(Number).join('.');
@@ -97,6 +100,40 @@ test('Attrappe: Eingaben mit den Grenzen und Meldungen des echten Diensts, titel
     { fehler: false, text: 'Auf der Insel steht projekt jetzt bei «Idee» (idee, Phase P1). Der Name ist auf der Insel gekürzt: «Ferienwohnungen Sonnenhof am Thunersee für Familien mit kleinen Kindern und…». Ruf lage erneut auf. Insel: https://albatros.build/cockpit/insel' },
     { fehler: false, text: 'projekt war schon bei «Idee» (idee, Phase P1); nichts geändert, diesen Schritt nicht nochmals melden. Insel: https://albatros.build/fr/cockpit/insel' },
   ]);
+}, 30_000);
+
+// Nachbesserung Welle 7 (01.11.2026, Gegenprobe zu sicht-05): Die Attrappe prüfte nur die oberste Ebene wie zod. Erwartet ist hier, was das
+// echte mcp (zod 4.6.7) am 01.11.2026 geantwortet hat (albatros 2f35816 und albatros-w7 31b9dcf gleich; Nachstellung im Scratch
+// welle7/skills/runde2/sicht-05). Läuft auch ohne albatros daneben (CI); der Vergleich unten prüft jedes Feld gegen das echte mcp.
+test('Attrappe: verschachtelte Eingaben, Listen, null und unbekannte Werkzeuge wie das echte mcp', async () => {
+  const beleg = (x: Record<string, unknown>) => ({ belege: [{ datei: 'docs/projekt.md', zeilen: [], ...x }] });
+  const r = await attrappe([
+    ['lage', beleg({ zeilen: ['x'.repeat(301)] })], ['lage', beleg({ datei: '' })], ['lage', { belege: [{ datei: 'docs/projekt.md' }] }],
+    ['lage', beleg({ zeilen: Array(51).fill('x') })], ['lage', beleg({ datei: 'd'.repeat(201) })], ['lage', { belege: [beleg({ zeilen: Array(51).fill(5) }).belege[0], null] }],
+    ['lage', { belege: 'x'.repeat(31) }], ['lage', []], ['domain_suchen', { wuensche: [] }], ['domain_suchen', { wuensche: ['x'.repeat(64)] }],
+    ['domain_suchen', { wuensche: ['😀'.repeat(64)] }], ['domain_suchen', { wuensche: ['😀'.repeat(63)] }], ['schritt_melden', { schritt: 'idee', titel: null }],
+    ['schritt_melden', { schritt: 'idee', titel: [] }], ['verstanden_melden', { mission: null, art: 'selbst' }], ['upgrade_link', { stufe: null }], ['gibts_nicht', {}],
+  ]);
+  expect(r).toEqual([
+    { fehler: true, text: 'Ungültige Angaben: belege.0.zeilen.0: Too big: expected string to have <=300 characters' },
+    { fehler: true, text: 'Ungültige Angaben: belege.0.datei: Too small: expected string to have >=1 characters' },
+    { fehler: true, text: 'Ungültige Angaben: belege.0.zeilen: Invalid input: expected array, received undefined' },
+    { fehler: true, text: 'Ungültige Angaben: belege.0.zeilen: Too big: expected array to have <=50 items' },
+    { fehler: true, text: 'Ungültige Angaben: belege.0.datei: Too big: expected string to have <=200 characters' },
+    { fehler: true, text: 'Ungültige Angaben: belege.0.zeilen: Too big: expected array to have <=50 items, belege.1: Invalid input: expected object, received null' },
+    { fehler: true, text: 'Ungültige Angaben: belege: Invalid input: expected array, received string, belege: Too big: expected string to have <=30 characters' },
+    { fehler: true, text: 'Ungültige Angaben: Eingabe: Invalid input: expected object, received array' },
+    { fehler: true, text: 'Ungültige Angaben: wuensche: Too small: expected array to have >=1 items' },
+    { fehler: true, text: 'Ungültige Angaben: wuensche.0: Too big: expected string to have <=63 characters' },
+    { fehler: true, text: 'Ungültige Angaben: wuensche.0: Too big: expected string to have <=63 characters' },
+    { fehler: false, text: expect.stringMatching(/^Frei \(Preis pro Jahr/) },
+    { fehler: true, text: 'Ungültige Angaben: titel: Invalid input: expected string, received null' },
+    { fehler: true, text: 'Ungültige Angaben: titel: Invalid input: expected string, received array, titel: Too small: expected array to have >=1 items' },
+    { fehler: true, text: 'Ungültige Angaben: mission: Invalid input: expected string, received null' },
+    { fehler: true, text: 'Ungültige Angaben: stufe: Invalid option: expected one of "light"|"pilot"' },
+    { fehler: true, text: 'JSON-RPC -32602: Unbekanntes Werkzeug: gibts_nicht' },
+  ]);
+  expect(await attrappe([['', {}]], { methode: 'resources/list' })).toEqual([{ fehler: true, text: 'JSON-RPC -32601: Unbekannte Methode: resources/list' }]);
 }, 30_000);
 
 test('Attrappe: verstanden_melden mit den Regeln und Sätzen von flugschule', async () => {
@@ -157,27 +194,33 @@ test('Attrappe: offene Pflichtfrage mit werte nennt die deutschen Anfangswörter
 // dieselben Eingaben ergeben dieselbe Antwort, jeder Schritt der Insel heisst gleich, die Zeile zu offenen Pflichtfragen ist gleich, und die
 // festen Sätze von flugschule und mcp stehen wörtlich in albatros. So fällt auf, wenn die Attrappe wieder abweicht.
 const albatros = resolve(process.env.ALBATROS ?? `${wurzel}../albatros`);
-test.skipIf(!existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`))('Attrappe gegen das echte mcp: gleiche Antworten, feste Sätze wörtlich aus albatros', async () => {
+const mitAlbatros = existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`);
+type Antworten = (m: string, p: string, b: unknown) => { status: number; body: unknown } | undefined;
+// Das echte mcp (createApp) mit FAHRPLAN und ERFASSUNG; flugschule und konto antworten zum Schein (antworten, sonst 404)
+async function echtesMcp() {
   const kit: Record<string, unknown> = await import(`${albatros}/packages/kit/src/index.ts`);
   const mcp: Record<string, unknown> = await import(`${albatros}/services/mcp/src/app.ts`);
-  const { ZUSTAENDE } = (await import(`${albatros}/services/mcp/scripts/lage-attrappen.ts`)) as { ZUSTAENDE: Record<string, { antworten: Record<string, { status: number; body: unknown }>; eingabe: Record<string, unknown> }> };
   const createApp = mcp.createApp as (deps: Record<string, unknown>) => { request: (pfad: string, init: RequestInit) => Promise<Response> };
+  const schalter = { ...(kit.ALLE_AUS as Record<string, boolean>), FAHRPLAN: true, ERFASSUNG: true };
+  const app = (antworten: Antworten) => createApp({
+    resource: 'https://mcp.albatros.build', issuer: 'https://clerk.albatros.test', schalter, erfassung: null, limit: null,
+    ctx: () => ({ methoden: [], schalter, rufe: async (_d: string, m: string, p: string, b?: unknown) => antworten(m, p, b) ?? { status: 404, body: { error: 'Nicht gefunden.' } } }),
+    verifyToken: async () => ({ subject: 'user_anna', aud: ['https://mcp.albatros.build'], revoked: false, expired: false }),
+  });
+  const rufe = async (a: ReturnType<typeof app>, name: string, args: unknown): Promise<Ergebnis> => {
+    const r = await a.request('/', { method: 'POST', headers: { authorization: 'Bearer attrappe', 'content-type': 'application/json' },
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }) });
+    return alsErgebnis((await r.json()) as Rpc);
+  };
+  return { kit, app, rufe, echt: (antworten: Antworten, name: string, args: unknown) => rufe(app(antworten), name, args) };
+}
+test.skipIf(!mitAlbatros)('Attrappe gegen das echte mcp: gleiche Antworten, feste Sätze wörtlich aus albatros', async () => {
+  const { kit, echt } = await echtesMcp();
+  const { ZUSTAENDE } = (await import(`${albatros}/services/mcp/scripts/lage-attrappen.ts`)) as { ZUSTAENDE: Record<string, { antworten: Record<string, { status: number; body: unknown }>; eingabe: Record<string, unknown> }> };
   // Die Antworten zum Schein unten erkennen den Weg ohne Abfrage: mcp hängt je nach Stand ?sprache=… an (albatros Welle 7, sicht-06: POST
   // /cockpit/verstanden?sprache=de; vorher ohne). Nachbesserung 01.11.2026: Der Vergleich wurde gegen albatros-w7 rot («Nicht gefunden.»),
   // obwohl die Attrappe gleich antwortete. Die Zustände von lage-attrappen.ts tragen die Abfrage im Schlüssel und gelten weiter genau.
   const ohneAbfrage = (p: string) => p.split('?')[0]!;
-  const schalter = { ...(kit.ALLE_AUS as Record<string, boolean>), FAHRPLAN: true, ERFASSUNG: true };
-  const echt = async (antworten: (m: string, p: string, b: unknown) => { status: number; body: unknown } | undefined, name: string, args: Record<string, unknown>): Promise<Ergebnis> => {
-    const app = createApp({
-      resource: 'https://mcp.albatros.build', issuer: 'https://clerk.albatros.test', schalter, erfassung: null, limit: null,
-      ctx: () => ({ methoden: [], schalter, rufe: async (_d: string, m: string, p: string, b?: unknown) => antworten(m, p, b) ?? { status: 404, body: { error: 'Nicht gefunden.' } } }),
-      verifyToken: async () => ({ subject: 'user_anna', aud: ['https://mcp.albatros.build'], revoked: false, expired: false }),
-    });
-    const r = await app.request('/', { method: 'POST', headers: { authorization: 'Bearer attrappe', 'content-type': 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }) });
-    const j = (await r.json()) as { result: { content: { text: string }[]; isError?: boolean } };
-    return { fehler: j.result.isError === true, text: j.result.content[0]!.text };
-  };
   // Eingaben und alle Schritte der Insel der Reihe nach (flugschule sagt jedes Mal neu), mit langem titel
   const schritte = geladen.fahrplan.insel.map((s) => ['schritt_melden', { schritt: s, titel: LANG, sprache: 'de' }] as [string, Record<string, unknown>]);
   const insel = (m: string, p: string, b: unknown) => (m === 'POST' && ohneAbfrage(p) === '/cockpit/insel/schritt'
@@ -216,6 +259,74 @@ test.skipIf(!existsSync(`${albatros}/services/mcp/scripts/lage-attrappen.ts`))('
   if (mcpLernen.includes('OHNE_WIEDERHOLUNG')) expect(mcpLernen).toContain(fest[3]!.text.split('\n')[1]!);
   expect(INSEL_NAMEN_GLEICH(kit.INSEL_NAMEN as Record<string, string>, mock.slice(EINGABEN.length).map((x) => x.text))).toEqual([]);
 }, 60_000);
+// Grenzwerte jedes Felds jedes Werkzeugs, das die Attrappe anbietet (aus ihrem tools/list erzeugt, auch in Listen und Objekten darin), gegen
+// das echte mcp: Lehnt eines der beiden ab, lehnen beide ab, mit demselben Text (Nachbesserung Welle 7, 01.11.2026, Gegenprobe zu sicht-05:
+// Die Attrappe prüfte nur die oberste Ebene wie zod; 10 von 29 Grenzfällen der Gegenprobe antworteten anders). Nimmt beides an, vergleicht
+// der Test nicht: Die Antworten hängen dann am Zustand und an flugschule und konto zum Schein.
+type Knoten = { type?: string; enum?: unknown[]; minLength?: number; maxLength?: number; pattern?: string; minItems?: number; maxItems?: number;
+  items?: Knoten; properties?: Record<string, Knoten>; required?: string[] };
+const gueltig = (s: Knoten): unknown => (s.enum ? s.enum[0] : s.type === 'object' ? Object.fromEntries((s.required ?? []).map((k) => [k, gueltig(s.properties?.[k] ?? {})]))
+  : s.type === 'array' ? Array.from({ length: s.minItems ?? 0 }, () => gueltig(s.items ?? {})) : s.type === 'boolean' ? true : 'a'.repeat(Math.max(s.minLength ?? 1, 1)));
+const FALSCH: unknown[] = [null, 5, 1.5, true, {}, [], 'x', ['a'], { length: 400 }];
+function varianten(s: Knoten): unknown[] {
+  if (s.enum) return [...FALSCH, 'gibts-nicht', String(s.enum[0]).toUpperCase(), ` ${String(s.enum[0])}`];
+  if (s.type === 'string') {
+    const grenzen = [s.minLength, s.maxLength].filter((n): n is number => n !== undefined);
+    return [...FALSCH, '', ' ', 'A', 'Ab', 'a\nb', 'a\tb', '\u007f', '\u2028', ' a ', 'a b', '-a', 'a_b', 'ä', '😀', '🇨🇭', ...grenzen.flatMap((n) => [
+      'a'.repeat(Math.max(n - 1, 0)), 'a'.repeat(n), 'a'.repeat(n + 1), '😀'.repeat(n), '😀'.repeat(n + 1), ` ${'a'.repeat(n)} `, `${'a'.repeat(n)}\n`,
+      'A'.repeat(n + 1), Array(n + 1).fill('a'), Array(n).fill('a')])];
+  }
+  if (s.type === 'array') {
+    const ok = gueltig(s.items ?? {});
+    const grenzen = [s.minItems, s.maxItems].filter((n): n is number => n !== undefined);
+    return [...FALSCH, [null], [ok, null], [5, ok], 'x'.repeat((s.maxItems ?? 2) + 1), ...grenzen.flatMap((n) => [Array(Math.max(n - 1, 0)).fill(ok),
+      Array(n).fill(ok), Array(n + 1).fill(ok), Array(n + 1).fill(null), [...Array(Math.max(n - 1, 0)).fill(ok), null], [...Array(n).fill(ok), 5]])];
+  }
+  return s.type === 'boolean' ? [...FALSCH, 'ja', 0] : FALSCH;
+}
+function faelle(schema: Knoten): unknown[] {
+  const aus: unknown[] = [];
+  const feld = (s: Knoten, setze: (v: unknown) => unknown) => {
+    aus.push(setze(gueltig(s)));
+    for (const v of varianten(s)) aus.push(setze(v));
+    if (s.type === 'array' && s.items) feld(s.items, (v) => setze([v]));
+    if (s.type === 'object') {
+      const basis = gueltig(s) as Record<string, unknown>;
+      for (const [k, p] of Object.entries(s.properties ?? {})) {
+        aus.push(setze(Object.fromEntries(Object.entries(basis).filter(([x]) => x !== k))));
+        feld(p, (v) => setze({ ...basis, [k]: v }));
+      }
+    }
+  };
+  feld(schema, (v) => v);
+  return [...new Map(aus.map((a) => [JSON.stringify(a), a])).values()];
+}
+test.skipIf(!mitAlbatros)('Attrappe gegen das echte mcp: Grenzwerte jedes Felds jedes Werkzeugs, abgelehnt mit denselben Meldungen wie zod', async () => {
+  const { app, rufe } = await echtesMcp();
+  const echt = app(() => undefined);
+  const p = Bun.spawn(['bun', join(wurzel, 'scripts/durchspiel/mock-mcp.ts')], { cwd: wurzel, stdin: 'pipe', stdout: 'pipe', stderr: 'ignore' });
+  p.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' })}\n`);
+  p.stdin.end();
+  const { tools } = (JSON.parse(await new Response(p.stdout).text()) as { result: { tools: { name: string; inputSchema: Knoten }[] } }).result;
+  await p.exited;
+  const liste: [string, unknown][] = [...tools.flatMap((t) => faelle(t.inputSchema).map((a) => [t.name, a] as [string, unknown])), ['gibts_nicht', {}], ['', {}]];
+  const mock = await attrappe(liste);
+  const abgelehnt = (x: Ergebnis) => x.text.startsWith('Ungültige Angaben') || x.text.startsWith('JSON-RPC');
+  const abweichend: string[] = [];
+  let verglichen = 0;
+  for (const [i, [name, args]] of liste.entries()) {
+    const e = await rufe(echt, name, args).catch((err: unknown) => ({ fehler: true, text: `Absturz: ${String(err)}` }));
+    const m = mock[i] ?? { fehler: true, text: '(keine Antwort)' };
+    if (!abgelehnt(e) && !abgelehnt(m)) continue;
+    verglichen++;
+    if (e.fehler !== m.fehler || e.text !== m.text) abweichend.push(`${name} ${JSON.stringify(args).slice(0, 160)}\n  echt:     ${e.text.slice(0, 300)}\n  attrappe: ${m.text.slice(0, 300)}`);
+  }
+  expect(abweichend).toEqual([]);
+  // Gezählt am 01.11.2026: 26 Werkzeuge, 1505 Fälle, 1012 lehnen beide ab. Sinkt das stark, prüft der Test weniger, als er sagt
+  expect(tools.length).toBeGreaterThan(20);
+  expect(verglichen).toBeGreaterThan(900);
+}, 120_000);
+
 // Jeder Schritt heisst in der Antwort der Attrappe wie in kit INSEL_NAMEN
 function INSEL_NAMEN_GLEICH(namen: Record<string, string>, texte: string[]): string[] {
   return geladen.ok ? geladen.fahrplan.insel.flatMap((s, i) => (texte[i]?.includes(`«${namen[s]}» (${s}, Phase`) ? [] : [`${s}: ${texte[i] ?? 'keine Antwort'}`])) : [];

@@ -13,8 +13,9 @@
 // (gratis, light, pilot), DURCHSPIEL_SCHLOESSER, DURCHSPIEL_LOG (jeder Aufruf als JSON-Zeile mit Runde), DURCHSPIEL_RUNDE (Datei mit der
 // Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo).
 // Beschreibungen und Parameter der Werkzeuge und die Anleitung wie beim echten Dienst mit FAHRPLAN und ERFASSUNG (mocks/werkzeuge.json,
-// mocks/anleitung.txt); fehlt ein Pflichtfeld, ist ein Wert nicht erlaubt, zu lang, zu kurz oder passt er nicht zum Muster, antwortet die
-// Attrappe wie er mit «Ungültige Angaben» und den Meldungen von zod. Seit Welle 7 (01.11.2026, Sichtung sicht-05, w7-20) auch wie er: titel
+// mocks/anleitung.txt); Eingaben prüft sie auf jeder Ebene wie zod im echten Dienst (auch in Listen und Objekten darin, unten bei «Eingaben
+// wie zod») und antwortet wie er mit «Ungültige Angaben»; ein Werkzeug, das sie nicht anbietet, und eine unbekannte Methode sind wie dort
+// Fehler von JSON-RPC (-32602, -32601). Seit Welle 7 (01.11.2026, Sichtung sicht-05, w7-20) auch wie er: titel
 // gekürzt (kuerzeTitel) und Schritte mit ihrem Namen auf der Insel, verstanden_melden mit den Regeln und Sätzen von flugschule (409),
 // coach_fragen ohne Abo mit dem Satz von mcp, luecke_melden mit dem Satz von flugschule, offene Pflichtfragen mit den deutschen
 // Anfangswörtern wie lage. scripts/durchspiel.test.ts vergleicht das mit dem echten mcp, wenn albatros daneben liegt.
@@ -435,45 +436,96 @@ function antwort(werkzeug: string, a: Args): Antwort | null {
   return null;
 }
 
-type Feld = { type?: string; enum?: unknown[]; minLength?: number; maxLength?: number; pattern?: string; maxItems?: number };
-type Schema = { name: string; description: string; inputSchema: { required?: string[]; properties?: Record<string, Feld> } };
+type Knoten = { type?: string; enum?: unknown[]; minLength?: number; maxLength?: number; pattern?: string; minItems?: number; maxItems?: number;
+  items?: Knoten; properties?: Record<string, Knoten>; required?: string[]; default?: unknown };
+type Schema = { name: string; description: string; inputSchema: Knoten };
 const ECHT: Schema[] = JSON.parse(readFileSync(join(wurzel, 'scripts/durchspiel/mocks/werkzeuge.json'), 'utf8'));
 const ANLEITUNG = readFileSync(join(wurzel, 'scripts/durchspiel/mocks/anleitung.txt'), 'utf8').trim();
 const mitText = (n: string) => [...(fallOrdner ? [fallOrdner] : []), ...ordner].some((o) => existsSync(join(o, `${n}.md`)));
 const werkzeuge = ECHT.filter((w) => MIT_ZUSTAND[w.name] || mitText(w.name));
-// Wie zod im echten Dienst, in der Reihenfolge der Felder und je Feld min, max, Muster: Pflichtfelder, erlaubte Werte (schritt_melden: die
-// 19 Schritte der Insel), Typ, Länge von Text und Listen, Muster. Was werkzeuge.json nicht trägt, steht hier: eigene Meldungen zu Mustern
-// (services/mcp/src/werkzeuge.ts, gemeinsam.ts) und .trim() vor der Prüfung (nur titel); die Werkzeuge bekommen den getrimmten Wert.
+
+// ———— Eingaben wie zod im echten Dienst ————
+// werkzeuge.json trägt die Eingaben von mcp als JSON Schema (z.toJSONSchema). Die Attrappe prüft sie wie zod 4 (mcp: zod 4.6.7,
+// nachgebaut aus zod/v4/core schemas.js, checks.js und locales/en.js) und antwortet wie mcp mit «Ungültige Angaben: <pfad>: <meldung>, …»,
+// der Pfad mit Punkten (belege.0.zeilen.0), ohne Pfad «Eingabe». Nachbesserung Welle 7 (01.11.2026, Gegenprobe zu sicht-05): Vorher
+// prüfte die Attrappe nur die oberste Ebene; verschachtelte Felder (belege[].zeilen[], wuensche[]), minItems und null («received null»)
+// wichen vom echten Dienst ab. Wie zod:
+// - Falscher Typ: «Invalid input: expected <typ>, received <art>» (art: null, array, object, string, number, boolean, undefined).
+// - Erlaubte Werte (enum): «Invalid option: expected one of "a"|"b"» für jede andere Eingabe, auch für null und ein fehlendes Pflichtfeld.
+// - Text: zuerst .trim() (nur Felder in GETRIMMT), dann die Länge in Codepunkten (ein Emoji zählt 1), dann das Muster; jeder Fund zählt.
+//   Ist der Typ falsch, prüft zod nur noch die Länge, und nur wenn der Wert eine hat (eine Liste: «expected array to have <=300 items»).
+// - Liste: Länger als maxItems gibt nur diesen Fund, die Einträge prüft zod dann nicht. Sonst die Einträge (pfad.0, pfad.1, …), danach die
+//   Länge; hatte ein Eintrag schon eine zu lange Liste, nicht mehr.
+// - Objekt: die Felder in der Reihenfolge des Schemas. Fehlt ein freiwilliges Feld, nichts (mit default: der Wert); fehlt ein Pflichtfeld,
+//   prüft zod undefined. Unbekannte Felder fallen weg, wie bei zod.
+// Was das JSON Schema nicht trägt, steht hier: eigene Meldungen von mcp zu Mustern (services/mcp/src/werkzeuge.ts, gemeinsam.ts) und
+// .trim(). scripts/durchspiel.test.ts vergleicht das mit dem echten mcp für Grenzwerte jedes Felds; weicht etwas ab, wird er rot.
 const MUSTER_MELDUNG: Record<string, string> = {
   '^[^\\u0000-\\u001f]*$': 'Ohne Zeilenumbrüche',
   '^[a-z0-9][a-z0-9-]{0,39}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 40 Zeichen',
   '^[a-z0-9][a-z0-9-]{0,63}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 64 Zeichen',
 };
 const GETRIMMT = new Set(['schritt_melden.titel']);
-const ungueltig = (name: string, roh: Args): { fehler: string[]; a: Args } => {
-  const s = ECHT.find((w) => w.name === name)?.inputSchema;
-  const a: Args = { ...roh };
-  for (const k of Object.keys(a)) if (GETRIMMT.has(`${name}.${k}`) && typeof a[k] === 'string') a[k] = (a[k] as string).trim();
-  const fehler = Object.entries(s?.properties ?? {}).flatMap(([k, p]) => {
-    const v = a[k];
-    if (v === undefined) {
-      if (!s?.required?.includes(k)) return [];
-      return [p.enum ? `${k}: Invalid option: expected one of ${p.enum.map((x) => `"${String(x)}"`).join('|')}` : `${k}: Invalid input: expected ${p.type ?? 'string'}, received undefined`];
+type Fund = { pfad: (string | number)[]; text: string; weiter?: boolean }; // weiter wie issue.continue bei zod: false hält alles Weitere an
+const artVon = (v: unknown) => (v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v);
+const alsWert = (v: unknown) => (typeof v === 'string' ? `"${v}"` : String(v));
+// Länge wie zod $ZodCheckMinLength/$ZodCheckMaxLength: für jeden Wert mit length (auch nach falschem Typ), Text in Codepunkten
+const EINHEIT: Record<string, string> = { string: 'characters', array: 'items' };
+function laengen(min: number | undefined, max: number | undefined, v: unknown, pfad: Fund['pfad'], funde: Fund[]) {
+  for (const [grenze, zuKlein] of [[min, true], [max, false]] as const) {
+    if (grenze === undefined || funde.some((f) => f.weiter === false) || v === null || v === undefined || (v as { length?: unknown }).length === undefined) continue;
+    const roh = (v as { length: number }).length;
+    const n = typeof v === 'string' && (zuKlein ? roh >= grenze && roh < grenze * 2 : roh > grenze) ? [...v].length : roh;
+    if (zuKlein ? n >= grenze : n <= grenze) continue;
+    const herkunft = Array.isArray(v) ? 'array' : typeof v === 'string' ? 'string' : 'unknown';
+    const e = EINHEIT[herkunft];
+    const satz = zuKlein ? `Too small: expected ${herkunft} to ${e ? 'have ' : 'be '}>=${grenze}` : `Too big: expected ${herkunft} to ${e ? 'have ' : 'be '}<=${grenze}`;
+    funde.push({ pfad, text: e ? `${satz} ${e}` : satz, weiter: true });
+  }
+}
+function pruefe(s: Knoten, roh: unknown, pfad: Fund['pfad'], feld: string): { funde: Fund[]; wert: unknown } {
+  const funde: Fund[] = [];
+  if (s.enum) {
+    if (!s.enum.includes(roh)) funde.push({ pfad, text: s.enum.length === 1 ? `Invalid input: expected ${alsWert(s.enum[0])}` : `Invalid option: expected one of ${s.enum.map(alsWert).join('|')}` });
+    return { funde, wert: roh };
+  }
+  const falsch = (typ: string) => funde.push({ pfad, text: `Invalid input: expected ${typ}, received ${artVon(roh)}` });
+  if (s.type === 'object') {
+    if (typeof roh !== 'object' || roh === null || Array.isArray(roh)) { falsch('object'); return { funde, wert: roh }; }
+    const wert: Args = {};
+    for (const [k, p] of Object.entries(s.properties ?? {})) {
+      if (!(k in roh) && !s.required?.includes(k)) { if (p.default !== undefined) wert[k] = p.default; continue; }
+      const r = pruefe(p, (roh as Args)[k], [...pfad, k], `${feld}.${k}`);
+      funde.push(...r.funde);
+      if (r.wert !== undefined) wert[k] = r.wert;
     }
-    if (p.enum) return p.enum.includes(v) ? [] : [`${k}: Invalid option: expected one of ${p.enum.map((x) => `"${String(x)}"`).join('|')}`];
-    if (p.type === 'array') {
-      if (!Array.isArray(v)) return [`${k}: Invalid input: expected array, received ${typeof v}`];
-      return p.maxItems !== undefined && v.length > p.maxItems ? [`${k}: Too big: expected array to have <=${p.maxItems} items`] : [];
+    return { funde, wert };
+  }
+  if (s.type === 'array') {
+    if (Array.isArray(roh) && s.maxItems !== undefined && roh.length > s.maxItems) return { funde: [{ pfad, text: `Too big: expected array to have <=${s.maxItems} items`, weiter: false }], wert: roh };
+    let wert = roh;
+    if (!Array.isArray(roh)) falsch('array');
+    else wert = roh.map((x, i) => { const r = pruefe(s.items ?? {}, x, [...pfad, i], feld); funde.push(...r.funde); return r.wert; });
+    laengen(s.minItems, s.maxItems, wert, pfad, funde);
+    return { funde, wert };
+  }
+  if (s.type === 'string') {
+    let wert = roh;
+    if (typeof roh !== 'string') falsch('string');
+    else if (GETRIMMT.has(feld)) wert = roh.trim();
+    laengen(s.minLength, s.maxLength, wert, pfad, funde);
+    if (typeof wert === 'string' && s.pattern !== undefined && !new RegExp(s.pattern).test(wert)) {
+      funde.push({ pfad, text: MUSTER_MELDUNG[s.pattern] ?? `Invalid string: must match pattern /${s.pattern}/`, weiter: true });
     }
-    if (p.type && p.type !== 'object' && typeof v !== p.type) return [`${k}: Invalid input: expected ${p.type}, received ${typeof v}`];
-    if (typeof v !== 'string') return [];
-    return [
-      p.minLength !== undefined && v.length < p.minLength ? `${k}: Too small: expected string to have >=${p.minLength} characters` : null,
-      p.maxLength !== undefined && v.length > p.maxLength ? `${k}: Too big: expected string to have <=${p.maxLength} characters` : null,
-      p.pattern !== undefined && !new RegExp(p.pattern).test(v) ? `${k}: ${MUSTER_MELDUNG[p.pattern] ?? `Invalid string: must match pattern /${p.pattern}/`}` : null,
-    ].filter((x): x is string => x !== null);
-  });
-  return { fehler, a };
+    return { funde, wert };
+  }
+  if (s.type === 'boolean' && typeof roh !== 'boolean') falsch('boolean');
+  return { funde, wert: roh };
+}
+// Wie mcp (app.ts): arguments fehlt oder ist null: {}; Meldung je Fund «<pfad>: <meldung>», ohne Pfad «Eingabe»
+const ungueltig = (w: Schema, roh: unknown): { fehler: string[]; a: Args } => {
+  const r = pruefe(w.inputSchema, roh ?? {}, [], w.name);
+  return { fehler: r.funde.map((f) => `${f.pfad.join('.') || 'Eingabe'}: ${f.text}`), a: r.wert as Args };
 };
 
 const runde = () => { const f = process.env.DURCHSPIEL_RUNDE; return f && existsSync(f) ? Number(readFileSync(f, 'utf8').trim()) : null; };
@@ -493,16 +545,21 @@ process.stdin.on('data', (d) => {
     } else if (m.method === 'tools/list') {
       senden({ jsonrpc: '2.0', id: m.id, result: { tools: werkzeuge } });
     } else if (m.method === 'tools/call') {
-      const name = String(m.params?.name ?? '');
-      const roh: Args = m.params?.arguments ?? {};
-      const { fehler, a } = ungueltig(name, roh);
-      const r: Antwort = fehler.length ? { fehler: true, text: `Ungültige Angaben: ${fehler.join(', ')}` }
-        : werkzeuge.some((w) => w.name === name) ? antwort(name, a) ?? { fehler: true, text: `Werkzeug ${name} gibt es nicht.` } : { fehler: true, text: `Werkzeug ${name} gibt es nicht.` };
-      process.stderr.write(`[attrappe] ${name} ${JSON.stringify(roh)}\n`);
-      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh, fehler: r.fehler ?? false })}\n`);
-      senden({ jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } });
-    } else {
+      // Wie mcp (app.ts): ein Werkzeug, das die Attrappe nicht anbietet, ist ein Fehler von JSON-RPC (-32602), keine Antwort des Werkzeugs
+      const name = String(m.params?.name);
+      const roh: unknown = m.params?.arguments;
+      const w = werkzeuge.find((x) => x.name === name);
+      const { fehler, a } = w ? ungueltig(w, roh) : { fehler: [], a: {} };
+      const r: Antwort = !w ? { fehler: true, text: `Unbekanntes Werkzeug: ${name}` } : fehler.length ? { fehler: true, text: `Ungültige Angaben: ${fehler.join(', ')}` }
+        : antwort(name, a) ?? { fehler: true, text: `Werkzeug ${name} gibt es nicht.` };
+      process.stderr.write(`[attrappe] ${name} ${JSON.stringify(roh ?? {})}\n`);
+      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false })}\n`);
+      senden(w ? { jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } }
+        : { jsonrpc: '2.0', id: m.id, error: { code: -32602, message: r.text } });
+    } else if (m.method === 'ping') {
       senden({ jsonrpc: '2.0', id: m.id, result: {} });
+    } else {
+      senden({ jsonrpc: '2.0', id: m.id, error: { code: -32601, message: `Unbekannte Methode: ${String(m.method)}` } }); // wie mcp
     }
   }
 });
