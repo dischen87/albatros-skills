@@ -26,12 +26,19 @@ export const GRENZEN = {
                                     // 504 (oder 429, wenn sie bis dahin keinen Platz bekam). Bun.serve wartet darum länger (idleTimeout)
   grossBytes: 1024 * 1024,          // ein Körper ab dieser Länge kommt in Stücken vom Teil, wenn der Teil das kann (stueckweise unten)
   stueckBytes: 64 * 1024,           // so gross ist ein Stück (eine Anfrage mit Range an den Teil)
+  grossJeAdresse: 6,                // so viele grosse Körper je Adresse zugleich in Stücken; weitere derselben Adresse warten, bis einer durch ist
 };
 // Bun liest den Körper einer Antwort vom Teil so schnell in den Speicher, wie der Teil liefert, auch wenn die Besucherin nicht liest
 // (Welle 7, w7-28: rund 3 MB je hängendem Download von 5 MB; 3 Adressen × 20 Downloads: 194 bis 208 MB). Darum holt der Eingang grosse
 // Körper in Stücken (Range), jedes erst, wenn Bun das vorige an die Besucherin weitergibt: Wer langsam liest, hält nur, was Bun ihr
 // vorausschreibt. Ohne Budget über alle Adressen: Keine Besucherin wartet auf eine andere (Welle 8, w8-45, 01.11.2026). Gemessen mit
 // 3 × 20 hängenden Downloads à 5 MB von einem Teil wie nginx: Stücke à 256 KB 108 bis 116 MB, à 64 KB 60 bis 63 MB (README, «Speicher»).
+// Nachbesserung 02.11.2026 (Gegenprobe skills): Mit Stücken à 64 KB braucht eine Datei von 25 MB 401 Anfragen an den Teil; PocketBase lässt
+// mit den Grenzen der Bausteine je Adresse 300 in 10 Sekunden zu (es sieht die Adresse der Besucherin aus X-Forwarded-For) und brach Filme
+// und Galerien mit 429 ab. Darum eine eigene Grenze für /api/files/ in pb_migrations/3_eingang_dateien.js. Grössere Stücke (bis 256 KB nach
+// Dateigrösse) hielten mehr Speicher (3 × 20 hängende Downloads bis 123 MB) und machten Galerien nicht schneller, darum bleibt es bei 64 KB.
+// Dazu höchstens grossJeAdresse grosse Körper je Adresse zugleich: Eine Besucherin wartet dabei nur auf ihre eigenen, andere nie; das ist
+// der Deckel für den Speicher ohne gemeinsame Sperre wie in w7-28 (gemessen 14 Adressen × 20 hängende Downloads 87 statt 159 MB, README).
 const SCHEIBE = 16 * 1024; // Bun schreibt Scheiben voraus, nicht Bytes: kleine Scheiben halten weniger Speicher
 // Verwaltung und Interna von PocketBase sind von aussen nie erreichbar (404), dazu jede Punktdatei ausser /.well-known/. Auch die Echtzeit
 // (/api/realtime): Kein Rezept braucht sie, und jede Verbindung bliebe offen und hielte einen der Plätze für alle.
@@ -297,35 +304,79 @@ function durch(koerper: ReadableStream<Uint8Array>, frei: () => void) {
 // Kann dieser Körper in Stücken kommen? Nur bei GET, ganz (200) oder genau ein Bereich (206), ohne Komprimierung, ab grossBytes, wenn der
 // Teil Bereiche anbietet (accept-ranges: bytes, wie nginx bei Dateien und PocketBase bei Dateien) und die Datei erkennbar bleibt (ETag ohne
 // W/ oder Last-Modified, für If-Range: Ändert sie sich unterwegs, schickt der Teil 200 statt 206, und der Eingang bricht ab, statt zwei
-// Fassungen zu mischen). Sonst geht der Körper wie bisher durch (durch oben). Ergebnis: Anfang und Ende der Bytes in der Datei und If-Range.
-export function stueckweise(methode: string, res: Pick<Response, 'status' | 'headers'>, grossBytes: number): { von: number; bis: number; ifRange: string } | null {
+// Fassungen zu mischen). Last-Modified gilt nur als starker Validator, also mindestens 1 s vor Date (RFC 9110, 8.8.2.2 und 13.1.5): Wird eine
+// Datei in derselben Sekunde ersetzt, in der sie entstand, trägt die neue dieselbe Zeit (Nachbesserung 02.11.2026, sonst gemischte Bytes).
+// Sonst geht der Körper wie bisher durch (durch oben). Ergebnis: Anfang und Ende der Bytes in der Datei, If-Range, und was jedes Stück
+// gleich haben muss (ETag bzw. Last-Modified, Länge der ganzen Datei; null: unbekannt).
+export type Bereich = { von: number; bis: number; ifRange: string; gleich: { etag: string | null; datum: string | null; ganz: number | null } };
+export function stueckweise(methode: string, res: Pick<Response, 'status' | 'headers'>, grossBytes: number, jetzt = Date.now()): Bereich | null {
   if (methode !== 'GET' || (res.status !== 200 && res.status !== 206)) return null;
   const h = res.headers;
   if ((h.get('content-encoding') ?? 'identity').toLowerCase() !== 'identity') return null;
   if (!(h.get('accept-ranges') ?? '').toLowerCase().split(',').map((x) => x.trim()).includes('bytes')) return null;
   const etag = h.get('etag'), datum = h.get('last-modified');
-  const ifRange = etag && /^"[^"]*"$/.test(etag) ? etag : datum && !Number.isNaN(Date.parse(datum)) ? datum : null;
+  const stark = etag && /^"[^"]*"$/.test(etag) ? etag : null;
+  const zeit = datum ? Date.parse(datum) : NaN, bezug = h.get('date') ? Date.parse(h.get('date')!) : jetzt;
+  const datumStark = !stark && datum && !Number.isNaN(zeit) && !Number.isNaN(bezug) && bezug - zeit >= 1000 ? datum : null;
+  const ifRange = stark ?? datumStark;
   const laenge = Number(h.get('content-length') ?? NaN);
   if (!ifRange || !Number.isSafeInteger(laenge) || laenge < grossBytes) return null;
-  if (res.status === 200) return { von: 0, bis: laenge - 1, ifRange };
+  const gleich = { etag: stark, datum: stark ? null : datumStark, ganz: res.status === 200 ? laenge : null };
+  if (res.status === 200) return { von: 0, bis: laenge - 1, ifRange, gleich };
   const b = /^bytes (\d+)-(\d+)\/(\d+|\*)$/.exec(h.get('content-range') ?? '');
   if (!b) return null;
   const [von, bis] = [Number(b[1]), Number(b[2])];
-  return bis - von + 1 === laenge ? { von, bis, ifRange } : null;
+  return bis - von + 1 === laenge ? { von, bis, ifRange, gleich: { ...gleich, ganz: b[3] === '*' ? null : Number(b[3]) } } : null;
+}
+
+// Grosse Körper je Adresse (IPv6 je /64): höchstens n zugleich in Stücken. Ein weiterer derselben Adresse wartet beim ersten Stück, bis einer
+// ihrer eigenen durch ist, abgebrochen oder von ihr verlassen; andere Adressen warten nie. Ergebnis: frei() oder null (die Besucherin ging).
+function grosseKoerper(n: number) {
+  const je = new Map<string, { offen: number; warten: ((frei: () => void) => void)[] }>();
+  const frei = (netz: string) => {
+    let zurueck = false;
+    return () => {
+      if (zurueck) return;
+      zurueck = true;
+      const a = je.get(netz)!;
+      const naechste = a.warten.shift();
+      if (naechste) naechste(frei(netz));
+      else if (--a.offen === 0) je.delete(netz);
+    };
+  };
+  return (netz: string, signal: AbortSignal): Promise<(() => void) | null> => {
+    let a = je.get(netz);
+    if (!a) je.set(netz, (a = { offen: 0, warten: [] }));
+    if (a.offen < n) { a.offen++; return Promise.resolve(frei(netz)); }
+    if (signal.aborted) return Promise.resolve(null);
+    const warten = a.warten;
+    return new Promise((fertig) => {
+      const dran = (f: () => void) => { signal.removeEventListener('abort', weg); fertig(f); };
+      const weg = () => { const i = warten.indexOf(dran); if (i >= 0) warten.splice(i, 1); fertig(null); };
+      signal.addEventListener('abort', weg, { once: true });
+      warten.push(dran);
+    });
+  };
 }
 
 // Der Körper in Stücken: Jedes Stück (Range von bis) holt der Eingang erst, wenn Bun das vorige ganz weitergegeben hat, und gibt es in
 // Scheiben weiter. Ein Stück kommt ganz und mit 206 und genau diesem Bereich, sonst bricht der Körper ab (die Besucherin sieht einen
-// abgebrochenen Download und lädt neu). Ist er durch, bricht er ab oder bricht die Besucherin ab, wird der Platz frei.
+// abgebrochenen Download und lädt neu). Vor dem ersten Stück wartet er, bis die Adresse einen ihrer Plätze für grosse Körper hat (gross).
+// Ist er durch, bricht er ab oder bricht die Besucherin ab, werden beide Plätze frei.
 function stuecke(holen: (von: number, bis: number, signal: AbortSignal) => Promise<Uint8Array>, bereich: { von: number; bis: number },
-  stueckBytes: number, frei: () => void, melden: (grund: string) => void) {
+  stueckBytes: number, frei: () => void, melden: (grund: string) => void, gross: (signal: AbortSignal) => Promise<(() => void) | null>) {
   const halt = new AbortController();
-  let pos = bereich.von, stueck = new Uint8Array(0), i = 0;
+  let pos = bereich.von, stueck = new Uint8Array(0), i = 0, grossFrei: (() => void) | null = null;
+  const alleFrei = () => { grossFrei?.(); frei(); };
   return new ReadableStream<Uint8Array>({
     async pull(c) {
       try {
+        if (!grossFrei) {
+          grossFrei = await gross(halt.signal);
+          if (!grossFrei) { frei(); return; } // die Besucherin ging, während sie wartete (cancel unten)
+        }
         if (i >= stueck.length) {
-          if (pos > bereich.bis) { frei(); c.close(); return; }
+          if (pos > bereich.bis) { alleFrei(); c.close(); return; }
           const bis = Math.min(bereich.bis, pos + stueckBytes - 1);
           stueck = await holen(pos, bis, halt.signal);
           [pos, i] = [bis + 1, 0];
@@ -334,18 +385,19 @@ function stuecke(holen: (von: number, bis: number, signal: AbortSignal) => Promi
         i += scheibe.length;
         c.enqueue(scheibe);
       } catch (err) {
-        frei();
+        alleFrei();
         if (!halt.signal.aborted) melden(err instanceof Error ? err.message : 'Fehler');
         c.error(err); // die Antwort bricht ab (ohne Schluss der Stücke): Die Besucherin sieht einen abgebrochenen Download, nie einen falschen
       }
     },
-    cancel() { halt.abort(); frei(); },
+    cancel() { halt.abort(); alleFrei(); },
   }, { highWaterMark: 0 });
 }
 
 // grenzen: nur für den Test (kürzere Frist, weniger Wartende, kleinere Stücke als in GRENZEN)
 export type Optionen = { vertraut?: string; anfragenProMinute?: number;
-  grenzen?: Partial<Pick<typeof GRENZEN, 'teilMs' | 'wartendAlle' | 'grossBytes' | 'stueckBytes'>>; jetzt?: () => number; log?: (zeile: string) => void };
+  grenzen?: Partial<Pick<typeof GRENZEN, 'teilMs' | 'wartendAlle' | 'grossBytes' | 'stueckBytes' | 'grossJeAdresse'>>;
+  jetzt?: () => number; log?: (zeile: string) => void };
 
 export function eingang(e: Einstellungen, o: Optionen = {}) {
   const vertraut = netze(o.vertraut);
@@ -353,6 +405,7 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
   const g = { ...GRENZEN, ...o.grenzen };
   const zaehle = zaehler(o.jetzt ?? Date.now);
   const platzFuer = plaetze(g);
+  const grossFuer = grosseKoerper(g.grossJeAdresse);
   const proMinute = o.anfragenProMinute ?? GRENZEN.anfragenProMinute;
   const log = o.log ?? ((z: string) => console.log(z));
   const [hauptUrsprung] = e.urspruenge;
@@ -480,27 +533,36 @@ export function eingang(e: Einstellungen, o: Optionen = {}) {
     const bereich = res.body ? stueckweise(req.method, res, g.grossBytes) : null;
     if (bereich) void res.body!.cancel().catch(() => {});
     const melden = (grund: string) => log(JSON.stringify({ zeit: new Date().toISOString(), methode: req.method, pfad: protokoll, teil: teil.name, fehler: 'stueck', grund }));
-    const koerper = !res.body ? null : bereich ? stuecke(stueckHolen(teil, url, kopf, bereich.ifRange), bereich, g.stueckBytes, platz.frei, melden) : durch(res.body, platz.frei);
+    const koerper = !res.body ? null : bereich
+      ? stuecke(stueckHolen(teil, url, kopf, bereich), bereich, g.stueckBytes, platz.frei, melden, (s) => grossFuer(netzVon(wer), s))
+      : durch(res.body, platz.frei);
     platz.beimKoerper = koerper !== null;
     return { res: new Response(koerper, { status: res.status, statusText: res.statusText, headers: aus }), teil: teil.name, pfad: protokoll };
   }
 
   // Ein Stück vom Teil: dieselben Kopfzeilen wie die erste Anfrage, ohne Bedingungen, dazu Range und If-Range. Nur 206 mit genau diesem
-  // Bereich und ganzer Länge zählt; die Frist ist dieselbe wie für eine Antwort (teilMs), das Stück kommt ohne Warten auf die Besucherin.
-  function stueckHolen(teil: Teil, url: URL, kopf: Headers, ifRange: string) {
+  // Bereich und ganzer Länge zählt, und mit demselben ETag bzw. derselben Last-Modified und derselben Länge der ganzen Datei wie die erste
+  // Antwort (ein Teil, der If-Range nicht beachtet, fällt so auch auf); die Frist ist dieselbe wie für eine Antwort (teilMs), das Stück kommt
+  // ohne Warten auf die Besucherin.
+  function stueckHolen(teil: Teil, url: URL, kopf: Headers, b: Bereich) {
     const basis = new Headers(kopf);
     for (const k of ['range', 'if-range', 'if-none-match', 'if-modified-since', 'if-match', 'if-unmodified-since']) basis.delete(k);
-    basis.set('if-range', ifRange);
+    basis.set('if-range', b.ifRange);
     return async (von: number, bis: number, signal: AbortSignal) => {
       const k = new Headers(basis);
       k.set('range', `bytes=${von}-${bis}`);
       const r = await fetch(`${teil.ziel}${url.pathname}${url.search}`, {
         headers: k, redirect: 'manual', signal: AbortSignal.any([signal, AbortSignal.timeout(g.teilMs)]), decompress: false,
       } as RequestInit);
-      const b = /^bytes (\d+)-(\d+)\//.exec(r.headers.get('content-range') ?? '');
-      if (r.status !== 206 || !b || Number(b[1]) !== von || Number(b[2]) !== bis) {
+      const m = /^bytes (\d+)-(\d+)\/(\d+|\*)$/.exec(r.headers.get('content-range') ?? '');
+      const anders = r.status !== 206 ? `${r.status} statt 206`
+        : !m || Number(m[1]) !== von || Number(m[2]) !== bis ? 'anderer Bereich'
+        : b.gleich.ganz !== null && m[3] !== String(b.gleich.ganz) ? 'andere Länge der Datei'
+        : b.gleich.etag !== null && r.headers.get('etag') !== b.gleich.etag ? 'anderer ETag'
+        : b.gleich.datum !== null && r.headers.get('last-modified') !== b.gleich.datum ? 'andere Last-Modified' : null;
+      if (anders) {
         await r.body?.cancel().catch(() => {});
-        throw new Error(`Stück ${von}-${bis}: ${r.status} statt 206 mit diesem Bereich (Datei geändert?)`);
+        throw new Error(`Stück ${von}-${bis}: ${anders} (Datei geändert?)`);
       }
       const stueck = new Uint8Array(await r.arrayBuffer());
       if (stueck.length !== bis - von + 1) throw new Error(`Stück ${von}-${bis}: ${stueck.length} Bytes`);
