@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: '99f07c378614'
+  quelle: 'fa330a390be9'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -298,7 +298,7 @@ Adesso la persona passa lei stessa per la sua casa. Decide se può andare online
 
 Se prima dell'approvazione la persona vuole ancora cambiare qualcosa: un testo, un'immagine o un appuntamento, si torna al passo 4, poi di nuovo controllo e sopralluogo. Una nuova pagina o una nuova funzione è un'aggiunta: prima in `docs/plan.md`, poi una bozza delle pagine cambiate e un nuovo via libera per costruire (skill `entwurf`), solo dopo la costruzione.
 
-Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo strumento c'è, e seguilo.
+Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo strumento c'è, con `skills_stand` (il valore di `stand` sotto `metadata` in cima a questo file), e seguilo.
 
 ## Trappole
 

@@ -178,7 +178,7 @@ Danach kommt P9: Folge dem Skill `webseite-bauen` (`../webseite-bauen/SKILL.md`)
 
 ## Die Insel
 
-Nach Schritt 6 rufst du das Werkzeug `schritt_melden` mit `schritt: entwurf` und `sprache: de` auf, nach der Freigabe mit `schritt: entwurf-freigegeben`. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; kennt Albatros den Schritt noch nicht, geht es ohne Insel weiter, `docs/entwurf.md` ist der Beleg. Danach rufst du `lage` erneut auf (Skill `lotse`).
+Nach Schritt 6 rufst du das Werkzeug `schritt_melden` mit `schritt: entwurf` und `sprache: de` auf, nach der Freigabe mit `schritt: entwurf-freigegeben`. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; kennt Albatros den Schritt noch nicht, geht es ohne Insel weiter, `docs/entwurf.md` ist der Beleg. Danach rufst du `lage` erneut auf (Skill `lotse`), immer mit `skills_stand`: dem Wert von `stand` unter `metadata` oben in dieser Datei.
 
 ## Stolpersteine
 

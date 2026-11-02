@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web avant le design et la construction, en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md et une esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, contenus existants, docs/recherche.md), plan de la maison (pages, fonctions, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis dans un contexte neuf, docs/plan-pruefung.md, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction sur le parcours site web."
 metadata:
   stand: 0.2.0
-  quelle: '75a09c46731f'
+  quelle: '835d45cf1624'
 ---
 
 # Planifier le site web : le plan de la maison
@@ -46,7 +46,7 @@ Si la personne veut tout de suite le plan complet, tu écris d'un coup les fichi
 
 1. Mettre à jour les lignes `Stand:` (état) et `Nächster Schritt:` (prochaine étape) dans `docs/projekt.md`.
 2. `schritt_melden` avec l'étape du tableau plus haut, `titel` (la valeur de la ligne `Projektname:` dans `docs/projekt.md`, comme la personne appelle son projet) et `sprache: fr`. Avec `titel`, l'île montre la maison avec ce nom au lieu de « projekt » ; Albatros l'accepte jusqu'à 300 caractères et l'y raccourcit à 80. Pour le premier projet de la personne, tu laisses `projekt` de côté : il deviendra plus tard le journal de bord au port. Seulement pour un autre projet, tu donnes un nom court en minuscules, chiffres et « - ». Dis à la personne en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables) à cause de `titel` (par exemple un saut de ligne ou plus de 300 caractères), tu annonces aussitôt la même étape une nouvelle fois sans `titel` : l'étape compte, le nom est secondaire. S'il répond autrement « Ungültige Angaben » ou « unbekannt » (inconnu), ou s'il manque, on continue sans l'île.
-3. Vérifier la mission de la section (plus bas, « Vérifier la mission »), puis rappeler `lage` (skill `lotse`) et suivre ce qui est à faire maintenant.
+3. Vérifier la mission de la section (plus bas, « Vérifier la mission »), puis rappeler `lage` (skill `lotse`), avec `skills_stand` (la valeur de `stand` sous `metadata` en haut de ce fichier), et suivre ce qui est à faire maintenant.
 
 Si la personne a un compte et que son île n'est pas encore ouverte dans cette conversation, tu l'ouvres une fois : `open https://albatros.build/fr/cockpit/insel` (Linux `xdg-open`, Windows `start`). Une maison y grandit à chaque étape.
 
@@ -87,7 +87,7 @@ Si la personne a un compte et que son île n'est pas encore ouverte dans cette c
 
    ## D'abord
 
-   Lis `docs/projekt.md` (état, prochaine étape), puis appelle `lage` (Albatros). `lage` dit quel skill et quelle section sont à faire maintenant ; suis-le. Si `docs/projekt.md` n'existe pas encore, le projet commence avec le skill `webseite-planen`, section Idee. Sans connexion à Albatros, le skill `lotse` aide à continuer.
+   Lis `docs/projekt.md` (état, prochaine étape), puis appelle `lage` (Albatros), toujours avec `skills_stand` : la valeur de `stand` sous `metadata` en haut des skills d'Albatros. `lage` dit quel skill et quelle section sont à faire maintenant ; suis-le. Si `docs/projekt.md` n'existe pas encore, le projet commence avec le skill `webseite-planen`, section Idee. Sans connexion à Albatros, le skill `lotse` aide à continuer.
 
    ## Règles
 
@@ -95,7 +95,7 @@ Si la personne a un compte et que son île n'est pas encore ouverte dans cette c
    - Rien ne va sur Internet sans validation : pas de publication et pas de push au port avant que la personne ait validé son site (`Freigegeben:` dans `docs/prd.md`). Après la mise en ligne, chaque changement a besoin de son propre oui.
    - Les prix seulement d'après `konto_status`, jamais de mémoire.
    - Deux questions au maximum par message. Ce que tu peux proposer toi-même est noté `[Annahme: …]` (hypothèse), ce qui est ouvert `[offen: …]`. Ces marques et les noms des lignes dans `docs/` restent en allemand. Ne rien inventer.
-   - Après chaque étape réussie : mettre à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`, `schritt_melden` (avec `titel`, la valeur de la ligne `Projektname:`, dès qu'elle existe), puis rappeler `lage`.
+   - Après chaque étape réussie : mettre à jour `Stand:` et `Nächster Schritt:` dans `docs/projekt.md`, `schritt_melden` (avec `titel`, la valeur de la ligne `Projektname:`, dès qu'elle existe), puis rappeler `lage`, avec `skills_stand`.
    - Les mots de passe, les numéros de carte et les clés privées ne vont jamais dans le chat ni dans un fichier du projet. Les secrets sont dans `.env`, et `.env` est dans `.gitignore`.
    - Tutoiement, langage de tous les jours, en français. Un mot technique n'arrive qu'avec son image.
    ```

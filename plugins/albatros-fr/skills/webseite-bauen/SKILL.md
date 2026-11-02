@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.2.0
-  quelle: '99f07c378614'
+  quelle: 'fa330a390be9'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -298,7 +298,7 @@ Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut
 
 Si la personne veut encore changer quelque chose avant la validation : un texte, une image ou une date, on revient à l'étape 4, puis vérification et visite à nouveau. Une nouvelle page ou une nouvelle fonction est un complément : d'abord dans `docs/plan.md`, puis une ébauche des pages modifiées et une nouvelle autorisation de construire (skill `entwurf`), et seulement ensuite la construction.
 
-Ensuite vient le skill `lancieren` : où le site doit-il habiter ? Appelle `lage` si l'outil existe et suis-le.
+Ensuite vient le skill `lancieren` : où le site doit-il habiter ? Appelle `lage` si l'outil existe, avec `skills_stand` (la valeur de `stand` sous `metadata` en haut de ce fichier), et suis-le.
 
 ## Pièges
 

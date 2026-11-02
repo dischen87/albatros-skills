@@ -3,7 +3,7 @@ name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito. Nel piano di volo (P6): mockup grigio («L'ordine è giusto?»), tre direzioni chiaramente diverse dal concetto, controllo contro l'aspetto da IA, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Sempre con la domanda sugli elementi grafici (icone, foto, mascotte, 3D; strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «mascotte», «3D»."
 metadata:
   stand: 0.2.0
-  quelle: 'c9b2b9c3e084'
+  quelle: 'cdb199a62e56'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -131,7 +131,7 @@ Apri la tavola dei campioni e mostra alla persona come vederla sul telefonino: r
 
 ### L'isola
 
-Dopo il passo 1 chiami lo strumento `schritt_melden` con `schritt: mockup` e `sprache: it`, dopo il passo 5 con `schritt: entwuerfe`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se manca, si continua senza isola. Dopo chiami di nuovo `lage` (skill `lotse`).
+Dopo il passo 1 chiami lo strumento `schritt_melden` con `schritt: mockup` e `sprache: it`, dopo il passo 5 con `schritt: entwuerfe`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se manca, si continua senza isola. Dopo chiami di nuovo `lage` (skill `lotse`), sempre con `skills_stand`: il valore di `stand` sotto `metadata` in cima a questo file.
 
 ## Tre direzioni
 

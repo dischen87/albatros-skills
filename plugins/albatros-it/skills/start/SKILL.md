@@ -3,7 +3,7 @@ name: start
 description: "Avvia Albatros per una persona senza conoscenze tecniche: collega la sua IA ad Albatros (accesso dal browser), chiede se vuole un sito web o un'attività, chiarisce imparare o fare e porta subito alla prima sezione del piano di volo, l'idea con il nome del progetto e un primo schizzo. Finché il sito non c'è sul proprio computer, Albatros non costa niente; abbonamento, chiave e sito in rete arrivano solo con lo skill lancieren. Usa lo skill con /albatros-it:start, «avvia Albatros», «voglio un sito web», «voglio fare un sito», «ho un'idea imprenditoriale», «ho un'idea per un'attività», «da dove comincio?», «sono nuovo qui», «quanto costa Albatros?», «mi serve un server?», e quando qualcuno nomina Albatros ma non è ancora collegato o non ha ancora scelto un percorso."
 metadata:
   stand: 0.2.0
-  quelle: 'c97168526c5a'
+  quelle: 'a4124046b799'
 ---
 
 # Start: salire a bordo
@@ -87,7 +87,7 @@ Prima di cominciare con l'idea, chiama `lage` di Albatros, con `skills_stand`: i
 
 Senza altre domande vai poi avanti con lo skill `webseite-planen`, sezione Idea (`../webseite-planen/SKILL.md`, in Claude Code `albatros-it:webseite-planen`). Anche nel percorso attività si comincia lì; dopo viene il metodo `ideen-check`. La tua risposta finisce con il nome del progetto: una proposta o la domanda («Basta un nome provvisorio, può anche essere scelto a caso.»).
 
-Da qui ti accompagna lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros-it:lotse`): dopo ogni sezione riuscita chiama `lage`. Di' alla persona che d'ora in poi le basta chiedere «Come vado avanti?».
+Da qui ti accompagna lo skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros-it:lotse`): dopo ogni sezione riuscita chiama `lage`, con `skills_stand` come sopra. Di' alla persona che d'ora in poi le basta chiedere «Come vado avanti?».
 
 ## Se qualcosa si inceppa
 

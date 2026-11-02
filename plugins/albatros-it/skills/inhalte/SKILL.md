@@ -3,7 +3,7 @@ name: inhalte
 description: "Aiuta una persona senza conoscenze tecniche a scrivere e scegliere testi e immagini per il suo sito web, nel piano di volo per la bozza di tutto il sito (P7): la pagina iniziale in tre frasi, testi brevi nel tono del concetto per chi legge sul telefonino, i testi mancanti ben visibili come [da completare], foto proprie invece di immagini di repertorio con una lista delle foto, diritti e dimensioni delle immagini, testi dell'IA riportati nella propria voce. Il risultato è una lista dei contenuti in docs/inhalte.md e i testi nella bozza. Usa lo skill con «scrivere i testi», «cosa scrivo sulla pagina iniziale», «chi siamo», «immagini per il sito», «lista delle foto», «posso usare questa immagine?», «il testo sembra scritto dall'IA», «contenuti»."
 metadata:
   stand: 0.2.0
-  quelle: '0b198ab95f73'
+  quelle: '3212c0762904'
 ---
 
 # Contenuti: la merce in vetrina
@@ -17,6 +17,8 @@ Il sito web è una vetrina. L'aspetto grafico è la luce e la decorazione. I con
 ## Nel piano di volo
 
 I testi nascono in P7, come parte della bozza di tutto il sito (skill `entwurf`, passo «I testi»): ciò che scrivi qui va direttamente nelle pagine di `design/entwurf/`. È già raccolto ciò che la persona ha (`Inhalte vorhanden:` in `docs/recherche.md`, P2), come suona e che cosa promette (`Ton:` e `Kern:` in `docs/konzept.md`, P5), e la lista delle foto (in `docs/inhalte.md`, P5). I testi li proponi tu; ciò che manca compare come `[da completare: che cosa manca, chi lo fornisce entro quando]` nella bozza, e il numero delle cose da completare sta nella riga `Seiten:` di `docs/entwurf.md`. La persona conferma i testi mentre sfoglia il sito.
+
+Se il sito lo costruisce Albatros (in `docs/projekt.md` c'è `Bauen lassen: albatros`, e `lage` nomina un incarico aperto), non c'è nessuna bozza da parte tua: raccogli soltanto. Testi, elenco dei contenuti e lista delle foto vanno in `docs/inhalte.md`; sotto `design/` non metti e non cambi niente, perché è da lì che costruisce Albatros. Le foto nuove la persona le mette lei stessa in `design/bilder/` e, fino al pagamento, sceglie di nuovo la cartella del progetto nel cockpit, sotto «Il tuo incarico». Dopo la messa online portate sul sito ciò che avete raccolto con la prima modifica personale (skill `webseite-aendern`).
 
 Se il sito è già online e un testo deve cambiare, vale lo skill `webseite-aendern`.
 

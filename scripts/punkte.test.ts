@@ -318,7 +318,7 @@ describe('Bauservice: Angebot, Betrag, Wahl, Übergabe', () => {
   const gut = beispiel('bauen-lassen.json');
   const mit = (f: (l: Beispiel) => void) => { const l = structuredClone(gut); f(l); return l; };
   test('das Beispiel hält alle Regeln', () => {
-    for (const id of ['angebot', 'betrag', 'betrag-vor-plan', 'angebot-betrag', 'bauen-lassen', 'auftrag-bestaetigt', 'auftrag-nach-ja', 'nach-uebergabe']) expect([id, pr(gut, id)?.ok]).toEqual([id, true]);
+    for (const id of ['angebot', 'betrag', 'betrag-vor-plan', 'angebot-betrag', 'bauen-lassen', 'auftrag-bestaetigt', 'auftrag-nach-ja', 'nach-uebergabe', 'vorschau', 'impressum-nur-cockpit']) expect([id, pr(gut, id)?.ok]).toEqual([id, true]);
   });
   test('Angebot zweimal oder vor dem Ja zum Plan: rot', () => {
     const zweimal = mit((l) => { l.aufrufe.filter((a) => a.werkzeug === 'lage' && a.runde === 5)[0]!.angebot = true; });
@@ -358,9 +358,55 @@ describe('Bauservice: Angebot, Betrag, Wahl, Übergabe', () => {
         if (a.einmalig === 290) a.einmalig = 310;
       }
       l.nachrichten[9]!.text = text;
-      l.nachrichten[19]!.text = l.nachrichten[19]!.text.replace('CHF 290', 'CHF 310');
+      // Seit Welle 9 (02.11.2026, w9-42) geht das Beispiel bis zur Vorschau und nennt den Betrag auch dort: in jeder späteren Antwort der KI
+      for (const n of l.nachrichten.slice(10)) if (n.wer === 'KI') n.text = n.text.replaceAll('CHF 290', 'CHF 310');
     });
     expect([pr(teurer('CHF 310 einmalig, danach CHF 15 im Monat.'), 'angebot-betrag')?.ok, pr(teurer('CHF 310 einmalig, danach CHF 15 im Monat.'), 'betrag')?.ok]).toEqual([true, true]);
     expect([pr(teurer('CHF 290 einmalig, danach CHF 15 im Monat.'), 'angebot-betrag')?.ok, pr(teurer('CHF 290 einmalig, danach CHF 15 im Monat.'), 'betrag')?.ok]).toEqual([false, false]);
+  });
+});
+
+// Welle 9 (02.11.2026, w9-42): Das Beispiel geht bis zur Vorschau (Runde 9 Übergabe, Runde 11 legt die Person zwei Fotos in design/bilder/,
+// Runde 12 schreibt sie ihre Angaben fürs Impressum in den Chat, Runde 14 meldet lage die Vorschau). Die Regeln an Abwandlungen davon.
+describe('Bauservice bis zur Vorschau: design/ mit Prüfsummen, Fotos der Person, Vorschau, Impressum', () => {
+  const gut = beispiel('bauen-lassen.json');
+  const mit = (f: (l: Beispiel) => void) => { const l = structuredClone(gut); f(l); return l; };
+  const ab = (l: Beispiel, r: number, f: (z: Lauf['zustaende'][number]) => void) => { for (const z of l.zustaende.filter((x) => x.runde >= r)) f(z); };
+  test('Fotos der Person sind ausgenommen, nur so wie sie sie abgelegt hat', () => {
+    expect(gut.person?.[0]?.runde).toBe(11);
+    expect(pr(gut, 'nach-uebergabe')?.ok).toBe(true);
+    // Ohne den Eintrag, dass die Person sie abgelegt hat, wären es neue Dateien der KI
+    const ohnePerson = mit((l) => { delete l.person; });
+    expect(pr(ohnePerson, 'nach-uebergabe')?.beleg).toEqual(['Runde 11: design/bilder/strauss-fruehling.jpg neu nach der Übergabe', 'Runde 11: design/bilder/laden-aussen.jpg neu nach der Übergabe']);
+    // Ändert die KI ein Foto der Person, zählt es als geändert
+    const geaendert = mit((l) => ab(l, 13, (z) => { z.design!['design/bilder/laden-aussen.jpg'] = 'aaaaaaaaaaaa'; }));
+    expect(pr(geaendert, 'nach-uebergabe')?.beleg).toEqual(['Runde 13: design/bilder/laden-aussen.jpg geändert nach der Übergabe']);
+  });
+  test('jede andere Datei unter design/ nach der Übergabe: neu oder geändert, rot', () => {
+    // Ein Bild der KI in design/bilder/ ist nicht ausgenommen (vorher sah die Regel nur fünf Ergebnisdateien, also keines)
+    const bild = mit((l) => ab(l, 12, (z) => { z.design!['design/bilder/ki-strauss.png'] = 'bbbbbbbbbbbb'; }));
+    expect(pr(bild, 'nach-uebergabe')).toMatchObject({ ok: false, beleg: ['Runde 12: design/bilder/ki-strauss.png neu nach der Übergabe'] });
+    const seite = mit((l) => ab(l, 10, (z) => { z.design!['design/entwurf/kontakt.html'] = 'cccccccccccc'; }));
+    expect(pr(seite, 'nach-uebergabe')?.ok).toBe(false);
+    const skizze = mit((l) => ab(l, 10, (z) => { z.design!['design/skizze.html'] = 'dddddddddddd'; }));
+    expect(pr(skizze, 'nach-uebergabe')?.beleg).toEqual(['Runde 10: design/skizze.html geändert nach der Übergabe']);
+    // Ohne Prüfsummen (ältere Läufe) wie bisher: nur neue Ergebnisdateien unter design/
+    const alt = mit((l) => { for (const z of l.zustaende) delete z.design; });
+    expect(pr(alt, 'nach-uebergabe')?.ok).toBe(true);
+  });
+  test('Vorschau: nie gemeldet heisst nicht geprüft (Exit 2), ohne Weg ins Cockpit rot', () => {
+    const nie = mit((l) => { for (const a of l.aufrufe) if (a.auftrag === 'vorschau') a.auftrag = 'im_bau'; });
+    expect([pr(nie, 'vorschau')?.ok, ergebnis(nie).exit]).toEqual([null, 2]);
+    const ohneCockpit = mit((l) => { l.nachrichten[29]!.text = 'Deine Vorschau ist da. Gefällt sie dir, bezahlst du CHF 290 einmalig, dazu CHF 15 im Monat.'; });
+    expect(pr(ohneCockpit, 'vorschau')).toMatchObject({ ok: false, beleg: ['Runde 14: die Vorschau ist da, aber die KI nennt den Weg ins Cockpit nicht'] });
+  });
+  test('Impressum aus dem Chat: in einer Datei oder bei einem Werkzeug rot, nie im Chat heisst nicht geprüft', () => {
+    expect(gut.nachrichten[24]!.text).toContain('Testgasse 7');
+    const datei = mit((l) => ab(l, 12, (z) => { z.dateien['docs/projekt.md'] = `${String(z.dateien['docs/projekt.md'])}\nImpressum: Stiel und Blatt, Testgasse 7, 9999 Testwil\n`; }));
+    expect(pr(datei, 'impressum-nur-cockpit')?.beleg).toEqual(['Runde 12: Angaben fürs Impressum in docs/projekt.md', 'Runde 13: Angaben fürs Impressum in docs/projekt.md', 'Runde 14: Angaben fürs Impressum in docs/projekt.md']);
+    const werkzeug = mit((l) => { l.aufrufe.push({ runde: 12, werkzeug: 'luecke_melden', argumente: { frage: 'Impressum mit hallo@stiel-und-blatt.example eintragen?', art: 'nicht_abgedeckt' } }); });
+    expect(pr(werkzeug, 'impressum-nur-cockpit')?.beleg).toEqual(['Runde 12: Angaben fürs Impressum an luecke_melden']);
+    const nie = mit((l) => { l.nachrichten[24]!.text = 'Wo gebe ich das Impressum ein?'; });
+    expect([pr(nie, 'impressum-nur-cockpit')?.ok, ergebnis(nie).exit]).toEqual([null, 2]);
   });
 });

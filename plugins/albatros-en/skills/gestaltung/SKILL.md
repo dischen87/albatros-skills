@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge. In the flight plan (P6): a grey mockup (“Is the order right?”), three clearly different directions from the concept, a check against the AI look, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. Always with the question about design elements (icons, photos, mascot, 3D; image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “mascot”, “3D”."
 metadata:
   stand: 0.2.0
-  quelle: 'c9b2b9c3e084'
+  quelle: 'cdb199a62e56'
 ---
 
 # Design: first the foundations, then the facade
@@ -131,7 +131,7 @@ Open the sample sheet and show the person how to see it as on a phone: drag the 
 
 ### The island
 
-After step 1 you call the tool `schritt_melden` with `schritt: mockup` and `sprache: en`, after step 5 with `schritt: entwuerfe`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown on the island. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if the tool is missing, carry on without the island. Then call `lage` again (skill `lotse`).
+After step 1 you call the tool `schritt_melden` with `schritt: mockup` and `sprache: en`, after step 5 with `schritt: entwuerfe`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown on the island. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if the tool is missing, carry on without the island. Then call `lage` again (skill `lotse`), always with `skills_stand`: the value of `stand` under `metadata` at the top of this file.
 
 ## Three directions
 

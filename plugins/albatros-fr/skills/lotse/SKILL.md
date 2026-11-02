@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principal d'Albatros : l'aiguilleur du ciel. Demande avec l'outil lage l'état réel de la personne (phase du plan de vol, questions obligatoires ouvertes, abonnement, page ou serveur, mission), puis suit exactement le skill et la section à faire maintenant ; après chaque étape réussie, il redemande. Montre le plan de vol en trois grandes étapes (décoller, voler, atterrir), pose lui-même les questions obligatoires, clarifie apprendre ou faire et signale les lacunes du savoir-faire. Sans connexion, il montre les trois grandes étapes avec la prochaine étape et, sur demande, la bibliothèque ouverte. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je veux apprendre moi-même », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? »), le skill spécialisé a la priorité."
 metadata:
   stand: 0.2.0
-  quelle: '2438fd74b074'
+  quelle: '3790932b59cf'
 ---
 
 # Aiguilleur du ciel : la bonne chose au bon moment
@@ -88,7 +88,18 @@ Juste après, dans la même réponse, tu commences l'étape : lis le skill, va
 
 Tu transmets les remarques à la personne, mais elles ne détournent pas de l'étape qui est à faire maintenant.
 
-**Faire construire (Bauen lassen) :** Si `lage` montre une ligne `Angebot:` (offre), tu la dis une fois, avec le montant de `lage`, et tu écris le choix de la personne dans `docs/projekt.md` (skill `webseite-planen`, section « Vérifier le plan »). Si `lage` nomme une commande ouverte chez Albatros (attendre Albatros, choisir la direction dans le cockpit, regarder l'aperçu), tu ne continues pas à construire toi-même, même si la personne demande comment continuer : tu lui montres le chemin vers le cockpit et tu l'aides à côté avec les textes et les photos (skill `inhalte`). Le paiement dans le cockpit est sa validation du site ; les données de carte, elle les saisit seulement là, jamais dans le chat.
+**Faire construire (Bauen lassen) :** Si `lage` montre une ligne `Angebot:` (offre), tu la dis une fois, avec le montant de `lage`, et tu écris le choix de la personne dans `docs/projekt.md` (skill `webseite-planen`, section « Vérifier le plan »).
+
+**Commande ouverte chez Albatros :** Tant que `lage` nomme une commande ouverte, c'est Albatros qui construit le site. Tu ne continues pas à construire toi-même, même si la personne demande comment continuer : pas de maquette, pas d'ébauche, pas de code, et tu ne crées ni ne modifies rien sous `design/`. Tu lui montres le chemin vers le cockpit (`open https://albatros.build/cockpit/auftrag`, avec le préfixe de langue comme `/fr/cockpit/auftrag`) et tu suis ce que dit `lage`. Ce qui est à faire, `lage` le nomme sous « Jetzt dran » en allemand, dans toutes les langues :
+
+- « warten auf Albatros » (attendre Albatros) : à côté, tu aides avec les textes et les photos (skill `inhalte`). Les textes et la liste de photos vont dans `docs/inhalte.md`. Les nouvelles photos, la personne les met elle-même dans `design/bilder/` et, jusqu'au paiement, choisit à nouveau son dossier de projet dans le cockpit ; ainsi l'équipe les voit.
+- « eine Richtung wählen und die Angaben fürs Impressum eingeben » (choisir une direction et saisir les informations pour les mentions légales) : la personne choisit une ébauche dans le cockpit et y saisit le nom ou l'entreprise, l'adresse postale et l'e-mail pour les mentions légales, jamais dans le chat. Si elle t'écrit quand même ces informations, tu ne les inscris nulle part et tu ne les transmets à aucun outil ; tu lui montres l'endroit dans le cockpit.
+- « die Vorschau ansehen » (regarder l'aperçu) : elle regarde l'aperçu sur son téléphone et sur l'ordinateur. On paie seulement dans le cockpit avec « Payer et mettre en ligne », et les données de carte, elle les saisit seulement là, jamais dans le chat. Le paiement est sa validation du site. Si `lage` dit que le paiement ne fonctionne pas encore (par exemple avec son propre serveur), tu dis exactement cela.
+- « eine Nachricht ans Team schreiben oder den Auftrag zurückziehen » (écrire un message à l'équipe ou retirer la commande) : les ébauches ou l'aperçu sont restés trop longtemps sans réaction et sont hors ligne ; les deux se font dans le cockpit.
+
+Les montants, tu ne les donnes que comme `lage` ou `konto_status` les donnent, jamais de mémoire.
+
+**Après la mise en ligne :** Quand la commande est en ligne, Albatros a construit le site, et la personne apprend désormais sur son projet terminé. Tu continues à suivre `lage`, pas à pas. Si `lage` dit « warten » (attendre), Albatros est en train d'inscrire la validation sur son île : attendre un peu, puis rappeler `lage`. Ensuite vient d'abord la clé (skill `ssh-schluessel`), puis le journal de bord (`git clone`, skill `webseite-aendern`, section « Récupérer le journal de bord » (Das Logbuch holen)) ; dans le dossier récupéré, tu appelles `lage` avec ses preuves (`belege`). Puis vient la première modification personnelle du projet terminé (skill `webseite-aendern`). Dans `docs/prd.md`, il y a déjà `Freigegeben: <JJ.MM.AAAA>, Abnahme mit der Zahlung von Auftrag #<numéro>` : le paiement était son oui au site. Tu ne le redemandes pas et tu ne modifies pas cette ligne. Un propre domaine et l'annonce sont facultatifs et viennent ensuite.
 
 ### 3. Les questions obligatoires, c'est toi qui les poses
 

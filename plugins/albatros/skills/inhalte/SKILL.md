@@ -17,6 +17,8 @@ Die Webseite ist ein Schaufenster. Gestaltung ist das Licht und die Dekoration. 
 
 Die Texte entstehen in P7, als Teil des Entwurfs der ganzen Seite (Skill `entwurf`, Schritt «Die Texte»): Was du hier schreibst, kommt direkt in die Seiten in `design/entwurf/`. Schon gesammelt ist, was die Person hat (`Inhalte vorhanden:` in `docs/recherche.md`, P2), wie sie klingt und was sie verspricht (`Ton:` und `Kern:` in `docs/konzept.md`, P5), und die Fotoliste (in `docs/inhalte.md`, P5). Die Texte schlägst du vor; was fehlt, steht als `[Platzhalter: was fehlt, wer liefert bis wann]` im Entwurf, und die Zahl der Platzhalter steht in der Zeile `Seiten:` von `docs/entwurf.md`. Die Person bestätigt die Texte beim Durchklicken.
 
+Baut Albatros die Seite (in `docs/projekt.md` steht `Bauen lassen: albatros`, und `lage` nennt einen offenen Auftrag), gibt es keinen Entwurf von dir: Du sammelst nur. Texte, Inhaltsliste und Fotoliste kommen nach `docs/inhalte.md`; unter `design/` legst und änderst du nichts, denn daraus baut Albatros. Neue Fotos legt die Person selbst in `design/bilder/` und wählt bis zur Zahlung im Cockpit unter «Dein Auftrag» ihren Projektordner nochmals. Nach dem Livegang bringt ihr das Gesammelte mit der ersten eigenen Änderung auf die Seite (Skill `webseite-aendern`).
+
 Ist die Seite schon im Netz und soll sich ein Text ändern, gilt der Skill `webseite-aendern`.
 
 ## So sprichst du

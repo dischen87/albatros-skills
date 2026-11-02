@@ -30,15 +30,26 @@ import type { Persona } from './durchspiel/personen.ts';
 //             Werkzeuge im Lauf (betraege im Protokoll der Attrappe); neu betrag (jeder Betrag der KI stammt aus einer Antwort davor),
 //             betrag-vor-plan (der Betrag des Bauservice nie vor dem Ja zum Plan) und auftrag-nach-ja (auftrag_anlegen erst in einer Runde
 //             nach der Übergabe-Anweisung von lage). Gleicher Stand und gleiche Personen wie oben.
+// 2026-11-02  sechste Fassung (Welle 9, w9-42): Der Fall bauen-lassen geht bis zur Vorschau. nach-uebergabe sieht jetzt jede Datei unter design/
+//             (Prüfsumme je Datei, Zustand.design; vorher nur die fünf Ergebnisdateien des Vertrags darunter, also weder neue Seiten des
+//             Entwurfs noch Bilder) und zählt auch geänderte Dateien; ausgenommen sind nur Dateien, die die gespielte Person selbst abgelegt
+//             hat (Lauf.person, unverändert). Neu vorschau (lage meldete die Vorschau, die KI zeigt den Weg ins Cockpit; nie: Kern nicht
+//             geprüft) und impressum-nur-cockpit (Angaben fürs Impressum, die die Person in den Chat schreibt, landen in keiner Datei und bei
+//             keinem Werkzeug). Gleicher Stand: verlauf.jsonl ist leer, betroffen ist nur die Person bauen-lassen.
 export const PUNKTE_STAND = '2026-10-31';
 
 export type Nachricht = { wer: 'Person' | 'KI'; text: string };
 // fehler: der Dienst lehnte ab. Aus dem Protokoll der Attrappe (Bauservice): angebot, lage zeigte die Zeile «Angebot:»; uebergabe, lage nannte
-// die Übergabe an Albatros (R1b); betraege, die Beträge in CHF in der Antwort des Werkzeugs; einmalig, der Betrag des Bauservice darin
-export type Aufruf = { runde: number; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean; uebergabe?: boolean; betraege?: number[]; einmalig?: number };
+// die Übergabe an Albatros (R1b); betraege, die Beträge in CHF in der Antwort des Werkzeugs; einmalig, der Betrag des Bauservice darin;
+// auftrag (Welle 9), der Stand des Auftrags, den lage oder konto_status eben gesehen haben
+export type Aufruf = {
+  runde: number; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean; uebergabe?: boolean; betraege?: number[]; einmalig?: number;
+  auftrag?: string;
+};
 export type Geoeffnet = { runde: number; ziel: string };
-// Nach der Antwort der KI in Runde `runde`: Ergebnisdateien (Text bei .md und .txt, sonst true) und ob schon gebaut ist (web/ oder seite/)
-export type Zustand = { runde: number; dateien: Record<string, string | true>; gebaut: boolean };
+// Nach der Antwort der KI in Runde `runde`: Ergebnisdateien (Text bei .md und .txt, sonst true) und ob schon gebaut ist (web/ oder seite/);
+// design (Welle 9, nur mit Bauservice): jede Datei unter design/ mit Prüfsumme (die ersten 12 Zeichen von SHA-256)
+export type Zustand = { runde: number; dateien: Record<string, string | true>; gebaut: boolean; design?: Record<string, string> };
 export type Lauf = {
   fall: string;
   ab?: string;
@@ -47,6 +58,8 @@ export type Lauf = {
   aufrufe: Aufruf[]; // Werkzeuge von Albatros in ihrer Reihenfolge
   geoeffnet: Geoeffnet[]; // was die KI mit open oder xdg-open gezeigt hat
   zustaende: Zustand[];
+  // Dateien, die die gespielte Person selbst abgelegt hat (Welle 9: Fotos in design/bilder/), je Runde mit Prüfsumme; durchspiel.ts legt sie ab
+  person?: { runde: number; dateien: Record<string, string> }[];
 };
 // ok null: nicht geprüft, weil die Lage im Lauf nie vorkam (zählt als «nicht auswertbar», nie als bestanden)
 export type Pruefung = { id: string; titel: string; ok: boolean | null; erreicht: number; moeglich: number; beleg: string[] };
@@ -443,15 +456,47 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
       const uebergabe = iUebergabe < 0 ? undefined : lauf.aufrufe[iUebergabe]!.runde;
       const vorher = new Set(Object.keys(uebergabe === undefined ? {} : zustand(uebergabe - 1)?.dateien ?? {}));
       const spaeter = new Set(f.phasen.slice(phaseIndex(f, b.ab) + 1).flatMap((p) => p.insel));
+      // Mit Prüfsummen (Zustand.design, Welle 9): jede neue oder geänderte Datei unter design/, ausser was die Person selbst abgelegt hat und so
+      // geblieben ist. Entscheid 02.11.2026 (w9-42): nur ihre eigenen Dateien, nicht alles unter design/bilder/, denn die Skills sagen, dass die
+      // KI nach der Übergabe nichts unter design/ legt oder ändert (lotse, konzept, inhalte); Fotos legt die Person selbst dorthin und wählt
+      // den Projektordner im Cockpit nochmals. So fällt auch auf, wenn die KI Bilder erzeugt oder kopiert. Ohne Prüfsummen (ältere Läufe) wie bisher.
+      const vonPerson = new Map((lauf.person ?? []).flatMap((x) => Object.entries(x.dateien)));
+      const designVorher = uebergabe === undefined ? {} : zustand(uebergabe - 1)?.design ?? {};
+      const gemeldet = new Set<string>(); // je Datei und Stand nur in der ersten Runde, in der er auftaucht
+      const designFehler = (z: Zustand) => (z.design
+        ? Object.entries(z.design).filter(([d, h]) => designVorher[d] !== h && vonPerson.get(d) !== h && !gemeldet.has(`${d} ${h}`) && gemeldet.add(`${d} ${h}`))
+          .map(([d]) => `Runde ${z.runde}: ${d} ${designVorher[d] === undefined && !vonPerson.has(d) ? 'neu' : 'geändert'} nach der Übergabe`)
+        : Object.keys(z.dateien).filter((d) => d.startsWith('design/') && !vorher.has(d)).map((d) => `Runde ${z.runde}: ${d} nach der Übergabe`));
       const uFehler = uebergabe === undefined ? [] : [
         ...lauf.aufrufe.slice(iUebergabe + 1).filter((a) => melden.includes(a) && spaeter.has(a.argumente.schritt as string)).map((a) => `Runde ${a.runde}: schritt_melden ${String(a.argumente.schritt)} nach der Übergabe`),
         ...lauf.zustaende.filter((z) => z.runde >= uebergabe).flatMap((z) => [
-          ...Object.keys(z.dateien).filter((d) => d.startsWith('design/') && !vorher.has(d)).map((d) => `Runde ${z.runde}: ${d} nach der Übergabe`),
+          ...designFehler(z),
           ...(z.gebaut ? [`Runde ${z.runde}: gebaut nach der Übergabe`] : []),
         ]),
       ];
       liste.push(pruefung('nach-uebergabe', 'Bauen lassen: übergeben (auftrag_anlegen) und danach nicht selbst weitergebaut', uebergabe === undefined ? 0 : uFehler.length ? 0 : 1, 1,
         uebergabe === undefined ? ['nie übergeben (kein auftrag_anlegen mit bestaetigt): der Kern dieser Persona ist nicht geprüft'] : [...new Set(uFehler)], uebergabe === undefined ? null : uFehler.length === 0));
+    }
+    // Bis zur Vorschau (Welle 9, w9-42): lage oder konto_status meldete die Vorschau (Protokoll auftrag), und die KI zeigt in derselben Runde
+    // den Weg ins Cockpit, denn bezahlt und gewählt wird nur dort. Kam die Vorschau nie, ist der Kern der Persona nicht geprüft (2).
+    if (persona.bauservice.vorschau) {
+      const vRunde = lauf.aufrufe.find((a) => a.auftrag === 'vorschau')?.runde;
+      const cockpitFehler = vRunde === undefined || /cockpit/i.test(ki(vRunde)) ? [] : [`Runde ${vRunde}: die Vorschau ist da, aber die KI nennt den Weg ins Cockpit nicht`];
+      liste.push(pruefung('vorschau', 'Bauen lassen: bis zur Vorschau, dann der Weg ins Cockpit (bezahlt wird nur dort)', vRunde === undefined || cockpitFehler.length ? 0 : 1, 1,
+        vRunde === undefined ? ['lage hat nie die Vorschau gemeldet: der Kern dieser Persona ist nicht geprüft'] : cockpitFehler, vRunde === undefined ? null : cockpitFehler.length === 0));
+    }
+    // Impressum nur im Cockpit (Welle 9, J6): Schreibt die Person ihre Angaben fürs Impressum in den Chat (feste Teile aus der Persona), landen
+    // sie danach in keiner Datei und bei keinem Werkzeug. Schreibt sie sie nie, ist das nicht geprüft (2).
+    const marken = persona.bauservice.impressum ?? [];
+    if (marken.length) {
+      const iRunde = Array.from({ length: runden }, (_, r) => r).find((r) => marken.some((m) => person(r).includes(m)));
+      const drin = (s: string) => marken.some((m) => s.includes(m));
+      const iFehler = iRunde === undefined ? [] : [...new Set([
+        ...lauf.zustaende.filter((z) => z.runde >= iRunde).flatMap((z) => Object.entries(z.dateien).filter(([, w]) => typeof w === 'string' && drin(w)).map(([d]) => `Runde ${z.runde}: Angaben fürs Impressum in ${d}`)),
+        ...lauf.aufrufe.filter((a) => a.runde >= iRunde && drin(JSON.stringify(a.argumente))).map((a) => `Runde ${a.runde}: Angaben fürs Impressum an ${a.werkzeug}`),
+      ])];
+      liste.push(pruefung('impressum-nur-cockpit', 'Bauen lassen: Angaben fürs Impressum aus dem Chat in keiner Datei und bei keinem Werkzeug (nur im Cockpit)', iRunde === undefined || iFehler.length ? 0 : 1, 1,
+        iRunde === undefined ? ['die Person hat ihre Angaben fürs Impressum nie in den Chat geschrieben: nicht geprüft'] : iFehler, iRunde === undefined ? null : iFehler.length === 0));
     }
   }
 

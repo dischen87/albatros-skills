@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server, missione) e poi segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo riuscito chiede di nuovo. Mostra il piano di volo in tre tappe (decollare, volare, atterrare), fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e, su richiesta, la biblioteca aperta di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?») ha la precedenza lo skill specifico."
 metadata:
   stand: 0.2.0
-  quelle: '2438fd74b074'
+  quelle: '3790932b59cf'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto
@@ -88,7 +88,18 @@ Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, vai al
 
 Gli avvisi li dici alla persona, ma non la distraggono dal passo che tocca adesso.
 
-**Far costruire (Bauen lassen):** Se `lage` mostra una riga `Angebot:` (offerta), la dici una volta, con l'importo da `lage`, e scrivi la scelta della persona in `docs/projekt.md` (skill `webseite-planen`, sezione «Verificare il piano»). Se `lage` nomina un incarico aperto da Albatros (aspettare Albatros, scegliere la direzione nel cockpit, guardare l'anteprima), non continui a costruire tu, anche se la persona chiede come si va avanti: le mostri la strada verso il cockpit e intanto l'aiuti con testi e foto (skill `inhalte`). Il pagamento nel cockpit è la sua approvazione del sito; i dati della carta li inserisce solo lì, mai nella chat.
+**Far costruire (Bauen lassen):** Se `lage` mostra una riga `Angebot:` (offerta), la dici una volta, con l'importo da `lage`, e scrivi la scelta della persona in `docs/projekt.md` (skill `webseite-planen`, sezione «Verificare il piano»).
+
+**Incarico aperto da Albatros:** Finché `lage` nomina un incarico aperto, il sito lo costruisce Albatros. Tu non continui a costruire, anche se la persona chiede come si va avanti: niente mockup, niente bozza, niente codice, e sotto `design/` non metti e non cambi niente. Le mostri la strada verso il cockpit (`open https://albatros.build/cockpit/auftrag`, con il prefisso della lingua come `/fr/cockpit/auftrag`) e segui quello che dice `lage`. Che cosa tocca, `lage` lo nomina sotto «Jetzt dran» in tedesco, in ogni lingua:
+
+- «warten auf Albatros» (aspettare Albatros): intanto aiuti con testi e foto (skill `inhalte`). Testi e lista delle foto vanno in `docs/inhalte.md`. Le foto nuove la persona le mette lei stessa in `design/bilder/` e, fino al pagamento, sceglie di nuovo la cartella del progetto nel cockpit; così il team le vede.
+- «eine Richtung wählen und die Angaben fürs Impressum eingeben» (scegliere una direzione e inserire i dati per l'impressum): la persona sceglie una bozza nel cockpit e lì inserisce nome o ditta, indirizzo postale ed e-mail per l'impressum, mai nella chat. Se te li scrive comunque, non li inserisci da nessuna parte e non li passi a nessuno strumento; le mostri il punto nel cockpit.
+- «die Vorschau ansehen» (guardare l'anteprima): guarda l'anteprima sul telefono e sul computer. Si paga solo nel cockpit con «Paga e metti online», e i dati della carta li inserisce solo lì, mai nella chat. Il pagamento è la sua approvazione del sito. Se `lage` dice che il pagamento non funziona ancora (per esempio con un proprio server), dici esattamente questo.
+- «eine Nachricht ans Team schreiben oder den Auftrag zurückziehen» (scrivere un messaggio al team o ritirare l'incarico): bozze o anteprima sono rimaste troppo a lungo senza risposta e sono state tolte dalla rete; entrambe le cose si fanno nel cockpit.
+
+Gli importi li dici solo come li dicono `lage` o `konto_status`, mai a memoria.
+
+**Dopo la messa online:** Quando l'incarico è online, Albatros ha costruito il sito, e da ora la persona impara sul suo progetto finito. Continui a seguire `lage`, passo dopo passo. Se `lage` dice «warten» (aspettare), Albatros sta registrando l'approvazione sulla sua isola: aspettare un attimo, poi richiamare `lage`. Poi viene prima la chiave (skill `ssh-schluessel`), poi il diario di bordo (`git clone`, skill `webseite-aendern`, sezione «Prendere il diario di bordo» (Das Logbuch holen)); nella cartella presa chiami `lage` con le sue prove (`belege`). Poi viene la prima modifica personale al progetto finito (skill `webseite-aendern`). In `docs/prd.md` c'è già `Freigegeben: <GG.MM.AAAA>, Abnahme mit der Zahlung von Auftrag #<numero>`: il pagamento era il suo sì al sito. Non lo chiedi di nuovo e non cambi la riga. Un dominio proprio e l'annuncio sono facoltativi e vengono dopo.
 
 ### 3. Le domande obbligatorie le fai tu
 

@@ -135,6 +135,8 @@ const istGebaut = (wo: string) => {
   return alle(join(wo, 'web')).length > 0 || (seite.length > 0 && !nurVorlage);
 };
 const text = (d: string) => /\.(md|txt)$/.test(d);
+// Prüfsumme einer Datei wie im Zustand (punkte.ts Zustand.design): die ersten 12 Zeichen von SHA-256
+const pruefsumme = (inhalt: string | Uint8Array) => new Bun.CryptoHasher('sha256').update(inhalt).digest('hex').slice(0, 12);
 const zustand = (runde: number): Zustand => {
   const wo = projektOrdner() ?? arbeit;
   const dateien: Record<string, string | true> = {};
@@ -142,7 +144,27 @@ const zustand = (runde: number): Zustand => {
     const f = join(wo, d);
     if (existsSync(f) && statSync(f).isFile()) dateien[d] = text(d) && statSync(f).size <= 200_000 ? readFileSync(f, 'utf8') : true;
   }
-  return { runde, dateien, gebaut: istGebaut(wo) };
+  // Mit Bauservice (Welle 9, w9-42): jede Datei unter design/ mit Prüfsumme, damit punkte.ts neue und geänderte Dateien nach der Übergabe sieht
+  const design = persona.bauservice ? Object.fromEntries(alle(join(wo, 'design')).map((f) => [relative(wo, f), pruefsumme(readFileSync(f))])) : undefined;
+  return { runde, dateien, gebaut: istGebaut(wo), ...(design ? { design } : {}) };
+};
+// Was die gespielte Person selbst ablegt (Welle 9, w9-42): Sagt sie, sie habe Fotos in design/bilder gelegt, legt der Test die Dateien aus der
+// Persona dort ab, bevor die KI antwortet (einmal je Lauf, auch im Trockenlauf aus ihrer aufgezeichneten Nachricht). punkte.ts nimmt genau diese
+// Dateien mit ihrer Prüfsumme von nach-uebergabe aus.
+const personAbgelegt: NonNullable<Lauf['person']> = AUSWERTEN && existsSync(join(ergebnis, 'person.json')) ? JSON.parse(readFileSync(join(ergebnis, 'person.json'), 'utf8')) : [];
+const personLegtAb = (runde: number, nachricht: string) => {
+  const fotos = persona.bauservice?.fotos ?? [];
+  if (!fotos.length || personAbgelegt.length || !/design\/bilder/i.test(nachricht)) return;
+  const wo = projektOrdner() ?? arbeit;
+  const dateien: Record<string, string> = {};
+  for (const d of fotos) {
+    const inhalt = `Foto der Person im Durchspiel (${d}), nur ein Platzhalter\n`;
+    mkdirSync(dirname(join(wo, d)), { recursive: true });
+    writeFileSync(join(wo, d), inhalt);
+    dateien[d] = pruefsumme(inhalt);
+  }
+  personAbgelegt.push({ runde, dateien });
+  writeFileSync(join(ergebnis, 'person.json'), JSON.stringify(personAbgelegt));
 };
 
 // ———— Werkzeugaufrufe und Geöffnetes, mit Runde ————
@@ -173,10 +195,11 @@ const ausTranskript = () => {
 };
 const aufrufe = (): Aufruf[] => (ECHT ? ausTranskript() : lies(LOG).split('\n').filter((z) => z.startsWith('{')).flatMap((z) => {
   const x = JSON.parse(z) as { zeit: string; runde: number | null; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean;
-    uebergabe?: boolean; betraege?: number[]; einmalig?: number };
-  // Felder für den Bauservice (punkte.ts): angebot, uebergabe, betraege, einmalig aus dem Protokoll der Attrappe
+    uebergabe?: boolean; betraege?: number[]; einmalig?: number; auftrag?: string };
+  // Felder für den Bauservice (punkte.ts): angebot, uebergabe, betraege, einmalig, auftrag (Welle 9) aus dem Protokoll der Attrappe
   return [{ runde: x.runde ?? rundeZu(x.zeit), werkzeug: x.werkzeug, argumente: x.argumente, ...(x.fehler ? { fehler: true } : {}), ...(x.angebot ? { angebot: true } : {}),
-    ...(x.uebergabe ? { uebergabe: true } : {}), ...(x.betraege?.length ? { betraege: x.betraege } : {}), ...(x.einmalig !== undefined ? { einmalig: x.einmalig } : {}) }];
+    ...(x.uebergabe ? { uebergabe: true } : {}), ...(x.betraege?.length ? { betraege: x.betraege } : {}), ...(x.einmalig !== undefined ? { einmalig: x.einmalig } : {}),
+    ...(x.auftrag ? { auftrag: x.auftrag } : {}) }];
 }));
 const geoeffnet = (): Geoeffnet[] => lies(GEOEFFNET).split('\n').filter(Boolean).map((z) => {
   const m = /^(\d+) (.*)$/.exec(z);
@@ -232,14 +255,19 @@ const zustaende: Zustand[] = AUSWERTEN && existsSync(join(ergebnis, 'zustaende.j
 let kostenPerson = 0;
 let ende = AUSWERTEN ? 'ausgewertet' : 'runden';
 // Ziel erreicht: alle Insel-Schritte bis --bis gemeldet und alle Ergebnisse mit Pflichtzeilen da (dann hört der Lauf auf, wie die Punkte)
-const laufBisher = (): Lauf => ({ fall: FALL, bis: BIS, nachrichten: verlauf.map(({ wer, text: t }) => ({ wer, text: t })), aufrufe: aufrufe(), geoeffnet: geoeffnet(), zustaende });
+const laufBisher = (): Lauf => ({ fall: FALL, bis: BIS, nachrichten: verlauf.map(({ wer, text: t }) => ({ wer, text: t })), aufrufe: aufrufe(), geoeffnet: geoeffnet(), zustaende,
+  ...(personAbgelegt.length ? { person: personAbgelegt } : {}) });
 // Bauservice mit albatros (Welle 8, w8-44): erst nach der Übergabe (auftrag_anlegen), die nach P5 kommt, und noch eine Runde danach, damit
-// punkte.ts sieht, ob die KI nach der Übergabe weiterbaut (Nachbesserung 02.11.2026: vorher endete der Lauf mit der Runde der Übergabe)
+// punkte.ts sieht, ob die KI nach der Übergabe weiterbaut (Nachbesserung 02.11.2026: vorher endete der Lauf mit der Runde der Übergabe). Mit
+// vorschau (Welle 9, w9-42) erst, wenn lage oder konto_status die Vorschau gemeldet hat und die Runde dazu fertig ist.
 const zielErreicht = () => {
   const p = punkte(laufBisher(), F, persona, { bis: BIS });
-  const u = aufrufe().find((a) => a.werkzeug === 'auftrag_anlegen' && !a.fehler && a.argumente.bestaetigt === true)?.runde;
-  const uebergeben = persona.bauservice?.bauen !== 'albatros' || (u !== undefined && (zustaende.at(-1)?.runde ?? -1) > u);
-  return ['insel', 'ergebnisse'].every((id) => p.pruefungen.find((x) => x.id === id)?.ok === true) && uebergeben;
+  const alleAufrufe = aufrufe();
+  const letzte = zustaende.at(-1)?.runde ?? -1;
+  const u = alleAufrufe.find((a) => a.werkzeug === 'auftrag_anlegen' && !a.fehler && a.argumente.bestaetigt === true)?.runde;
+  const uebergeben = persona.bauservice?.bauen !== 'albatros' || (u !== undefined && letzte > u);
+  const vorschau = !persona.bauservice?.vorschau || alleAufrufe.some((a) => a.auftrag === 'vorschau' && a.runde <= letzte);
+  return ['insel', 'ergebnisse'].every((id) => p.pruefungen.find((x) => x.id === id)?.ok === true) && uebergeben && vorschau;
 };
 // Die KI ergänzt im Skill ssh-schluessel das echte ~/.ssh/config: Nach dem Spiel kommt der alte Stand zurück, ihre Fassung in die Ergebnisse
 const SSH_CONFIG = join(homedir(), '.ssh/config'), sshVorher = !AUSWERTEN && !ECHT && !TROCKEN && existsSync(SSH_CONFIG) ? readFileSync(SSH_CONFIG, 'utf8') : null;
@@ -273,6 +301,7 @@ if (!AUSWERTEN) {
     rundenZeit.push({ start: new Date().toISOString(), ende: '' });
     verlauf.push({ wer: 'Person', text: nachricht });
     console.log(`\n[Person] ${nachricht}`);
+    personLegtAb(runde, nachricht); // Bauservice: Fotos, die die Person selbst in design/bilder/ legt (oben)
     if (TROCKEN) {
       verlauf.push({ wer: 'KI', text: await nachgespielt(runde), kosten: 0 });
     } else {

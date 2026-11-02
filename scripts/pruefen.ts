@@ -7,7 +7,7 @@ import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
-import { pruefeAbschnittsnamen } from './abschnitte.ts';
+import { ohneCode, pruefeAbschnittsnamen } from './abschnitte.ts';
 import { ALTE_INSEL, ladeFahrplan, stufeFehler } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
@@ -241,14 +241,47 @@ for (const { datei, text } of skillTexte) {
 
 // Bauservice (Welle 8, w8-44; Nachbesserung 02.11.2026 nach der Gegenprobe): Was lage, auftrag_anlegen und scripts/punkte.ts lesen, steht in
 // jeder Sprache wörtlich gleich, auch wenn die Übersetzung sonst frei ist (vorher blieb pruefen grün, wenn eine Übersetzung den Absatz
-// verlor, «selbst» übersetzte oder bestaetigt: true wegliess)
+// verlor, «selbst» übersetzte oder bestaetigt: true wegliess). Welle 9 (02.11.2026, w9-40, w9-41): dazu je neuer Satz ein Wort, das nur dort
+// steht, damit das Fehlen eines einzelnen Satzes auffällt (Mutationen im Ergebnis w9). konzept: der Projektordner im Cockpit nach der Übergabe
+// (cockpit/auftrag, `pwd`), danach nichts unter design/ ausser den Fotos der Person (`design/bilder/`), Frage 5 mit «… design/bilder.». lotse:
+// was lage unter «Jetzt dran» auf Deutsch nennt, solange ein Auftrag offen ist (warten, Richtung mit Impressum, Vorschau), nichts unter
+// `design/`, und nach dem Livegang das Logbuch mit der Zeile, die konto in docs/prd.md schreibt (J2: «Abnahme mit der Zahlung von Auftrag #n»,
+// bleibt deutsch); webseite-aendern: Logbuch eines Projekts von Albatros (Schritt 1) und dieselbe Zeile (Schritt 4); inhalte: nur sammeln,
+// nichts unter `design/`. konzept nennt seit dem 02.11.2026 auch `setup` für auftrag_anlegen (fahrplan/w9-nahtstellen in albatros macht es zur
+// Pflicht; mcp in efe228c nimmt das Feld schon an und übergeht es).
 const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
   'webseite-planen': ['`Angebot:`', '`Bauen lassen: selbst (', '`Bauen lassen: albatros (', '`konto_status`'],
-  lotse: ['`Angebot:`', '`inhalte`'],
-  konzept: ['`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`'],
+  lotse: [
+    '`Angebot:`', '`inhalte`', '`design/`', 'cockpit/auftrag', 'warten auf Albatros', 'die Angaben fürs Impressum eingeben', 'die Vorschau ansehen',
+    'Das Logbuch holen', 'Abnahme mit der Zahlung von Auftrag #',
+  ],
+  konzept: [
+    '`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`', 'cockpit/auftrag', '`pwd`', '`design/bilder/`',
+    'design/bilder.', '`setup` (',
+  ],
+  'webseite-aendern': ['`Bauen lassen: albatros`', 'Abnahme mit der Zahlung von Auftrag #'],
+  inhalte: ['`Bauen lassen: albatros`', '`design/`'],
 };
 for (const { datei, slug, text } of skillTexte)
   for (const w of BAUSERVICE_WOERTLICH[slug] ?? []) if (!text.includes(w)) fehler.push(`${datei}: Bauservice, «${w}» fehlt (wörtlich wie im deutschen Skill)`);
+// skills_stand bei jedem Aufruf von lage (Welle 9, w9-43, 02.11.2026): Gemini CLI und Cursor schicken keine Kopfzeile mit dem Stand der Skills
+// (die Verbindung kommt dort nicht aus dem Plugin); ruft die KI lage aus einem Skill ohne skills_stand auf, meldet lage die Skills fälschlich als
+// veraltet (Bericht Welle 8, Live-Test). Jeder Satz in einem deutschen Skill und in vorlage/AGENTS.md, der lage aufrufen lässt, nennt
+// skills_stand (lotse beschreibt die Angaben selbst und ist ausgenommen); jede Übersetzung nennt `skills_stand` gleich oft wie das Deutsche.
+const LAGE_AUFRUF = /(?:\bruf(?:st du)?|\brufen) `lage`|`lage`(?: von Albatros)? (?:erneut|nochmals)|`lage`(?: von Albatros)? auf(?:rufen)?\b/i;
+const saetze = (text: string) => ohneCode(text).join('\n').split(/(?<=[.!?])\s+|\n/);
+const zaehle = (text: string) => text.split('`skills_stand`').length - 1;
+const agentsDe = (await lies('vorlage/AGENTS.md')) ?? '';
+for (const [datei, text] of [...skillTexte.filter((s) => s.datei.startsWith('plugins/albatros/') && s.slug !== 'lotse').map((s) => [s.datei, s.text] as const), ['vorlage/AGENTS.md', agentsDe] as const])
+  for (const satz of saetze(text)) if (LAGE_AUFRUF.test(satz) && !satz.includes('`skills_stand`')) fehler.push(`${datei}: lage ohne \`skills_stand\`: «${satz.trim().slice(0, 100)}»`);
+for (const { datei, slug, text } of skillTexte.filter((s) => !s.datei.startsWith('plugins/albatros/'))) {
+  const de = skillTexte.find((s) => s.slug === slug && s.datei.startsWith('plugins/albatros/'));
+  if (de && zaehle(text) !== zaehle(de.text)) fehler.push(`${datei}: \`skills_stand\` ${zaehle(text)}-mal, im deutschen Skill ${zaehle(de.text)}-mal`);
+}
+for (const s of ['fr', 'it', 'en']) {
+  const t = await lies(`uebersetzungen/${s}/vorlage/AGENTS.md`);
+  if (t !== null && zaehle(t) !== zaehle(agentsDe)) fehler.push(`uebersetzungen/${s}/vorlage/AGENTS.md: \`skills_stand\` ${zaehle(t)}-mal, in vorlage/AGENTS.md ${zaehle(agentsDe)}-mal`);
+}
 // Marken für «Annahme» in pruefen.mjs (webseite-bauen, Freigabe mit --freigabe und --vor-bau) wie marken.annahme in fahrplan.yaml: Die
 // Zeile ist von Hand geschrieben, kit liest die Marken aus dem Vertrag (Nachbesserung 02.11.2026: eine neue Marke im Vertrag hätte pruefen.mjs
 // sonst unbemerkt «frei» sagen lassen, wo kit «nicht frei» sagt)

@@ -3,7 +3,7 @@ name: lotse
 description: "The main Albatros skill: the air traffic controller. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server, mission), then follows exactly the skill and section that are up now; after every step they finish, it asks again. Shows the flight plan in three stages (take off, fly, land), asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and, on request, the open library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “what's next?”, “where am I?”, “where did we get to?”, “it's not working”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. “how do I connect my domain?”), the matching topic skill comes first."
 metadata:
   stand: 0.2.0
-  quelle: '2438fd74b074'
+  quelle: '3790932b59cf'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -88,7 +88,18 @@ Straight after that, in the same answer, you start on the step: read the skill, 
 
 Pass the notes on to the person, but they don't pull attention away from the step that's up now.
 
-**Having it built (Bauen lassen):** If `lage` shows a line `Angebot:` (offer), say it once, with the amount from `lage`, and write the person's choice in `docs/projekt.md` (skill `webseite-planen`, section “Checking the plan”). If `lage` names an open order with Albatros (waiting for Albatros, choosing the direction in the cockpit, looking at the preview), you don't carry on building yourself, even if the person asks how to go on: show them the way to the cockpit and help them alongside with texts and photos (skill `inhalte`). Paying in the cockpit is their release of the site; they enter card details only there, never in the chat.
+**Having it built (Bauen lassen):** If `lage` shows a line `Angebot:` (offer), say it once, with the amount from `lage`, and write the person's choice in `docs/projekt.md` (skill `webseite-planen`, section “Checking the plan”).
+
+**Order open with Albatros:** As long as `lage` names an open order, Albatros is building the site. You don't carry on building yourself, even if the person asks how to go on: no mockup, no draft, no code, and you don't add or change anything under `design/`. Show them the way to the cockpit (`open https://albatros.build/cockpit/auftrag`, with a language prefix like `/fr/cockpit/auftrag`) and follow what `lage` says. What's up, `lage` names under “Jetzt dran” in German, in every language:
+
+- “warten auf Albatros” (waiting for Albatros): alongside, you help with texts and photos (skill `inhalte`). Texts and the photo list go into `docs/inhalte.md`. The person puts new photos into `design/bilder/` themselves and, until they pay, chooses their project folder again in the cockpit; then the team sees them.
+- “eine Richtung wählen und die Angaben fürs Impressum eingeben” (choose a direction and enter the details for the legal notice): the person chooses a draft in the cockpit and enters name or company, postal address and email for the legal notice there, never in the chat. If they write these details to you anyway, you don't put them anywhere and don't pass them to any tool; you show them the place in the cockpit.
+- “die Vorschau ansehen” (look at the preview): they look at the preview on their phone and on the computer. Paying happens only in the cockpit with “Pay and go live”, and they enter card details only there, never in the chat. The payment is their release of the site. If `lage` says paying doesn't work yet (for example with their own server), say exactly that.
+- “eine Nachricht ans Team schreiben oder den Auftrag zurückziehen” (write a message to the team or withdraw the order): the drafts or the preview went unanswered for too long and were taken offline; both are done in the cockpit.
+
+You give amounts only the way `lage` or `konto_status` give them, never from memory.
+
+**After going live:** Once the order is live, Albatros has built the site, and from now on the person learns on their finished project. You keep following `lage`, step by step. If `lage` says “warten” (wait), Albatros is just recording the release on their island: wait a moment, then call `lage` again. Then comes the key first (skill `ssh-schluessel`), then the logbook (`git clone`, skill `webseite-aendern`, section “Fetch the logbook” (Das Logbuch holen)); in the fetched folder you call `lage` with its evidence (`belege`). Then comes the first change of their own to the finished project (skill `webseite-aendern`). `docs/prd.md` already has `Freigegeben: <DD.MM.YYYY>, Abnahme mit der Zahlung von Auftrag #<number>`: the payment was their yes to the site. You don't ask again and you don't change that line. An own domain and the announcement are optional and come afterwards.
 
 ### 3. You ask the required questions yourself
 

@@ -3,7 +3,7 @@ name: inhalte
 description: "Aide une personne sans connaissances préalables à écrire et à choisir les textes et les images de son site web, dans le plan de vol pour l'ébauche de tout le site (P7) : la page d'accueil en trois phrases, des textes courts dans le ton du concept pour des gens qui lisent sur le natel, les textes manquants bien visibles comme [à compléter], ses propres photos plutôt que des images de banque d'images avec une liste de photos, droits et taille des images, ramener les textes d'IA à sa propre voix. Le résultat est une liste des contenus dans docs/inhalte.md et les textes dans l'ébauche. Utilise ce skill quand on dit « écrire des textes », « qu'est-ce que j'écris sur la page d'accueil », « à propos », « images pour le site », « liste de photos », « est-ce que j'ai le droit d'utiliser cette image », « le texte fait IA », « contenus »."
 metadata:
   stand: 0.2.0
-  quelle: '0b198ab95f73'
+  quelle: '3212c0762904'
 ---
 
 # Contenus : la marchandise dans la vitrine
@@ -17,6 +17,8 @@ Le site web est une vitrine. La mise en forme, c'est la lumière et la décorati
 ## Dans le plan de vol
 
 Les textes naissent en P7, comme partie de l'ébauche de tout le site (skill `entwurf`, étape « Les textes ») : ce que tu écris ici va directement dans les pages de `design/entwurf/`. Ce qui est déjà rassemblé : ce que la personne a (`Inhalte vorhanden:` dans `docs/recherche.md`, P2), comment elle sonne et ce qu'elle promet (`Ton:` et `Kern:` dans `docs/konzept.md`, P5), et la liste de photos (dans `docs/inhalte.md`, P5). Les textes, c'est toi qui les proposes ; ce qui manque figure comme `[à compléter : ce qui manque, qui le livre et quand]` dans l'ébauche, et le nombre d'éléments à compléter figure dans la ligne `Seiten:` de `docs/entwurf.md`. La personne confirme les textes en parcourant le site.
+
+Si c'est Albatros qui construit le site (`docs/projekt.md` contient `Bauen lassen: albatros`, et `lage` nomme une commande ouverte), il n'y a pas d'ébauche de ta part : tu rassembles seulement. Les textes, la liste des contenus et la liste de photos vont dans `docs/inhalte.md` ; sous `design/`, tu ne crées ni ne modifies rien, car c'est à partir de là qu'Albatros construit. Les nouvelles photos, la personne les met elle-même dans `design/bilder/` et, jusqu'au paiement, choisit à nouveau son dossier de projet dans le cockpit, sous « Ta commande ». Après la mise en ligne, vous mettez ce que vous avez rassemblé sur le site avec la première modification personnelle (skill `webseite-aendern`).
 
 Si le site est déjà en ligne et qu'un texte doit changer, c'est le skill `webseite-aendern` qui vaut.
 

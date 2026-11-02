@@ -295,7 +295,7 @@ Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz 
 
 Will die Person vor der Freigabe noch etwas ändern: Ein Text, ein Bild oder ein Termin geht zurück zu Schritt 4, dann Prüfen und Begehung nochmals. Eine neue Seite oder eine neue Funktion ist ein Nachtrag: zuerst in `docs/plan.md`, dann ein Entwurf der geänderten Seiten und eine neue Freigabe zum Bauen (Skill `entwurf`), erst dann gebaut.
 
-Danach kommt der Skill `lancieren`: Wo soll die Seite wohnen? Ruf `lage` auf, wenn es das Werkzeug gibt, und folge ihm.
+Danach kommt der Skill `lancieren`: Wo soll die Seite wohnen? Ruf `lage` auf, wenn es das Werkzeug gibt, mit `skills_stand` (dem Wert von `stand` unter `metadata` oben in dieser Datei), und folge ihm.
 
 ## Stolpersteine
 

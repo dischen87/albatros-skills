@@ -3,7 +3,7 @@ name: entwurf
 description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git, avec une brique aussi Bun), puis chaque page du plan dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, regardé sur le natel et sur l'ordinateur. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
 metadata:
   stand: 0.2.0
-  quelle: '847fd670e192'
+  quelle: '31d8a030c617'
 ---
 
 # Ébauche : le modèle qu'on peut visiter
@@ -180,7 +180,7 @@ Ensuite vient P9 : suis le skill `webseite-bauen` (`../webseite-bauen/SKILL.md`)
 
 ## L'île
 
-Après l'étape 6, tu appelles l'outil `schritt_melden` avec `schritt: entwurf` et `sprache: fr`, après l'autorisation avec `schritt: entwurf-freigegeben`. `projekt`, tu le laisses de côté, sauf si la personne travaille à un autre projet qui se trouve seulement sur son ordinateur ; tu donnes alors son nom court. Dis-lui en une phrase que sa maison a grandi. Si l'outil répond « Ungültige Angaben » (données non valables), vérifie une fois l'orthographe ; si Albatros ne connaît pas encore l'étape, on continue sans l'île, `docs/entwurf.md` en est la preuve. Ensuite, tu appelles à nouveau `lage` (skill `lotse`).
+Après l'étape 6, tu appelles l'outil `schritt_melden` avec `schritt: entwurf` et `sprache: fr`, après l'autorisation avec `schritt: entwurf-freigegeben`. `projekt`, tu le laisses de côté, sauf si la personne travaille à un autre projet qui se trouve seulement sur son ordinateur ; tu donnes alors son nom court. Dis-lui en une phrase que sa maison a grandi. Si l'outil répond « Ungültige Angaben » (données non valables), vérifie une fois l'orthographe ; si Albatros ne connaît pas encore l'étape, on continue sans l'île, `docs/entwurf.md` en est la preuve. Ensuite, tu appelles à nouveau `lage` (skill `lotse`), toujours avec `skills_stand` : la valeur de `stand` sous `metadata` en haut de ce fichier.
 
 ## Pièges
 

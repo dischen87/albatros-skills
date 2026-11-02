@@ -354,10 +354,15 @@ test.skipIf(!mitBauservice)('Bauservice: Attrappe wie lage, konto_status und auf
     return alsErgebnis((await r.json()) as Rpc);
   };
   const basis = ZUSTAENDE['gratis-ohne-projekt']!.antworten;
-  const ich = (stufe: string) => {
+  const ich = (stufe: string, seite: string | null = null) => {
     const b = basis['GET /cockpit/ich']!.body as Record<string, unknown>;
     const leistung = { ...(b.leistung as object), server: stufe === 'pilot', seite: stufe !== 'gratis', bisPhase: stufe === 'gratis' ? 'P10' : null, preisChfMonat: stufe === 'light' ? 15 : stufe === 'pilot' ? 40 : 0 };
-    return { status: 200, body: { ...b, stufe, leistung, abo: stufe === 'gratis' ? null : { stufe, status: 'active', bis: null, kuendigtZumEnde: false } } };
+    return { status: 200, body: { ...b, stufe, leistung, seite, abo: stufe === 'gratis' ? null : { stufe, status: 'active', bis: null, kuendigtZumEnde: false } } };
+  };
+  // Seite nach der Auslieferung (R3): wie GET /cockpit/seite in lage-attrappen, mit so vielen Schlössern wie im Fall
+  const seiteMit = (schloesser: number) => {
+    const s = basis['GET /cockpit/seite']!.body as { schluessel: unknown[] };
+    return { status: 200, body: { ...s, schluessel: s.schluessel.slice(0, schloesser) } };
   };
   const projekt = (extra: string[] = []) => ({ datei: 'docs/projekt.md', zeilen: ['Projektname: Stiel und Blatt', 'In einem Satz: Blumenladen', 'Für wen: Quartier', 'Hauptsache: Strauss anfragen', 'Erfolg: drei Anfragen pro Woche', 'Bestehende Seite: keine', 'Modus: machen', ...extra] });
   const recherche = { datei: 'docs/recherche.md', zeilen: ['Vorbilder: a, b, c', 'Übernehmen: klare Preise', 'Vermeiden: Popups', 'Pflichten: Impressum, Datenschutz', 'Inhalte vorhanden: Fotos', 'Suchbegriffe: Blumen Testwil'] };
@@ -367,7 +372,12 @@ test.skipIf(!mitBauservice)('Bauservice: Attrappe wie lage, konto_status und auf
   const P4 = ['idee', 'recherche', 'plan', 'plan-geprueft'], P5 = [...P4, 'konzept'];
   const STATISCH = 'statisch, Seite ohne eigene Dienste';
   const ALBATROS = 'Bauen lassen: albatros (01.11.2026)';
-  type Fall = { name: string; stufe?: string; belege: object[]; schritte: string[]; auftrag?: string; stuecke?: string[]; modus?: string };
+  // Nach der Auslieferung (Welle 9, R3): docs/prd.md mit der Zeile, die konto schreibt (J2), und docs/live.md mit Domain und Ankündigung (P13)
+  const prd = { datei: 'docs/prd.md', zeilen: ['# PRD: Stiel und Blatt', 'Freigegeben: 03.11.2026, Abnahme mit der Zahlung von Auftrag #1'] };
+  const live = { datei: 'docs/live.md', zeilen: ['Eigene Domain: später', 'Angekündigt: Quartierzeitung und Stammkundinnen'] };
+  const BAU = [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept];
+  // seite: Name der Seite (R3: konto hat ausgeliefert), schloesser: Schlösser an der Seite (sonst eins), ziel: wohin konto ausliefert (server)
+  type Fall = { name: string; stufe?: string; belege: object[]; schritte: string[]; auftrag?: string; stuecke?: string[]; modus?: string; seite?: string; schloesser?: number; ziel?: 'server' };
   const FAELLE: Fall[] = [
     { name: 'R1 Angebot, Gratis', belege: [projekt(), recherche, plan(STATISCH), pruefung], schritte: P4 },
     { name: 'R1 Angebot, Light', stufe: 'light', belege: [projekt(), recherche, plan(STATISCH), pruefung], schritte: P4 },
@@ -384,20 +394,34 @@ test.skipIf(!mitBauservice)('Bauservice: Attrappe wie lage, konto_status und auf
     { name: 'R2 vorschau, Gratis', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'vorschau', stuecke: ['vorschau'] },
     { name: 'R2 vorschau, Light', stufe: 'light', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'vorschau', stuecke: ['vorschau'] },
     { name: 'R4 zurückgezogen mit albatros', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'zurueckgezogen' },
+    // Welle 9 (02.11.2026, w9-42; albatros efe228c): Ziel server ohne Bezahlen und Betrag, R3 nach der Auslieferung
+    { name: 'Ziel server: Vorschau ohne Bezahlen', stufe: 'pilot', belege: BAU, schritte: P5, auftrag: 'vorschau', stuecke: ['vorschau'], ziel: 'server' },
+    { name: 'Ziel server: Vorschläge', stufe: 'pilot', belege: BAU, schritte: P5, auftrag: 'vorschlaege', stuecke: ['mockup', 'entwurf-1'], ziel: 'server' },
+    { name: 'R3 live, Insel vor der Freigabe: warten', stufe: 'light', seite: 'anna', belege: BAU, schritte: P5, auftrag: 'live' },
+    { name: 'R3 Freigabe auf der Insel, ohne Schloss: Schlüssel', stufe: 'light', seite: 'anna', schloesser: 0, belege: BAU, schritte: [...P5, 'freigabe'], auftrag: 'live' },
+    { name: 'R3 Freigabe auf der Insel: Logbuch holen', stufe: 'light', seite: 'anna', belege: BAU, schritte: [...P5, 'freigabe'], auftrag: 'live' },
+    { name: 'R3 Logbuch da, Insel bei Freigabe', stufe: 'light', seite: 'anna', belege: [...BAU, prd], schritte: [...P5, 'freigabe'], auftrag: 'live' },
+    { name: 'R3 Logbuch da, Insel live: Domain und Ankündigung freiwillig', stufe: 'light', seite: 'anna', belege: [...BAU, prd], schritte: [...P5, 'freigabe', 'live'], auftrag: 'live' },
+    { name: 'R3 Logbuch da, docs/live.md beantwortet', stufe: 'light', seite: 'anna', belege: [...BAU, prd, live], schritte: [...P5, 'freigabe', 'live'], auftrag: 'live' },
+    // Nahtstellen nach Welle 9 (albatros 6540052): R1b nur mit Setup statisch (bestätigt) und ohne eigenen Server, sonst P6 mit dem Hinweis
+    { name: 'R1b mit Setup [Annahme: statisch …]: Hinweis statt Übergabe', belege: [projekt([ALBATROS]), recherche, plan(`[Annahme: ${STATISCH}]`), pruefung, konzept], schritte: P5 },
+    { name: 'R1b mit Setup baustein: Hinweis statt Übergabe', belege: [projekt([ALBATROS]), recherche, plan('baustein, Anmeldeliste'), pruefung, konzept], schritte: P5 },
+    { name: 'P5 mit albatros und Setup baustein: Hinweis, Danach P6', belege: [projekt([ALBATROS]), recherche, plan('baustein, Anmeldeliste'), pruefung], schritte: P4 },
   ];
   const zeilen = (t: string) => t.split('\n').filter((z) => /^(Jetzt dran|Angebot|Danach|Hinweis):/.test(z)).concat(t.split('\n').filter((z) => z.startsWith('Stand:')).map((z) => z.split(' · ').at(-1)!));
   const anders: string[] = [];
   for (const f of FAELLE) {
     const stufe = f.stufe ?? 'gratis';
     const preis = { einmaligChf: 290, aboChfMonat: stufe === 'gratis' ? 15 : null };
-    const auftraege = f.auftrag ? [{ nr: 1, status: f.auftrag, preis, stuecke: (f.stuecke ?? []).map((stueck) => ({ stueck })) }] : [];
-    const antworten: A = { ...basis, 'GET /cockpit/ich': ich(stufe), 'GET /cockpit/erfassung': { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } },
+    const auftraege = f.auftrag ? [{ nr: 1, status: f.auftrag, preis, stuecke: (f.stuecke ?? []).map((stueck) => ({ stueck })), ...(f.ziel ? { ziel: { art: f.ziel } } : {}) }] : [];
+    const antworten: A = { ...basis, 'GET /cockpit/ich': ich(stufe, f.seite ?? null), 'GET /cockpit/seite': seiteMit(f.schloesser ?? 1), 'GET /cockpit/erfassung': { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } },
       'GET /cockpit/insel': { status: 200, body: { projekte: [{ projekt: 'projekt', titel: 'Stiel und Blatt', schritt: f.schritte.at(-1), am: '2026-11-01T10:00:00Z' }], gesehen: null } },
       'GET /cockpit/auftraege': { status: 200, body: auftraege }, 'GET /web/auftrag': { status: 200, body: { einmaligChf: 290, aboChfMonat: 15 } } };
     const args = { skills_stand: STAND, modus: f.modus ?? 'machen', belege: f.belege };
     const e = await echt(antworten, 'lage', args);
     const ek = await echt(antworten, 'konto_status', {});
-    const dateien: Record<string, string> = { weg: 'webseite', erfassung: 'ja', ...(stufe !== 'gratis' ? { abo: stufe } : {}), ...(f.auftrag ? { auftrag: f.auftrag } : {}) };
+    const dateien: Record<string, string> = { weg: 'webseite', erfassung: 'ja', ...(stufe !== 'gratis' ? { abo: stufe } : {}), ...(f.auftrag ? { auftrag: f.auftrag } : {}),
+      ...(f.seite ? { seite: f.seite } : {}), schloesser: String(f.schloesser ?? 1) };
     const m = await attrappe([...f.schritte.map((s) => ['schritt_melden', { schritt: s, titel: 'Stiel und Blatt', sprache: 'de' }] as [string, unknown]), ['lage', args], ['konto_status', {}]], { stufe, dateien, bauservice: true });
     const [ml, mk] = m.slice(-2) as [Ergebnis, Ergebnis];
     if (JSON.stringify(zeilen(ml.text)) !== JSON.stringify(zeilen(e.text))) anders.push(`${f.name}, lage:\n  echt:     ${zeilen(e.text).join(' | ')}\n  attrappe: ${zeilen(ml.text).join(' | ')}`);
@@ -405,19 +429,29 @@ test.skipIf(!mitBauservice)('Bauservice: Attrappe wie lage, konto_status und auf
     if (bau(mk.text) !== bau(ek.text)) anders.push(`${f.name}, konto_status:\n  echt:     ${bau(ek.text)}\n  attrappe: ${bau(mk.text)}`);
   }
   // auftrag_anlegen: ohne Ja, ohne bestaetigt, falscher Typ, angelegt, zweiter offener Auftrag, zu lang, nur Leerzeichen
-  const B = { name: 'Stiel und Blatt', wofuer: 'Blumenladen', fuerWen: 'Quartier', seiten: 'Start, Kontakt', stil: 'frisch' };
-  const ANLEGEN: unknown[] = [{ ...B, bestaetigt: false }, B, { ...B, bestaetigt: 'true' }, { ...B, bestaetigt: true }, { ...B, bestaetigt: true },
+  // Seit den Nahtstellen nach Welle 9 mit setup (Pflicht): ohne setup, Setup baustein und Setup als Annahme abgelehnt, ohne Auftrag
+  const B = { name: 'Stiel und Blatt', wofuer: 'Blumenladen', fuerWen: 'Quartier', seiten: 'Start, Kontakt', setup: STATISCH, stil: 'frisch' };
+  const { setup: _ohne, ...OHNE_SETUP } = B;
+  const ANLEGEN: unknown[] = [{ ...B, bestaetigt: false }, B, { ...B, bestaetigt: 'true' }, { ...OHNE_SETUP, bestaetigt: true }, { ...B, bestaetigt: true, setup: 'baustein, Anmeldeliste' },
+    { ...B, bestaetigt: true, setup: `- Setup: [Annahme: ${STATISCH}]` }, { ...B, bestaetigt: true }, { ...B, bestaetigt: true },
     { ...B, bestaetigt: true, material: 'x'.repeat(4001) }, { ...B, bestaetigt: true, name: '   ' }, { ...B, bestaetigt: true, adresse: 'y'.repeat(301) }];
   let offen = false;
   const antworten = (m: string, p: string): { status: number; body: unknown } | undefined => {
     if (m === 'POST' && p === '/cockpit/auftraege') { if (offen) return { status: 409, body: { error: 'Du hast schon einen offenen Auftrag.' } }; offen = true; return { status: 200, body: { nr: 1, status: 'briefing', preis: { einmaligChf: 290, aboChfMonat: 15 } } }; }
-    if (m === 'GET' && p === '/cockpit/ich') return { status: 200, body: { sprache: 'de' } };
+    if (m === 'GET' && p === '/cockpit/ich') return { status: 200, body: { stufe: 'gratis', server: null, leistung: { server: false }, sprache: 'de' } };
     return undefined;
   };
   const erwartet: Ergebnis[] = [];
   for (const a of ANLEGEN) erwartet.push(await echt(new Proxy({}, { get: (_t, k: string) => { const [m, ...p] = k.split(' '); return antworten(m!, p.join(' ')); } }) as A, 'auftrag_anlegen', a));
   const mock = await attrappe(ANLEGEN.map((a) => ['auftrag_anlegen', a] as [string, unknown]), { stufe: 'gratis', bauservice: true });
   ANLEGEN.forEach((a, i) => { if (JSON.stringify(mock[i]) !== JSON.stringify(erwartet[i])) anders.push(`auftrag_anlegen ${JSON.stringify(a).slice(0, 80)}:\n  echt:     ${erwartet[i]!.text}\n  attrappe: ${mock[i]!.text}`); });
+  // Pilot (Ziel server): seit den Nahtstellen kein Auftrag, der Satz NUR_OHNE_SERVER (vorher angelegt ohne Betrag)
+  const serverAntworten = (m: string, p: string): { status: number; body: unknown } | undefined =>
+    m === 'POST' && p === '/cockpit/auftraege' ? { status: 200, body: { nr: 1, status: 'briefing', preis: { einmaligChf: 290, aboChfMonat: null }, ziel: { art: 'server' } } }
+      : m === 'GET' && p === '/cockpit/ich' ? { status: 200, body: { stufe: 'pilot', server: null, leistung: { server: true }, sprache: 'de' } } : antworten(m, p);
+  const echtServer = await echt(new Proxy({}, { get: (_t, k: string) => { const [m, ...p] = k.split(' '); return serverAntworten(m!, p.join(' ')); } }) as A, 'auftrag_anlegen', { ...B, bestaetigt: true });
+  const [mockServer] = await attrappe([['auftrag_anlegen', { ...B, bestaetigt: true }]], { stufe: 'pilot', bauservice: true });
+  if (JSON.stringify(mockServer) !== JSON.stringify(echtServer)) anders.push(`auftrag_anlegen mit Ziel server:\n  echt:     ${echtServer.text}\n  attrappe: ${mockServer!.text}`);
   expect(anders).toEqual([]);
 }, 120_000);
 
