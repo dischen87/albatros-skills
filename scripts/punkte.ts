@@ -26,14 +26,16 @@ import type { Persona } from './durchspiel/personen.ts';
 // 2026-11-01  fünfte Fassung (Welle 8, w8-44): Prüfungen zum Bauservice (angebot, angebot-betrag, bauen-lassen, auftrag-bestaetigt,
 //             nach-uebergabe), nur für Personen mit bauservice; für alle anderen gleich. Der Stand bleibt 2026-10-31: verlauf.jsonl ist leer,
 //             und die neuen Prüfungen treffen nur die neuen Personen bauen-lassen und bauen-lassen-nein.
+// 2026-11-02  Nachbesserung der fünften Fassung (Gegenprobe skills): Beträge nicht mehr fest (290/15), sondern aus den Antworten der
+//             Werkzeuge im Lauf (betraege im Protokoll der Attrappe); neu betrag (jeder Betrag der KI stammt aus einer Antwort davor),
+//             betrag-vor-plan (der Betrag des Bauservice nie vor dem Ja zum Plan) und auftrag-nach-ja (auftrag_anlegen erst in einer Runde
+//             nach der Übergabe-Anweisung von lage). Gleicher Stand und gleiche Personen wie oben.
 export const PUNKTE_STAND = '2026-10-31';
 
-// Beträge des Bauservice wie konto (albatros services/konto/src/stufen.ts AUFTRAG, GET /web/auftrag), für die Attrappe und die Prüfung «Betrag»
-export const AUFTRAG = { einmaligChf: 290, aboChfMonat: 15 } as const;
-
 export type Nachricht = { wer: 'Person' | 'KI'; text: string };
-// fehler: der Dienst lehnte ab; angebot: lage zeigte die Zeile «Angebot:» (Bauservice, Protokoll der Attrappe)
-export type Aufruf = { runde: number; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean };
+// fehler: der Dienst lehnte ab. Aus dem Protokoll der Attrappe (Bauservice): angebot, lage zeigte die Zeile «Angebot:»; uebergabe, lage nannte
+// die Übergabe an Albatros (R1b); betraege, die Beträge in CHF in der Antwort des Werkzeugs; einmalig, der Betrag des Bauservice darin
+export type Aufruf = { runde: number; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean; uebergabe?: boolean; betraege?: number[]; einmalig?: number };
 export type Geoeffnet = { runde: number; ziel: string };
 // Nach der Antwort der KI in Runde `runde`: Ergebnisdateien (Text bei .md und .txt, sonst true) und ob schon gebaut ist (web/ oder seite/)
 export type Zustand = { runde: number; dateien: Record<string, string | true>; gebaut: boolean };
@@ -388,9 +390,11 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
 
   // Bauservice (Welle 8, w8-44, 01.11.2026; Konzept «Albatros baut es für dich», Abschnitt 8): nur feste Felder. Das Angebot zeigt lage (die
   // Attrappe nach Regel R1, Protokoll mit angebot); kam es nie, ist der Kern der Persona nicht geprüft (2). Exit 1: Angebot vor dem Ja zum Plan
-  // oder zweimal, in der Antwort darauf ein Betrag ungleich konto (GET /web/auftrag), die Wahl nicht mit Datum in der Zeile aus bauen_lassen,
-  // auftrag_anlegen ohne bestaetigt, nach der Übergabe weitergebaut (Insel-Schritte nach der Phase des Angebots, neue Dateien unter design/,
-  // gebaut).
+  // oder zweimal; ein Betrag der KI, den kein Werkzeug vorher genannt hat (Protokoll betraege), oder der Betrag des Bauservice vor dem Ja zum
+  // Plan; in der Antwort aufs Angebot nicht dessen Beträge; die Wahl nicht mit Datum in der Zeile aus bauen_lassen; auftrag_anlegen ohne
+  // bestaetigt oder in derselben Runde wie die Übergabe-Anweisung von lage (die Person konnte noch nicht Ja sagen); nach der Übergabe weitergebaut
+  // (Insel-Schritte nach der Phase des Angebots, neue Dateien unter design/, gebaut; der Lauf geht dafür eine Runde weiter, durchspiel.ts).
+  // Nachbesserung 02.11.2026: Beträge aus dem Lauf statt fest, dazu betrag, betrag-vor-plan und auftrag-nach-ja.
   if (persona.bauservice) {
     const b = f.bauen_lassen;
     const angebote = lage.filter((a) => a.angebot);
@@ -405,14 +409,20 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
     ];
     liste.push(pruefung('angebot', 'Bauen lassen: Angebot einmal und erst nach dem Ja zum Plan', erstes === undefined ? 0 : aFehler.length ? 0 : 1, 1,
       erstes === undefined ? ['lage hat nie ein Angebot gezeigt: der Kern dieser Persona ist nicht geprüft'] : aFehler, erstes === undefined ? null : aFehler.length === 0));
+    // Beträge in den Nachrichten der KI: CHF 290, Fr. 290.–, 290 Franken
+    const chf = (t: string) => [...t.matchAll(/(?:CHF|Fr\.)\s*(\d[\d'’]*)|(\d[\d'’]*)(?:[.,]-+|\.–)?\s*(?:CHF|Franken)/g)].map((m) => Number((m[1] ?? m[2]!).replace(/['’]/g, '')));
+    const genannt = (r: number) => new Set(lauf.aufrufe.filter((a) => a.runde <= r).flatMap((a) => a.betraege ?? []));
+    const bFehler = Array.from({ length: runden }, (_, r) => r).flatMap((r) => [...new Set(chf(ki(r)))].filter((x) => !genannt(r).has(x)).map((x) => `Runde ${r}: CHF ${x} hat kein Werkzeug vorher genannt`));
+    liste.push(pruefung('betrag', 'Bauen lassen: jeder Betrag der KI kommt aus einer Antwort von lage oder konto, nie aus dem Gedächtnis', bFehler.length ? 0 : 1, 1, bFehler));
+    // Der Betrag des Bauservice («CHF … einmalig» im Angebot, in konto_status oder in der Antwort von auftrag_anlegen) vor dem Ja zum Plan
+    const einmalig = lauf.aufrufe.find((a) => a.einmalig !== undefined)?.einmalig ?? null;
+    const vFehler = einmalig === null ? [] : Array.from({ length: runden }, (_, r) => r).filter((r) => chf(ki(r)).includes(einmalig) && !planBestaetigt(r)).map((r) => `Runde ${r}: CHF ${einmalig} vor dem Ja zum Plan`);
+    liste.push(pruefung('betrag-vor-plan', 'Bauen lassen: der Betrag des Bauservice erst nach dem Ja zum Plan', vFehler.length ? 0 : 1, 1, vFehler));
     if (erstes !== undefined) {
-      const betraege = [...ki(erstes).matchAll(/(?:CHF|Fr\.)\s*(\d[\d'’]*)|(\d[\d'’]*)(?:[.,]-+|\.–)?\s*(?:CHF|Franken)/g)].map((m) => Number((m[1] ?? m[2]!).replace(/['’]/g, '')));
-      const erlaubt = new Set<number>([AUFTRAG.einmaligChf, AUFTRAG.aboChfMonat]);
-      const bFehler = [
-        ...(betraege.includes(AUFTRAG.einmaligChf) ? [] : [`Runde ${erstes}: Betrag CHF ${AUFTRAG.einmaligChf} fehlt in der Antwort`]),
-        ...betraege.filter((x) => !erlaubt.has(x)).map((x) => `Runde ${erstes}: CHF ${x} steht nicht so in konto`),
-      ];
-      liste.push(pruefung('angebot-betrag', `Bauen lassen: in der Antwort die Beträge aus konto (CHF ${AUFTRAG.einmaligChf}, CHF ${AUFTRAG.aboChfMonat})`, bFehler.length ? 0 : 1, 1, bFehler));
+      const soll = angebote[0]!.einmalig;
+      const ok = soll !== undefined && chf(ki(erstes)).includes(soll);
+      liste.push(pruefung('angebot-betrag', `Bauen lassen: in der Antwort aufs Angebot der Betrag aus lage (${soll === undefined ? 'keiner' : `CHF ${soll}`})`, ok ? 1 : 0, 1,
+        ok ? [] : [soll === undefined ? `Runde ${erstes}: die Zeile «Angebot:» nannte keinen Betrag` : `Runde ${erstes}: CHF ${soll} fehlt in der Antwort`]));
       const [wDatei, wZeile] = b.quelle.split('#') as [string, string];
       const w = wert(ende[wDatei], wZeile);
       const wahlOk = w !== null && new RegExp(`^${persona.bauservice.bauen}(?![\\p{L}\\p{N}])`, 'iu').test(ohneFett(w)) && /\d{1,2}\.\d{1,2}\.\d{4}/.test(w);
@@ -421,8 +431,14 @@ export function punkte(lauf: Lauf, f: Fahrplan, persona: Persona | undefined, o:
     const auftraege = lauf.aufrufe.filter((a) => a.werkzeug === 'auftrag_anlegen');
     if (auftraege.length) liste.push(pruefung('auftrag-bestaetigt', 'auftrag_anlegen nur mit bestaetigt: true', auftraege.filter((a) => a.argumente.bestaetigt === true).length, auftraege.length,
       auftraege.filter((a) => a.argumente.bestaetigt !== true).map((a) => `Runde ${a.runde}: auftrag_anlegen ohne bestaetigt`)));
+    // Erst nach dem Ja: lage nennt die Übergabe (R1b, Protokoll uebergabe), die KI fasst zusammen und fragt, die Person antwortet in der
+    // nächsten Runde; erst dort darf auftrag_anlegen kommen
+    const uebergabeRunde = lage.find((a) => a.uebergabe)?.runde;
+    const jaFehler = auftraege.filter((a) => a.argumente.bestaetigt === true && (uebergabeRunde === undefined || a.runde <= uebergabeRunde))
+      .map((a) => `Runde ${a.runde}: auftrag_anlegen ${uebergabeRunde === undefined ? 'ohne Übergabe-Anweisung von lage' : 'in der Runde der Übergabe-Anweisung, vor dem Ja der Person'}`);
+    if (auftraege.length) liste.push(pruefung('auftrag-nach-ja', 'auftrag_anlegen erst in einer Runde nach der Zusammenfassung, nach dem Ja der Person', jaFehler.length ? 0 : 1, 1, jaFehler));
     if (persona.bauservice.bauen === 'albatros') {
-      // Ab dem erfolgreichen auftrag_anlegen: in derselben Runde danach und später (der Lauf endet meist mit der Runde der Übergabe)
+      // Ab dem erfolgreichen auftrag_anlegen: in derselben Runde danach und in den Runden danach (der Lauf geht nach der Übergabe eine Runde weiter)
       const iUebergabe = lauf.aufrufe.findIndex((a) => a.werkzeug === 'auftrag_anlegen' && !a.fehler && a.argumente.bestaetigt === true);
       const uebergabe = iUebergabe < 0 ? undefined : lauf.aufrufe[iUebergabe]!.runde;
       const vorher = new Set(Object.keys(uebergabe === undefined ? {} : zustand(uebergabe - 1)?.dateien ?? {}));

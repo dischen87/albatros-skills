@@ -83,7 +83,14 @@
   {
    "runde": 0,
    "werkzeug": "konto_status",
-   "argumente": {}
+   "argumente": {},
+   "betraege": [
+    15,
+    40,
+    5,
+    290
+   ],
+   "einmalig": 290
   },
   {
    "runde": 0,
@@ -336,7 +343,12 @@
      }
     ]
    },
-   "angebot": true
+   "angebot": true,
+   "betraege": [
+    290,
+    15
+   ],
+   "einmalig": 290
   },
   {
    "runde": 5,

@@ -267,7 +267,7 @@ Ein Durchlauf mit zwei KIs nach dem Fahrplan (`fahrplan.yaml`, P1 bis P13), erg�
 | `geschaeft` | Geschäftsidee, Weg Geschäft | Methoden der Phasen (`ideen-check`, `zielgruppe`, `angebot-und-preis`, `landingpage`) | P3 |
 | `musikverein` | erfundener Verein, als einziger auch gegen die echte Plattform | ganzer Ablauf bis live | P13 |
 | `curling`, `buchung` | modernisiert eine bestehende Seite; Yogastudio mit Buchungstool (Pilot, Baustein) | Bestandsaufnahme; Wohnort Pilot, Probe mit PocketBase | P13 |
-| `bauen-lassen`, `bauen-lassen-nein` | Bauservice (Attrappe mit `DURCHSPIEL_BAUSERVICE=on`): lässt Albatros bauen; baut selbst weiter | Angebot einmal nach dem Ja zum Plan, Betrag nur aus konto (CHF 290, CHF 15), Wahl in `Bauen lassen:`, `auftrag_anlegen` nur mit `bestaetigt`, nach der Übergabe nicht weitergebaut | P5 |
+| `bauen-lassen`, `bauen-lassen-nein` | Bauservice (Attrappe mit `DURCHSPIEL_BAUSERVICE=on`, Regeln und Wortlaut wie `bauservice.ts` in albatros): lässt Albatros bauen; baut selbst weiter | Angebot einmal nach dem Ja zum Plan; jeder Betrag nur aus einer Antwort von lage oder konto im Lauf, der Betrag des Bauservice nie vor dem Ja zum Plan; Wahl in `Bauen lassen:`; `auftrag_anlegen` nur mit `bestaetigt` und erst in einer Runde nach der Übergabe-Anweisung; eine Runde nach der Übergabe nicht weitergebaut | P5 |
 
 **Ohne Modell und ohne Kosten prüfen** (kein Netz, kein Port, kein Konto):
 
@@ -276,7 +276,7 @@ bun test                                                                        
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/gut-lernen.json        # Exit 0
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/schlecht-gratis.json   # Exit 1
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/offen-nein-vor-bau.json --ergebnis <ordner>   # Exit 2, Ergebnis ausserhalb des Repos
-bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/bauen-lassen.json --ergebnis <ordner>   # Exit 0, ebenso bauen-lassen-nein; bauen-lassen-schlecht Exit 1
+bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/bauen-lassen.json --ergebnis <ordner>   # Exit 0, ebenso bauen-lassen-nein; Exit 1: bauen-lassen-schlecht, -vor-plan, -betrag, -ohne-ja, -weiterbauen
 bun scripts/punkte.ts <ergebnis-ordner>                                               # Punkte eines Laufs neu rechnen (lauf.json)
 bun scripts/verlauf.ts                                                                # Trend je Fall
 ```

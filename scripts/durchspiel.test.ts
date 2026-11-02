@@ -52,12 +52,13 @@ type Ergebnis = { fehler: boolean; text: string };
 // Antwort von JSON-RPC als Ergebnis: ein Fehler von JSON-RPC (unbekanntes Werkzeug, unbekannte Methode) als «JSON-RPC <code>: <message>»
 type Rpc = { result?: { content: { text: string }[]; isError?: boolean }; error?: { code: number; message: string } };
 const alsErgebnis = (m: Rpc): Ergebnis => (m.result ? { fehler: m.result.isError === true, text: m.result.content[0]!.text } : { fehler: true, text: `JSON-RPC ${m.error?.code}: ${m.error?.message}` });
-async function attrappe(aufrufe: [string, unknown][], o: { stufe?: string; dateien?: Record<string, string>; methode?: string } = {}): Promise<Ergebnis[]> {
+async function attrappe(aufrufe: [string, unknown][], o: { stufe?: string; dateien?: Record<string, string>; methode?: string; bauservice?: boolean } = {}): Promise<Ergebnis[]> {
   const hafen = mkdtempSync(join(ordner, 'hafen-'));
   for (const [d, w] of Object.entries(o.dateien ?? {})) writeFileSync(join(hafen, d), w);
   const env = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('DURCHSPIEL_')));
   const p = Bun.spawn(['bun', join(wurzel, 'scripts/durchspiel/mock-mcp.ts')], {
-    cwd: wurzel, stdin: 'pipe', stdout: 'pipe', stderr: 'ignore', env: { ...env, DURCHSPIEL_HAFEN: hafen, DURCHSPIEL_STUFE: o.stufe ?? 'light' },
+    cwd: wurzel, stdin: 'pipe', stdout: 'pipe', stderr: 'ignore',
+    env: { ...env, DURCHSPIEL_HAFEN: hafen, DURCHSPIEL_STUFE: o.stufe ?? 'light', ...(o.bauservice ? { DURCHSPIEL_BAUSERVICE: 'on' } : {}) },
   });
   p.stdin.write(`${aufrufe.map(([name, a], i) => JSON.stringify({ jsonrpc: '2.0', id: i + 1, method: o.methode ?? 'tools/call', params: { name, arguments: a } })).join('\n')}\n`);
   p.stdin.end();
@@ -331,3 +332,100 @@ test.skipIf(!mitAlbatros)('Attrappe gegen das echte mcp: Grenzwerte jedes Felds 
 function INSEL_NAMEN_GLEICH(namen: Record<string, string>, texte: string[]): string[] {
   return geladen.ok ? geladen.fahrplan.insel.flatMap((s, i) => (texte[i]?.includes(`«${namen[s]}» (${s}, Phase`) ? [] : [`${s}: ${texte[i] ?? 'keine Antwort'}`])) : [];
 }
+
+// ———— Bauservice (Nachbesserung 02.11.2026, Gegenprobe skills): Attrappe mit DURCHSPIEL_BAUSERVICE=on gegen das echte mcp mit BAUSERVICE ————
+// Läuft, wenn albatros den Bauservice hat (services/mcp/src/bauservice.ts, seit Welle 8). Gleiche Zustände, gleiche Zeilen von lage (Jetzt dran,
+// Angebot, Danach, Hinweise, der Teil des Stands mit der Phase), gleiches konto_status zum Bauservice und gleiches auftrag_anlegen. Vorher wich die
+// Attrappe ab: «Danach» P6 statt der Übergabe, «Phase P6» im Stand, «danach Light» auch mit Light, bestaetigt nur true.
+const mitBauservice = existsSync(`${albatros}/services/mcp/src/bauservice.ts`);
+test.skipIf(!mitBauservice)('Bauservice: Attrappe wie lage, konto_status und auftrag_anlegen im echten mcp, in jedem Zustand', async () => {
+  const kit: Record<string, unknown> = await import(`${albatros}/packages/kit/src/index.ts`);
+  const mcp: Record<string, unknown> = await import(`${albatros}/services/mcp/src/app.ts`);
+  const { ZUSTAENDE } = (await import(`${albatros}/services/mcp/scripts/lage-attrappen.ts`)) as { ZUSTAENDE: Record<string, { antworten: Record<string, { status: number; body: unknown }> }> };
+  const createApp = mcp.createApp as (deps: Record<string, unknown>) => { request: (pfad: string, init: RequestInit) => Promise<Response> };
+  const schalter = { ...(kit.ALLE_AUS as Record<string, boolean>), FAHRPLAN: true, ERFASSUNG: true, BAUSERVICE: true };
+  type A = Record<string, { status: number; body: unknown }>;
+  const echt = async (antworten: A, name: string, args: unknown): Promise<Ergebnis> => {
+    const app = createApp({ resource: 'https://mcp.albatros.build', issuer: 'https://clerk.albatros.test', schalter, erfassung: null, limit: null,
+      ctx: () => ({ methoden: [], schalter, rufe: async (_d: string, m: string, p: string) => antworten[`${m} ${p}`] ?? antworten[`${m} ${p.split('?')[0]}`] ?? { status: 404, body: { error: 'Nicht gefunden.' } } }),
+      verifyToken: async () => ({ subject: 'user_anna', aud: ['https://mcp.albatros.build'], revoked: false, expired: false }) });
+    const r = await app.request('/', { method: 'POST', headers: { authorization: 'Bearer attrappe', 'content-type': 'application/json' },
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }) });
+    return alsErgebnis((await r.json()) as Rpc);
+  };
+  const basis = ZUSTAENDE['gratis-ohne-projekt']!.antworten;
+  const ich = (stufe: string) => {
+    const b = basis['GET /cockpit/ich']!.body as Record<string, unknown>;
+    const leistung = { ...(b.leistung as object), server: stufe === 'pilot', seite: stufe !== 'gratis', bisPhase: stufe === 'gratis' ? 'P10' : null, preisChfMonat: stufe === 'light' ? 15 : stufe === 'pilot' ? 40 : 0 };
+    return { status: 200, body: { ...b, stufe, leistung, abo: stufe === 'gratis' ? null : { stufe, status: 'active', bis: null, kuendigtZumEnde: false } } };
+  };
+  const projekt = (extra: string[] = []) => ({ datei: 'docs/projekt.md', zeilen: ['Projektname: Stiel und Blatt', 'In einem Satz: Blumenladen', 'Für wen: Quartier', 'Hauptsache: Strauss anfragen', 'Erfolg: drei Anfragen pro Woche', 'Bestehende Seite: keine', 'Modus: machen', ...extra] });
+  const recherche = { datei: 'docs/recherche.md', zeilen: ['Vorbilder: a, b, c', 'Übernehmen: klare Preise', 'Vermeiden: Popups', 'Pflichten: Impressum, Datenschutz', 'Inhalte vorhanden: Fotos', 'Suchbegriffe: Blumen Testwil'] };
+  const plan = (setup: string) => ({ datei: 'docs/plan.md', zeilen: ['Seiten: Start, Angebot, Kontakt, Impressum, Datenschutz', 'Funktionen: Hauptsache «Strauss anfragen»: Mail; Bestätigung: Mail; Fehler: nochmals', 'Zugang: alles öffentlich', 'Sprachen: Deutsch', `Setup: ${setup}`, 'Testing: Anfrage kommt an', 'Release: Mai 2027', 'Pflege: selbst, monatlich', 'Bestätigt: 01.11.2026, «Ja»'] });
+  const pruefung = { datei: 'docs/plan-pruefung.md', zeilen: ['Geprüft am: 01.11.2026', 'Zweite Meinung: zehn Punkte ok'] };
+  const konzept = { datei: 'docs/konzept.md', zeilen: ['Name: Stiel und Blatt', 'Ton: du, herzlich', 'Charakter: frisch, verspielt, persönlich', 'Maskottchen: nein', 'Muss bleiben: Logo mit Blatt', 'Kern: frische Blumen', 'Bildsprache: hell'] };
+  const P4 = ['idee', 'recherche', 'plan', 'plan-geprueft'], P5 = [...P4, 'konzept'];
+  const STATISCH = 'statisch, Seite ohne eigene Dienste';
+  const ALBATROS = 'Bauen lassen: albatros (01.11.2026)';
+  type Fall = { name: string; stufe?: string; belege: object[]; schritte: string[]; auftrag?: string; stuecke?: string[]; modus?: string };
+  const FAELLE: Fall[] = [
+    { name: 'R1 Angebot, Gratis', belege: [projekt(), recherche, plan(STATISCH), pruefung], schritte: P4 },
+    { name: 'R1 Angebot, Light', stufe: 'light', belege: [projekt(), recherche, plan(STATISCH), pruefung], schritte: P4 },
+    { name: 'Pilot: kein Angebot', stufe: 'pilot', belege: [projekt(), recherche, plan(STATISCH), pruefung], schritte: P4 },
+    { name: 'Setup [Annahme: statisch …]', belege: [projekt(), recherche, plan(`[Annahme: ${STATISCH}]`), pruefung], schritte: P4 },
+    { name: 'Setup baustein', belege: [projekt(), recherche, plan('baustein, Anmeldeliste'), pruefung], schritte: P4 },
+    { name: 'Modus lernen', belege: [projekt(), recherche, plan(STATISCH), pruefung], schritte: P4, modus: 'lernen' },
+    { name: 'P5 mit albatros: Danach die Übergabe', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung], schritte: P4 },
+    { name: 'R1b Übergabe', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5 },
+    { name: '[Annahme: albatros] ist keine Wahl', belege: [projekt(['Bauen lassen: [Annahme: albatros]']), recherche, plan(STATISCH), pruefung, konzept], schritte: P5 },
+    { name: 'Pilot: keine Übergabe', stufe: 'pilot', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5 },
+    ...['briefing', 'gewaehlt', 'im_bau', 'bezahlt'].map((auftrag) => ({ name: `R2 ${auftrag}`, belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag })),
+    { name: 'R2 vorschlaege', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'vorschlaege', stuecke: ['mockup', 'entwurf-1'] },
+    { name: 'R2 vorschau, Gratis', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'vorschau', stuecke: ['vorschau'] },
+    { name: 'R2 vorschau, Light', stufe: 'light', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'vorschau', stuecke: ['vorschau'] },
+    { name: 'R4 zurückgezogen mit albatros', belege: [projekt([ALBATROS]), recherche, plan(STATISCH), pruefung, konzept], schritte: P5, auftrag: 'zurueckgezogen' },
+  ];
+  const zeilen = (t: string) => t.split('\n').filter((z) => /^(Jetzt dran|Angebot|Danach|Hinweis):/.test(z)).concat(t.split('\n').filter((z) => z.startsWith('Stand:')).map((z) => z.split(' · ').at(-1)!));
+  const anders: string[] = [];
+  for (const f of FAELLE) {
+    const stufe = f.stufe ?? 'gratis';
+    const preis = { einmaligChf: 290, aboChfMonat: stufe === 'gratis' ? 15 : null };
+    const auftraege = f.auftrag ? [{ nr: 1, status: f.auftrag, preis, stuecke: (f.stuecke ?? []).map((stueck) => ({ stueck })) }] : [];
+    const antworten: A = { ...basis, 'GET /cockpit/ich': ich(stufe), 'GET /cockpit/erfassung': { status: 200, body: { erfassung: 'ja', anfragen: 'offen' } },
+      'GET /cockpit/insel': { status: 200, body: { projekte: [{ projekt: 'projekt', titel: 'Stiel und Blatt', schritt: f.schritte.at(-1), am: '2026-11-01T10:00:00Z' }], gesehen: null } },
+      'GET /cockpit/auftraege': { status: 200, body: auftraege }, 'GET /web/auftrag': { status: 200, body: { einmaligChf: 290, aboChfMonat: 15 } } };
+    const args = { skills_stand: STAND, modus: f.modus ?? 'machen', belege: f.belege };
+    const e = await echt(antworten, 'lage', args);
+    const ek = await echt(antworten, 'konto_status', {});
+    const dateien: Record<string, string> = { weg: 'webseite', erfassung: 'ja', ...(stufe !== 'gratis' ? { abo: stufe } : {}), ...(f.auftrag ? { auftrag: f.auftrag } : {}) };
+    const m = await attrappe([...f.schritte.map((s) => ['schritt_melden', { schritt: s, titel: 'Stiel und Blatt', sprache: 'de' }] as [string, unknown]), ['lage', args], ['konto_status', {}]], { stufe, dateien, bauservice: true });
+    const [ml, mk] = m.slice(-2) as [Ergebnis, Ergebnis];
+    if (JSON.stringify(zeilen(ml.text)) !== JSON.stringify(zeilen(e.text))) anders.push(`${f.name}, lage:\n  echt:     ${zeilen(e.text).join(' | ')}\n  attrappe: ${zeilen(ml.text).join(' | ')}`);
+    const bau = (t: string) => t.split(/(?<=\.)\s+|\n/).filter((z) => /Auftrag bei Albatros|Albatros baut deine Seite|einmalig|Im Cockpit: https/.test(z)).join(' ');
+    if (bau(mk.text) !== bau(ek.text)) anders.push(`${f.name}, konto_status:\n  echt:     ${bau(ek.text)}\n  attrappe: ${bau(mk.text)}`);
+  }
+  // auftrag_anlegen: ohne Ja, ohne bestaetigt, falscher Typ, angelegt, zweiter offener Auftrag, zu lang, nur Leerzeichen
+  const B = { name: 'Stiel und Blatt', wofuer: 'Blumenladen', fuerWen: 'Quartier', seiten: 'Start, Kontakt', stil: 'frisch' };
+  const ANLEGEN: unknown[] = [{ ...B, bestaetigt: false }, B, { ...B, bestaetigt: 'true' }, { ...B, bestaetigt: true }, { ...B, bestaetigt: true },
+    { ...B, bestaetigt: true, material: 'x'.repeat(4001) }, { ...B, bestaetigt: true, name: '   ' }, { ...B, bestaetigt: true, adresse: 'y'.repeat(301) }];
+  let offen = false;
+  const antworten = (m: string, p: string): { status: number; body: unknown } | undefined => {
+    if (m === 'POST' && p === '/cockpit/auftraege') { if (offen) return { status: 409, body: { error: 'Du hast schon einen offenen Auftrag.' } }; offen = true; return { status: 200, body: { nr: 1, status: 'briefing', preis: { einmaligChf: 290, aboChfMonat: 15 } } }; }
+    if (m === 'GET' && p === '/cockpit/ich') return { status: 200, body: { sprache: 'de' } };
+    return undefined;
+  };
+  const erwartet: Ergebnis[] = [];
+  for (const a of ANLEGEN) erwartet.push(await echt(new Proxy({}, { get: (_t, k: string) => { const [m, ...p] = k.split(' '); return antworten(m!, p.join(' ')); } }) as A, 'auftrag_anlegen', a));
+  const mock = await attrappe(ANLEGEN.map((a) => ['auftrag_anlegen', a] as [string, unknown]), { stufe: 'gratis', bauservice: true });
+  ANLEGEN.forEach((a, i) => { if (JSON.stringify(mock[i]) !== JSON.stringify(erwartet[i])) anders.push(`auftrag_anlegen ${JSON.stringify(a).slice(0, 80)}:\n  echt:     ${erwartet[i]!.text}\n  attrappe: ${mock[i]!.text}`); });
+  expect(anders).toEqual([]);
+}, 120_000);
+
+// Der Betrag eines Auftrags in der Attrappe (sie ist im Durchspiel auch konto) wie in albatros: services/konto/src/stufen.ts AUFTRAG.preisChf und
+// der Preis von Light (Nachbesserung 02.11.2026: vorher stand er fest in punkte.ts, ohne Abgleich)
+test.skipIf(!mitBauservice)('Bauservice: Beträge der Attrappe wie konto stufen.ts', async () => {
+  const stufen = (await import(`${albatros}/services/konto/src/stufen.ts`)) as { AUFTRAG: { preisChf: number }; LEISTUNG: Record<string, { preisChfMonat: number }> };
+  const quelle = readFileSync(join(wurzel, 'scripts/durchspiel/mock-mcp.ts'), 'utf8');
+  expect(Number(/const AUFTRAG_CHF = (\d+);/.exec(quelle)?.[1])).toBe(stufen.AUFTRAG.preisChf);
+  expect(Number(/const PREIS: Record<string, number> = \{ light: (\d+), pilot: (\d+) \};/.exec(quelle)?.[1])).toBe(stufen.LEISTUNG.light!.preisChfMonat);
+});

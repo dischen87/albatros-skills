@@ -1,0 +1,855 @@
+{
+ "fall": "bauen-lassen",
+ "bis": "P5",
+ "ordner": "stiel-und-blatt",
+ "erwartet": {
+  "exit": 1,
+  "nein": [
+   "nach-uebergabe"
+  ]
+ },
+ "nachrichten": [
+  {
+   "wer": "Person",
+   "text": "Ich möchte eine Webseite für meinen Blumenladen. Ehrlich gesagt hätte ich am liebsten, dass das jemand für mich macht."
+  },
+  {
+   "wer": "KI",
+   "text": "Willkommen an Bord! Albatros ist eine Flugschule: abheben, fliegen, landen. Deine KI fliegt im Rucksack mit, ob Claude Code, Codex, Gemini CLI oder Cursor. Bis du deine Seite auf deinem Computer siehst, kostet Albatros nichts. Ich mache die Arbeit und erkläre dir jeden Schritt. Wie soll dein Projekt heissen?"
+  },
+  {
+   "wer": "Person",
+   "text": "Stiel und Blatt. Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik. Für Leute aus dem Quartier und Brautpaare. Die Hauptsache: Einen Strauss per Anfrage vorbestellen. Eine Webseite gibt es noch nicht."
+  },
+  {
+   "wer": "KI",
+   "text": "Ich habe docs/projekt.md angelegt und dir die graue Skizze deiner Startseite geöffnet. Erfolg habe ich als Annahme eingetragen: [Annahme: drei Anfragen pro Woche]. Passt die Skizze so?"
+  },
+  {
+   "wer": "Person",
+   "text": "Ja, die Skizze passt."
+  },
+  {
+   "wer": "KI",
+   "text": "Ich habe die Recherche in docs/recherche.md eingetragen: Vorbilder, Pflichten und deine Inhalte (Fotos der Sträusse, das Logo mit dem Blatt). Jetzt der Grundriss: Welche Funktionen braucht deine Seite, und gibt es Bereiche nur für bestimmte Leute?"
+  },
+  {
+   "wer": "Person",
+   "text": "Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden». Nein, alles ist öffentlich. Deutsch reicht. Zum Muttertag im Mai 2027. Ich selbst, die Saisonsträusse jeden Monat."
+  },
+  {
+   "wer": "KI",
+   "text": "Den Grundriss habe ich in docs/plan.md geschrieben und in einem frischen Gespräch prüfen lassen (docs/plan-pruefung.md): zehn Punkte ok, keiner offen. Ist der Plan so final, oder ändern wir etwas?"
+  },
+  {
+   "wer": "Person",
+   "text": "Ja, so ist der Plan gut."
+  },
+  {
+   "wer": "KI",
+   "text": "Dein Plan steht. Ab hier wird gestaltet und gebaut. Du kannst mit mir selbst weiterbauen: Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts. Oder Albatros baut sie für dich: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF 290 einmalig, danach Light für CHF 15 im Monat. So oder so kommen jetzt fünf Fragen zum Charakter deiner Seite. Was ist dir lieber?"
+  },
+  {
+   "wer": "Person",
+   "text": "Ja, Albatros soll bauen."
+  },
+  {
+   "wer": "KI",
+   "text": "Notiert: Bauen lassen: albatros. Jetzt zum Charakter deiner Seite. Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen? Und: Du oder Sie, und wie soll die Sprache klingen?"
+  },
+  {
+   "wer": "Person",
+   "text": "Der Name bleibt. Du-Form, herzlich."
+  },
+  {
+   "wer": "KI",
+   "text": "Danke. Welche drei Wörter beschreiben, wie es wirken soll? Und gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen? Leg Logo und Fotos in den Ordner design/bilder."
+  },
+  {
+   "wer": "Person",
+   "text": "frisch, verspielt, persönlich. Das Logo mit dem Blatt."
+  },
+  {
+   "wer": "KI",
+   "text": "Gut. Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später."
+  },
+  {
+   "wer": "Person",
+   "text": "Nein, keine Figur."
+  },
+  {
+   "wer": "KI",
+   "text": "Dein Konzept steht. Das schicke ich an Albatros: deinen Plan mit Seiten, Funktionen und deinen Abnahmekriterien, deine Recherche und dein Konzept, als Text. Passwörter und Zugangsdaten sind nicht dabei. Die Adresse deiner Seite wählst du danach im Cockpit. Das Albatros-Team liest es, und beim Bauen hilft eine KI (Claude von Anthropic). Bis du bezahlst, ist alles unverbindlich, und du kannst jederzeit selbst weiterbauen. Soll ich es schicken?"
+  },
+  {
+   "wer": "Person",
+   "text": "Ja, schick es."
+  },
+  {
+   "wer": "KI",
+   "text": "Erledigt: Auftrag #1 ist bei Albatros. Bezahlt wird erst, wenn dir die Vorschau gefällt: CHF 290 einmalig, dazu Light für CHF 15 im Monat. Im Cockpit unter «Dein Auftrag» wählst du die Adresse deiner Seite und später eine Richtung aus den Entwürfen. Bauen musst du nichts mehr."
+  },
+  {
+   "wer": "Person",
+   "text": "Kannst du in der Zwischenzeit schon mit dem Design anfangen?"
+  },
+  {
+   "wer": "KI",
+   "text": "Klar, ich fange schon mal an: Ich lege dein Designsystem an (design/tokens.css) und das Musterblatt."
+  }
+ ],
+ "aufrufe": [
+  {
+   "runde": 0,
+   "werkzeug": "konto_status",
+   "argumente": {},
+   "betraege": [
+    15,
+    40,
+    5,
+    290
+   ],
+   "einmalig": 290
+  },
+  {
+   "runde": 0,
+   "werkzeug": "weg_waehlen",
+   "argumente": {
+    "weg": "webseite"
+   }
+  },
+  {
+   "runde": 0,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0"
+   }
+  },
+  {
+   "runde": 1,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 2,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "idee",
+    "titel": "Stiel und Blatt",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 2,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "recherche",
+    "titel": "Stiel und Blatt",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 2,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 3,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "plan",
+    "titel": "Stiel und Blatt",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 3,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, die Saisonsträusse jeden Monat",
+       "Stand: 01.11.2026, Grundriss steht, noch nicht geprüft"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 4,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "plan-geprueft",
+    "titel": "Stiel und Blatt",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 4,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, die Saisonsträusse jeden Monat",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   },
+   "angebot": true,
+   "betraege": [
+    290,
+    15
+   ],
+   "einmalig": 290
+  },
+  {
+   "runde": 5,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Bauen lassen: albatros (01.11.2026)",
+       "Stand: 01.11.2026, Plan bestätigt",
+       "Nächster Schritt: Konzept"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, die Saisonsträusse jeden Monat",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 8,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "konzept",
+    "titel": "Stiel und Blatt",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 8,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Bauen lassen: albatros (01.11.2026)",
+       "Stand: 01.11.2026, Plan bestätigt",
+       "Nächster Schritt: Konzept"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, die Saisonsträusse jeden Monat",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "docs/konzept.md",
+      "zeilen": [
+       "Name: Stiel und Blatt",
+       "Kern: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Ton: Du-Form, herzlich",
+       "Charakter: frisch, verspielt, persönlich",
+       "Maskottchen: nein (01.11.2026)",
+       "Muss bleiben: Das Logo mit dem Blatt",
+       "Bildsprache: echte Fotos aus dem Laden"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   },
+   "uebergabe": true
+  },
+  {
+   "runde": 9,
+   "werkzeug": "auftrag_anlegen",
+   "argumente": {
+    "bestaetigt": true,
+    "name": "Stiel und Blatt",
+    "wofuer": "Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik. Hauptsache: Einen Strauss per Anfrage vorbestellen. Erfolg: drei Anfragen pro Woche.",
+    "fuerWen": "Leute aus dem Quartier und Brautpaare",
+    "seiten": "Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz. Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden». Sprachen: Deutsch.",
+    "stil": "Du-Form, herzlich; frisch, verspielt, persönlich; keine Figur; das Logo mit dem Blatt muss bleiben",
+    "material": "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt. Abnahme: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an."
+   },
+   "betraege": [
+    290,
+    15
+   ],
+   "einmalig": 290
+  },
+  {
+   "runde": 9,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Bauen lassen: albatros (01.11.2026)",
+       "Stand: 01.11.2026, Plan bestätigt",
+       "Nächster Schritt: Konzept"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, die Saisonsträusse jeden Monat",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "docs/konzept.md",
+      "zeilen": [
+       "Name: Stiel und Blatt",
+       "Kern: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Ton: Du-Form, herzlich",
+       "Charakter: frisch, verspielt, persönlich",
+       "Maskottchen: nein (01.11.2026)",
+       "Muss bleiben: Das Logo mit dem Blatt",
+       "Bildsprache: echte Fotos aus dem Laden"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 10,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "musterblatt",
+    "titel": "Stiel und Blatt",
+    "sprache": "de"
+   },
+   "fehler": true
+  },
+  {
+   "runde": 10,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "In einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Für wen: Leute aus dem Quartier und Brautpaare",
+       "Hauptsache: Einen Strauss per Anfrage vorbestellen.",
+       "Erfolg: [Annahme: drei Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Bauen lassen: albatros (01.11.2026)",
+       "Stand: 01.11.2026, Plan bestätigt",
+       "Nächster Schritt: Konzept"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt",
+       "Suchbegriffe: Blumenladen Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Stiel und Blatt",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, die Saisonsträusse jeden Monat",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "docs/konzept.md",
+      "zeilen": [
+       "Name: Stiel und Blatt",
+       "Kern: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.",
+       "Ton: Du-Form, herzlich",
+       "Charakter: frisch, verspielt, persönlich",
+       "Maskottchen: nein (01.11.2026)",
+       "Muss bleiben: Das Logo mit dem Blatt",
+       "Bildsprache: echte Fotos aus dem Laden"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  }
+ ],
+ "geoeffnet": [
+  {
+   "runde": 0,
+   "ziel": "https://albatros.build/cockpit/insel"
+  },
+  {
+   "runde": 1,
+   "ziel": "design/skizze.html"
+  }
+ ],
+ "zustaende": [
+  {
+   "runde": 0,
+   "dateien": {},
+   "gebaut": false
+  },
+  {
+   "runde": 1,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 2,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 3,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nStand: 01.11.2026, Grundriss steht, noch nicht geprüft\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 4,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 5,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: albatros (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 6,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: albatros (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 7,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: albatros (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 8,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: albatros (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n",
+    "docs/konzept.md": "# Konzept: Stiel und Blatt\n\nName: Stiel und Blatt\nKern: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nTon: Du-Form, herzlich\nCharakter: frisch, verspielt, persönlich\nMaskottchen: nein (01.11.2026)\nMuss bleiben: Das Logo mit dem Blatt\nBildsprache: echte Fotos aus dem Laden\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 9,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: albatros (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n",
+    "docs/konzept.md": "# Konzept: Stiel und Blatt\n\nName: Stiel und Blatt\nKern: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nTon: Du-Form, herzlich\nCharakter: frisch, verspielt, persönlich\nMaskottchen: nein (01.11.2026)\nMuss bleiben: Das Logo mit dem Blatt\nBildsprache: echte Fotos aus dem Laden\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 10,
+   "dateien": {
+    "docs/projekt.md": "# Stiel und Blatt\n\nProjektname: Stiel und Blatt\nIn einem Satz: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nFür wen: Leute aus dem Quartier und Brautpaare\nHauptsache: Einen Strauss per Anfrage vorbestellen.\nErfolg: [Annahme: drei Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: albatros (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Stiel und Blatt\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Sträusse, das Logo mit dem Blatt\nSuchbegriffe: Blumenladen Testwil\n",
+    "docs/plan.md": "# Plan: Stiel und Blatt\n\nProjektname: Stiel und Blatt\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Muttertag im Mai 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, die Saisonsträusse jeden Monat\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n",
+    "docs/konzept.md": "# Konzept: Stiel und Blatt\n\nName: Stiel und Blatt\nKern: Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.\nTon: Du-Form, herzlich\nCharakter: frisch, verspielt, persönlich\nMaskottchen: nein (01.11.2026)\nMuss bleiben: Das Logo mit dem Blatt\nBildsprache: echte Fotos aus dem Laden\n",
+    "design/tokens.css": ":root { --farbe: #2a7; }\n",
+    "design/musterblatt.html": "<h1>Musterblatt</h1>\n"
+   },
+   "gebaut": false
+  }
+ ]
+}

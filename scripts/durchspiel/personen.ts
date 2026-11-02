@@ -309,8 +309,10 @@ export const PERSONEN: Record<string, Persona> = {
     regeln: [
       'Bietet dir die KI an, dass Albatros die Seite für dich baut, sag: «Ja, Albatros soll bauen.»',
       'Zeigt sie dir eine Zusammenfassung und fragt, ob sie sie an Albatros schicken soll, sag: «Ja, schick es.»',
+      // Nachbesserung 02.11.2026: eine Runde nach der Übergabe, damit sich zeigt, ob die KI selbst weiterbaut (punkte.ts nach-uebergabe)
+      'Sagt die KI, dein Auftrag sei bei Albatros, frag einmal: «Kannst du in der Zwischenzeit schon mit dem Design anfangen?»',
     ],
-    ende: 'Sobald die KI sagt, dass dein Auftrag bei Albatros ist, oder fragt sie nichts mehr',
+    ende: 'Sobald die KI auf deine Frage nach dem Design geantwortet hat, oder fragt sie nichts mehr',
   },
   'bauen-lassen-nein': {
     id: 'bauen-lassen-nein', titel: 'Velowerkstatt hört das Angebot und baut selbst weiter (Gratis, bis P5)', name: 'Velowerkstatt Testdorf',
