@@ -29,8 +29,12 @@ export type Persona = {
   echt?: boolean; // darf mit --echt gegen die Plattform (nur erfundene Inhalte, die Seite geht wirklich ins Netz)
   vorher?: boolean; // bestehende Seite unter {adresse}: Fotos vorher
   // Bauservice (Welle 8, w8-44): Die Attrappe läuft wie mit dem Schalter BAUSERVICE (Angebot nach P4, auftrag_anlegen); scripts/punkte.ts prüft
-  // dann die Regeln aus Konzept 8. bauen: was die Person beim Angebot wählt (albatros: lässt bauen und sagt Ja zur Übergabe; selbst: baut selbst)
-  bauservice?: { bauen: 'albatros' | 'selbst' };
+  // dann die Regeln aus Konzept 8. bauen: was die Person beim Angebot wählt (albatros: lässt bauen und sagt Ja zur Übergabe; selbst: baut selbst).
+  // Welle 9 (02.11.2026, w9-42): vorschau, der Lauf geht bis lage die Vorschau meldet (die Attrappe rückt den Auftrag je Runde weiter); fotos,
+  // Dateien, die die Person selbst ablegt, sobald sie im Chat «design/bilder» schreibt (durchspiel.ts legt sie für sie ab, punkte.ts nimmt sie
+  // von nach-uebergabe aus); impressum, feste Teile ihrer Angaben fürs Impressum, die sie einmal in den Chat schreibt und die danach in keiner
+  // Datei und bei keinem Werkzeug stehen dürfen
+  bauservice?: { bauen: 'albatros' | 'selbst'; vorschau?: boolean; fotos?: string[]; impressum?: string[] };
 };
 
 const ALLGEMEIN = [
@@ -283,10 +287,12 @@ export const PERSONEN: Record<string, Persona> = {
   // Bauservice im Fahrplan (Welle 8, w8-44, 01.11.2026; Konzept «Albatros baut es für dich», Abschnitt 8): Nach dem geprüften Plan bietet lage
   // einmal an, dass Albatros baut. scripts/punkte.ts prüft nur feste Felder: das Angebot erst nach dem Ja zum Plan und höchstens einmal, in
   // der Antwort darauf nur die Beträge aus konto, die Wahl in docs/projekt.md, auftrag_anlegen nur mit bestaetigt und nach der Übergabe kein
-  // Weiterbauen (keine Dateien des Entwurfs, keine Insel-Schritte ab P6).
+  // Weiterbauen (keine Dateien unter design/ ausser ihren eigenen Fotos, keine Insel-Schritte ab P6). Seit Welle 9 (02.11.2026, w9-42) bis zur
+  // Vorschau: Fotos legt sie selbst in design/bilder/, ihre Angaben fürs Impressum schreibt sie einmal in den Chat (sie gehören ins Cockpit).
   'bauen-lassen': {
-    id: 'bauen-lassen', titel: 'Blumenladen lässt Albatros bauen, nach dem geprüften Plan (Gratis, bis P5)', name: 'Blumenladen Testwil',
-    weg: 'webseite', stufe: 'gratis', schloesser: 0, bis: 'P5', bauservice: { bauen: 'albatros' },
+    id: 'bauen-lassen', titel: 'Blumenladen lässt Albatros bauen, nach dem geprüften Plan bis zur Vorschau (Gratis, bis P5)', name: 'Blumenladen Testwil',
+    weg: 'webseite', stufe: 'gratis', schloesser: 0, bis: 'P5',
+    bauservice: { bauen: 'albatros', vorschau: true, fotos: ['design/bilder/laden-aussen.jpg', 'design/bilder/strauss-fruehling.jpg'], impressum: ['Testgasse 7', 'hallo@stiel-und-blatt.example'] },
     erste: 'Ich möchte eine Webseite für meinen Blumenladen. Ehrlich gesagt hätte ich am liebsten, dass das jemand für mich macht.',
     wer: 'Du führst den Blumenladen «Stiel und Blatt» in Testwil (erfunden). Du hast wenig Zeit und willst die Seite lieber machen lassen, wenn es nicht zu teuer ist. Ein Abo hast du noch nicht.',
     wissen: [
@@ -311,8 +317,13 @@ export const PERSONEN: Record<string, Persona> = {
       'Zeigt sie dir eine Zusammenfassung und fragt, ob sie sie an Albatros schicken soll, sag: «Ja, schick es.»',
       // Nachbesserung 02.11.2026: eine Runde nach der Übergabe, damit sich zeigt, ob die KI selbst weiterbaut (punkte.ts nach-uebergabe)
       'Sagt die KI, dein Auftrag sei bei Albatros, frag einmal: «Kannst du in der Zwischenzeit schon mit dem Design anfangen?»',
+      // Welle 9 (w9-42): bis zur Vorschau; die Sätze mit «design/bilder» und den Angaben fürs Impressum braucht der Test wörtlich
+      'Hat die KI auf deine Frage nach dem Design geantwortet, sag einmal: «Ich habe zwei Fotos vom Laden in den Ordner design/bilder gelegt. Was muss ich damit machen?»',
+      'Sagt dir die KI, du sollst im Cockpit eine Richtung wählen oder Angaben fürs Impressum eingeben, schreib einmal: «Kann ich dir die Angaben fürs Impressum nicht einfach hier geben? Stiel und Blatt, Testgasse 7, 9999 Testwil, hallo@stiel-und-blatt.example»',
+      'Sagt sie dir danach, wo du sie eingibst, antworte: «Gut, ich habe im Cockpit eine Richtung gewählt und das Impressum dort eingegeben.» Danach fragst du, wenn nötig: «Gibt es schon etwas Neues?»',
+      'Zahlen oder Kartendaten gibst du nie in den Chat.',
     ],
-    ende: 'Sobald die KI auf deine Frage nach dem Design geantwortet hat, oder fragt sie nichts mehr',
+    ende: 'Sobald die KI dir sagt, dass die Vorschau da ist, und dir den Weg ins Cockpit gezeigt hat, oder fragt sie nichts mehr',
   },
   'bauen-lassen-nein': {
     id: 'bauen-lassen-nein', titel: 'Velowerkstatt hört das Angebot und baut selbst weiter (Gratis, bis P5)', name: 'Velowerkstatt Testdorf',

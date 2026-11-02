@@ -13,7 +13,7 @@
 // (gratis, light, pilot), DURCHSPIEL_SCHLOESSER, DURCHSPIEL_LOG (jeder Aufruf als JSON-Zeile mit Runde), DURCHSPIEL_RUNDE (Datei mit der
 // Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo),
 // DURCHSPIEL_BAUSERVICE=on (Bauservice wie mit dem Schalter BAUSERVICE: auftrag_anlegen und in lage die Zeile «Angebot:», unten bei «Bauservice»).
-// Beschreibungen und Parameter der Werkzeuge und die Anleitung wie beim echten Dienst mit FAHRPLAN und ERFASSUNG (mocks/werkzeuge.json,
+// Beschreibungen und Parameter der Werkzeuge und die Anleitung wie beim echten Dienst mit FAHRPLAN, ERFASSUNG und BAUSERVICE (mocks/werkzeuge.json,
 // mocks/anleitung.txt); Eingaben prüft sie auf jeder Ebene wie zod im echten Dienst (auch in Listen und Objekten darin, unten bei «Eingaben
 // wie zod») und antwortet wie er mit «Ungültige Angaben»; ein Werkzeug, das sie nicht anbietet, und eine unbekannte Methode sind wie dort
 // Fehler von JSON-RPC (-32602, -32601). Seit Welle 7 (01.11.2026, Sichtung sicht-05, w7-20) auch wie er: titel
@@ -21,8 +21,10 @@
 // coach_fragen ohne Abo mit dem Satz von mcp, luecke_melden mit dem Satz von flugschule, offene Pflichtfragen mit den deutschen
 // Anfangswörtern wie lage. scripts/durchspiel.test.ts vergleicht das mit dem echten mcp, wenn albatros daneben liegt.
 // Neu erzeugen im Repo albatros, Ordner services/mcp, mit Z=…/albatros-skills/scripts/durchspiel/mocks:
-//   bun -e "import { z } from 'zod'; import { WERKZEUGE } from './src/werkzeuge.ts'; import { anleitung } from './src/lage.ts';
-//     const an = { FAHRPLAN: true, ERFASSUNG: true }; const liste = WERKZEUGE.filter((w) => (!w.nurMit || an[w.nurMit]) && (!w.nurOhne || !an[w.nurOhne]))
+// (seit Welle 8 kann nurMit eine Liste sein: sichtbarBei aus services/mcp/src/gemeinsam.ts wie tools/list; mit BAUSERVICE steht auftrag_anlegen
+// in werkzeuge.json, die Attrappe bietet es trotzdem nur mit DURCHSPIEL_BAUSERVICE=on an; Welle 9, 02.11.2026)
+//   bun -e "import { z } from 'zod'; import { WERKZEUGE } from './src/werkzeuge.ts'; import { sichtbarBei } from './src/gemeinsam.ts'; import { anleitung } from './src/lage.ts';
+//     const an = { FAHRPLAN: true, ERFASSUNG: true, BAUSERVICE: true }; const liste = WERKZEUGE.filter((w) => sichtbarBei(w, an))
 //     .map((w) => { const { \$schema: _, ...inputSchema } = z.toJSONSchema(w.eingabe, { io: 'input' }); return { name: w.name, description: w.description, inputSchema }; });
 //     await Bun.write('$Z/werkzeuge.json', JSON.stringify(liste, null, 1) + '\n'); await Bun.write('$Z/anleitung.txt', anleitung(an) + '\n');"
 import { spawnSync } from 'node:child_process';
@@ -30,8 +32,8 @@ import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } 
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
 import {
-  ausgangZaehlt, beantwortet, belegt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wertPasst,
-  wohnortVon, type Fuer,
+  ausgangZaehlt, beantwortet, belegt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, jaBelegt, phaseBelegt, phaseIndex, wert,
+  wertPasst, wohnortVon, type Fuer,
 } from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
 
@@ -105,13 +107,22 @@ const mitMethoden = (p: Phase, skillText: string, ms: string[]) => (!ms.length ?
 // die Person nur im Cockpit, im Durchspiel also nie
 const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Werkzeuge deine KI aufruft, nie deine Unterhaltung mit ihr. Lücken und Anfragen nur, wenn du sie erlaubst. Ansehen und widersprechen kannst du unter https://albatros.build/cockpit/daten.';
 
-// ———— Bauservice (Welle 8, w8-44; Konzept «Albatros baut es für dich», 3.1) ————
+// ———— Bauservice (Welle 8, w8-44; Welle 9, w9-42; Konzept «Albatros baut es für dich», 3.1) ————
 // Mit DURCHSPIEL_BAUSERVICE=on wie lage, konto_status und auftrag_anlegen mit FAHRPLAN und BAUSERVICE, Regeln und Wortlaut aus albatros
 // services/mcp/src/bauservice.ts (Nachbesserung 02.11.2026 nach der Gegenprobe: vorher eigene Sätze, P6 als «Danach» bei «Bauen lassen:
 // albatros», «Phase P6» im Stand, «danach Light» auch für Light, bestaetigt nur true). scripts/durchspiel.test.ts vergleicht mit dem echten mcp,
 // wenn albatros den Bauservice hat. Nicht nachgebaut: abgelaufene Vorschläge und Vorschau (braucht die Stücke des Auftrags in konto).
+// Welle 9 (02.11.2026, w9-42, Stand albatros efe228c): R2 «vorschlaege» mit den Angaben fürs Impressum (J5), Ziel server (eigener Server oder
+// Pilot) ohne Bezahlen und ohne Betrag in lage, konto_status und auftrag_anlegen, R3 nach der Auslieferung (J4: warten bis zur Freigabe auf der
+// Insel, Schlüssel, Logbuch holen, danach die erste eigene Änderung, Domain und Ankündigung freiwillig), konto_status nach live. Dazu nach dem
+// Zweig fahrplan/w9-nahtstellen in albatros (Entscheid des Koordinators, 02.11.2026): «Setup: [Annahme: statisch …]» gibt kein Angebot mehr,
+// nur die Antwort, die mit statisch beginnt. Bis er zusammengeführt ist, weicht das echte mcp in diesem einen Fall ab (durchspiel.test.ts nennt
+// die Ausnahme mit Datum).
 // Die Attrappe ist hier auch konto: Stand des Auftrags in der Datei auftrag im Hafen, Betrag wie GET /web/auftrag (stufen.ts AUFTRAG.preisChf und
-// Light; durchspiel.test.ts gleicht mit albatros ab). scripts/punkte.ts liest die Beträge aus den Antworten, nie von hier.
+// Light; durchspiel.test.ts gleicht mit albatros ab). scripts/punkte.ts liest die Beträge aus den Antworten, nie von hier. Im Durchspiel (mit
+// DURCHSPIEL_RUNDE) arbeitet Albatros zwischen den Runden: Jede neue Runde, in der die KI lage oder konto_status aufruft, rückt der Auftrag einen
+// Stand weiter (briefing, vorschlaege, im_bau, vorschau; die Wahl der Person im Cockpit und der Start des Baus auf dem Mac sind ein Schritt), bis
+// zur Vorschau; bezahlt wird im Durchspiel nie. Ohne DURCHSPIEL_RUNDE (Vergleichstest) bleibt der Stand, wie die Datei auftrag ihn nennt.
 const BAUSERVICE = process.env.DURCHSPIEL_BAUSERVICE === 'on';
 const AUFTRAG_CHF = 290;
 const [BL_DATEI, BL_ZEILE] = F.bauen_lassen.quelle.split('#') as [string, string];
@@ -126,34 +137,74 @@ const ANGEBOT_ABO = 'Albatros kann deine Seite auch für dich bauen: Du bekommst
 const ANGEBOT_LIGHT = 'Albatros kann deine Seite auch für dich bauen: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF {einmalig} einmalig, Light hast du schon. Selbst weiterbauen kostet bis zur fertigen Seite auf deinem Computer nichts. Frag die Person einmal, was ihr lieber ist, und schreib ihre Antwort mit Datum in {datei}: «{zeile} selbst (TT.MM.JJJJ)» oder «{zeile} albatros (TT.MM.JJJJ)». Die Fragen zum Konzept kommen so oder so.';
 const UEBERGABE = 'Die Person will, dass Albatros ihre Seite baut, und ihr Konzept steht. Fass zusammen, was mitgeht, frag «Soll ich es schicken?» und leg den Auftrag erst nach ihrem Ja mit auftrag_anlegen an. Weiterbauen mit P6 gehört nicht dazu.';
 const DANACH_COCKPIT = 'im Cockpit unter «Dein Auftrag» die Adresse der Seite und später eine Richtung wählen ({link})';
-const R2_VORSCHLAEGE = 'Die Entwürfe für Auftrag #{nr} sind da. Die Person schaut sie im Cockpit an und wählt eine Richtung: {link}. Bauen musst du nichts.';
+const R2_VORSCHLAEGE = 'Die Entwürfe für Auftrag #{nr} sind da. Die Person schaut sie im Cockpit an, wählt eine Richtung und gibt dort die Angaben fürs Impressum ein: Name oder Firma, Postadresse und E-Mail. An diese E-Mail gehen auch Anfragen von Besuchern, ausser sie nennt eine andere. Diese Angaben gibt sie nur im Cockpit ein, nie im Chat: {link}. Bauen musst du nichts.';
 const R2_VORSCHAU_ABO = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an. Gefällt sie ihr, klickt sie im Cockpit auf «Bezahlen und live schalten» (CHF {einmalig} einmalig, dazu Light für CHF {abo} im Monat); sonst schreibt sie dort, was anders werden soll: {link}.';
 const R2_VORSCHAU = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an. Gefällt sie ihr, klickt sie im Cockpit auf «Bezahlen und live schalten» (CHF {einmalig} einmalig); sonst schreibt sie dort, was anders werden soll: {link}.';
+const R2_VORSCHAU_SERVER = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an und schreibt im Cockpit, was ihr gefällt oder was anders werden soll. Weil sie einen eigenen Server hat, liefert Albatros die Seite noch nicht von selbst dorthin aus, darum geht Bezahlen im Cockpit noch nicht; das Team findet mit ihr eine Lösung: {link}.';
+const ZIEL_SERVER = 'Mit deinem eigenen Server geht Bezahlen im Cockpit noch nicht: Dorthin liefert Albatros noch nicht von selbst aus. Schreib dem Team im Cockpit, es findet mit dir eine Lösung.';
 const R2_BRIEFING = 'Albatros liest das Briefing von Auftrag #{nr} und macht Entwürfe. Baue nicht selbst daneben weiter; bis dahin kann die Person Texte und Fotos sammeln (Skill `inhalte`).';
 const R2_BAU = 'Albatros baut die Seite für Auftrag #{nr}. Baue nicht selbst daneben weiter; bis dahin kann die Person Texte und Fotos sammeln (Skill `inhalte`).';
 const R2_BEZAHLT = 'Auftrag #{nr} ist bezahlt, Albatros schaltet die Seite jetzt live. Baue nicht selbst daneben weiter.';
+const R3_WARTEN = 'Auftrag #{nr} ist live: Albatros hat die Seite gebaut, und die Person hat sie mit der Zahlung freigegeben. Albatros trägt die Freigabe gleich auf ihrer Insel ein. Ruf lage in ein paar Minuten nochmals auf und baue bis dahin nichts nach, was Albatros schon gebaut hat.';
+const R3_LOGBUCH = 'Albatros hat die Seite für Auftrag #{nr} gebaut, und sie ist live. Das ganze Projekt liegt im Logbuch im Hafen: Hol es auf diesen Computer (git clone), denn daran lernt die Person, ihre Seite selbst zu ändern. Liegt es schon da, ruf lage in diesem Ordner mit belege auf (darin docs/prd.md mit «Freigegeben:»).';
+const R3_DANACH_LOGBUCH = 'die erste eigene Änderung an der fertigen Seite mit Skill `webseite-aendern`; freiwillig eine eigene Domain (Skill `domain`) und wem die Person es zuerst sagt (Skill `lancieren`, Abschnitt «Wem sagst du es zuerst?»)';
+const R3_DANACH_LIVE = 'freiwillig eine eigene Domain (Skill `domain`) und wem die Person es zuerst sagt (Skill `lancieren`, Abschnitt «Wem sagst du es zuerst?»); beides kommt in docs/live.md («Eigene Domain:», «Angekündigt:»)';
 const R4 = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir.';
 const R4_ZEILE = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir. Schreib in {datei} «{zeile} selbst (TT.MM.JJJJ)».';
 const OHNE_JA = 'Ohne das ausdrückliche Ja der Person lege ich keinen Auftrag an. Zeig ihr die Zusammenfassung, frag «Soll ich es schicken?» und ruf auftrag_anlegen erst nach ihrem Ja mit bestaetigt: true auf.';
 const UEBERGABE_JETZT = 'Skill `konzept`, Abschnitt «Übergabe an Albatros»';
+const LOGBUCH_JETZT = 'Skill `webseite-aendern`, Abschnitt «Das Logbuch holen»';
+// Schlüssel nach der Auslieferung (R3), wie die Regel «noch kein Schloss» in lage.ts; die Attrappe kennt sie nur hier (sonst hat sie keine Regeln
+// für Server und Seite)
+const KEIN_SCHLOSS = { server: 'Es ist noch kein Schloss hinterlegt: Ohne kommst du weder auf den Server noch in den Hafen.', seite: 'Es ist noch kein Schloss hinterlegt: Ohne geht kein git push in den Hafen, und deine Seite bleibt leer.' };
 const fuelle = (t: string, w: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (m, k: string) => (k in w ? String(w[k]) : m));
-// Wie bauserviceMoeglich: nur ohne eigenen Server und ohne Pilot (dorthin liefert konto keinen Auftrag aus)
+// Wie bauserviceMoeglich: nur ohne eigenen Server und ohne Pilot (dorthin liefert konto keinen Auftrag aus). Sonst ist das Ziel eines Auftrags
+// server (konto zielVon: Server oder Stufe mit Server), und konto kassiert dort nicht (Welle 9)
 const bauserviceMoeglich = () => !merk('server') && stufe() !== 'pilot';
+const zielServer = () => !bauserviceMoeglich();
 // Preis eines Auftrags wie konto: einmalig, dazu Light im selben Checkout, solange kein Abo läuft (mit Abo null)
 const auftragPreis = () => ({ einmaligChf: AUFTRAG_CHF, aboChfMonat: stufe() === 'gratis' ? PREIS.light! : null });
-// Wahl in «Bauen lassen:» (die Antwort der Person, nie eine Annahme) und Setup ab statisch, wie bauenLassen und setupPasst
+// Wahl in «Bauen lassen:» (die Antwort der Person, nie eine Annahme) und Setup ab statisch, wie bauenLassen und setupPasst. Setup ebenfalls nur
+// als Antwort, nie als [Annahme: statisch …] (fahrplan/w9-nahtstellen, siehe oben)
 const bauenLassen = (dateien: Record<string, string>) => {
   const w = wert(dateien[BL_DATEI], BL_ZEILE);
   return { zeile: w !== null, wahl: F.bauen_lassen.werte.find((x) => beantwortet(F, w) && wertPasst(F, { werte: [x] }, w)) ?? null };
 };
 const setupPasst = (dateien: Record<string, string>) => {
   const w = wert(dateien[SETUP_DATEI], SETUP_ZEILE);
-  return belegt(F, w) && wertPasst(F, { werte: [F.bauen_lassen.setup_beginnt] }, w);
+  return beantwortet(F, w) && wertPasst(F, { werte: [F.bauen_lassen.setup_beginnt] }, w);
 };
-// Regeln R1, R1b, R2, R4 wie bauserviceRegeln; auftrag: Stand des einzigen Auftrags der Attrappe (Nummer 1) oder null
-function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; phase: string | null; geschafft: number; stoppen: boolean }) {
-  const r: { offen: { jetzt: string; grund: string } | null; uebergabe: { jetzt: string; grund: string; danach: string } | null; angebot: string | null; danachP5: string | null; hinweis: string | null } =
-    { offen: null, uebergabe: null, angebot: null, danachP5: null, hinweis: null };
+// R3 liest zwei Stellen aus dem Vertrag wie bauservice.ts: docs/prd.md mit dem Ja-Moment von P10 (konto schreibt «Freigegeben: …, Abnahme mit
+// der Zahlung von Auftrag #n», J2) heisst, das Logbuch liegt auf dem Computer; docs/live.md mit den Antworten auf adresse und ankuendigung (P13)
+const frageVon = (phase: string, id: string) => F.phasen.find((p) => p.id === phase)!.pflichtfragen.find((q) => q.id === id)!;
+const JA_P10 = F.ja_momente.find((j) => j.phase === 'P10')!;
+const [PRD_DATEI, PRD_ZEILE] = frageVon(JA_P10.phase, JA_P10.frage).ablage.split('#') as [string, string];
+const NACH_LIVE_FRAGEN = [frageVon('P13', 'adresse'), frageVon('P13', 'ankuendigung')];
+const logbuchDa = (dateien: Record<string, string>) => jaBelegt(F, dateien[PRD_DATEI], PRD_ZEILE);
+const nachLiveBeantwortet = (dateien: Record<string, string>) => NACH_LIVE_FRAGEN.every((q) => {
+  const [datei, anfang] = q.ablage.split('#') as [string, string];
+  const w = wert(dateien[datei], anfang);
+  return beantwortet(F, w) && wertPasst(F, q, w);
+});
+// Albatros arbeitet zwischen den Runden (nur im Durchspiel, siehe oben): ein Stand je neuer Runde mit lage oder konto_status
+const WEITER: Record<string, string> = { briefing: 'vorschlaege', vorschlaege: 'im_bau', gewaehlt: 'im_bau', im_bau: 'vorschau' };
+function auftragWeiter() {
+  const r = runde();
+  const s = merk('auftrag');
+  if (!BAUSERVICE || r === null || !s || !WEITER[s]) return;
+  if (r > Number(merk('auftrag-runde') ?? '-1')) {
+    setze('auftrag', WEITER[s]!);
+    setze('auftrag-runde', String(r));
+  }
+}
+type BauRegeln = {
+  offen: { jetzt: string; grund: string } | null; uebergabe: { jetzt: string; grund: string; danach: string } | null; angebot: string | null;
+  danachP5: string | null; hinweis: string | null; rueckweg: { jetzt: string; grund: string; danach: string } | null; danachLive: string | null; gebaut: boolean;
+  schluessel: boolean;
+};
+// Regeln R1, R1b, R2, R3, R4 wie bauserviceRegeln; auftrag: Stand des einzigen Auftrags der Attrappe (Nummer 1) oder null
+function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; phase: string | null; geschafft: number; stoppen: boolean }): BauRegeln {
+  const r: BauRegeln = { offen: null, uebergabe: null, angebot: null, danachP5: null, hinweis: null, rueckweg: null, danachLive: null, gebaut: false, schluessel: false };
   if (!BAUSERVICE) return r;
   const auftrag = merk('auftrag');
   const ab = phaseIndex(F, F.bauen_lassen.ab);
@@ -162,9 +213,23 @@ function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; p
   if (istOffen(auftrag)) {
     const p = auftragPreis();
     const w = { nr: 1, link: COCKPIT_AUFTRAG, einmalig: p.einmaligChf, abo: p.aboChfMonat ?? 0 };
-    if (auftrag === 'vorschlaege') r.offen = { jetzt: 'im Cockpit unter «Dein Auftrag» eine Richtung wählen', grund: fuelle(R2_VORSCHLAEGE, w) };
-    else if (auftrag === 'vorschau') r.offen = { jetzt: 'im Cockpit unter «Dein Auftrag» die Vorschau ansehen', grund: fuelle(p.aboChfMonat === null ? R2_VORSCHAU : R2_VORSCHAU_ABO, w) };
+    const vorschau = zielServer() ? R2_VORSCHAU_SERVER : p.aboChfMonat === null ? R2_VORSCHAU : R2_VORSCHAU_ABO;
+    if (auftrag === 'vorschlaege') r.offen = { jetzt: 'im Cockpit unter «Dein Auftrag» eine Richtung wählen und die Angaben fürs Impressum eingeben', grund: fuelle(R2_VORSCHLAEGE, w) };
+    else if (auftrag === 'vorschau') r.offen = { jetzt: 'im Cockpit unter «Dein Auftrag» die Vorschau ansehen', grund: fuelle(vorschau, w) };
     else r.offen = { jetzt: 'warten auf Albatros', grund: fuelle(auftrag === 'briefing' ? R2_BRIEFING : auftrag === 'bezahlt' ? R2_BEZAHLT : R2_BAU, w) };
+    return r;
+  }
+  // R3 nach der Auslieferung: vor der Freigabe auf der Insel warten; danach Schlüssel (in lage, wie dort vor dem Logbuch), das Logbuch, bis
+  // docs/prd.md mit «Freigegeben:» als Beleg kommt, dann Domain und Ankündigung freiwillig, bis docs/live.md sie nennt
+  if (auftrag === 'live') {
+    if (rang(insel()) < rang('freigabe')) {
+      r.offen = { jetzt: 'warten', grund: fuelle(R3_WARTEN, { nr: 1 }) };
+      r.gebaut = true;
+    } else {
+      r.schluessel = true;
+      if (!logbuchDa(o.dateien)) r.rueckweg = { jetzt: LOGBUCH_JETZT, grund: fuelle(R3_LOGBUCH, { nr: 1 }), danach: R3_DANACH_LOGBUCH };
+      else if (!nachLiveBeantwortet(o.dateien)) r.danachLive = R3_DANACH_LIVE;
+    }
     return r;
   }
   if (auftrag === 'zurueckgezogen') {
@@ -187,11 +252,14 @@ function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; p
 function kontoStatusZeile(): string | null {
   if (!BAUSERVICE) return null;
   const auftrag = merk('auftrag');
+  const im = `Im Cockpit: ${COCKPIT_AUFTRAG}.`;
   if (istOffen(auftrag)) {
+    if (zielServer()) return `Auftrag bei Albatros: #1, ${STAND_NAME[auftrag!] ?? auftrag}. ${ZIEL_SERVER} ${im}`;
     const p = auftragPreis();
     const abo = p.aboChfMonat === null ? '' : `, dazu Light für CHF ${p.aboChfMonat} im Monat`;
-    return `Auftrag bei Albatros: #1, ${STAND_NAME[auftrag!] ?? auftrag}. Bezahlt wird erst bei der Vorschau: CHF ${p.einmaligChf} einmalig${abo}. Im Cockpit: ${COCKPIT_AUFTRAG}.`;
+    return `Auftrag bei Albatros: #1, ${STAND_NAME[auftrag!] ?? auftrag}. Bezahlt wird erst bei der Vorschau: CHF ${p.einmaligChf} einmalig${abo}. ${im}`;
   }
+  if (auftrag === 'live') return `Auftrag bei Albatros: #1, ${STAND_NAME.live}. Albatros hat deine Seite gebaut, bezahlt ist sie; ändern kannst du sie jetzt selbst. ${im}`;
   if (!bauserviceMoeglich()) return null;
   const danach = stufe() === 'light' ? ', Light hast du schon' : `, danach Light für CHF ${PREIS.light} im Monat`;
   return `Albatros baut deine Seite auf Wunsch: CHF ${AUFTRAG_CHF} einmalig${danach}; bezahlt wird erst, wenn dir die Vorschau gefällt. Angeboten wird es in lage, sobald dein Plan steht.`;
@@ -233,6 +301,7 @@ function lektion(p: Phase, weg: string | null, st: string): string[] {
 }
 
 function lage(a: Args): Antwort {
+  auftragWeiter(); // Bauservice im Durchspiel: Albatros hat seit der letzten Runde weitergearbeitet
   const belege: Beleg[] = Array.isArray(a.belege) ? (a.belege as Beleg[]).filter((b) => typeof b?.datei === 'string' && Array.isArray(b.zeilen)) : [];
   const dateien: Record<string, string> = Object.fromEntries(belege.map((b) => [b.datei, b.zeilen.join('\n')]));
   const weg = merk('weg');
@@ -271,8 +340,15 @@ function lage(a: Args): Antwort {
   if (!weg) {
     [jetzt, grund] = [skill('start'), 'Du hast noch keinen Weg gewählt: eine Webseite oder ein Geschäft.'];
   } else if (bau.offen) {
-    // R2 Auftrag offen: was die Person im Cockpit tut, oder warten; kein «Danach», nie P6 bis P10 daneben
+    // R2 Auftrag offen: was die Person im Cockpit tut, oder warten; kein «Danach», nie P6 bis P10 daneben. R3 vor der Freigabe ebenso (warten)
     [jetzt, grund] = [bau.offen.jetzt, bau.offen.grund];
+  } else if (bau.schluessel && erledigt >= phaseIndex(F, 'P11') && (merk('server') || seiteName()) && schloesser() === 0) {
+    // R3 nach der Freigabe: zuerst das Schloss, wie die Regel in lage (dort für alle, hier nur nach der Auslieferung); «Danach» wie dort die Phase
+    [jetzt, grund] = [skill('ssh-schluessel'), merk('server') ? KEIN_SCHLOSS.server : KEIN_SCHLOSS.seite];
+    if (p) danach = `Phase ${p.id} «${p.titel}» mit ${fuer(p).text}`;
+  } else if (bau.rueckweg) {
+    // R3: das Logbuch holen, nie P6 bis P10; die Phase im Stand bleibt die der Insel
+    [jetzt, grund, danach] = [bau.rueckweg.jetzt, bau.rueckweg.grund, bau.rueckweg.danach];
   } else if (entscheid === 'stoppen') {
     [jetzt, grund] = ['nichts mehr', 'Dein Ideen-Check sagt «stoppen»: Die Idee trägt so nicht. Das ist geschafft, nicht gescheitert.'];
     danach = `Mit einer neuen Idee beginnt es wieder bei P1: ${methodeText(['ideen-check'])}`;
@@ -303,10 +379,12 @@ function lage(a: Args): Antwort {
   } else if (geschaeft && st !== 'gratis') {
     [jetzt, grund] = [methodeText([F.nach_live.landen.geschaeft?.[0] ?? 'zahlen']), `Deine Seite ist live, alle ${F.phasen.length} Phasen sind geschafft. Jetzt kommt die Etappe Landen: sichtbar werden und die ersten Kundinnen und Kunden gewinnen.`];
     danach = `${skill('landung')}, sobald du in ein eigenes Haus umziehen willst`;
+    if (bau.danachLive) danach = bau.danachLive; // R3 wie unten
   } else {
     [jetzt, grund] = [skill(F.nach_live.aendern.skill), `Deine Seite ist live, alle ${F.phasen.length} Phasen sind geschafft. Änderungen gehen klein (${F.nach_live.aendern.klein.join(', ')}) oder gross (${F.nach_live.aendern.gross.join(', ')}).`];
     if (geschaeft) hinweise.push('Die Etappe Landen mit den Methoden gehört zum Abo; den Link gibt upgrade_link, wenn die Person es will.');
     danach = merk('seite') || merk('server') ? `${skill('landung')}, sobald du in ein eigenes Haus umziehen willst` : `${skill('statistik')}, sobald du wissen willst, wer deine Seite besucht`;
+    if (bau.danachLive) danach = bau.danachLive; // R3: Hat Albatros gebaut, Domain und Ankündigung freiwillig, bis docs/live.md sie nennt
   }
   if (bau.hinweis) hinweise.push(bau.hinweis); // R4 (zurückgezogen) hinter den Hinweisen, die etwas melden
   zeilen.push(`Jetzt dran: ${jetzt}. Grund: ${grund}`, ...(merk('erfassung') ? [] : [HINWEIS_ERFASSUNG]), ...hinweise.slice(0, 2).map((h) => `Hinweis: ${h}`));
@@ -333,8 +411,9 @@ function lage(a: Args): Antwort {
     `Abo ${STUFEN[st] ?? st}`,
     server ? `Server ${server} bereit, ${n} Schlösser` : s ? `Seite https://${s}.aufwind.sh ${stand(s)}, ${n} Schlösser` : null,
     `Projekt projekt ${i ? `auf der Insel bei «${i}»` : 'noch nicht auf der Insel'}`,
-    // R1b und R2: keine Phase, an der die KI weiterbauen könnte
-    bau.offen || bau.uebergabe ? `Fahrplan geschafft: ${bisText(erledigt)}, den Bau übernimmt Albatros`
+    // R1b und R2: keine Phase, an der die KI weiterbauen könnte; R3 vor der Freigabe: die Seite hat Albatros gebaut
+    bau.gebaut ? `Fahrplan geschafft: ${bisText(erledigt)}, die Seite hat Albatros gebaut`
+      : bau.offen || bau.uebergabe ? `Fahrplan geschafft: ${bisText(erledigt)}, den Bau übernimmt Albatros`
       : p ? `Phase ${p.id} von ${F.phasen.length} (geschafft nach Insel: ${bisText(nachInsel)}${nachDateien > nachInsel ? `, nach Belegen weiter: ${bisText(nachDateien)}` : ''})` : `alle ${F.phasen.length} Phasen geschafft`,
   ].filter(Boolean).join(' · ')}.`);
   return { text: zeilen.join('\n') };
@@ -507,6 +586,7 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
       : { text: `Methode ${a.name}: Im Durchspiel ohne albatros-methoden (DURCHSPIEL_METHODEN) gibt es keinen Text. Arbeite mit dem, was lage und die Skills sagen.` };
   },
   konto_status: () => {
+    auftragWeiter();
     const [st, n, s, server, weg] = [stufe(), schloesser(), seiteName(), merk('server'), merk('weg')];
     return { text: [
       `Angemeldet. Abo: ${st === 'gratis' ? 'Gratis (Skills, Missionen und der Fahrplan bis zur fertigen Seite auf deinem Computer; keine Seite im Netz, kein Server)' : `${STUFEN[st]} (CHF ${PREIS[st]} pro Monat, aktiv)`}.`,
@@ -524,6 +604,12 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
     if (a.bestaetigt !== true) return { fehler: true, text: OHNE_JA };
     if (istOffen(merk('auftrag'))) return { fehler: true, text: 'Du hast schon einen offenen Auftrag.' };
     setze('auftrag', 'briefing');
+    setze('auftrag-runde', String(runde() ?? -1));
+    // Ziel server (Welle 9): ohne Betrag, und eine Adresse auf aufwind.sh gibt es dann nicht zu wählen
+    if (zielServer()) {
+      return { text: `Auftrag #1 ist bei Albatros. ${ZIEL_SERVER} Im Cockpit unter «Dein Auftrag»: ${COCKPIT_AUFTRAG}. `
+        + 'Dort wählt die Person später eine Richtung; bauen muss sie nichts mehr. Ruf lage erneut auf.' };
+    }
     const p = auftragPreis();
     const abo = p.aboChfMonat === null ? '' : `, dazu Light für CHF ${p.aboChfMonat} im Monat`;
     return { text: `Auftrag #1 ist bei Albatros. Bezahlt wird erst, wenn die Vorschau gefällt: CHF ${p.einmaligChf} einmalig${abo}. `
@@ -561,8 +647,8 @@ type Schema = { name: string; description: string; inputSchema: Knoten };
 const ECHT: Schema[] = JSON.parse(readFileSync(join(wurzel, 'scripts/durchspiel/mocks/werkzeuge.json'), 'utf8'));
 const ANLEITUNG = readFileSync(join(wurzel, 'scripts/durchspiel/mocks/anleitung.txt'), 'utf8').trim();
 const mitText = (n: string) => [...(fallOrdner ? [fallOrdner] : []), ...ordner].some((o) => existsSync(join(o, `${n}.md`)));
-// auftrag_anlegen nur mit Bauservice. werkzeuge.json kommt aus mcp mit FAHRPLAN und ERFASSUNG, ohne BAUSERVICE; bis es die Eingabe von dort
-// gibt, steht sie hier wie in albatros services/mcp/src/bauservice.ts (Eingabe, Beschreibungen wörtlich), die Felder wie Briefing in
+// auftrag_anlegen nur mit Bauservice. werkzeuge.json kam bis Welle 8 aus mcp ohne BAUSERVICE; seit dem Erzeugungsbefehl oben (Welle 9) steht
+// auftrag_anlegen darin, und die Attrappe nimmt die Eingabe von dort. Bis der Koordinator neu erzeugt, steht sie hier wie in albatros services/mcp/src/bauservice.ts (Eingabe, Beschreibungen wörtlich), die Felder wie Briefing in
 // services/konto/src/auftraege.ts (trim, Längen); bestaetigt ist ein Wahrheitswert, false gibt den Text OHNE_JA (Nachbesserung 02.11.2026)
 const text1 = (max: number, description: string): Knoten => ({ type: 'string', minLength: 1, maxLength: max, description });
 const AUFTRAG_WERKZEUG: Schema = ECHT.find((w) => w.name === 'auftrag_anlegen') ?? {
@@ -697,7 +783,9 @@ process.stdin.on('data', (d) => {
       // einmalig: der Betrag des Bauservice («CHF … einmalig» im Angebot, in konto_status oder in der Antwort von auftrag_anlegen)
       const betraege = [...new Set([...r.text.matchAll(/CHF\s*(\d[\d'’]*)/g)].map((x) => Number(x[1]!.replace(/['’]/g, ''))))];
       const einmalig = /CHF\s*(\d[\d'’]*) einmalig/.exec(r.text)?.[1];
-      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false, ...(angebot ? { angebot } : {}), ...(uebergabe ? { uebergabe } : {}), ...(betraege.length ? { betraege } : {}), ...(einmalig ? { einmalig: Number(einmalig.replace(/['’]/g, '')) } : {}) })}\n`);
+      // auftrag (Welle 9, w9-42): Stand des Auftrags, wie lage und konto_status ihn eben gesehen haben (punkte.ts: Vorschau erreicht)
+      const auftrag = BAUSERVICE && (name === 'lage' || name === 'konto_status') ? merk('auftrag') : null;
+      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false, ...(angebot ? { angebot } : {}), ...(uebergabe ? { uebergabe } : {}), ...(betraege.length ? { betraege } : {}), ...(einmalig ? { einmalig: Number(einmalig.replace(/['’]/g, '')) } : {}), ...(auftrag ? { auftrag } : {}) })}\n`);
       senden(w ? { jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } }
         : { jsonrpc: '2.0', id: m.id, error: { code: -32602, message: r.text } });
     } else if (m.method === 'ping') {
