@@ -36,6 +36,8 @@ git pull --rebase                                       # jedes weitere Mal, im 
 
 Liegt das Logbuch nur auf diesem Computer (selbst, ohne Repo), arbeitest du dort und holst nichts. Scheitert `git` mit «Permission denied», fehlt auf diesem Computer der Schlüssel (Skill `ssh-schluessel`).
 
+**Hat Albatros die Seite gebaut** (im bisherigen Projektordner steht in `docs/projekt.md` `Bauen lassen: albatros`, und der Auftrag ist live), liegt das ganze Projekt im Hafen, und `docs/lancieren.md` gibt es nicht: `{name}` ist der Name der Seite aus `konto_status`. Zuerst kommt der Schlüssel (Skill `ssh-schluessel`). Das Logbuch holst du in einen neuen Ordner neben dem bisherigen, nicht hinein: `git clone git@aufwind.sh:{name}/projekt.git ../{name}-seite`. Ab jetzt arbeitest du dort; den bisherigen Ordner löschst du nicht. Im geholten Ordner rufst du `lage` mit dessen Belegen auf, darin `docs/prd.md` mit der Zeile `Freigegeben: <TT.MM.JJJJ>, Abnahme mit der Zahlung von Auftrag #<Nummer>`, die Albatros beim Ausliefern eingetragen hat. Texte und Fotos, die die Person während des Baus gesammelt hat (im bisherigen Ordner `docs/inhalte.md` und `design/bilder/`), sind oft eine gute erste eigene Änderung.
+
 ### 2. Zuerst die Pläne lesen
 
 Bevor du etwas änderst, liest du:
@@ -82,6 +84,8 @@ Ganz unten in `docs/prd.md`, nach der Zeile `Freigegeben:` des ersten Baus, komm
 ```
 
 Bei einem grossen Wunsch steht darüber `Abgeleitet aus: docs/entwurf.md (Nachtrag <TT.MM.JJJJ>, Freigegeben zum Bauen: <TT.MM.JJJJ>)`: Die Kriterien folgen aus dem Entwurf, den die Person freigegeben hat. Bei einem kleinen zeigst du sie in Schritt 5 zusammen mit dem Ergebnis.
+
+Hat Albatros die Seite gebaut, heisst die Zeile des ersten Baus `Freigegeben: <TT.MM.JJJJ>, Abnahme mit der Zahlung von Auftrag #<Nummer>`: Die Zahlung war die Freigabe. Diese Zeile bleibt, wie sie ist.
 
 ### 5. Ändern, bauen, prüfen, vorher und nachher zeigen
 

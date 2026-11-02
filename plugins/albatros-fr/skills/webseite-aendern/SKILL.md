@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Modifie avec une personne sans connaissances préalables son site web terminé, avec sa propre IA, qu'il soit au port d'Albatros ou qu'elle l'héberge elle-même : récupérer le journal de bord, lire d'abord docs/ (plan, système de design, stack technique, PRD, domicile), puis petit (texte, date, image : changer en local, montrer avant et après, validation, push) ou grand (nouvelle page, fonction, autre apparence : complément au plan, ébauche des pages modifiées, autorisation de construire, construire et vérifier, montrer, validation, push), toujours dans le système de design existant, puis vérifier en ligne. Utilise ce skill pour « modifie mon site », « nouvelle date », « changer un texte », « remplacer une image », « il manque … », « nouvelle page », « rends le site … », « il y a une erreur sur le site », et chaque fois que quelque chose doit changer sur un site en ligne."
 metadata:
   stand: 0.2.0
-  quelle: 'b1185cbb28aa'
+  quelle: '3a31bee96c4f'
 ---
 
 # Modifier le site web : des travaux dans une maison habitée
@@ -26,7 +26,7 @@ Des travaux dans une maison habitée : dans le classeur, il y a les plans et l
 
 ## Déroulement
 
-### 1. Récupérer le journal de bord
+### 1. Récupérer le journal de bord (Das Logbuch holen)
 
 Où le site habite figure dans `docs/lancieren.md` (ligne `Wohnort:`, adresse sous `Adresse:`), sinon `konto_status` le dit. C'est de là que dépend l'endroit où se trouve le journal de bord :
 
@@ -38,6 +38,8 @@ git pull --rebase                                       # chaque fois suivante, 
 ```
 
 Si le journal de bord n'existe que sur cet ordinateur (par soi-même, sans dépôt), tu travailles là et tu ne récupères rien. Si `git` échoue avec « Permission denied », il manque la clé sur cet ordinateur (skill `ssh-schluessel`).
+
+**Si c'est Albatros qui a construit le site** (dans l'ancien dossier de projet, `docs/projekt.md` contient `Bauen lassen: albatros`, et la commande est en ligne), tout le projet se trouve au port, et `docs/lancieren.md` n'existe pas : `{name}` est le nom du site d'après `konto_status`. D'abord vient la clé (skill `ssh-schluessel`). Le journal de bord, tu le récupères dans un nouveau dossier à côté de l'ancien, pas dedans : `git clone git@aufwind.sh:{name}/projekt.git ../{name}-site`. À partir de là, tu travailles dans ce dossier ; tu ne supprimes pas l'ancien. Dans le dossier récupéré, tu appelles `lage` avec ses preuves (`belege`), dont `docs/prd.md` avec la ligne `Freigegeben: <JJ.MM.AAAA>, Abnahme mit der Zahlung von Auftrag #<numéro>`, qu'Albatros a inscrite à la livraison. Les textes et les photos que la personne a rassemblés pendant la construction (dans l'ancien dossier, `docs/inhalte.md` et `design/bilder/`) font souvent une bonne première modification personnelle.
 
 ### 2. Lire d'abord les plans
 
@@ -85,6 +87,8 @@ Tout en bas de `docs/prd.md`, après la ligne `Freigegeben:` de la première con
 ```
 
 Pour un grand souhait, il y a au-dessus `Abgeleitet aus: docs/entwurf.md (Nachtrag <JJ.MM.AAAA>, Freigegeben zum Bauen: <JJ.MM.AAAA>)` : les critères découlent de l'ébauche que la personne a autorisée. Pour un petit, tu les montres à l'étape 5 avec le résultat.
+
+Si c'est Albatros qui a construit le site, la ligne de la première construction s'appelle `Freigegeben: <JJ.MM.AAAA>, Abnahme mit der Zahlung von Auftrag #<numéro>` : le paiement était la validation. Cette ligne reste telle quelle.
 
 ### 5. Changer, construire, vérifier, montrer avant et après
 

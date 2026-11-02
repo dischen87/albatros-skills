@@ -3,7 +3,7 @@ name: inhalte
 description: "Helps a person with no prior knowledge write and choose texts and pictures for their website, in the flight plan for the draft of the whole site (P7): the home page in three sentences, short texts in the tone from the concept for people reading on their phone, missing texts shown visibly as [placeholder], own photos instead of stock images with a photo list, picture rights and image size, bringing AI texts into their own voice. The result is a content list in docs/inhalte.md and the texts in the draft. Use this skill for “write the texts”, “what do I put on my home page”, “about us”, “pictures for my website”, “photo list”, “am I allowed to use this picture”, “this text sounds like AI”, “content”."
 metadata:
   stand: 0.2.0
-  quelle: '0b198ab95f73'
+  quelle: '3212c0762904'
 ---
 
 # Content: the goods in the shop window
@@ -17,6 +17,8 @@ The website is a shop window. Design is the lighting and the decoration. The con
 ## In the flight plan
 
 The texts are written in P7, as part of the draft of the whole site (skill `entwurf`, step “The texts”): what you write here goes straight into the pages in `design/entwurf/`. Already gathered: what the person has (`Inhalte vorhanden:` in `docs/recherche.md`, P2), how they sound and what they promise (`Ton:` and `Kern:` in `docs/konzept.md`, P5), and the photo list (in `docs/inhalte.md`, P5). You suggest the texts; whatever is missing appears as `[placeholder: what's missing, who delivers it by when]` in the draft, and the number of placeholders goes into the line `Seiten:` of `docs/entwurf.md`. The person confirms the texts while clicking through.
+
+If Albatros is building the site (`docs/projekt.md` has `Bauen lassen: albatros`, and `lage` names an open order), there's no draft from you: you only collect. Texts, the content list and the photo list go into `docs/inhalte.md`; you don't add or change anything under `design/`, because that's what Albatros builds from. The person puts new photos into `design/bilder/` themselves and, until they pay, chooses their project folder again in the cockpit under “Your order”. After going live, you bring what you collected onto the site with the first change of their own (skill `webseite-aendern`).
 
 If the site is already live and a text should change, the skill `webseite-aendern` applies.
 

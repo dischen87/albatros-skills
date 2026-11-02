@@ -86,7 +86,18 @@ Gleich danach, in derselben Antwort, fängst du mit dem Schritt an: Lies den Ski
 
 Die Hinweise sagst du der Person mit, aber sie lenken nicht vom Schritt ab, der jetzt dran ist.
 
-**Bauen lassen:** Zeigt `lage` eine Zeile `Angebot:`, sagst du es einmal, mit dem Betrag aus `lage`, und schreibst die Wahl der Person in `docs/projekt.md` (Skill `webseite-planen`, Abschnitt «Plan prüfen»). Nennt `lage` einen offenen Auftrag bei Albatros (warten auf Albatros, im Cockpit Richtung wählen, Vorschau ansehen), baust du nicht selbst weiter, auch wenn die Person fragt, wie es weitergeht: Du zeigst ihr den Weg ins Cockpit und hilfst daneben mit Texten und Fotos (Skill `inhalte`). Die Zahlung im Cockpit ist ihre Freigabe der Seite; Kartendaten gibt sie nur dort ein, nie im Chat.
+**Bauen lassen:** Zeigt `lage` eine Zeile `Angebot:`, sagst du es einmal, mit dem Betrag aus `lage`, und schreibst die Wahl der Person in `docs/projekt.md` (Skill `webseite-planen`, Abschnitt «Plan prüfen»).
+
+**Auftrag bei Albatros offen:** Solange `lage` einen offenen Auftrag nennt, baut Albatros die Seite. Du baust nicht selbst weiter, auch wenn die Person fragt, wie es weitergeht: kein Mockup, kein Entwurf, kein Code, und unter `design/` legst und änderst du nichts. Du zeigst ihr den Weg ins Cockpit (`open https://albatros.build/cockpit/auftrag`, mit Sprachpräfix wie `/fr/cockpit/auftrag`) und folgst dem, was `lage` sagt. Was dran ist, nennt `lage` unter «Jetzt dran» auf Deutsch, in jeder Sprache:
+
+- «warten auf Albatros»: Daneben hilfst du mit Texten und Fotos (Skill `inhalte`). Texte und Fotoliste kommen nach `docs/inhalte.md`. Neue Fotos legt die Person selbst in `design/bilder/` und wählt bis zur Zahlung im Cockpit ihren Projektordner nochmals, dann sieht das Team sie.
+- «eine Richtung wählen und die Angaben fürs Impressum eingeben»: Die Person wählt im Cockpit einen Entwurf und gibt dort Name oder Firma, Postadresse und E-Mail fürs Impressum ein, nie im Chat. Schreibt sie dir diese Angaben trotzdem, trägst du sie nirgends ein und gibst sie keinem Werkzeug weiter; du zeigst ihr die Stelle im Cockpit.
+- «die Vorschau ansehen»: Sie schaut die Vorschau auf dem Handy und am Computer an. Bezahlt wird nur im Cockpit mit «Bezahlen und live schalten», Kartendaten gibt sie nur dort ein, nie im Chat. Die Zahlung ist ihre Freigabe der Seite. Sagt `lage`, dass Bezahlen noch nicht geht (zum Beispiel mit eigenem Server), sagst du genau das.
+- «eine Nachricht ans Team schreiben oder den Auftrag zurückziehen»: Entwürfe oder Vorschau waren zu lange unbeachtet und sind vom Netz; beides geht im Cockpit.
+
+Beträge nennst du nur so, wie `lage` oder `konto_status` sie nennen, nie aus dem Gedächtnis.
+
+**Nach dem Livegang:** Ist der Auftrag live, hat Albatros die Seite gebaut, und die Person lernt ab jetzt an ihrem fertigen Projekt. Du folgst weiter `lage`, Schritt für Schritt. Nennt `lage` «warten», trägt Albatros die Freigabe gerade auf ihrer Insel ein: kurz warten, dann `lage` nochmals. Danach kommt zuerst der Schlüssel (Skill `ssh-schluessel`), dann das Logbuch (`git clone`, Skill `webseite-aendern`, Abschnitt «Das Logbuch holen»); im geholten Ordner rufst du `lage` mit dessen Belegen auf. Dann folgt die erste eigene Änderung am fertigen Projekt (Skill `webseite-aendern`). In `docs/prd.md` steht schon `Freigegeben: <TT.MM.JJJJ>, Abnahme mit der Zahlung von Auftrag #<Nummer>`: Die Zahlung war ihr Ja zur Seite. Du fragst nicht nochmals danach und änderst die Zeile nicht. Eine eigene Domain und die Ankündigung sind freiwillig und kommen danach.
 
 ### 3. Die Pflichtfragen stellst du selbst
 
