@@ -172,8 +172,11 @@ const ausTranskript = () => {
   return aufrufe.map(({ id, ...a }) => (fehler.has(id) ? { ...a, fehler: true } : a));
 };
 const aufrufe = (): Aufruf[] => (ECHT ? ausTranskript() : lies(LOG).split('\n').filter((z) => z.startsWith('{')).flatMap((z) => {
-  const x = JSON.parse(z) as { zeit: string; runde: number | null; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean };
-  return [{ runde: x.runde ?? rundeZu(x.zeit), werkzeug: x.werkzeug, argumente: x.argumente, ...(x.fehler ? { fehler: true } : {}), ...(x.angebot ? { angebot: true } : {}) }];
+  const x = JSON.parse(z) as { zeit: string; runde: number | null; werkzeug: string; argumente: Record<string, unknown>; fehler?: boolean; angebot?: boolean;
+    uebergabe?: boolean; betraege?: number[]; einmalig?: number };
+  // Felder für den Bauservice (punkte.ts): angebot, uebergabe, betraege, einmalig aus dem Protokoll der Attrappe
+  return [{ runde: x.runde ?? rundeZu(x.zeit), werkzeug: x.werkzeug, argumente: x.argumente, ...(x.fehler ? { fehler: true } : {}), ...(x.angebot ? { angebot: true } : {}),
+    ...(x.uebergabe ? { uebergabe: true } : {}), ...(x.betraege?.length ? { betraege: x.betraege } : {}), ...(x.einmalig !== undefined ? { einmalig: x.einmalig } : {}) }];
 }));
 const geoeffnet = (): Geoeffnet[] => lies(GEOEFFNET).split('\n').filter(Boolean).map((z) => {
   const m = /^(\d+) (.*)$/.exec(z);
@@ -230,10 +233,12 @@ let kostenPerson = 0;
 let ende = AUSWERTEN ? 'ausgewertet' : 'runden';
 // Ziel erreicht: alle Insel-Schritte bis --bis gemeldet und alle Ergebnisse mit Pflichtzeilen da (dann hört der Lauf auf, wie die Punkte)
 const laufBisher = (): Lauf => ({ fall: FALL, bis: BIS, nachrichten: verlauf.map(({ wer, text: t }) => ({ wer, text: t })), aufrufe: aufrufe(), geoeffnet: geoeffnet(), zustaende });
-// Bauservice mit albatros (Welle 8, w8-44): erst nach der Übergabe (auftrag_anlegen), die nach P5 kommt
+// Bauservice mit albatros (Welle 8, w8-44): erst nach der Übergabe (auftrag_anlegen), die nach P5 kommt, und noch eine Runde danach, damit
+// punkte.ts sieht, ob die KI nach der Übergabe weiterbaut (Nachbesserung 02.11.2026: vorher endete der Lauf mit der Runde der Übergabe)
 const zielErreicht = () => {
   const p = punkte(laufBisher(), F, persona, { bis: BIS });
-  const uebergeben = persona.bauservice?.bauen !== 'albatros' || p.pruefungen.find((x) => x.id === 'nach-uebergabe')?.ok !== null;
+  const u = aufrufe().find((a) => a.werkzeug === 'auftrag_anlegen' && !a.fehler && a.argumente.bestaetigt === true)?.runde;
+  const uebergeben = persona.bauservice?.bauen !== 'albatros' || (u !== undefined && (zustaende.at(-1)?.runde ?? -1) > u);
   return ['insel', 'ergebnisse'].every((id) => p.pruefungen.find((x) => x.id === id)?.ok === true) && uebergeben;
 };
 // Die KI ergänzt im Skill ssh-schluessel das echte ~/.ssh/config: Nach dem Spiel kommt der alte Stand zurück, ihre Fassung in die Ergebnisse

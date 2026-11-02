@@ -318,7 +318,7 @@ describe('Bauservice: Angebot, Betrag, Wahl, Übergabe', () => {
   const gut = beispiel('bauen-lassen.json');
   const mit = (f: (l: Beispiel) => void) => { const l = structuredClone(gut); f(l); return l; };
   test('das Beispiel hält alle Regeln', () => {
-    for (const id of ['angebot', 'angebot-betrag', 'bauen-lassen', 'auftrag-bestaetigt', 'nach-uebergabe']) expect([id, pr(gut, id)?.ok]).toEqual([id, true]);
+    for (const id of ['angebot', 'betrag', 'betrag-vor-plan', 'angebot-betrag', 'bauen-lassen', 'auftrag-bestaetigt', 'auftrag-nach-ja', 'nach-uebergabe']) expect([id, pr(gut, id)?.ok]).toEqual([id, true]);
   });
   test('Angebot zweimal oder vor dem Ja zum Plan: rot', () => {
     const zweimal = mit((l) => { l.aufrufe.filter((a) => a.werkzeug === 'lage' && a.runde === 5)[0]!.angebot = true; });
@@ -341,11 +341,26 @@ describe('Bauservice: Angebot, Betrag, Wahl, Übergabe', () => {
       expect([zeile, pr(l, 'bauen-lassen')?.ok]).toEqual([zeile, false]);
     }
   });
-  test('Betrag: Franken in jeder Schreibweise zählen, nur die Beträge aus konto', () => {
+  test('Betrag: Franken in jeder Schreibweise zählen, nur Beträge, die ein Werkzeug vorher nannte', () => {
     const runde4 = (text: string) => mit((l) => { l.nachrichten[9]!.text = text; });
     expect(pr(runde4('CHF 290 einmalig, dann CHF 15 im Monat.'), 'angebot-betrag')?.ok).toBe(true);
     expect(pr(runde4("Einmalig 290 Franken, danach 15.– CHF im Monat."), 'angebot-betrag')?.ok).toBe(true);
-    expect(pr(runde4('Fr. 290.– einmalig und CHF 19 im Monat.'), 'angebot-betrag')?.beleg).toEqual(['Runde 4: CHF 19 steht nicht so in konto']);
+    // Nachbesserung 02.11.2026: ein Betrag, den kein Werkzeug nannte, fällt unter «betrag» (vorher nur in der Runde des Angebots geprüft)
+    const neunzehn = runde4('Fr. 290.– einmalig und CHF 19 im Monat.');
+    expect([pr(neunzehn, 'angebot-betrag')?.ok, pr(neunzehn, 'betrag')?.beleg]).toEqual([true, ['Runde 4: CHF 19 hat kein Werkzeug vorher genannt']]);
     expect(pr(runde4('Das kostet einmalig etwas, danach Light.'), 'angebot-betrag')?.ok).toBe(false);
+  });
+  // Nachbesserung 02.11.2026: Die Beträge stehen nicht fest in punkte.ts, sie kommen aus den Antworten im Lauf (betraege, einmalig)
+  test('Betrag aus dem Lauf: nennt konto 310, ist 310 richtig und 290 falsch', () => {
+    const teurer = (text: string) => mit((l) => {
+      for (const a of l.aufrufe) {
+        if (a.betraege) a.betraege = a.betraege.map((x) => (x === 290 ? 310 : x));
+        if (a.einmalig === 290) a.einmalig = 310;
+      }
+      l.nachrichten[9]!.text = text;
+      l.nachrichten[19]!.text = l.nachrichten[19]!.text.replace('CHF 290', 'CHF 310');
+    });
+    expect([pr(teurer('CHF 310 einmalig, danach CHF 15 im Monat.'), 'angebot-betrag')?.ok, pr(teurer('CHF 310 einmalig, danach CHF 15 im Monat.'), 'betrag')?.ok]).toEqual([true, true]);
+    expect([pr(teurer('CHF 290 einmalig, danach CHF 15 im Monat.'), 'angebot-betrag')?.ok, pr(teurer('CHF 290 einmalig, danach CHF 15 im Monat.'), 'betrag')?.ok]).toEqual([false, false]);
   });
 });

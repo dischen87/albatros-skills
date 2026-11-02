@@ -7,6 +7,7 @@
   "nein": [
    "angebot-betrag",
    "auftrag-bestaetigt",
+   "betrag",
    "nach-uebergabe"
   ]
  },
@@ -81,7 +82,7 @@
   },
   {
    "wer": "KI",
-   "text": "Dein Konzept steht. Das schicke ich an Albatros: deinen Plan mit Seiten, Funktionen und deinen Abnahmekriterien, deine Recherche und dein Konzept. Deine Seite bekommt die Adresse stiel-und-blatt.aufwind.sh; ändern kannst du sie bis zum Bezahlen. Passwörter und Zugangsdaten sind nicht dabei. Das Albatros-Team liest es, und beim Bauen hilft eine KI (Claude von Anthropic). Bis du bezahlst, ist alles unverbindlich. Soll ich es schicken?"
+   "text": "Dein Konzept steht. Das schicke ich an Albatros: deinen Plan mit Seiten, Funktionen und deinen Abnahmekriterien, deine Recherche und dein Konzept, als Text. Passwörter und Zugangsdaten sind nicht dabei. Die Adresse deiner Seite wählst du danach im Cockpit. Das Albatros-Team liest es, und beim Bauen hilft eine KI (Claude von Anthropic). Bis du bezahlst, ist alles unverbindlich, und du kannst jederzeit selbst weiterbauen. Soll ich es schicken?"
   },
   {
    "wer": "Person",
@@ -89,14 +90,21 @@
   },
   {
    "wer": "KI",
-   "text": "Erledigt: Auftrag #1 ist bei Albatros, CHF 290 einmalig, danach Light für CHF 15 im Monat, bezahlt wird erst bei der Vorschau. Wähl im Cockpit unter «Dein Auftrag» deinen Projektordner. Bauen musst du nichts mehr."
+   "text": "Erledigt: Auftrag #1 ist bei Albatros, CHF 290 einmalig, danach Light für CHF 15 im Monat, bezahlt wird erst bei der Vorschau. Im Cockpit unter «Dein Auftrag» wählst du die Adresse deiner Seite. Bauen musst du nichts mehr."
   }
  ],
  "aufrufe": [
   {
    "runde": 0,
    "werkzeug": "konto_status",
-   "argumente": {}
+   "argumente": {},
+   "betraege": [
+    15,
+    40,
+    5,
+    290
+   ],
+   "einmalig": 290
   },
   {
    "runde": 0,
@@ -349,7 +357,12 @@
      }
     ]
    },
-   "angebot": true
+   "angebot": true,
+   "betraege": [
+    290,
+    15
+   ],
+   "einmalig": 290
   },
   {
    "runde": 5,
@@ -506,7 +519,8 @@
       "zeilen": []
      }
     ]
-   }
+   },
+   "uebergabe": true
   },
   {
    "runde": 9,
@@ -518,7 +532,8 @@
     "seiten": "Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz. Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden». Abnahme: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an.",
     "stil": "Du-Form, herzlich; frisch, verspielt, persönlich; keine Figur; Das Logo mit dem Blatt",
     "material": "Fotos der Sträusse, das Logo mit dem Blatt"
-   }
+   },
+   "fehler": true
   },
   {
    "runde": 9,
@@ -531,7 +546,12 @@
     "seiten": "Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz. Hauptsache «Strauss anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden». Abnahme: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an.",
     "stil": "Du-Form, herzlich; frisch, verspielt, persönlich; keine Figur; Das Logo mit dem Blatt",
     "material": "Fotos der Sträusse, das Logo mit dem Blatt"
-   }
+   },
+   "betraege": [
+    290,
+    15
+   ],
+   "einmalig": 290
   },
   {
    "runde": 9,
