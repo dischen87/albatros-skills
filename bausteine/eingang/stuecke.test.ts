@@ -8,7 +8,10 @@ import { eingang, einstellungen, stueckweise } from './eingang.ts';
 
 const KB = 1024;
 const datei = (n: number, saat: number) => new Uint8Array(n).map((_, i) => (i * 7 + saat) % 251);
-const DATEIEN: Record<string, Uint8Array> = { '/video.bin': datei(2048 * KB + 77, 1), '/klein.bin': datei(100 * KB, 2), '/bild.bin': datei(600 * KB, 3) };
+// /gross.bin (02.11.2026, CI auf Linux): grösser als das, was der Kern einer Verbindung vorauspuffert (Linux bis etwa 4 MB Senden und 6 MB
+// Empfangen über loopback; auf dem Mac viel weniger). Mit 2 MB nahm Linux eine angehaltene Besucherin ganz in den Puffer, ihr Platz wurde frei,
+// und die Tests unten massen das Betriebssystem statt den Eingang.
+const DATEIEN: Record<string, Uint8Array> = { '/video.bin': datei(2048 * KB + 77, 1), '/klein.bin': datei(100 * KB, 2), '/bild.bin': datei(600 * KB, 3), '/gross.bin': datei(24 * 1024 * KB + 5, 4) };
 for (const x of ['etag', 'datum', 'laenge']) DATEIEN[`/ignoriert-${x}.bin`] = DATEIEN['/video.bin']!;
 let etag = '"1"';
 const anfragen: { pfad: string; query: string; range: string | null; ifRange: string | null }[] = [];
@@ -118,22 +121,23 @@ test('eine angehaltene Besucherin hält nur wenige Stücke; eine andere Adresse 
   anfragen.length = 0;
   // A fordert drei grosse Dateien an und liest nichts
   for (let i = 0; i < 3; i++) {
-    const s = connect({ host: '127.0.0.1', port: tuer.port }, () => { s.write(`GET /video.bin?a=${i} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: 203.0.113.20\r\n\r\n`); s.pause(); });
+    const s = connect({ host: '127.0.0.1', port: tuer.port }, () => { s.write(`GET /gross.bin?a=${i} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: 203.0.113.20\r\n\r\n`); s.pause(); });
     s.on('error', () => {});
     offen.push(s);
   }
   await Bun.sleep(1000);
-  const vonA = bereiche('/video.bin').length;
-  // Bun schreibt einer Leserin, die nicht liest, etwas voraus (Socket und eigener Puffer), aber nie die ganze Datei (32 Stücke)
-  expect(vonA).toBeLessThan(3 * 24);
+  const vonA = bereiche('/gross.bin').length;
+  // Bun und der Kern schreiben einer Leserin, die nicht liest, etwas voraus (Socket und eigener Puffer), aber nie die ganze Datei
+  expect(vonA).toBeLessThan(3 * Math.ceil(DATEIEN['/gross.bin']!.length / (64 * KB)) * 0.6);
   const t = performance.now();
   const r = await holen('/video.bin', '203.0.113.21');
   const b = new Uint8Array(await r.arrayBuffer());
   expect([r.status, gleich(b, DATEIEN['/video.bin']!)]).toEqual([200, true]);
   expect(performance.now() - t).toBeLessThan(2000);
   await Bun.sleep(300);
-  // A liest immer noch nicht: keine neuen Stücke für A
-  expect(bereiche('/video.bin').length - vonA).toBe(Math.ceil(DATEIEN['/video.bin']!.length / (64 * KB)));
+  // A liest immer noch nicht: keine neuen Stücke für A; die andere Adresse holte genau ihre Datei
+  expect(bereiche('/gross.bin').length).toBe(vonA);
+  expect(bereiche('/video.bin').length).toBe(Math.ceil(DATEIEN['/video.bin']!.length / (64 * KB)));
 }, 15_000);
 
 test('geht die Besucherin mitten im Körper, holt der Eingang keine weiteren Stücke und gibt ihren Platz frei', async () => {
@@ -181,12 +185,12 @@ test('höchstens grossJeAdresse grosse Körper je Adresse zugleich; weitere wart
   anfragen.length = 0;
   const socks: Socket[] = [];
   for (let i = 0; i < 4; i++) {
-    const s = connect({ host: '127.0.0.1', port: tuer2.port }, () => { s.write(`GET /video.bin?a=${i} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: 203.0.113.42\r\n\r\n`); s.pause(); });
+    const s = connect({ host: '127.0.0.1', port: tuer2.port }, () => { s.write(`GET /gross.bin?a=${i} HTTP/1.1\r\nHost: verein.example\r\nX-Forwarded-For: 203.0.113.42\r\n\r\n`); s.pause(); });
     s.on('error', () => {});
     socks.push(s); offen.push(s);
   }
   await Bun.sleep(800);
-  const mitStuecken = () => new Set(anfragen.filter((a) => a.pfad === '/video.bin' && a.range !== null).map((a) => a.query));
+  const mitStuecken = () => new Set(anfragen.filter((a) => a.pfad === '/gross.bin' && a.range !== null).map((a) => a.query));
   expect(mitStuecken().size).toBe(2);
   // eine andere Adresse bekommt ihre grosse Datei sofort
   const t = performance.now();
