@@ -149,6 +149,9 @@ const R2_BEZAHLT = 'Auftrag #{nr} ist bezahlt, Albatros schaltet die Seite jetzt
 const R3_WARTEN = 'Auftrag #{nr} ist live: Albatros hat die Seite gebaut, und die Person hat sie mit der Zahlung freigegeben. Albatros trägt die Freigabe gleich auf ihrer Insel ein. Ruf lage in ein paar Minuten nochmals auf und baue bis dahin nichts nach, was Albatros schon gebaut hat.';
 const R3_LOGBUCH = 'Albatros hat die Seite für Auftrag #{nr} gebaut, und sie ist live. Das ganze Projekt liegt im Logbuch im Hafen: Hol es auf diesen Computer (git clone), denn daran lernt die Person, ihre Seite selbst zu ändern. Liegt es schon da, ruf lage in diesem Ordner mit belege auf (darin docs/prd.md mit «Freigegeben:»).';
 const R3_DANACH_LOGBUCH = 'die erste eigene Änderung an der fertigen Seite mit Skill `webseite-aendern`; freiwillig eine eigene Domain (Skill `domain`) und wem die Person es zuerst sagt (Skill `lancieren`, Abschnitt «Wem sagst du es zuerst?»)';
+// R3 ohne Schloss (albatros 5e82681): eigener Grund und das Logbuch als «Danach» statt «deine Seite bleibt leer» und der Phase der Insel
+const R3_SCHLOSS = 'Albatros hat die Seite für Auftrag #{nr} gebaut, und sie ist live. Damit die Person sie selbst ändern kann, hinterlegt sie jetzt ihr Schloss: Ohne Schloss holt sie weder das Logbuch aus dem Hafen (git clone) noch bringt sie eine Änderung hinein (git push).';
+const R3_DANACH_SCHLOSS = 'das Logbuch holen mit Skill `webseite-aendern`, Abschnitt «Das Logbuch holen» (git clone), danach die erste eigene Änderung an der fertigen Seite';
 const R3_DANACH_LIVE = 'freiwillig eine eigene Domain (Skill `domain`) und wem die Person es zuerst sagt (Skill `lancieren`, Abschnitt «Wem sagst du es zuerst?»); beides kommt in docs/live.md («Eigene Domain:», «Angekündigt:»)';
 const R4 = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir.';
 const R4_ZEILE = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir. Schreib in {datei} «{zeile} selbst (TT.MM.JJJJ)».';
@@ -211,11 +214,11 @@ function auftragWeiter() {
 type BauRegeln = {
   offen: { jetzt: string; grund: string } | null; uebergabe: { jetzt: string; grund: string; danach: string } | null; angebot: string | null;
   danachP5: string | null; hinweis: string | null; rueckweg: { jetzt: string; grund: string; danach: string } | null; danachLive: string | null; gebaut: boolean;
-  schluessel: boolean;
+  schluessel: boolean; schloss: { grund: string; danach: string } | null;
 };
 // Regeln R1, R1b, R2, R3, R4 wie bauserviceRegeln; auftrag: Stand des einzigen Auftrags der Attrappe (Nummer 1) oder null
 function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; phase: string | null; geschafft: number; stoppen: boolean }): BauRegeln {
-  const r: BauRegeln = { offen: null, uebergabe: null, angebot: null, danachP5: null, hinweis: null, rueckweg: null, danachLive: null, gebaut: false, schluessel: false };
+  const r: BauRegeln = { offen: null, uebergabe: null, angebot: null, danachP5: null, hinweis: null, rueckweg: null, danachLive: null, gebaut: false, schluessel: false, schloss: null };
   if (!BAUSERVICE) return r;
   const auftrag = merk('auftrag');
   const ab = phaseIndex(F, F.bauen_lassen.ab);
@@ -238,6 +241,8 @@ function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; p
       r.gebaut = true;
     } else {
       r.schluessel = true;
+      // Ohne Schloss (lage prüft es vor dem Logbuch): danach das Logbuch, oder liegt es schon da, die erste eigene Änderung
+      r.schloss = { grund: fuelle(R3_SCHLOSS, { nr: 1 }), danach: logbuchDa(o.dateien) ? R3_DANACH_LOGBUCH : R3_DANACH_SCHLOSS };
       if (!logbuchDa(o.dateien)) r.rueckweg = { jetzt: LOGBUCH_JETZT, grund: fuelle(R3_LOGBUCH, { nr: 1 }), danach: R3_DANACH_LOGBUCH };
       else if (!nachLiveBeantwortet(o.dateien)) r.danachLive = R3_DANACH_LIVE;
     }
@@ -362,9 +367,10 @@ function lage(a: Args): Antwort {
     // R2 Auftrag offen: was die Person im Cockpit tut, oder warten; kein «Danach», nie P6 bis P10 daneben. R3 vor der Freigabe ebenso (warten)
     [jetzt, grund] = [bau.offen.jetzt, bau.offen.grund];
   } else if (bau.schluessel && erledigt >= phaseIndex(F, 'P11') && (merk('server') || seiteName()) && schloesser() === 0) {
-    // R3 nach der Freigabe: zuerst das Schloss, wie die Regel in lage (dort für alle, hier nur nach der Auslieferung); «Danach» wie dort die Phase
+    // R3 nach der Freigabe: zuerst das Schloss, wie die Regel in lage (dort für alle, hier nur nach der Auslieferung); Grund und «Danach» aus R3
     [jetzt, grund] = [skill('ssh-schluessel'), merk('server') ? KEIN_SCHLOSS.server : KEIN_SCHLOSS.seite];
     if (p) danach = `Phase ${p.id} «${p.titel}» mit ${fuer(p).text}`;
+    if (bau.schloss) [grund, danach] = [bau.schloss.grund, bau.schloss.danach];
   } else if (bau.rueckweg) {
     // R3: das Logbuch holen, nie P6 bis P10; die Phase im Stand bleibt die der Insel
     [jetzt, grund, danach] = [bau.rueckweg.jetzt, bau.rueckweg.grund, bau.rueckweg.danach];

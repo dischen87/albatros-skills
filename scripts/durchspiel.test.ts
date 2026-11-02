@@ -399,6 +399,7 @@ test.skipIf(!mitBauservice)('Bauservice: Attrappe wie lage, konto_status und auf
     { name: 'Ziel server: Vorschläge', stufe: 'pilot', belege: BAU, schritte: P5, auftrag: 'vorschlaege', stuecke: ['mockup', 'entwurf-1'], ziel: 'server' },
     { name: 'R3 live, Insel vor der Freigabe: warten', stufe: 'light', seite: 'anna', belege: BAU, schritte: P5, auftrag: 'live' },
     { name: 'R3 Freigabe auf der Insel, ohne Schloss: Schlüssel', stufe: 'light', seite: 'anna', schloesser: 0, belege: BAU, schritte: [...P5, 'freigabe'], auftrag: 'live' },
+    { name: 'R3 Logbuch da, ohne Schloss: Schlüssel, danach die erste Änderung', stufe: 'light', seite: 'anna', schloesser: 0, belege: [...BAU, prd], schritte: [...P5, 'freigabe', 'live'], auftrag: 'live' },
     { name: 'R3 Freigabe auf der Insel: Logbuch holen', stufe: 'light', seite: 'anna', belege: BAU, schritte: [...P5, 'freigabe'], auftrag: 'live' },
     { name: 'R3 Logbuch da, Insel bei Freigabe', stufe: 'light', seite: 'anna', belege: [...BAU, prd], schritte: [...P5, 'freigabe'], auftrag: 'live' },
     { name: 'R3 Logbuch da, Insel live: Domain und Ankündigung freiwillig', stufe: 'light', seite: 'anna', belege: [...BAU, prd], schritte: [...P5, 'freigabe', 'live'], auftrag: 'live' },
