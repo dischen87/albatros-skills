@@ -241,11 +241,13 @@ for (const { datei, text } of skillTexte) {
 
 // Bauservice (Welle 8, w8-44; Nachbesserung 02.11.2026 nach der Gegenprobe): Was lage, auftrag_anlegen und scripts/punkte.ts lesen, steht in
 // jeder Sprache wörtlich gleich, auch wenn die Übersetzung sonst frei ist (vorher blieb pruefen grün, wenn eine Übersetzung den Absatz
-// verlor, «selbst» übersetzte oder bestaetigt: true wegliess)
+// verlor, «selbst» übersetzte oder bestaetigt: true wegliess). Welle 9 (02.11.2026, w9-40): dazu in konzept der Projektordner im Cockpit nach
+// der Übergabe (Link cockpit/auftrag, nur `docs/` und `design/`) und Logo und Fotos in design/bilder; vorher blieb pruefen grün, wenn eine
+// Übersetzung diese Sätze verlor (Mutationen im Ergebnis w9).
 const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
   'webseite-planen': ['`Angebot:`', '`Bauen lassen: selbst (', '`Bauen lassen: albatros (', '`konto_status`'],
   lotse: ['`Angebot:`', '`inhalte`'],
-  konzept: ['`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`'],
+  konzept: ['`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`', 'cockpit/auftrag', '`design/`', 'design/bilder'],
 };
 for (const { datei, slug, text } of skillTexte)
   for (const w of BAUSERVICE_WOERTLICH[slug] ?? []) if (!text.includes(w)) fehler.push(`${datei}: Bauservice, «${w}» fehlt (wörtlich wie im deutschen Skill)`);
