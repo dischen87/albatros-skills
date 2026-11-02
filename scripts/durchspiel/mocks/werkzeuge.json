@@ -6,7 +6,7 @@
    "type": "object",
    "properties": {
     "skills_stand": {
-     "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin), damit lage merkt, wenn sie veraltet sind.",
+     "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin), damit lage merkt, wenn sie veraltet sind. Ohne Angabe gilt die Kopfzeile X-Albatros-Skills-Stand, die das Plugin selbst mitschickt; skills_stand geht ihr vor.",
      "type": "string",
      "maxLength": 20
     },
@@ -124,6 +124,74 @@
    },
    "required": [
     "text"
+   ]
+  }
+ },
+ {
+  "name": "auftrag_anlegen",
+  "description": "Nur wenn die Person will, dass Albatros ihre Seite baut, lage dazu «Übergabe an Albatros» nennt und sie auf «Soll ich es schicken?» ausdrücklich Ja gesagt hat (bestaetigt: true): Legt den Auftrag mit dem Briefing an. Albatros baut bis jetzt nur Seiten ohne Baustein (Setup statisch) und nicht auf einen eigenen Server. Die Felder füllst du aus ihren Dateien, ohne Namen von Dritten und ohne Passwörter oder Zugangsdaten. Gibt Nummer, Betrag und den Link ins Cockpit zurück; bezahlt wird erst, wenn ihr die Vorschau gefällt. Höchstens ein offener Auftrag je Person.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "bestaetigt": {
+     "type": "boolean",
+     "description": "true erst nach dem ausdrücklichen Ja der Person auf «Soll ich es schicken?»; ohne Ja legt Albatros nichts an."
+    },
+    "name": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 120,
+     "description": "Name der Seite oder des Projekts: «Name:» aus docs/konzept.md, sonst «Projektname:» aus docs/projekt.md."
+    },
+    "wofuer": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2000,
+     "description": "Wofür die Seite ist: «In einem Satz:», «Hauptsache:» und «Erfolg:» aus docs/projekt.md; auf dem Weg Geschäft dazu docs/angebot.md."
+    },
+    "fuerWen": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2000,
+     "description": "Für wen sie ist: «Für wen:» aus docs/projekt.md; auf dem Weg Geschäft dazu docs/zielgruppe.md."
+    },
+    "seiten": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2000,
+     "description": "Seiten und Funktionen aus docs/plan.md («Seiten:», «Funktionen:», «Sprachen:»)."
+    },
+    "setup": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 300,
+     "description": "Die Zeile «Setup:» aus docs/plan.md, wörtlich. Albatros baut bis jetzt nur Seiten, deren Setup mit statisch beginnt und von der Person bestätigt ist."
+    },
+    "adresse": {
+     "description": "Bestehende Webseite: «Bestehende Seite:» aus docs/projekt.md, nur wenn es eine gibt.",
+     "type": "string",
+     "maxLength": 300
+    },
+    "stil": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2000,
+     "description": "Wirkung aus docs/konzept.md («Ton:», «Charakter:», «Muss bleiben:», «Maskottchen:», «Bildsprache:») und docs/recherche.md («Vorbilder:», «Übernehmen:», «Vermeiden:»)."
+    },
+    "material": {
+     "description": "Inhalte und Pflichten aus docs/recherche.md («Inhalte vorhanden:», «Pflichten:») und die Abnahmekriterien aus docs/plan.md («Testing:»); nur Text und Links, keine Dateien.",
+     "type": "string",
+     "maxLength": 4000
+    }
+   },
+   "required": [
+    "bestaetigt",
+    "name",
+    "wofuer",
+    "fuerWen",
+    "seiten",
+    "setup",
+    "stil"
    ]
   }
  },

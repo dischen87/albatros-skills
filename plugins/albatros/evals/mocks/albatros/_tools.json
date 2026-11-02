@@ -7,7 +7,7 @@
         "type": "object",
         "properties": {
           "skills_stand": {
-            "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin), damit lage merkt, wenn sie veraltet sind.",
+            "description": "Stand der Albatros-Skills auf diesem Computer (metadata.stand im Plugin), damit lage merkt, wenn sie veraltet sind. Ohne Angabe gilt die Kopfzeile X-Albatros-Skills-Stand, die das Plugin selbst mitschickt; skills_stand geht ihr vor.",
             "type": "string",
             "maxLength": 20
           },
