@@ -114,10 +114,11 @@ const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Wer
 // wenn albatros den Bauservice hat. Nicht nachgebaut: abgelaufene Vorschläge und Vorschau (braucht die Stücke des Auftrags in konto).
 // Welle 9 (02.11.2026, w9-42, Stand albatros efe228c): R2 «vorschlaege» mit den Angaben fürs Impressum (J5), Ziel server (eigener Server oder
 // Pilot) ohne Bezahlen und ohne Betrag in lage, konto_status und auftrag_anlegen, R3 nach der Auslieferung (J4: warten bis zur Freigabe auf der
-// Insel, Schlüssel, Logbuch holen, danach die erste eigene Änderung, Domain und Ankündigung freiwillig), konto_status nach live. Dazu nach dem
-// Zweig fahrplan/w9-nahtstellen in albatros (Entscheid des Koordinators, 02.11.2026): «Setup: [Annahme: statisch …]» gibt kein Angebot mehr,
-// nur die Antwort, die mit statisch beginnt. Bis er zusammengeführt ist, weicht das echte mcp in diesem einen Fall ab (durchspiel.test.ts nennt
-// die Ausnahme mit Datum).
+// Insel, Schlüssel, Logbuch holen, danach die erste eigene Änderung, Domain und Ankündigung freiwillig), konto_status nach live. Dazu die
+// Nahtstellen nach Welle 9 (albatros 6540052): «Setup: [Annahme: statisch …]» gibt kein Angebot, nur die bestätigte Antwort, die mit statisch
+// beginnt; R1b übergibt nur mit diesem Setup und ohne eigenen Server (sonst der normale Fahrplan mit dem Hinweis, was gilt, bis P6 geschafft);
+// auftrag_anlegen braucht setup und lehnt ohne Setup statisch oder mit Pilot oder eigenem Server ab, ohne Auftrag; «Danach» und die Antwort
+// von auftrag_anlegen nennen den Projektordner.
 // Die Attrappe ist hier auch konto: Stand des Auftrags in der Datei auftrag im Hafen, Betrag wie GET /web/auftrag (stufen.ts AUFTRAG.preisChf und
 // Light; durchspiel.test.ts gleicht mit albatros ab). scripts/punkte.ts liest die Beträge aus den Antworten, nie von hier. Im Durchspiel (mit
 // DURCHSPIEL_RUNDE) arbeitet Albatros zwischen den Runden: Jede neue Runde, in der die KI lage oder konto_status aufruft, rückt der Auftrag einen
@@ -136,7 +137,7 @@ const COCKPIT_AUFTRAG = 'https://albatros.build/cockpit/auftrag';
 const ANGEBOT_ABO = 'Albatros kann deine Seite auch für dich bauen: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF {einmalig} einmalig, danach Light für CHF {abo} im Monat. Selbst weiterbauen kostet bis zur fertigen Seite auf deinem Computer nichts. Frag die Person einmal, was ihr lieber ist, und schreib ihre Antwort mit Datum in {datei}: «{zeile} selbst (TT.MM.JJJJ)» oder «{zeile} albatros (TT.MM.JJJJ)». Die Fragen zum Konzept kommen so oder so.';
 const ANGEBOT_LIGHT = 'Albatros kann deine Seite auch für dich bauen: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF {einmalig} einmalig, Light hast du schon. Selbst weiterbauen kostet bis zur fertigen Seite auf deinem Computer nichts. Frag die Person einmal, was ihr lieber ist, und schreib ihre Antwort mit Datum in {datei}: «{zeile} selbst (TT.MM.JJJJ)» oder «{zeile} albatros (TT.MM.JJJJ)». Die Fragen zum Konzept kommen so oder so.';
 const UEBERGABE = 'Die Person will, dass Albatros ihre Seite baut, und ihr Konzept steht. Fass zusammen, was mitgeht, frag «Soll ich es schicken?» und leg den Auftrag erst nach ihrem Ja mit auftrag_anlegen an. Weiterbauen mit P6 gehört nicht dazu.';
-const DANACH_COCKPIT = 'im Cockpit unter «Dein Auftrag» die Adresse der Seite und später eine Richtung wählen ({link})';
+const DANACH_COCKPIT = 'im Cockpit unter «Dein Auftrag» den Projektordner und die Adresse der Seite wählen, später eine Richtung ({link})';
 const R2_VORSCHLAEGE = 'Die Entwürfe für Auftrag #{nr} sind da. Die Person schaut sie im Cockpit an, wählt eine Richtung und gibt dort die Angaben fürs Impressum ein: Name oder Firma, Postadresse und E-Mail. An diese E-Mail gehen auch Anfragen von Besuchern, ausser sie nennt eine andere. Diese Angaben gibt sie nur im Cockpit ein, nie im Chat: {link}. Bauen musst du nichts.';
 const R2_VORSCHAU_ABO = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an. Gefällt sie ihr, klickt sie im Cockpit auf «Bezahlen und live schalten» (CHF {einmalig} einmalig, dazu Light für CHF {abo} im Monat); sonst schreibt sie dort, was anders werden soll: {link}.';
 const R2_VORSCHAU = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an. Gefällt sie ihr, klickt sie im Cockpit auf «Bezahlen und live schalten» (CHF {einmalig} einmalig); sonst schreibt sie dort, was anders werden soll: {link}.';
@@ -151,6 +152,8 @@ const R3_DANACH_LOGBUCH = 'die erste eigene Änderung an der fertigen Seite mit 
 const R3_DANACH_LIVE = 'freiwillig eine eigene Domain (Skill `domain`) und wem die Person es zuerst sagt (Skill `lancieren`, Abschnitt «Wem sagst du es zuerst?»); beides kommt in docs/live.md («Eigene Domain:», «Angekündigt:»)';
 const R4 = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir.';
 const R4_ZEILE = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir. Schreib in {datei} «{zeile} selbst (TT.MM.JJJJ)».';
+const NUR_STATISCH = 'Albatros baut bis jetzt nur Seiten ohne eigene Dienste: Dafür beginnt «{setup}» in {plan} mit statisch, von der Person bestätigt (ohne [Annahme]). Braucht die Seite einen Baustein (Anmeldung, Buchung, Login), baust du mit ihr selbst weiter und schreibst in {datei} «{zeile} selbst (TT.MM.JJJJ)».';
+const NUR_OHNE_SERVER = 'Mit einem eigenen Server oder dem Abo Pilot baut Albatros die Seite noch nicht: Dorthin liefert es noch nicht von selbst aus. Darum baust du mit der Person selbst weiter und schreibst in {datei} «{zeile} selbst (TT.MM.JJJJ)»; will sie trotzdem bauen lassen, frag das Team mit coach_fragen.';
 const OHNE_JA = 'Ohne das ausdrückliche Ja der Person lege ich keinen Auftrag an. Zeig ihr die Zusammenfassung, frag «Soll ich es schicken?» und ruf auftrag_anlegen erst nach ihrem Ja mit bestaetigt: true auf.';
 const UEBERGABE_JETZT = 'Skill `konzept`, Abschnitt «Übergabe an Albatros»';
 const LOGBUCH_JETZT = 'Skill `webseite-aendern`, Abschnitt «Das Logbuch holen»';
@@ -173,6 +176,14 @@ const bauenLassen = (dateien: Record<string, string>) => {
 const setupPasst = (dateien: Record<string, string>) => {
   const w = wert(dateien[SETUP_DATEI], SETUP_ZEILE);
   return beantwortet(F, w) && wertPasst(F, { werte: [F.bauen_lassen.setup_beginnt] }, w);
+};
+// Was eine Übergabe verhindert, wie uebergabeHindernis: ohne Ziel, in das konto ausliefert, oder ohne Setup statisch (bestätigt)
+const uebergabeHindernis = (dateien: Record<string, string>) => (!bauserviceMoeglich() ? NUR_OHNE_SERVER : !setupPasst(dateien) ? NUR_STATISCH : null);
+const HINDERNIS_WERTE = { setup: SETUP_ZEILE, plan: SETUP_DATEI, datei: BL_DATEI, zeile: BL_ZEILE };
+// setup von auftrag_anlegen als Beleg wie setupBeleg: die ganze Zeile (auch als Listenpunkt) oder nur der Wert
+const setupBeleg = (s: string): Record<string, string> => {
+  const z0 = s.trim().replace(/^[-*]\s+/, '');
+  return { [SETUP_DATEI]: z0.startsWith(SETUP_ZEILE) ? z0 : `${SETUP_ZEILE} ${z0}` };
 };
 // R3 liest zwei Stellen aus dem Vertrag wie bauservice.ts: docs/prd.md mit dem Ja-Moment von P10 (konto schreibt «Freigegeben: …, Abnahme mit
 // der Zahlung von Auftrag #n», J2) heisst, das Logbuch liegt auf dem Computer; docs/live.md mit den Antworten auf adresse und ankuendigung (P13)
@@ -237,6 +248,14 @@ function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; p
     return r;
   }
   const ohneAuftrag = auftrag === null;
+  // R1b nur unter den Bedingungen von R1: sonst der normale Fahrplan mit dem Satz, was gilt, wie R4 nur, bis P6 geschafft ist
+  if (bl.wahl === 'albatros' && ohneAuftrag) {
+    const hindernis = uebergabeHindernis(o.dateien);
+    if (hindernis) {
+      if (o.geschafft <= ab + 1) r.hinweis = fuelle(hindernis, HINDERNIS_WERTE);
+      return r;
+    }
+  }
   if (!bauserviceMoeglich()) return r;
   if (bl.wahl === 'albatros' && ohneAuftrag) {
     if (o.geschafft > ab) r.uebergabe = { jetzt: UEBERGABE_JETZT, grund: UEBERGABE, danach: fuelle(DANACH_COCKPIT, { link: COCKPIT_AUFTRAG }) };
@@ -602,18 +621,16 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
   // ein offener Auftrag je Person (409 wörtlich wie konto)
   auftrag_anlegen: (a) => {
     if (a.bestaetigt !== true) return { fehler: true, text: OHNE_JA };
+    // Dieselbe Regel wie R1 und R1b (Nahtstellen nach Welle 9): mit Pilot oder eigenem Server, ohne Setup statisch (bestätigt) kein Auftrag
+    const hindernis = uebergabeHindernis(setupBeleg(String(a.setup ?? '')));
+    if (hindernis) return { fehler: true, text: fuelle(hindernis, HINDERNIS_WERTE) };
     if (istOffen(merk('auftrag'))) return { fehler: true, text: 'Du hast schon einen offenen Auftrag.' };
     setze('auftrag', 'briefing');
     setze('auftrag-runde', String(runde() ?? -1));
-    // Ziel server (Welle 9): ohne Betrag, und eine Adresse auf aufwind.sh gibt es dann nicht zu wählen
-    if (zielServer()) {
-      return { text: `Auftrag #1 ist bei Albatros. ${ZIEL_SERVER} Im Cockpit unter «Dein Auftrag»: ${COCKPIT_AUFTRAG}. `
-        + 'Dort wählt die Person später eine Richtung; bauen muss sie nichts mehr. Ruf lage erneut auf.' };
-    }
     const p = auftragPreis();
     const abo = p.aboChfMonat === null ? '' : `, dazu Light für CHF ${p.aboChfMonat} im Monat`;
     return { text: `Auftrag #1 ist bei Albatros. Bezahlt wird erst, wenn die Vorschau gefällt: CHF ${p.einmaligChf} einmalig${abo}. `
-      + `Im Cockpit unter «Dein Auftrag»: ${COCKPIT_AUFTRAG}. Dort wählt die Person die Adresse ihrer Seite und später eine Richtung; bauen muss sie nichts mehr. Ruf lage erneut auf.` };
+      + `Im Cockpit unter «Dein Auftrag»: ${COCKPIT_AUFTRAG}. Dort wählt die Person ihren Projektordner und die Adresse ihrer Seite, später eine Richtung; bauen muss sie nichts mehr. Ruf lage erneut auf.` };
   },
   schluessel_hinterlegen: (a) => {
     if (!/^(ssh-ed25519|ssh-rsa|ecdsa-sha2-nistp256) [A-Za-z0-9+/=]{20,}/.test(String(a.schluessel).trim())) {
@@ -653,13 +670,14 @@ const mitText = (n: string) => [...(fallOrdner ? [fallOrdner] : []), ...ordner].
 const text1 = (max: number, description: string): Knoten => ({ type: 'string', minLength: 1, maxLength: max, description });
 const AUFTRAG_WERKZEUG: Schema = ECHT.find((w) => w.name === 'auftrag_anlegen') ?? {
   name: 'auftrag_anlegen',
-  description: 'Nur wenn die Person will, dass Albatros ihre Seite baut, lage dazu «Übergabe an Albatros» nennt und sie auf «Soll ich es schicken?» ausdrücklich Ja gesagt hat (bestaetigt: true): Legt den Auftrag mit dem Briefing an. Die Felder füllst du aus ihren Dateien, ohne Namen von Dritten und ohne Passwörter oder Zugangsdaten. Gibt Nummer, Betrag und den Link ins Cockpit zurück; bezahlt wird erst, wenn ihr die Vorschau gefällt. Höchstens ein offener Auftrag je Person.',
-  inputSchema: { type: 'object', required: ['bestaetigt', 'name', 'wofuer', 'fuerWen', 'seiten', 'stil'], properties: {
+  description: 'Nur wenn die Person will, dass Albatros ihre Seite baut, lage dazu «Übergabe an Albatros» nennt und sie auf «Soll ich es schicken?» ausdrücklich Ja gesagt hat (bestaetigt: true): Legt den Auftrag mit dem Briefing an. Albatros baut bis jetzt nur Seiten ohne Baustein (Setup statisch) und nicht auf einen eigenen Server. Die Felder füllst du aus ihren Dateien, ohne Namen von Dritten und ohne Passwörter oder Zugangsdaten. Gibt Nummer, Betrag und den Link ins Cockpit zurück; bezahlt wird erst, wenn ihr die Vorschau gefällt. Höchstens ein offener Auftrag je Person.',
+  inputSchema: { type: 'object', required: ['bestaetigt', 'name', 'wofuer', 'fuerWen', 'seiten', 'setup', 'stil'], properties: {
     bestaetigt: { type: 'boolean', description: 'true erst nach dem ausdrücklichen Ja der Person auf «Soll ich es schicken?»; ohne Ja legt Albatros nichts an.' },
     name: text1(120, 'Name der Seite oder des Projekts: «Name:» aus docs/konzept.md, sonst «Projektname:» aus docs/projekt.md.'),
     wofuer: text1(2000, 'Wofür die Seite ist: «In einem Satz:», «Hauptsache:» und «Erfolg:» aus docs/projekt.md; auf dem Weg Geschäft dazu docs/angebot.md.'),
     fuerWen: text1(2000, 'Für wen sie ist: «Für wen:» aus docs/projekt.md; auf dem Weg Geschäft dazu docs/zielgruppe.md.'),
     seiten: text1(2000, 'Seiten und Funktionen aus docs/plan.md («Seiten:», «Funktionen:», «Sprachen:»).'),
+    setup: text1(300, 'Die Zeile «Setup:» aus docs/plan.md, wörtlich. Albatros baut bis jetzt nur Seiten, deren Setup mit statisch beginnt und von der Person bestätigt ist.'),
     adresse: { type: 'string', maxLength: 300, description: 'Bestehende Webseite: «Bestehende Seite:» aus docs/projekt.md, nur wenn es eine gibt.' },
     stil: text1(2000, 'Wirkung aus docs/konzept.md («Ton:», «Charakter:», «Muss bleiben:», «Maskottchen:», «Bildsprache:») und docs/recherche.md («Vorbilder:», «Übernehmen:», «Vermeiden:»).'),
     material: { type: 'string', maxLength: 4000, description: 'Inhalte und Pflichten aus docs/recherche.md («Inhalte vorhanden:», «Pflichten:») und die Abnahmekriterien aus docs/plan.md («Testing:»); nur Text und Links, keine Dateien.' },
@@ -688,7 +706,7 @@ const MUSTER_MELDUNG: Record<string, string> = {
   '^[a-z0-9][a-z0-9-]{0,39}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 40 Zeichen',
   '^[a-z0-9][a-z0-9-]{0,63}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 64 Zeichen',
 };
-const GETRIMMT = new Set(['schritt_melden.titel', ...['name', 'wofuer', 'fuerWen', 'seiten', 'adresse', 'stil', 'material'].map((f) => `auftrag_anlegen.${f}`)]);
+const GETRIMMT = new Set(['schritt_melden.titel', ...['name', 'wofuer', 'fuerWen', 'seiten', 'setup', 'adresse', 'stil', 'material'].map((f) => `auftrag_anlegen.${f}`)]);
 type Fund = { pfad: (string | number)[]; text: string; weiter?: boolean }; // weiter wie issue.continue bei zod: false hält alles Weitere an
 const artVon = (v: unknown) => (v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v);
 const alsWert = (v: unknown) => (typeof v === 'string' ? `"${v}"` : String(v));
