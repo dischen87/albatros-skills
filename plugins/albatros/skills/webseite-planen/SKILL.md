@@ -44,7 +44,7 @@ Will die Person gleich den ganzen Plan, schreibst du die fehlenden Dateien in ei
 
 1. In `docs/projekt.md` die Zeilen `Stand:` und `Nächster Schritt:` nachführen.
 2. `schritt_melden` mit dem Schritt aus der Tabelle oben, `titel` (der Wert der Zeile `Projektname:` in `docs/projekt.md`, so wie die Person ihr Projekt nennt) und `sprache` (die Sprache des Gesprächs). Mit `titel` zeigt die Insel das Haus mit diesem Namen statt «projekt»; Albatros nimmt ihn bis 300 Zeichen an und kürzt ihn dort auf 80. `projekt` lässt du beim ersten Projekt der Person weg: Daraus wird später das Logbuch im Hafen. Nur für ein weiteres Projekt gibst du einen kurzen Namen aus Kleinbuchstaben, Ziffern und «-» mit. Sag der Person in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben» wegen `titel` (etwa ein Zeilenumbruch oder mehr als 300 Zeichen), meldest du denselben Schritt gleich nochmals ohne `titel`: Der Schritt zählt, der Name ist Nebensache. Antwortet es sonst «Ungültige Angaben» oder «unbekannt», oder fehlt es, geht es ohne Insel weiter.
-3. Die Mission des Abschnitts prüfen (unten, «Mission prüfen»), dann `lage` erneut aufrufen (Skill `lotse`) und dem folgen, was jetzt dran ist.
+3. Die Mission des Abschnitts prüfen (unten, «Mission prüfen»), dann `lage` erneut aufrufen (Skill `lotse`), mit `skills_stand` (dem Wert von `stand` unter `metadata` oben in dieser Datei), und dem folgen, was jetzt dran ist.
 
 Hat die Person ein Konto und ist ihre Insel in diesem Gespräch noch nicht offen, öffnest du sie einmal: `open https://albatros.build/cockpit/insel` (mit Sprachpräfix wie `/fr/cockpit/insel`; Linux `xdg-open`, Windows `start`). Dort wächst mit jedem Schritt ein Haus.
 
@@ -85,7 +85,7 @@ Hat die Person ein Konto und ist ihre Insel in diesem Gespräch noch nicht offen
 
    ## Zuerst
 
-   Lies `docs/projekt.md` (Stand, nächster Schritt), dann ruf `lage` auf (Albatros). `lage` sagt, welcher Skill und welcher Abschnitt jetzt dran ist; folge ihm. Gibt es `docs/projekt.md` noch nicht, beginnt das Projekt mit dem Skill `webseite-planen`, Abschnitt Idee. Ohne Verbindung zu Albatros hilft der Skill `lotse` weiter.
+   Lies `docs/projekt.md` (Stand, nächster Schritt), dann ruf `lage` auf (Albatros), immer mit `skills_stand`: dem Wert von `stand` unter `metadata` oben in den Skills von Albatros. `lage` sagt, welcher Skill und welcher Abschnitt jetzt dran ist; folge ihm. Gibt es `docs/projekt.md` noch nicht, beginnt das Projekt mit dem Skill `webseite-planen`, Abschnitt Idee. Ohne Verbindung zu Albatros hilft der Skill `lotse` weiter.
 
    ## Regeln
 
@@ -93,7 +93,7 @@ Hat die Person ein Konto und ist ihre Insel in diesem Gespräch noch nicht offen
    - Nichts geht ins Netz ohne Freigabe: kein Veröffentlichen und kein Push in den Hafen, bevor die Person ihre Seite freigegeben hat (`Freigegeben:` in `docs/prd.md`). Nach dem Livegang braucht jede Änderung ihr eigenes Ja.
    - Preise nur aus `konto_status`, nie aus dem Gedächtnis.
    - Höchstens zwei Fragen in einer Nachricht. Was du selbst vorschlagen kannst, steht als `[Annahme: …]`, was offen ist, als `[offen: …]`. Nichts erfinden.
-   - Nach jedem geschafften Schritt: `Stand:` und `Nächster Schritt:` in `docs/projekt.md` nachführen, `schritt_melden` (mit `titel`, dem Wert der Zeile `Projektname:`, sobald es sie gibt), dann `lage` erneut.
+   - Nach jedem geschafften Schritt: `Stand:` und `Nächster Schritt:` in `docs/projekt.md` nachführen, `schritt_melden` (mit `titel`, dem Wert der Zeile `Projektname:`, sobald es sie gibt), dann `lage` erneut, mit `skills_stand`.
    - Passwörter, Kartennummern und private Schlüssel gehören nie in den Chat und nie in eine Datei des Projekts. Geheimnisse stehen in `.env`, und `.env` steht in `.gitignore`.
    - Du-Form, Alltagssprache. Ein Fachwort kommt erst mit seinem Bild.
    ```

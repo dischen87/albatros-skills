@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site. Dans le plan de vol (P6) : maquette grise (« L'ordre est-il juste ? »), trois directions bien différentes tirées du concept, vérification contre le look IA, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Toujours avec la question des éléments graphiques (icônes, photos, mascotte, 3D ; outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « icônes », « mascotte », « 3D »."
 metadata:
   stand: 0.2.0
-  quelle: 'c9b2b9c3e084'
+  quelle: 'cdb199a62e56'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -131,7 +131,7 @@ Ouvre la planche d'échantillons et montre à la personne comment la voir sur le
 
 ### L'île
 
-Après l'étape 1, tu appelles l'outil `schritt_melden` avec `schritt: mockup` et `sprache: fr`, après l'étape 5 avec `schritt: entwuerfe`. `projekt`, tu le laisses de côté, sauf si la personne travaille à un autre projet qui se trouve seulement sur son ordinateur ; tu donnes alors son nom court. Dis-lui en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables), vérifie une fois l'orthographe ; s'il manque, on continue sans l'île. Ensuite, tu appelles à nouveau `lage` (skill `lotse`).
+Après l'étape 1, tu appelles l'outil `schritt_melden` avec `schritt: mockup` et `sprache: fr`, après l'étape 5 avec `schritt: entwuerfe`. `projekt`, tu le laisses de côté, sauf si la personne travaille à un autre projet qui se trouve seulement sur son ordinateur ; tu donnes alors son nom court. Dis-lui en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables), vérifie une fois l'orthographe ; s'il manque, on continue sans l'île. Ensuite, tu appelles à nouveau `lage` (skill `lotse`), toujours avec `skills_stand` : la valeur de `stand` sous `metadata` en haut de ce fichier.
 
 ## Trois directions
 

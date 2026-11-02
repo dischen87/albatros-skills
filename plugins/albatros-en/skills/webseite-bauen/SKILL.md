@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: '99f07c378614'
+  quelle: 'fa330a390be9'
 ---
 
 # Building the website: the shell in your own workshop
@@ -298,7 +298,7 @@ Now the person walks through their house themselves. They decide whether it may 
 
 If the person wants to change something before the release: a text, a picture or a date goes back to step 4, then the check and the walk-through again. A new page or a new feature is an addition: first in `docs/plan.md`, then a draft of the changed pages and a new approval to build (skill `entwurf`), and only then is it built.
 
-Next comes the skill `lancieren`: where should the site live? Call `lage` if the tool is there, and follow it.
+Next comes the skill `lancieren`: where should the site live? Call `lage` if the tool is there, with `skills_stand` (the value of `stand` under `metadata` at the top of this file), and follow it.
 
 ## Pitfalls
 

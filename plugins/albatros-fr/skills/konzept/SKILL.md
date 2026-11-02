@@ -3,7 +3,7 @@ name: konzept
 description: "Clarifie avec une personne sans connaissances préalables, après le plan confirmé, le caractère de son site avant de choisir les couleurs (plan de vol P5) : nom vers l'extérieur, cœur en trois phrases, ton (tu ou vous), trois mots pour l'effet voulu, ce qui doit rester, langage visuel et toujours la question de savoir si un personnage (mascotte) en fait partie : oui, non ou plus tard. Sur le parcours entreprise, d'abord avec la méthode marke. Des images du personnage seulement après avoir indiqué le prix et reçu un oui. Le résultat est docs/konzept.md. Utilise ce skill après webseite-planen (plan confirmé) et pour « concept », « marque », « caractère », « ton », « mascotte », « personnage », « quel effet doit faire mon site »."
 metadata:
   stand: 0.2.0
-  quelle: '1b21dc585537'
+  quelle: '1aa319758af2'
 ---
 
 # Concept : le caractère avant les couleurs
@@ -124,7 +124,7 @@ Avec Gratis, si le crédit ne suffit pas ou si la personne ne veut pas (encore) 
 
 ## L'île
 
-Quand tout est dans `docs/konzept.md` et que `Maskottchen:` commence par `ja`, `nein` ou `später`, tu appelles l'outil `schritt_melden` avec `schritt: konzept` et `sprache: fr`. `projekt`, tu le laisses de côté, sauf si la personne travaille à un autre projet qui se trouve seulement sur son ordinateur ; tu donnes alors son nom court. Dis-lui en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables), vérifie une fois l'orthographe ; si Albatros ne connaît pas encore l'étape, on continue sans l'île, `docs/konzept.md` en est la preuve. Ensuite, tu appelles à nouveau `lage` (skill `lotse`).
+Quand tout est dans `docs/konzept.md` et que `Maskottchen:` commence par `ja`, `nein` ou `später`, tu appelles l'outil `schritt_melden` avec `schritt: konzept` et `sprache: fr`. `projekt`, tu le laisses de côté, sauf si la personne travaille à un autre projet qui se trouve seulement sur son ordinateur ; tu donnes alors son nom court. Dis-lui en une phrase que sa maison a grandi sur l'île. Si l'outil répond « Ungültige Angaben » (données non valables), vérifie une fois l'orthographe ; si Albatros ne connaît pas encore l'étape, on continue sans l'île, `docs/konzept.md` en est la preuve. Ensuite, tu appelles à nouveau `lage` (skill `lotse`), toujours avec `skills_stand` : la valeur de `stand` sous `metadata` en haut de ce fichier.
 
 ## Remise à Albatros (Übergabe an Albatros)
 

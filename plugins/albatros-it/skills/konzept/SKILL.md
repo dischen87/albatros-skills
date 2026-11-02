@@ -3,7 +3,7 @@ name: konzept
 description: "Chiarisce con una persona senza conoscenze tecniche, dopo il piano confermato, il carattere del suo sito prima di scegliere i colori (piano di volo P5): nome verso l'esterno, nucleo in tre frasi, tono (tu o Lei), tre parole per l'effetto, ciò che deve restare, linguaggio visivo e sempre la domanda se ne fa parte un personaggio (mascotte): sì, no o più tardi. Sul percorso attività prima con il metodo marke. Immagini del personaggio solo dopo aver indicato il prezzo e ricevuto un sì. Il risultato è docs/konzept.md. Usa questo skill dopo webseite-planen (piano confermato) e con «concetto», «marchio», «carattere», «tono», «mascotte», «personaggio», «che effetto deve fare il mio sito»."
 metadata:
   stand: 0.2.0
-  quelle: '1b21dc585537'
+  quelle: '1aa319758af2'
 ---
 
 # Concetto: il carattere prima dei colori
@@ -124,7 +124,7 @@ Con Gratis, se il credito non basta o la persona non vuole (ancora) un'immagine,
 
 ## L'isola
 
-Quando tutto è in `docs/konzept.md` e `Maskottchen:` comincia con `ja`, `nein` o `später`, chiami lo strumento `schritt_melden` con `schritt: konzept` e `sprache: it`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se Albatros non conosce ancora il passo, si continua senza isola, `docs/konzept.md` ne è la prova. Dopo chiami di nuovo `lage` (skill `lotse`).
+Quando tutto è in `docs/konzept.md` e `Maskottchen:` comincia con `ja`, `nein` o `später`, chiami lo strumento `schritt_melden` con `schritt: konzept` e `sprache: it`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta sull'isola. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se Albatros non conosce ancora il passo, si continua senza isola, `docs/konzept.md` ne è la prova. Dopo chiami di nuovo `lage` (skill `lotse`), sempre con `skills_stand`: il valore di `stand` sotto `metadata` in cima a questo file.
 
 ## Consegna ad Albatros (Übergabe an Albatros)
 

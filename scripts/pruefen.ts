@@ -7,7 +7,7 @@ import { Glob } from 'bun';
 import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
-import { pruefeAbschnittsnamen } from './abschnitte.ts';
+import { ohneCode, pruefeAbschnittsnamen } from './abschnitte.ts';
 import { ALTE_INSEL, ladeFahrplan, stufeFehler } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
@@ -263,6 +263,24 @@ const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
 };
 for (const { datei, slug, text } of skillTexte)
   for (const w of BAUSERVICE_WOERTLICH[slug] ?? []) if (!text.includes(w)) fehler.push(`${datei}: Bauservice, «${w}» fehlt (wörtlich wie im deutschen Skill)`);
+// skills_stand bei jedem Aufruf von lage (Welle 9, w9-43, 02.11.2026): Gemini CLI und Cursor schicken keine Kopfzeile mit dem Stand der Skills
+// (die Verbindung kommt dort nicht aus dem Plugin); ruft die KI lage aus einem Skill ohne skills_stand auf, meldet lage die Skills fälschlich als
+// veraltet (Bericht Welle 8, Live-Test). Jeder Satz in einem deutschen Skill und in vorlage/AGENTS.md, der lage aufrufen lässt, nennt
+// skills_stand (lotse beschreibt die Angaben selbst und ist ausgenommen); jede Übersetzung nennt `skills_stand` gleich oft wie das Deutsche.
+const LAGE_AUFRUF = /(?:\bruf(?:st du)?|\brufen) `lage`|`lage`(?: von Albatros)? (?:erneut|nochmals)|`lage`(?: von Albatros)? auf(?:rufen)?\b/i;
+const saetze = (text: string) => ohneCode(text).join('\n').split(/(?<=[.!?])\s+|\n/);
+const zaehle = (text: string) => text.split('`skills_stand`').length - 1;
+const agentsDe = (await lies('vorlage/AGENTS.md')) ?? '';
+for (const [datei, text] of [...skillTexte.filter((s) => s.datei.startsWith('plugins/albatros/') && s.slug !== 'lotse').map((s) => [s.datei, s.text] as const), ['vorlage/AGENTS.md', agentsDe] as const])
+  for (const satz of saetze(text)) if (LAGE_AUFRUF.test(satz) && !satz.includes('`skills_stand`')) fehler.push(`${datei}: lage ohne \`skills_stand\`: «${satz.trim().slice(0, 100)}»`);
+for (const { datei, slug, text } of skillTexte.filter((s) => !s.datei.startsWith('plugins/albatros/'))) {
+  const de = skillTexte.find((s) => s.slug === slug && s.datei.startsWith('plugins/albatros/'));
+  if (de && zaehle(text) !== zaehle(de.text)) fehler.push(`${datei}: \`skills_stand\` ${zaehle(text)}-mal, im deutschen Skill ${zaehle(de.text)}-mal`);
+}
+for (const s of ['fr', 'it', 'en']) {
+  const t = await lies(`uebersetzungen/${s}/vorlage/AGENTS.md`);
+  if (t !== null && zaehle(t) !== zaehle(agentsDe)) fehler.push(`uebersetzungen/${s}/vorlage/AGENTS.md: \`skills_stand\` ${zaehle(t)}-mal, in vorlage/AGENTS.md ${zaehle(agentsDe)}-mal`);
+}
 // Marken für «Annahme» in pruefen.mjs (webseite-bauen, Freigabe mit --freigabe und --vor-bau) wie marken.annahme in fahrplan.yaml: Die
 // Zeile ist von Hand geschrieben, kit liest die Marken aus dem Vertrag (Nachbesserung 02.11.2026: eine neue Marke im Vertrag hätte pruefen.mjs
 // sonst unbemerkt «frei» sagen lassen, wo kit «nicht frei» sagt)

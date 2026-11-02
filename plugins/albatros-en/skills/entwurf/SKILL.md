@@ -3,7 +3,7 @@ name: entwurf
 description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page from the plan in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, looked at on a phone and on a computer. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
   stand: 0.2.0
-  quelle: '847fd670e192'
+  quelle: '31d8a030c617'
 ---
 
 # Draft: the walk-through model
@@ -180,7 +180,7 @@ After that comes P9: follow the skill `webseite-bauen` (`../webseite-bauen/SKILL
 
 ## The island
 
-After step 6 you call the tool `schritt_melden` with `schritt: entwurf` and `sprache: en`, after the approval with `schritt: entwurf-freigegeben`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if Albatros doesn't know the step yet, carry on without the island, and `docs/entwurf.md` is the evidence. Then call `lage` again (skill `lotse`).
+After step 6 you call the tool `schritt_melden` with `schritt: entwurf` and `sprache: en`, after the approval with `schritt: entwurf-freigegeben`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if Albatros doesn't know the step yet, carry on without the island, and `docs/entwurf.md` is the evidence. Then call `lage` again (skill `lotse`), always with `skills_stand`: the value of `stand` under `metadata` at the top of this file.
 
 ## Stumbling blocks
 

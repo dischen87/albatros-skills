@@ -122,7 +122,7 @@ Mit Gratis, wenn das Guthaben nicht reicht oder die Person (noch) kein Bild will
 
 ## Die Insel
 
-Steht alles in `docs/konzept.md` und beginnt `Maskottchen:` mit `ja`, `nein` oder `später`, rufst du das Werkzeug `schritt_melden` mit `schritt: konzept` und `sprache: de` auf. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; kennt Albatros den Schritt noch nicht, geht es ohne Insel weiter, `docs/konzept.md` ist der Beleg. Danach rufst du `lage` erneut auf (Skill `lotse`).
+Steht alles in `docs/konzept.md` und beginnt `Maskottchen:` mit `ja`, `nein` oder `später`, rufst du das Werkzeug `schritt_melden` mit `schritt: konzept` und `sprache: de` auf. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; kennt Albatros den Schritt noch nicht, geht es ohne Insel weiter, `docs/konzept.md` ist der Beleg. Danach rufst du `lage` erneut auf (Skill `lotse`), immer mit `skills_stand`: dem Wert von `stand` unter `metadata` oben in dieser Datei.
 
 ## Übergabe an Albatros
 

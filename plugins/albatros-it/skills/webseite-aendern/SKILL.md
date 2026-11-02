@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Cambia con una persona senza conoscenze tecniche il suo sito web finito, con la sua IA, che stia nel porto di Albatros o che se ne occupi lei stessa: prendere il diario di bordo, leggere prima docs/ (piano, sistema di design, stack tecnologico, PRD, domicilio), poi piccolo (testo, appuntamento, immagine: cambiare in locale, mostrare prima e dopo, approvazione, push) o grande (nuova pagina, funzione, altro aspetto: aggiunta al piano, bozza delle pagine cambiate, via libera per costruire, costruire e controllare, mostrare, approvazione, push), sempre nel sistema di design esistente, poi verifica in rete. Usa lo skill con «cambia il mio sito», «nuovo appuntamento», «cambiare un testo», «sostituire un'immagine», «manca …», «nuova pagina», «rendi il sito …», «sul sito c'è un errore», e ogni volta che su un sito in rete qualcosa deve cambiare."
 metadata:
   stand: 0.2.0
-  quelle: '79078892243f'
+  quelle: 'e3f90bc93ad6'
 ---
 
 # Cambiare il sito web: ristrutturare una casa abitata
@@ -39,7 +39,7 @@ git pull --rebase                                       # ogni volta successiva,
 
 Se il diario di bordo c'è solo su questo computer (da te, senza repository), lavori lì e non prendi niente. Se `git` fallisce con «Permission denied», su questo computer manca la chiave (skill `ssh-schluessel`).
 
-**Se il sito l'ha costruito Albatros** (nella vecchia cartella del progetto, in `docs/projekt.md` c'è `Bauen lassen: albatros`, e l'incarico è online), tutto il progetto sta al porto, e `docs/lancieren.md` non c'è: `{name}` è il nome del sito da `konto_status`. Prima viene la chiave (skill `ssh-schluessel`). Il diario di bordo lo prendi in una cartella nuova accanto a quella vecchia, non dentro: `git clone git@aufwind.sh:{name}/projekt.git ../{name}-sito`. Da qui in poi lavori lì; la vecchia cartella non la cancelli. Nella cartella presa chiami `lage` con le sue prove (`belege`), tra cui `docs/prd.md` con la riga `Freigegeben:` che Albatros ha inserito alla consegna (passo 4). Testi e foto che la persona ha raccolto durante la costruzione (nella vecchia cartella, `docs/inhalte.md` e `design/bilder/`) sono spesso una buona prima modifica personale.
+**Se il sito l'ha costruito Albatros** (nella vecchia cartella del progetto, in `docs/projekt.md` c'è `Bauen lassen: albatros`, e l'incarico è online), tutto il progetto sta al porto, e `docs/lancieren.md` non c'è: `{name}` è il nome del sito da `konto_status`. Prima viene la chiave (skill `ssh-schluessel`). Il diario di bordo lo prendi in una cartella nuova accanto a quella vecchia, non dentro: `git clone git@aufwind.sh:{name}/projekt.git ../{name}-sito`. Da qui in poi lavori lì; la vecchia cartella non la cancelli. Nella cartella presa chiami `lage` con `skills_stand` (il valore di `stand` sotto `metadata` in cima a questo file) e con le sue prove (`belege`), tra cui `docs/prd.md` con la riga `Freigegeben:` che Albatros ha inserito alla consegna (passo 4). Testi e foto che la persona ha raccolto durante la costruzione (nella vecchia cartella, `docs/inhalte.md` e `design/bilder/`) sono spesso una buona prima modifica personale.
 
 ### 2. Prima leggere i progetti
 

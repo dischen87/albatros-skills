@@ -129,7 +129,7 @@ Farben, Schriften und Grössen stehen im Musterblatt nur als `var(--…)`. Prüf
 
 ### Die Insel
 
-Nach Schritt 1 rufst du das Werkzeug `schritt_melden` mit `schritt: mockup` und `sprache: de` auf, nach Schritt 5 mit `schritt: entwuerfe`. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; fehlt es, geht es ohne Insel weiter. Danach rufst du `lage` erneut auf (Skill `lotse`).
+Nach Schritt 1 rufst du das Werkzeug `schritt_melden` mit `schritt: mockup` und `sprache: de` auf, nach Schritt 5 mit `schritt: entwuerfe`. `projekt` lässt du weg, ausser die Person arbeitet an einem weiteren Projekt nur auf ihrem Computer; dann gibst du dessen kurzen Namen mit. Sag ihr in einem Satz, dass ihr Haus auf der Insel gewachsen ist. Antwortet das Werkzeug «Ungültige Angaben», prüf die Schreibweise einmal; fehlt es, geht es ohne Insel weiter. Danach rufst du `lage` erneut auf (Skill `lotse`), immer mit `skills_stand`: dem Wert von `stand` unter `metadata` oben in dieser Datei.
 
 ## Drei Richtungen
 

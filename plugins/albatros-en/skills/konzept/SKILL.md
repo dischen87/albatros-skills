@@ -3,7 +3,7 @@ name: konzept
 description: "Works out with a person who has no prior knowledge, once the plan is confirmed, the character of their site before any colours are chosen (flight plan P5): name to the outside world, core in three sentences, tone (formal or informal), three words for how it should come across, what has to stay, visual style and always the question whether a character (mascot) belongs to it: yes, no or later. On the business path, first with the method marke. Pictures of the mascot only after naming the price and getting a yes. The result is docs/konzept.md. Use this skill after webseite-planen (plan confirmed) and for “concept”, “brand”, “character”, “tone”, “mascot”, “how should my site come across”."
 metadata:
   stand: 0.2.0
-  quelle: '1b21dc585537'
+  quelle: '1aa319758af2'
 ---
 
 # Concept: character before colours
@@ -124,7 +124,7 @@ With Gratis, if the credit isn't enough or the person doesn't want a picture (ye
 
 ## The island
 
-Once everything is in `docs/konzept.md` and `Maskottchen:` starts with `ja`, `nein` or `später`, you call the tool `schritt_melden` with `schritt: konzept` and `sprache: en`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown on the island. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if Albatros doesn't know the step yet, carry on without the island, and `docs/konzept.md` is the evidence. Then call `lage` again (skill `lotse`).
+Once everything is in `docs/konzept.md` and `Maskottchen:` starts with `ja`, `nein` or `später`, you call the tool `schritt_melden` with `schritt: konzept` and `sprache: en`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown on the island. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if Albatros doesn't know the step yet, carry on without the island, and `docs/konzept.md` is the evidence. Then call `lage` again (skill `lotse`), always with `skills_stand`: the value of `stand` under `metadata` at the top of this file.
 
 ## Handing over to Albatros (Übergabe an Albatros)
 

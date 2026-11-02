@@ -3,7 +3,7 @@ name: entwurf
 description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina del piano nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, guardato sul telefonino e sul computer. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
 metadata:
   stand: 0.2.0
-  quelle: '847fd670e192'
+  quelle: '31d8a030c617'
 ---
 
 # Bozza: il modello in cui si può entrare
@@ -180,7 +180,7 @@ Dopo viene P9: segui lo skill `webseite-bauen` (`../webseite-bauen/SKILL.md`). C
 
 ## L'isola
 
-Dopo il passo 6 chiami lo strumento `schritt_melden` con `schritt: entwurf` e `sprache: it`, dopo il via libera con `schritt: entwurf-freigegeben`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se Albatros non conosce ancora il passo, si continua senza isola, `docs/entwurf.md` ne è la prova. Dopo chiami di nuovo `lage` (skill `lotse`).
+Dopo il passo 6 chiami lo strumento `schritt_melden` con `schritt: entwurf` e `sprache: it`, dopo il via libera con `schritt: entwurf-freigegeben`. `projekt` lo lasci fuori, a meno che la persona lavori a un altro progetto che sta solo sul suo computer; allora dai il suo nome breve. Dille in una frase che la sua casa è cresciuta. Se lo strumento risponde «Ungültige Angaben» (dati non validi), controlla una volta la scrittura; se Albatros non conosce ancora il passo, si continua senza isola, `docs/entwurf.md` ne è la prova. Dopo chiami di nuovo `lage` (skill `lotse`), sempre con `skills_stand`: il valore di `stand` sotto `metadata` in cima a questo file.
 
 ## Trappole
 
