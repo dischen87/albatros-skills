@@ -3,7 +3,7 @@ name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito. Nel piano di volo (P6): mockup grigio («L'ordine è giusto?»), tre direzioni chiaramente diverse dal concetto, controllo contro l'aspetto da IA, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Sempre con la domanda sugli elementi grafici (icone, foto, mascotte, 3D; strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «non sembra professionale», «layout», «icone», «mascotte», «3D»."
 metadata:
   stand: 0.2.0
-  quelle: 'ab8851d7159a'
+  quelle: 'c9b2b9c3e084'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -223,14 +223,14 @@ Quando la direzione è decisa, chiedi sempre: «Vuoi aggiungere anche degli elem
 
 Quello che sceglie la persona va nel sistema di design (`docs/designsystem.md`) e nella mazzetta dei colori (dimensioni, spaziature, regole).
 
-**Con Albatros** immagini, figure scontornate e modelli 3D nascono con gli strumenti di Albatros, pagati dal credito della persona (prezzo di costo più 35 %):
+**Con Albatros** immagini, figure scontornate e modelli 3D nascono con gli strumenti di Albatros, pagati dal credito della persona (prezzo di costo più 35 %), da Light e Pilot. Con Gratis non ci sono strumenti per immagini: personaggio, pose e immagini restano uno schizzo fino a Light o Pilot (sotto, «Senza strumenti per immagini»):
 
 - `bild_erzeugen` con `beschreibung` e `format` (`quadrat`, `quer`, `hoch` o `breit`), `bild_freistellen` con `bild_url` (un'immagine con sfondo trasparente), `modell_3d` con `bild_url` (un modello 3D in formato GLB, meglio se da un'immagine scontornata).
 - `guthaben` mostra il saldo, i prezzi e il link per ricaricare. I prezzi li dici solo da questa risposta.
 - Prima della prima chiamata che costa qualcosa chiami `guthaben`, dici il prezzo e chiedi una volta: «Un'immagine costa CHF …, il tuo credito basta per … Procedo?» Dopo, a ogni chiamata dici in breve costo e resto, senza chiedere di nuovo. Se il credito non basta, passi il link per ricaricare.
 - Ogni risultato lo salvi subito nel progetto (nel piano di volo `curl -o design/bilder/<nome>.png <url>`, per un sito costruito in `web/public/bilder/`), perché dopo 7 giorni sparisce. Per una variante cambi la descrizione: la stessa descrizione per 15 minuti restituisce la stessa immagine, senza nuovi costi.
 - Ogni immagine generata la guardi tu stesso prima di mostrarla alla persona. Sul sito va solo quello che ha scelto lei.
-- Se uno strumento risponde «kommt bald» (arriva presto), vai avanti senza strumenti per immagini (vedi sotto).
+- Se uno strumento risponde «kommt bald» (arriva presto), o che le immagini «gehören zu Light und Pilot» (appartengono a Light e Pilot, con Gratis), vai avanti senza strumenti per immagini (vedi sotto) e non chiedi del credito.
 
 **Con un account Hugging Face proprio** si può fare anche così, come alternativa. La persona crea l'account da sola e accede da sola. Tu colleghi il server ufficiale: `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Con Codex è `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, con Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`, con Cursor la voce `"huggingface": { "url": "https://huggingface.co/mcp?login" }` sotto `mcpServers` in `~/.cursor/mcp.json`. Gli Spaces per immagini, scontorno e 3D li sceglie lei su huggingface.co/settings/mcp. Gratis ci sono 5 minuti di calcolo al giorno. Senza accesso il server offre solo la ricerca nell'Hub.
 

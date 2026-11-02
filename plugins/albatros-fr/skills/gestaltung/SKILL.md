@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site. Dans le plan de vol (P6) : maquette grise (« L'ordre est-il juste ? »), trois directions bien différentes tirées du concept, vérification contre le look IA, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Toujours avec la question des éléments graphiques (icônes, photos, mascotte, 3D ; outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « ça ne fait pas professionnel », « mise en page », « icônes », « mascotte », « 3D »."
 metadata:
   stand: 0.2.0
-  quelle: 'ab8851d7159a'
+  quelle: 'c9b2b9c3e084'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -223,14 +223,14 @@ Une fois la direction fixée, tu demandes toujours : « Tu veux encore des élé
 
 Ce que la personne choisit va dans le système de design (`docs/designsystem.md`) et dans le nuancier (tailles, espacements, règles).
 
-**Avec Albatros**, les images, les personnages détourés et les modèles 3D naissent avec les outils d'Albatros, payés avec le crédit de la personne (prix coûtant plus 35 %) :
+**Avec Albatros**, les images, les personnages détourés et les modèles 3D naissent avec les outils d'Albatros, payés avec le crédit de la personne (prix coûtant plus 35 %), à partir de Light et Pilot. Avec Gratis, il n'y a pas d'outils d'images : le personnage, ses poses et les images restent une esquisse jusqu'à Light ou Pilot (plus bas, « Sans outils d'images ») :
 
 - `bild_erzeugen` avec `beschreibung` (description) et `format` (`quadrat` carré, `quer` paysage, `hoch` portrait ou `breit` large), `bild_freistellen` avec `bild_url` (une image avec fond transparent), `modell_3d` avec `bild_url` (un modèle 3D en GLB, de préférence à partir d'une image détourée).
 - `guthaben` montre le crédit, les prix et le lien pour recharger. Les prix, tu ne les donnes que d'après cette réponse.
 - Avant le premier appel qui coûte quelque chose, tu appelles `guthaben`, tu donnes le prix et tu demandes une fois : « Une image coûte CHF …, ton crédit suffit pour … Je le fais ? » Ensuite, après chaque appel, tu indiques brièvement le coût et le reste, sans redemander. Si le crédit ne suffit pas, tu transmets le lien pour recharger.
 - Chaque résultat, tu l'enregistres tout de suite dans le projet (dans le plan de vol `curl -o design/bilder/<nom>.png <url>`, pour un site construit dans `web/public/bilder/`), car après 7 jours, il a disparu. Pour une variante, tu changes la description : la même description renvoie la même image pendant 15 minutes, sans nouveaux frais.
 - Chaque image générée, tu la regardes toi-même avant de la montrer à la personne. Sur le site ne va que ce qu'elle a choisi.
-- Si un outil répond « kommt bald » (bientôt disponible), tu continues sans outils d'images (plus bas).
+- Si un outil répond « kommt bald » (bientôt disponible), ou que les images « gehören zu Light und Pilot » (appartiennent à Light et Pilot, avec Gratis), tu continues sans outils d'images (plus bas) et tu ne parles pas de crédit.
 
 **Avec un propre compte Hugging Face**, ça marche aussi, comme alternative. La personne crée le compte elle-même et se connecte elle-même. Tu ajoutes le serveur officiel : `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Avec Codex, c'est `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, avec Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`, avec Cursor l'entrée `"huggingface": { "url": "https://huggingface.co/mcp?login" }` sous `mcpServers` dans `~/.cursor/mcp.json`. Les Spaces pour les images, le détourage et la 3D, elle les choisit sous huggingface.co/settings/mcp. Gratuitement, il y a 5 minutes de temps de calcul par jour. Sans connexion, le serveur ne propose que la recherche dans le Hub.
 

@@ -221,14 +221,14 @@ Steht die Richtung, fragst du immer: «Möchtest du noch Gestaltungselemente daz
 
 Was die Person wählt, kommt ins Designsystem (`docs/designsystem.md`) und in den Farbfächer (Grössen, Abstände, Regeln).
 
-**Mit Albatros** entstehen Bilder, freigestellte Figuren und 3D-Modelle über die Werkzeuge von Albatros, bezahlt aus dem Guthaben der Person (Selbstkosten plus 35 %):
+**Mit Albatros** entstehen Bilder, freigestellte Figuren und 3D-Modelle über die Werkzeuge von Albatros, bezahlt aus dem Guthaben der Person (Selbstkosten plus 35 %), ab Light und Pilot. Mit Gratis gibt es keine Bild-Werkzeuge: Figur, Posen und Bilder bleiben bis Light oder Pilot eine Skizze (unten, «Ohne Bild-Werkzeuge»):
 
 - `bild_erzeugen` mit `beschreibung` und `format` (`quadrat`, `quer`, `hoch` oder `breit`), `bild_freistellen` mit `bild_url` (ein Bild mit transparentem Hintergrund), `modell_3d` mit `bild_url` (ein 3D-Modell als GLB, am besten aus einem freigestellten Bild).
 - `guthaben` zeigt den Stand, die Preise und den Link zum Aufladen. Preise nennst du nur aus dieser Antwort.
 - Vor dem ersten Aufruf, der etwas kostet, rufst du `guthaben` auf, nennst den Preis und fragst einmal: «Ein Bild kostet CHF …, dein Guthaben reicht für … Soll ich?» Danach nennst du nach jedem Aufruf kurz Kosten und Rest, ohne neu zu fragen. Reicht das Guthaben nicht, gibst du den Link zum Aufladen weiter.
 - Jedes Ergebnis speicherst du sofort im Projekt (im Fahrplan `curl -o design/bilder/<name>.png <url>`, bei einer gebauten Seite nach `web/public/bilder/`), denn nach 7 Tagen ist es weg. Für eine Variante änderst du die Beschreibung: Dieselbe Beschreibung gibt 15 Minuten lang dasselbe Bild zurück, ohne neue Kosten.
 - Jedes erzeugte Bild schaust du selbst an, bevor du es der Person zeigst. Auf die Seite kommt nur, was sie gewählt hat.
-- Antwortet ein Werkzeug «kommt bald», machst du ohne Bild-Werkzeuge weiter (unten).
+- Antwortet ein Werkzeug «kommt bald», oder Bilder «gehören zu Light und Pilot» (mit Gratis), machst du ohne Bild-Werkzeuge weiter (unten) und fragst nicht nach Guthaben.
 
 **Mit einem eigenen Hugging-Face-Konto** geht es auch, als Alternative. Die Person legt das Konto selbst an und meldet sich selbst an. Du bindest den offiziellen Server ein: `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. Mit Codex heisst es `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, mit Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`, mit Cursor der Eintrag `"huggingface": { "url": "https://huggingface.co/mcp?login" }` unter `mcpServers` in `~/.cursor/mcp.json`. Die Spaces für Bilder, Freistellen und 3D wählt sie unter huggingface.co/settings/mcp. Gratis gibt es 5 Minuten Rechenzeit pro Tag. Ohne Anmeldung bietet der Server nur die Suche im Hub.
 
