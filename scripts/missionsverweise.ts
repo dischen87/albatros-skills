@@ -56,8 +56,11 @@ const MIT: Record<string, string> = {
 // eine echte Verneinung bis zwei Wörter vor dem Wort für «mit». «ohne» und «nur» zählen weiter nur direkt davor, sonst würde «ohne Umweg mit
 // `mission_holen`» grün. Dazu englisch «n't» («isn't from», «don't come from»).
 const NEIN_VERB = String.raw`nicht|nie|niemals|kein\p{L}*|pas|jamais|non|mai|not|never|no|\p{L}*n[’']t`;
+// Nachbesserung 02.11.2026 (Gegenprobe skills): Steht zwischen Verneinung und dem Wort für «mit» «anders als», «other than», «autrement que» …,
+// hebt das die Verneinung auf («nicht anders als aus `mission_holen`» heisst: nur von dort). Solche Wörter zählen nicht als die zwei dazwischen.
+const AUFHEBEN = String.raw`anders|woanders|als|ausser|sondern|other|than|but|except|autrement|ailleurs|que|sauf|altro|altrimenti|che|tranne|fuorché`;
 const QUELLE_DAVOR = Object.fromEntries(Object.entries(MIT).map(([s, w]) => [s, new RegExp(
-  String.raw`(?:^|[^\p{L}])(?:(${NEIN}|\p{L}*n[’']t)\s+|(${NEIN_VERB})\s+(?:\p{L}+\s+){1,2})?(?:${w})\s+(?:(?:dem|l[’']|lo|the)\s*(?:Werkzeug|outil|strumento|tool)\s+)?$`, 'iu')]));
+  String.raw`(?:^|[^\p{L}])(?:(${NEIN}|\p{L}*n[’']t)\s+|(${NEIN_VERB})\s+(?:(?!(?:${AUFHEBEN})(?![\p{L}\p{N}]))\p{L}+\s+){1,2})?(?:${w})\s+(?:(?:dem|l[’']|lo|the)\s*(?:Werkzeug|outil|strumento|tool)\s+)?$`, 'iu')]));
 // Satzgrenze: . ! ? : ; vor Leerraum, nicht nach einem einzelnen Buchstaben (z. B., e.g.)
 const SATZENDE = /(?<!(?:^|[\s(.])\p{L})[.!?:;](?=\s|$)/gu;
 function satzUm(text: string, stelle: number): string {

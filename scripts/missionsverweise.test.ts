@@ -212,6 +212,12 @@ test('Regel 5: verneintes Verb vor «from», «da», «de» ist eine Warnung, in
     ['en', 'Do not invent check questions from memory but from `mission_holen`.'],
     ['en', 'You never guess the check questions: they come from `mission_holen`.'],
     ['it', 'Non inventare: le domande di controllo le prendi da `mission_holen`.'],
+    // Nachbesserung 02.11.2026 (Gegenprobe skills): «nicht anders als», «nie anders als» heben die Verneinung auf, das ist eine Quelle
+    ['de', 'Die Kontrollfragen holst du nicht anders als aus `mission_holen`.'],
+    ['de', 'Die Kontrollfrage nimmst du nie anders als über `mission_holen`.'],
+    ['en', 'Check questions never come other than from `mission_holen`.'],
+    ['fr', 'Les questions de contrôle ne viennent jamais autrement que de `mission_holen`.'],
+    ['it', 'Le domande di controllo non arrivano altro che da `mission_holen`.'],
   ];
   for (const [s, f] of rot) expect([s, f, missionsverweise([inSprache(s, f)], MS)]).toEqual([s, f, [expect.stringContaining('Kontrollfragen aus mission_holen')]]);
 });

@@ -239,6 +239,25 @@ for (const { datei, text } of skillTexte) {
   fehler.push(...bozzaApprovata(datei, text)); // Begriffe wie im GLOSSAR.md (P8 auf Italienisch)
 }
 
+// Bauservice (Welle 8, w8-44; Nachbesserung 02.11.2026 nach der Gegenprobe): Was lage, auftrag_anlegen und scripts/punkte.ts lesen, steht in
+// jeder Sprache wörtlich gleich, auch wenn die Übersetzung sonst frei ist (vorher blieb pruefen grün, wenn eine Übersetzung den Absatz
+// verlor, «selbst» übersetzte oder bestaetigt: true wegliess)
+const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
+  'webseite-planen': ['`Angebot:`', '`Bauen lassen: selbst (', '`Bauen lassen: albatros (', '`konto_status`'],
+  lotse: ['`Angebot:`', '`inhalte`'],
+  konzept: ['`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`'],
+};
+for (const { datei, slug, text } of skillTexte)
+  for (const w of BAUSERVICE_WOERTLICH[slug] ?? []) if (!text.includes(w)) fehler.push(`${datei}: Bauservice, «${w}» fehlt (wörtlich wie im deutschen Skill)`);
+// Marken für «Annahme» in pruefen.mjs (webseite-bauen, Freigabe mit --freigabe und --vor-bau) wie marken.annahme in fahrplan.yaml: Die
+// Zeile ist von Hand geschrieben, kit liest die Marken aus dem Vertrag (Nachbesserung 02.11.2026: eine neue Marke im Vertrag hätte pruefen.mjs
+// sonst unbemerkt «frei» sagen lassen, wo kit «nicht frei» sagt)
+if (fahrplan) {
+  const pm = await Bun.file(`${wurzel}plugins/albatros/skills/webseite-bauen/pruefen.mjs`).text();
+  const liste = /const ANNAHME_DARIN = \/\\\[\(\?:([^)]*)\)/.exec(pm)?.[1]?.split('|');
+  if (!liste || liste.join() !== fahrplan.marken.annahme.join()) fehler.push(`plugins/albatros/skills/webseite-bauen/pruefen.mjs: ANNAHME_DARIN nennt ${liste?.join(', ') ?? 'nichts'}, fahrplan.yaml marken.annahme ${fahrplan.marken.annahme.join(', ')}`);
+}
+
 // Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md
 // sind in jeder Sprache gleich: Sie geben keinen Text aus, den die Person liest, ohne dass die KI ihn erklärt.
 const uebersetzt = async (pfad: string) => Bun.file(wurzel + pfad).exists();
