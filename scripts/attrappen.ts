@@ -5,7 +5,8 @@
 // - <fall>/mocks/albatros/lage.md und weitere Werkzeuge je Fall: mit einem Zustand aus lage-attrappen.ts, oder mit einem eigenen
 //   Zustand (Insel-Schritt), dessen Belege aus dem Gerüst des Falls kommen (scaffold.sh, so wie die KI sie nach dem Skill lotse liest)
 // Ruft keinen Dienst auf. Aufruf: ALBATROS=<Ordner von albatros> bun scripts/attrappen.ts [--pruefen]
-// Ohne ALBATROS: ../albatros neben diesem Repo. --pruefen schreibt nichts und endet mit 1, wenn etwas vom Erzeugten abweicht.
+// Ohne ALBATROS: ../albatros neben diesem Repo. --pruefen schreibt nichts und endet mit 1, wenn etwas vom Erzeugten abweicht oder die
+// Missionen der lage-Attrappen nicht zu missionen/ passen (seit 01.11.2026, w8-47).
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -78,6 +79,13 @@ async function main() {
   const mcp: Record<string, unknown> = await import(`${A}/services/mcp/src/app.ts`);
   const attrappen: Record<string, unknown> = await import(`${A}/services/mcp/scripts/lage-attrappen.ts`);
   const ZUSTAENDE = attrappen.ZUSTAENDE as Record<string, Zustand>;
+  // Welle 8 (w8-47, 01.11.2026): die Missionen der lage-Attrappen (MISSIONEN in lage-attrappen.ts) gegen missionen/ in diesem Repo, mit
+  // missionenGegenSkills aus albatros (seit Welle 7, sicht-04: Titel, Phase, Skill, freiwillig, Abo, alle Kontrollfragen, fehlende Lektionen).
+  // Vorher sah --pruefen eine geänderte Kontrollfrage nur, wenn ein Fall die Mission mit mission_holen zeigt (Frage 3 von flugschule-17
+  // geändert: «35 Attrappen wie erzeugt»).
+  const vergleich = attrappen.missionenGegenSkills as ((ordner: string) => string[]) | undefined;
+  const missionenAnders = vergleich ? vergleich(wurzel) : [];
+  if (!vergleich) console.log('missionenGegenSkills fehlt in lage-attrappen.ts (albatros vor Welle 7): Missionen nicht verglichen.');
   // Wie viele Dateien lage als belege nimmt (seit 31.10.2026 alle Ergebnisdateien und der Ideen-Check mit Reserve, steu-09; vorher 20)
   const lageModul: Record<string, unknown> = await import(`${A}/services/mcp/src/lage.ts`);
   const BELEGE_HOECHSTENS = typeof lageModul.BELEGE_HOECHSTENS === 'number' ? lageModul.BELEGE_HOECHSTENS : 20;
@@ -211,11 +219,14 @@ async function main() {
     if (pruefen) console.error(`${pfad.slice(wurzel.length)}: ${ist === null ? 'fehlt' : 'anders als erzeugt'}`);
     else await Bun.write(pfad, inhalt);
   }
-  if (pruefen && abweichend) {
-    console.error(`${abweichend} von ${soll.size} Attrappen weichen ab: ALBATROS=${A} bun scripts/attrappen.ts`);
-    process.exit(1);
-  }
-  console.log(pruefen ? `${soll.size} Attrappen wie erzeugt (albatros: ${A}).` : `${abweichend} von ${soll.size} Attrappen geschrieben (albatros: ${A}).`);
+  // Missionen in lage-attrappen.ts anders als missionen/: Das behebt kein neues Erzeugen hier, sondern MISSIONEN in albatros
+  for (const z of missionenAnders) console.error(`${A}/services/mcp/scripts/lage-attrappen.ts, MISSIONEN gegen missionen/: ${z}`);
+  const n = missionenAnders.length;
+  if (n) console.error(`${n} ${n === 1 ? 'Abweichung' : 'Abweichungen'} der Missionen: MISSIONEN in lage-attrappen.ts (albatros) nachführen`);
+  if (pruefen && abweichend) console.error(`${abweichend} von ${soll.size} Attrappen weichen ab: ALBATROS=${A} bun scripts/attrappen.ts`);
+  if (pruefen && (abweichend || missionenAnders.length)) process.exit(1);
+  const missionen = vergleich ? ', Missionen der lage-Attrappen wie missionen/' : '';
+  console.log(pruefen ? `${soll.size} Attrappen wie erzeugt${missionen} (albatros: ${A}).` : `${abweichend} von ${soll.size} Attrappen geschrieben (albatros: ${A}).`);
 }
 
 if (import.meta.main) await main();

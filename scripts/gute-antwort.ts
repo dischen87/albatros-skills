@@ -120,6 +120,7 @@ export async function guteAntwort(wurzel: string, f: Fahrplan): Promise<{ ok: tr
     `- Gratis bis ${f.gratis_bis}.`,
     `- Marken am Anfang eines Werts: ${code(`[${f.marken.offen[0]}: …]`)} (in jeder Sprache deutsch) und der Platzhalter ${code(`[${f.marken.platzhalter[0]}]`)} (im Entwurf übersetzt) heissen nicht belegt; ${code(`[${f.marken.annahme[0]}: …]`)} (deutsch) ist ein Vorschlag der KI und nie die Antwort der Person. Erkannt werden auch ${[...f.marken.offen.slice(1), ...f.marken.platzhalter.slice(1), ...f.marken.annahme.slice(1)].join(', ')}.`,
     `- Wohnort (P11, Zeile ${code('Wohnort:')}): beginnt mit «${f.wohnorte.light}» (light) oder «${f.wohnorte.pilot}» (pilot), jeder andere Wert heisst selbst; ohne die Zeile gilt das Abo im Konto (Gratis heisst selbst).`,
+    `- Bauen lassen (ab ${f.bauen_lassen.ab}, nur im Modus ${f.bauen_lassen.nur_modus}, wenn ${code('Setup:')} mit ${code(f.bauen_lassen.setup_beginnt)} beginnt): Zeigt ${code('lage')} eine Zeile ${code('Angebot:')}, sagt die KI es einmal, mit dem Betrag aus ${code('lage')}, nie aus dem Gedächtnis. Die Wahl der Person steht in ${code(f.bauen_lassen.quelle)}, Wert ${oder(f.bauen_lassen.werte.map(code))} mit Datum. ${code('auftrag_anlegen')} erst nach der Zusammenfassung und dem Ja der Person, mit ${code('bestaetigt: true')}; danach baut die KI nicht selbst weiter.`,
     `- Modus (Standard: ${f.modus.standard}; gilt je Projekt, steht in ${code(f.modus.quelle)}):`,
     `  - machen: ${f.modus.machen}`,
     `  - lernen: ${f.modus.lernen}`,

@@ -11,7 +11,8 @@
 //   <werkzeug>.server.md, .seite.md, .<abo>.md. Platzhalter: {repo}, {name} (Name der Seite), {stand} (zuletzt veröffentlicht), {stufe}.
 // Umgebung: DURCHSPIEL_STAND (Stand der Skills im Lauf mit fahrplan.yaml, missionen/, plugins/albatros), DURCHSPIEL_FALL, DURCHSPIEL_STUFE
 // (gratis, light, pilot), DURCHSPIEL_SCHLOESSER, DURCHSPIEL_LOG (jeder Aufruf als JSON-Zeile mit Runde), DURCHSPIEL_RUNDE (Datei mit der
-// Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo).
+// Nummer der laufenden Runde), DURCHSPIEL_METHODEN (Ordner mit <name>/SKILL.md, sonst ../albatros-methoden/skills neben diesem Repo),
+// DURCHSPIEL_BAUSERVICE=on (Bauservice wie mit dem Schalter BAUSERVICE: auftrag_anlegen und in lage die Zeile «Angebot:», unten bei «Bauservice»).
 // Beschreibungen und Parameter der Werkzeuge und die Anleitung wie beim echten Dienst mit FAHRPLAN und ERFASSUNG (mocks/werkzeuge.json,
 // mocks/anleitung.txt); Eingaben prüft sie auf jeder Ebene wie zod im echten Dienst (auch in Listen und Objekten darin, unten bei «Eingaben
 // wie zod») und antwortet wie er mit «Ungültige Angaben»; ein Werkzeug, das sie nicht anbietet, und eine unbekannte Methode sind wie dort
@@ -29,7 +30,7 @@ import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } 
 import { join } from 'node:path';
 import { ladeFahrplan, type Phase, type Pflichtfrage } from '../fahrplan.ts';
 import {
-  ausgangZaehlt, belegt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wertPasst,
+  ausgangZaehlt, beantwortet, belegt, bisAbschluss, entscheidVon, erledigtNachDateien, erledigtNachInsel, frageBelegt, freieMethoden, phaseBelegt, phaseIndex, wert, wertPasst,
   wohnortVon, type Fuer,
 } from '../punkte.ts';
 import { hoeher as neuer } from '../stand.ts';
@@ -104,6 +105,98 @@ const mitMethoden = (p: Phase, skillText: string, ms: string[]) => (!ms.length ?
 // die Person nur im Cockpit, im Durchspiel also nie
 const HINWEIS_ERFASSUNG = 'Hinweis zur Erfassung: Albatros speichert, welche Werkzeuge deine KI aufruft, nie deine Unterhaltung mit ihr. Lücken und Anfragen nur, wenn du sie erlaubst. Ansehen und widersprechen kannst du unter https://albatros.build/cockpit/daten.';
 
+// ———— Bauservice (Welle 8, w8-44; Konzept «Albatros baut es für dich», 3.1) ————
+// Mit DURCHSPIEL_BAUSERVICE=on wie lage, konto_status und auftrag_anlegen mit FAHRPLAN und BAUSERVICE, Regeln und Wortlaut aus albatros
+// services/mcp/src/bauservice.ts (Nachbesserung 02.11.2026 nach der Gegenprobe: vorher eigene Sätze, P6 als «Danach» bei «Bauen lassen:
+// albatros», «Phase P6» im Stand, «danach Light» auch für Light, bestaetigt nur true). scripts/durchspiel.test.ts vergleicht mit dem echten mcp,
+// wenn albatros den Bauservice hat. Nicht nachgebaut: abgelaufene Vorschläge und Vorschau (braucht die Stücke des Auftrags in konto).
+// Die Attrappe ist hier auch konto: Stand des Auftrags in der Datei auftrag im Hafen, Betrag wie GET /web/auftrag (stufen.ts AUFTRAG.preisChf und
+// Light; durchspiel.test.ts gleicht mit albatros ab). scripts/punkte.ts liest die Beträge aus den Antworten, nie von hier.
+const BAUSERVICE = process.env.DURCHSPIEL_BAUSERVICE === 'on';
+const AUFTRAG_CHF = 290;
+const [BL_DATEI, BL_ZEILE] = F.bauen_lassen.quelle.split('#') as [string, string];
+const [SETUP_DATEI, SETUP_ZEILE] = F.phasen.flatMap((p) => p.pflichtfragen).find((q) => q.id === 'setup')!.ablage.split('#') as [string, string];
+const istOffen = (s: string | null) => s !== null && s !== 'live' && s !== 'zurueckgezogen';
+const STAND_NAME: Record<string, string> = {
+  briefing: 'Briefing', vorschlaege: 'Vorschläge bereit', gewaehlt: 'Richtung gewählt', im_bau: 'Im Bau', vorschau: 'Vorschau bereit', bezahlt: 'Bezahlt', live: 'Live',
+  zurueckgezogen: 'Zurückgezogen',
+};
+const COCKPIT_AUFTRAG = 'https://albatros.build/cockpit/auftrag';
+const ANGEBOT_ABO = 'Albatros kann deine Seite auch für dich bauen: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF {einmalig} einmalig, danach Light für CHF {abo} im Monat. Selbst weiterbauen kostet bis zur fertigen Seite auf deinem Computer nichts. Frag die Person einmal, was ihr lieber ist, und schreib ihre Antwort mit Datum in {datei}: «{zeile} selbst (TT.MM.JJJJ)» oder «{zeile} albatros (TT.MM.JJJJ)». Die Fragen zum Konzept kommen so oder so.';
+const ANGEBOT_LIGHT = 'Albatros kann deine Seite auch für dich bauen: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF {einmalig} einmalig, Light hast du schon. Selbst weiterbauen kostet bis zur fertigen Seite auf deinem Computer nichts. Frag die Person einmal, was ihr lieber ist, und schreib ihre Antwort mit Datum in {datei}: «{zeile} selbst (TT.MM.JJJJ)» oder «{zeile} albatros (TT.MM.JJJJ)». Die Fragen zum Konzept kommen so oder so.';
+const UEBERGABE = 'Die Person will, dass Albatros ihre Seite baut, und ihr Konzept steht. Fass zusammen, was mitgeht, frag «Soll ich es schicken?» und leg den Auftrag erst nach ihrem Ja mit auftrag_anlegen an. Weiterbauen mit P6 gehört nicht dazu.';
+const DANACH_COCKPIT = 'im Cockpit unter «Dein Auftrag» die Adresse der Seite und später eine Richtung wählen ({link})';
+const R2_VORSCHLAEGE = 'Die Entwürfe für Auftrag #{nr} sind da. Die Person schaut sie im Cockpit an und wählt eine Richtung: {link}. Bauen musst du nichts.';
+const R2_VORSCHAU_ABO = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an. Gefällt sie ihr, klickt sie im Cockpit auf «Bezahlen und live schalten» (CHF {einmalig} einmalig, dazu Light für CHF {abo} im Monat); sonst schreibt sie dort, was anders werden soll: {link}.';
+const R2_VORSCHAU = 'Die Vorschau von Auftrag #{nr} ist da. Die Person schaut sie auf dem Handy und am Computer an. Gefällt sie ihr, klickt sie im Cockpit auf «Bezahlen und live schalten» (CHF {einmalig} einmalig); sonst schreibt sie dort, was anders werden soll: {link}.';
+const R2_BRIEFING = 'Albatros liest das Briefing von Auftrag #{nr} und macht Entwürfe. Baue nicht selbst daneben weiter; bis dahin kann die Person Texte und Fotos sammeln (Skill `inhalte`).';
+const R2_BAU = 'Albatros baut die Seite für Auftrag #{nr}. Baue nicht selbst daneben weiter; bis dahin kann die Person Texte und Fotos sammeln (Skill `inhalte`).';
+const R2_BEZAHLT = 'Auftrag #{nr} ist bezahlt, Albatros schaltet die Seite jetzt live. Baue nicht selbst daneben weiter.';
+const R4 = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir.';
+const R4_ZEILE = 'Auftrag #{nr} ist zurückgezogen: Ab hier baust du selbst weiter. Die Entwürfe von Albatros sind nicht dabei, sie gehören erst mit der Zahlung dir. Schreib in {datei} «{zeile} selbst (TT.MM.JJJJ)».';
+const OHNE_JA = 'Ohne das ausdrückliche Ja der Person lege ich keinen Auftrag an. Zeig ihr die Zusammenfassung, frag «Soll ich es schicken?» und ruf auftrag_anlegen erst nach ihrem Ja mit bestaetigt: true auf.';
+const UEBERGABE_JETZT = 'Skill `konzept`, Abschnitt «Übergabe an Albatros»';
+const fuelle = (t: string, w: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (m, k: string) => (k in w ? String(w[k]) : m));
+// Wie bauserviceMoeglich: nur ohne eigenen Server und ohne Pilot (dorthin liefert konto keinen Auftrag aus)
+const bauserviceMoeglich = () => !merk('server') && stufe() !== 'pilot';
+// Preis eines Auftrags wie konto: einmalig, dazu Light im selben Checkout, solange kein Abo läuft (mit Abo null)
+const auftragPreis = () => ({ einmaligChf: AUFTRAG_CHF, aboChfMonat: stufe() === 'gratis' ? PREIS.light! : null });
+// Wahl in «Bauen lassen:» (die Antwort der Person, nie eine Annahme) und Setup ab statisch, wie bauenLassen und setupPasst
+const bauenLassen = (dateien: Record<string, string>) => {
+  const w = wert(dateien[BL_DATEI], BL_ZEILE);
+  return { zeile: w !== null, wahl: F.bauen_lassen.werte.find((x) => beantwortet(F, w) && wertPasst(F, { werte: [x] }, w)) ?? null };
+};
+const setupPasst = (dateien: Record<string, string>) => {
+  const w = wert(dateien[SETUP_DATEI], SETUP_ZEILE);
+  return belegt(F, w) && wertPasst(F, { werte: [F.bauen_lassen.setup_beginnt] }, w);
+};
+// Regeln R1, R1b, R2, R4 wie bauserviceRegeln; auftrag: Stand des einzigen Auftrags der Attrappe (Nummer 1) oder null
+function bauserviceRegeln(o: { dateien: Record<string, string>; modus: string; phase: string | null; geschafft: number; stoppen: boolean }) {
+  const r: { offen: { jetzt: string; grund: string } | null; uebergabe: { jetzt: string; grund: string; danach: string } | null; angebot: string | null; danachP5: string | null; hinweis: string | null } =
+    { offen: null, uebergabe: null, angebot: null, danachP5: null, hinweis: null };
+  if (!BAUSERVICE) return r;
+  const auftrag = merk('auftrag');
+  const ab = phaseIndex(F, F.bauen_lassen.ab);
+  const bl = bauenLassen(o.dateien);
+  const zeile = { datei: BL_DATEI, zeile: BL_ZEILE };
+  if (istOffen(auftrag)) {
+    const p = auftragPreis();
+    const w = { nr: 1, link: COCKPIT_AUFTRAG, einmalig: p.einmaligChf, abo: p.aboChfMonat ?? 0 };
+    if (auftrag === 'vorschlaege') r.offen = { jetzt: 'im Cockpit unter «Dein Auftrag» eine Richtung wählen', grund: fuelle(R2_VORSCHLAEGE, w) };
+    else if (auftrag === 'vorschau') r.offen = { jetzt: 'im Cockpit unter «Dein Auftrag» die Vorschau ansehen', grund: fuelle(p.aboChfMonat === null ? R2_VORSCHAU : R2_VORSCHAU_ABO, w) };
+    else r.offen = { jetzt: 'warten auf Albatros', grund: fuelle(auftrag === 'briefing' ? R2_BRIEFING : auftrag === 'bezahlt' ? R2_BEZAHLT : R2_BAU, w) };
+    return r;
+  }
+  if (auftrag === 'zurueckgezogen') {
+    if (o.geschafft <= ab + 1) r.hinweis = fuelle(bl.wahl === 'albatros' ? R4_ZEILE : R4, { nr: 1, ...zeile });
+    return r;
+  }
+  const ohneAuftrag = auftrag === null;
+  if (!bauserviceMoeglich()) return r;
+  if (bl.wahl === 'albatros' && ohneAuftrag) {
+    if (o.geschafft > ab) r.uebergabe = { jetzt: UEBERGABE_JETZT, grund: UEBERGABE, danach: fuelle(DANACH_COCKPIT, { link: COCKPIT_AUFTRAG }) };
+    else if (o.phase === F.bauen_lassen.ab) r.danachP5 = UEBERGABE_JETZT;
+    return r;
+  }
+  if (o.phase === F.bauen_lassen.ab && o.modus === F.bauen_lassen.nur_modus && !o.stoppen && ohneAuftrag && !bl.zeile && setupPasst(o.dateien)) {
+    r.angebot = fuelle(stufe() === 'light' ? ANGEBOT_LIGHT : ANGEBOT_ABO, { einmalig: AUFTRAG_CHF, abo: PREIS.light!, ...zeile });
+  }
+  return r;
+}
+// Zeile für konto_status wie kontoStatusZeile
+function kontoStatusZeile(): string | null {
+  if (!BAUSERVICE) return null;
+  const auftrag = merk('auftrag');
+  if (istOffen(auftrag)) {
+    const p = auftragPreis();
+    const abo = p.aboChfMonat === null ? '' : `, dazu Light für CHF ${p.aboChfMonat} im Monat`;
+    return `Auftrag bei Albatros: #1, ${STAND_NAME[auftrag!] ?? auftrag}. Bezahlt wird erst bei der Vorschau: CHF ${p.einmaligChf} einmalig${abo}. Im Cockpit: ${COCKPIT_AUFTRAG}.`;
+  }
+  if (!bauserviceMoeglich()) return null;
+  const danach = stufe() === 'light' ? ', Light hast du schon' : `, danach Light für CHF ${PREIS.light} im Monat`;
+  return `Albatros baut deine Seite auf Wunsch: CHF ${AUFTRAG_CHF} einmalig${danach}; bezahlt wird erst, wenn dir die Vorschau gefällt. Angeboten wird es in lage, sobald dein Plan steht.`;
+}
+
 type Mission = {
   id: string; weg: string; titel: string; skill?: string; phase?: string; optional?: boolean; abo?: string;
   pruefung?: { typ: string; schritt?: string }[]; verstehen?: { frage: string; kern: string }[];
@@ -165,6 +258,8 @@ function lage(a: Args): Antwort {
   };
   const zeilen: string[] = [];
   const hinweise: string[] = [];
+  // Bauservice (oben, wie bauserviceRegeln in albatros): Stand des Auftrags in der Attrappe, Wahl der Person in docs/projekt.md
+  const bau = bauserviceRegeln({ dateien, modus, phase: p?.id ?? null, geschafft: erledigt, stoppen: entscheid === 'stoppen' });
   const ss = typeof a.skills_stand === 'string' && /^\d+\.\d+\.\d+$/.test(a.skills_stand) ? a.skills_stand : null;
   if (!ss || neuer(SKILLS_STAND, ss)) {
     zeilen.push(`Deine Albatros-Skills sind veraltet (auf diesem Computer: ${ss ?? 'unbekannt'}, aktuell: ${SKILLS_STAND}). Gib bei lage skills_stand mit (metadata.stand in deinen Skills); fehlt dir ein Skill, hol ihn mit skill_holen.`);
@@ -175,12 +270,18 @@ function lage(a: Args): Antwort {
   let phaseDran = false;
   if (!weg) {
     [jetzt, grund] = [skill('start'), 'Du hast noch keinen Weg gewählt: eine Webseite oder ein Geschäft.'];
+  } else if (bau.offen) {
+    // R2 Auftrag offen: was die Person im Cockpit tut, oder warten; kein «Danach», nie P6 bis P10 daneben
+    [jetzt, grund] = [bau.offen.jetzt, bau.offen.grund];
   } else if (entscheid === 'stoppen') {
     [jetzt, grund] = ['nichts mehr', 'Dein Ideen-Check sagt «stoppen»: Die Idee trägt so nicht. Das ist geschafft, nicht gescheitert.'];
     danach = `Mit einer neuen Idee beginnt es wieder bei P1: ${methodeText(['ideen-check'])}`;
   } else if (e?.art === 'hausaufgabe') {
     [jetzt, grund] = [`warten bis ${e.bis}`, `Dein Ideen-Check hat eine Hausaufgabe offen bis ${e.bis}. Erst mit ihrem Ergebnis entscheidet ihr: weiter, anpassen oder stoppen.`];
     danach = `${methodeText(['ideen-check'])} mit dem Ergebnis der Hausaufgabe`;
+  } else if (bau.uebergabe) {
+    // R1b Übergabe: «Bauen lassen: albatros», P5 geschafft, noch kein Auftrag; nie P6
+    [jetzt, grund, danach] = [bau.uebergabe.jetzt, bau.uebergabe.grund, bau.uebergabe.danach];
   } else if (p) {
     phaseDran = true;
     const f = fuer(p);
@@ -198,6 +299,7 @@ function lage(a: Args): Antwort {
     const landen = geschaeft && st !== 'gratis' ? F.nach_live.landen.geschaeft?.[0] : undefined;
     danach = q ? `Phase ${q.id} «${q.titel}» mit ${fuer(q).text}`
       : `nach dem Livegang ${landen ? methodeText([landen]) : skill(F.nach_live.aendern.skill)}${geschaeft && !landen ? '; die Etappe Landen mit den Methoden gehört zum Abo' : ''}`;
+    if (bau.danachP5) danach = bau.danachP5; // P5 mit «Bauen lassen: albatros»: danach die Übergabe, nie P6
   } else if (geschaeft && st !== 'gratis') {
     [jetzt, grund] = [methodeText([F.nach_live.landen.geschaeft?.[0] ?? 'zahlen']), `Deine Seite ist live, alle ${F.phasen.length} Phasen sind geschafft. Jetzt kommt die Etappe Landen: sichtbar werden und die ersten Kundinnen und Kunden gewinnen.`];
     danach = `${skill('landung')}, sobald du in ein eigenes Haus umziehen willst`;
@@ -206,6 +308,7 @@ function lage(a: Args): Antwort {
     if (geschaeft) hinweise.push('Die Etappe Landen mit den Methoden gehört zum Abo; den Link gibt upgrade_link, wenn die Person es will.');
     danach = merk('seite') || merk('server') ? `${skill('landung')}, sobald du in ein eigenes Haus umziehen willst` : `${skill('statistik')}, sobald du wissen willst, wer deine Seite besucht`;
   }
+  if (bau.hinweis) hinweise.push(bau.hinweis); // R4 (zurückgezogen) hinter den Hinweisen, die etwas melden
   zeilen.push(`Jetzt dran: ${jetzt}. Grund: ${grund}`, ...(merk('erfassung') ? [] : [HINWEIS_ERFASSUNG]), ...hinweise.slice(0, 2).map((h) => `Hinweis: ${h}`));
   if (phaseDran && p) {
     for (const q of p.pflichtfragen.filter((x) => !frageBelegt(F, p, x, dateien))) zeilen.push(`Pflichtfragen offen: ${q.id}: ${q.frage.de} (${wer(p, q)}${werteHinweis(q, dateien)})`);
@@ -215,6 +318,8 @@ function lage(a: Args): Antwort {
     const ausgang = ausgangZaehlt(F, p, fuerWeg) ? ` Auf dem Weg Geschäft dazu ${ausgangText(p)}.` : '';
     zeilen.push(`Fertig, wenn: ${p.gate}${ausgang} Dann schritt_melden mit ${melden.map((x) => `«${x}»`).join(', ')}${melden.length > 1 ? ', je sobald geschafft' : ''}.`);
     if (st === 'gratis' && erledigt <= gratisBis) zeilen.push(`Hinweis: ${GRATIS_HINWEIS}`);
+    // R1 Angebot: eine eigene Zeile mit dem Betrag, wie der Gratis-Hinweis
+    if (bau.angebot) zeilen.push(`Angebot: ${bau.angebot}`);
     zeilen.push(`Modus: ${modus}. ${F.modus[modus]}`);
     if (modus === 'lernen') zeilen.push(...lektion(p, weg, st));
   }
@@ -228,7 +333,9 @@ function lage(a: Args): Antwort {
     `Abo ${STUFEN[st] ?? st}`,
     server ? `Server ${server} bereit, ${n} Schlösser` : s ? `Seite https://${s}.aufwind.sh ${stand(s)}, ${n} Schlösser` : null,
     `Projekt projekt ${i ? `auf der Insel bei «${i}»` : 'noch nicht auf der Insel'}`,
-    p ? `Phase ${p.id} von ${F.phasen.length} (geschafft nach Insel: ${bisText(nachInsel)}${nachDateien > nachInsel ? `, nach Belegen weiter: ${bisText(nachDateien)}` : ''})` : `alle ${F.phasen.length} Phasen geschafft`,
+    // R1b und R2: keine Phase, an der die KI weiterbauen könnte
+    bau.offen || bau.uebergabe ? `Fahrplan geschafft: ${bisText(erledigt)}, den Bau übernimmt Albatros`
+      : p ? `Phase ${p.id} von ${F.phasen.length} (geschafft nach Insel: ${bisText(nachInsel)}${nachDateien > nachInsel ? `, nach Belegen weiter: ${bisText(nachDateien)}` : ''})` : `alle ${F.phasen.length} Phasen geschafft`,
   ].filter(Boolean).join(' · ')}.`);
   return { text: zeilen.join('\n') };
 }
@@ -408,7 +515,19 @@ const MIT_ZUSTAND: Record<string, (a: Args) => Antwort> = {
         : s ? `Seite: https://${s}.aufwind.sh (${stand(s)}). Hafen (Git): git@aufwind.sh:${s}/projekt.git, im Browser https://code.aufwind.sh/${s}/projekt.` : 'Server: keiner. Seite: keine.',
       `Weg: ${weg === 'webseite' ? 'Webseite' : weg === 'geschaeft' ? 'Geschäft' : 'noch nicht gewählt'}.`,
       `Hinterlegte Schlösser: ${n ? `${n} (ssh-ed25519 …@laptop)` : 'keine (Werkzeug schluessel_hinterlegen)'}. Guthaben für Bilder: CHF 5.00.`,
-    ].join(' ') };
+      kontoStatusZeile(), // Bauservice: der Betrag aus konto (bauservice.ts kontoStatusZeile)
+    ].filter(Boolean).join(' ') };
+  },
+  // Wie mcp auftrag_anlegen (Schnittstelle I4, bauservice.ts AUFTRAG_ANLEGEN) und konto POST /cockpit/auftraege: ohne Ja der Text OHNE_JA,
+  // ein offener Auftrag je Person (409 wörtlich wie konto)
+  auftrag_anlegen: (a) => {
+    if (a.bestaetigt !== true) return { fehler: true, text: OHNE_JA };
+    if (istOffen(merk('auftrag'))) return { fehler: true, text: 'Du hast schon einen offenen Auftrag.' };
+    setze('auftrag', 'briefing');
+    const p = auftragPreis();
+    const abo = p.aboChfMonat === null ? '' : `, dazu Light für CHF ${p.aboChfMonat} im Monat`;
+    return { text: `Auftrag #1 ist bei Albatros. Bezahlt wird erst, wenn die Vorschau gefällt: CHF ${p.einmaligChf} einmalig${abo}. `
+      + `Im Cockpit unter «Dein Auftrag»: ${COCKPIT_AUFTRAG}. Dort wählt die Person die Adresse ihrer Seite und später eine Richtung; bauen muss sie nichts mehr. Ruf lage erneut auf.` };
   },
   schluessel_hinterlegen: (a) => {
     if (!/^(ssh-ed25519|ssh-rsa|ecdsa-sha2-nistp256) [A-Za-z0-9+/=]{20,}/.test(String(a.schluessel).trim())) {
@@ -436,13 +555,31 @@ function antwort(werkzeug: string, a: Args): Antwort | null {
   return null;
 }
 
-type Knoten = { type?: string; enum?: unknown[]; minLength?: number; maxLength?: number; pattern?: string; minItems?: number; maxItems?: number;
+type Knoten = { type?: string; description?: string; enum?: unknown[]; minLength?: number; maxLength?: number; pattern?: string; minItems?: number; maxItems?: number;
   items?: Knoten; properties?: Record<string, Knoten>; required?: string[]; default?: unknown };
 type Schema = { name: string; description: string; inputSchema: Knoten };
 const ECHT: Schema[] = JSON.parse(readFileSync(join(wurzel, 'scripts/durchspiel/mocks/werkzeuge.json'), 'utf8'));
 const ANLEITUNG = readFileSync(join(wurzel, 'scripts/durchspiel/mocks/anleitung.txt'), 'utf8').trim();
 const mitText = (n: string) => [...(fallOrdner ? [fallOrdner] : []), ...ordner].some((o) => existsSync(join(o, `${n}.md`)));
-const werkzeuge = ECHT.filter((w) => MIT_ZUSTAND[w.name] || mitText(w.name));
+// auftrag_anlegen nur mit Bauservice. werkzeuge.json kommt aus mcp mit FAHRPLAN und ERFASSUNG, ohne BAUSERVICE; bis es die Eingabe von dort
+// gibt, steht sie hier wie in albatros services/mcp/src/bauservice.ts (Eingabe, Beschreibungen wörtlich), die Felder wie Briefing in
+// services/konto/src/auftraege.ts (trim, Längen); bestaetigt ist ein Wahrheitswert, false gibt den Text OHNE_JA (Nachbesserung 02.11.2026)
+const text1 = (max: number, description: string): Knoten => ({ type: 'string', minLength: 1, maxLength: max, description });
+const AUFTRAG_WERKZEUG: Schema = ECHT.find((w) => w.name === 'auftrag_anlegen') ?? {
+  name: 'auftrag_anlegen',
+  description: 'Nur wenn die Person will, dass Albatros ihre Seite baut, lage dazu «Übergabe an Albatros» nennt und sie auf «Soll ich es schicken?» ausdrücklich Ja gesagt hat (bestaetigt: true): Legt den Auftrag mit dem Briefing an. Die Felder füllst du aus ihren Dateien, ohne Namen von Dritten und ohne Passwörter oder Zugangsdaten. Gibt Nummer, Betrag und den Link ins Cockpit zurück; bezahlt wird erst, wenn ihr die Vorschau gefällt. Höchstens ein offener Auftrag je Person.',
+  inputSchema: { type: 'object', required: ['bestaetigt', 'name', 'wofuer', 'fuerWen', 'seiten', 'stil'], properties: {
+    bestaetigt: { type: 'boolean', description: 'true erst nach dem ausdrücklichen Ja der Person auf «Soll ich es schicken?»; ohne Ja legt Albatros nichts an.' },
+    name: text1(120, 'Name der Seite oder des Projekts: «Name:» aus docs/konzept.md, sonst «Projektname:» aus docs/projekt.md.'),
+    wofuer: text1(2000, 'Wofür die Seite ist: «In einem Satz:», «Hauptsache:» und «Erfolg:» aus docs/projekt.md; auf dem Weg Geschäft dazu docs/angebot.md.'),
+    fuerWen: text1(2000, 'Für wen sie ist: «Für wen:» aus docs/projekt.md; auf dem Weg Geschäft dazu docs/zielgruppe.md.'),
+    seiten: text1(2000, 'Seiten und Funktionen aus docs/plan.md («Seiten:», «Funktionen:», «Sprachen:»).'),
+    adresse: { type: 'string', maxLength: 300, description: 'Bestehende Webseite: «Bestehende Seite:» aus docs/projekt.md, nur wenn es eine gibt.' },
+    stil: text1(2000, 'Wirkung aus docs/konzept.md («Ton:», «Charakter:», «Muss bleiben:», «Maskottchen:», «Bildsprache:») und docs/recherche.md («Vorbilder:», «Übernehmen:», «Vermeiden:»).'),
+    material: { type: 'string', maxLength: 4000, description: 'Inhalte und Pflichten aus docs/recherche.md («Inhalte vorhanden:», «Pflichten:») und die Abnahmekriterien aus docs/plan.md («Testing:»); nur Text und Links, keine Dateien.' },
+  } },
+};
+const werkzeuge = [...ECHT.filter((w) => w.name !== 'auftrag_anlegen' && (MIT_ZUSTAND[w.name] || mitText(w.name))), ...(BAUSERVICE ? [AUFTRAG_WERKZEUG] : [])];
 
 // ———— Eingaben wie zod im echten Dienst ————
 // werkzeuge.json trägt die Eingaben von mcp als JSON Schema (z.toJSONSchema). Die Attrappe prüft sie wie zod 4 (mcp: zod 4.6.7,
@@ -465,7 +602,7 @@ const MUSTER_MELDUNG: Record<string, string> = {
   '^[a-z0-9][a-z0-9-]{0,39}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 40 Zeichen',
   '^[a-z0-9][a-z0-9-]{0,63}$': 'Kleinbuchstaben, Ziffern und «-», höchstens 64 Zeichen',
 };
-const GETRIMMT = new Set(['schritt_melden.titel']);
+const GETRIMMT = new Set(['schritt_melden.titel', ...['name', 'wofuer', 'fuerWen', 'seiten', 'adresse', 'stil', 'material'].map((f) => `auftrag_anlegen.${f}`)]);
 type Fund = { pfad: (string | number)[]; text: string; weiter?: boolean }; // weiter wie issue.continue bei zod: false hält alles Weitere an
 const artVon = (v: unknown) => (v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v);
 const alsWert = (v: unknown) => (typeof v === 'string' ? `"${v}"` : String(v));
@@ -553,7 +690,14 @@ process.stdin.on('data', (d) => {
       const r: Antwort = !w ? { fehler: true, text: `Unbekanntes Werkzeug: ${name}` } : fehler.length ? { fehler: true, text: `Ungültige Angaben: ${fehler.join(', ')}` }
         : antwort(name, a) ?? { fehler: true, text: `Werkzeug ${name} gibt es nicht.` };
       process.stderr.write(`[attrappe] ${name} ${JSON.stringify(roh ?? {})}\n`);
-      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false })}\n`);
+      // Für scripts/punkte.ts (Bauservice): angebot, lage zeigte die Zeile «Angebot:»; uebergabe, lage nannte die Übergabe an Albatros (R1b);
+      // betraege, alle Beträge in CHF in der Antwort (lage, konto_status, auftrag_anlegen …): Die KI darf nur diese nennen, nie andere
+      const angebot = name === 'lage' && /^Angebot: /m.test(r.text);
+      const uebergabe = name === 'lage' && /^Jetzt dran: Skill `konzept`, Abschnitt «Übergabe an Albatros»/m.test(r.text);
+      // einmalig: der Betrag des Bauservice («CHF … einmalig» im Angebot, in konto_status oder in der Antwort von auftrag_anlegen)
+      const betraege = [...new Set([...r.text.matchAll(/CHF\s*(\d[\d'’]*)/g)].map((x) => Number(x[1]!.replace(/['’]/g, ''))))];
+      const einmalig = /CHF\s*(\d[\d'’]*) einmalig/.exec(r.text)?.[1];
+      if (process.env.DURCHSPIEL_LOG) appendFileSync(process.env.DURCHSPIEL_LOG, `${JSON.stringify({ zeit: new Date().toISOString(), runde: runde(), werkzeug: name, argumente: roh ?? {}, fehler: r.fehler ?? false, ...(angebot ? { angebot } : {}), ...(uebergabe ? { uebergabe } : {}), ...(betraege.length ? { betraege } : {}), ...(einmalig ? { einmalig: Number(einmalig.replace(/['’]/g, '')) } : {}) })}\n`);
       senden(w ? { jsonrpc: '2.0', id: m.id, result: { content: [{ type: 'text', text: r.text }], ...(r.fehler ? { isError: true } : {}) } }
         : { jsonrpc: '2.0', id: m.id, error: { code: -32602, message: r.text } });
     } else if (m.method === 'ping') {

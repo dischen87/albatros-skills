@@ -3,7 +3,7 @@ name: bausteine
 description: "Scopre con una persona senza conoscenze tecniche cosa deve saper fare il suo sito e monta i blocchi pronti adatti, prima sul suo computer: lista di iscrizione, prenotazioni per corsi e appuntamenti, area membri con accesso e abilitazione, bacheca (PocketBase), un ingresso con un solo accesso per più parti o un CMS grande (Strapi con Postgres), con la memoria di lavoro misurata. Spiega con l'immagine degli elementi prefabbricati nella costruzione di una casa. Usa lo skill con «iscrizione», «lista di iscrizione», «prenotazione», «prenotare un corso», «prenotare un appuntamento», «riservare un posto», «salvare un modulo», «login», «accesso», «area membri», «area admin», «gestire gli utenti», «ruoli», «ingresso», «banca dati», «Strapi», «CMS», «PocketBase», «blocco», «cosa ci sta sul mio server», «basta il mio server», e quando un sito deve saper fare più che mostrare testi e immagini."
 metadata:
   stand: 0.2.0
-  quelle: 'd66c4610d5d1'
+  quelle: '5cece7070637'
 ---
 
 # Blocchi: elementi prefabbricati per il tuo sito
@@ -213,17 +213,17 @@ Se serve lo decidono queste regole, in quest'ordine:
 
 La risposta va in `docs/betrieb.md`, alla riga `Eingang:` (skill `betrieb`). Il suo valore comincia sempre con la parola tedesca `ja` o `nicht nötig`, anche se la persona parla un'altra lingua; dopo viene il motivo nella sua lingua, per esempio `Eingang: ja – /intern/ e le comunicazioni da PocketBase richiedono lo stesso accesso` o `Eingang: nicht nötig – solo la ricetta mitglieder, bastano le regole di PocketBase`. Lo skill `lancieren` monta l'ingresso solo con `Eingang: ja`. Le porte del sito (`docs/tueren.txt`: aperte, solo con accesso, mai) diventano le parti in `bausteine/eingang/eingang.json`.
 
-**Costi:** niente soldi in più, gira insieme al resto sul server Pilot. Memoria: 20 MB a riposo; a pieno carico con pagine piccole fino a 69 MB, con molte immagini insieme (20 pagine da 60 immagini) fino a 129 MB, e se dei visitatori scaricano file grandi senza leggerli fino in fondo, ancora di più (misurato con tre indirizzi: 208 MB). Misurato il 31.10 e l'01.11.2026 su un Mac. Il container è limitato a 128 MB (`mem_limit`); se allora riparte e quanto gli serve sul server, non è ancora misurato; ogni chiamata a una parte protetta interroga PocketBase, costa quasi un millisecondo. In più un elemento da curare (versione di Bun nel `Dockerfile`).
+**Costi:** niente soldi in più, gira insieme al resto sul server Pilot. Memoria: 20 MB a riposo; a pieno carico con pagine piccole fino a 69 MB, con molte immagini insieme (20 pagine da 60 immagini) fino a 129 MB, e se dei visitatori scaricano file grandi senza leggerli fino in fondo: dal sito (nginx) e da PocketBase l'ingresso prende i file grandi a pezzi, misurato con tre indirizzi fino a 42 MB, con quattordici fino a 73 MB; da una parte tua che non conosce gli intervalli, di più (misurato 201 MB). Misurato dal 31.10 al 02.11.2026 su un Mac. Il container è limitato a 128 MB (`mem_limit`); se allora riparte e quanto gli serve sul server, non è ancora misurato; ogni chiamata a una parte protetta interroga PocketBase, costa quasi un millisecondo. In più un elemento da curare (versione di Bun nel `Dockerfile`).
 
 **Montare,** prima in locale come ogni blocco (sezione 4), passo per passo in `bausteine/eingang/README.md`:
 
-1. PocketBase con la ricetta `mitglieder` è montato. Prendere `bausteine/eingang`, `pb_hooks/*` in `bausteine/pocketbase/pb_hooks/`, `pb_migrations/2_eingang.js` in `bausteine/pocketbase/pb_migrations/`.
+1. PocketBase con la ricetta `mitglieder` è montato. Prendere `bausteine/eingang`, `pb_hooks/*` in `bausteine/pocketbase/pb_hooks/`, `pb_migrations/*` in `bausteine/pocketbase/pb_migrations/`.
 2. In `eingang.json` inserire l'indirizzo del sito (`ursprung`) e le parti: nome, destinazione, percorsi, accesso `offen` (aperto), `angemeldet` (con accesso) o `rolle:<name>`. Le pagine protette stanno in cartelle proprie (`seite/intern/`). Se più tardi arriva un dominio proprio, qui non serve niente: l'ingresso accetta moduli e accessi dall'indirizzo con cui si apre il sito.
 3. In `mitglieder.html` impostare `const EINGANG = true;`: l'accesso vale allora con un cookie per tutte le parti.
 4. `bun bausteine/eingang/test.ts` segnala «Alles grün», poi `bun bausteine/pocketbase/lokal.ts --eingang`: la persona apre una pagina protetta senza accesso, accede, torna indietro ed esce.
 5. Al lancio (skill `lancieren`, parte 2): in `compose.yaml` sotto `include:` la riga `- bausteine/eingang/compose.yaml`, e nel servizio `webseite` cancellare le righe `ports:` e `- "80:80"`, altrimenti si potrebbe aggirare l'ingresso. Il sito è allora raggiungibile solo dietro l'ingresso. Poi verificare ogni porta dall'esterno: `node scripts/pruefen.mjs --tueren https://{name}.aufwind.sh` con le «porte dei blocchi» (sezione 4): `/intern/` dà 401, `/_/` e `/api/collections/_SUPERUSERS/auth-methods` danno 404, la pagina iniziale 200.
 
-**Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'amministrazione, in qualsiasi grafia. Chiude anche il tempo reale di PocketBase (`/api/realtime`), nessuna ricetta ne ha bisogno. Uscire vale per un dispositivo; uscire ovunque vuol dire impostare una nuova password.
+**Cosa non sa fare:** dietro l'ingresso «Le mie prenotazioni» (ricetta `buchungen`) funziona solo attraverso il tunnel, perché l'ingresso chiude dall'esterno l'amministrazione, in qualsiasi grafia. Chiude anche il tempo reale di PocketBase (`/api/realtime`), nessuna ricetta ne ha bisogno. Uscire vale per tutti i dispositivi: chi esce sul telefono è uscito anche sul computer.
 
 ## Trappole
 

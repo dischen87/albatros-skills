@@ -1,7 +1,7 @@
 ---
 id: geschaeft-06-go-live-check
 weg: geschaeft
-stufe: fliegen
+stufe: landen
 phase: P13
 titel: Vor dem Start einmal ums Flugzeug
 bild: Die Vorflugkontrolle am echten Flugzeug, mit laufendem Flugschreiber

@@ -284,6 +284,28 @@ try {
   const t15 = performance.now();
   const fuenfzehn = e4.roh('GET /langsam/15', { 'X-Forwarded-For': '198.51.100.62' }).then((s) => ({ s, ms: performance.now() - t15 }));
   const suId = (await admin('GET', '/collections/_superusers')).id as string;
+
+  // Grosse Dateien aus PocketBase (/api/files) durch den Eingang, mit den Grenzen der Bausteine (/api/ 300 Anfragen in 10 s je Adresse,
+  // die PocketBase aus X-Forwarded-For nimmt): Der Eingang holt sie in Stücken (je Stück eine Anfrage), sie kommen trotzdem ganz an
+  // (Nachbesserung w8-45, 02.11.2026: vorher brach ein Film von 25 MB nach 300 Stücken mit 429 ab, eine Galerie mit 12 Fotos à 2 MB ganz)
+  const sammlung = await fetch(`${api}/collections`, { method: 'POST', headers: { 'content-type': 'application/json', authorization: token },
+    body: JSON.stringify({ name: 'dateien', type: 'base', listRule: '', viewRule: '', fields: [{ name: 'datei', type: 'file', maxSelect: 1, maxSize: 60 * 1024 * 1024 }] }) });
+  const hoch = async (n: number, name: string) => {
+    const f = new FormData();
+    f.append('datei', new File([new Uint8Array(n).map((_, i) => (i * 13 + n) % 251)], name));
+    const r = await (await fetch(`${api}/collections/dateien/records`, { method: 'POST', headers: { authorization: token }, body: f })).json() as { id: string; datei: string };
+    return { pfad: `/api/files/dateien/${r.id}/${r.datei}`, n };
+  };
+  const film = await hoch(25 * 1024 * 1024, 'film.mp4');
+  const fotos: { pfad: string; n: number }[] = [];
+  for (let i = 0; i < 12; i++) fotos.push(await hoch(2 * 1024 * 1024 + i, `foto-${i}.jpg`));
+  const ganz = async (x: { pfad: string; n: number }, adresse: string) => {
+    try { const r = await e4.holen(x.pfad, { kopf: { 'x-forwarded-for': adresse } }); return r.status === 200 && (await r.arrayBuffer()).byteLength === x.n; } catch { return false; }
+  };
+  const filmGanz = await ganz(film, '198.51.100.70');
+  const fotoAdresse = '198.51.100.71';
+  const fotosGanz = (await Promise.all(fotos.map((x) => ganz(x, fotoAdresse)))).filter(Boolean).length;
+  pruefe(sammlung.ok && filmGanz && fotosGanz === 12, `Grosse Dateien aus PocketBase durch den Eingang ganz, mit den Grenzen der Bausteine: Film 25 MB ${filmGanz ? 'ganz' : 'abgebrochen'}, Galerie ${fotosGanz} von 12 Fotos à 2 MB`);
   const suKoerper = JSON.stringify({ identity: 'test@example.com', password: passwort });
   const schreibweisen = ['_SUPERUSERS', '_Superusers', suId, '_%C5%BFuperusers', '_MFAS'];
   const mailsVorher = mails;
@@ -448,6 +470,8 @@ try {
 
   const ab = await holen('/api/eingang/abmelden', { methode: 'POST', kopf: { origin: EIGEN, cookie } });
   pruefe(ab.status === 204 && /^__Host-sitzung=;.*Max-Age=0/.test(ab.headers.get('set-cookie') ?? ''), 'Abmelden löscht das Cookie');
+  const kopie = await holen('/intern/seite.html', { kopf: { cookie } });
+  pruefe(kopie.status === 401, `Abmelden widerruft die Sitzung: eine Kopie des Cookies gilt danach nicht mehr (${kopie.status})`);
 
   // Grenzen je Adresse, hinter einem vertrauten Proxy
   const e2 = await starten(konfig(`http://127.0.0.1:${pbPort}`), { VERTRAUTE_PROXYS: '127.0.0.1', ANFRAGEN_PRO_MINUTE: '20' });

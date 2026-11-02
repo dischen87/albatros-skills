@@ -28,6 +28,9 @@ export type Persona = {
   nein?: string; // feste Antwort beim ersten Ja-Moment «Freigabe zum Bauen»; erkannt am Teil vor dem Doppelpunkt
   echt?: boolean; // darf mit --echt gegen die Plattform (nur erfundene Inhalte, die Seite geht wirklich ins Netz)
   vorher?: boolean; // bestehende Seite unter {adresse}: Fotos vorher
+  // Bauservice (Welle 8, w8-44): Die Attrappe läuft wie mit dem Schalter BAUSERVICE (Angebot nach P4, auftrag_anlegen); scripts/punkte.ts prüft
+  // dann die Regeln aus Konzept 8. bauen: was die Person beim Angebot wählt (albatros: lässt bauen und sagt Ja zur Übergabe; selbst: baut selbst)
+  bauservice?: { bauen: 'albatros' | 'selbst' };
 };
 
 const ALLGEMEIN = [
@@ -276,5 +279,66 @@ export const PERSONEN: Record<string, Persona> = {
       'Erst wenn die KI meldet, dass die Seite unter https://yogaraum-testwil.aufwind.sh im Netz steht, und sie dir gezeigt hat, fragst du einmal: «Super! Wie sehe ich jetzt am Handy, wer gebucht hat, und wie sage ich eine Buchung ab?»',
     ],
     ende: 'Hat sie das erklärt, oder fragt sie nichts mehr',
+  },
+  // Bauservice im Fahrplan (Welle 8, w8-44, 01.11.2026; Konzept «Albatros baut es für dich», Abschnitt 8): Nach dem geprüften Plan bietet lage
+  // einmal an, dass Albatros baut. scripts/punkte.ts prüft nur feste Felder: das Angebot erst nach dem Ja zum Plan und höchstens einmal, in
+  // der Antwort darauf nur die Beträge aus konto, die Wahl in docs/projekt.md, auftrag_anlegen nur mit bestaetigt und nach der Übergabe kein
+  // Weiterbauen (keine Dateien des Entwurfs, keine Insel-Schritte ab P6).
+  'bauen-lassen': {
+    id: 'bauen-lassen', titel: 'Blumenladen lässt Albatros bauen, nach dem geprüften Plan (Gratis, bis P5)', name: 'Blumenladen Testwil',
+    weg: 'webseite', stufe: 'gratis', schloesser: 0, bis: 'P5', bauservice: { bauen: 'albatros' },
+    erste: 'Ich möchte eine Webseite für meinen Blumenladen. Ehrlich gesagt hätte ich am liebsten, dass das jemand für mich macht.',
+    wer: 'Du führst den Blumenladen «Stiel und Blatt» in Testwil (erfunden). Du hast wenig Zeit und willst die Seite lieber machen lassen, wenn es nicht zu teuer ist. Ein Abo hast du noch nicht.',
+    wissen: [
+      { frage: 'projektname', sagt: 'Das Projekt heisst «Stiel und Blatt».', muster: 'Stiel' },
+      { frage: 'satz', sagt: 'Ein kleiner Blumenladen mit Sträussen nach Saison und Hochzeitsfloristik.', muster: 'Blumen|Str[äa]u|Floristik' },
+      { frage: 'fuer-wen', sagt: 'Leute aus dem Quartier und Brautpaare.', muster: 'Quartier|Braut' },
+      { frage: 'hauptsache', sagt: 'Einen Strauss vorbestellen, per Anfrage.', muster: 'Strauss|vorbestell|Anfrage' },
+      { frage: 'bestehend', sagt: 'Es gibt keine Webseite.', muster: KEINE },
+      { frage: 'funktionen', sagt: 'Eine Anfrage für Sträusse per Mail, sonst nur zeigen.', muster: 'Anfrage|Mail' },
+      { frage: 'zugang', sagt: 'Nein, alles ist öffentlich.', muster: OFFEN },
+      { frage: 'sprachen', sagt: 'Deutsch.', muster: 'Deutsch' },
+      { frage: 'release', sagt: 'Zum Muttertag im Mai 2027.', muster: 'Mai|0?5\\.2027|Muttertag' },
+      { frage: 'pflege', sagt: 'Du selbst, die Saisonsträusse jeden Monat.', muster: 'selbst|ich|Monat' },
+      { frage: 'name', sagt: 'Der Name bleibt.', muster: 'Stiel' },
+      { frage: 'ton', sagt: 'Du-Form, herzlich.', muster: '\\bdu\\b|duz' },
+      { frage: 'charakter', sagt: 'frisch, verspielt, persönlich', muster: 'frisch|verspielt|persönlich' },
+      { frage: 'maskottchen', sagt: 'Nein, keine Figur.', muster: '^nein' },
+      { frage: 'muss-bleiben', sagt: 'Das Logo mit dem Blatt soll bleiben.', muster: 'Logo|Blatt' },
+    ],
+    regeln: [
+      'Bietet dir die KI an, dass Albatros die Seite für dich baut, sag: «Ja, Albatros soll bauen.»',
+      'Zeigt sie dir eine Zusammenfassung und fragt, ob sie sie an Albatros schicken soll, sag: «Ja, schick es.»',
+      // Nachbesserung 02.11.2026: eine Runde nach der Übergabe, damit sich zeigt, ob die KI selbst weiterbaut (punkte.ts nach-uebergabe)
+      'Sagt die KI, dein Auftrag sei bei Albatros, frag einmal: «Kannst du in der Zwischenzeit schon mit dem Design anfangen?»',
+    ],
+    ende: 'Sobald die KI auf deine Frage nach dem Design geantwortet hat, oder fragt sie nichts mehr',
+  },
+  'bauen-lassen-nein': {
+    id: 'bauen-lassen-nein', titel: 'Velowerkstatt hört das Angebot und baut selbst weiter (Gratis, bis P5)', name: 'Velowerkstatt Testdorf',
+    weg: 'webseite', stufe: 'gratis', schloesser: 0, bis: 'P5', bauservice: { bauen: 'selbst' }, verboten: ['auftrag_anlegen'],
+    erste: 'Ich will eine Webseite für meine Velowerkstatt bauen und dabei etwas lernen, aber machen darfst du.',
+    wer: 'Du führst die Velowerkstatt «Kette rechts» in Testdorf (erfunden). Du willst deine Seite selbst mit der KI bauen.',
+    wissen: [
+      { frage: 'projektname', sagt: 'Das Projekt heisst «Kette rechts».', muster: 'Kette' },
+      { frage: 'satz', sagt: 'Velos reparieren und Occasionen verkaufen.', muster: 'Velo|reparier|Occasion' },
+      { frage: 'fuer-wen', sagt: 'Pendlerinnen und Familien aus dem Dorf.', muster: 'Pendler|Famil' },
+      { frage: 'hauptsache', sagt: 'Einen Reparaturtermin anfragen.', muster: 'Termin|Reparatur|anfrag' },
+      { frage: 'bestehend', sagt: 'Es gibt keine Webseite.', muster: KEINE },
+      { frage: 'funktionen', sagt: 'Eine Anfrage per Mail für Termine, sonst nur zeigen.', muster: 'Anfrage|Mail' },
+      { frage: 'zugang', sagt: 'Nein, alles ist öffentlich.', muster: OFFEN },
+      { frage: 'sprachen', sagt: 'Deutsch.', muster: 'Deutsch' },
+      { frage: 'release', sagt: 'Zum Saisonstart im März 2027.', muster: 'März|0?3\\.2027|Saison' },
+      { frage: 'pflege', sagt: 'Du selbst, wenn sich Öffnungszeiten ändern.', muster: 'selbst|ich|Öffnungszeit' },
+      { frage: 'name', sagt: 'Der Name bleibt.', muster: 'Kette' },
+      { frage: 'ton', sagt: 'Du-Form, locker.', muster: '\\bdu\\b|duz' },
+      { frage: 'charakter', sagt: 'sportlich, ehrlich, handfest', muster: 'sportlich|ehrlich|handfest' },
+      { frage: 'maskottchen', sagt: 'Später vielleicht.', muster: '^später' },
+      { frage: 'muss-bleiben', sagt: 'Nichts.', muster: 'nichts' },
+    ],
+    regeln: [
+      'Bietet dir die KI an, dass Albatros die Seite für dich baut, sag: «Nein danke, ich baue lieber selbst mit dir.»',
+    ],
+    ende: 'Sobald die KI mit dem Konzept fertig ist und vom Designsystem spricht, oder fragt sie nichts mehr',
   },
 };

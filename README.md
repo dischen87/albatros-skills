@@ -8,7 +8,7 @@ Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen:
 - **fliegen:** die Seite auf dem eigenen Computer bauen, prüfen und freigeben, dann den Wohnort wählen (P9 bis P11)
 - **landen:** Betrieb vorbereiten, live schalten und der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen (P12, P13 und danach)
 
-Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` trägt dieselben drei Namen (Abschnitt «Missionen»).
+Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` ist die Etappe dieser Phase, mit denselben drei Namen (Abschnitt «Missionen»; `pruefen.ts` prüft das seit 01.11.2026).
 
 Dieses Repo enthält:
 
@@ -71,6 +71,8 @@ Die Skills liegen als Kopie auf dem Computer der Person. Ist die Kopie älter al
 | Gemini CLI | `npx skills update -g -y`, dann Gemini CLI neu starten |
 | Cursor | `npx skills update -g -y`, dann Cursor neu starten |
 
+Woher `lage` den Stand kennt: Jedes Plugin schickt ihn bei jedem Aufruf selbst mit, als Kopfzeile `X-Albatros-Skills-Stand` in seiner `.mcp.json`, gleich `version` in `plugin.json` und `metadata.stand` der Skills (`bun run pruefen` verlangt das). Sie steht dort zweimal: unter `headers` für Claude Code und unter `http_headers` für Codex, denn Codex liest aus der `.mcp.json` eines Plugins nur diesen Schlüssel. Gemessen am 01.11.2026 ohne Modell gegen einen Server auf 127.0.0.1: Claude Code 2.1.118 und 2.1.309 (`--plugin-dir`, `mcp list`) schicken sie bei `initialize` und jeder weiteren Anfrage, Codex 0.166.0 (Plugin aus einem lokalen Marktplatz, `mcp list`) bei seinen Anfragen an den Server; ein Aufruf von `lage` in einer Sitzung ist nicht gemessen. albatros nimmt die Kopfzeile, wenn `lage` ohne `skills_stand` kommt; `skills_stand` im Aufruf geht vor. Bei Gemini CLI und Cursor kommen Skills (`npx skills`) und Verbindung getrennt: Eine feste Kopfzeile in deren Verbindung bliebe nach `npx skills update` auf dem alten Stand stehen. Dort schickt die KI `skills_stand` mit (`metadata.stand` des Skills, Skills `start` und `lotse`).
+
 albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`: In den Befehlen für Claude Code und Codex steht dann dieser Name statt `albatros@albatros`, der Marktplatz heisst immer `albatros`, und `npx skills update -g -y` gilt für alle Sprachen. Die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
 
 ## Sprachen
@@ -92,10 +94,10 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 .claude-plugin/marketplace.json     Marktplatz «albatros» mit vier Plugins: albatros (Deutsch), albatros-fr, albatros-it, albatros-en
 plugins/albatros/
   .claude-plugin/plugin.json
-  .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk)
+  .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk), mit der Kopfzeile X-Albatros-Skills-Stand (Abschnitt «Aktualisieren»)
   skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
   skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
-  skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9, P10, P13): vier Bereiche, --vor-bau, --tueren, --vergleich, --live
+  skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9 bis P13): vier Bereiche, --vor-bau, --freigabe (lancieren, Regel wie kit jaBelegt), --tueren, --vergleich, --live
   evals/<name>/                     mindestens ein Eval-Fall pro Skill und je Phase (claude plugin eval, Abschnitt «Evals»)
   evals/_projekt/                   Gerüst Sonnenhof für die Fälle (projekt.sh, bis P1 … P12) und die Anleitung des Servers
   evals/mocks/albatros/             Attrappen der Albatros-Werkzeuge für die Evals; _tools.json ist die echte Werkzeugliste
@@ -110,7 +112,7 @@ schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
 vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband
 bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
 scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts), dass Abschnitte aus fahrplan.yaml und Querverweise in jeder Sprache in einer #-Überschrift stehen (scripts/abschnitte.ts), dass jede Phase mit Lernmomenten je Weg eine Lektion mit Kontrollfrage hat (scripts/lektionen.ts) und dass die Skills bei verstanden_melden, Kontrollfragen und mission_pruefen die richtigen Missionen nennen, Kontrollfragen nie aus mission_holen nehmen, wörtlich so zitieren, wie die Mission sie in derselben Sprache stellt, und höchstens zwei in eine Nachricht legen (scripts/missionsverweise.ts), und dass ein Skill mit titel bei schritt_melden den Ausweg nach «Ungültige Angaben» nennt und auf Italienisch die Bozza «con via libera» heisst (scripts/abgleich.ts)
-scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche, Vorlage, Gerüst der Evals), abschnitte.test.ts (Abschnittsnamen), lektionen.test.ts (Lektion je Phase und Weg), missionsverweise.test.ts (Missionen in den Skills), pruefbefehle.test.ts (grep-Befehle der Skills gegen die Regel dahinter, auch mit Leerraum ausserhalb von ASCII und Dateien in Latin-1; in Claude Code auch mit dessen grep, einem eingebauten ugrep), rechtspfade.test.ts (Pfade für Impressum und Datenschutz je Sprache), tueren.test.ts (Listen von PocketBase und ihr Status in den Skills gegen «Türen der Bausteine»), fahrplan.test.ts (fahrplan.yaml), evals.test.ts (Grader ohne Modell, Attrappen), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe und die Attrappe, mit albatros auch gegen das echte mcp), verlauf.test.ts; dazu bausteine/eingang/verwaltung.test.ts (vordere Schicht des Eingangs)
+scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche, Vorlage, Gerüst der Evals), abschnitte.test.ts (Abschnittsnamen), lektionen.test.ts (Lektion je Phase und Weg), missionsverweise.test.ts (Missionen in den Skills), pruefbefehle.test.ts (die Freigabe in lancieren mit pruefen.mjs --freigabe gegen kit jaBelegt, auch mit Leerraum ausserhalb von ASCII und Dateien in Latin-1; der grep-Befehl für «Eingang:», in Claude Code auch mit dessen grep, einem eingebauten ugrep), rechtspfade.test.ts (Pfade für Impressum und Datenschutz je Sprache), tueren.test.ts (Listen von PocketBase und ihr Status in den Skills gegen «Türen der Bausteine»), fahrplan.test.ts (fahrplan.yaml), evals.test.ts (Grader ohne Modell, Attrappen), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe und die Attrappe, mit albatros auch gegen das echte mcp), verlauf.test.ts; dazu bausteine/eingang/verwaltung.test.ts (vordere Schicht des Eingangs) und stuecke.test.ts (grosse Körper in Stücken)
 scripts/attrappen.ts                erzeugt die Attrappen der Evals mit dem echten mcp von albatros (--pruefen vergleicht nur)
 scripts/bewertung.ts                Grader ohne Modell wie in plugin eval, mit Beispielen je Fall in scripts/evals-beispiele.ts
 scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens, Recht fr und it), je mit erwartet.json: bun scripts/testseiten/test.ts
@@ -126,7 +128,7 @@ Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran i
 | Wann | Skill | Bild |
 |---|---|---|
 | immer | `lotse` | der Fluglotse im Turm: sagt nach dem echten Stand, was jetzt dran ist |
-| Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, dann los mit der Idee |
+| Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, `lage` fragen, dann los mit der Idee |
 | P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss, Plan prüfen) |
 | P2, P4, P13 | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite, keine Funktion geht ohne Entscheid verloren, Umleitungen beim Livegang |
 | P5 | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden; Maskottchen ja, nein oder später |
@@ -161,7 +163,7 @@ Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er 
 ---
 id: flugschule-02-ssh-schluessel     # <weg>-<nr>-<slug>, gleich wie der Dateiname
 weg: flugschule                      # flugschule | webseite | geschaeft
-stufe: fliegen                       # abheben (Idee, Produkt) | fliegen (Setup, live) | landen (erster Fan)
+stufe: fliegen                       # Etappe der Phase: abheben (P1 bis P8) | fliegen (P9 bis P11) | landen (P12, P13)
 phase: P11                           # Phase im Fahrplan: dort wird das Thema gebraucht und ist die Prüfung bestehbar
 optional: true                       # nur bei freiwilligen Missionen (domain, landung, cms, statistik, webseite-02, webseite-04)
 titel: Dein Hausschlüssel für den Server
@@ -201,7 +203,7 @@ Annahmen über die Instanz: Benutzer `pilot`, Projekt in `~/projekt` (Klon von `
 ```bash
 bun install
 bun run pruefen                       # Skills, Missionen, Fahrplan, Version, GUTE-ANTWORT.md, KRITERIEN-LOG.md, Vorlage und Befehle zum Aktualisieren
-bun test                              # scripts/*.test.ts und bausteine/eingang/verwaltung.test.ts: Regeln von pruefen.ts, Prüfbefehle der
+bun test                              # scripts/*.test.ts, bausteine/eingang/verwaltung.test.ts und stuecke.test.ts: Regeln von pruefen.ts, Prüfbefehle der
                                       # Skills, Grader der Evals ohne Modell, entwurf-pruefen.mjs gegen die Testseiten, Punkte, Trockenläufe
                                       # und Verlauf des Durchspiels (CI: Job pruefen)
 bun scripts/testseiten/test.ts        # pruefen.mjs gegen die Testseiten (nicht in CI); alle Fälle ausser --vor-bau und --tueren laden beim
@@ -227,7 +229,7 @@ Ein Eval-Fall prüft, was die KI mit den Skills tut: ein Satz der Person (`promp
 claude plugin eval plugins/albatros --tag fahrplan --scaffold --allow-tools Write Edit --ablation none \
   --max-cost-usd 0 --no-publish --trust-plugin --output-dir <ordner> --report <ordner>/bericht.html
 bun test                                                   # Grader ohne Modell: je Fall ein gutes und mindestens ein schlechtes Beispiel
-ALBATROS=<albatros-ordner> bun scripts/attrappen.ts --pruefen   # Attrappen wie aus dem echten mcp erzeugt? Schreibt nichts, Exit 1 bei Abweichung
+ALBATROS=<albatros-ordner> bun scripts/attrappen.ts --pruefen   # Attrappen wie aus dem echten mcp erzeugt, Missionen der lage-Attrappen wie missionen/? Schreibt nichts, Exit 1 bei Abweichung
 bun scripts/gute-antwort.ts                                # GUTE-ANTWORT.md neu erzeugen, nach jeder Änderung an fahrplan.yaml, an den Tags oder am KRITERIEN-LOG.md
 ```
 
@@ -265,6 +267,7 @@ Ein Durchlauf mit zwei KIs nach dem Fahrplan (`fahrplan.yaml`, P1 bis P13), erg�
 | `geschaeft` | Geschäftsidee, Weg Geschäft | Methoden der Phasen (`ideen-check`, `zielgruppe`, `angebot-und-preis`, `landingpage`) | P3 |
 | `musikverein` | erfundener Verein, als einziger auch gegen die echte Plattform | ganzer Ablauf bis live | P13 |
 | `curling`, `buchung` | modernisiert eine bestehende Seite; Yogastudio mit Buchungstool (Pilot, Baustein) | Bestandsaufnahme; Wohnort Pilot, Probe mit PocketBase | P13 |
+| `bauen-lassen`, `bauen-lassen-nein` | Bauservice (Attrappe mit `DURCHSPIEL_BAUSERVICE=on`, Regeln und Wortlaut wie `bauservice.ts` in albatros): lässt Albatros bauen; baut selbst weiter | Angebot einmal nach dem Ja zum Plan; jeder Betrag nur aus einer Antwort von lage oder konto im Lauf, der Betrag des Bauservice nie vor dem Ja zum Plan; Wahl in `Bauen lassen:`; `auftrag_anlegen` nur mit `bestaetigt` und erst in einer Runde nach der Übergabe-Anweisung; eine Runde nach der Übergabe nicht weitergebaut | P5 |
 
 **Ohne Modell und ohne Kosten prüfen** (kein Netz, kein Port, kein Konto):
 
@@ -273,11 +276,12 @@ bun test                                                                        
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/gut-lernen.json        # Exit 0
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/schlecht-gratis.json   # Exit 1
 bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/offen-nein-vor-bau.json --ergebnis <ordner>   # Exit 2, Ergebnis ausserhalb des Repos
+bun scripts/durchspiel.ts --trocken scripts/durchspiel/beispiele/bauen-lassen.json --ergebnis <ordner>   # Exit 0, ebenso bauen-lassen-nein; Exit 1: bauen-lassen-schlecht, -vor-plan, -betrag, -ohne-ja, -weiterbauen
 bun scripts/punkte.ts <ergebnis-ordner>                                               # Punkte eines Laufs neu rechnen (lauf.json)
 bun scripts/verlauf.ts                                                                # Trend je Fall
 ```
 
-Der Trockenlauf spielt einen aufgezeichneten Verlauf ab (Format von `lauf.json`): Statt der KI schreibt er die Dateien jeder Runde, ruft die Werkzeuge der Attrappe und öffnet, was die KI öffnete; statt der Person kommen ihre aufgezeichneten Nachrichten. Attrappe, Protokolle, Zustände, Punkte und Exit-Code laufen wie in einem echten Lauf. Die drei Beispiele in `scripts/durchspiel/beispiele/` (gut, schlecht, nicht auswertbar) sind von Hand geschrieben, je mit erwartetem Exit-Code, nicht von einem Modell aufgezeichnet.
+Der Trockenlauf spielt einen aufgezeichneten Verlauf ab (Format von `lauf.json`): Statt der KI schreibt er die Dateien jeder Runde, ruft die Werkzeuge der Attrappe und öffnet, was die KI öffnete; statt der Person kommen ihre aufgezeichneten Nachrichten. Attrappe, Protokolle, Zustände, Punkte und Exit-Code laufen wie in einem echten Lauf. Die Beispiele in `scripts/durchspiel/beispiele/` (gut, schlecht, nicht auswertbar; seit 01.11.2026 dazu drei zum Bauservice) sind von Hand geschrieben, je mit erwartetem Exit-Code, nicht von einem Modell aufgezeichnet.
 
 **Mit Modell** (kostet; `--budget` deckelt die bauende KI, Standard 30 USD, dazu Person und Richter):
 

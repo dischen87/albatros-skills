@@ -1,7 +1,7 @@
 ---
 id: webseite-08-statistik
 weg: webseite
-stufe: fliegen
+stufe: landen
 phase: P13
 optional: true
 titel: Die Strichliste an der Ladentür

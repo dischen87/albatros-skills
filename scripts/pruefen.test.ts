@@ -2,6 +2,7 @@
 import { expect, test } from 'bun:test';
 import { Glob } from 'bun';
 import { agentsBlock, type Befehle, befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
+import { KOPF_SCHLUESSEL, KOPF_STAND, kopfzeileStand } from './stand.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const lies = (pfad: string) => Bun.file(wurzel + pfad).text();
@@ -107,4 +108,23 @@ test('Italienisch: die Bozza hat den via libera, nie «approvata»; die Skills h
     expect([gruen, bozzaApprovata(it, gruen)]).toEqual([gruen, []]);
   // Nur Italienisch: «approvata» kommt in anderen Sprachen nicht vor, «approved draft» ist im Englischen richtig (approval to build)
   expect(bozzaApprovata('plugins/albatros-en/skills/webseite-bauen/SKILL.md', 'bozza approvata')).toEqual([]);
+});
+
+// Welle 8 (01.11.2026, w8-42, Schnittstelle I1, Entscheid skills-stand-kopfzeile): Jedes Plugin schickt seinen Stand selbst mit, als Kopfzeile
+// X-Albatros-Skills-Stand in .mcp.json, gleich version in plugin.json (und damit metadata.stand jeder SKILL.md). pruefen.ts verlangt es, unter
+// headers (Claude Code) und http_headers (Codex liest aus der .mcp.json eines Plugins nur diesen Schlüssel; gemessen mit 0.166.0).
+test('Kopfzeile mit dem Stand: in allen vier Plugins für Claude Code und Codex gleich version, sonst rot', async () => {
+  expect(KOPF_STAND).toBe('X-Albatros-Skills-Stand');
+  expect([...KOPF_SCHLUESSEL]).toEqual(['headers', 'http_headers']);
+  for (const plugin of ['albatros', 'albatros-fr', 'albatros-it', 'albatros-en']) {
+    const version = (await Bun.file(`${wurzel}plugins/${plugin}/.claude-plugin/plugin.json`).json()).version;
+    const mcp = await Bun.file(`${wurzel}plugins/${plugin}/.mcp.json`).json();
+    for (const s of KOPF_SCHLUESSEL) expect([plugin, s, kopfzeileStand(mcp, s)]).toEqual([plugin, s, version]);
+    expect([plugin, mcp.mcpServers.albatros.url]).toEqual([plugin, 'https://mcp.albatros.build']);
+  }
+  expect(kopfzeileStand({ mcpServers: { albatros: { type: 'http', url: 'https://mcp.albatros.build' } } })).toBeNull();
+  expect(kopfzeileStand({ mcpServers: { albatros: { headers: { [KOPF_STAND]: '0.2.0' } } } }, 'http_headers')).toBeNull(); // nur Claude Code
+  expect(kopfzeileStand({ mcpServers: { albatros: { headers: { 'x-albatros-skills-stand': '0.2.0' } } } })).toBeNull(); // Schreibweise wie I1
+  expect(kopfzeileStand({ mcpServers: { andere: { headers: { [KOPF_STAND]: '0.2.0' } } } })).toBeNull();
+  expect(kopfzeileStand(null)).toBeNull();
 });

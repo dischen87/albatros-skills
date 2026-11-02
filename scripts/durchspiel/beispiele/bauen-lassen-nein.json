@@ -1,0 +1,619 @@
+{
+ "fall": "bauen-lassen-nein",
+ "bis": "P5",
+ "ordner": "kette-rechts",
+ "erwartet": {
+  "exit": 0
+ },
+ "nachrichten": [
+  {
+   "wer": "Person",
+   "text": "Ich will eine Webseite für meine Velowerkstatt bauen und dabei etwas lernen, aber machen darfst du."
+  },
+  {
+   "wer": "KI",
+   "text": "Willkommen an Bord! Albatros ist eine Flugschule: abheben, fliegen, landen. Deine KI fliegt im Rucksack mit, ob Claude Code, Codex, Gemini CLI oder Cursor. Bis du deine Seite auf deinem Computer siehst, kostet Albatros nichts. Ich mache die Arbeit und erkläre dir jeden Schritt. Wie soll dein Projekt heissen?"
+  },
+  {
+   "wer": "Person",
+   "text": "Kette rechts. Velos reparieren und Occasionen verkaufen. Für Pendlerinnen und Familien aus dem Dorf. Die Hauptsache: Einen Reparaturtermin anfragen. Eine Webseite gibt es noch nicht."
+  },
+  {
+   "wer": "KI",
+   "text": "Ich habe docs/projekt.md angelegt und dir die graue Skizze deiner Startseite geöffnet. Erfolg habe ich als Annahme eingetragen: [Annahme: fünf Anfragen pro Woche]. Passt die Skizze so?"
+  },
+  {
+   "wer": "Person",
+   "text": "Ja, die Skizze passt."
+  },
+  {
+   "wer": "KI",
+   "text": "Ich habe die Recherche in docs/recherche.md eingetragen: Vorbilder, Pflichten und deine Inhalte (Fotos der Werkstatt). Jetzt der Grundriss: Welche Funktionen braucht deine Seite, und gibt es Bereiche nur für bestimmte Leute?"
+  },
+  {
+   "wer": "Person",
+   "text": "Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden». Nein, alles ist öffentlich. Deutsch reicht. Zum Saisonstart im März 2027. Ich selbst, wenn sich Öffnungszeiten ändern."
+  },
+  {
+   "wer": "KI",
+   "text": "Den Grundriss habe ich in docs/plan.md geschrieben und in einem frischen Gespräch prüfen lassen (docs/plan-pruefung.md): zehn Punkte ok, keiner offen. Ist der Plan so final, oder ändern wir etwas?"
+  },
+  {
+   "wer": "Person",
+   "text": "Ja, so ist der Plan gut."
+  },
+  {
+   "wer": "KI",
+   "text": "Dein Plan steht. Ab hier wird gestaltet und gebaut. Du kannst mit mir selbst weiterbauen: Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts. Oder Albatros baut sie für dich: Du bekommst Entwürfe zur Wahl und danach eine Vorschau deiner ganzen Seite. Bezahlen musst du erst, wenn du die Seite willst: CHF 290 einmalig, danach Light für CHF 15 im Monat. So oder so kommen jetzt fünf Fragen zum Charakter deiner Seite. Was ist dir lieber?"
+  },
+  {
+   "wer": "Person",
+   "text": "Nein danke, ich baue lieber selbst mit dir."
+  },
+  {
+   "wer": "KI",
+   "text": "Notiert: Bauen lassen: selbst. Jetzt zum Charakter deiner Seite. Bleibt der Projektname, oder soll das Projekt nach aussen anders heissen? Und: Du oder Sie, und wie soll die Sprache klingen?"
+  },
+  {
+   "wer": "Person",
+   "text": "Der Name bleibt. Du-Form, locker."
+  },
+  {
+   "wer": "KI",
+   "text": "Danke. Welche drei Wörter beschreiben, wie es wirken soll? Und gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen?"
+  },
+  {
+   "wer": "Person",
+   "text": "sportlich, ehrlich, handfest. Nichts."
+  },
+  {
+   "wer": "KI",
+   "text": "Gut. Soll eine Figur dazugehören, die durch deine Seite führt? Ja, nein oder später."
+  },
+  {
+   "wer": "Person",
+   "text": "Später vielleicht."
+  },
+  {
+   "wer": "KI",
+   "text": "Dein Konzept steht in docs/konzept.md, und dein Haus auf der Insel ist gewachsen. Als Nächstes kommt das Designsystem mit dem Musterblatt (P6). Soll ich anfangen?"
+  }
+ ],
+ "aufrufe": [
+  {
+   "runde": 0,
+   "werkzeug": "konto_status",
+   "argumente": {},
+   "betraege": [
+    15,
+    40,
+    5,
+    290
+   ],
+   "einmalig": 290
+  },
+  {
+   "runde": 0,
+   "werkzeug": "weg_waehlen",
+   "argumente": {
+    "weg": "webseite"
+   }
+  },
+  {
+   "runde": 0,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0"
+   }
+  },
+  {
+   "runde": 1,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "In einem Satz: Velos reparieren und Occasionen verkaufen.",
+       "Für wen: Pendlerinnen und Familien aus dem Dorf",
+       "Hauptsache: Einen Reparaturtermin anfragen.",
+       "Erfolg: [Annahme: fünf Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 2,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "idee",
+    "titel": "Kette rechts",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 2,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "recherche",
+    "titel": "Kette rechts",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 2,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "In einem Satz: Velos reparieren und Occasionen verkaufen.",
+       "Für wen: Pendlerinnen und Familien aus dem Dorf",
+       "Hauptsache: Einen Reparaturtermin anfragen.",
+       "Erfolg: [Annahme: fünf Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Werkstatt",
+       "Suchbegriffe: Velowerkstatt Testwil"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 3,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "plan",
+    "titel": "Kette rechts",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 3,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "In einem Satz: Velos reparieren und Occasionen verkaufen.",
+       "Für wen: Pendlerinnen und Familien aus dem Dorf",
+       "Hauptsache: Einen Reparaturtermin anfragen.",
+       "Erfolg: [Annahme: fünf Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Werkstatt",
+       "Suchbegriffe: Velowerkstatt Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, wenn sich Öffnungszeiten ändern",
+       "Stand: 01.11.2026, Grundriss steht, noch nicht geprüft"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 4,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "plan-geprueft",
+    "titel": "Kette rechts",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 4,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "In einem Satz: Velos reparieren und Occasionen verkaufen.",
+       "Für wen: Pendlerinnen und Familien aus dem Dorf",
+       "Hauptsache: Einen Reparaturtermin anfragen.",
+       "Erfolg: [Annahme: fünf Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Stand: 01.11.2026, Idee steht",
+       "Nächster Schritt: Research"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Werkstatt",
+       "Suchbegriffe: Velowerkstatt Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, wenn sich Öffnungszeiten ändern",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   },
+   "angebot": true,
+   "betraege": [
+    290,
+    15
+   ],
+   "einmalig": 290
+  },
+  {
+   "runde": 5,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "In einem Satz: Velos reparieren und Occasionen verkaufen.",
+       "Für wen: Pendlerinnen und Familien aus dem Dorf",
+       "Hauptsache: Einen Reparaturtermin anfragen.",
+       "Erfolg: [Annahme: fünf Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Bauen lassen: selbst (01.11.2026)",
+       "Stand: 01.11.2026, Plan bestätigt",
+       "Nächster Schritt: Konzept"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Werkstatt",
+       "Suchbegriffe: Velowerkstatt Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, wenn sich Öffnungszeiten ändern",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  },
+  {
+   "runde": 8,
+   "werkzeug": "schritt_melden",
+   "argumente": {
+    "schritt": "konzept",
+    "titel": "Kette rechts",
+    "sprache": "de"
+   }
+  },
+  {
+   "runde": 8,
+   "werkzeug": "lage",
+   "argumente": {
+    "skills_stand": "0.2.0",
+    "modus": "machen",
+    "belege": [
+     {
+      "datei": "docs/projekt.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "In einem Satz: Velos reparieren und Occasionen verkaufen.",
+       "Für wen: Pendlerinnen und Familien aus dem Dorf",
+       "Hauptsache: Einen Reparaturtermin anfragen.",
+       "Erfolg: [Annahme: fünf Anfragen pro Woche]",
+       "Bestehende Seite: keine",
+       "Modus: machen",
+       "Bauen lassen: selbst (01.11.2026)",
+       "Stand: 01.11.2026, Plan bestätigt",
+       "Nächster Schritt: Konzept"
+      ]
+     },
+     {
+      "datei": "docs/recherche.md",
+      "zeilen": [
+       "Vorbilder: drei Läden aus der Region (Adressen geprüft)",
+       "Übliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt",
+       "Übernehmen: grosse Fotos, Öffnungszeiten oben",
+       "Vermeiden: lange Texte",
+       "Pflichten: Impressum, Datenschutz",
+       "Inhalte vorhanden: Fotos der Werkstatt",
+       "Suchbegriffe: Velowerkstatt Testwil"
+      ]
+     },
+     {
+      "datei": "docs/plan.md",
+      "zeilen": [
+       "Projektname: Kette rechts",
+       "Seiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz",
+       "Funktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»",
+       "Zugang: keine Bereiche nur für bestimmte Leute",
+       "Sprachen: Deutsch",
+       "Setup: statisch, Seite ohne eigene Dienste, Anfragen per Mail",
+       "Testing: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an",
+       "Release: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live",
+       "Pflege: Ich selbst, wenn sich Öffnungszeiten ändern",
+       "Bestätigt: 01.11.2026, «Ja, so ist der Plan gut.»",
+       "Stand: 01.11.2026, Grundriss geprüft und bestätigt"
+      ]
+     },
+     {
+      "datei": "docs/plan-pruefung.md",
+      "zeilen": [
+       "Geprüft am: 01.11.2026",
+       "Zweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen"
+      ]
+     },
+     {
+      "datei": "docs/konzept.md",
+      "zeilen": [
+       "Name: Kette rechts",
+       "Kern: Velos reparieren und Occasionen verkaufen.",
+       "Ton: Du-Form, locker",
+       "Charakter: sportlich, ehrlich, handfest",
+       "Maskottchen: später (01.11.2026)",
+       "Muss bleiben: Nichts",
+       "Bildsprache: echte Fotos aus dem Laden"
+      ]
+     },
+     {
+      "datei": "AGENTS.md",
+      "zeilen": []
+     },
+     {
+      "datei": "design/skizze.html",
+      "zeilen": []
+     }
+    ]
+   }
+  }
+ ],
+ "geoeffnet": [
+  {
+   "runde": 0,
+   "ziel": "https://albatros.build/cockpit/insel"
+  },
+  {
+   "runde": 1,
+   "ziel": "design/skizze.html"
+  }
+ ],
+ "zustaende": [
+  {
+   "runde": 0,
+   "dateien": {},
+   "gebaut": false
+  },
+  {
+   "runde": 1,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 2,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 3,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n",
+    "docs/plan.md": "# Plan: Kette rechts\n\nProjektname: Kette rechts\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, wenn sich Öffnungszeiten ändern\nStand: 01.11.2026, Grundriss steht, noch nicht geprüft\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 4,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nStand: 01.11.2026, Idee steht\nNächster Schritt: Research\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n",
+    "docs/plan.md": "# Plan: Kette rechts\n\nProjektname: Kette rechts\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, wenn sich Öffnungszeiten ändern\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 5,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: selbst (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n",
+    "docs/plan.md": "# Plan: Kette rechts\n\nProjektname: Kette rechts\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, wenn sich Öffnungszeiten ändern\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 6,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: selbst (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n",
+    "docs/plan.md": "# Plan: Kette rechts\n\nProjektname: Kette rechts\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, wenn sich Öffnungszeiten ändern\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 7,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: selbst (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n",
+    "docs/plan.md": "# Plan: Kette rechts\n\nProjektname: Kette rechts\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, wenn sich Öffnungszeiten ändern\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n"
+   },
+   "gebaut": false
+  },
+  {
+   "runde": 8,
+   "dateien": {
+    "docs/projekt.md": "# Kette rechts\n\nProjektname: Kette rechts\nIn einem Satz: Velos reparieren und Occasionen verkaufen.\nFür wen: Pendlerinnen und Familien aus dem Dorf\nHauptsache: Einen Reparaturtermin anfragen.\nErfolg: [Annahme: fünf Anfragen pro Woche]\nBestehende Seite: keine\nModus: machen\nBauen lassen: selbst (01.11.2026)\nStand: 01.11.2026, Plan bestätigt\nNächster Schritt: Konzept\n",
+    "AGENTS.md": "# Kette rechts\n\nLies docs/projekt.md und frag lage, was jetzt dran ist.\n",
+    "design/skizze.html": true,
+    "docs/recherche.md": "# Recherche\n\nVorbilder: drei Läden aus der Region (Adressen geprüft)\nÜbliche Seiten und Funktionen: Angebot, Öffnungszeiten, Kontakt\nÜbernehmen: grosse Fotos, Öffnungszeiten oben\nVermeiden: lange Texte\nPflichten: Impressum, Datenschutz\nInhalte vorhanden: Fotos der Werkstatt\nSuchbegriffe: Velowerkstatt Testwil\n",
+    "docs/plan.md": "# Plan: Kette rechts\n\nProjektname: Kette rechts\nSeiten: Start, Angebot, Über uns, Kontakt, Impressum und Datenschutz\nFunktionen: Hauptsache «Termin anfragen»: Anfrage per Mail; Bestätigung per Mail; Fehler mit «Nochmals senden»\nZugang: keine Bereiche nur für bestimmte Leute\nSprachen: Deutsch\nSetup: statisch, Seite ohne eigene Dienste, Anfragen per Mail\nTesting: Am Handy sieht man die Hauptsache ohne Scrollen; eine Anfrage kommt an\nRelease: Zum Saisonstart im März 2027; Weg ins Netz: auf dem Computer ansehen, Freigabe, Wohnort wählen, live\nPflege: Ich selbst, wenn sich Öffnungszeiten ändern\nBestätigt: 01.11.2026, «Ja, so ist der Plan gut.»\nStand: 01.11.2026, Grundriss geprüft und bestätigt\n",
+    "docs/plan-pruefung.md": "# Prüfung des Plans\n\nGeprüft am: 01.11.2026\nZweite Meinung: Claude Code, Subagent in frischem Kontext; 10 ok, 0 Risiko, 0 offen\n",
+    "docs/konzept.md": "# Konzept: Kette rechts\n\nName: Kette rechts\nKern: Velos reparieren und Occasionen verkaufen.\nTon: Du-Form, locker\nCharakter: sportlich, ehrlich, handfest\nMaskottchen: später (01.11.2026)\nMuss bleiben: Nichts\nBildsprache: echte Fotos aus dem Laden\n"
+   },
+   "gebaut": false
+  }
+ ]
+}

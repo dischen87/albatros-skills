@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Pianifica con una persona senza conoscenze tecniche il suo sito web prima del design e della costruzione, in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md e uno schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, contenuti esistenti, docs/recherche.md), pianta (pagine, funzioni, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere in un contesto nuovo, docs/plan-pruefung.md, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill con «voglio un sito web», «pianificare un sito web», «da dove comincio», «cosa mi serve per un sito web», «quali pagine mi servono», «sitemap», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione sul percorso sito web."
 metadata:
   stand: 0.2.0
-  quelle: '58f8cf3c1cd8'
+  quelle: '75a09c46731f'
 ---
 
 # Pianificare il sito web: la pianta
@@ -184,7 +184,7 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
    - Chi cambierà più tardi testi e appuntamenti, e quanto spesso?
 2. **Il resto lo proponi con un motivo, come standard invece che come domanda:**
    - `Seiten:` (pagine) Per il primo volo al massimo da cinque a sette, impressum e protezione dei dati compresi. Un inizio collaudato: pagina iniziale (chi, cosa, per chi, e il pulsante per la cosa principale), offerta, chi siamo, contatto, impressum e protezione dei dati. Ogni pagina va curata.
-   - `Setup:` (configurazione) Lo standard è un sito senza servizi propri: testi e immagini, anche in più lingue, liste come le date come file nel progetto, richieste per e-mail. Solo una lista di iscrizione, prenotazioni con posti, un accesso o una bacheca per altri richiedono un blocco (skill `bausteine`, più tardi con un server tuo). Un sistema per gestire i contenuti (skill `cms`) arriva solo quando qualcuno senza conoscenze tecniche cambia regolarmente i contenuti.
+   - `Setup:` (configurazione) Lo standard è un sito senza servizi propri: testi e immagini, anche in più lingue, liste come le date come file nel progetto, richieste per e-mail. Solo una lista di iscrizione, prenotazioni con posti, un accesso o una bacheca per altri richiedono un blocco (skill `bausteine`, più tardi con un server tuo). Un sistema per gestire i contenuti (skill `cms`) arriva solo quando qualcuno senza conoscenze tecniche cambia regolarmente i contenuti. Il valore comincia con la parola tedesca `statisch` (sito senza servizi propri) o `baustein` (con lista di iscrizione, prenotazione, accesso o bacheca), poi una frase nella lingua della persona; le parole restano in tedesco, Albatros legge solo la prima.
    - `Testing:` (verifica) da che cosa capite che è finito: da tre a cinque frasi che si possono verificare, partendo dalla cosa principale. Per esempio: «Sul telefonino si vede senza scorrere di cosa si tratta, e il pulsante «Chiedere un posto».» «Una richiesta arriva, e chi chiede riceve una conferma.» «Impressum e protezione dei dati si raggiungono da ogni pagina.»
    - `Release:` (messa online) la data o l'occasione della persona, e in più, come standard, la strada verso la rete: la persona vede prima il suo sito sul suo computer e lo approva, poi sceglie dove abita il sito (da Albatros o da sé), poi va online. Prima dell'approvazione niente va in rete.
 3. **Scrivere `docs/plan.md`.** `Funktionen` = funzioni, `Zugang` = accesso, `Sprachen` = lingue, `Pflege` = cura:
@@ -199,7 +199,7 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
    Funktionen: cosa principale «…»: …; conferma: …; errore: …
    Zugang: …
    Sprachen: …
-   Setup: [Annahme: sito senza servizi propri, perché …]
+   Setup: [Annahme: statisch, sito senza servizi propri, perché …]
    Testing: [Annahme: …; …; …]
    Release: <data o occasione>; strada verso la rete: vedere sul computer, approvazione, scegliere il domicilio, online
    Pflege: …
@@ -268,6 +268,8 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
 **Momento di apprendimento:** chi ha scritto il piano vede peggio le sue lacune.
 
 **Ce l'hai fatta quando** ogni punto della lista di controllo è ok, rischio o aperto con il punto preciso e `docs/plan.md` ha la riga `Bestätigt:` con il sì della persona. Poi `schritt_melden` con `plan-geprueft`. Dopo viene il carattere del sito (skill `konzept`), ancora prima di colori e codice.
+
+**Far costruire (Bauen lassen):** Se `lage` poi mostra una riga `Angebot:` (offerta), la dici una volta alla persona, con l'importo esattamente come lo dice `lage`, mai a memoria. Più o meno così: «Il tuo piano è pronto. Da qui si progetta e si costruisce. Puoi continuare con me da te: finché il tuo sito non è finito sul tuo computer, Albatros non costa niente. Oppure Albatros lo costruisce per te: ricevi delle bozze tra cui scegliere e poi un'anteprima di tutto il tuo sito. Paghi solo quando vuoi il sito: <importo da lage>. In ogni caso adesso arrivano cinque domande sul carattere del tuo sito. Che cosa preferisci?» La sua scelta la scrivi subito in `docs/projekt.md`: `Bauen lassen: selbst (<GG.MM.AAAA>)` o `Bauen lassen: albatros (<GG.MM.AAAA>)`; le parole `selbst` e `albatros` restano in tedesco. Così l'offerta non torna. Senza riga `Angebot:` non ne dici niente; se la persona chiede da sé se Albatros può costruire, nomini questa strada una volta, con l'importo da `konto_status`. Con `albatros` si continua comunque prima con il concetto, poi viene la consegna (skill `konzept`, sezione «Consegna ad Albatros»).
 
 ## Cosa risparmi alla persona
 

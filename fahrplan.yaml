@@ -65,6 +65,16 @@ modus:
     Die KI erklärt jeden Schritt mit Bild und Warum, lässt die Person die Lernmomente selbst tippen, stellt am Ende der Phase die
     Kontrollfrage der Lektion und meldet «verstanden» (verstanden_melden) erst nach der Antwort der Person.
 
+# Bauen lassen (Bauservice, Konzept albatros/docs/plan-bauservice.md, 01.11.2026): Einmal, sobald P4 geschafft ist (P5 dran), bietet
+# lage an, dass Albatros baut. Die Wahl steht in docs/projekt.md, Zeile «Bauen lassen:», Wert selbst oder albatros mit Datum.
+# Angebot nur mit Schalter BAUSERVICE, im Modus machen, mit «Setup:» ab «statisch», ohne Auftrag und ohne Zeile «Bauen lassen:».
+bauen_lassen:
+  ab: P5
+  quelle: 'docs/projekt.md#Bauen lassen:'
+  werte: [selbst, albatros]
+  nur_modus: machen
+  setup_beginnt: statisch
+
 phasen:
   - id: P1
     titel: Idee verstehen

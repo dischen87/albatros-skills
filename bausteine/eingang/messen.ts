@@ -11,6 +11,8 @@
 // durchkommt. --fetch-plaetze setzt BUN_CONFIG_MAX_HTTP_REQUESTS (wie im Dockerfile; ohne: Standard von Bun, 256).
 // --bilder B: --seiten Besucherinnen (je eine Adresse) laden zugleich eine Seite mit B Bildern à --kb KB, alle Bilder auf einmal (wie
 // über HTTP/2 an der Kante). Misst, ob alle ankommen, wie lange es dauert und wie viele der Teil gleichzeitig hat.
+// --bereiche: Der Teil antwortet wie nginx bei Dateien (accept-ranges, ETag, ein Bereich mit 206): Bilder ab 1 MB holt der Eingang dann in
+// Stücken (eingang.ts, stueckweise; Welle 8, w8-45). Ohne: wie ein Teil, der keine Bereiche kann.
 import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { connect } from 'node:net';
 import { tmpdir } from 'node:os';
@@ -21,7 +23,7 @@ const args = process.argv.slice(2);
 const wert = (n: string, d: number) => { const i = args.indexOf(n); return i >= 0 ? Number(args[i + 1]) : d; };
 const ANFRAGEN = wert('--anfragen', 10_000), GLEICHZEITIG = wert('--gleichzeitig', 50), ADRESSEN = wert('--adressen', 1000), SMOL = args.includes('--smol');
 const GEHALTEN = wert('--gehalten', 0), JE = wert('--je-adresse', 20), PLAETZE = wert('--fetch-plaetze', 0);
-const BILDER = wert('--bilder', 0), SEITEN = wert('--seiten', 1), KB = wert('--kb', 100);
+const BILDER = wert('--bilder', 0), SEITEN = wert('--seiten', 1), KB = wert('--kb', 100), BEREICHE = args.includes('--bereiche');
 const hier = import.meta.dir, pb = wurzelVon(join(hier, '..', 'pocketbase'));
 const tmp = mkdtempSync(join(tmpdir(), 'eingang-messen-'));
 mkdirSync(join(tmp, 'pb_migrations')); mkdirSync(join(tmp, 'pb_hooks'));
@@ -39,11 +41,17 @@ const halten = new Promise<void>((r) => { loslassen = r; });
 const bild = new Uint8Array(KB * 1024).fill(66);
 const teil = Bun.serve({ hostname: '127.0.0.1', port: 0, idleTimeout: 255, async fetch(r) {
   const pfad = new URL(r.url).pathname;
-  if (pfad.startsWith('/bild/')) { // wie ein Webserver mit Dateien: 5 ms je Bild
+  if (pfad.startsWith('/bild/')) { // wie ein Webserver mit Dateien: 5 ms je Bild (ein Stück mit Range ohne diese Wartezeit, wie aus dem Cache)
     bilderHoechstens = Math.max(bilderHoechstens, ++bilderJetzt);
-    await Bun.sleep(5);
+    if (!r.headers.get('range')) await Bun.sleep(5);
     bilderJetzt--;
-    return new Response(bild, { headers: { 'content-type': 'image/jpeg' } });
+    const m = BEREICHE ? /^bytes=(\d+)-(\d*)$/.exec(r.headers.get('range') ?? '') : null;
+    const kopf = { 'content-type': 'image/jpeg', ...(BEREICHE ? { 'accept-ranges': 'bytes', etag: '"bild-1"' } : {}) };
+    if (m && (r.headers.get('if-range') ?? '"bild-1"') === '"bild-1"') {
+      const von = Number(m[1]), bis = m[2] ? Math.min(Number(m[2]), bild.length - 1) : bild.length - 1;
+      return new Response(bild.subarray(von, bis + 1), { status: 206, headers: { ...kopf, 'content-range': `bytes ${von}-${bis}/${bild.length}` } });
+    }
+    return new Response(bild, { headers: kopf });
   }
   if (pfad === '/halten') { gehalten++; await halten; gehalten--; }
   return new Response(seite, { headers: { 'content-type': 'text/html; charset=utf-8' } });
@@ -119,7 +127,7 @@ try {
     const ganz = seiten.flatMap((s) => s.b).filter((x) => x.status === 200 && x.bytes > bild.length).length;
     const ms = seiten.map((s) => s.ms).sort((a, b) => a - b);
     console.log(`Bun ${Bun.version}${SMOL ? ' --smol' : ''}, ${process.platform} ${process.arch}, ${new Date().toISOString().slice(0, 10)}, BUN_CONFIG_MAX_HTTP_REQUESTS ${PLAETZE || '256 (Standard)'}`);
-    console.log(`${SEITEN} Seiten mit je ${BILDER} Bildern à ${KB} KB zugleich: Status ${[...status].map(([s, z]) => `${z}×${s}`).join(', ')}, ganz angekommen ${ganz} von ${SEITEN * BILDER}; beim Teil höchstens ${bilderHoechstens} zugleich`);
+    console.log(`${SEITEN} Seiten mit je ${BILDER} Bildern à ${KB} KB zugleich${BEREICHE ? ' (Teil mit Bereichen)' : ''}: Status ${[...status].map(([s, z]) => `${z}×${s}`).join(', ')}, ganz angekommen ${ganz} von ${SEITEN * BILDER}; beim Teil höchstens ${bilderHoechstens} zugleich`);
     console.log(`Seite fertig: Median ${(ms[Math.floor(ms.length / 2)]! / 1000).toFixed(2)} s, langsamste ${(ms.at(-1)! / 1000).toFixed(2)} s; Eingang RSS: Leerlauf ${mb(leer)}, Spitze ${mb(spitze)}`);
   } else {
     let spitze = leer, pbSpitze = pbLeer;

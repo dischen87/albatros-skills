@@ -72,9 +72,18 @@ Sag es in einem Satz, genau so: «Bis du deine Seite auf deinem Computer siehst,
 
 Fragt die Person nach Preisen oder ob sie einen eigenen Server braucht, antwortest du kurz und ohne Zahlungslink: Fürs Netz gibt es später drei Wege: **Light** (eine Seite aus Texten und Bildern, ohne eigenen Server), **Pilot** (ein eigener Server, nötig, sobald auf der Seite ein Programm läuft: Anmeldeliste, Buchungen mit Plätzen, Login für Mitglieder) oder **selbst** (die Person bringt die Seite woanders ins Netz). Für eine Seite aus Texten und Bildern reicht Light, auch mit mehreren Sprachen. Preise nennst du nur aus `konto_status`, nie aus dem Gedächtnis. Entscheiden muss sie erst, wenn ihre Seite fertig und freigegeben ist (Skill `lancieren`).
 
+Nur wenn die Person fragt, ob Albatros die Seite für sie bauen kann: Ja, das geht, sobald ihr Plan steht; dann bietet Albatros es ihr an, mit dem Preis, und bezahlt wird erst, wenn ihr die fertige Vorschau gefällt. Von dir aus erwähnst du es hier nicht, und hier gibt es weder Link noch Zahlung.
+
 ### 5. Los: die Idee
 
-Ohne weitere Fragen gehst du sofort weiter mit dem Skill `webseite-planen`, Abschnitt Idee (`../webseite-planen/SKILL.md`, in Claude Code `albatros:webseite-planen`). Auch auf dem Weg Geschäft beginnt es dort; danach kommt die Methode `ideen-check`. Deine Antwort endet mit dem Projektnamen: einem Vorschlag oder der Frage danach («Ein Arbeitsname reicht, er darf auch willkürlich sein.»).
+Bevor es mit der Idee losgeht, ruf `lage` von Albatros auf, mit `skills_stand`: dem Wert von `stand` unter `metadata` oben in dieser Datei. Gibt es im Projektordner schon `docs/projekt.md`, gibst du ihre Zeilen als `belege` mit, so wie der Skill `lotse` es für `lage` beschreibt. So kennst du den echten Stand, bevor du anfängst:
+
+- Nennt `lage` «Jetzt dran: `webseite-planen`, Abschnitt «Idee»», geht es dort los, wie unten. Nennt es etwas anderes, weil die Person schon weiter ist, folgst du dem.
+- Steht `Hinweis zur Erfassung:` da, sagst du ihn der Person einmal, in ihrer Sprache, vollständig und mit der Adresse.
+- Steht `Anfragen: erlaubt.` da, gibst du ab dem nächsten Aufruf `anfrage` mit (Skill `lotse`).
+- Fehlt `lage` oder antwortet Albatros nicht, fängst du ohne `lage` mit der Idee an.
+
+Ohne weitere Fragen gehst du dann weiter mit dem Skill `webseite-planen`, Abschnitt Idee (`../webseite-planen/SKILL.md`, in Claude Code `albatros:webseite-planen`). Auch auf dem Weg Geschäft beginnt es dort; danach kommt die Methode `ideen-check`. Deine Antwort endet mit dem Projektnamen: einem Vorschlag oder der Frage danach («Ein Arbeitsname reicht, er darf auch willkürlich sein.»).
 
 Ab hier begleitet dich der Skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros:lotse`): Nach jedem geschafften Abschnitt ruft er `lage` auf. Sag der Person, dass sie künftig einfach «Wie weiter?» fragen kann.
 

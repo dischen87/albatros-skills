@@ -8,15 +8,16 @@ import { existsSync } from 'node:fs';
 import schema from '../schema/mission.schema.json';
 import { befehleAusReadme, befehleAusSkill, bozzaApprovata, titelAusweg, unterschiede, vorlageGegenSkill } from './abgleich.ts';
 import { pruefeAbschnittsnamen } from './abschnitte.ts';
-import { ALTE_INSEL, ladeFahrplan } from './fahrplan.ts';
+import { ALTE_INSEL, ladeFahrplan, stufeFehler } from './fahrplan.ts';
 import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
 import { ladeFragen, missionsverweise, type SkillText } from './missionsverweise.ts';
-import { hoeher, quelle } from './stand.ts';
+import { hoeher, KOPF_SCHLUESSEL, KOPF_STAND, kopfzeileStand, quelle } from './stand.ts';
 
 type Mission = {
   id: string;
   weg: string;
+  stufe: 'abheben' | 'fliegen' | 'landen';
   phase: string;
   optional?: boolean;
   abo?: 'light' | 'pilot';
@@ -52,6 +53,12 @@ for (const p of (await Bun.file(wurzel + '.claude-plugin/marketplace.json').json
   if (p.version !== VERSION) fehler.push(`.claude-plugin/marketplace.json: ${p.name} hat version ${p.version}, nicht ${VERSION}`);
   const eigen = (await Bun.file(`${wurzel}${p.source}/.claude-plugin/plugin.json`).json()).version;
   if (eigen !== VERSION) fehler.push(`${p.source.replace(/^\.\//, '')}/.claude-plugin/plugin.json: version ${eigen}, nicht ${VERSION}`);
+  // Kopfzeile mit dem Stand (I1) für Claude Code (headers) und Codex (http_headers), gleich version und damit metadata.stand (scripts/stand.ts)
+  const mcp: unknown = await Bun.file(`${wurzel}${p.source}/.mcp.json`).json().catch(() => null);
+  for (const s of KOPF_SCHLUESSEL) {
+    const kopf = kopfzeileStand(mcp, s);
+    if (kopf !== VERSION) fehler.push(`${p.source.replace(/^\.\//, '')}/.mcp.json: ${s}.${KOPF_STAND} ist ${kopf ?? 'leer'}, nicht ${VERSION} (version in plugin.json)`);
+  }
 }
 // Ändert sich etwas unter plugins/*/skills, steigt die Version gegenüber origin/main (sonst behalten alte Installationen den alten Stand
 // ohne es zu merken). Ohne origin/main, etwa in einer flachen Kopie, entfällt diese Prüfung.
@@ -155,6 +162,15 @@ if (fahrplan) {
   if (inPhasen.join() !== fahrplan.insel.join()) f(`insel muss genau phasen[].insel in derselben Reihenfolge sein (${inPhasen.join(', ')})`);
   const alt = ALTE_INSEL.map((s) => fahrplan.insel.indexOf(s));
   if (alt.some((i, n) => i < 0 || (n > 0 && i <= alt[n - 1]!))) f(`insel: die zehn alten Schritte fehlen oder stehen nicht in alter Reihenfolge (${ALTE_INSEL.join(' < ')})`);
+  // Bauen lassen (Schnittstelle I2, 01.11.2026): ab einer Phase des Fahrplans; die Wahl steht in einer Ergebnisdatei, aber nie als Pflichtzeile
+  // (sonst hielte das Gate eine Phase auf, bis die Person den Bauservice beantwortet); «Setup:» ist eine Pflichtfrage vor dieser Phase
+  const b = fahrplan.bauen_lassen;
+  const [bDatei, bZeile] = b.quelle.split('#') as [string, string | undefined];
+  if (!ids.includes(b.ab)) f(`bauen_lassen.ab: ${b.ab} ist keine Phase`);
+  if (!bZeile || !fahrplan.phasen.some((p) => p.ergebnis.some((e) => e.datei === bDatei))) f(`bauen_lassen.quelle: ${b.quelle} braucht eine Zeile in einer Ergebnisdatei`);
+  if (fahrplan.phasen.some((p) => p.ergebnis.some((e) => e.datei === bDatei && e.zeilen?.includes(bZeile ?? '')))) f(`bauen_lassen.quelle: «${bZeile}» darf keine Pflichtzeile sein`);
+  const setup = fahrplan.phasen.findIndex((p) => p.pflichtfragen.some((q) => q.ablage === 'docs/plan.md#Setup:'));
+  if (setup < 0 || setup >= ids.indexOf(b.ab)) f(`bauen_lassen: «Setup:» in docs/plan.md muss eine Pflichtfrage vor ${b.ab} sein`);
 }
 
 // Abschnittsnamen (scripts/abschnitte.ts): Was lage aus fahrplan.yaml nennt und worauf deutsche Skills verweisen, steht im Ziel-Skill
@@ -194,6 +210,9 @@ for await (const datei of new Glob('missionen/*/*.md').scan(wurzel)) {
   if (!gueltig) continue;
   deutsch.set(datei, k);
   if (!fahrplan) continue;
+  // Stufe gleich Etappe der Phase (Entscheid stufe-etappe, 01.11.2026, scripts/fahrplan.ts)
+  const stufe = stufeFehler(fahrplan.phasen, k);
+  if (stufe) fehler.push(`${datei}: ${stufe}`);
   // Der Insel-Schritt gehört zur Phase der Mission; bis gratis_bis arbeitet die Person nur auf ihrem Computer, ohne Server und Hafen
   for (const p of k.pruefung)
     if (p.typ === 'insel' && inselPhase.get(p.schritt ?? '') !== k.phase)
@@ -218,6 +237,25 @@ for (const { datei, text } of skillTexte) {
   const f = titelAusweg(datei, text);
   if (f) fehler.push(f);
   fehler.push(...bozzaApprovata(datei, text)); // Begriffe wie im GLOSSAR.md (P8 auf Italienisch)
+}
+
+// Bauservice (Welle 8, w8-44; Nachbesserung 02.11.2026 nach der Gegenprobe): Was lage, auftrag_anlegen und scripts/punkte.ts lesen, steht in
+// jeder Sprache wörtlich gleich, auch wenn die Übersetzung sonst frei ist (vorher blieb pruefen grün, wenn eine Übersetzung den Absatz
+// verlor, «selbst» übersetzte oder bestaetigt: true wegliess)
+const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
+  'webseite-planen': ['`Angebot:`', '`Bauen lassen: selbst (', '`Bauen lassen: albatros (', '`konto_status`'],
+  lotse: ['`Angebot:`', '`inhalte`'],
+  konzept: ['`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`'],
+};
+for (const { datei, slug, text } of skillTexte)
+  for (const w of BAUSERVICE_WOERTLICH[slug] ?? []) if (!text.includes(w)) fehler.push(`${datei}: Bauservice, «${w}» fehlt (wörtlich wie im deutschen Skill)`);
+// Marken für «Annahme» in pruefen.mjs (webseite-bauen, Freigabe mit --freigabe und --vor-bau) wie marken.annahme in fahrplan.yaml: Die
+// Zeile ist von Hand geschrieben, kit liest die Marken aus dem Vertrag (Nachbesserung 02.11.2026: eine neue Marke im Vertrag hätte pruefen.mjs
+// sonst unbemerkt «frei» sagen lassen, wo kit «nicht frei» sagt)
+if (fahrplan) {
+  const pm = await Bun.file(`${wurzel}plugins/albatros/skills/webseite-bauen/pruefen.mjs`).text();
+  const liste = /const ANNAHME_DARIN = \/\\\[\(\?:([^)]*)\)/.exec(pm)?.[1]?.split('|');
+  if (!liste || liste.join() !== fahrplan.marken.annahme.join()) fehler.push(`plugins/albatros/skills/webseite-bauen/pruefen.mjs: ANNAHME_DARIN nennt ${liste?.join(', ') ?? 'nichts'}, fahrplan.yaml marken.annahme ${fahrplan.marken.annahme.join(', ')}`);
 }
 
 // Jeder Skill (mit allen Dateien daneben, etwa pruefen.mjs) und jede Mission gibt es in allen vier Sprachen. Dateien neben SKILL.md

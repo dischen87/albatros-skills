@@ -46,6 +46,8 @@ export type Fahrplan = {
   marken: { offen: string[]; platzhalter: string[]; annahme: string[] };
   wohnorte: { light: string; pilot: string };
   modus: { standard: 'machen' | 'lernen'; quelle: string; machen: string; lernen: string };
+  // Bauservice (01.11.2026): ab dieser Phase einmal das Angebot von lage; Wahl in quelle, Wert aus werte (selbst, albatros)
+  bauen_lassen: { ab: string; quelle: string; werte: string[]; nur_modus: 'machen' | 'lernen'; setup_beginnt: string };
   phasen: Phase[];
   nach_live: { aendern: { skill: string; klein: string[]; gross: string[] }; landen: JeWeg };
   insel: string[];
@@ -90,6 +92,14 @@ export function vertragsFehler(f: Fahrplan): string[] {
   }
   return fehler;
 }
+
+// Stufe einer Mission gleich der Etappe ihrer Phase (Entscheid stufe-etappe, 01.11.2026), für pruefen.ts: Ohne FAHRPLAN ordnen Bibliothek
+// und Flugbuch nach stufe, mit FAHRPLAN nach der Etappe der Phase; so stehen sie in beiden Fällen gleich. null: in Ordnung
+export function stufeFehler(phasen: Pick<Phase, 'id' | 'etappe'>[], m: { stufe?: unknown; phase?: unknown }): string | null {
+  const etappe = phasen.find((p) => p.id === m.phase)?.etappe;
+  return etappe && m.stufe !== etappe ? `stufe muss ${etappe} sein, die Etappe der Phase ${m.phase} in fahrplan.yaml (nicht ${m.stufe})` : null;
+}
+
 const teilfolge = (teil: string[], ganz: string[]) => {
   let i = 0;
   for (const s of ganz) if (s === teil[i]) i++;

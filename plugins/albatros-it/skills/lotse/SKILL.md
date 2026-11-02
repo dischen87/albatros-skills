@@ -3,7 +3,7 @@ name: lotse
 description: "Skill principale di Albatros: il controllore di volo. Con lo strumento lage chiede lo stato reale della persona (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server, missione) e poi segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo riuscito chiede di nuovo. Mostra il piano di volo in tre tappe (decollare, volare, atterrare), fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e, su richiesta, la biblioteca aperta di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «come vado avanti?», «qual è il prossimo passo?», «a che punto sono?», «non funziona», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. «come collego il mio dominio?») ha la precedenza lo skill specifico."
 metadata:
   stand: 0.2.0
-  quelle: 'a85bc07e08c8'
+  quelle: '2438fd74b074'
 ---
 
 # Controllore di volo: la cosa giusta al momento giusto
@@ -87,6 +87,8 @@ Subito dopo, nella stessa risposta, cominci con il passo: leggi lo skill, vai al
 - **Strumento `coach_fragen`:** Questo la persona non lo può risolvere da sola. Formula con lei la domanda e ponila con `coach_fragen`.
 
 Gli avvisi li dici alla persona, ma non la distraggono dal passo che tocca adesso.
+
+**Far costruire (Bauen lassen):** Se `lage` mostra una riga `Angebot:` (offerta), la dici una volta, con l'importo da `lage`, e scrivi la scelta della persona in `docs/projekt.md` (skill `webseite-planen`, sezione «Verificare il piano»). Se `lage` nomina un incarico aperto da Albatros (aspettare Albatros, scegliere la direzione nel cockpit, guardare l'anteprima), non continui a costruire tu, anche se la persona chiede come si va avanti: le mostri la strada verso il cockpit e intanto l'aiuti con testi e foto (skill `inhalte`). Il pagamento nel cockpit è la sua approvazione del sito; i dati della carta li inserisce solo lì, mai nella chat.
 
 ### 3. Le domande obbligatorie le fai tu
 

@@ -3,7 +3,7 @@ name: konzept
 description: "Works out with a person who has no prior knowledge, once the plan is confirmed, the character of their site before any colours are chosen (flight plan P5): name to the outside world, core in three sentences, tone (formal or informal), three words for how it should come across, what has to stay, visual style and always the question whether a character (mascot) belongs to it: yes, no or later. On the business path, first with the method marke. Pictures of the mascot only after naming the price and getting a yes. The result is docs/konzept.md. Use this skill after webseite-planen (plan confirmed) and for “concept”, “brand”, “character”, “tone”, “mascot”, “how should my site come across”."
 metadata:
   stand: 0.2.0
-  quelle: '02a20c500e11'
+  quelle: 'f201b65b1e7d'
 ---
 
 # Concept: character before colours
@@ -29,7 +29,7 @@ Phase P5 “Design and marketing concept”. It's due after the confirmed plan: 
 - Two questions per message at most. Five questions are answered only by the person: name, tone, character, the mascot and what has to stay. Core and visual style you suggest and write down as `[Annahme: …]` (assumption); the person confirms all assumptions in one single message.
 - Whatever the person hasn't said appears as `[offen: …]` (open), never as something you made up. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open.
 - Taste is the person's call. You help with pairs of opposites and examples, not with favourite colours.
-- Pictures made with the Albatros image tools cost credit: first the price, then only after their yes (section “The mascot”).
+- Pictures made with the Albatros image tools come with Light and Pilot, and they cost credit: first the price, then only after their yes (section “The mascot”). With Gratis there are no image tools: the mascot, its poses and pictures stay a sketch until Light or Pilot.
 
 ## Mode
 
@@ -59,6 +59,8 @@ If the project should have a different name, you suggest three to five names and
 - “Is there a logo, house colour or font that has to stay?” Why: whatever has to stay is the frame for all directions. If there's nothing, write “nothing”.
 
 Favourite colours only go under `Muss bleiben:` if they really have to stay. Otherwise you note them below the line as a wish; in P6 it will show whether they suit the character.
+
+If `docs/projekt.md` has the line `Bauen lassen: albatros`, add after the question about logo, house colour and font: “Put the logo and photos in the folder design/bilder.”
 
 ### 4. The mascot: yes, no or later
 
@@ -116,20 +118,31 @@ With “yes”, you first describe the mascot in words, under `## Mascot` in `do
 - Where it appears: for example at the welcome, at a success, on an empty page.
 - Where never: with errors, cancellations and delicate moments, next to photos of people, behind lists or forms.
 
-A picture of the mascot is optional and costs credit. Before the first picture you call the tool `guthaben`, give the price from its answer and ask once: “A picture costs CHF …, your credit is enough for … Shall I make a first picture of the mascot?” Only after their yes do you call `bild_erzeugen`; `bild_freistellen` and `modell_3d` likewise only after the price and a yes. You look at every picture yourself before you show it, and save it in the project straight away (`curl -o design/figur/<name>.png <url>`), because after 7 days it's gone.
+With Gratis you don't call any image tool: the mascot stays a sketch (below) until the person has Light or Pilot. If an image tool answers that pictures “gehören zu Light und Pilot” (belong to Light and Pilot), carry on without an image tool as with “kommt bald” and don't ask about credit. With Light or Pilot, a picture of the mascot is optional and costs credit. Before the first picture you call the tool `guthaben`, give the price from its answer and ask once: “A picture costs CHF …, your credit is enough for … Shall I make a first picture of the mascot?” Only after their yes do you call `bild_erzeugen`; `bild_freistellen` and `modell_3d` likewise only after the price and a yes. You look at every picture yourself before you show it, and save it in the project straight away (`curl -o design/figur/<name>.png <url>`), because after 7 days it's gone.
 
-If the credit isn't enough, or the person doesn't want a picture (yet), the mascot stays a sketch until the site is released (P10): a simple drawing in grey that you draw as `design/figur/skizze.svg`, or a photo of their own drawing on paper. That's enough for the sample sheet and the draft. The mascot's poses (welcome, searching, success, empty) are made in P6 (skill `gestaltung`, section “Design elements”).
+With Gratis, if the credit isn't enough or the person doesn't want a picture (yet), the mascot stays a sketch: a simple drawing in grey that you draw as `design/figur/skizze.svg`, or a photo of their own drawing on paper. That's enough for the sample sheet and the draft. The mascot's poses (welcome, searching, success, empty) are made in P6 (skill `gestaltung`, section “Design elements”).
 
 ## The island
 
 Once everything is in `docs/konzept.md` and `Maskottchen:` starts with `ja`, `nein` or `später`, you call the tool `schritt_melden` with `schritt: konzept` and `sprache: en`. You leave out `projekt`, unless the person is working on another project that's only on their computer; then you pass its short name. Tell them in one sentence that their house has grown on the island. If the tool answers “Ungültige Angaben” (invalid details), check the spelling once; if Albatros doesn't know the step yet, carry on without the island, and `docs/konzept.md` is the evidence. Then call `lage` again (skill `lotse`).
+
+## Handing over to Albatros (Übergabe an Albatros)
+
+Only if `docs/projekt.md` has `Bauen lassen: albatros` (the person accepted the offer from `lage`) and `lage` names this section, so once `docs/konzept.md` is done. Then you no longer design or build yourself: Albatros makes the mockup, the drafts and the whole site as a preview, and the person chooses in the cockpit.
+
+1. **Summary.** Read `docs/projekt.md`, `docs/recherche.md`, `docs/plan.md` (with the acceptance criteria under `Testing:`), `docs/plan-pruefung.md` and `docs/konzept.md`. Tell the person in one message what you're sending, roughly like this: “This is what I'll send to Albatros: your plan with pages, features and your acceptance criteria, your research and your concept, as text. Passwords and access details are not included. You choose the address of your site afterwards in the cockpit. The Albatros team reads it, and an AI (Claude by Anthropic) helps with building. Until you pay, nothing is binding, and you can carry on yourself at any time. Shall I send it?”
+2. **Only after their explicit yes** call `auftrag_anlegen` with `bestaetigt: true`, plus the briefing fields from their files, the way Albatros describes them: `name` (`Name:` from `docs/konzept.md`, otherwise `Projektname:` from `docs/projekt.md`), `wofuer` (`In einem Satz:`, `Hauptsache:` and `Erfolg:` from `docs/projekt.md`; on the business path also `docs/angebot.md`), `fuerWen` (`Für wen:`; on the business path also `docs/zielgruppe.md`), `seiten` (`Seiten:`, `Funktionen:` and `Sprachen:` from `docs/plan.md`), `adresse` only for an existing site (`Bestehende Seite:`), `stil` (`Ton:`, `Charakter:`, `Muss bleiben:`, `Maskottchen:` and `Bildsprache:` from `docs/konzept.md`, plus `Vorbilder:`, `Übernehmen:` and `Vermeiden:` from `docs/recherche.md`), `material` (`Inhalte vorhanden:` and `Pflichten:` from `docs/recherche.md` and the acceptance criteria from `Testing:`; only text and links, no files). `name` has at most 120 characters, `adresse` 300, `material` 4000, the others 2000 each. No names of other people, no phone numbers, addresses, passwords or access details. “Looks good” is not a yes; without a yes, you send nothing.
+3. **Afterwards** tell them what `auftrag_anlegen` reports: the number, the amount exactly as Albatros gives it and the way to the cockpit, roughly: “Done: order #<number> is with Albatros. In the cockpit, under “Your order”, you choose the address of your site and later a direction from the drafts. You don't have to build anything any more.” Never give an amount from memory. If Albatros reports an error (for example an order is already open, or the build service isn't available right now), pass it on word for word and don't start building.
+4. From here on you don't build anything yourself, even if the person asks: no mockup, no drafts, no code. `lage` says what's up (for example choosing in the cockpit or waiting for Albatros). Meanwhile they can collect texts and photos (skill `inhalte`). If they change their mind, they withdraw the order in the cockpit; after that the flight plan carries on with them.
+
+If the person chooses `Bauen lassen: selbst`, this section doesn't apply: it carries on with the design system (skill `gestaltung`).
 
 ## Stumbling blocks
 
 - **Colours first:** then the person likes the site, but it says nothing to visitors. Colours come in P6, from the character.
 - **Forgetting the question about the mascot:** it easily gets lost, and it's compulsory because a mascot later shapes every picture.
 - **Passing off assumptions as answers:** name, tone, character, the mascot and what has to stay are said by the person.
-- **Pictures without a price:** every image tool only after the price and a yes.
+- **Pictures without a price:** every image tool only after the price and a yes, and with Gratis none at all.
 - **A tone that doesn't hold:** the site informal, the email formal, and it feels like two different shops.
 
 ## Check the mission
@@ -138,4 +151,4 @@ Once everything is in `docs/konzept.md` and `Maskottchen:` starts with `ja`, `ne
 
 ## Final message
 
-Your last message in this step starts with one sentence on the picture “character before colours” that sums up the core once more. Then: what's done, where the result is (`docs/konzept.md`), what's still open (often the answer about the mascot or a photo) and what comes next: the design system with its sample sheet in P6 (skill `gestaltung`).
+Your last message in this step starts with one sentence on the picture “character before colours” that sums up the core once more. Then: what's done, where the result is (`docs/konzept.md`), what's still open (often the answer about the mascot or a photo) and what comes next: the design system with its sample sheet in P6 (skill `gestaltung`), or with `Bauen lassen: albatros` the handover to Albatros (section above).

@@ -4,7 +4,8 @@ import { describe, expect, test } from 'bun:test';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ladeFahrplan, vertragsFehler, type Fahrplan } from './fahrplan.ts';
+import { Glob } from 'bun';
+import { ladeFahrplan, stufeFehler, vertragsFehler, type Fahrplan } from './fahrplan.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
 const geladen = await ladeFahrplan(wurzel);
@@ -64,5 +65,50 @@ describe('fahrplan.yaml nach der Gegenprüfung', () => {
     phase(fremd, 'P1').ausgaenge!.geschafft = ['weiter', 'vielleicht'];
     expect(vertragsFehler(fremd)).toEqual(['fahrplan.yaml: P1 ausgaenge.geschafft nennt vielleicht, das ist kein Ausgang der Phase (weiter, anpassen, stoppen)']);
     expect(await lade(fremd)).toContain('das ist kein Ausgang der Phase');
+  });
+});
+
+// Entscheid stufe-etappe (01.11.2026): 9 Missionen von fliegen auf landen, geschaeft-05 von fliegen auf abheben; pruefen.ts verlangt seither
+// stufe gleich der Etappe der Phase
+describe('Stufe einer Mission gleich der Etappe ihrer Phase', () => {
+  test('alle echten Missionen', async () => {
+    const abweichend: string[] = [];
+    let n = 0;
+    for (const d of new Glob('missionen/*/*.md').scanSync(wurzel)) {
+      const kopf = Bun.YAML.parse((await Bun.file(wurzel + d).text()).match(/^---\n([\s\S]*?)\n---/)![1]!) as { stufe: string; phase: string };
+      n++;
+      const f = stufeFehler(F.phasen, kopf);
+      if (f) abweichend.push(`${d}: ${f}`);
+    }
+    expect(n).toBeGreaterThan(40);
+    expect(abweichend).toEqual([]);
+  });
+  test('rot bei einer anderen Etappe, in Ordnung ohne bekannte Phase (die meldet das Schema)', () => {
+    expect(stufeFehler(F.phasen, { stufe: 'fliegen', phase: 'P13' })).toBe('stufe muss landen sein, die Etappe der Phase P13 in fahrplan.yaml (nicht fliegen)');
+    expect(stufeFehler(F.phasen, { stufe: 'fliegen', phase: 'P3' })).toBe('stufe muss abheben sein, die Etappe der Phase P3 in fahrplan.yaml (nicht fliegen)');
+    expect(stufeFehler(F.phasen, { stufe: 'fliegen', phase: 'P9' })).toBeNull();
+    expect(stufeFehler(F.phasen, { stufe: 'landen', phase: 'P99' })).toBeNull();
+  });
+});
+
+// Schnittstelle I2 (Bauservice, 01.11.2026): der Block bauen_lassen genau so, im Schema Pflicht
+describe('bauen_lassen', () => {
+  test('im Vertrag wie in der Schnittstelle I2', () => {
+    expect(F.bauen_lassen).toEqual({ ab: 'P5', quelle: 'docs/projekt.md#Bauen lassen:', werte: ['selbst', 'albatros'], nur_modus: 'machen', setup_beginnt: 'statisch' });
+    // Die Zeile ist keine Pflichtzeile: Sie hält kein Gate auf
+    expect(F.phasen.some((p) => p.ergebnis.some((e) => e.zeilen?.includes('Bauen lassen:')))).toBe(false);
+    // Die Pflichtfrage setup bekommt keine werte (I3: ältere Projekte bleiben gültig)
+    expect(F.phasen.flatMap((p) => p.pflichtfragen).find((q) => q.id === 'setup')?.werte).toBeUndefined();
+  });
+  test('fehlt der Block oder ein Feld, lädt der Fahrplan nicht', async () => {
+    const ohne = kopie() as Partial<Fahrplan>;
+    delete ohne.bauen_lassen;
+    expect(await lade(ohne)).toContain("must have required property 'bauen_lassen'");
+    const ohneModus = kopie();
+    delete (ohneModus.bauen_lassen as Partial<Fahrplan['bauen_lassen']>).nur_modus;
+    expect(await lade(ohneModus)).toContain("/bauen_lassen must have required property 'nur_modus'");
+    const leer = kopie();
+    leer.bauen_lassen.werte = [];
+    expect(await lade(leer)).toContain('/bauen_lassen/werte must NOT have fewer than 1 items');
   });
 });

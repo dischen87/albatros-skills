@@ -1,7 +1,7 @@
 ---
 id: flugschule-10-landung
 weg: flugschule
-stufe: fliegen
+stufe: landen
 phase: P13
 optional: true
 titel: Umzug ins eigene Haus

@@ -3,6 +3,9 @@
 // und schreibt die Messwerte nach docs/pruefung/; die Berichte in einfachen Worten schreibt danach die KI.
 //   node scripts/pruefen.mjs --vor-bau              vor dem Bau: Ende mit 2 ohne «Freigegeben zum Bauen: <Datum>» in docs/entwurf.md,
 //                                                    ohne design/entwurf/index.html oder ohne design/tokens.css
+//   node scripts/pruefen.mjs --freigabe             vor dem Wohnort und vor dem Livegang (lancieren): Ende mit 0 und «Seite freigegeben: …»,
+//                                                    wenn die letzte Zeile «Freigegeben:» in docs/prd.md ein Ja ist (wie albatros kit jaBelegt),
+//                                                    sonst mit 2 und dem Grund
 //   node scripts/pruefen.mjs                        die gebaute Seite aus seite/, über einen kleinen Server auf diesem Computer
 //   node scripts/pruefen.mjs --tueren [<adresse>]   die Türen aus docs/tueren.txt (je Zeile Pfad und erwarteter Status ohne Anmeldung):
 //                                                    lokal aus seite/, oder unter <adresse> (Baustein auf diesem Computer, Seite im Netz)
@@ -12,7 +15,7 @@
 //   --nur sicherheit,ablaeufe,aussehen,code         nur diese Bereiche
 //   --aus <ordner>                                  Messwerte und Fotos dorthin statt nach docs/pruefung (für Durchspiel und Tests)
 // Aufruf im Projektordner (mit seite/, meist auch web/, design/ und docs/). Beim ersten Mal lädt das Skript Playwright, axe-core (dieselben
-// Regeln wie pa11y) und Lighthouse nach ~/.cache/albatros-pruefen und Chromium dazu; --vor-bau und --tueren brauchen sie nicht. Zeigt nie
+// Regeln wie pa11y) und Lighthouse nach ~/.cache/albatros-pruefen und Chromium dazu; --vor-bau, --freigabe und --tueren brauchen sie nicht. Zeigt nie
 // Werte von Geheimnissen. Ende mit 1, wenn ein Bereich rot ist, mit 2, wenn etwas fehlt, was die Prüfung braucht, sonst mit 0.
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -41,18 +44,39 @@ const alle = (d) => (existsSync(d) ? readdirSync(d, { withFileTypes: true }) : [
   .flatMap((e) => (['node_modules', '.git', '.astro', '.cache'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
 const rel = (f) => relative(WURZEL, f).split(sep).join('/');
 
+// ---------- Ja-Momente wie albatros kit jaWert und jaBelegt (packages/kit/src/phasen.ts), Zeichen für Zeichen dieselben Ausdrücke ----------
+// Es zählt die letzte Zeile mit diesem Anfang; davor fallen Leerraum, >, * und - weg, im Wert die Sternchen. Ein Ja hat vorne ein Datum
+// (31.10.2026, 2026-10-31, 31. Oktober 2026) mit Jahr 19xx oder 20xx; leer, «[offen …]» oder «<Datum>» ist keines. Eine Annahme irgendwo im
+// Wert auch nicht, auch hinter dem Datum (Marken wie marken.annahme in fahrplan.yaml). Dieselbe Tabelle prüft scripts/pruefbefehle.test.ts
+// gegen kit (seit 01.11.2026, w8-46: --freigabe statt grep und findstr in lancieren, auf jedem Rechner gleich).
+const ANNAHME_DARIN = /\[(?:Annahme|hypothèse|hypothese|ipotesi|assumption)(?![\p{L}\p{N}])/iu;
+const jaWert = (text, anfang) => {
+  const z = text.split('\n').map((x) => x.replace(/^[\s>*-]*/, '')).filter((x) => x.startsWith(anfang)).at(-1);
+  return z === undefined ? null : z.slice(anfang.length).replace(/\*/g, '').trim();
+};
+const datiert = (w) => w !== null && /^\d{1,4}[./\- ]/.test(w) && /\b(19|20)\d\d\b/.test(w);
+const lies = (f) => (existsSync(f) ? readFileSync(f, 'utf8') : null);
+
+// ---------- Freigabe der Seite (lancieren, P11 und P13): Ende mit 0 und «Seite freigegeben: …» nur, wenn kit jaBelegt dasselbe sagt ----------
+if (args.includes('--freigabe')) {
+  const text = lies(join(WURZEL, 'docs', 'prd.md'));
+  if (text === null) fehlt('Nicht freigegeben: docs/prd.md fehlt. Zuerst bauen und begehen (Skill webseite-bauen).');
+  const w = jaWert(text, 'Freigegeben:');
+  if (w === null) fehlt('Nicht freigegeben: docs/prd.md hat keine Zeile «Freigegeben:». Zuerst die Begehung mit Freigabe (Skill webseite-bauen, Schritt 6).');
+  if (!datiert(w)) fehlt(`Nicht freigegeben: In der letzten Zeile «Freigegeben:» steht vorne kein Datum mit Jahr («${w}»). Zuerst die Begehung mit Freigabe (Skill webseite-bauen, Schritt 6).`);
+  if (ANNAHME_DARIN.test(w)) fehlt(`Nicht freigegeben: Die letzte Zeile «Freigegeben:» trägt eine [Annahme] («${w}»). Eine Annahme ist kein Ja der Person.`);
+  console.log(`Seite freigegeben: ${w}`);
+  process.exit(0);
+}
+
 // ---------- Vor dem Bau: gebaut wird nur ein Entwurf mit Freigabe zum Bauen (Skill entwurf); es zählt die letzte solche Zeile ----------
 if (args.includes('--vor-bau')) {
   const md = join(WURZEL, 'docs', 'entwurf.md');
-  const zeilen = existsSync(md) ? readFileSync(md, 'utf8').split('\n').map((z) => z.replace(/^[\s>*-]*/, '')).filter((z) => z.startsWith('Freigegeben zum Bauen:')) : [];
-  const freigabe = zeilen.at(-1)?.slice('Freigegeben zum Bauen:'.length).replace(/\*/g, '').trim() ?? '';
-  // Ein Datum steht vorne (31.10.2026, 2026-10-31, 31. Oktober 2026); leer, «[offen …]» oder «<Datum>» ist keine Freigabe. Eine Annahme
-  // irgendwo im Wert auch nicht, auch hinter dem Datum (wie albatros kit jaBelegt; Marken wie marken.annahme in fahrplan.yaml, 01.11.2026)
-  const datiert = /^\d{1,4}[./\- ]/.test(freigabe) && /\b(19|20)\d\d\b/.test(freigabe);
-  const annahme = /\[(?:Annahme|hypothèse|hypothese|ipotesi|assumption)(?![\p{L}\p{N}])/iu.test(freigabe);
+  const freigabe = jaWert(lies(md) ?? '', 'Freigegeben zum Bauen:') ?? '';
+  const annahme = ANNAHME_DARIN.test(freigabe);
   const luecken = [
     !existsSync(md) ? 'docs/entwurf.md fehlt: zuerst die ganze Seite entwerfen und freigeben lassen (Skill entwurf).'
-      : !datiert ? 'docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>». Gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).'
+      : !datiert(freigabe) ? 'docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>». Gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).'
       : annahme && 'docs/entwurf.md: Die Zeile «Freigegeben zum Bauen:» trägt eine [Annahme]. Eine Annahme ist kein Ja; gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).',
     !existsSync(join(ENTWURF, 'index.html')) && 'design/entwurf/index.html fehlt: gebaut wird aus dem Entwurf (Skill entwurf).',
     !existsSync(join(WURZEL, 'design', 'tokens.css')) && 'design/tokens.css fehlt: Farben, Schriften und Abstände kommen aus dem Designsystem (Skill gestaltung).',

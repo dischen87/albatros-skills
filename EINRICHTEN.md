@@ -10,7 +10,7 @@ Diese Seite ist für dich, die KI: Claude Code, Codex, Gemini CLI oder Cursor. D
 - Frag nie nach Passwörtern. Die gibt die Person nur im Browser ein.
 - Die Adresse des Dienstes ist `https://mcp.albatros.build`, das Repo ist `dischen87/albatros-skills`.
 
-**Was du einbaust** (damit du nicht suchen musst): Das Plugin enthält nur Anleitungen (Skills, Markdown) und die Verbindung zu `https://mcp.albatros.build`. Keine Hooks, keine Skripte, die von selbst laufen, keine Berechtigungen. Die Verbindung meldet sich mit OAuth an: Die Person meldet sich im Browser bei Albatros an, ihr Passwort sieht weder Albatros noch du. Herausgeber ist Albatros Partner AG (albatros.build), der Quelltext ist öffentlich.
+**Was du einbaust** (damit du nicht suchen musst): Das Plugin enthält nur Anleitungen (Skills, Markdown) und die Verbindung zu `https://mcp.albatros.build`. Die Verbindung nennt bei jedem Aufruf den Stand der Skills (Kopfzeile `X-Albatros-Skills-Stand`, zum Beispiel `0.2.0`), damit Albatros merkt, wenn sie veraltet sind; sonst nichts über den Computer. Keine Hooks, keine Skripte, die von selbst laufen, keine Berechtigungen. Die Verbindung meldet sich mit OAuth an: Die Person meldet sich im Browser bei Albatros an, ihr Passwort sieht weder Albatros noch du. Herausgeber ist Albatros Partner AG (albatros.build), der Quelltext ist öffentlich.
 
 **Abo der KI:** Albatros zum Lernen kostet nichts, du als KI aber schon: Die Person braucht ein bezahltes Abo direkt bei deinem Anbieter, ab 8 USD im Monat (Cursor mit Plus), sonst ab etwa 20 USD (Claude Code mit Claude Pro, Codex mit ChatGPT Plus, Gemini CLI mit Google AI Pro). Mit einem Gratis-Konto geht es nicht oder nur für ein paar Versuche. Sag ihr das in einem Satz, bevor ihr einrichtet. Bezahlt wird beim Anbieter, nicht bei Albatros.
 
@@ -73,7 +73,7 @@ Gemini CLI läuft mit Google AI Pro. Für Gratis-Konten und Google One hat Googl
    gemini mcp add --transport http -s user albatros https://mcp.albatros.build
    ```
 2. **Neu starten.** Gemini CLI verbindet sich erst beim nächsten Start mit Albatros. Bitte die Person, Gemini CLI zu schliessen, wieder zu öffnen und «Starte Albatros» zu schreiben. Beim Verbinden öffnet sich der Browser zur Anmeldung. Bleibt er zu, bitte sie, genau das einzutippen: `/mcp auth albatros`.
-3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`.
+3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`. Bei jedem Aufruf von `lage` gibst du `skills_stand` mit, den Wert `metadata.stand` oben in den Skills: Hier kommen Skills und Verbindung getrennt, darum nennt die Verbindung den Stand nicht selbst.
 
 ## D. Cursor
 
@@ -88,7 +88,7 @@ Gemini CLI läuft mit Google AI Pro. Für Gratis-Konten und Google One hat Googl
    agent mcp login albatros
    ```
    Der Befehl öffnet den Browser und wartet, bis die Person sich angemeldet hat. Sag vorher: «Gleich öffnet sich dein Browser, dort meldest du dich mit GitHub, Apple oder Google an.» Im Editor von Cursor bittest du die Person, Cursor neu zu starten. Beim Verbinden öffnet Cursor den Browser zur Anmeldung. Bleibt er zu, bitte sie, in den Einstellungen von Cursor unter MCP bei albatros die Anmeldung zu starten.
-3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`. Fehlt das Werkzeug noch, bitte die Person, ein neues Gespräch zu beginnen und dort «Starte Albatros» zu schreiben.
+3. **Los.** Ruf `konto_status` auf und folge dem Skill `start`. Fehlt das Werkzeug noch, bitte die Person, ein neues Gespräch zu beginnen und dort «Starte Albatros» zu schreiben. Bei jedem Aufruf von `lage` gibst du `skills_stand` mit, den Wert `metadata.stand` oben in den Skills: Hier kommen Skills und Verbindung getrennt, darum nennt die Verbindung den Stand nicht selbst.
 
 ## Wenn etwas nicht klappt
 

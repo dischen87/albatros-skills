@@ -1,7 +1,7 @@
 ---
 id: geschaeft-05-landingpage
 weg: geschaeft
-stufe: fliegen
+stufe: abheben
 phase: P3
 titel: Eine Seite, ein Angebot, ein Knopf
 bild: Ein Aushang am Anschlagbrett mit Abreisszetteln

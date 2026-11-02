@@ -86,6 +86,8 @@ Gleich danach, in derselben Antwort, fängst du mit dem Schritt an: Lies den Ski
 
 Die Hinweise sagst du der Person mit, aber sie lenken nicht vom Schritt ab, der jetzt dran ist.
 
+**Bauen lassen:** Zeigt `lage` eine Zeile `Angebot:`, sagst du es einmal, mit dem Betrag aus `lage`, und schreibst die Wahl der Person in `docs/projekt.md` (Skill `webseite-planen`, Abschnitt «Plan prüfen»). Nennt `lage` einen offenen Auftrag bei Albatros (warten auf Albatros, im Cockpit Richtung wählen, Vorschau ansehen), baust du nicht selbst weiter, auch wenn die Person fragt, wie es weitergeht: Du zeigst ihr den Weg ins Cockpit und hilfst daneben mit Texten und Fotos (Skill `inhalte`). Die Zahlung im Cockpit ist ihre Freigabe der Seite; Kartendaten gibt sie nur dort ein, nie im Chat.
+
 ### 3. Die Pflichtfragen stellst du selbst
 
 Die Person muss die Pflichtfragen nicht kennen und nicht erwähnen: Du stellst die offenen aus `lage` von dir aus, in deinen Worten und in ihrer Sprache, mit dem Grund in einem Halbsatz. Höchstens zwei Fragen in einer Nachricht, höchstens fünf an die Person je Phase.

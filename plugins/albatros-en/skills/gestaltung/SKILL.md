@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge. In the flight plan (P6): a grey mockup (“Is the order right?”), three clearly different directions from the concept, a check against the AI look, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. Always with the question about design elements (icons, photos, mascot, 3D; image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “it looks unprofessional”, “layout”, “icons”, “mascot”, “3D”."
 metadata:
   stand: 0.2.0
-  quelle: 'ab8851d7159a'
+  quelle: 'c9b2b9c3e084'
 ---
 
 # Design: first the foundations, then the facade
@@ -223,14 +223,14 @@ Once the direction is settled, you always ask: “Would you like any design elem
 
 Whatever the person picks goes into the design system (`docs/designsystem.md`) and into the colour fan (sizes, spacing, rules).
 
-**With Albatros**, pictures, cut-out characters and 3D models are made with the Albatros tools, paid from the person's credit (cost price plus 35 %):
+**With Albatros**, pictures, cut-out characters and 3D models are made with the Albatros tools, paid from the person's credit (cost price plus 35 %), with Light and Pilot. With Gratis there are no image tools: the mascot, its poses and pictures stay a sketch until Light or Pilot (below, “Without image tools”):
 
 - `bild_erzeugen` with `beschreibung` (the description) and `format` (`quadrat` square, `quer` landscape, `hoch` portrait or `breit` wide), `bild_freistellen` with `bild_url` (a picture with a transparent background), `modell_3d` with `bild_url` (a 3D model as GLB, ideally from a cut-out picture).
 - `guthaben` shows the balance, the prices and the link to top up. You only give prices from this answer.
 - Before the first call that costs something, you call `guthaben`, give the price and ask once: “A picture costs CHF …, your credit is enough for … Shall I?” After that, after every call you briefly give the cost and what's left, without asking again. If the credit isn't enough, pass on the link to top up.
 - You save every result in the project straight away (in the flight plan `curl -o design/bilder/<name>.png <url>`, for a built site into `web/public/bilder/`), because after 7 days it's gone. For a variant you change the description: the same description returns the same picture for 15 minutes, at no extra cost.
 - You look at every generated picture yourself before you show it to the person. Only what they've chosen goes on the site.
-- If a tool answers “kommt bald” (coming soon), you carry on without the image tools (below).
+- If a tool answers “kommt bald” (coming soon), or that pictures “gehören zu Light und Pilot” (belong to Light and Pilot, with Gratis), you carry on without the image tools (below) and don't ask about credit.
 
 **With their own Hugging Face account** it works too, as an alternative. The person creates the account themselves and signs in themselves. You add the official server: `claude mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`. With Codex it's `codex mcp add huggingface --url "https://huggingface.co/mcp?login"`, with Gemini CLI `gemini mcp add --transport http -s user huggingface "https://huggingface.co/mcp?login"`, with Cursor the entry `"huggingface": { "url": "https://huggingface.co/mcp?login" }` under `mcpServers` in `~/.cursor/mcp.json`. They choose the Spaces for pictures, cutting out and 3D at huggingface.co/settings/mcp. For free there are 5 minutes of computing time a day. Without signing in, the server only offers search in the Hub.
 
