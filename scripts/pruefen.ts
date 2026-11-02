@@ -241,20 +241,25 @@ for (const { datei, text } of skillTexte) {
 
 // Bauservice (Welle 8, w8-44; Nachbesserung 02.11.2026 nach der Gegenprobe): Was lage, auftrag_anlegen und scripts/punkte.ts lesen, steht in
 // jeder Sprache wörtlich gleich, auch wenn die Übersetzung sonst frei ist (vorher blieb pruefen grün, wenn eine Übersetzung den Absatz
-// verlor, «selbst» übersetzte oder bestaetigt: true wegliess). Welle 9 (02.11.2026, w9-40, w9-41): dazu der Projektordner im Cockpit nach der
-// Übergabe (Link cockpit/auftrag, nur `docs/` und `design/`) und Logo und Fotos in design/bilder (konzept); was lage unter «Jetzt dran» auf
-// Deutsch nennt, solange ein Auftrag offen ist (warten, Richtung mit Impressum, Vorschau), und nach dem Livegang das Logbuch mit der Zeile, die
-// konto in docs/prd.md schreibt (J2: «Abnahme mit der Zahlung von Auftrag #n», bleibt deutsch) (lotse, webseite-aendern); in inhalte die
-// Bedingung, unter der nur gesammelt wird. Vorher blieb pruefen grün, wenn eine Übersetzung diese Sätze verlor (Mutationen im Ergebnis w9).
+// verlor, «selbst» übersetzte oder bestaetigt: true wegliess). Welle 9 (02.11.2026, w9-40, w9-41): dazu je neuer Satz ein Wort, das nur dort
+// steht, damit das Fehlen eines einzelnen Satzes auffällt (Mutationen im Ergebnis w9). konzept: der Projektordner im Cockpit nach der Übergabe
+// (cockpit/auftrag, `pwd`), danach nichts unter design/ ausser den Fotos der Person (`design/bilder/`), Frage 5 mit «… design/bilder.». lotse:
+// was lage unter «Jetzt dran» auf Deutsch nennt, solange ein Auftrag offen ist (warten, Richtung mit Impressum, Vorschau), nichts unter
+// `design/`, und nach dem Livegang das Logbuch mit der Zeile, die konto in docs/prd.md schreibt (J2: «Abnahme mit der Zahlung von Auftrag #n»,
+// bleibt deutsch); webseite-aendern: Logbuch eines Projekts von Albatros (Schritt 1) und dieselbe Zeile (Schritt 4); inhalte: nur sammeln,
+// nichts unter `design/`.
 const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
   'webseite-planen': ['`Angebot:`', '`Bauen lassen: selbst (', '`Bauen lassen: albatros (', '`konto_status`'],
   lotse: [
-    '`Angebot:`', '`inhalte`', 'cockpit/auftrag', 'warten auf Albatros', 'die Angaben fürs Impressum eingeben', 'die Vorschau ansehen', 'Das Logbuch holen',
-    'Abnahme mit der Zahlung von Auftrag #',
+    '`Angebot:`', '`inhalte`', '`design/`', 'cockpit/auftrag', 'warten auf Albatros', 'die Angaben fürs Impressum eingeben', 'die Vorschau ansehen',
+    'Das Logbuch holen', 'Abnahme mit der Zahlung von Auftrag #',
   ],
-  konzept: ['`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`', 'cockpit/auftrag', '`design/`', 'design/bilder'],
+  konzept: [
+    '`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`', 'cockpit/auftrag', '`pwd`', '`design/bilder/`',
+    'design/bilder.',
+  ],
   'webseite-aendern': ['`Bauen lassen: albatros`', 'Abnahme mit der Zahlung von Auftrag #'],
-  inhalte: ['`Bauen lassen: albatros`'],
+  inhalte: ['`Bauen lassen: albatros`', '`design/`'],
 };
 for (const { datei, slug, text } of skillTexte)
   for (const w of BAUSERVICE_WOERTLICH[slug] ?? []) if (!text.includes(w)) fehler.push(`${datei}: Bauservice, «${w}» fehlt (wörtlich wie im deutschen Skill)`);

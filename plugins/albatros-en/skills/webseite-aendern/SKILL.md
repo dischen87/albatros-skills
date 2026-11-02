@@ -3,7 +3,7 @@ name: webseite-aendern
 description: "Changes a finished website with a person who has no prior knowledge, with their own AI, whether it's in the Albatros harbour or they host it themselves: fetch the logbook, read docs/ first (plan, design system, tech stack, PRD, where it lives), then small (text, date, picture: change locally, show before and after, release, push) or big (new page, feature, different look: addition to the plan, draft of the changed pages, approval to build, build and check, show, release, push), always within the existing design system, then check on the web. Use this skill for “change my site”, “new date”, “change a text”, “swap a picture”, “… is missing”, “new page”, “make the site …”, “something on the site is wrong”, and whenever something on a site that's online should be different."
 metadata:
   stand: 0.2.0
-  quelle: '3a31bee96c4f'
+  quelle: '79078892243f'
 ---
 
 # Change your website: renovating a house you live in
@@ -39,7 +39,7 @@ git pull --rebase                                       # every time after that,
 
 If the logbook is only on this computer (hosting it yourself, without a repository), you work there and fetch nothing. If `git` fails with “Permission denied”, the key is missing on this computer (skill `ssh-schluessel`).
 
-**If Albatros built the site** (in the previous project folder, `docs/projekt.md` has `Bauen lassen: albatros`, and the order is live), the whole project is in the harbour, and there is no `docs/lancieren.md`: `{name}` is the site's name from `konto_status`. The key comes first (skill `ssh-schluessel`). Fetch the logbook into a new folder next to the previous one, not into it: `git clone git@aufwind.sh:{name}/projekt.git ../{name}-site`. From now on you work there; you don't delete the previous folder. In the fetched folder you call `lage` with its evidence (`belege`), including `docs/prd.md` with the line `Freigegeben: <DD.MM.YYYY>, Abnahme mit der Zahlung von Auftrag #<number>`, which Albatros added on delivery. Texts and photos the person collected while it was being built (in the previous folder, `docs/inhalte.md` and `design/bilder/`) often make a good first change of their own.
+**If Albatros built the site** (in the previous project folder, `docs/projekt.md` has `Bauen lassen: albatros`, and the order is live), the whole project is in the harbour, and there is no `docs/lancieren.md`: `{name}` is the site's name from `konto_status`. The key comes first (skill `ssh-schluessel`). Fetch the logbook into a new folder next to the previous one, not into it: `git clone git@aufwind.sh:{name}/projekt.git ../{name}-site`. From now on you work there; you don't delete the previous folder. In the fetched folder you call `lage` with its evidence (`belege`), including `docs/prd.md` with the line `Freigegeben:` that Albatros added on delivery (step 4). Texts and photos the person collected while it was being built (in the previous folder, `docs/inhalte.md` and `design/bilder/`) often make a good first change of their own.
 
 ### 2. Read the plans first
 
