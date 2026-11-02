@@ -247,7 +247,8 @@ for (const { datei, text } of skillTexte) {
 // was lage unter «Jetzt dran» auf Deutsch nennt, solange ein Auftrag offen ist (warten, Richtung mit Impressum, Vorschau), nichts unter
 // `design/`, und nach dem Livegang das Logbuch mit der Zeile, die konto in docs/prd.md schreibt (J2: «Abnahme mit der Zahlung von Auftrag #n»,
 // bleibt deutsch); webseite-aendern: Logbuch eines Projekts von Albatros (Schritt 1) und dieselbe Zeile (Schritt 4); inhalte: nur sammeln,
-// nichts unter `design/`.
+// nichts unter `design/`. konzept nennt seit dem 02.11.2026 auch `setup` für auftrag_anlegen (fahrplan/w9-nahtstellen in albatros macht es zur
+// Pflicht; mcp in efe228c nimmt das Feld schon an und übergeht es).
 const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
   'webseite-planen': ['`Angebot:`', '`Bauen lassen: selbst (', '`Bauen lassen: albatros (', '`konto_status`'],
   lotse: [
@@ -256,7 +257,7 @@ const BAUSERVICE_WOERTLICH: Record<string, string[]> = {
   ],
   konzept: [
     '`Bauen lassen: albatros`', '`auftrag_anlegen` ', '`bestaetigt: true`', '`Bestehende Seite:`', '`Testing:`', 'cockpit/auftrag', '`pwd`', '`design/bilder/`',
-    'design/bilder.',
+    'design/bilder.', '`setup` (',
   ],
   'webseite-aendern': ['`Bauen lassen: albatros`', 'Abnahme mit der Zahlung von Auftrag #'],
   inhalte: ['`Bauen lassen: albatros`', '`design/`'],
