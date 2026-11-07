@@ -9,3 +9,28 @@ services:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 10s
       retries: 6
+
+  # Berts Arbeitsplatz online: aus, bis du ihn willst (Skill betrieb). Einschalten: docker compose --profile arbeitsplatz up -d
+  # Er antwortet unter https://<name>.aufwind.sh/arbeitsplatz (nginx.conf reicht /arbeitsplatz/ weiter); hinein kommen nur Mitglieder
+  # deines Projekts, angemeldet mit Albatros. Das Token deiner KI steht in ~/arbeitsplatz.env auf dem Server, nie im Logbuch.
+  arbeitsplatz:
+    container_name: arbeitsplatz
+    image: ghcr.io/dischen87/albatros-arbeitsplatz:0.3.0   # Version des Arbeitsplatzes; neuere bringt der Skill betrieb
+    profiles: ["arbeitsplatz"]
+    restart: unless-stopped
+    init: true
+    env_file:
+      - path: ../arbeitsplatz.env
+        required: false
+    environment:
+      ARBEITSPLATZ_PORT: "4747"         # Port im Container; angemeldet wird nur über Albatros
+    volumes:
+      - ./:/projekt                     # dein Projekt; die KI liest es, ändern geht online noch nicht
+      - arbeitsplatz_heim:/home/arbeitsplatz   # KI-Programm, ihre Anmeldung und der Zustand des Arbeitsplatzes
+    expose:
+      - "4747"                          # nur für nginx in der Webseite, nie direkt von aussen
+    mem_limit: 768m
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]   # keine Rechte über die eines normalen Programms hinaus
+volumes:
+  arbeitsplatz_heim:

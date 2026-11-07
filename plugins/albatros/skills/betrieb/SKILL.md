@@ -1,6 +1,6 @@
 ---
 name: betrieb
-description: 'Bereitet mit einer Person ohne Vorwissen den Betrieb ihrer Seite vor, bevor die Gäste kommen (P12): wie Besucher sich melden und wer es wie oft liest, wer erfährt, wenn die Seite nicht antwortet (eine einfache, kostenlose Überwachung), wie es auf gestern zurückgeht (Fotos des Servers mit Pilot, das Logbuch mit Light, eine eigene Sicherung bei selbst), ob ein Eingang mit Anmeldung nötig ist (nur mit eigenem Server, Skill bausteine) und ob gezählt wird, wer kommt (Skill statistik, mit Einwilligung, wo es sie braucht). Ergebnis ist docs/betrieb.md. Nutze den Skill nach dem Wohnort (lancieren) und bei «Betrieb», «Überwachung», «Sicherung», «Backup», «Rückmeldungen», «wer liest das Formular», «was, wenn die Seite ausfällt».'
+description: 'Bereitet mit einer Person ohne Vorwissen den Betrieb ihrer Seite vor, bevor die Gäste kommen (P12): wie Besucher sich melden und wer es wie oft liest, wer erfährt, wenn die Seite nicht antwortet (eine einfache, kostenlose Überwachung), wie es auf gestern zurückgeht (Fotos des Servers mit Pilot, das Logbuch mit Light, eine eigene Sicherung bei selbst), ob ein Eingang mit Anmeldung nötig ist (nur mit eigenem Server, Skill bausteine) und ob gezählt wird, wer kommt (Skill statistik, mit Einwilligung, wo es sie braucht). Ergebnis ist docs/betrieb.md. Mit Pilot auf Wunsch Berts Arbeitsplatz online auf dem eigenen Server (Autopilot und Zeitplan rund um die Uhr, nur Mitglieder des Projekts). Nutze den Skill nach dem Wohnort (lancieren) und bei «Betrieb», «Überwachung», «Sicherung», «Backup», «Rückmeldungen», «wer liest das Formular», «was, wenn die Seite ausfällt», «Arbeitsplatz online», «Arbeitsplatz auf meinen Server», «Autopilot in der Nacht».'
 metadata:
   stand: 0.2.0
 ---
@@ -97,6 +97,36 @@ Hat jede Zeile eine Antwort, machst du den Eintrag ins Logbuch (`git add docs/be
 
 Danach kommt das Live schalten: Skill `lancieren`, Teil 2.
 
+## Arbeitsplatz online (freiwillig, nur mit Pilot)
+
+Der Arbeitsplatz auf dem Computer schläft, wenn der Computer zu ist. Mit Pilot kann ein zweiter Arbeitsplatz auf dem eigenen Server wohnen, wie ein Büro, das nachts offen bleibt: Dort arbeitet die KI nach Zeitplan und sobald eine Mail oder ein Verkauf hereinkommt. Hinein kommen nur Mitglieder des Projekts, angemeldet mit Albatros. Das bietest du nur an, wenn die Person danach fragt oder `docs/betrieb.md` fertig ist; es ist kein Schritt des Fahrplans.
+
+**Was online geht (Stand 07.11.2026), das sagst du zuerst:**
+- Online arbeitet nur Claude Code, und nur lesend («Zuerst fragen»): Die KI liest, schlägt vor, legt Entwürfe und Fragen an. Dateien ändern und Befehle ausführen geht online noch nicht, weil der Schutzraum (Sandkasten) für die KI auf dem Server noch nicht gemessen ist. Ändern macht die Person mit ihrer KI auf dem Computer.
+- Die KI starten kann nur die Inhaberin: Sie arbeitet mit ihrem eigenen Claude-Abo, und das darf nach den Bedingungen von Anthropic niemand sonst nutzen. Mitglieder sehen alles; wer «nur lesen» hat, liest nur.
+- Codex und Gemini CLI richtest du online nicht ein. Bei OpenAI ist offen, ob ein Programm wie der Arbeitsplatz Codex mit einem ChatGPT-Abo auf einem Server starten darf; die Anmeldung mit Google gibt es für Gemini CLI seit dem 18.06.2026 nicht mehr. Fragt die Person danach, sag ihr genau das.
+
+**Darf das Claude-Abo das?** Frag zuerst: «Ist dein Projekt geschäftlich, verkaufst du etwas oder wirbst du für eine Firma?» Warum: Davon hängt ab, welches Abo es braucht.
+- Anthropic beschreibt den Weg ohne Browser selbst: `claude setup-token` für Skripte und Rechner ohne Browser. Das Konto gehört einer Person und wird nie geteilt.
+- Pro und Max gelten in der Schweiz und im EWR nur für nicht geschäftliche Zwecke (Bedingungen für Konsumenten von Anthropic, Abschnitt 11). Für ein geschäftliches Projekt braucht es Claude Team oder Enterprise, dort geht `claude setup-token` auch. Ist das Projekt geschäftlich und hat die Person nur Pro oder Max, hörst du hier auf, sagst warum, und sie arbeitet weiter mit dem Arbeitsplatz auf dem Computer.
+- Lies die Bedingungen mit ihr nach, bevor sie sich entscheidet: https://code.claude.com/docs/en/legal-and-compliance und https://www.anthropic.com/legal/consumer-terms
+
+**Einrichten.** Das Token tippt die Person selbst ein; du siehst es nie, und es geht nie über Albatros.
+1. Ruf `arbeitsplatz_online` mit `an: true` auf. Die Antwort nennt `ALBATROS_PROJEKT` und `ARBEITSPLATZ_ADRESSE`. Gibt es das Werkzeug nicht oder sagt es «nur mit Pilot», hörst du hier auf: Der Arbeitsplatz online ist bei Albatros noch nicht eingeschaltet oder es fehlt der eigene Server.
+2. Die Person erzeugt das Token auf ihrem Computer im Terminal: `claude setup-token`. Sie bestätigt im Browser, das Terminal zeigt das Token (es gilt ein Jahr). Sag ihr: «Kopier es, aber schick es nie in den Chat, auch nicht mir.»
+3. Auf dem Server legst du die Einstellungen an, ohne Token, ausserhalb des Projekts (so kommt die Datei nie ins Logbuch, und die KI im Arbeitsplatz liest sie nicht):
+   ```bash
+   ssh {name}@aufwind.sh 'umask 077 && printf "%s\n" "ARBEITSPLATZ_ADRESSE=<Adresse>" "ALBATROS_PROJEKT=<Projekt>" "ARBEITSPLATZ_KI=claude" > ~/arbeitsplatz.env'
+   ```
+   Die Person ergänzt das Token selbst: `ssh {name}@aufwind.sh`, dann `nano ~/arbeitsplatz.env`, am Ende die Zeile `CLAUDE_CODE_OAUTH_TOKEN=` mit dem Token, speichern (Ctrl+O, Enter, Ctrl+X), `exit`.
+4. Starten: `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz up -d --wait'`. Beim ersten Start holt der Arbeitsplatz Claude Code bei Anthropic (einmal, ein paar Minuten).
+5. Die Person öffnet die Adresse im Browser und klickt «Mit Albatros anmelden». In den Einstellungen wählt sie Claude Code, «Zuerst fragen» und die Zeiten des Autopiloten; unter Aufgaben zum Beispiel «Wenn eine Mail kommt: eine Antwort vorschlagen».
+6. Prüfen: Die Seite lädt, die Anmeldung klappt, und ein Mitglied mit «nur lesen» sieht alles, kann aber nichts starten.
+
+**Ausschalten:** `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz stop arbeitsplatz'` und `arbeitsplatz_online` mit `an: false`. Danach löscht die Person die Zeile mit dem Token in `~/arbeitsplatz.env`.
+
+In `docs/betrieb.md` kommt dazu die Zeile `Arbeitsplatz online: nein` oder `Arbeitsplatz online: ja, seit <Datum>, Claude Code mit dem Abo der Inhaberin, nur lesend`.
+
 ## Stolpersteine
 
 - Ein Formular, dessen Nachrichten niemand liest.
@@ -105,6 +135,8 @@ Danach kommt das Live schalten: Skill `lancieren`, Teil 2.
 - Eine Sicherung, die nie zurückgespielt wurde: Sie zählt erst nach der Probe.
 - Einen Eingang bauen, weil es professionell klingt: nur bei erfüllten Kriterien und mit eigenem Server.
 - Statistik mit Cookies ohne Einwilligung, wo es sie braucht.
+- Das Token der KI in den Chat, ins Logbuch oder in eine Datei im Projekt schreiben: Es gehört nur in `~/arbeitsplatz.env` auf dem Server, getippt von der Person.
+- Den Arbeitsplatz online mit einem Abo betreiben, das dafür nicht gedacht ist (Pro oder Max für ein Geschäft, ein fremdes Konto).
 
 ## Mission prüfen
 

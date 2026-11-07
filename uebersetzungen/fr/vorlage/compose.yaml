@@ -9,3 +9,28 @@ services:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 10s
       retries: 6
+
+  # L'espace de travail de Bert en ligne : éteint tant que tu ne le veux pas (skill betrieb). L'allumer : docker compose --profile arbeitsplatz up -d
+  # Il répond sous https://<name>.aufwind.sh/arbeitsplatz (nginx.conf transmet /arbeitsplatz/) ; seuls les membres de ton projet entrent,
+  # connectés avec Albatros. Le jeton de ton IA est dans ~/arbeitsplatz.env sur le serveur, jamais dans le journal de bord.
+  arbeitsplatz:
+    container_name: arbeitsplatz
+    image: ghcr.io/dischen87/albatros-arbeitsplatz:0.3.0   # version de l'espace de travail ; le skill betrieb apporte les plus récentes
+    profiles: ["arbeitsplatz"]
+    restart: unless-stopped
+    init: true
+    env_file:
+      - path: ../arbeitsplatz.env
+        required: false
+    environment:
+      ARBEITSPLATZ_PORT: "4747"         # port dans le conteneur ; connexion seulement par Albatros
+    volumes:
+      - ./:/projekt                     # ton projet ; l'IA le lit, le modifier en ligne ne marche pas encore
+      - arbeitsplatz_heim:/home/arbeitsplatz   # programme d'IA, sa connexion et l'état de l'espace de travail
+    expose:
+      - "4747"                          # seulement pour nginx dans le site, jamais directement depuis l'extérieur
+    mem_limit: 768m
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]   # pas plus de droits qu'un programme normal
+volumes:
+  arbeitsplatz_heim:

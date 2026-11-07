@@ -1,9 +1,9 @@
 ---
 name: betrieb
-description: "Prepara con una persona senza conoscenze tecniche la gestione del suo sito, prima che arrivino gli ospiti (P12): come la contattano i visitatori e chi legge i messaggi e quanto spesso, chi lo viene a sapere quando il sito non risponde (una sorveglianza semplice e gratuita), come si torna a ieri (foto del server con Pilot, il diario di bordo con Light, una copia di sicurezza propria se te ne occupi tu), se serve un ingresso con accesso (solo con un server proprio, skill bausteine) e se si conta chi arriva (skill statistik, con consenso dove serve). Il risultato è docs/betrieb.md. Usa lo skill dopo il domicilio (lancieren) e con «gestione», «sorveglianza», «copia di sicurezza», «backup», «messaggi dei visitatori», «chi legge il modulo», «e se il sito non funziona più?»."
+description: "Prepara con una persona senza conoscenze tecniche la gestione del suo sito, prima che arrivino gli ospiti (P12): come la contattano i visitatori e chi legge i messaggi e quanto spesso, chi lo viene a sapere quando il sito non risponde (una sorveglianza semplice e gratuita), come si torna a ieri (foto del server con Pilot, il diario di bordo con Light, una copia di sicurezza propria se te ne occupi tu), se serve un ingresso con accesso (solo con un server proprio, skill bausteine) e se si conta chi arriva (skill statistik, con consenso dove serve). Il risultato è docs/betrieb.md. Con Pilot, su richiesta, lo spazio di lavoro di Bert online (giorno e notte, solo membri del progetto). Usa lo skill dopo il domicilio (lancieren) e con «gestione», «sorveglianza», «copia di sicurezza», «backup», «messaggi dei visitatori», «chi legge il modulo», «e se il sito non funziona più?», «spazio di lavoro online», «pilota automatico di notte»."
 metadata:
   stand: 0.2.0
-  quelle: 'b68eee2fb444'
+  quelle: '2230dcfc7182'
 ---
 
 # Gestione: prima che arrivino gli ospiti
@@ -100,6 +100,36 @@ Quando ogni riga ha una risposta, fai la voce nel diario di bordo (`git add docs
 
 Poi viene la messa online: skill `lancieren`, parte 2.
 
+## Spazio di lavoro online (Arbeitsplatz online, facoltativo, solo con Pilot)
+
+Lo spazio di lavoro sul computer dorme quando il computer è chiuso. Con Pilot un secondo spazio di lavoro può abitare sul proprio server, come un ufficio che resta aperto di notte: lì l'IA lavora secondo la pianificazione e appena arriva un'e-mail o una vendita. Entrano solo i membri del progetto, con l'accesso di Albatros. Lo proponi solo se la persona lo chiede o se `docs/betrieb.md` è finito; non è una tappa del piano di volo.
+
+**Cosa funziona online (stato al 07.11.2026), lo dici per primo:**
+- Online lavora solo Claude Code, e solo in lettura («Chiedi prima»): l'IA legge, propone, crea bozze e domande. Modificare file ed eseguire comandi online non va ancora, perché lo spazio protetto (sandbox) per l'IA sul server non è ancora misurato. Le modifiche la persona le fa con la sua IA sul computer.
+- Avviare l'IA può solo la titolare: lavora con il suo abbonamento Claude, e secondo le condizioni di Anthropic nessun altro lo può usare. I membri vedono tutto; chi ha «solo lettura» legge soltanto.
+- Codex e Gemini CLI online non li installi. Da OpenAI è aperto se un programma come lo spazio di lavoro può avviare Codex con un abbonamento ChatGPT su un server; l'accesso con Google per Gemini CLI non esiste più dal 18.06.2026. Se la persona lo chiede, dille esattamente questo.
+
+**L'abbonamento Claude lo permette?** Chiedi prima: «Il tuo progetto è commerciale, vendi qualcosa o fai pubblicità per un'azienda?» Perché: ne dipende l'abbonamento necessario.
+- Anthropic descrive lei stessa la via senza browser: `claude setup-token` per script e computer senza browser. L'account appartiene a una persona e non si condivide mai.
+- In Svizzera e nello SEE, Pro e Max valgono solo per scopi non commerciali (condizioni per i consumatori di Anthropic, sezione 11). Per un progetto commerciale serve Claude Team o Enterprise, dove `claude setup-token` funziona anche. Se il progetto è commerciale e la persona ha solo Pro o Max, ti fermi qui, dici perché, e lei continua con lo spazio di lavoro sul computer.
+- Leggi le condizioni con lei prima che decida: https://code.claude.com/docs/en/legal-and-compliance e https://www.anthropic.com/legal/consumer-terms
+
+**Configurare.** Il token lo digita la persona stessa; tu non lo vedi mai, e non passa mai da Albatros.
+1. Chiama `arbeitsplatz_online` con `an: true`. La risposta indica `ALBATROS_PROJEKT` e `ARBEITSPLATZ_ADRESSE`. Se lo strumento non c'è o dice «solo con Pilot», ti fermi qui: lo spazio di lavoro online non è ancora attivato da Albatros o manca il proprio server.
+2. La persona crea il token sul suo computer nel terminale: `claude setup-token`. Conferma nel browser, il terminale mostra il token (vale un anno). Dille: «Copialo, ma non mandarlo mai nella chat, nemmeno a me.»
+3. Sul server crei le impostazioni, senza token, fuori dal progetto (così il file non entra mai nel diario di bordo, e l'IA dello spazio di lavoro non lo legge):
+   ```bash
+   ssh {name}@aufwind.sh 'umask 077 && printf "%s\n" "ARBEITSPLATZ_ADRESSE=<indirizzo>" "ALBATROS_PROJEKT=<progetto>" "ARBEITSPLATZ_KI=claude" > ~/arbeitsplatz.env'
+   ```
+   La persona aggiunge il token da sé: `ssh {name}@aufwind.sh`, poi `nano ~/arbeitsplatz.env`, alla fine la riga `CLAUDE_CODE_OAUTH_TOKEN=` con il token, salvare (Ctrl+O, Invio, Ctrl+X), `exit`.
+4. Avviare: `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz up -d --wait'`. Al primo avvio lo spazio di lavoro prende Claude Code da Anthropic (una volta, qualche minuto).
+5. La persona apre l'indirizzo nel browser e clicca «Accedi con Albatros». Nelle impostazioni sceglie Claude Code, «Chiedi prima» e gli orari del pilota automatico; sotto Compiti per esempio «Quando arriva un'e-mail: proporre una risposta».
+6. Verificare: la pagina si carica, l'accesso funziona, e un membro con «solo lettura» vede tutto ma non può avviare niente.
+
+**Spegnere:** `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz stop arbeitsplatz'` e `arbeitsplatz_online` con `an: false`. Poi la persona cancella la riga del token in `~/arbeitsplatz.env`.
+
+In `docs/betrieb.md` si aggiunge la riga `Arbeitsplatz online: nein` oppure `Arbeitsplatz online: ja, seit <data>, Claude Code con l'abbonamento della titolare, solo lettura`.
+
 ## Trappole
 
 - Un modulo i cui messaggi nessuno legge.
@@ -108,6 +138,8 @@ Poi viene la messa online: skill `lancieren`, parte 2.
 - Una copia di sicurezza mai ripristinata: conta solo dopo la prova.
 - Costruire un ingresso perché suona professionale: solo con i criteri soddisfatti e con un server proprio.
 - Statistiche con cookie senza consenso, dove serve.
+- Scrivere il token dell'IA nella chat, nel diario di bordo o in un file del progetto: va solo in `~/arbeitsplatz.env` sul server, digitato dalla persona.
+- Far girare lo spazio di lavoro online con un abbonamento che non è pensato per questo (Pro o Max per un'attività, l'account di un'altra persona).
 
 ## Verificare la missione
 
