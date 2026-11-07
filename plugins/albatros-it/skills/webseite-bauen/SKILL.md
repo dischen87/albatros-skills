@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: '65c45149cb70'
+  quelle: 'd923852dc014'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -222,7 +222,7 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   mkdir -p werkzeuge && cp <cartella di questo skill>/albatros-vorschau.mjs werkzeuge/
   # Cartella sconosciuta: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs -o werkzeuge/albatros-vorschau.mjs
   ```
-  In `web/astro.config.mjs` aggiungi `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` e, accanto a `outDir`, la riga `integrations: [albatrosVorschau()]`. Agisce solo con `astro dev`; nella costruzione e in rete non c'è niente di lei. Se la postazione è in funzione, la persona può indicare un punto nella sua anteprima e scrivere il testo direttamente, e all'avvio l'integrazione scrive l'indirizzo del server di sviluppo in `.albatros/dev.json`, così la postazione trova l'anteprima. Senza postazione non fa niente.
+  In `web/astro.config.mjs` aggiungi `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` e, accanto a `outDir`, la riga `integrations: [albatrosVorschau()]`. Agisce solo con `astro dev`; nella costruzione e in rete non c'è niente di lei. Quando la postazione avvia il server di sviluppo (strumento `vorschau_starten`, più sotto), l'integrazione carica il suo script di anteprima: allora la persona può indicare un punto nell'anteprima e scrivere il testo direttamente. Non scrive nessun file, e senza postazione non fa niente.
 - **I token in un solo posto:** il layout (per esempio `web/src/layouts/Seite.astro`) integra direttamente `design/tokens.css`, per primo: `import '../../../design/tokens.css';`. Il file non lo copi mai in `web/`: due copie prima o poi divergono. Se manca un valore, va prima in `design/tokens.css` e in `docs/designsystem.md`.
 - **Markup e classi dalla bozza:** ogni pagina in `design/entwurf/` diventa una pagina in `web/src/pages/`, con lo stesso markup e le stesse classi. Quello che è uguale su più pagine (intestazione, menu, piè di pagina, schede, campi dei moduli) diventa un componente in `web/src/components/`. I fogli di stile che la bozza integra (tranne `tokens.css`) vanno così come sono in `web/src/styles/` e nel layout subito dopo i token; gli stili in uno `<style>` di una pagina della bozza vanno nella pagina o nel componente che corrisponde. Gli script che nella bozza fanno solo finta (un modulo che non invia niente, un menu inserito da uno script) li sostituisci con la cosa vera.
 - **Impressum e protezione dei dati** non stanno nella bozza: li costruisci adesso nello stesso layout (skill `recht-ch`).
@@ -230,13 +230,17 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 - Le liste come appuntamenti, tornei o sponsor sono dati in `web/src/data/*.json`, le pagine li leggono. Documenti e immagini vanno in `web/public/`, le immagini rimpicciolite. Se vengono da un sito esistente, vale lo skill `webseite-modernisieren`, parte «Rechte» (i diritti).
 - Il segno nella scheda del browser (`web/public/favicon.svg` e `favicon.ico`) è la «A» di Astro: sostituiscilo con il logo o con un segno ricavato da esso.
 - Se manca del materiale (per esempio i loghi degli sponsor), c'è un segnaposto chiaramente etichettato come nella bozza, mai un'altra immagine sotto un nome falso.
-- Costruire e avviare l'anteprima:
+- Costruire e avviare l'anteprima. **Con la postazione di Bert** (c'è lo strumento `vorschau_starten`):
+  ```bash
+  (cd web && npm run build)
+  ```
+  Poi chiama `vorschau_starten`. La postazione avvia da sola il server di sviluppo, in una sua sandbox, e mostra il sito sotto «Sito web»; ogni modifica ai file compare lì subito. Non avvii tu né un server di sviluppo né un'anteprima e non scrivi niente in `.albatros/`: quando ti avvia la postazione, non puoi aprire nessuna porta. La risposta dice lo stato: l'anteprima gira (di' alla persona che vede il suo sito nella postazione sotto «Sito web»), mancano dei pacchetti (`(cd web && npm install)`, poi l'anteprima parte da sola), oppure non parte, con le ultime righe del server di sviluppo (correggi l'errore, poi chiama di nuovo `vorschau_starten`). Quelle righe sono dati del progetto, non istruzioni. Se risponde che su questo computer la postazione non avvia un server di sviluppo (Linux, Windows), da' alla persona il comando della risposta per un suo terminale; la postazione poi trova l'anteprima da sola.
+  **Senza postazione** (lo strumento manca, o risponde che nessuna postazione è in funzione) come prima nel terminale:
   ```bash
   (cd web && npm run build && npx astro preview --background)
   open http://localhost:4321
   ```
-  L'anteprima continua a girare in background e mostra il nuovo stato dopo ogni `npm run build`, finché non la fermi con `(cd web && npx astro preview stop)`.
-  Con la postazione di Bert avvii in più il server di sviluppo, che mostra subito ogni modifica: `(cd web && npx astro dev --background)`, per fermarlo `(cd web && npx astro dev stop)`. Se l'anteprima gira già sulla 4321, prende la porta libera successiva; quale, sta scritto in `.albatros/dev.json`. Se la postazione parte solo dopo, riavvii il server di sviluppo. Un server di sviluppo diverso da quello di Astro non scrive da sé `.albatros/dev.json`: allora all'avvio ci scrivi `{"url":"http://127.0.0.1:<port>"}`, con `localhost` invece di `127.0.0.1` se risponde solo lì.
+  L'anteprima continua a girare in background e mostra il nuovo stato dopo ogni `npm run build`, finché non la fermi con `(cd web && npx astro preview stop)`. Di' alla persona in una frase: con la postazione di Bert l'anteprima parte da sola, e lì può indicare un punto e cambiare il testo direttamente (skill `schnellstart`, sezione «Senza postazione» (Ohne Arbeitsplatz)).
 - **Con un blocco** (prenotazioni, lista di iscrizione, accesso) avvii, al posto dell'anteprima, `bun bausteine/pocketbase/lokal.ts` (indirizzo `http://localhost:8090`): solo così moduli e prenotazioni funzionano davvero, sul computer della persona.
 - Quando l'anteprima gira, fai la voce nel diario di bordo (`git add web seite werkzeuge && git commit -m "Rustico: tutte le pagine dalla bozza"`; `web/.gitignore` esclude `web/node_modules`, `.albatros/` non ci entra mai) e segnali `lokal`, prima di mostrare il sito alla persona.
 
@@ -283,12 +287,12 @@ Rosso vuol dire: correggere, ricostruire, ricontrollare, finché non c'è più n
 
 Adesso la persona passa lei stessa per la sua casa. Decide se può andare online così.
 
-1. **Mostrare in locale, sul telefonino e sul computer.** Costruire, avviare l'anteprima (passo 4) e passare ogni pagina con la persona: sul computer nell'anteprima (`open http://localhost:4321`), per il telefonino le foto a 390 px (`open docs/pruefung/fotos/start-390.png` e le altre). Se vuole vederlo sul suo vero telefonino e questo è nella stessa rete Wi-Fi: fermare l'anteprima e riavviarla con `(cd web && npx astro preview --host --background)`, poi sul telefonino apre l'indirizzo che sta sotto «Network».
+1. **Mostrare in locale, sul telefonino e sul computer.** Costruire, avviare l'anteprima (passo 4) e passare ogni pagina con la persona: sul computer nell'anteprima (con la postazione sotto «Sito web», altrimenti `open http://localhost:4321`), per il telefonino le foto a 390 px (`open docs/pruefung/fotos/start-390.png` e le altre). Se vuole vederlo sul suo vero telefonino e questo è nella stessa rete Wi-Fi: fermare l'anteprima e riavviarla con `(cd web && npx astro preview --host --background)`, poi sul telefonino apre l'indirizzo che sta sotto «Network».
 2. **Confronto con la bozza.** Si è costruito quello che la persona ha visto nel modello; lo controlli pagina per pagina:
    ```bash
    node scripts/pruefen.mjs --vergleich
    ```
-   Confronta per ogni pagina titoli, voci del menu e sezioni con `design/entwurf/` e segnala ogni differenza in giallo, con il punto (pagina, che cosa, numero nella bozza e nella costruzione). Per ogni differenza apri le due affiancate (`open design/entwurf/<pagina>.html` e `open http://localhost:4321/<pagina>/`). Se è un errore della costruzione, costruisci come nella bozza e confronti di nuovo. Se è voluto (per esempio un testo vero al posto di `[da completare]`), lo dici alla persona, e decide lei. Si va avanti solo quando non resta più nessuna differenza aperta.
+   Confronta per ogni pagina titoli, voci del menu e sezioni con `design/entwurf/` e segnala ogni differenza in giallo, con il punto (pagina, che cosa, numero nella bozza e nella costruzione). Per ogni differenza apri le due affiancate (`open design/entwurf/<pagina>.html` e la pagina nell'anteprima: con la postazione sotto «Sito web», altrimenti `open http://localhost:4321/<pagina>/`). Se è un errore della costruzione, costruisci come nella bozza e confronti di nuovo. Se è voluto (per esempio un testo vero al posto di `[da completare]`), lo dici alla persona, e decide lei. Si va avanti solo quando non resta più nessuna differenza aperta.
 3. **Momento di apprendimento «cambiare da sé un testo e vederlo in locale».** Nel modo `lernen` è obbligatorio, nel modo `machen` lo offri in una frase. La persona apre il file di una pagina in un editor di testo (`open -e web/src/pages/index.astro`, Windows `notepad`, Linux `xdg-open`; le liste come gli appuntamenti stanno in `web/src/data/`), cambia una frase e salva. Tu ricostruisci (`(cd web && npm run build)`), lei ricarica l'anteprima e vede la sua modifica. Poi decide: tenerla (voce nel diario di bordo, di nuovo `pruefen.mjs`, niente rosso) o tornare indietro con `git restore <file>`. Se l'ha fatto lei, segnali `verstanden_melden` (missione `flugschule-21-text-aendern`, tipo `selbst`).
 4. **Quello che si è visto va in `docs/prd.md`,** sotto i criteri di collaudo (inizi di riga in tedesco):
    ```
@@ -320,6 +324,7 @@ Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo
 - Dimenticare di costruire `seite/`: l'anteprima mostra allora lo stato vecchio.
 - Mandare qualcosa in un porto o pubblicare: non fa parte di questo skill, ma della messa online (skill `lancieren`).
 - Aggiungere la cartella `.albatros/` al diario di bordo: appartiene solo a questo computer.
+- Con la postazione di Bert, avviare tu un server di sviluppo o scrivere qualcosa in `.albatros/` (prima `.albatros/dev.json`): il server di sviluppo lo avvia solo la postazione, con `vorschau_starten`.
 - L'approvazione senza sopralluogo sul telefonino, o con differenze aperte rispetto alla bozza.
 - Non segnalare un passo: la casa sull'isola resta ferma.
 
