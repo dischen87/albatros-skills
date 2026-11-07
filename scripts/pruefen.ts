@@ -107,14 +107,17 @@ for await (const datei of new Glob('plugins/*/skills/lotse/SKILL.md').scan(wurze
 // P1 legt AGENTS.md im Projekt an, mit demselben Text wie die Vorlage im Hafen: je Sprache der Block in webseite-planen gleich
 // vorlage/AGENTS.md (übersetzt: uebersetzungen/<sprache>/vorlage/), CLAUDE.md und GEMINI.md mit der Zeile aus dem Skill und dem Verweis
 const lies = async (pfad: string) => ((await Bun.file(wurzel + pfad).exists()) ? Bun.file(wurzel + pfad).text() : null);
-for (const s of ['de', 'fr', 'it', 'en']) {
-  const skill = `plugins/albatros${s === 'de' ? '' : `-${s}`}/skills/webseite-planen/SKILL.md`;
-  const ordner = s === 'de' ? 'vorlage' : `uebersetzungen/${s}/vorlage`;
-  const text = await lies(skill);
-  if (text === null) continue; // eine fehlende Übersetzung meldet die Prüfung der vier Sprachen
-  const vorlage = { 'AGENTS.md': await lies(`${ordner}/AGENTS.md`), 'CLAUDE.md': await lies(`${ordner}/CLAUDE.md`), 'GEMINI.md': await lies(`${ordner}/GEMINI.md`) };
-  for (const f of vorlageGegenSkill(text, vorlage)) fehler.push(`${ordner}/${f} (gegen ${skill})`);
-}
+// Seit 07.11.2026 schreibt auch der Skill schnellstart AGENTS.md, CLAUDE.md und GEMINI.md (Live-Lauf: mit einem blossen Verweis auf
+// webseite-planen schrieb die KI eigene Hinweise ohne die Regeln), darum steht der Block dort ebenfalls und wird gleich geprüft.
+for (const slug of ['webseite-planen', 'schnellstart'])
+  for (const s of ['de', 'fr', 'it', 'en']) {
+    const skill = `plugins/albatros${s === 'de' ? '' : `-${s}`}/skills/${slug}/SKILL.md`;
+    const ordner = s === 'de' ? 'vorlage' : `uebersetzungen/${s}/vorlage`;
+    const text = await lies(skill);
+    if (text === null) continue; // eine fehlende Übersetzung meldet die Prüfung der vier Sprachen
+    const vorlage = { 'AGENTS.md': await lies(`${ordner}/AGENTS.md`), 'CLAUDE.md': await lies(`${ordner}/CLAUDE.md`), 'GEMINI.md': await lies(`${ordner}/GEMINI.md`) };
+    for (const f of vorlageGegenSkill(text, vorlage)) fehler.push(`${ordner}/${f} (gegen ${skill})`);
+  }
 
 // Befehle zum Aktualisieren: albatros erzeugt aus der README (Abschnitt «Aktualisieren») AKTUALISIEREN, das lage bei veralteten Skills
 // nennt; der Lotse (de) sagt der KI dieselben Befehle
@@ -171,6 +174,17 @@ if (fahrplan) {
   if (fahrplan.phasen.some((p) => p.ergebnis.some((e) => e.datei === bDatei && e.zeilen?.includes(bZeile ?? '')))) f(`bauen_lassen.quelle: «${bZeile}» darf keine Pflichtzeile sein`);
   const setup = fahrplan.phasen.findIndex((p) => p.pflichtfragen.some((q) => q.ablage === 'docs/plan.md#Setup:'));
   if (setup < 0 || setup >= ids.indexOf(b.ab)) f(`bauen_lassen: «Setup:» in docs/plan.md muss eine Pflichtfrage vor ${b.ab} sein`);
+}
+
+// Schnellstart (07.11.2026): Die Vorlage für docs/projekt.md im Skill hat in jeder Sprache alle Zeilen, die lage in P1 liest (Ergebnis von
+// P1 in fahrplan.yaml). Im Live-Lauf mit einem blossen Verweis auf webseite-planen fehlten «In einem Satz:» und «Erfolg:».
+if (fahrplan) {
+  const zeilen = fahrplan.phasen[0]?.ergebnis.find((e) => e.datei === 'docs/projekt.md')?.zeilen ?? [];
+  for (const s of ['de', 'fr', 'it', 'en']) {
+    const datei = `plugins/albatros${s === 'de' ? '' : `-${s}`}/skills/schnellstart/SKILL.md`;
+    const block = /\*\*`docs\/projekt\.md`\*\*[\s\S]*?```markdown\n([\s\S]*?)\n\s*```/.exec((await lies(datei)) ?? '')?.[1] ?? '';
+    for (const z of zeilen) if (!block.split('\n').some((l) => l.trim().startsWith(z))) fehler.push(`${datei}: Vorlage für docs/projekt.md ohne die Zeile «${z}» (P1 in fahrplan.yaml)`);
+  }
 }
 
 // Abschnittsnamen (scripts/abschnitte.ts): Was lage aus fahrplan.yaml nennt und worauf deutsche Skills verweisen, steht im Ziel-Skill
@@ -304,6 +318,20 @@ for (const s of ['fr', 'it', 'en']) {
     if (!(await uebersetzt(`uebersetzungen/${s}/${datei}`))) fehler.push(`uebersetzungen/${s}/${datei} fehlt`);
   }
 }
+// Berts Arbeitsplatz (F1.2 und F1.6, 07.11.2026): Jedes Plugin startet den lokalen Server albatros-arbeitsplatz aus seinem Ordner
+// arbeitsplatz/ (das Bündel kommt aus albatros apps/arbeitsplatz, bis dahin liegt dort nur die README.md). webseite-bauen kopiert die
+// Integration albatros-vorschau aus dem Skill nach werkzeuge/ im Projekt, die Vorlage im Hafen hat dieselbe Datei: beide gleich, sonst hätte
+// ein Projekt nach dem Live schalten (lancieren führt die Vorlage mit -X ours zusammen) eine andere Fassung als beim Bauen.
+for (const p of (await Bun.file(wurzel + '.claude-plugin/marketplace.json').json()).plugins as { source: string }[]) {
+  const ordner = p.source.replace(/^\.\//, '');
+  const s = ((await Bun.file(`${wurzel}${ordner}/.mcp.json`).json().catch(() => null)) as { mcpServers?: Record<string, { command?: string; args?: string[] }> } | null)?.mcpServers?.['albatros-arbeitsplatz'];
+  if (s?.command !== 'node' || JSON.stringify(s.args) !== JSON.stringify(['${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs', '--mcp']))
+    fehler.push(`${ordner}/.mcp.json: Server albatros-arbeitsplatz muss node \${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp starten`);
+  if (!(await Bun.file(`${wurzel}${ordner}/arbeitsplatz/README.md`).exists())) fehler.push(`${ordner}/arbeitsplatz/README.md fehlt`);
+}
+const VORSCHAU = 'plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs';
+if ((await lies(VORSCHAU)) !== (await lies('vorlage/werkzeuge/albatros-vorschau.mjs'))) fehler.push(`vorlage/werkzeuge/albatros-vorschau.mjs: anders als ${VORSCHAU}`);
+
 // Kopf einer übersetzten Mission: titel, bild und verstehen übersetzt, phase und optional gleich wie Deutsch; alles andere kommt aus der
 // deutschen Mission. titel und bild in den Längen, die flugschule (uebersetzungen.ts) annimmt.
 const IM_KOPF = new Set(['titel', 'bild', 'phase', 'optional', 'verstehen']);

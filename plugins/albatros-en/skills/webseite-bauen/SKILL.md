@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.2.0
-  quelle: 'fa330a390be9'
+  quelle: '65c45149cb70'
 ---
 
 # Building the website: the shell in your own workshop
@@ -217,6 +217,12 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 ```
 
 - In `web/astro.config.mjs`: `outDir: '../seite'`. Building goes into the folder `seite/`, which is what the place where the site lives will deliver later.
+- **Preview in Bert's workspace:** the integration `albatros-vorschau` is in this skill. Copy it into the project:
+  ```bash
+  mkdir -p werkzeuge && cp <folder of this skill>/albatros-vorschau.mjs werkzeuge/
+  # Folder unknown: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs -o werkzeuge/albatros-vorschau.mjs
+  ```
+  In `web/astro.config.mjs`, add `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` and, next to `outDir`, the line `integrations: [albatrosVorschau()]`. It only works with `astro dev`; nothing of it is in the build or on the web. If the workspace is running, the person can point at a spot in its preview and type text directly, and on start the integration writes the address of the dev server to `.albatros/dev.json`, so the workspace finds the preview. Without the workspace it does nothing.
 - **Tokens in one place:** the layout (for example `web/src/layouts/Seite.astro`) includes `design/tokens.css` directly, first of all: `import '../../../design/tokens.css';`. You never copy the file into `web/`: two copies drift apart. If a value is missing, it goes into `design/tokens.css` and `docs/designsystem.md` first.
 - **Markup and classes from the draft:** every page in `design/entwurf/` becomes a page in `web/src/pages/`, with the same markup and the same classes. Whatever is the same on several pages (header, menu, footer, cards, form fields) becomes a component in `web/src/components/`. The style sheets the draft includes (except `tokens.css`) go unchanged into `web/src/styles/` and into the layout right after the tokens; styles from a `<style>` on a draft page go into the matching page or component. Scripts that only pretend in the draft (a form that sends nothing, a menu inserted by a script) you replace with the real thing.
 - **Legal notice and privacy policy** aren't in the draft: you build them now in the same layout (skill `recht-ch`).
@@ -230,8 +236,9 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   open http://localhost:4321
   ```
   The preview keeps running in the background and shows the new state after every `npm run build`, until you stop it with `(cd web && npx astro preview stop)`.
+  With Bert's workspace you also start the dev server, which shows every change straight away: `(cd web && npx astro dev --background)`, stop it with `(cd web && npx astro dev stop)`. If the preview is already running on 4321, it takes the next free port; which one is in `.albatros/dev.json`. If the workspace only starts later, restart the dev server. A dev server other than Astro's doesn't write `.albatros/dev.json` itself: then you write `{"url":"http://127.0.0.1:<port>"}` into it on start, with `localhost` instead of `127.0.0.1` if it only answers there.
 - **With a building block** (bookings, sign-up list, login) you start `bun bausteine/pocketbase/lokal.ts` (address `http://localhost:8090`) instead of the preview: only then do forms and bookings really work, on the person's computer.
-- Once the preview is running, you make the logbook entry (`git add web seite && git commit -m "Shell: all pages from the draft"`; `web/.gitignore` leaves out `web/node_modules`) and report `lokal` before you show the site to the person.
+- Once the preview is running, you make the logbook entry (`git add web seite werkzeuge && git commit -m "Shell: all pages from the draft"`; `web/.gitignore` leaves out `web/node_modules`, `.albatros/` never goes in) and report `lokal` before you show the site to the person.
 
 ### 5. Check (`schritt: pruefung`)
 
@@ -294,6 +301,7 @@ Now the person walks through their house themselves. They decide whether it may 
    git add docs/prd.md && git commit -m "Site released" && git tag -f freigegeben
    ```
    When going live, the tag `freigegeben` shows whether anything about the site has changed since.
+   With Bert's workspace you request the release with `ja_moment` (`seite`) instead: the workspace writes the line `Freigegeben:` when the person clicks “Ja, bestätigen” (yes, confirm) (skill `lotse`, section “Bert's workspace” (Berts Arbeitsplatz)). Only make the logbook entry with the tag once `naechstes` reports it.
 7. Report `freigabe`. In `lernen` mode you now ask the check questions of the lesson `flugschule-21-text-aendern`: “How do you change a text on your site yourself, and how do you see the change before it goes online?” and “Why do you see your site on your own computer first, before it goes online?” You only report `verstanden_melden` (kind `kontrollfrage`) after the person's answer.
 
 If the person wants to change something before the release: a text, a picture or a date goes back to step 4, then the check and the walk-through again. A new page or a new feature is an addition: first in `docs/plan.md`, then a draft of the changed pages and a new approval to build (skill `entwurf`), and only then is it built.
@@ -311,6 +319,7 @@ Next comes the skill `lancieren`: where should the site live? Call `lage` if the
 - Reports without measured values, or “all green” without having looked at the screenshots.
 - Forgetting to build `seite/`: then the preview shows the old state.
 - Sending anything to a harbour or publishing it: that doesn't belong in this skill, but to going live (skill `lancieren`).
+- Adding the `.albatros/` folder to the logbook: it only belongs on this computer.
 - The release without a walk-through on the phone, or with open differences from the draft.
 - A step not reported: the house on the island stays where it is.
 

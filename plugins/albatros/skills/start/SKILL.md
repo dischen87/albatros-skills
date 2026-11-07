@@ -1,6 +1,6 @@
 ---
 name: start
-description: 'Startet Albatros für eine Person ohne Technik-Vorwissen: verbindet ihre KI mit Albatros (Anmeldung im Browser), fragt, ob sie eine Webseite oder ein Geschäft will, klärt lernen oder machen und führt sofort in den ersten Abschnitt des Fahrplans, die Idee mit Projektname und erster Skizze. Bis die Seite auf dem eigenen Computer steht, kostet Albatros nichts; Abo, Schlüssel und Seite im Netz kommen erst mit dem Skill lancieren. Nutze den Skill bei /albatros:start, «Albatros starten», «ich will eine Webseite», «ich habe eine Geschäftsidee», «wie fange ich an», «ich bin neu hier», «was kostet Albatros», «brauche ich einen Server», und wenn jemand Albatros erwähnt, aber noch nicht verbunden ist oder noch keinen Weg gewählt hat.'
+description: 'Startet Albatros für eine Person ohne Technik-Vorwissen: verbindet ihre KI mit Albatros (Anmeldung im Browser), fragt, ob sie eine Webseite oder ein Geschäft will, klärt lernen oder machen und führt sofort in den ersten Abschnitt des Fahrplans, die Idee mit Projektname und erster Skizze, bei einer Geschäftsidee oder wenn es schnell gehen soll in den Schnellstart mit Berts Arbeitsplatz. Bis die Seite auf dem eigenen Computer steht, kostet Albatros nichts; Abo, Schlüssel und Seite im Netz kommen erst mit dem Skill lancieren. Nutze den Skill bei /albatros:start, «Albatros starten», «ich will eine Webseite», «ich habe eine Geschäftsidee», «wie fange ich an», «ich bin neu hier», «was kostet Albatros», «brauche ich einen Server», und wenn jemand Albatros erwähnt, aber noch nicht verbunden ist oder noch keinen Weg gewählt hat.'
 metadata:
   stand: 0.2.0
 ---
@@ -35,6 +35,10 @@ Start macht nur drei Dinge: verbinden, Weg wählen, lernen oder machen. Dann geh
 **Eine Seite bei Albatros ändern:** Hat die Person schon eine Seite im Netz, selbst gebaut oder von Albatros gebaut, und will etwas ändern («neuer Termin», «Text ändern», «Bild austauschen», «es fehlt …»), folgst du dem Skill `webseite-aendern`.
 
 **Die Seite soll jetzt ins Netz:** Ist die Seite der Person schon fertig und freigegeben, oder hat sie schon ein Abo und will ihre Seite bei Albatros anlegen, folgst du dem Skill `lancieren`.
+
+**Berts Arbeitsplatz:** Gibt es die Werkzeuge des Arbeitsplatzes (`arbeitsplatz_oeffnen`, `naechstes`, Server `albatros-arbeitsplatz`), bietest du ihn der Person an, in einem Satz: «Auf deinem Computer gibt es Berts Arbeitsplatz, eine Startseite: Dort siehst du, was ich tue und was entsteht, und dort wählst du, wie es weitergeht.» Seine Werkzeuge rufst du nur im Projektordner auf, nie im Benutzerordner (Skill `schnellstart`, Abschnitt «Der Projektordner»). Seid ihr schon im Projektordner, rufst du zu Beginn `naechstes` auf: Hat die Person im Arbeitsplatz schon etwas gewählt oder ihre Idee geschrieben, machst du damit weiter. Mit `arbeitsplatz_oeffnen` öffnest du ihn, sobald ihr im Projektordner seid, und die Adresse in ihrem Browser. Fehlen die Werkzeuge, geht alles auch ohne (Skill `schnellstart`, Abschnitt «Ohne Arbeitsplatz»).
+
+**Schnellstart:** Hat die Person eine Geschäftsidee, oder will sie schnell etwas sehen («schnell», «leg einfach los»), und gilt machen, folgst du nach Schritt 4 dem Skill `schnellstart` (`../schnellstart/SKILL.md`, in Claude Code `albatros:schnellstart`) statt dem Abschnitt Idee im Skill `webseite-planen`: In wenigen Minuten liegen die ersten Stücke da, und die Person wählt, wie es weitergeht. Im Modus lernen bleibt es beim Fahrplan Schritt für Schritt.
 
 ### 1. Ist Albatros verbunden?
 
@@ -83,9 +87,9 @@ Bevor es mit der Idee losgeht, ruf `lage` von Albatros auf, mit `skills_stand`: 
 - Steht `Anfragen: erlaubt.` da, gibst du ab dem nächsten Aufruf `anfrage` mit (Skill `lotse`).
 - Fehlt `lage` oder antwortet Albatros nicht, fängst du ohne `lage` mit der Idee an.
 
-Ohne weitere Fragen gehst du dann weiter mit dem Skill `webseite-planen`, Abschnitt Idee (`../webseite-planen/SKILL.md`, in Claude Code `albatros:webseite-planen`). Auch auf dem Weg Geschäft beginnt es dort; danach kommt die Methode `ideen-check`. Deine Antwort endet mit dem Projektnamen: einem Vorschlag oder der Frage danach («Ein Arbeitsname reicht, er darf auch willkürlich sein.»).
+Gilt der Schnellstart (oben), folgst du jetzt dem Skill `schnellstart`. Sonst gehst du ohne weitere Fragen weiter mit dem Skill `webseite-planen`, Abschnitt Idee (`../webseite-planen/SKILL.md`, in Claude Code `albatros:webseite-planen`). Auch auf dem Weg Geschäft beginnt es dort; danach kommt die Methode `ideen-check`. Deine Antwort endet mit dem Projektnamen: einem Vorschlag oder der Frage danach («Ein Arbeitsname reicht, er darf auch willkürlich sein.»). Gibt es die Werkzeuge des Arbeitsplatzes, öffnest du ihn, sobald der Projektordner angelegt ist.
 
-Ab hier begleitet dich der Skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros:lotse`): Nach jedem geschafften Abschnitt ruft er `lage` auf, mit `skills_stand` wie oben. Sag der Person, dass sie künftig einfach «Wie weiter?» fragen kann.
+Ab hier begleitet dich der Skill `lotse` (`../lotse/SKILL.md`, in Claude Code `albatros:lotse`): Nach jedem geschafften Abschnitt ruft er `lage` auf, mit `skills_stand` wie oben, und mit Arbeitsplatz `naechstes`. Sag der Person, dass sie künftig einfach «Wie weiter?» fragen kann.
 
 ## Wenn etwas hakt
 

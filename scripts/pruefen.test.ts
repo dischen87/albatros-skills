@@ -46,6 +46,14 @@ test('Vorlage je Sprache: AGENTS.md gleich dem Block in webseite-planen, CLAUDE.
   }
 });
 
+// Schnellstart (07.11.2026): schreibt AGENTS.md, CLAUDE.md und GEMINI.md selbst, mit demselben Block wie webseite-planen und die Vorlage
+test('Vorlage je Sprache: auch der Block in schnellstart ist AGENTS.md der Vorlage, mit der Zeile für CLAUDE.md und GEMINI.md', async () => {
+  for (const [plugin, ordner] of SPRACHEN) {
+    const skill = await lies(`${plugin}/skills/schnellstart/SKILL.md`);
+    expect([ordner, vorlageGegenSkill(skill, await vorlage(ordner))]).toEqual([ordner, []]);
+  }
+});
+
 test('Vorlage: geänderte Zeile, fehlende Datei, fremde erste Zeile oder falscher Verweis werden rot', async () => {
   const skill = await lies('plugins/albatros/skills/webseite-planen/SKILL.md');
   const echt = await vorlage('vorlage');
@@ -88,8 +96,9 @@ test('titel bei schritt_melden: jeder Skill, der ihn nennt, sagt in seiner Sprac
     mitTitel.push(d.split('/').slice(1, 4).join('/'));
     expect([d, titelAusweg(d, text)]).toEqual([d, null]);
   }
+  // seit 07.11.2026 auch schnellstart: Es meldet den Schritt idee selbst und schreibt AGENTS.md mit der Regel zu `titel`
   expect(mitTitel.sort()).toEqual(['albatros', 'albatros-en', 'albatros-fr', 'albatros-it']
-    .flatMap((p) => ['lotse', 'webseite-modernisieren', 'webseite-planen'].map((s) => `${p}/skills/${s}`)).sort());
+    .flatMap((p) => ['lotse', 'schnellstart', 'webseite-modernisieren', 'webseite-planen'].map((s) => `${p}/skills/${s}`)).sort());
   // rot: der Satz fehlt, oder er steht in einer anderen Sprache
   expect(titelAusweg('plugins/albatros/skills/lotse/SKILL.md', 'Bei jedem `schritt_melden` gibst du `titel` mit.')).toContain('nochmals ohne `titel`');
   expect(titelAusweg('plugins/albatros-fr/skills/lotse/SKILL.md', '`schritt_melden` avec `titel`; sonst nochmals ohne `titel`.')).toContain('nochmals sans `titel`');
@@ -127,4 +136,21 @@ test('Kopfzeile mit dem Stand: in allen vier Plugins für Claude Code und Codex 
   expect(kopfzeileStand({ mcpServers: { albatros: { headers: { 'x-albatros-skills-stand': '0.2.0' } } } })).toBeNull(); // Schreibweise wie I1
   expect(kopfzeileStand({ mcpServers: { andere: { headers: { [KOPF_STAND]: '0.2.0' } } } })).toBeNull();
   expect(kopfzeileStand(null)).toBeNull();
+});
+
+// Berts Arbeitsplatz (F1.2, F1.6, 07.11.2026): Jedes Plugin startet den lokalen Server albatros-arbeitsplatz aus seinem Ordner arbeitsplatz/
+// (gemessen ohne Modell: Claude Code 2.1.118 und 2.1.317 setzen ${CLAUDE_PLUGIN_ROOT} ein, «✓ Connected»). Die Integration albatros-vorschau
+// ist im Skill webseite-bauen und in der Vorlage dieselbe Datei. pruefen.mjs sucht Geheimnisse und .env nicht in .albatros/: Dort liegt der
+// Zustand des Arbeitsplatzes (Chats, Läufe), nie im Logbuch und nie im Netz; ein Fund dort wäre kein «Geheimnis im Code».
+test('Arbeitsplatz: Server in allen vier Plugins, Ordner mit README, Integration gleich, pruefen.mjs überspringt .albatros/', async () => {
+  for (const plugin of ['albatros', 'albatros-fr', 'albatros-it', 'albatros-en']) {
+    const mcp = await Bun.file(`${wurzel}plugins/${plugin}/.mcp.json`).json();
+    expect([plugin, Object.keys(mcp.mcpServers)]).toEqual([plugin, ['albatros', 'albatros-arbeitsplatz']]);
+    expect([plugin, mcp.mcpServers['albatros-arbeitsplatz']]).toEqual([plugin, { type: 'stdio', command: 'node', args: ['${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs', '--mcp'] }]);
+    expect([plugin, await Bun.file(`${wurzel}plugins/${plugin}/arbeitsplatz/README.md`).exists()]).toEqual([plugin, true]);
+    expect([plugin, await lies(`plugins/${plugin}/skills/webseite-bauen/albatros-vorschau.mjs`)]).toEqual([plugin, await lies('vorlage/werkzeuge/albatros-vorschau.mjs')]);
+  }
+  const pm = await lies('plugins/albatros/skills/webseite-bauen/pruefen.mjs');
+  const ausgelassen = /\.flatMap\(\(e\) => \((\[[^\]]*\])\.includes\(e\.name\)/.exec(pm)?.[1];
+  expect(ausgelassen && JSON.parse(ausgelassen.replaceAll("'", '"'))).toEqual(['node_modules', '.git', '.astro', '.cache', '.albatros']);
 });

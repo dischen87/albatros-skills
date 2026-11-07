@@ -1,9 +1,9 @@
 ---
 name: start
-description: "Lance Albatros pour une personne sans connaissances techniques : relie son IA à Albatros (connexion dans le navigateur web), demande si elle veut un site web ou une entreprise, clarifie apprendre ou faire et mène tout de suite à la première section du plan de vol, l'idée avec le nom du projet et une première esquisse. Jusqu'à ce que le site existe sur son propre ordinateur, Albatros ne coûte rien ; abonnement, clé et site sur Internet ne viennent qu'avec le skill lancieren. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « combien coûte Albatros ? », « est-ce que j'ai besoin d'un serveur ? », et quand quelqu'un parle d'Albatros mais n'est pas encore connecté ou n'a pas encore choisi de parcours."
+description: "Lance Albatros pour une personne sans connaissances techniques : relie son IA à Albatros (connexion dans le navigateur web), demande si elle veut un site web ou une entreprise, clarifie apprendre ou faire et mène tout de suite à la première section du plan de vol, l'idée avec le nom du projet et une première esquisse, ou, pour une idée d'entreprise ou quand ça doit aller vite, au démarrage rapide avec le poste de travail de Bert. Jusqu'à ce que le site existe sur son propre ordinateur, Albatros ne coûte rien ; abonnement, clé et site sur Internet ne viennent qu'avec le skill lancieren. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « combien coûte Albatros ? », « est-ce que j'ai besoin d'un serveur ? », et quand quelqu'un parle d'Albatros mais n'est pas encore connecté ou n'a pas encore choisi de parcours."
 metadata:
   stand: 0.2.0
-  quelle: 'a4124046b799'
+  quelle: '60240344b45a'
 ---
 
 # Start : monter à bord
@@ -37,6 +37,10 @@ Start ne fait que trois choses : se connecter, choisir le parcours, apprendre 
 **Modifier un site chez Albatros :** si la personne a déjà un site sur Internet, construit par elle-même ou par Albatros, et veut y changer quelque chose (« nouvelle date », « modifier un texte », « remplacer une image », « il manque … »), tu suis le skill `webseite-aendern`.
 
 **Le site doit aller sur Internet maintenant :** si le site de la personne est déjà terminé et validé, ou si elle a déjà un abonnement et veut créer son site chez Albatros, tu suis le skill `lancieren`.
+
+**Le poste de travail de Bert :** si les outils du poste de travail existent (`arbeitsplatz_oeffnen`, `naechstes`, serveur `albatros-arbeitsplatz`), tu le proposes à la personne en une phrase : « Sur ton ordinateur, il y a le poste de travail de Bert, une page d'accueil : tu y vois ce que je fais et ce qui se crée, et tu y choisis comment on continue. » Ses outils, tu ne les appelles que dans le dossier du projet, jamais dans le dossier de l'utilisateur (skill `schnellstart`, section « Le dossier du projet » (Der Projektordner)). Si vous êtes déjà dans le dossier du projet, tu appelles `naechstes` au début : si la personne a déjà choisi quelque chose ou écrit son idée dans le poste de travail, tu continues avec ça. Avec `arbeitsplatz_oeffnen`, tu l'ouvres dès que vous êtes dans le dossier du projet, et l'adresse dans son navigateur web. Si les outils manquent, tout marche aussi sans (skill `schnellstart`, section « Sans poste de travail » (Ohne Arbeitsplatz)).
+
+**Démarrage rapide :** si la personne a une idée d'entreprise, ou si elle veut voir quelque chose vite (« vite », « vas-y, commence »), et que c'est le mode faire, tu suis après l'étape 4 le skill `schnellstart` (`../schnellstart/SKILL.md`, dans Claude Code `albatros-fr:schnellstart`) au lieu de la section Idée du skill `webseite-planen` : en quelques minutes, les premières pièces sont là, et la personne choisit comment on continue. En mode apprendre, on reste sur le plan de vol pas à pas.
 
 ### 1. Albatros est-il connecté ?
 
@@ -85,9 +89,9 @@ Avant de commencer avec l'idée, appelle `lage` d'Albatros, avec `skills_stand` 
 - Si `Anfragen: erlaubt.` (demandes autorisées) est là, tu donnes `anfrage` à partir de l'appel suivant (skill `lotse`).
 - Si `lage` manque ou qu'Albatros ne répond pas, tu commences l'idée sans `lage`.
 
-Sans autres questions, tu continues ensuite avec le skill `webseite-planen`, section Idée (`../webseite-planen/SKILL.md`, dans Claude Code `albatros-fr:webseite-planen`). Sur le parcours entreprise aussi, ça commence là ; ensuite vient la méthode `ideen-check`. Ta réponse se termine par le nom du projet : une proposition ou la question (« Un nom de travail suffit, il peut même être choisi au hasard. »).
+Si le démarrage rapide s'applique (plus haut), tu suis maintenant le skill `schnellstart`. Sinon, sans autres questions, tu continues avec le skill `webseite-planen`, section Idée (`../webseite-planen/SKILL.md`, dans Claude Code `albatros-fr:webseite-planen`). Sur le parcours entreprise aussi, ça commence là ; ensuite vient la méthode `ideen-check`. Ta réponse se termine par le nom du projet : une proposition ou la question (« Un nom de travail suffit, il peut même être choisi au hasard. »). Si les outils du poste de travail existent, tu l'ouvres dès que le dossier du projet est créé.
 
-À partir d'ici, le skill `lotse` t'accompagne (`../lotse/SKILL.md`, dans Claude Code `albatros-fr:lotse`) : après chaque section réussie, il appelle `lage`, avec `skills_stand` comme plus haut. Dis à la personne qu'à l'avenir, elle peut simplement demander « On fait quoi ensuite ? ».
+À partir d'ici, le skill `lotse` t'accompagne (`../lotse/SKILL.md`, dans Claude Code `albatros-fr:lotse`) : après chaque section réussie, il appelle `lage`, avec `skills_stand` comme plus haut, et avec le poste de travail `naechstes`. Dis à la personne qu'à l'avenir, elle peut simplement demander « On fait quoi ensuite ? ».
 
 ## Quand ça coince
 

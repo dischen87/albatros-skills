@@ -65,6 +65,11 @@ Projektdateien der Person: In `docs/` bleiben die Zeilennamen (`Projektname:`, `
 | Arbeiter am Fliessband | ouvrier | operaio | worker | |
 | Landingpage | landing page | landing page | landing page | |
 | Bert | Bert | Bert | Bert | der Albatros, Maskottchen; Name nie übersetzen |
+| Berts Arbeitsplatz | le poste de travail de Bert | la postazione di Bert | Bert's workspace | die Startseite der Person auf ihrem Computer (lokaler Server `albatros-arbeitsplatz`): Aktivität, Erstelltes, Vorschläge, Fragen, Ja-Momente; nicht die Werkstatt (Node, npm, Git) und nicht das Cockpit auf albatros.build |
+| Schnellstart (Skill `schnellstart`) | démarrage rapide | avvio rapido | quick start | in wenigen Minuten die ersten Stücke einer neuen Idee, nur im Modus machen; Bild: der erste Rundflug (le premier vol panoramique, il primo volo panoramico, the first sightseeing flight) |
+| Arbeitslogo (`design/logo.svg`) | logo provisoire | logo provvisorio | working logo | schwarz und grau, bis Konzept und Musterblatt das richtige Logo bringen |
+| Vorschlag (vorgeschlagene Aufgabe) · Ideen-Karte | proposition · carte d'idée | proposta · scheda idea | suggestion · idea card | Karten im Arbeitsplatz; die Ideen-Karte mit «Das erkunden» und «Nicht jetzt» (Explorer, Pas maintenant · Esplorare, Non ora · Explore this, Not now) |
+| Entwurf nach aussen (Werkzeug `entwurf`) | brouillon | messaggio in bozza | draft | Mail, Beitrag, Kontaktaufnahme: liegt im Arbeitsplatz, gesendet wird nichts; nicht die ébauche/bozza der Seite (P7), auf Italienisch nie «bozza approvata» |
 | Rucksack (die KI kommt mit) | sac à dos | zaino | rucksack | immer mit allen vier Namen: Claude Code, Codex, Gemini CLI, Cursor |
 | Baustein | brique | blocco | building block | fertiges Teil für die Seite (Skill `bausteine`) |
 | Fertigteile beim Hausbau | éléments préfabriqués dans la construction d'une maison | elementi prefabbricati nella costruzione di una casa | prefab parts when building a house | Bild für Bausteine |

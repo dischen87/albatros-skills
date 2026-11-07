@@ -41,7 +41,7 @@ const WIN = process.platform === 'win32';
 const fehlt = (...texte) => { console.error(texte.join('\n')); process.exit(2); };
 
 const alle = (d) => (existsSync(d) ? readdirSync(d, { withFileTypes: true }) : [])
-  .flatMap((e) => (['node_modules', '.git', '.astro', '.cache'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
+  .flatMap((e) => (['node_modules', '.git', '.astro', '.cache', '.albatros'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
 const rel = (f) => relative(WURZEL, f).split(sep).join('/');
 
 // ---------- Ja-Momente wie albatros kit jaWert und jaBelegt (packages/kit/src/phasen.ts), Zeichen für Zeichen dieselben Ausdrücke ----------

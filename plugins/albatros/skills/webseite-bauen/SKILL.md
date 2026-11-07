@@ -214,6 +214,12 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 ```
 
 - In `web/astro.config.mjs`: `outDir: '../seite'`. Gebaut wird in den Ordner `seite/`, ihn liefert später der Wohnort aus.
+- **Vorschau in Berts Arbeitsplatz:** Die Integration `albatros-vorschau` liegt in diesem Skill. Kopier sie ins Projekt:
+  ```bash
+  mkdir -p werkzeuge && cp <Ordner dieses Skills>/albatros-vorschau.mjs werkzeuge/
+  # Ordner unbekannt: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs -o werkzeuge/albatros-vorschau.mjs
+  ```
+  In `web/astro.config.mjs` kommt dazu `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` und neben `outDir` die Zeile `integrations: [albatrosVorschau()]`. Sie wirkt nur bei `astro dev`, im Bau und im Netz ist nichts davon. Läuft der Arbeitsplatz, kann die Person in seiner Vorschau auf eine Stelle zeigen und Text direkt tippen, und beim Start schreibt die Integration die Adresse des Dev-Servers nach `.albatros/dev.json`, damit der Arbeitsplatz die Vorschau findet. Ohne Arbeitsplatz tut sie nichts.
 - **Tokens an einem Ort:** Das Layout (zum Beispiel `web/src/layouts/Seite.astro`) bindet `design/tokens.css` direkt ein, als Erstes: `import '../../../design/tokens.css';`. Du kopierst die Datei nie nach `web/`: Zwei Kopien laufen auseinander. Fehlt ein Wert, kommt er zuerst in `design/tokens.css` und `docs/designsystem.md`.
 - **Markup und Klassen aus dem Entwurf:** Jede Seite in `design/entwurf/` wird eine Seite in `web/src/pages/`, mit demselben Markup und denselben Klassen. Was auf mehreren Seiten gleich ist (Kopf, Menü, Fuss, Karten, Formularfelder), wird eine Komponente in `web/src/components/`. Die Stil-Dateien, die der Entwurf einbindet (ausser `tokens.css`), kommen unverändert nach `web/src/styles/` und ins Layout gleich nach den Tokens; Stile aus einem `<style>` einer Entwurfsseite kommen in die passende Seite oder Komponente. Skripte, die im Entwurf nur so tun als ob (ein Formular, das nichts sendet, ein Menü, das ein Skript einfügt), ersetzt du durch das Echte.
 - **Impressum und Datenschutz** stehen nicht im Entwurf: Du baust sie jetzt im selben Layout (Skill `recht-ch`).
@@ -227,8 +233,9 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   open http://localhost:4321
   ```
   Die Vorschau läuft im Hintergrund weiter und zeigt nach jedem neuen `npm run build` den neuen Stand, bis du sie mit `(cd web && npx astro preview stop)` beendest.
+  Mit Berts Arbeitsplatz startest du dazu den Dev-Server, der jede Änderung sofort zeigt: `(cd web && npx astro dev --background)`, beenden mit `(cd web && npx astro dev stop)`. Läuft die Vorschau schon auf 4321, nimmt er den nächsten freien Port; welchen, steht in `.albatros/dev.json`. Startet der Arbeitsplatz erst später, startest du den Dev-Server neu. Ein anderer Dev-Server als der von Astro schreibt `.albatros/dev.json` nicht selbst: Dann schreibst du beim Start `{"url":"http://127.0.0.1:<port>"}` hinein, mit `localhost` statt `127.0.0.1`, wenn er nur dort antwortet.
 - **Mit einem Baustein** (Buchungen, Anmeldeliste, Login) startest du statt der Vorschau `bun bausteine/pocketbase/lokal.ts` (Adresse `http://localhost:8090`): Nur so laufen Formulare und Buchungen wirklich, auf dem Computer der Person.
-- Läuft die Vorschau, machst du den Eintrag ins Logbuch (`git add web seite && git commit -m "Rohbau: alle Seiten aus dem Entwurf"`; `web/node_modules` schliesst `web/.gitignore` aus) und meldest `lokal`, bevor du der Person die Seite zeigst.
+- Läuft die Vorschau, machst du den Eintrag ins Logbuch (`git add web seite werkzeuge && git commit -m "Rohbau: alle Seiten aus dem Entwurf"`; `web/node_modules` schliesst `web/.gitignore` aus, `.albatros/` kommt nie hinein) und meldest `lokal`, bevor du der Person die Seite zeigst.
 
 ### 5. Prüfen (`schritt: pruefung`)
 
@@ -291,6 +298,7 @@ Jetzt geht die Person selbst durch ihr Haus. Sie entscheidet, ob es so ins Netz 
    git add docs/prd.md && git commit -m "Seite freigegeben" && git tag -f freigegeben
    ```
    Beim Live schalten zeigt der Tag `freigegeben`, ob seither noch etwas an der Seite geändert hat.
+   Mit Berts Arbeitsplatz fragst du die Freigabe stattdessen mit `ja_moment` (`seite`) an: Die Zeile `Freigegeben:` schreibt der Arbeitsplatz, wenn die Person «Ja, bestätigen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»). Den Eintrag ins Logbuch mit dem Tag machst du erst, wenn `naechstes` das meldet.
 7. Melde `freigabe`. Im Modus `lernen` stellst du jetzt die Kontrollfragen der Lektion `flugschule-21-text-aendern`: «Wie änderst du selbst einen Text auf deiner Seite, und wie siehst du die Änderung, bevor sie ins Netz geht?» und «Warum siehst du deine Seite zuerst auf deinem Computer, bevor sie ins Netz geht?» `verstanden_melden` (Art `kontrollfrage`) meldest du erst nach der Antwort der Person.
 
 Will die Person vor der Freigabe noch etwas ändern: Ein Text, ein Bild oder ein Termin geht zurück zu Schritt 4, dann Prüfen und Begehung nochmals. Eine neue Seite oder eine neue Funktion ist ein Nachtrag: zuerst in `docs/plan.md`, dann ein Entwurf der geänderten Seiten und eine neue Freigabe zum Bauen (Skill `entwurf`), erst dann gebaut.
@@ -308,6 +316,7 @@ Danach kommt der Skill `lancieren`: Wo soll die Seite wohnen? Ruf `lage` auf, we
 - Berichte ohne Messwerte, oder «alles grün», ohne die Fotos angeschaut zu haben.
 - `seite/` vergessen zu bauen: Dann zeigt die Vorschau den alten Stand.
 - Etwas in einen Hafen schicken oder veröffentlichen: Das gehört nicht in diesen Skill, sondern zum Live schalten (Skill `lancieren`).
+- Den Ordner `.albatros/` ins Logbuch aufnehmen: Er gehört nur auf diesen Computer.
 - Die Freigabe ohne Begehung auf dem Handy, oder mit offenen Abweichungen vom Entwurf.
 - Einen Schritt nicht gemeldet: Das Haus auf der Insel bleibt stehen.
 

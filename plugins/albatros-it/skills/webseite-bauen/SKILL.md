@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.2.0
-  quelle: 'fa330a390be9'
+  quelle: '65c45149cb70'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -217,6 +217,12 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 ```
 
 - In `web/astro.config.mjs`: `outDir: '../seite'`. Si costruisce nella cartella `seite/`, è lei che più tardi il domicilio consegna.
+- **Anteprima nella postazione di Bert:** l'integrazione `albatros-vorschau` sta in questo skill. Copiala nel progetto:
+  ```bash
+  mkdir -p werkzeuge && cp <cartella di questo skill>/albatros-vorschau.mjs werkzeuge/
+  # Cartella sconosciuta: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs -o werkzeuge/albatros-vorschau.mjs
+  ```
+  In `web/astro.config.mjs` aggiungi `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` e, accanto a `outDir`, la riga `integrations: [albatrosVorschau()]`. Agisce solo con `astro dev`; nella costruzione e in rete non c'è niente di lei. Se la postazione è in funzione, la persona può indicare un punto nella sua anteprima e scrivere il testo direttamente, e all'avvio l'integrazione scrive l'indirizzo del server di sviluppo in `.albatros/dev.json`, così la postazione trova l'anteprima. Senza postazione non fa niente.
 - **I token in un solo posto:** il layout (per esempio `web/src/layouts/Seite.astro`) integra direttamente `design/tokens.css`, per primo: `import '../../../design/tokens.css';`. Il file non lo copi mai in `web/`: due copie prima o poi divergono. Se manca un valore, va prima in `design/tokens.css` e in `docs/designsystem.md`.
 - **Markup e classi dalla bozza:** ogni pagina in `design/entwurf/` diventa una pagina in `web/src/pages/`, con lo stesso markup e le stesse classi. Quello che è uguale su più pagine (intestazione, menu, piè di pagina, schede, campi dei moduli) diventa un componente in `web/src/components/`. I fogli di stile che la bozza integra (tranne `tokens.css`) vanno così come sono in `web/src/styles/` e nel layout subito dopo i token; gli stili in uno `<style>` di una pagina della bozza vanno nella pagina o nel componente che corrisponde. Gli script che nella bozza fanno solo finta (un modulo che non invia niente, un menu inserito da uno script) li sostituisci con la cosa vera.
 - **Impressum e protezione dei dati** non stanno nella bozza: li costruisci adesso nello stesso layout (skill `recht-ch`).
@@ -230,8 +236,9 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   open http://localhost:4321
   ```
   L'anteprima continua a girare in background e mostra il nuovo stato dopo ogni `npm run build`, finché non la fermi con `(cd web && npx astro preview stop)`.
+  Con la postazione di Bert avvii in più il server di sviluppo, che mostra subito ogni modifica: `(cd web && npx astro dev --background)`, per fermarlo `(cd web && npx astro dev stop)`. Se l'anteprima gira già sulla 4321, prende la porta libera successiva; quale, sta scritto in `.albatros/dev.json`. Se la postazione parte solo dopo, riavvii il server di sviluppo. Un server di sviluppo diverso da quello di Astro non scrive da sé `.albatros/dev.json`: allora all'avvio ci scrivi `{"url":"http://127.0.0.1:<port>"}`, con `localhost` invece di `127.0.0.1` se risponde solo lì.
 - **Con un blocco** (prenotazioni, lista di iscrizione, accesso) avvii, al posto dell'anteprima, `bun bausteine/pocketbase/lokal.ts` (indirizzo `http://localhost:8090`): solo così moduli e prenotazioni funzionano davvero, sul computer della persona.
-- Quando l'anteprima gira, fai la voce nel diario di bordo (`git add web seite && git commit -m "Rustico: tutte le pagine dalla bozza"`; `web/.gitignore` esclude `web/node_modules`) e segnali `lokal`, prima di mostrare il sito alla persona.
+- Quando l'anteprima gira, fai la voce nel diario di bordo (`git add web seite werkzeuge && git commit -m "Rustico: tutte le pagine dalla bozza"`; `web/.gitignore` esclude `web/node_modules`, `.albatros/` non ci entra mai) e segnali `lokal`, prima di mostrare il sito alla persona.
 
 ### 5. Controllare (`schritt: pruefung`)
 
@@ -294,6 +301,7 @@ Adesso la persona passa lei stessa per la sua casa. Decide se può andare online
    git add docs/prd.md && git commit -m "Sito approvato" && git tag -f freigegeben
    ```
    Alla messa online il tag `freigegeben` mostra se da allora sul sito è cambiato ancora qualcosa.
+   Con la postazione di Bert chiedi invece l'approvazione del sito con `ja_moment` (`seite`): la riga `Freigegeben:` la scrive la postazione quando la persona clicca «Ja, bestätigen» (sì, confermare) (skill `lotse`, sezione «La postazione di Bert» (Berts Arbeitsplatz)). La voce nel diario di bordo con il tag la fai solo quando `naechstes` lo segnala.
 7. Segnala `freigabe`. Nel modo `lernen` adesso fai le domande di controllo della lezione `flugschule-21-text-aendern`: «Come cambi da te un testo del tuo sito, e come vedi la modifica prima che vada online?» e «Perché vedi il tuo sito prima sul tuo computer, prima che vada online?» Segnali `verstanden_melden` (tipo `kontrollfrage`) solo dopo la risposta della persona.
 
 Se prima dell'approvazione la persona vuole ancora cambiare qualcosa: un testo, un'immagine o un appuntamento, si torna al passo 4, poi di nuovo controllo e sopralluogo. Una nuova pagina o una nuova funzione è un'aggiunta: prima in `docs/plan.md`, poi una bozza delle pagine cambiate e un nuovo via libera per costruire (skill `entwurf`), solo dopo la costruzione.
@@ -311,6 +319,7 @@ Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo
 - Rapporti senza valori misurati, o «tutto verde» senza aver guardato le foto.
 - Dimenticare di costruire `seite/`: l'anteprima mostra allora lo stato vecchio.
 - Mandare qualcosa in un porto o pubblicare: non fa parte di questo skill, ma della messa online (skill `lancieren`).
+- Aggiungere la cartella `.albatros/` al diario di bordo: appartiene solo a questo computer.
 - L'approvazione senza sopralluogo sul telefonino, o con differenze aperte rispetto alla bozza.
 - Non segnalare un passo: la casa sull'isola resta ferma.
 

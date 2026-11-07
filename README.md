@@ -12,7 +12,7 @@ Jede Mission nennt ihre Phase (`phase`); ihr Feld `stufe` ist die Etappe dieser 
 
 Dieses Repo enthält:
 
-- das **Plugin `albatros`** für Claude Code (Skills und die Verbindung zu Albatros über MCP),
+- das **Plugin `albatros`** für Claude Code (Skills, die Verbindung zu Albatros über MCP und Berts Arbeitsplatz, die Startseite auf dem eigenen Computer, als lokaler MCP-Server `albatros-arbeitsplatz`),
 - die **Skills** der Flugschule und des Wegs Webseite, im [Agent-Skills-Standard](https://agentskills.io) (`SKILL.md`), damit sie auch in Codex, Gemini CLI und Cursor laufen,
 - die **Missionen** aller drei Wege als Markdown. Die Website macht daraus öffentliche Lernseiten, der Dienst flugschule prüft damit den Fortschritt,
 - den **Fahrplan** (`fahrplan.yaml`): Phasen, Skills und Abschnitte, Pflichtfragen, Ergebnisse, Ja-Momente und Insel-Schritte; albatros erzeugt daraus, was `lage` braucht,
@@ -75,6 +75,21 @@ Woher `lage` den Stand kennt: Jedes Plugin schickt ihn bei jedem Aufruf selbst m
 
 albatros erzeugt aus dieser Tabelle `AKTUALISIEREN` in `packages/kit/src/fahrplan.ts` (`scripts/fahrplan-erzeugen.ts`); `bun run pruefen` verlangt dieselben Zeilen wie im deutschen Lotse. Auf Französisch, Italienisch und Englisch heisst das Plugin `albatros-fr@albatros`, `albatros-it@albatros` und `albatros-en@albatros`: In den Befehlen für Claude Code und Codex steht dann dieser Name statt `albatros@albatros`, der Marktplatz heisst immer `albatros`, und `npx skills update -g -y` gilt für alle Sprachen. Die übersetzten Lotsen nennen es so. Die Befehle sind am 31.10.2026 mit `--help` von Claude Code 2.1.118, Codex 0.141.0 und `skills@1.7.4` geprüft, nicht mit einem echten Update.
 
+## Berts Arbeitsplatz
+
+Berts Arbeitsplatz ist die Startseite der Person auf ihrem Computer (Plan: `docs/foundable/f01-bert-lokal.md` in albatros, Code: `apps/arbeitsplatz`). Jedes Plugin trägt ihn in `.mcp.json` als zweiten Server ein, `albatros-arbeitsplatz` mit stdio: `node ${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp`. Der Server nimmt den Ordner, in dem die KI läuft, als Projekt und schreibt nur in dessen `.albatros/` (eigene `.gitignore` mit `*`). Das Bündel kommt erst bei der Auslieferung in `plugins/<plugin>/arbeitsplatz/` (`bun run buendeln --nach …` in albatros, für alle vier Plugins gleich). Wie die KI ihn nutzt, steht in den Skills `schnellstart` und `lotse`; die Integration für die Vorschau im Skill `webseite-bauen`.
+
+Gemessen am 07.11.2026 ohne Modell, mit dem Bündel 0.3.0 in einer Kopie des Plugins:
+
+| KI | Ergebnis |
+|---|---|
+| Claude Code 2.1.118 und 2.1.317 | `claude --plugin-dir <kopie> mcp list` mit leerem `CLAUDE_CONFIG_DIR`: `plugin:albatros:albatros-arbeitsplatz: node <kopie>/arbeitsplatz/arbeitsplatz.mjs --mcp - ✓ Connected`; `${CLAUDE_PLUGIN_ROOT}` wird eingesetzt, der Server läuft im Ordner, in dem Claude Code gestartet wurde. |
+| Codex 0.166.0 | Plugin aus einem lokalen Test-Marktplatz mit leerem `CODEX_HOME`: `codex mcp list` zeigt den Server, aber mit `${CLAUDE_PLUGIN_ROOT}` im Pfad. In einer Sitzung (`codex app-server`, `thread/start`, ohne Modell) startet Codex ihn im Ordner der Sitzung, ersetzt den Platzhalter aber nicht und setzt auch keine Umgebungsvariable dafür (auch `${PLUGIN_ROOT}` und `./arbeitsplatz/…` geprüft): Start fehlgeschlagen. Ein eigener Eintrag mit demselben Namen und festem Pfad (`codex mcp add albatros-arbeitsplatz -- node <pfad> --mcp`) ersetzt den aus dem Plugin und meldet «ready» mit den zehn Werkzeugen. `default_tools_approval_mode` nimmt `auto`, `prompt`, `writes` und `approve` an (anderes bricht ab); setzen lässt es sich nur in `config.toml` (`codex mcp add -c 'mcp_servers.albatros-arbeitsplatz.default_tools_approval_mode=…'` bricht mit «invalid transport» ab). Anleitung: Skill `schnellstart`, Abschnitt «Arbeitsplatz eintragen». |
+| Gemini CLI 0.49.0 | `gemini mcp add -s user --trust albatros-arbeitsplatz node <pfad> --mcp` schreibt den Eintrag mit `--mcp` als Argument; `gemini mcp list` zeigt «Connected» nur in einem Ordner, dem die Person vertraut (sonst «Disabled»); der Server läuft im Ordner von Gemini CLI. Das Bündel kommt dort aus einem schmalen Klon dieses Repos (`git clone --depth 1 --filter=blob:none --sparse`, geprüft gegen `main`). |
+| Cursor | nicht geprüft |
+
+Die Integration `albatros-vorschau` ist mit einem echten `astro dev` (Astro 7.4.7, `npm create astro@latest --template minimal`) und dem laufenden Bündel geprüft: ohne `.albatros/` fügt sie nichts ein und legt nichts an; mit `.albatros/` schreibt sie `.albatros/dev.json` mit der Adresse, unter der der Dev-Server antwortet (Astro hört ohne `--host` auf macOS nur auf `[::1]`, darum `http://localhost:<port>`), und der Arbeitsplatz nennt diese Adresse als Vorschau; mit laufendem Arbeitsplatz lädt die Seite `vorschau.js` nur im iframe (Chromium ohne Fenster: oben nicht geladen, im iframe geladen und aktiv); `astro build` enthält nichts davon. Nach `astro dev stop` bleibt `dev.json` liegen (der Hook `astro:server:done` läuft dabei nicht); der Arbeitsplatz prüft die Adresse und sucht sonst auf 4321 und 5173.
+
 ## Sprachen
 
 Alle Skills und Missionen gibt es auf Deutsch, Französisch, Italienisch und Englisch, mit denselben Kennungen. Begriffe und Ablage: [GLOSSAR.md](GLOSSAR.md).
@@ -94,10 +109,13 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 .claude-plugin/marketplace.json     Marktplatz «albatros» mit vier Plugins: albatros (Deutsch), albatros-fr, albatros-it, albatros-en
 plugins/albatros/
   .claude-plugin/plugin.json
-  .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk), mit der Kopfzeile X-Albatros-Skills-Stand (Abschnitt «Aktualisieren»)
-  skills/<name>/SKILL.md            27 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start) und die Bibliothek
+  .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk), mit der Kopfzeile X-Albatros-Skills-Stand (Abschnitt «Aktualisieren»),
+                                    und albatros-arbeitsplatz (stdio: node ${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp, Abschnitt «Berts Arbeitsplatz»)
+  arbeitsplatz/                     Bündel von Berts Arbeitsplatz aus albatros apps/arbeitsplatz (bun run buendeln --nach …); bis zur Auslieferung nur README.md
+  skills/<name>/SKILL.md            28 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start), schnellstart und die Bibliothek
   skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
   skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9 bis P13): vier Bereiche, --vor-bau, --freigabe (lancieren, Regel wie kit jaBelegt), --tueren, --vergleich, --live
+  skills/webseite-bauen/albatros-vorschau.mjs   Astro-Integration für die Vorschau im Arbeitsplatz (nur astro dev), gleich wie vorlage/werkzeuge/albatros-vorschau.mjs
   evals/<name>/                     mindestens ein Eval-Fall pro Skill und je Phase (claude plugin eval, Abschnitt «Evals»)
   evals/_projekt/                   Gerüst Sonnenhof für die Fälle (projekt.sh, bis P1 … P12) und die Anleitung des Servers
   evals/mocks/albatros/             Attrappen der Albatros-Werkzeuge für die Evals; _tools.json ist die echte Werkzeugliste
@@ -109,9 +127,10 @@ missionen/<weg>/<nr>-<slug>.md      44 Missionen: flugschule 21, webseite 9, ges
 uebersetzungen/<sprache>/           Missionen, Vorlage und Texte für den Server auf Französisch, Italienisch und Englisch
 schema/mission.schema.json          JSON Schema der Missions-Kopfdaten
 schema/fahrplan.schema.json         JSON Schema von fahrplan.yaml
-vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband
+vorlage/                            Vorlage für {name}/projekt im Hafen: Seite, AGENTS.md mit CLAUDE.md und GEMINI.md, Dockerfile, compose.yaml, Fliessband,
+                                    werkzeuge/albatros-vorschau.mjs (Vorschau im Arbeitsplatz, schreibt .albatros/dev.json beim Start von astro dev)
 bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
-scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts), dass Abschnitte aus fahrplan.yaml und Querverweise in jeder Sprache in einer #-Überschrift stehen (scripts/abschnitte.ts), dass jede Phase mit Lernmomenten je Weg eine Lektion mit Kontrollfrage hat (scripts/lektionen.ts) und dass die Skills bei verstanden_melden, Kontrollfragen und mission_pruefen die richtigen Missionen nennen, Kontrollfragen nie aus mission_holen nehmen, wörtlich so zitieren, wie die Mission sie in derselben Sprache stellt, und höchstens zwei in eine Nachricht legen (scripts/missionsverweise.ts), und dass ein Skill mit titel bei schritt_melden den Ausweg nach «Ungültige Angaben» nennt und auf Italienisch die Bozza «con via libera» heisst (scripts/abgleich.ts)
+scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts), dass Abschnitte aus fahrplan.yaml und Querverweise in jeder Sprache in einer #-Überschrift stehen (scripts/abschnitte.ts), dass jede Phase mit Lernmomenten je Weg eine Lektion mit Kontrollfrage hat (scripts/lektionen.ts) und dass die Skills bei verstanden_melden, Kontrollfragen und mission_pruefen die richtigen Missionen nennen, Kontrollfragen nie aus mission_holen nehmen, wörtlich so zitieren, wie die Mission sie in derselben Sprache stellt, und höchstens zwei in eine Nachricht legen (scripts/missionsverweise.ts), und dass ein Skill mit titel bei schritt_melden den Ausweg nach «Ungültige Angaben» nennt und auf Italienisch die Bozza «con via libera» heisst (scripts/abgleich.ts), dazu Berts Arbeitsplatz: der Server albatros-arbeitsplatz in jedem Plugin, dieselbe Integration albatros-vorschau in Skill und Vorlage, und schnellstart mit AGENTS.md wie die Vorlage und docs/projekt.md mit allen Zeilen von P1
 scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche, Vorlage, Gerüst der Evals), abschnitte.test.ts (Abschnittsnamen), lektionen.test.ts (Lektion je Phase und Weg), missionsverweise.test.ts (Missionen in den Skills), pruefbefehle.test.ts (die Freigabe in lancieren mit pruefen.mjs --freigabe gegen kit jaBelegt, auch mit Leerraum ausserhalb von ASCII und Dateien in Latin-1; der grep-Befehl für «Eingang:», in Claude Code auch mit dessen grep, einem eingebauten ugrep), rechtspfade.test.ts (Pfade für Impressum und Datenschutz je Sprache), tueren.test.ts (Listen von PocketBase und ihr Status in den Skills gegen «Türen der Bausteine»), fahrplan.test.ts (fahrplan.yaml), evals.test.ts (Grader ohne Modell, Attrappen), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe und die Attrappe, mit albatros auch gegen das echte mcp), verlauf.test.ts; dazu bausteine/eingang/verwaltung.test.ts (vordere Schicht des Eingangs) und stuecke.test.ts (grosse Körper in Stücken)
 scripts/attrappen.ts                erzeugt die Attrappen der Evals mit dem echten mcp von albatros (--pruefen vergleicht nur)
 scripts/bewertung.ts                Grader ohne Modell wie in plugin eval, mit Beispielen je Fall in scripts/evals-beispiele.ts
@@ -129,6 +148,7 @@ Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran i
 |---|---|---|
 | immer | `lotse` | der Fluglotse im Turm: sagt nach dem echten Stand, was jetzt dran ist |
 | Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, `lage` fragen, dann los mit der Idee |
+| Einstieg, Modus machen | `schnellstart` | der erste Rundflug: in wenigen Minuten Projekt, Zielgruppe, Angebot, Arbeitslogo und graue Skizze, dazu Vorschläge und eine Ideen-Karte in Berts Arbeitsplatz |
 | P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss, Plan prüfen) |
 | P2, P4, P13 | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite, keine Funktion geht ohne Entscheid verloren, Umleitungen beim Livegang |
 | P5 | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden; Maskottchen ja, nein oder später |

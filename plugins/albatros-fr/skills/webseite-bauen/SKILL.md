@@ -3,7 +3,7 @@ name: webseite-bauen
 description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.2.0
-  quelle: 'fa330a390be9'
+  quelle: '65c45149cb70'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -217,6 +217,12 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
 ```
 
 - Dans `web/astro.config.mjs` : `outDir: '../seite'`. On construit dans le dossier `seite/`, c'est lui que le domicile livrera plus tard.
+- **Aperçu dans le poste de travail de Bert :** l'intégration `albatros-vorschau` se trouve dans ce skill. Copie-la dans le projet :
+  ```bash
+  mkdir -p werkzeuge && cp <dossier de ce skill>/albatros-vorschau.mjs werkzeuge/
+  # Dossier inconnu: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs -o werkzeuge/albatros-vorschau.mjs
+  ```
+  Dans `web/astro.config.mjs`, ajoute `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` et, à côté de `outDir`, la ligne `integrations: [albatrosVorschau()]`. Elle n'agit qu'avec `astro dev` ; dans la construction et sur Internet, il n'y a rien d'elle. Si le poste de travail tourne, la personne peut y montrer un endroit dans l'aperçu et taper du texte directement, et au démarrage l'intégration écrit l'adresse du serveur de développement dans `.albatros/dev.json`, pour que le poste de travail trouve l'aperçu. Sans poste de travail, elle ne fait rien.
 - **Les tokens à un seul endroit :** la mise en page (par exemple `web/src/layouts/Seite.astro`) intègre directement `design/tokens.css`, en premier : `import '../../../design/tokens.css';`. Tu ne copies jamais le fichier dans `web/` : deux copies finissent par diverger. S'il manque une valeur, elle va d'abord dans `design/tokens.css` et `docs/designsystem.md`.
 - **Balisage et classes tirés de l'ébauche :** chaque page de `design/entwurf/` devient une page dans `web/src/pages/`, avec le même balisage et les mêmes classes. Ce qui est identique sur plusieurs pages (en-tête, menu, pied de page, cartes, champs de formulaire) devient un composant dans `web/src/components/`. Les feuilles de style que l'ébauche intègre (sauf `tokens.css`) vont telles quelles dans `web/src/styles/` et dans la mise en page juste après les tokens ; les styles d'un `<style>` d'une page de l'ébauche vont dans la page ou le composant qui correspond. Les scripts qui, dans l'ébauche, font seulement semblant (un formulaire qui n'envoie rien, un menu inséré par un script), tu les remplaces par la vraie chose.
 - **Mentions légales et protection des données** ne figurent pas dans l'ébauche : tu les construis maintenant dans la même mise en page (skill `recht-ch`).
@@ -230,8 +236,9 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   open http://localhost:4321
   ```
   L'aperçu continue de tourner en arrière-plan et montre le nouvel état après chaque `npm run build`, jusqu'à ce que tu l'arrêtes avec `(cd web && npx astro preview stop)`.
+  Avec le poste de travail de Bert, tu lances en plus le serveur de développement, qui montre chaque changement tout de suite : `(cd web && npx astro dev --background)`, arrêt avec `(cd web && npx astro dev stop)`. Si l'aperçu tourne déjà sur 4321, il prend le port libre suivant ; lequel, c'est écrit dans `.albatros/dev.json`. Si le poste de travail ne démarre qu'après, tu relances le serveur de développement. Un autre serveur de développement que celui d'Astro n'écrit pas `.albatros/dev.json` lui-même : dans ce cas, tu y écris au démarrage `{"url":"http://127.0.0.1:<port>"}`, avec `localhost` au lieu de `127.0.0.1` s'il ne répond que là.
 - **Avec une brique** (réservations, liste d'inscription, connexion), tu lances, au lieu de l'aperçu, `bun bausteine/pocketbase/lokal.ts` (adresse `http://localhost:8090`) : c'est seulement ainsi que formulaires et réservations fonctionnent vraiment, sur l'ordinateur de la personne.
-- Quand l'aperçu tourne, tu fais l'entrée dans le journal de bord (`git add web seite && git commit -m "Gros œuvre : toutes les pages tirées de l'ébauche"` ; `web/.gitignore` exclut `web/node_modules`) et tu annonces `lokal`, avant de montrer le site à la personne.
+- Quand l'aperçu tourne, tu fais l'entrée dans le journal de bord (`git add web seite werkzeuge && git commit -m "Gros œuvre : toutes les pages tirées de l'ébauche"` ; `web/.gitignore` exclut `web/node_modules`, `.albatros/` n'y entre jamais) et tu annonces `lokal`, avant de montrer le site à la personne.
 
 ### 5. Vérifier (`schritt: pruefung`)
 
@@ -294,6 +301,7 @@ Maintenant, la personne parcourt elle-même sa maison. Elle décide si elle peut
    git add docs/prd.md && git commit -m "Site validé" && git tag -f freigegeben
    ```
    À la mise en ligne, le tag `freigegeben` montre si quelque chose a encore changé sur le site depuis.
+   Avec le poste de travail de Bert, tu demandes plutôt la validation avec `ja_moment` (`seite`) : la ligne `Freigegeben:`, c'est le poste de travail qui l'écrit quand la personne clique sur « Ja, bestätigen » (oui, confirmer) (skill `lotse`, section « Le poste de travail de Bert » (Berts Arbeitsplatz)). L'entrée dans le journal de bord avec le tag, tu ne la fais que quand `naechstes` l'annonce.
 7. Annonce `freigabe`. En mode `lernen`, tu poses maintenant les questions de contrôle de la leçon `flugschule-21-text-aendern` : « Comment changes-tu toi-même un texte de ton site, et comment vois-tu le changement avant qu'il aille en ligne ? » et « Pourquoi vois-tu ton site d'abord sur ton ordinateur, avant qu'il aille en ligne ? » Tu n'annonces `verstanden_melden` (type `kontrollfrage`) qu'après la réponse de la personne.
 
 Si la personne veut encore changer quelque chose avant la validation : un texte, une image ou une date, on revient à l'étape 4, puis vérification et visite à nouveau. Une nouvelle page ou une nouvelle fonction est un complément : d'abord dans `docs/plan.md`, puis une ébauche des pages modifiées et une nouvelle autorisation de construire (skill `entwurf`), et seulement ensuite la construction.
@@ -311,6 +319,7 @@ Ensuite vient le skill `lancieren` : où le site doit-il habiter ? Appelle `
 - Des rapports sans valeurs mesurées, ou « tout vert » sans avoir regardé les photos.
 - Oublier de construire `seite/` : l'aperçu montre alors l'ancien état.
 - Envoyer quelque chose dans un port ou publier : ça n'appartient pas à ce skill, mais à la mise en ligne (skill `lancieren`).
+- Ajouter le dossier `.albatros/` au journal de bord : il n'appartient qu'à cet ordinateur.
 - La validation sans visite sur le natel, ou avec des écarts ouverts par rapport à l'ébauche.
 - Ne pas annoncer une étape : la maison sur l'île reste plantée là.
 

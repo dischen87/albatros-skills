@@ -9,6 +9,11 @@
       "http_headers": {
         "X-Albatros-Skills-Stand": "0.2.0"
       }
+    },
+    "albatros-arbeitsplatz": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs", "--mcp"]
     }
   }
 }
