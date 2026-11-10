@@ -1,9 +1,9 @@
 ---
 name: webseite-bauen
-description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie l'autorisation de construire, puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro à partir du balisage et des classes de l'ébauche et de design/tokens.css, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
+description: "Construit avec une personne sans connaissances préalables son site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie les deux oui (plan confirmé, ébauche autorisée), puis journal de bord (git init, une entrée par étape), mode de construction, PRD tiré de l'ébauche avec accès et portes (docs/tueren.txt), construction avec Astro entrée par entrée de la liste de construction, à partir du balisage et des classes de l'ébauche, quatre vérifications avec pruefen.mjs et les portes, visite sur le natel et sur l'ordinateur, comparaison avec l'ébauche (--vergleich) et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « comment ça continue après l'ébauche ? »."
 metadata:
   stand: 0.3.0
-  quelle: 'd923852dc014'
+  quelle: '32024cc69d90'
 ---
 
 # Construire le site web : le gros œuvre dans ton propre atelier
@@ -18,7 +18,7 @@ L'ébauche est le modèle qu'on peut visiter, et la personne l'a autorisé. Main
 
 - Les outils d'Albatros répondent en allemand. Tu transmets tout en français à la personne et tu lui parles toujours en français.
 - Les débuts de ligne dans les fichiers de `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restent en allemand, comme les marques `[Annahme: …]` et `[offen: …]` : `lage` et les vérifications les cherchent tels quels. Ce qui suit les deux-points, tu l'écris en français.
-- L'ordre est fixe. On ne construit que quand `pruefen.mjs --vor-bau` trouve l'autorisation de construire, et seulement ce qui figure dans l'ébauche. Si quelque chose doit être différent de l'ébauche, tu le dis à la personne avant de le construire.
+- L'ordre est fixe. On ne construit que quand `pruefen.mjs --vor-bau` trouve les deux oui (plan confirmé, ébauche autorisée à la construction), et seulement ce qui figure dans l'ébauche. Si quelque chose doit être différent de l'ébauche, tu le dis à la personne avant de le construire.
 - Dans ce skill, rien ne va en ligne ni dans un port. Tout reste sur l'ordinateur de la personne et ne coûte rien chez Albatros.
 - Tu proposes la prochaine étape et tu la fais. La personne n'a jamais besoin de savoir ce qui vient ensuite.
 - Le mode figure dans `docs/projekt.md` (ligne `Modus:`) : avec `machen` (faire), tu travailles et tu expliques chaque étape en une phrase avec une image, tu proposes les moments d'apprentissage. Avec `lernen` (apprendre), tu expliques chaque étape avec une image et le pourquoi, et la personne fait elle-même les moments d'apprentissage.
@@ -30,12 +30,12 @@ L'ébauche est le modèle qu'on peut visiter, et la personne l'a autorisé. Main
 
 | Étape | Image | Résultat | Île |
 |---|---|---|---|
-| 0. Avant la construction | le coup d'œil sur la signature sous le modèle | `pruefen.mjs --vor-bau` se termine par 0 | |
+| 0. Avant la construction | le coup d'œil sur les deux signatures : sous le plan et sous le modèle | `pruefen.mjs --vor-bau` se termine par 0 | |
 | 1. Atelier et journal de bord | installer l'établi, ouvrir le journal de bord | journal de bord avec la première entrée | |
 | 2. Mode de construction | comment on construit : bois ou pierre | `docs/stack.md` | |
 | 3. PRD avec accès et portes | le plan de construction, tiré du modèle | `docs/prd.md` avec `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
-| 4. Construire | le gros œuvre | `web/`, `seite/` | `lokal` |
-| 5. Vérifier | la réception par des spécialistes | `docs/pruefung/` avec quatre rapports, portes vérifiées | `pruefung` |
+| 4. Construire | le gros œuvre, pièce par pièce selon la liste de construction | `web/`, `seite/` | `lokal` |
+| 5. Vérifier | la réception par des spécialistes | `docs/pruefung/` avec quatre rapports, portes vérifiées, chaque entrée de la liste de construction construite | `pruefung` |
 | 6. Validation | la visite du gros œuvre terminé | `Lokal gesehen:`, `Vergleich mit Entwurf:` et `Freigegeben:` dans `docs/prd.md` | `freigabe` |
 
 Les étapes 0 à 5 forment la phase P9, l'étape 6 la P10. Ce qui figure dans la colonne « Résultat » doit être là à la fin de l'étape. Chaque étape se termine par une entrée dans le journal de bord.
@@ -58,7 +58,7 @@ Après chaque étape réussie qui a une entrée dans la colonne « Île », 
 
 ## Les étapes
 
-### 0. Avant la construction : l'ébauche est-elle autorisée ?
+### 0. Avant la construction : les deux oui sont-ils là ?
 
 Le script de vérification `pruefen.mjs` se trouve dans ce skill. Copie-le dans le projet, puis il vérifie si on a le droit de construire :
 
@@ -68,8 +68,8 @@ mkdir -p scripts && cp <dossier de ce skill>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Se termine par 0 :** il y a la ligne `Freigegeben zum Bauen: <JJ.MM.AAAA>, …` dans `docs/entwurf.md`, l'ébauche dans `design/entwurf/` et les tokens dans `design/tokens.css`. On continue avec l'étape 1.
-- **Se termine par 2 :** la sortie (en allemand) dit ce qui manque. Dis-le à la personne en une phrase et retourne là-bas : sans autorisation de construire, au skill `entwurf` (partie « Freigabe », la validation) ; sans ébauche, au skill `entwurf` ; sans tokens, au skill `gestaltung`. La ligne `Freigegeben zum Bauen:`, tu ne l'écris jamais toi-même, même pas « vite fait » : elle n'existe qu'après le oui de la personne à l'ébauche.
+- **Se termine par 0 :** il y a les deux oui de la personne, `Bestätigt: <JJ.MM.AAAA>, …` dans `docs/plan.md` et `Freigegeben zum Bauen: <JJ.MM.AAAA>, …` dans `docs/entwurf.md`, plus l'ébauche dans `design/entwurf/` et les tokens dans `design/tokens.css`. On continue avec l'étape 1.
+- **Se termine par 2 :** la sortie (en allemand) dit ce qui manque. Dis-le à la personne en une phrase et retourne là-bas : sans plan confirmé, au skill `webseite-planen` (section « Vérifier le plan » (Plan prüfen)) ; sans autorisation de construire, au skill `entwurf` (partie « Freigabe », la validation) ; sans ébauche, au skill `entwurf` ; sans tokens, au skill `gestaltung`. Les lignes `Bestätigt:` et `Freigegeben zum Bauen:`, tu ne les écris jamais toi-même, même pas « vite fait », et tu ne construis pas non plus « déjà un peu à l'avance » quand la personne insiste : elles n'existent qu'après son oui au plan et à l'ébauche.
 
 ### 1. Atelier et journal de bord
 
@@ -137,8 +137,8 @@ Le PRD est le plan de construction sur une page. Il est tiré de l'ébauche auto
 Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <date tirée de docs/entwurf.md>)
 
 **Pour qui et pourquoi :** … (tiré de docs/projekt.md)
-**Pages :** comme dans l'ébauche : accueil, …, plus mentions légales et protection des données
-**Fonctions :** chacune avec son déroulement, la confirmation, l'erreur et l'état vide, comme montrés dans l'ébauche (pour un site existant, chaque fonction de docs/bestand.md avec sa décision)
+**Pages :** comme dans la liste de construction (docs/plan.md) et dans l'ébauche : S1 Accueil, …, plus mentions légales et protection des données
+**Fonctions :** comme dans la liste de construction : F1 …, chacune avec son déroulement, la confirmation, l'erreur et l'état vide, comme montrés dans l'ébauche (pour un site existant, chaque fonction de docs/bestand.md avec sa décision)
 **Design :** design/tokens.css et docs/designsystem.md ; balisage et classes tirés de design/entwurf/
 **Stack technique :** voir docs/stack.md
 **Pas inclus :** … (tiré de docs/plan.md : ce qui est laissé de côté pour le premier vol)
@@ -154,18 +154,20 @@ Les portes figurent dans docs/tueren.txt et sont vérifiées avec pruefen.mjs --
 
 ## Critères d'acceptation
 
-Tirés de docs/plan.md (Testing:) et de l'ébauche ; validés avec l'ébauche.
+Tirés de la liste de construction dans docs/plan.md (colonne Abnahme), de « Testing: » et de l'ébauche ; validés avec l'ébauche. Pour chaque entrée de la liste de construction, une section avec son identifiant.
 
-### Accueil
+### S1 Accueil
+- [ ] <Abnahme de la liste de construction, mot pour mot>
 - [ ] Titres, menu et sections comme dans design/entwurf/index.html (pruefen.mjs --vergleich)
 - [ ] Dans les trois premières phrases figurent qui vous êtes, à qui s'adresse le site et ce que les visiteurs doivent faire
 - [ ] L'en-tête montre une vraie photo ou l'essentiel du contenu, pas seulement un titre et un bouton sur une surface de couleur (skill gestaltung, « Schlicht heisst nicht ohne Bild »)
 
-### <chaque autre page de design/entwurf/>
+### <identifiant et titre de chaque autre page, par exemple S2 Offre>
+- [ ] <Abnahme de la liste de construction, mot pour mot>
 - [ ] Titres, menu et sections comme dans design/entwurf/<page>.html
-- [ ] …
 
-### <chaque fonction, par exemple un formulaire ou des réservations>
+### <identifiant et titre de chaque fonction, par exemple F1 Demander une place>
+- [ ] <Abnahme de la liste de construction, mot pour mot>
 - [ ] L'envoi fonctionne, les champs obligatoires manquants se signalent clairement, le message arrive à <adresse>
 - [ ] Chaque liste montre si elle charge, si elle est vide (une phrase et un bouton) ou si elle a une erreur (avec « Réessayer », jamais déguisée en liste vide)
 - [ ] Après l'envoi, une confirmation : ce qui s'est passé, ce qui vient ensuite, comment l'annuler
@@ -177,7 +179,9 @@ Tirés de docs/plan.md (Testing:) et de l'ébauche ; validés avec l'ébauche.
 - [ ] Chaque page, aussi les pages des briques, a un en-tête, un menu et un pied de page avec mentions légales et protection des données
 - [ ] Contraste : texte au moins 4,5 : 1, boutons et bordures au moins 3 : 1
 - [ ] Utilisable au clavier, le focus est visible
-- [ ] Vitesse : Lighthouse au moins 90 en performance, accessibilité, bonnes pratiques et SEO ; au maximum 50 Ko de JavaScript par page ; images sous 500 Ko
+- [ ] Toute l'étendue des fonctions : chaque entrée de la liste de construction est construite (plan-pruefen.mjs --bau sans rouge)
+- [ ] Unique plutôt qu'en kit : design-pruefen.mjs --bau sans rouge ; mouvement seulement avec une intention et en respectant « Réduire les animations » ; 3D seulement avec une image fixe comme solution de repli, le site tient sans WebGL
+- [ ] Poids et vitesse : par page au plus 1 Mo avec tout ce qu'elle intègre de façon fixe ; Lighthouse au moins 90 en performance, accessibilité, bonnes pratiques et SEO ; au maximum 50 Ko de JavaScript par page ; images sous 500 Ko
 - [ ] Chaque porte de docs/tueren.txt répond comme prévu ; aucun secret dans le code, aucun .env en ligne
 ```
 
@@ -224,7 +228,10 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
   Dans `web/astro.config.mjs`, ajoute `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` et, à côté de `outDir`, la ligne `integrations: [albatrosVorschau()]`. Elle n'agit qu'avec `astro dev` ; dans la construction et sur Internet, il n'y a rien d'elle. Quand le poste de travail lance le serveur de développement (outil `vorschau_starten`, plus bas), elle charge son script d'aperçu : la personne peut alors montrer un endroit dans l'aperçu et taper du texte directement. Elle n'écrit aucun fichier, et sans poste de travail, elle ne fait rien.
 - **Les tokens à un seul endroit :** la mise en page (par exemple `web/src/layouts/Seite.astro`) intègre directement `design/tokens.css`, en premier : `import '../../../design/tokens.css';`. Tu ne copies jamais le fichier dans `web/` : deux copies finissent par diverger. S'il manque une valeur, elle va d'abord dans `design/tokens.css` et `docs/designsystem.md`.
+- **Entrée par entrée selon la liste de construction :** d'abord ce qui est commun (mise en page avec les tokens, en-tête, menu, pied de page), puis les entrées de la liste de construction (`## Bauliste`) de `docs/plan.md` dans leur ordre, `Muss` (doit) avant `Kann` (peut) : pour chaque entrée, construire, relancer la construction, regarder, vérifier sa réception dans le PRD, puis une entrée dans le journal de bord avec l'identifiant (`git commit -m "S2 Offre construite"`). Avec le poste de travail de Bert, tu annonces chaque entrée avec `schritt` (« S2 Offre est construite »). Ainsi, la personne voit son site naître partie par partie, et une erreur se trouve dans une partie, pas quelque part.
+- **Les identifiants restent dans le balisage :** chaque endroit avec `data-bauliste="F1"` dans l'ébauche porte aussi l'attribut dans la construction. C'est à ça que `plan-pruefen.mjs --bau` vérifie qu'aucune fonction ne s'est perdue.
 - **Balisage et classes tirés de l'ébauche :** chaque page de `design/entwurf/` devient une page dans `web/src/pages/`, avec le même balisage et les mêmes classes. Ce qui est identique sur plusieurs pages (en-tête, menu, pied de page, cartes, champs de formulaire) devient un composant dans `web/src/components/`. Les feuilles de style que l'ébauche intègre (sauf `tokens.css`) vont telles quelles dans `web/src/styles/` et dans la mise en page juste après les tokens ; les styles d'un `<style>` d'une page de l'ébauche vont dans la page ou le composant qui correspond. Les scripts qui, dans l'ébauche, font seulement semblant (un formulaire qui n'envoie rien, un menu inséré par un script), tu les remplaces par la vraie chose.
+- **Mouvement et 3D**, tu les construis exactement comme ils figurent dans l'ébauche et dans `docs/designsystem.md` (skill `gestaltung`, section « Mouvement et 3D » (Bewegung und 3D)), et rien de plus : pas de mouvement sans sa phrase, toujours avec `prefers-reduced-motion` ; la 3D ne se charge qu'au besoin (`import()` dans le script, jamais en dur dans l'en-tête HTML de la page), l'image fixe est dans le HTML.
 - **Mentions légales et protection des données** ne figurent pas dans l'ébauche : tu les construis maintenant dans la même mise en page (skill `recht-ch`).
 - **Les données d'abord :** ce que la personne a cité dans le plan (cours avec horaires et places, prix, heures d'ouverture), tu le récupères maintenant, avant de construire. Un « on a ça » ne suffit pas : demande le texte, la liste ou une photo de celle-ci.
 - Les listes comme les dates, les tournois ou les sponsors sont des données dans `web/src/data/*.json`, que les pages lisent. Documents et images vont dans `web/public/`, images réduites. S'ils viennent d'un site existant, le skill `webseite-modernisieren` s'applique, partie « Rechte » (les droits).
@@ -251,17 +258,21 @@ Quatre spécialistes font la réception du gros œuvre, chacune écrit un rappor
 ```bash
 (cd web && npm run build) && node scripts/pruefen.mjs
 node scripts/pruefen.mjs --tueren                               # avec une brique : --tueren http://localhost:8090, tant que lokal.ts tourne
+node scripts/plan-pruefen.mjs --bau                             # toute l'étendue des fonctions : chaque entrée de la liste de construction est construite
+node scripts/design-pruefen.mjs --bau                           # unique plutôt qu'en kit, mouvement, 3D, poids, sur le site construit
 ```
+
+`plan-pruefen.mjs` et `design-pruefen.mjs` sont dans `scripts/` depuis le plan et l'ébauche (sinon, les copier depuis les skills `webseite-planen` et `gestaltung`, comme décrit là-bas) ; ils n'ont rien à télécharger.
 
 La première fois, le script télécharge les outils (Playwright, axe-core, Lighthouse, environ 200 Mo) et prend quelques minutes. Dis-le à la personne avant. Il écrit `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` et des photos de chaque page en 390 et 1440 px dans `docs/pruefung/fotos/`. Ses messages sont en allemand : tu les transmets en français.
 
 Ensuite, tu écris quatre rapports, d'une page chacun, dans la langue de la personne :
 
 - `docs/pruefung/sicherheit.md` (sécurité et droit) : secrets dans le code, `npm audit`, pas de `.env` dans `seite/`, chaque porte de `docs/tueren.txt` avec son statut, mentions légales et protection des données présentes et complètes (skill `recht-ch`), quels services externes et cookies le site utilise.
-- `docs/pruefung/ablaeufe.md` (déroulements et accès) : les règles d'accessibilité (WCAG 2.2 AA, axe) sur chaque page, liens morts, chaque formulaire essayé une fois toi-même, la page d'accueil parcourue au clavier (Tab), les déroulements du PRD étape par étape.
+- `docs/pruefung/ablaeufe.md` (déroulements et accès) : les règles d'accessibilité (WCAG 2.2 AA, axe) sur chaque page, liens morts, chaque formulaire essayé une fois toi-même, la page d'accueil parcourue au clavier (Tab), les déroulements du PRD étape par étape, et pour chaque entrée de la liste de construction, si elle est construite (`plan-pruefen.mjs --bau`) : s'il manque un `Muss`, le feu est rouge.
   - **Vert seulement avec une preuve.** Pour chaque fonction avec une brique, la sortie du test (« Alles grün », tout vert) et une photo d'une vraie réservation de test ou d'une vraie entrée sur cet ordinateur vont dans le rapport. Si quelque chose n'a pas fonctionné, le feu est jaune ou rouge. N'écris jamais « testé de bout en bout » si tu ne l'as pas fait.
-- `docs/pruefung/aussehen.md` (apparence) : `design/tokens.css` est intégré, seulement ses valeurs dans le code, système de design respecté, chaque photo regardée toi-même (coupé, masqué, lisible ?) et comparée à la liste des signes d'IA du skill `gestaltung`. Si `pruefen.mjs` signale en rouge le menu sur le natel ou des cartes identiques sur la page d'accueil, tu transformes avant de continuer. Avec le jaune « pas de photo dans la première image », l'essentiel figure en grand dans l'en-tête, et la personne reçoit la liste des photos.
-- `docs/pruefung/code.md` (code et vitesse) : Lighthouse dans les quatre domaines, JavaScript par page, tailles des images, et quels critères d'acceptation sont remplis.
+- `docs/pruefung/aussehen.md` (apparence) : `design/tokens.css` est intégré, seulement ses valeurs dans le code, système de design respecté, les feux de `design-pruefen.mjs --bau` par domaine (police, univers de couleurs, textes, en-tête, mouvement, 3D, poids), chaque photo regardée toi-même (coupé, masqué, lisible ?) et comparée à la liste des signes d'IA du skill `gestaltung`, plus l'auto-vérification avec deuxième avis sur le site construit (skill `gestaltung`, section « Auto-vérification et deuxième avis » (Selbstprüfung und zweite Meinung)). Avec de la 3D, tu ouvres le site une fois avec JavaScript désactivé : l'image fixe est là, rien ne manque. Si `pruefen.mjs` signale en rouge le menu sur le natel ou des cartes identiques sur la page d'accueil, tu transformes avant de continuer. Avec le jaune « pas de photo dans la première image », l'essentiel figure en grand dans l'en-tête, et la personne reçoit la liste des photos.
+- `docs/pruefung/code.md` (code et vitesse) : Lighthouse dans les quatre domaines, JavaScript par page, poids par page (limite 1 Mo, au-dessus de 2 Mo rouge), tailles des images, et quels critères d'acceptation sont remplis.
 
 ```markdown
 # Vérification : <domaine>
@@ -316,6 +327,8 @@ Ensuite vient le skill `lancieren` : où le site doit-il habiter ? Appelle `
 
 - Construire sans `pruefen.mjs --vor-bau`, ou écrire soi-même la ligne `Freigegeben zum Bauen:` : on construit alors ce que personne n'a autorisé.
 - Réinventer le balisage au lieu de le reprendre de l'ébauche : à la visite, la personne voit alors autre chose que dans le modèle.
+- Tout construire d'un coup au lieu d'entrée par entrée : il manque alors une fonction à la fin, et personne ne le remarque avant la visite.
+- « Embellir » en construisant : un dégradé, un mouvement ou un effet qui ne figurent pas dans l'ébauche. On construit ce qui est autorisé.
 - Un deuxième `tokens.css` dans `web/` : il y a alors deux vérités, et l'une d'elles sera bientôt fausse.
 - Des critères d'acceptation qu'on ne peut pas vérifier (« beau », « moderne ») : écris à quoi on le voit ou on le mesure.
 - Un autre framework « parce qu'il est moderne » : la raison est le souhait de la personne ou une fonction, sinon Astro.
