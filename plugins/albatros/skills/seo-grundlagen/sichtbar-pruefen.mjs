@@ -37,6 +37,8 @@ if (!existsSync(join(ORDNER, 'index.html'))) {
 const PUNKTE = ['titel', 'beschreibung', 'h1', 'bilder', 'sitemap', 'robots', 'kanonisch', 'strukturierte_daten', 'open_graph', 'llms_txt', 'gewicht', 'indexnow'];
 const ZUSATZ = ['interne_links', 'sprache'];
 const STUFE = { hinweis: -1, grün: 0, gelb: 1, rot: 2 };
+// Marken wie marken in fahrplan.yaml (offen, platzhalter, annahme), in den vier Sprachen: Was so markiert ist, ist kein geprüfter Fakt
+const MARKE = /\[\s*(annahme|hypoth[eè]se|ipotesi|assumption|offen|ouvert|aperto|open|platzhalter|[aà] compl[eé]ter|da completare|placeholder)(?![\p{L}\p{N}])/iu;
 const M = Object.fromEntries([...PUNKTE, ...ZUSATZ].map((p) => [p, []]));
 const melde = (punkt, ampel, text) => M[punkt].push({ ampel, text });
 
@@ -203,7 +205,7 @@ const sitemapDatei = ['sitemap.xml', 'sitemap-index.xml', 'sitemap_index.xml'].m
     }
     if (d.aggregateRating !== undefined || d.review !== undefined)
       melde('strukturierte_daten', 'gelb', `${pfad}: ${arten.join(', ')} mit Bewertungen (aggregateRating oder review). Eigene Sterne zum eigenen Geschäft zeigt Google nicht, und erfundene sind verboten: nur echte, sichtbar auf der Seite, mit Quelle`);
-    if (/\[(annahme|offen|platzhalter)\b/i.test(JSON.stringify(d))) melde('strukturierte_daten', 'rot', `${pfad}: JSON-LD mit [Annahme], [offen] oder [Platzhalter]: Dort stehen nur geprüfte Angaben`);
+    if (MARKE.test(JSON.stringify(d))) melde('strukturierte_daten', 'rot', `${pfad}: JSON-LD mit [Annahme], [offen] oder [Platzhalter]: Dort stehen nur geprüfte Angaben`);
   }
   if (bloecke.length && startseite && !bloecke.some((b) => b.pfad === '/')) melde('strukturierte_daten', 'gelb', 'Die Startseite hat keine strukturierten Daten, andere Seiten schon');
 }
@@ -238,7 +240,7 @@ const sitemapDatei = ['sitemap.xml', 'sitemap-index.xml', 'sitemap_index.xml'].m
     const tot = links.filter((l) => { const u = url(l); return u && eigen(u) && !pfade.has(ohneSchluss(decodeURIComponent(u.pathname))) && !existsSync(join(ORDNER, decodeURIComponent(u.pathname))); });
     if (tot.length) melde('llms_txt', 'rot', `llms.txt nennt Adressen, die es im Bau nicht gibt: ${liste(tot, 3)}`);
     if (links.some((l) => !/^https:\/\//i.test(l))) melde('llms_txt', 'gelb', 'llms.txt: Links mit voller Adresse (https://…)');
-    if (/\[(annahme|offen|platzhalter)\b|lorem ipsum/i.test(t)) melde('llms_txt', 'rot', 'llms.txt mit [Annahme], [offen], [Platzhalter] oder Lorem: Dort stehen nur geprüfte Fakten');
+    if (MARKE.test(t) || /lorem ipsum/i.test(t)) melde('llms_txt', 'rot', 'llms.txt mit [Annahme], [offen], [Platzhalter] oder Lorem: Dort stehen nur geprüfte Fakten');
   }
 }
 

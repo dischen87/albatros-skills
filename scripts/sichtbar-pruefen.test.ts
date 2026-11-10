@@ -132,6 +132,15 @@ test('jeder der zwölf Punkte hat mindestens einen eingebauten Fehler', () => {
   expect([...new Set(FEHLER.map(([n]) => n))]).toEqual(PUNKTE);
 });
 
+test('Marken in llms.txt und JSON-LD, auch übersetzt: kein geprüfter Fakt → rot', () => {
+  for (const marke of ['[Annahme: offen bis Samstag]', '[à compléter : horaires]', '[da completare: orari]', '[placeholder: opening hours]', '[offen: Preis]']) {
+    const r = pruefe((d) => ohne(d, 'llms.txt', 'meist bis am nächsten Tag.', `meist bis am nächsten Tag. ${marke}`));
+    expect([marke, r.ampeln.llms_txt]).toEqual([marke, 'rot']);
+  }
+  const r = pruefe((d) => ohne(d, 'index.html', '"telephone":"+41 31 000 00 00"', '"telephone":"[à compléter : téléphone]"'));
+  expect(r.ampeln.strukturierte_daten).toBe('rot');
+});
+
 test('Sitemap von Astro: sitemap-index.xml mit sitemap-0.xml', () => {
   const r = pruefe((d) => {
     d['sitemap-0.xml'] = d['sitemap.xml']!;
