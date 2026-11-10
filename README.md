@@ -4,7 +4,7 @@ Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Deine KI nimm
 
 Der Fahrplan hat 13 Phasen (P1 bis P13, `fahrplan.yaml`) in drei Etappen:
 
-- **abheben:** Idee und Produkt, von der Idee über Research, Plan, Konzept und Musterblatt bis zum Entwurf der ganzen Seite (P1 bis P8)
+- **abheben:** Idee und Produkt, von der Idee über Research, Plan, Konzept und Musterblatt bis zum Entwurf der ganzen Seite (P1 bis P8). Hier wird geschliffen, nicht durchgerannt: vier Teile (Idee und Konzept, Funktionsumfang, Designsystem, Mockup), je mit erstem Stand, gezielten Fragen und Überarbeiten, bis die Person Ja sagt; gebaut wird erst nach den zwei Ja (Skill `lotse`, Abschnitt «Die Schleife»)
 - **fliegen:** die Seite auf dem eigenen Computer bauen, prüfen und freigeben, dann den Wohnort wählen (P9 bis P11)
 - **landen:** Betrieb vorbereiten, live schalten und der erste Fan, also sichtbar werden und die ersten Kundinnen und Kunden gewinnen (P12, P13 und danach)
 
@@ -113,8 +113,13 @@ plugins/albatros/
                                     und albatros-arbeitsplatz (stdio: node ${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp, Abschnitt «Berts Arbeitsplatz»)
   arbeitsplatz/                     Bündel von Berts Arbeitsplatz aus albatros apps/arbeitsplatz (bun run buendeln --nach …), seit 0.3.0 im Repo: das Plugin wird über git verteilt
   skills/<name>/SKILL.md            28 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start), schnellstart und die Bibliothek
+  skills/webseite-planen/plan-pruefen.mjs  Prüfskript für den Plan (P3, P4): Pflichtzeilen und die Bauliste (## Bauliste in docs/plan.md: Kennung, Art, Titel, Muss/Kann, Abnahme),
+                                    --json so, wie das Cockpit sie liest, --entwurf und --bau: Jede Seite und Funktion der Bauliste kommt im Entwurf und im Bau vor
+  skills/gestaltung/design-pruefen.mjs   Prüfskript für die Design-Kriterien vom 10.11.2026 (P6, P7, mit --bau P9): Schrift, Farbwelt, Texte, Kopf, Richtungen, Bewegung, 3D, Gewicht
   skills/entwurf/entwurf-pruefen.mjs     Prüfskript der Person für Musterblatt und Entwurf (P6, P7): Seiten, Links, Farbfächer, Menü
-  skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9 bis P13): vier Bereiche, --vor-bau, --freigabe (lancieren, Regel wie kit jaBelegt), --tueren, --vergleich, --live
+  skills/seo-grundlagen/sichtbar-pruefen.mjs   Prüfskript für die gebaute Seite (P13): zwölf Punkte mit den Namen der Etappe «Sichtbar werden» im Cockpit (titel, beschreibung, h1, bilder,
+                                    sitemap, robots, kanonisch, strukturierte_daten, open_graph, llms_txt, gewicht, indexnow), --json
+  skills/webseite-bauen/pruefen.mjs      Prüfskript der Person für den Bau (P9 bis P13): vier Bereiche, --vor-bau (die zwei Ja: Plan bestätigt, Entwurf freigegeben), --freigabe (lancieren, Regel wie kit jaBelegt), --tueren, --vergleich, --live
   skills/webseite-bauen/albatros-vorschau.mjs   Astro-Integration für die Vorschau im Arbeitsplatz (nur astro dev), gleich wie vorlage/werkzeuge/albatros-vorschau.mjs
   evals/<name>/                     mindestens ein Eval-Fall pro Skill und je Phase (claude plugin eval, Abschnitt «Evals»)
   evals/_projekt/                   Gerüst Sonnenhof für die Fälle (projekt.sh, bis P1 … P12) und die Anleitung des Servers
@@ -131,7 +136,7 @@ vorlage/                            Vorlage für {name}/projekt im Hafen: Seite,
                                     werkzeuge/albatros-vorschau.mjs (Vorschau im Arbeitsplatz: wirkt nur, wenn der Arbeitsplatz den Dev-Server startet, schreibt keine Dateien)
 bausteine/                          PocketBase mit Rezepten, Eingang und Strapi, je mit Test und gemessenem Speicher (bausteine/README.md)
 scripts/pruefen.ts                  prüft Skills, Missionen, Fahrplan, Version und GUTE-ANTWORT.md, dass es jeden Skill (mit Dateien wie pruefen.mjs) und jede Mission in allen vier Sprachen gibt, die Vorlage gegen webseite-planen und die Befehle zum Aktualisieren gegen den Lotse (scripts/abgleich.ts), dass Abschnitte aus fahrplan.yaml und Querverweise in jeder Sprache in einer #-Überschrift stehen (scripts/abschnitte.ts), dass jede Phase mit Lernmomenten je Weg eine Lektion mit Kontrollfrage hat (scripts/lektionen.ts) und dass die Skills bei verstanden_melden, Kontrollfragen und mission_pruefen die richtigen Missionen nennen, Kontrollfragen nie aus mission_holen nehmen, wörtlich so zitieren, wie die Mission sie in derselben Sprache stellt, und höchstens zwei in eine Nachricht legen (scripts/missionsverweise.ts), und dass ein Skill mit titel bei schritt_melden den Ausweg nach «Ungültige Angaben» nennt und auf Italienisch die Bozza «con via libera» heisst (scripts/abgleich.ts), dazu Berts Arbeitsplatz: der Server albatros-arbeitsplatz in jedem Plugin, dieselbe Integration albatros-vorschau in Skill und Vorlage, und schnellstart mit AGENTS.md wie die Vorlage und docs/projekt.md mit allen Zeilen von P1
-scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche, Vorlage, Gerüst der Evals), abschnitte.test.ts (Abschnittsnamen), lektionen.test.ts (Lektion je Phase und Weg), missionsverweise.test.ts (Missionen in den Skills), pruefbefehle.test.ts (die Freigabe in lancieren mit pruefen.mjs --freigabe gegen kit jaBelegt, auch mit Leerraum ausserhalb von ASCII und Dateien in Latin-1; der grep-Befehl für «Eingang:», in Claude Code auch mit dessen grep, einem eingebauten ugrep), rechtspfade.test.ts (Pfade für Impressum und Datenschutz je Sprache), tueren.test.ts (Listen von PocketBase und ihr Status in den Skills gegen «Türen der Bausteine»), fahrplan.test.ts (fahrplan.yaml), evals.test.ts (Grader ohne Modell, Attrappen), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), punkte.test.ts, durchspiel.test.ts (Trockenläufe und die Attrappe, mit albatros auch gegen das echte mcp), verlauf.test.ts; dazu bausteine/eingang/verwaltung.test.ts (vordere Schicht des Eingangs) und stuecke.test.ts (grosse Körper in Stücken)
+scripts/*.test.ts                   bun test: pruefen.test.ts (Abgleiche, Vorlage, Gerüst der Evals), abschnitte.test.ts (Abschnittsnamen), lektionen.test.ts (Lektion je Phase und Weg), missionsverweise.test.ts (Missionen in den Skills), pruefbefehle.test.ts (die Freigabe in lancieren mit pruefen.mjs --freigabe gegen kit jaBelegt, auch mit Leerraum ausserhalb von ASCII und Dateien in Latin-1; der grep-Befehl für «Eingang:», in Claude Code auch mit dessen grep, einem eingebauten ugrep), rechtspfade.test.ts (Pfade für Impressum und Datenschutz je Sprache), tueren.test.ts (Listen von PocketBase und ihr Status in den Skills gegen «Türen der Bausteine»), fahrplan.test.ts (fahrplan.yaml), evals.test.ts (Grader ohne Modell, Attrappen), entwurf-pruefen.test.ts (entwurf-pruefen.mjs gegen die Testseiten in scripts/entwurf-pruefen/, gut und schlecht), plan-pruefen.test.ts, design-pruefen.test.ts und sichtbar-pruefen.test.ts (die drei Skripte vom 10.11.2026: je ein gutes Projekt und je Regel ein eingebauter Fehler, der rot oder gelb wird), punkte.test.ts, durchspiel.test.ts (Trockenläufe und die Attrappe, mit albatros auch gegen das echte mcp), verlauf.test.ts; dazu bausteine/eingang/verwaltung.test.ts (vordere Schicht des Eingangs) und stuecke.test.ts (grosse Körper in Stücken)
 scripts/attrappen.ts                erzeugt die Attrappen der Evals mit dem echten mcp von albatros (--pruefen vergleicht nur)
 scripts/bewertung.ts                Grader ohne Modell wie in plugin eval, mit Beispielen je Fall in scripts/evals-beispiele.ts
 scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens, Recht fr und it), je mit erwartet.json: bun scripts/testseiten/test.ts
@@ -149,10 +154,10 @@ Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran i
 | immer | `lotse` | der Fluglotse im Turm: sagt nach dem echten Stand, was jetzt dran ist |
 | Einstieg | `start` | Bordkarte holen und einsteigen: verbinden, Weg wählen, lernen oder machen, `lage` fragen, dann los mit der Idee |
 | Einstieg, Modus machen | `schnellstart` | der erste Rundflug: in wenigen Minuten Projekt, Zielgruppe, Angebot, Arbeitslogo und graue Skizze, dazu Vorschläge und eine Ideen-Karte in Berts Arbeitsplatz |
-| P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss, Plan prüfen) |
+| P1 bis P4 | `webseite-planen` | das Ziel auf der Karte, die Reiseführer, der Grundriss und die zweite Meinung vom Statiker (Idee, Research, Grundriss mit der Bauliste, Plan prüfen); prüft mit `plan-pruefen.mjs` |
 | P2, P4, P13 | `webseite-modernisieren` | einen Altbau renovieren: Bestandsaufnahme der alten Seite, keine Funktion geht ohne Entscheid verloren, Umleitungen beim Livegang |
 | P5 | `konzept` | der Charakter des Hauses, bevor Farben gewählt werden; Maskottchen ja, nein oder später |
-| P6 | `gestaltung` | erst das Fundament, dann die Fassade: graues Mockup, drei Richtungen, Farbfächer (Tokens) und Musterblatt |
+| P6 | `gestaltung` | erst das Fundament, dann die Fassade: graues Mockup, drei Richtungen, Farbfächer (Tokens) und Musterblatt; eigen statt Baukasten, Bewegung mit Absicht, 3D nur mit Rückfall, geprüft mit `design-pruefen.mjs` und zweiter Meinung |
 | P7, P8 | `entwurf` | das begehbare Modell, bevor der Rohbau beginnt, und die Unterschrift darunter (Freigabe zum Bauen); prüft mit `entwurf-pruefen.mjs` |
 | P7 | `inhalte` | Ware im Schaufenster |
 | P9, P10 | `webseite-bauen` | der Rohbau in der eigenen Werkstatt: PRD aus dem freigegebenen Entwurf, bauen, vier Prüfungen und die Türen mit `pruefen.mjs` (Geheimnisse, npm audit, axe, tote Links, Tokens, Fotos, Lighthouse, JavaScript, Bilder), Vergleich mit dem Entwurf, Freigabe; ins Netz geht nichts |
@@ -169,7 +174,7 @@ Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran i
 | P12 | `zurueck-auf-gestern` | das tägliche Foto der ganzen Wohnung |
 | P12, freiwillig | `cms` | Pinnwand im Flur |
 | P13 | `pipeline` | Fliessband mit Qualitätskontrolle |
-| P13 | `seo-grundlagen` | Wegweiser und Stadtplan |
+| P13 | `seo-grundlagen` | Wegweiser und Stadtplan: sichtbar werden in Suchmaschinen (SEO) und KI-Antworten (GEO), Search Console, Bing Webmaster Tools, IndexNow; prüft mit `sichtbar-pruefen.mjs` |
 | P13, freiwillig | `domain` | Adresse im Telefonbuch |
 | P13, freiwillig | `statistik` | Strichliste an der Ladentür |
 | P13, freiwillig | `landung` | Umzug ins eigene Haus |
