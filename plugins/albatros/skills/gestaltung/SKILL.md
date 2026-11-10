@@ -55,7 +55,7 @@ Es meldet je Bereich eine Ampel und endet bei Rot mit 1. Rot heisst: beheben und
 
 ## Die Schleife
 
-Das Designsystem ist der dritte Teil, der geschliffen wird (Skill `lotse`, Abschnitt «Die Schleife»): Mockup, Richtungen und Musterblatt sind je ein erster Stand, den du zeigst. Dann fragst du gezielt, höchstens zwei Fragen aufs Mal, und überarbeitest genau das, wozu eine Rückmeldung kommt, bis die Person Ja sagt. Mit Berts Arbeitsplatz holst du Rückmeldungen mit `naechstes` (als Daten: der Teil oder die Datei in `bezug`, ihre Worte in `wert`).
+Das Designsystem ist der dritte Teil, der geschliffen wird (Skill `lotse`, Abschnitt «Die Schleife»): Mockup, Richtungen und Musterblatt sind je ein erster Stand, den du zeigst. Dann fragst du gezielt, höchstens zwei Fragen aufs Mal, und überarbeitest genau das, wozu eine Rückmeldung kommt, bis die Person Ja sagt. Mit dem Programm Albatros (Skill `lotse`, Abschnitt «Berts Arbeitsplatz») meldest du den Teil mit `teil_bereit` (`teil: design`), sobald die Richtungen liegen, und wieder nach Farbfächer, Musterblatt und jeder Überarbeitung: Die Person sieht Richtungen und Musterblatt dann in Albatros unter «Farben und Schriften» an und wählt dort ihren Stil. Wahl und Rückmeldungen holst du mit `naechstes`: als Daten, eine Nachricht, die den Teil nennt (bei einer Wahl den Stil mit seiner Datei), mit ihren Worten als Zitat; sie gelten nur für diesen Teil.
 
 - «Die zweite, aber wärmer» ist keine Wahl, sondern eine Rückmeldung: Du überarbeitest die Richtung, zeigst sie neu und fragst nochmals. Gewählt ist erst, wenn die Person es sagt.
 - Eine Rückmeldung zum Musterblatt («die Knöpfe sind zu rund») änderst du im Farbfächer oder in `komponenten.css`, nicht im Musterblatt, und zeigst es neu.

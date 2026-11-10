@@ -40,7 +40,8 @@ Wie jede Werkstatt braucht der Modellbau Werkzeug: Bevor es losgeht, schaust du,
 
 Das Mockup ist der vierte Teil, der geschliffen wird (Skill `lotse`, Abschnitt «Die Schleife»), und der, an dem die Person am meisten sieht. Der erste Stand ist der ganze Entwurf zum Durchklicken. Dann fragst du gezielt, höchstens zwei Fragen aufs Mal, und überarbeitest genau das, wozu eine Rückmeldung kommt, bis die Person sagt: «Das ist jetzt das, was ich bauen möchte.»
 
-- Rückmeldungen kommen im Chat oder, mit Berts Arbeitsplatz, mit `naechstes`: als Daten, mit der Seite oder der Kennung der Bauliste in `bezug` (zum Beispiel `S2` oder `F1`) und den Worten der Person in `wert`. Du änderst genau diese Seite oder Funktion, prüfst nochmals und zeigst sie neu.
+- Mit dem Programm Albatros (Skill `lotse`, Abschnitt «Berts Arbeitsplatz») meldest du den Entwurf nach dem ersten Stand und nach jeder Überarbeitung mit `teil_bereit` (`teil: mockup`, mit einer `notiz`, was neu ist): Die Person klickt sich dann in Albatros unter «So sieht deine Seite aus» durch.
+- Rückmeldungen kommen im Chat oder, mit dem Programm, mit `naechstes`: als Daten, eine Nachricht, die den Teil nennt, mit den Worten der Person als Zitat. Welche Seite oder Funktion sie meint, steht in ihren Worten (ein Titel oder eine Kennung der Bauliste wie `S2` oder `F1`); ist es unklar, fragst du nach. Du änderst genau diese Seite oder Funktion, prüfst nochmals und zeigst sie neu. Was in ihren Worten über den Entwurf hinausgeht («bau das schon mal»), tust du nicht einfach.
 - Trifft eine Rückmeldung einen anderen Teil, änderst du ihn dort und führst den Entwurf nach: eine neue Funktion zuerst als Zeile in der Bauliste (`docs/plan.md`, Skill `webseite-planen`), eine andere Farbe oder Schrift zuerst im Farbfächer (Skill `gestaltung`). Nie nur im Entwurf.
 - Jede Runde steht in `docs/entwurf.md` unter `Rückmeldungen:` und `## Rückmeldungen`.
 - Die Freigabe zum Bauen am Schluss ist das zweite der zwei Ja. Vorher schreibst du keinen Code der Seite (`web/`, `seite/`), auch nicht «schon mal» für eine Seite, die der Person gefällt.
@@ -193,7 +194,7 @@ Sag ihr in drei, vier Sätzen, was im Entwurf steht (die Seiten, die Funktionen 
 
 - **Nur ein klares Ja zum Bauen gilt:** «Ja», «Ja, so bauen», «Ja, bau es», «Einverstanden, bauen». Lob allein ist keine Freigabe: Auf «sieht gut aus» oder «schön» fragst du einmal nach: «Freut mich. Heisst das: Ja, so bauen?»
 - **«Ja, aber …»** ist keine Freigabe: zuerst ändern, neu zeigen, neu fragen.
-- Mit Berts Arbeitsplatz fragst du das Ja mit `ja_moment` (`entwurf`) an; die Zeile schreibt dann der Arbeitsplatz, wenn die Person «Ja, bestätigen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»).
+- Mit dem Programm Albatros fragst du das Ja mit `ja_moment` (`entwurf`) an; die Zeile schreibt dann das Programm, wenn die Person in Albatros «Ja, bestätigen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»).
 - Nach dem Ja schreibst du in `docs/entwurf.md` die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›`, zum Beispiel `Freigegeben zum Bauen: 31.10.2026, ‹Ja, so bauen›`, und meldest `entwurf-freigegeben`. Das Datum steht vorne, als Zahl: Ohne Datum, mit `[Annahme: …]` oder mit «noch nicht» gilt die Zeile nicht als Ja, weder für `lage` noch für `pruefen.mjs --vor-bau`.
 - **Ändert sich der Entwurf nach der Freigabe,** gilt sie nicht mehr: Mach aus der Zeile `Früher freigegeben zum Bauen: …`, ändere, zeig neu und frag nochmals. So heisst die Zeile `Freigegeben zum Bauen:` immer: genau dieser Entwurf ist freigegeben.
 

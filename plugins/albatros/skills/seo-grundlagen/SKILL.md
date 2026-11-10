@@ -33,7 +33,7 @@ Die Fachwörter dafür sind **SEO** (gefunden werden in Suchmaschinen) und **GEO
 
 - **Beim Bauen** (Skill `webseite-bauen`), auf dem Computer der Person: alles, was in der Seite steht, Schritte 1 bis 6. Das Skript `sichtbar-pruefen.mjs` prüft es an der gebauten Seite.
 - **Nach dem Livegang** (Skill `lancieren`), mit der echten Adresse: Search Console, Bing Webmaster Tools, IndexNow und das Unternehmensprofil, Schritte 7 bis 10. Am einfachsten mit eigener Domain (Skill `domain`).
-- **Mit Berts Arbeitsplatz** zeigt die Etappe «Sichtbar werden» dieselben zwölf Punkte mit denselben Namen wie das Skript. Was die Person dort anklickt oder zurückmeldet, holst du mit `naechstes`.
+- **Mit dem Programm Albatros** (Skill `lotse`, Abschnitt «Berts Arbeitsplatz») zeigt die Etappe «Sichtbar werden» dieselben zwölf Punkte wie das Skript, in Alltagsworten («Bei Google gefunden werden»). Ruf zu Beginn und nach jedem Schritt `naechstes` auf: Es nennt, wie viele Punkte dort noch fehlen, und bringt, worum die Person in Albatros bittet. Nennt ihre Nachricht Punkte der Prüfung, kümmerst du dich um genau diese und änderst nur, was dafür nötig ist.
 
 ## Ablauf
 
@@ -149,7 +149,7 @@ IndexNow ist eine Klingel für Suchmaschinen: Statt zu warten, bis der Bote vorb
    curl -s -o /dev/null -w '%{http_code}\n' "https://api.indexnow.org/indexnow?url=https://<domain>/&key=<schlüssel>"
    ```
    200 heisst angenommen, 202 angenommen und der Schlüssel wird noch geprüft, 403 der Schlüssel passt nicht zur Datei, 422 die Adresse gehört nicht zu diesem Schlüssel, 429 zu viele Meldungen. Mehrere Adressen gehen in einer Meldung als JSON (`host`, `key`, `urlList`, bis 10 000 Adressen).
-4. Gemeldet wird, was neu, geändert oder gelöscht ist, nicht jeden Tag alles. Veröffentlicht die Person mit Berts Arbeitsplatz, sagt die Etappe «Sichtbar werden», ob die Meldung dort schon mitläuft; dann meldest du nicht doppelt.
+4. Gemeldet wird, was neu, geändert oder gelöscht ist, nicht jeden Tag alles. Veröffentlicht die Person mit dem Programm Albatros, sagt die Etappe «Sichtbar werden», ob die Meldung dort schon mitläuft; dann meldest du nicht doppelt.
 
 ### 10. Für lokale Geschäfte: das Unternehmensprofil
 
