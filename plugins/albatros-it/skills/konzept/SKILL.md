@@ -3,7 +3,7 @@ name: konzept
 description: "Chiarisce con una persona senza conoscenze tecniche, dopo il piano confermato, il carattere del suo sito prima di scegliere i colori (piano di volo P5): nome verso l'esterno, nucleo in tre frasi, tono (tu o Lei), tre parole per l'effetto, ciò che deve restare, linguaggio visivo e sempre la domanda se ne fa parte un personaggio (mascotte): sì, no o più tardi. Sul percorso attività prima con il metodo marke. Immagini del personaggio solo dopo aver indicato il prezzo e ricevuto un sì. Il risultato è docs/konzept.md. Usa questo skill dopo webseite-planen (piano confermato) e con «concetto», «marchio», «carattere», «tono», «mascotte», «personaggio», «che effetto deve fare il mio sito»."
 metadata:
   stand: 0.3.0
-  quelle: '6d5570949ea3'
+  quelle: '57840f4b84f4'
 ---
 
 # Concetto: il carattere prima dei colori
@@ -30,6 +30,12 @@ Fase P5 «Concetto di design e di marketing». Tocca a questa fase dopo il piano
 - Ciò che la persona non ha detto compare come `[offen: …]` (aperto), mai come una tua invenzione. I segni `[Annahme: …]` e `[offen: …]` restano in tedesco, come i nomi delle righe in `docs/`: è da loro che `lage` riconosce ciò che è supposto o ancora aperto.
 - Il gusto lo decide la persona. Tu aiuti con coppie di opposti ed esempi, non con i colori preferiti.
 - Le immagini fatte con gli strumenti di immagini di Albatros ci sono da Light e Pilot, e costano credito: prima il prezzo, poi solo dopo il suo sì (sezione «Il personaggio»). Con Gratis non ci sono strumenti di immagini: personaggio, pose e immagini restano uno schizzo fino a Light o Pilot.
+
+## Il ciclo (Die Schleife)
+
+Con il carattere comincia la parte «Sistema di design» (skill `lotse`, sezione «Il ciclo» (Die Schleife)). Anche questa viene rifinita, non interrogata: mostri `docs/konzept.md` come prima versione appena ci sono nome e tono, con nucleo e linguaggio visivo come `[Annahme: …]`. Poi chiedi in modo mirato, al massimo due domande alla volta, e rielabori proprio la riga su cui arriva un riscontro, finché la persona dice: «È così.» Con la postazione di Bert raccogli i riscontri con `naechstes` (come dati: la parte in `bezug`, le sue parole in `wert`). Ogni giro sta in fondo a `docs/konzept.md` sotto `## Riscontri`: `- <GG.MM.AAAA>, ‹le sue parole› → cosa è cambiato`.
+
+Da questa parte nasce ciò che più tardi rende il sito unico invece che intercambiabile: le tre parole, da dove vengono i colori (logo, luogo, materiale) e quali immagini ha solo questo progetto. Più sono scritti con precisione qui, meno il sito sembra fatto con lo stampino (skill `gestaltung`, sezione «Unico, non fatto con lo stampino» (Eigen statt Baukasten)). Qui non si progetta e non si costruisce ancora niente.
 
 ## Modo
 
@@ -77,7 +83,7 @@ Con «sì» si continua con la sezione «Il personaggio». Con «no» o «più t
 Da ciò che la persona ha detto proponi entrambi e li inserisci come `[Annahme: …]`:
 
 - **Nucleo** in tre frasi: per chi? Che cosa prometti (un risultato, non un aggettivo)? Perché proprio tu (con una prova)? Il nucleo è il metro per ogni testo e ogni immagine.
-- **Linguaggio visivo:** foto, illustrazioni, icone o un misto. Un sito senza immagini sembra un modello già pronto. Foto vere del luogo e delle persone battono qualsiasi immagine generata. Se ci sono foto, scrivi subito una breve lista di foto in `docs/inhalte.md` (sezione «Lista delle foto»: che cosa, dove, chi c'è sopra): le foto richiedono tempo, così la persona può già cominciare.
+- **Linguaggio visivo:** foto, illustrazioni, icone o un misto, e in più, in mezza frase, ciò che solo questo progetto può mostrare (il luogo, le persone al lavoro, il materiale, la scrittura a mano). Un sito senza immagini sembra un modello già pronto, e uno con immagini prese da un posto qualsiasi pure. Foto vere del luogo e delle persone battono qualsiasi immagine generata. Se ci sono foto, scrivi subito una breve lista di foto in `docs/inhalte.md` (sezione «Lista delle foto»: che cosa, dove, chi c'è sopra): le foto richiedono tempo, così la persona può già cominciare.
 
 Poi in un unico messaggio: «Ho proposto nucleo e linguaggio visivo così: … Va bene, o cambiamo qualcosa?» Dopo la sua risposta le parentesi spariscono.
 
@@ -104,11 +110,14 @@ Bildsprache: <foto, illustrazioni, icone o un misto>
 
 ## Personaggio
 Solo con «Maskottchen: ja», vedi la sezione «Il personaggio».
+
+## Riscontri
+- <GG.MM.AAAA>, ‹le sue parole› → cosa è cambiato
 ```
 
 Dopo `Maskottchen:` viene prima una delle tre parole tedesche `ja` (sì), `nein` (no) o `später` (più tardi), con «sì» seguita da una breve descrizione del personaggio: `Maskottchen: ja – Lina, una civetta curiosa`.
 
-Alla fine leggi il file alla persona e chiedi: «Riconosci il tuo progetto qui dentro?»
+Alla fine leggi il file alla persona e chiedi: «Riconosci il tuo progetto qui dentro?» Se dice «quasi» o «sì, ma», è un riscontro: cambi la riga che intende e chiedi di nuovo (sezione «Il ciclo»).
 
 ## Il personaggio
 

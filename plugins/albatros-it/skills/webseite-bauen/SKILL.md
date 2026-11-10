@@ -1,9 +1,9 @@
 ---
 name: webseite-bauen
-description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla il via libera per costruire, poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro dal markup e dalle classi della bozza e da design/tokens.css, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
+description: "Costruisce con una persona senza conoscenze tecniche il suo sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla i due sì (piano confermato, bozza con via libera), poi diario di bordo (git init, una voce per passo), modo di costruzione, PRD ricavato dalla bozza con accesso e porte (docs/tueren.txt), costruzione con Astro voce per voce della lista di costruzione, dal markup e dalle classi della bozza, quattro controlli con pruefen.mjs e le porte, sopralluogo sul telefonino e sul computer, confronto con la bozza (--vergleich) e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
   stand: 0.3.0
-  quelle: 'd923852dc014'
+  quelle: '32024cc69d90'
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -18,7 +18,7 @@ La bozza è il modello in cui si può entrare, e la persona gli ha dato il via l
 
 - Gli strumenti di Albatros rispondono in tedesco. Tu passi tutto alla persona in italiano e le parli sempre in italiano.
 - Gli inizi di riga nei file di `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) restano in tedesco, come i segni `[Annahme: …]` e `[offen: …]`: `lage` e le verifiche li cercano così. Quello che segue i due punti lo scrivi in italiano.
-- L'ordine è fisso. Si costruisce solo quando `pruefen.mjs --vor-bau` trova il via libera per costruire, e solo ciò che sta nella bozza. Se qualcosa deve essere diverso dalla bozza, lo dici alla persona prima di costruirlo.
+- L'ordine è fisso. Si costruisce solo quando `pruefen.mjs --vor-bau` trova i due sì (piano confermato, bozza con via libera per costruire), e solo ciò che sta nella bozza. Se qualcosa deve essere diverso dalla bozza, lo dici alla persona prima di costruirlo.
 - In questo skill niente va online e niente in un porto. Tutto resta sul computer della persona e da Albatros non costa niente.
 - Proponi il prossimo passo e lo fai. La persona non deve mai sapere che cosa viene dopo.
 - Il modo sta in `docs/projekt.md` (riga `Modus:`): con `machen` (fare) lavori tu e spieghi ogni passo in una frase con un'immagine, i momenti di apprendimento li offri. Con `lernen` (imparare) spieghi ogni passo con un'immagine e il perché, e la persona fa da sé i momenti di apprendimento.
@@ -30,12 +30,12 @@ La bozza è il modello in cui si può entrare, e la persona gli ha dato il via l
 
 | Passo | Immagine | Risultato | Isola |
 |---|---|---|---|
-| 0. Prima di costruire | lo sguardo sulla firma sotto il modello | `pruefen.mjs --vor-bau` finisce con 0 | |
+| 0. Prima di costruire | lo sguardo sulle due firme: sotto il piano e sotto il modello | `pruefen.mjs --vor-bau` finisce con 0 | |
 | 1. Officina e diario di bordo | preparare il banco, aprire il diario di bordo | diario di bordo con la prima voce | |
 | 2. Modo di costruzione | come si costruisce: legno o pietra | `docs/stack.md` | |
 | 3. PRD con accesso e porte | il progetto di costruzione, ricavato dal modello | `docs/prd.md` con `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
-| 4. Costruire | il rustico | `web/`, `seite/` | `lokal` |
-| 5. Controllare | il collaudo degli esperti | `docs/pruefung/` con quattro rapporti, porte controllate | `pruefung` |
+| 4. Costruire | il rustico, stanza per stanza secondo la lista di costruzione (Bauliste) | `web/`, `seite/` | `lokal` |
+| 5. Controllare | il collaudo degli esperti | `docs/pruefung/` con quattro rapporti, porte controllate, ogni voce della lista di costruzione costruita | `pruefung` |
 | 6. Approvazione | il sopralluogo del rustico finito | `Lokal gesehen:`, `Vergleich mit Entwurf:` e `Freigegeben:` in `docs/prd.md` | `freigabe` |
 
 I passi da 0 a 5 sono la fase P9, il passo 6 è la P10. Quello che sta nella colonna «Risultato» deve esserci alla fine del passo. Ogni passo finisce con una voce nel diario di bordo.
@@ -58,7 +58,7 @@ Dopo ogni passo riuscito che ha una voce nella colonna «Isola», chiami lo stru
 
 ## I passi
 
-### 0. Prima di costruire: la bozza ha il via libera?
+### 0. Prima di costruire: ci sono tutti e due i sì?
 
 Lo script di controllo `pruefen.mjs` si trova in questo skill. Copialo nel progetto, poi controlla se si può costruire:
 
@@ -68,8 +68,8 @@ mkdir -p scripts && cp <cartella di questo skill>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Finisce con 0:** c'è la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, …` in `docs/entwurf.md`, la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
-- **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza via libera per costruire allo skill `entwurf` (parte «Freigabe», il via libera), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. La riga `Freigegeben zum Bauen:` non la scrivi mai tu, nemmeno «al volo»: c'è solo dopo il sì della persona alla bozza.
+- **Finisce con 0:** ci sono i due sì della persona, `Bestätigt: <GG.MM.AAAA>, …` in `docs/plan.md` e `Freigegeben zum Bauen: <GG.MM.AAAA>, …` in `docs/entwurf.md`, in più la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
+- **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza piano confermato allo skill `webseite-planen` (parte «Plan prüfen», verificare il piano), senza via libera per costruire allo skill `entwurf` (parte «Freigabe», il via libera), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. Le righe `Bestätigt:` e `Freigegeben zum Bauen:` non le scrivi mai tu, nemmeno «al volo», e non costruisci nemmeno «intanto qualcosa in anticipo» se la persona insiste: ci sono solo dopo il suo sì al piano e alla bozza.
 
 ### 1. Officina e diario di bordo
 
@@ -137,8 +137,8 @@ Il PRD è il progetto di costruzione su una pagina. È ricavato dalla bozza con 
 Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <data da docs/entwurf.md>)
 
 **Per chi e a che scopo:** … (da docs/projekt.md)
-**Pagine:** come nella bozza: home, …, più impressum e protezione dei dati
-**Funzioni:** ognuna con il suo percorso, la conferma, l'errore e lo stato vuoto, come mostrati nella bozza (per un sito esistente ogni funzione di docs/bestand.md con la sua decisione)
+**Pagine:** come nella lista di costruzione (docs/plan.md) e nella bozza: S1 home, …, più impressum e protezione dei dati
+**Funzioni:** come nella lista di costruzione: F1 …, ognuna con il suo percorso, la conferma, l'errore e lo stato vuoto, come mostrati nella bozza (per un sito esistente ogni funzione di docs/bestand.md con la sua decisione)
 **Design:** design/tokens.css e docs/designsystem.md; markup e classi da design/entwurf/
 **Stack tecnologico:** vedi docs/stack.md
 **Non incluso:** … (da docs/plan.md: quello che per il primo volo resta fuori)
@@ -154,18 +154,20 @@ Le porte stanno in docs/tueren.txt e si controllano con pruefen.mjs --tueren.
 
 ## Criteri di collaudo
 
-Ricavati da docs/plan.md (Testing:) e dalla bozza; il via libera è quello della bozza.
+Ricavati dalla lista di costruzione in docs/plan.md (colonna Abnahme), da «Testing:» e dalla bozza; il via libera è quello della bozza. Per ogni voce della lista di costruzione una sezione con il suo identificativo.
 
-### Home
+### S1 Home
+- [ ] <collaudo dalla lista di costruzione, alla lettera>
 - [ ] Titoli, menu e sezioni come in design/entwurf/index.html (pruefen.mjs --vergleich)
 - [ ] Nelle prime tre frasi si dice chi siete, a chi si rivolge il sito e che cosa devono fare i visitatori
 - [ ] Nell'intestazione c'è una foto vera o la cosa più importante del contenuto, non solo titolo e pulsante su una superficie colorata (skill gestaltung, «Schlicht heisst nicht ohne Bild»)
 
-### <ogni altra pagina di design/entwurf/>
+### <identificativo e titolo di ogni altra pagina, per esempio S2 Offerta>
+- [ ] <collaudo dalla lista di costruzione, alla lettera>
 - [ ] Titoli, menu e sezioni come in design/entwurf/<pagina>.html
-- [ ] …
 
-### <ogni funzione, per esempio un modulo o le prenotazioni>
+### <identificativo e titolo di ogni funzione, per esempio F1 Chiedere un posto>
+- [ ] <collaudo dalla lista di costruzione, alla lettera>
 - [ ] L'invio funziona, i campi obbligatori mancanti si segnalano in modo comprensibile, il messaggio arriva a <indirizzo>
 - [ ] Ogni lista mostra se sta caricando, se è vuota (una frase e un pulsante) o se ha un errore (con «Riprova», mai mascherato da lista vuota)
 - [ ] Dopo l'invio una conferma: che cosa è successo, che cosa viene dopo, come annullarlo
@@ -177,7 +179,9 @@ Ricavati da docs/plan.md (Testing:) e dalla bozza; il via libera è quello della
 - [ ] Ogni pagina, anche quelle dei blocchi, ha intestazione, menu e piè di pagina con impressum e protezione dei dati
 - [ ] Contrasto: testo almeno 4,5 : 1, pulsanti e bordi almeno 3 : 1
 - [ ] Usabile con la tastiera, il focus è visibile
-- [ ] Velocità: Lighthouse almeno 90 in prestazioni, accessibilità, best practice e SEO; al massimo 50 KB di JavaScript per pagina; immagini sotto 500 KB
+- [ ] Funzionalità complete: ogni voce della lista di costruzione è costruita (plan-pruefen.mjs --bau senza rosso)
+- [ ] Unico, non fatto con lo stampino: design-pruefen.mjs --bau senza rosso; movimento solo con un'intenzione e con riguardo per «Riduci movimento»; 3D solo con un'immagine ferma come ripiego, il sito regge senza WebGL
+- [ ] Peso e velocità: per pagina al massimo 1 MB con tutto ciò che include in modo fisso; Lighthouse almeno 90 in prestazioni, accessibilità, best practice e SEO; al massimo 50 KB di JavaScript per pagina; immagini sotto 500 KB
 - [ ] Ogni porta di docs/tueren.txt risponde come previsto; nessun segreto nel codice, nessun .env in rete
 ```
 
@@ -224,7 +228,10 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
   In `web/astro.config.mjs` aggiungi `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` e, accanto a `outDir`, la riga `integrations: [albatrosVorschau()]`. Agisce solo con `astro dev`; nella costruzione e in rete non c'è niente di lei. Quando la postazione avvia il server di sviluppo (strumento `vorschau_starten`, più sotto), l'integrazione carica il suo script di anteprima: allora la persona può indicare un punto nell'anteprima e scrivere il testo direttamente. Non scrive nessun file, e senza postazione non fa niente.
 - **I token in un solo posto:** il layout (per esempio `web/src/layouts/Seite.astro`) integra direttamente `design/tokens.css`, per primo: `import '../../../design/tokens.css';`. Il file non lo copi mai in `web/`: due copie prima o poi divergono. Se manca un valore, va prima in `design/tokens.css` e in `docs/designsystem.md`.
+- **Voce per voce secondo la lista di costruzione:** prima ciò che è comune (layout con i token, intestazione, menu, piè di pagina), poi le voci della lista di costruzione in `docs/plan.md` nel loro ordine, `Muss` (deve esserci) prima di `Kann` (può arrivare dopo): per ogni voce costruire, far ricostruire, guardare, controllare il suo collaudo nel PRD, poi una voce nel diario di bordo con l'identificativo (`git commit -m "S2 Offerta costruita"`). Con la postazione di Bert annunci ogni voce con `schritt` («S2 Offerta è costruita»). Così la persona vede come il suo sito nasce parte per parte, e un errore sta in una parte, non chissà dove.
+- **Gli identificativi restano nel markup:** ogni punto con `data-bauliste="F1"` della bozza porta l'attributo anche nella costruzione. Da lì `plan-pruefen.mjs --bau` controlla che nessuna funzione sia andata persa.
 - **Markup e classi dalla bozza:** ogni pagina in `design/entwurf/` diventa una pagina in `web/src/pages/`, con lo stesso markup e le stesse classi. Quello che è uguale su più pagine (intestazione, menu, piè di pagina, schede, campi dei moduli) diventa un componente in `web/src/components/`. I fogli di stile che la bozza integra (tranne `tokens.css`) vanno così come sono in `web/src/styles/` e nel layout subito dopo i token; gli stili in uno `<style>` di una pagina della bozza vanno nella pagina o nel componente che corrisponde. Gli script che nella bozza fanno solo finta (un modulo che non invia niente, un menu inserito da uno script) li sostituisci con la cosa vera.
+- **Movimento e 3D** li costruisci esattamente come stanno nella bozza e in `docs/designsystem.md` (skill `gestaltung`, sezione «Movimento e 3D» (Bewegung und 3D)), e niente in più: nessun movimento senza la sua frase, sempre con `prefers-reduced-motion`; il 3D si carica solo quando serve (`import()` nello script, mai fisso in testa alla pagina), l'immagine ferma sta nell'HTML.
 - **Impressum e protezione dei dati** non stanno nella bozza: li costruisci adesso nello stesso layout (skill `recht-ch`).
 - **Prima i dati:** quello che la persona ha nominato nel piano (corsi con orari e posti, prezzi, orari di apertura) lo procuri adesso, prima di costruire. Un «ce l'abbiamo» non basta: chiedi il testo, la lista o una foto di essa.
 - Le liste come appuntamenti, tornei o sponsor sono dati in `web/src/data/*.json`, le pagine li leggono. Documenti e immagini vanno in `web/public/`, le immagini rimpicciolite. Se vengono da un sito esistente, vale lo skill `webseite-modernisieren`, parte «Rechte» (i diritti).
@@ -251,17 +258,21 @@ Quattro esperte fanno il collaudo del rustico, ognuna scrive un rapporto con un 
 ```bash
 (cd web && npm run build) && node scripts/pruefen.mjs
 node scripts/pruefen.mjs --tueren                               # con un blocco: --tueren http://localhost:8090, mentre gira lokal.ts
+node scripts/plan-pruefen.mjs --bau                             # funzionalità complete: ogni voce della lista di costruzione è costruita
+node scripts/design-pruefen.mjs --bau                           # unico e non fatto con lo stampino, movimento, 3D, peso, sul sito costruito
 ```
+
+`plan-pruefen.mjs` e `design-pruefen.mjs` stanno in `scripts/` dal piano e dalla bozza (altrimenti li copi dagli skill `webseite-planen` e `gestaltung`, come descritto lì); non hanno bisogno di scaricare niente.
 
 La prima volta lo script scarica gli strumenti (Playwright, axe-core, Lighthouse, circa 200 MB) e ci mette qualche minuto. Dillo prima alla persona. Scrive `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` e foto di ogni pagina a 390 e 1440 px in `docs/pruefung/fotos/`. I suoi messaggi sono in tedesco: li passi in italiano.
 
 Poi scrivi quattro rapporti, di una pagina ciascuno, nella lingua della persona:
 
 - `docs/pruefung/sicherheit.md` (sicurezza e diritto): segreti nel codice, `npm audit`, nessun `.env` in `seite/`, ogni porta di `docs/tueren.txt` con il suo stato, impressum e protezione dei dati presenti e completi (skill `recht-ch`), quali servizi esterni e cookie usa il sito.
-- `docs/pruefung/ablaeufe.md` (percorsi e accesso): le regole di accessibilità (WCAG 2.2 AA, axe) su ogni pagina, link morti, ogni modulo provato tu una volta, la home percorsa con la tastiera (Tab), i percorsi del PRD passo per passo.
+- `docs/pruefung/ablaeufe.md` (percorsi e accesso): le regole di accessibilità (WCAG 2.2 AA, axe) su ogni pagina, link morti, ogni modulo provato tu una volta, la home percorsa con la tastiera (Tab), i percorsi del PRD passo per passo, e per ogni voce della lista di costruzione se è costruita (`plan-pruefen.mjs --bau`): se manca un `Muss`, il semaforo è rosso.
   - **Verde solo con una prova.** Per ogni funzione con un blocco, nel rapporto vanno l'output del test («Alles grün», tutto verde) e una foto di una vera prenotazione di prova o di una vera voce su questo computer. Se qualcosa non ha funzionato, il semaforo è giallo o rosso. Non scrivere mai «provato fino in fondo» se non l'hai fatto.
-- `docs/pruefung/aussehen.md` (aspetto): `design/tokens.css` è integrato, solo i suoi valori nel codice, sistema di design rispettato, ogni foto guardata tu stesso (tagliato, coperto, leggibile?) e confrontata con la lista dei tratti da IA dello skill `gestaltung`. Se `pruefen.mjs` segna in rosso il menu sul telefonino o schede uguali sulla home, rifai la disposizione prima di andare avanti. Con il giallo «nessuna foto nella prima schermata», la cosa più importante sta in grande nell'intestazione e la persona riceve la lista delle foto.
-- `docs/pruefung/code.md` (codice e velocità): Lighthouse nei quattro ambiti, JavaScript per pagina, dimensioni delle immagini, e quali criteri di collaudo sono soddisfatti.
+- `docs/pruefung/aussehen.md` (aspetto): `design/tokens.css` è integrato, solo i suoi valori nel codice, sistema di design rispettato, i semafori di `design-pruefen.mjs --bau` per ogni ambito (carattere, mondo dei colori, testi, testata, movimento, 3D, peso), ogni foto guardata tu stesso (tagliato, coperto, leggibile?) e confrontata con la lista dei tratti da IA dello skill `gestaltung`, in più l'autoverifica con secondo parere sul sito costruito (skill `gestaltung`, sezione «Autoverifica e secondo parere» (Selbstprüfung und zweite Meinung)). Con il 3D apri il sito una volta con JavaScript disattivato: l'immagine ferma c'è, non manca niente. Se `pruefen.mjs` segna in rosso il menu sul telefonino o schede uguali sulla home, rifai la disposizione prima di andare avanti. Con il giallo «nessuna foto nella prima schermata», la cosa più importante sta in grande nell'intestazione e la persona riceve la lista delle foto.
+- `docs/pruefung/code.md` (codice e velocità): Lighthouse nei quattro ambiti, JavaScript per pagina, peso per pagina (limite 1 MB, oltre 2 MB rosso), dimensioni delle immagini, e quali criteri di collaudo sono soddisfatti.
 
 ```markdown
 # Controllo: <ambito>
@@ -316,6 +327,8 @@ Dopo viene lo skill `lancieren`: dove deve abitare il sito? Chiama `lage`, se lo
 
 - Costruire senza `pruefen.mjs --vor-bau`, o scrivere tu la riga `Freigegeben zum Bauen:`: si costruisce allora quello a cui nessuno ha dato il via libera.
 - Reinventare il markup invece di riprenderlo dalla bozza: al sopralluogo la persona vede allora qualcos'altro che nel modello.
+- Costruire tutto in una volta invece che voce per voce: alla fine manca allora una funzione, e nessuno se ne accorge prima del sopralluogo.
+- «Abbellire» mentre si costruisce: una sfumatura, un movimento o un effetto che non stanno nella bozza. Si costruisce ciò che ha il via libera.
 - Un secondo `tokens.css` in `web/`: allora ci sono due verità, e una presto è sbagliata.
 - Criteri di collaudo che non si possono controllare («bello», «moderno»): scrivi da che cosa si vede o si misura.
 - Un altro framework «perché è moderno»: il motivo è il desiderio della persona o una funzione, altrimenti Astro.
