@@ -19,6 +19,8 @@
 #                      Arbeitsplatz ausserhalb des Käfigs und schreibt .albatros/; die KI startet im Käfig nur diese Leitung. Landlock ABI 4
 #                      sperrt Verbindungen zu Unix-Sockets mit Pfad nicht, und die Leitung braucht keine Regel für den Ordner des Sockets.
 # Was keine Regel hat, ist zu. Pfade, die es nicht gibt, und symbolische Links werden übergangen (ein Link bekäme sonst Rechte auf sein Ziel).
+# Ein Pfad unter /proc/self meint diesen Prozess: Das Programm nach «--» übernimmt seine PID (exec), die Regel gilt also für das Programm selbst
+# und für kein anderes (so bekommt die KI-CLI ihre eigene Speicherkarte /proc/self/maps, src/bruecke/kaefig.ts).
 # Verlangt Landlock ABI 4 (Linux 6.7): Erst dort lassen sich TCP-Verbindungen sperren (Port des Arbeitsplatzes, ssh). Fehlt etwas oder greift
 # eine Probe nicht, endet das Skript mit Code 126 und startet das Programm nicht (lieber kein Lauf als ein ungeschützter).
 use strict;

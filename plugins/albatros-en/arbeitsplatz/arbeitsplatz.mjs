@@ -9262,6 +9262,11 @@ class ClaudeUebersetzer {
       }
       case "assistant": {
         const fehler = textVon(j.error);
+        if (fehler === "authentication_failed") {
+          if (haupt)
+            teile.push({ art: "abgemeldet" });
+          break;
+        }
         for (const b of bloecke) {
           if (b.type === "text" && haupt) {
             const t = textVon(b.text);
@@ -9668,6 +9673,7 @@ var SYSTEM_LESEN = [
   "/proc/filesystems",
   "/proc/sys"
 ];
+var KARTE_SELBST = "/proc/self/maps";
 var istOrdner = (p) => {
   try {
     return lstatSync(p).isDirectory();
@@ -9687,7 +9693,7 @@ function richtlinie(projekt, zweck, umfeld) {
   const lesen = [...SYSTEM_LESEN, dirname(umfeld.helfer), projekt, join7(umfeld.heim, ".gitconfig"), join7(umfeld.heim, ".config", "git", "config")];
   const schreiben = [umfeld.tmp];
   if (zweck !== "git") {
-    lesen.push(...umfeld.programme ?? []);
+    lesen.push(KARTE_SELBST, ...umfeld.programme ?? []);
     if (umfeld.konfig)
       schreiben.push(umfeld.konfig);
   }
@@ -9805,7 +9811,7 @@ function kaefigLauf(k, projekt, rechte, u) {
   const umgebung = {
     [KAEFIG_ZEICHEN]: "1",
     CLAUDE_CONFIG_DIR: u.konfig,
-    CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "1",
+    CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "0",
     TMPDIR: u.tmp,
     npm_config_cache: join7(u.tmp, "albatros-npm"),
     ...git ?? {}
@@ -10127,6 +10133,8 @@ var M = {
   keineGewaehlt: (gefunden) => gefunden.length ? `Du hast noch keine KI gewählt. Wähle in den Einstellungen unter «Deine KI» eine aus (auf diesem Computer gefunden: ${gefunden.join(", ")}).` : `Auf diesem Computer ist noch keine KI installiert. Installiere zum Beispiel Claude Code im Terminal mit «${claude.installieren}».`,
   nichtInstalliert: (a) => `${a.name} ist auf diesem Computer nicht installiert. Installiere es im Terminal mit «${a.installieren}».`,
   nichtAngemeldet: (a) => `${a.name} ist nicht angemeldet. Melde dich im Terminal an mit «${a.anmelden}».`,
+  fehltOnline: (a) => `${a.name} fehlt auf deinem Server noch. Öffne die Einstellungen: Unter «Deine KI auf dem Server» stehen die Schritte.`,
+  nichtVerbundenOnline: (a) => `${a.name} ist auf deinem Server nicht verbunden. Öffne die Einstellungen: Unter «Deine KI auf dem Server» stehen die Schritte.`,
   veraltet: (a, version) => `${a.name} ${version ? `ist in Version ${version} zu alt für den Sandkasten des Arbeitsplatzes (nötig ab ${a.mindestVersion})` : "hat seine Version nicht genannt, darum startet der Arbeitsplatz es nicht ohne Sandkasten"}. ` + `Aktualisiere es im Terminal mit «${a.aktualisieren}» und schick den Auftrag dann nochmals.`,
   grenze: (n) => `Heute hat deine KI schon ${n} Läufe gemacht, mehr erlauben deine Einstellungen nicht. Wenn du heute weitermachen willst, erhöhe «Läufe pro Tag» in den Einstellungen.`,
   gesperrt: "Deine KI arbeitet schon in diesem Projekt, zum Beispiel im Terminal. Warte, bis sie fertig ist, und schick den Auftrag dann nochmals.",
@@ -10200,6 +10208,8 @@ function neueBruecke(speicher, optionen = {}) {
     ...plattform === "linux" ? kaefig.ok ? { kaefig: true } : { kaefigGrund: kaefig.grund } : {}
   };
   const kiUmgebung = optionen.kiUmgebung ?? {};
+  const nichtInstalliert = (a) => optionen.online ? M.fehltOnline(a) : M.nichtInstalliert(a);
+  const nichtAngemeldet = (a) => optionen.online ? M.nichtVerbundenOnline(a) : M.nichtAngemeldet(a);
   function imKaefig(rechte) {
     if (!kaefig.ok || plattform !== "linux")
       return { befehl: [], umgebung: {} };
@@ -10261,9 +10271,9 @@ function neueBruecke(speicher, optionen = {}) {
     if (!stand.installiert || stand.angemeldet === false)
       stand = (await kiStand(true))[einst.ki];
     if (!stand.installiert)
-      return { ok: false, grund: "keine_ki", meldung: M.nichtInstalliert(adapter) };
+      return { ok: false, grund: "keine_ki", meldung: nichtInstalliert(adapter) };
     if (stand.angemeldet === false)
-      return { ok: false, grund: "nicht_angemeldet", meldung: M.nichtAngemeldet(adapter) };
+      return { ok: false, grund: "nicht_angemeldet", meldung: nichtAngemeldet(adapter) };
     if (!stand.version || !mindestens(stand.version, adapter.mindestVersion))
       return { ok: false, grund: "keine_ki", meldung: M.veraltet(adapter, stand.version) };
     const ohne = adapter.ohneSandkasten?.(projekt, umfeld, rechte) ?? null;
@@ -10333,8 +10343,17 @@ function neueBruecke(speicher, optionen = {}) {
         return;
       }
       case "fehler":
-        if (!l.gestoppt)
+        if (!l.gestoppt && !l.abgemeldet)
           fehlerMelden(l, t.meldung);
+        return;
+      case "abgemeldet":
+        if (!l.abgemeldet) {
+          l.abgemeldet = true;
+          fehlerMelden(l, nichtAngemeldet(l.adapter));
+          kiStand(true).catch(() => {
+            return;
+          });
+        }
         return;
       case "grenze":
         grenzeMelden(l, t.meldung);
@@ -10342,7 +10361,7 @@ function neueBruecke(speicher, optionen = {}) {
       case "runde":
         stueckRest(l);
         l.letzteRundeOk = t.ok;
-        if (!t.ok && t.meldung && !l.gestoppt)
+        if (!t.ok && t.meldung && !l.gestoppt && !l.abgemeldet)
           fehlerMelden(l, t.meldung);
         l.offeneRunden = Math.max(0, l.offeneRunden - 1);
         naechsteNachricht(l);
@@ -10459,6 +10478,7 @@ function neueBruecke(speicher, optionen = {}) {
       grenze: null,
       grenzeGemeldet: false,
       fehler: null,
+      abgemeldet: false,
       letzteRundeOk: null,
       letzterText: null,
       stderr: "",
@@ -16644,6 +16664,16 @@ var MELDUNGEN = {
     it: "{name} non è installato su questo computer. Installalo nel terminale con «{befehl}».",
     en: "{name} isn’t installed on this computer. Install it in the terminal with ‘{befehl}’."
   },
+  "{name} fehlt auf deinem Server noch. Öffne die Einstellungen: Unter «Deine KI auf dem Server» stehen die Schritte.": {
+    fr: "{name} manque encore sur ton serveur. Ouvre les réglages : les étapes sont sous « Ton IA sur le serveur ».",
+    it: "{name} manca ancora sul tuo server. Apri le impostazioni: i passi sono sotto «La tua IA sul server».",
+    en: "{name} is still missing on your server. Open the settings: the steps are under ‘Your AI on the server’."
+  },
+  "{name} ist auf deinem Server nicht verbunden. Öffne die Einstellungen: Unter «Deine KI auf dem Server» stehen die Schritte.": {
+    fr: "{name} n’est pas connecté sur ton serveur. Ouvre les réglages : les étapes sont sous « Ton IA sur le serveur ».",
+    it: "{name} non è collegato sul tuo server. Apri le impostazioni: i passi sono sotto «La tua IA sul server».",
+    en: "{name} isn’t connected on your server. Open the settings: the steps are under ‘Your AI on the server’."
+  },
   "{name} ist nicht angemeldet. Melde dich im Terminal an mit «{befehl}».": {
     fr: "{name} n’est pas connecté. Connecte-toi dans le terminal avec « {befehl} ».",
     it: "{name} non ha effettuato l’accesso. Accedi nel terminale con «{befehl}».",
@@ -17639,7 +17669,7 @@ async function online(projekt, ui) {
   sp.sicherstellen();
   let bruecke;
   try {
-    bruecke = neueBruecke(sp, { kaefig, kiUmgebung: zugang, sperrPort: konfig.port, mcpServer: eigenerMcpServer() });
+    bruecke = neueBruecke(sp, { kaefig, kiUmgebung: zugang, sperrPort: konfig.port, mcpServer: eigenerMcpServer(), online: true });
   } catch {
     bruecke = ersatzBruecke();
   }
