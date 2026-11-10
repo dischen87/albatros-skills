@@ -1,16 +1,8 @@
-# Berts Arbeitsplatz (Bündel)
+# Berts Arbeitsplatz 0.3.0
 
-Dieser Ordner bekommt bei der Auslieferung das Bündel des Arbeitsplatzes: `arbeitsplatz.mjs` (Server, lokaler MCP-Server
-`albatros-arbeitsplatz`, Brücke zur eigenen KI; läuft mit Node ≥ 20) und `ui/` (die Oberfläche). Gebaut wird es im Repo albatros,
-`apps/arbeitsplatz`, und für alle vier Plugins gleich:
+Gebündelt aus [dischen87/albatros](https://github.com/dischen87/albatros) `apps/arbeitsplatz` mit `bun run buendeln --nach <dieser Ordner>`. Nicht von Hand ändern.
 
-```bash
-cd <albatros>/apps/arbeitsplatz && bun run buendeln --nach <albatros-skills>/plugins/albatros-it/arbeitsplatz
-git -C <albatros-skills> checkout -- plugins/albatros-it/arbeitsplatz/README.md   # --nach ersetzt den ganzen Ordner, auch diese Datei
-```
-
-Eingetragen ist der Arbeitsplatz in `../.mcp.json` als Server `albatros-arbeitsplatz` (stdio:
-`node ${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp`). Er nimmt den Ordner, in dem die KI läuft, als Projekt und schreibt
-nur in dessen Ordner `.albatros/` (eigene `.gitignore` mit `*`, kommt nie ins Logbuch). Plan und Verhalten:
-`docs/foundable/f01-bert-lokal.md` in albatros. Bis das Bündel hier liegt, startet der Server nicht; die Skills arbeiten dann ohne
-Arbeitsplatz weiter (Skill `schnellstart`, Abschnitt «Ohne Arbeitsplatz»).
+- `node arbeitsplatz.mjs` startet den Arbeitsplatz im aktuellen Ordner (Projektordner, nicht der Benutzerordner), `--hilfe` zeigt alle Optionen.
+- `node arbeitsplatz.mjs --mcp` ist der lokale MCP-Server für deine KI (stdio); das Plugin trägt ihn in `.mcp.json` ein.
+- `docker build -t ghcr.io/dischen87/albatros-arbeitsplatz:0.3.0 .` in diesem Ordner baut das Bild für den Arbeitsplatz online (eigener Server, Skill betrieb).
+- Braucht Node 20 oder neuer. Lizenz: MIT.

@@ -1,0 +1,402 @@
+/* Berts Arbeitsplatz: Hülle und Teile, die albatros.css nicht hat. Nur Tokens (tokens.css) und Klassen aus albatros.css; eigene Klassen
+   heissen ap-*. Kein Inline-Stil (CSP des Servers ohne 'unsafe-inline'). */
+
+/* Grundlage wie die Tailwind-Preflight, auf die albatros.css gebaut ist (im Web kommt sie von Tailwind). In der Schicht base und mit
+   :where(), damit jede Regel aus albatros.css gewinnt. */
+@layer base {
+  :where(*, ::before, ::after, ::backdrop) { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid; }
+  :where(html) { line-height: 1.5; tab-size: 4; }
+  :where(hr) { height: 0; color: inherit; border-top-width: 1px; }
+  :where(h1, h2, h3, h4, h5, h6) { font-size: inherit; font-weight: inherit; }
+  :where(b, strong) { font-weight: bolder; }
+  :where(code, kbd, samp, pre) { font-family: var(--font-mono); font-size: 1em; }
+  :where(table) { border-collapse: collapse; border-color: inherit; }
+  :where(ol, ul) { list-style: none; }
+  :where(img, svg, video, iframe) { display: block; vertical-align: middle; }
+  :where(img, video) { max-width: 100%; height: auto; }
+  :where(button, input, select, textarea) { font: inherit; letter-spacing: inherit; color: inherit; border-radius: 0; background-color: transparent; }
+  :where(textarea) { resize: vertical; }
+  :where([hidden]) { display: none !important; }
+}
+
+/* ---------------------------------------------------------------- Hülle */
+body { background: var(--bg); overflow-x: hidden; }
+.ap-ohne-js { padding: var(--space-6); }
+.ap-sprung { position: fixed; left: -9999px; top: 12px; z-index: 100; }
+.ap-sprung:focus-visible { left: 16px; padding: 10px 16px; border-radius: var(--radius-pill); background: var(--sf); color: var(--pr2); font-weight: 700; box-shadow: var(--shadow-floating); }
+
+.ap-rahmen.shell { display: grid; min-height: 100vh; min-height: 100dvh; }
+.ap-rahmen.breit { grid-template-columns: 248px minmax(0, 1fr) 400px; }
+.ap-rahmen.mittel { grid-template-columns: 232px minmax(0, 1fr); }
+.ap-rahmen.schmal { grid-template-columns: minmax(0, 1fr); padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+
+.ap-nav { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; min-width: 0;
+  padding: 16px 12px; background: var(--sf); border-right: 1px solid var(--ln); }
+.ap-marke { display: flex; align-items: center; gap: 10px; padding: 4px 6px 18px; min-width: 0; }
+.ap-marke-text { gap: 0; line-height: 1.25; }
+.ap-marke-text b { font-family: var(--font-display); font-variation-settings: "SOFT" 100, "WONK" 0; font-weight: 600; font-size: 16px; }
+.ap-nav .ni { text-decoration: none; }
+.ap-nav .ni .badge { margin-left: auto; }
+.ap-nav-fuss { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 6px 4px; border-top: 1px solid var(--ln); }
+.ap-nav-fuss .chip, .ap-mehr ~ .col .chip { white-space: normal; max-width: 100%; }
+
+.ap-main { min-width: 0; display: flex; flex-direction: column; }
+.ap-main:focus { outline: none; }
+.ap-inhalt { width: 100%; max-width: 880px; margin: 0 auto; padding: 32px 32px 64px; }
+.ap-verbindung { padding: 16px 32px 0; max-width: 880px; width: 100%; margin: 0 auto; }
+@media (max-width: 767px) {
+  .ap-inhalt { padding: 16px 16px 32px; }
+  .ap-verbindung { padding: 12px 16px 0; }
+}
+
+.ap-seitenchat { position: sticky; top: 0; height: 100vh; height: 100dvh; display: flex; min-width: 0; background: var(--sf); border-left: 1px solid var(--ln); }
+.ap-seitenchat > .ap-chat { flex: 1; }
+
+/* Chat als eigene Ansicht: füllt den Bildschirm, nur der Verlauf scrollt */
+.ap-main.chat-seite .ap-inhalt.chat { max-width: none; padding: 0; height: 100vh; height: 100dvh; display: flex; }
+.ap-rahmen.schmal .ap-main.chat-seite .ap-inhalt.chat { height: calc(100dvh - 70px - env(safe-area-inset-bottom, 0px)); }
+.ap-inhalt.chat > .ap-chat { flex: 1; }
+.ap-rahmen.mittel .ap-chat.seite { max-width: 880px; margin: 0 auto; width: 100%; border-inline: 1px solid var(--ln); background: var(--sf); }
+
+/* Navigation unten (Telefon) */
+.ap-unten { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); background: var(--glass); box-shadow: var(--shadow-bar);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.ap-unten a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; min-width: 0; padding: 4px 2px;
+  border-radius: 16px; color: var(--mu); font-size: 12px; font-weight: 700; line-height: 1.1; text-align: center; text-decoration: none; overflow-wrap: anywhere; }
+.ap-unten a[aria-current="page"] { color: var(--primary-ink); background: var(--prs); }
+.ap-unten a:focus-visible { outline-offset: -2px; }
+.ap-unten-icon { position: relative; display: inline-flex; }
+.ap-unten-icon .badge { position: absolute; top: -7px; right: -14px; box-shadow: 0 0 0 2px var(--sf); }
+
+/* Vor dem ersten Zustand */
+.ap-vorher { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px; background: var(--stage-sky-top); }
+.ap-vorher-karte { width: 100%; max-width: 540px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.ap-vorher-karte .alert { text-align: left; }
+
+/* Meldungen (Toasts): unten mittig, auf dem Telefon über der Navigation */
+.ap-meldungen { position: fixed; left: 16px; right: 16px; bottom: 24px; z-index: 80; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+.ap-meldungen .toast { pointer-events: auto; }
+.ap-meldungen.breit { left: calc(248px + 16px); right: calc(400px + 16px); }
+.ap-meldungen.mittel { left: calc(232px + 16px); }
+@media (max-width: 767px) { .ap-meldungen { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); } }
+
+/* Dialog: <dialog> mit .modal aus albatros.css, auf dem Telefon als Blatt von unten */
+.ap-dialog { width: min(560px, 94vw); max-width: 100vw; max-height: 100vh; margin: auto; padding: 0; border: 0; background: transparent; overflow: visible; }
+.ap-dialog::backdrop { background: var(--scrim); }
+.ap-dialog .modal { width: 100%; max-width: 100%; margin: 0; }
+@media (max-width: 767px) { .ap-dialog { width: 100vw; margin: auto 0 0; max-height: 100dvh; } }
+
+/* ---------------------------------------------------------------- Allgemein */
+:lang(de) q, :lang(it) q { quotes: "«" "»" "‹" "›"; }
+:lang(fr) q { quotes: "«\202F" "\202F»" "‹\202F" "\202F›"; }
+:lang(en) q { quotes: "“" "”" "‘" "’"; }
+.ap-umbruch { overflow-wrap: break-word; min-width: 0; }
+.ap-zwei-zeilen { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: break-word; }
+.ap-handlung { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.ap-handlung > span { min-width: 0; }
+.ap-befehl { display: inline-flex; align-items: center; gap: 2px; max-width: 100%; padding: 2px 2px 2px 12px; border-radius: 12px; background: var(--sf2);
+  font-family: var(--font-mono); font-size: 13px; }
+.ap-befehl code { overflow-wrap: anywhere; min-width: 0; }
+.ap-befehl.satz { font-family: inherit; font-size: 14px; font-weight: 600; padding-left: 14px; }
+.ap-befehl.satz q { min-width: 0; overflow-wrap: break-word; }
+.alert .ap-befehl { background: var(--sf); }
+.ap-kopf { flex-wrap: wrap; }
+.ap-laedt { display: flex; align-items: center; gap: 10px; }
+.ap-seitenkopf { display: flex; flex-direction: column; gap: 8px; }
+.ap-seitenkopf-zeile { flex-wrap: wrap; gap: 12px 16px; }
+.ap-seitenkopf .k-titel { max-width: 640px; }
+.ap-zurueck { align-self: flex-start; margin-left: -8px; }
+.ap-zeile-form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ap-zeile-form > .ctl { flex: 1 1 220px; }
+.ap-zeile-form.mit-label { align-items: flex-start; }
+.ap-zeile-form.mit-label > .btn { margin-top: 25px; }
+.ap-zeile-form > .grow { flex: 1 1 240px; }
+@media (max-width: 767px) { .ap-zeile-form.mit-label > .btn { margin-top: 0; } }
+.ap-zahl-feld { max-width: 280px; }
+.ap-zeilen { display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------------------------------------------------------------- Start */
+.ap-bert { gap: 20px; }
+.ap-bert-kopf { display: flex; align-items: center; gap: 20px; min-width: 0; }
+.ap-bert-kopf > .k-maskottchen { width: 120px; }
+.ap-lage { font-size: 17px; line-height: 1.45; color: var(--ink-soft); }
+.ap-bert-lauf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px;
+  border-radius: var(--radius-inner); background: var(--sf2); }
+.ap-bert-lauf > .col { flex: 1 1 260px; }
+.ap-zitat-kurz { overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ap-fertig { padding: 12px 16px; border-radius: var(--radius-inner); background: var(--oks); color: var(--oki); font-weight: 600; }
+.ap-eingabe { display: flex; flex-direction: column; gap: 8px; }
+.compose textarea { flex: 1; min-width: 0; align-self: stretch; padding: 8px 8px 8px 10px; border: 0; outline: 0; background: transparent; resize: none;
+  font: inherit; line-height: 1.45; color: inherit; max-height: 200px; }
+.compose textarea::placeholder { color: var(--placeholder); }
+.compose > .btn { align-self: flex-end; }
+@media (max-width: 767px) {
+  .ap-bert { gap: 16px; }
+  .ap-bert-kopf { gap: 14px; align-items: flex-start; }
+  .ap-bert-kopf > .k-maskottchen { width: 76px; }
+  .ap-bert .t1 { font-size: 26px; }
+  .ap-lage { font-size: 15px; }
+}
+
+.ap-ja { gap: 16px; }
+.ap-ja > .steps, .ap-ja-stand > .steps { padding-bottom: 14px; border-bottom: 1px solid var(--ln); }
+.ap-ja-stand { gap: 10px; }
+.ap-ja-stand > .steps { padding-bottom: 0; border-bottom: 0; }
+.steps > li > span { white-space: normal; }
+.ap-frage { gap: 14px; }
+.btn .ap-empfohlen { min-height: 20px; padding: 2px 8px; background: color-mix(in srgb, var(--onpr) 24%, transparent); color: inherit; }
+.ap-idee .chip { flex: none; }
+
+.ap-vorschlaege { display: flex; flex-direction: column; }
+.ap-vorschlag { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-top: 1px solid var(--ln); }
+.ap-vorschlag:first-child { border-top: 0; padding-top: 2px; }
+.ap-vorschlag:last-child { padding-bottom: 0; }
+.ap-vorschlag-knoepfe { display: flex; flex-direction: column; align-items: stretch; gap: 4px; flex: none; }
+@media (max-width: 767px) {
+  .ap-vorschlag { flex-direction: column; gap: 10px; }
+  .ap-vorschlag-knoepfe { flex-direction: row; flex-wrap: wrap; }
+}
+
+.ap-apps { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 12px; }
+.ap-app { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 8px; min-height: 44px; padding: 16px 8px 14px;
+  border-radius: var(--radius-inner); background: var(--sf); color: var(--ink); text-align: center; text-decoration: none; font-size: 14px; font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--ln); }
+a.ap-app:hover { background: var(--sf2); text-decoration: none; }
+.ap-app-name { overflow-wrap: anywhere; line-height: 1.2; }
+.ap-app-stand { font-size: 12px; font-weight: 600; line-height: 1.2; color: var(--mu); }
+.ap-app-stand.ok { color: var(--oki); }
+.ap-app > .badge { position: absolute; top: 10px; right: 10px; }
+.ap-apps-online { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding-top: 4px; }
+.ap-apps-grau { display: flex; gap: 6px; }
+.ap-app.grau { flex-direction: row; gap: 6px; padding: 4px 10px 4px 4px; background: transparent; color: var(--mu); box-shadow: inset 0 0 0 1px var(--ln); font-size: 13px; border-radius: var(--radius-pill); }
+.ap-apps-online > .meta { flex: 1 1 260px; }
+@media (max-width: 767px) {
+  .ap-apps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ap-app { padding: 12px 4px 10px; font-size: 13px; }
+  .ap-apps-grau { flex-wrap: wrap; }
+}
+
+.ap-verlauf { display: flex; flex-direction: column; gap: 12px; }
+.ap-reiter-inhalt { min-height: 120px; }
+.ap-zeitstrahl > li { --mitte: 14px; grid-template-columns: 54px 28px minmax(0, 1fr); }
+.ap-zeitstrahl > li:not(:last-child)::before { left: 77px; }
+.ap-zeitstrahl > li > time { text-align: right; padding-right: 2px; }
+.ap-zeitstrahl > li > .k-ikon { box-shadow: 0 0 0 3px var(--sf); }
+.ap-zeitstrahl .k-inhalt { padding-top: 4px; gap: 2px; overflow-wrap: anywhere; }
+
+.ap-erstellt { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.ap-stueck { display: flex; align-items: center; gap: 12px; height: 100%; min-height: 68px; padding: 12px 14px 12px 12px; border-radius: var(--radius-inner);
+  background: var(--sf2); color: inherit; text-decoration: none; min-width: 0; }
+a.ap-stueck:hover { background: var(--prs); text-decoration: none; }
+.ap-stueck > svg.i { flex: none; color: var(--mu); }
+.ap-stueck-bild { width: 44px; height: 44px; flex: none; object-fit: contain; border-radius: 12px; background: var(--sf); }
+
+.ap-laeufe { display: flex; flex-direction: column; }
+.ap-lauf-zeile { display: flex; align-items: flex-start; gap: 12px; padding: 12px 10px; margin: 0 -10px; border-top: 1px solid var(--ln); border-radius: 14px; color: inherit; text-decoration: none; }
+.ap-laeufe > li:first-child > .ap-lauf-zeile { border-top-color: transparent; }
+.ap-lauf-zeile:hover { background: var(--sf2); text-decoration: none; }
+.ap-lauf-rechts { flex: none; gap: 6px; }
+.ap-lauf-pfeil { color: var(--mu); }
+@media (max-width: 767px) { .ap-lauf-pfeil { display: none; } }
+
+/* ---------------------------------------------------------------- Chat */
+.ap-chat { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--sf); }
+.ap-chat-kopf { display: flex; align-items: center; gap: 12px; padding: 16px 20px 6px; }
+.ap-chat-kopf .k-maskottchen { width: 44px; }
+.ap-chat-ki { padding: 4px 20px 12px; border-bottom: 1px solid var(--ln); }
+.ap-chat-ki .chip { white-space: normal; }
+.ap-chat-verlauf { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 20px;
+  background: var(--bg); }
+.ap-chat-leer { margin: auto 0; display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: var(--radius-card); background: var(--stage-band); text-align: center; }
+.ap-chat-verlauf > .btn { align-self: center; }
+.ap-lauf { display: flex; flex-direction: column; gap: 8px; scroll-margin-top: 12px; min-width: 0; }
+.ap-lauf:focus { outline: none; }
+.ap-lauf.markiert { padding: 10px; margin: -10px; border-radius: var(--radius-inner); box-shadow: inset 0 0 0 2px var(--pr); }
+.ap-lauf > .bub { overflow-wrap: anywhere; }
+.ap-lauf > .bub.me { white-space: pre-wrap; }
+.ap-lauf > .bub.sys { max-width: 100%; }
+.bub.ap-bub-bert { max-width: 94%; }
+.bub.ap-bub-bert.offen { box-shadow: var(--shadow-raised), inset 3px 0 0 var(--as); }
+.ap-werkzeuge { display: flex; flex-direction: column; gap: 2px; }
+.ap-werkzeug { display: flex; align-items: flex-start; gap: 8px; padding: 2px 4px; font-size: 13px; line-height: 1.4; color: var(--mu); overflow-wrap: anywhere; }
+.ap-werkzeug > svg.i { margin-top: 1px; }
+.ap-schritte > summary { display: flex; align-items: center; min-height: 36px; padding: 0 4px; font-size: 13px; font-weight: 700; color: var(--mu); cursor: pointer; list-style: none; }
+.ap-schritte > summary::before { content: "▸"; margin-right: 6px; }
+.ap-schritte[open] > summary::before { content: "▾"; }
+.ap-schritte > summary::-webkit-details-marker { display: none; }
+.ap-arbeitet { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--asi); }
+.ap-punkte { display: inline-flex; gap: 4px; }
+.ap-punkte > i { width: 7px; height: 7px; border-radius: 50%; background: var(--as); animation: ap-hupf 1.2s infinite ease-in-out; }
+.ap-punkte > i:nth-child(2) { animation-delay: .15s; }
+.ap-punkte > i:nth-child(3) { animation-delay: .3s; }
+@keyframes ap-hupf { 0%, 80%, 100% { transform: translateY(0); opacity: .5; } 40% { transform: translateY(-4px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ap-punkte > i { animation: none; opacity: 1; } }
+.ap-eingereiht { display: flex; align-items: center; gap: 6px; align-self: flex-end; text-align: right; }
+.ap-chat-eingabe { display: flex; flex-direction: column; gap: 6px; padding: 12px 16px 14px; background: var(--sf); border-top: 1px solid var(--ln); }
+.ap-chat-eingabe .compose { align-items: flex-end; }
+.ap-chat-eingabe .compose > .btn { flex: none; }
+@media (max-width: 767px) {
+  .ap-chat-kopf { padding: 12px 16px 4px; }
+  .ap-chat-ki { padding: 4px 16px 10px; }
+  .ap-chat-verlauf { padding: 14px 16px; }
+  .ap-chat-eingabe { padding: 10px 12px 12px; }
+  .ap-chat-hinweis { display: none; }
+}
+
+/* ---------------------------------------------------------------- Markdown (eigener Renderer, markdown.tsx) */
+.ap-md { display: flex; flex-direction: column; gap: 12px; min-width: 0; overflow-wrap: anywhere; line-height: 1.6; }
+.bub .ap-md { gap: 8px; line-height: 1.5; }
+.ap-md h1, .ap-md h2, .ap-md h3 { font-family: var(--font-display); font-variation-settings: "SOFT" 100, "WONK" 0; font-weight: 600; line-height: 1.2; margin-top: 8px; }
+.ap-md h1 { font-size: 30px; font-weight: 700; }
+.ap-md h2 { font-size: 23px; }
+.ap-md h3 { font-size: 19px; }
+.ap-md h4, .ap-md h5, .ap-md h6 { font-size: 15px; font-weight: 700; margin-top: 4px; }
+.ap-md > :first-child { margin-top: 0; }
+.bub .ap-md h1, .bub .ap-md h2, .bub .ap-md h3 { font-size: 17px; margin-top: 4px; }
+.ap-md ul { list-style: disc; padding-left: 1.4em; display: flex; flex-direction: column; gap: 4px; }
+.ap-md ol { list-style: decimal; padding-left: 1.6em; display: flex; flex-direction: column; gap: 4px; }
+.ap-md li > ul, .ap-md li > ol { margin-top: 4px; }
+.ap-md li.ap-md-aufgabe { list-style: none; display: flex; gap: 8px; align-items: flex-start; margin-left: -1.4em; }
+.ap-md-haken { flex: none; width: 18px; height: 18px; margin-top: 3px; border-radius: 5px; box-shadow: inset 0 0 0 1.5px var(--control); display: grid; place-items: center;
+  font-size: 12px; font-weight: 800; color: var(--onpr); }
+.ap-md-haken.an { background: var(--ok); box-shadow: none; }
+.ap-md blockquote { padding: 8px 14px; border-left: 4px solid var(--line-strong); border-radius: 0 12px 12px 0; background: var(--sf2); color: var(--ink-soft);
+  display: flex; flex-direction: column; gap: 8px; }
+.ap-md code { font-family: var(--font-mono); font-size: .88em; padding: 1px 5px; border-radius: 6px; background: var(--sf2); }
+.ap-md pre { overflow-x: auto; padding: 12px 14px; border-radius: var(--radius-thumb); background: var(--sf2); font-size: 13px; line-height: 1.55; overflow-wrap: normal; }
+.ap-md pre code { padding: 0; background: none; font-size: inherit; white-space: pre; }
+.ap-md hr { border-color: var(--ln); margin: 8px 0; }
+.ap-md a { color: var(--pr2); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.ap-md strong { font-weight: 700; }
+.ap-md-bild { display: inline-block; vertical-align: middle; width: auto; max-width: min(100%, 360px); max-height: 360px; border-radius: var(--radius-thumb); background: var(--sf2); }
+.ap-md-tabelle { max-width: 100%; overflow-x: auto; border-radius: var(--radius-thumb); box-shadow: inset 0 0 0 1px var(--ln); }
+.ap-md table { width: 100%; font-size: 14px; }
+.ap-md th { text-align: left; padding: 8px 12px; background: var(--sf2); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mu); }
+.ap-md td { padding: 8px 12px; border-top: 1px solid var(--ln); vertical-align: top; }
+.ap-md .ap-links { text-align: left; } .ap-md .ap-mitte { text-align: center; } .ap-md .ap-rechts { text-align: right; }
+.ap-md pre:focus-visible, .ap-md-tabelle:focus-visible { outline-offset: 2px; }
+
+/* ---------------------------------------------------------------- Webseite */
+.ap-vorschau-karte { gap: 14px; }
+.ap-werkzeugleiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.ap-werkzeugleiste .ml { margin-left: auto; }
+.ap-vorschau-huelle { width: 100%; min-width: 0; min-height: 120px; display: flex; justify-content: center; }
+.ap-vorschau-rahmen { position: relative; flex: none; overflow: hidden; border-radius: 16px; background: var(--sf); box-shadow: var(--shadow-raised), 0 0 0 1px var(--ln); }
+.ap-vorschau-rahmen > iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; background: var(--sf); max-width: none; }
+.ap-gezeigt { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: var(--radius-inner); background: var(--ass); box-shadow: inset 0 0 0 1px var(--asl); }
+.ap-gezeigt code { font-family: var(--font-mono); font-size: 12.5px; }
+.ap-vorschau-stand { gap: 10px; min-width: 0; }
+.ap-ausgabe { min-width: 0; }
+.ap-ausgabe > summary { cursor: pointer; width: fit-content; }
+.ap-ausgabe > pre { margin-top: 6px; max-height: 240px; overflow: auto; padding: 12px 14px; border-radius: var(--radius-thumb); background: var(--sf2);
+  font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; white-space: pre; overflow-wrap: normal; }
+.ap-ausgabe > pre:focus-visible { outline-offset: 2px; }
+.ap-versionen { display: flex; flex-direction: column; }
+.ap-version { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 0; border-top: 1px solid var(--ln); }
+.ap-version > .col { flex: 1 1 220px; }
+.ap-version:first-child { border-top: 0; }
+.ap-version code { font-family: var(--font-mono); font-size: 12px; }
+
+/* ---------------------------------------------------------------- Bibliothek */
+.ap-dok-liste { display: flex; flex-direction: column; }
+.ap-dok-zeile { display: flex; align-items: center; gap: 12px; padding: 10px 10px; margin: 0 -10px; border-top: 1px solid var(--ln); border-radius: 14px; color: inherit; text-decoration: none; min-height: 56px; }
+.ap-dok-liste > li:first-child > .ap-dok-zeile { border-top-color: transparent; }
+.ap-dok-zeile:hover { background: var(--sf2); text-decoration: none; }
+.ap-dok-zeile > svg.i { color: var(--mu); flex: none; }
+.ap-dokument { padding: 28px 32px; }
+.ap-dok-bild { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: var(--radius-thumb); }
+.ap-text { overflow-x: auto; white-space: pre; font-family: var(--font-mono); font-size: 13px; line-height: 1.55; }
+@media (max-width: 767px) { .ap-dokument { padding: 18px 16px; } }
+
+/* ---------------------------------------------------------------- Aufgaben, Freigaben */
+.ap-aufgabe { gap: 12px; }
+.ap-anweisung { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-soft); }
+.ap-gruppe > h2 { display: flex; align-items: center; gap: 8px; }
+.ap-entwurf { gap: 14px; }
+.ap-entwurf-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ap-mehr { gap: 2px; }
+.ap-mehr .ni { text-decoration: none; }
+.ap-mehr .ni .ml { margin-left: auto; }
+
+/* ---------------------------------------------------------------- Zeitplan und Autopilot (F1.10) */
+.ap-aufgabe-kopf { gap: 12px; }
+.ap-aufgabe-kopf > .chip { flex: none; }
+.ap-aufgabe-knoepfe { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; margin-left: -8px; }
+.ap-formular { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.ap-formular-zeile { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; align-items: start; }
+.ap-tage { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ap-tage-liste { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.ap-zeiten { display: flex; flex-wrap: wrap; gap: 8px; }
+.ap-kanaele { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ap-kanaele > legend { margin-bottom: 2px; }
+.ap-autopilot-schalter { max-width: 420px; }
+
+/* ---------------------------------------------------------------- Apps (Ansicht je App, Weg nach online) */
+a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
+.ap-apps-grau.gross { flex-wrap: wrap; gap: 8px; }
+.ap-zurueck { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font-weight: 600; }
+.ap-dreh { transform: rotate(180deg); }
+.ap-starter { display: flex; flex-direction: column; gap: 8px; }
+.ap-starter-knopf { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 12px 14px; border-radius: var(--radius-inner); background: var(--sf2);
+  text-align: left; cursor: pointer; line-height: 1.35; }
+.ap-starter-knopf:hover { background: var(--prs); }
+.ap-starter-knopf:focus-visible { outline: 2px solid var(--pr); outline-offset: 2px; }
+.ap-starter-knopf > span { flex: 1; overflow-wrap: anywhere; }
+.ap-starter-knopf > svg.i { flex: none; color: var(--mu); }
+.ap-weg { display: flex; flex-direction: column; }
+.ap-weg-schritt { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 14px 0; border-top: 1px solid var(--ln); }
+.ap-weg-schritt:first-child { border-top: 0; padding-top: 0; }
+.ap-weg-schritt > .col { flex: 1 1 240px; }
+.ap-weg-zahl { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--sf2); font-weight: 700; }
+.ap-weg-zahl.ok { background: var(--oks); color: var(--oki); }
+.ap-weg-stand { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* ---------------------------------------------------------------- Mit Albatros verbinden */
+.ap-code-karte { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--radius-inner); background: var(--ass); box-shadow: inset 0 0 0 1px var(--asl); }
+.ap-code { display: flex; flex-direction: column; gap: 2px; }
+.ap-code-wert { font-family: var(--font-mono); font-size: clamp(26px, 7vw, 36px); font-weight: 500; letter-spacing: 0.08em; line-height: 1.2; overflow-wrap: anywhere; }
+.ap-zahl-feld.breit { max-width: 420px; }
+
+/* ---------------------------------------------------------------- Chat: Dateien, Verlauf */
+.ap-chat { position: relative; }
+.ap-chat.zieht { outline: 2px dashed var(--pr); outline-offset: -6px; }
+.ap-chat-ablage { position: absolute; inset: 0; z-index: 5; display: grid; place-content: center; justify-items: center; gap: 8px; background: color-mix(in srgb, var(--sf) 88%, transparent);
+  color: var(--pr2); font-weight: 700; pointer-events: none; }
+.ap-chat-kopf > .row { flex: none; }
+.ap-chat-aelter { text-align: center; }
+.ap-chat-aelter .lnk { cursor: pointer; min-height: 32px; }
+.ap-anhang-liste { display: flex; flex-wrap: wrap; gap: 6px; }
+.bub > .ap-anhang-liste { margin-top: 8px; }
+.ap-anhang { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 32px; padding: 2px 4px 2px 10px; border-radius: var(--radius-pill); background: var(--sf2); font-size: 13px; }
+.ap-anhang.klein { min-height: 24px; padding: 2px 10px; background: color-mix(in srgb, currentColor 14%, transparent); }
+.ap-anhang > .ell { min-width: 0; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ap-anhang > .act { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; color: var(--mu); }
+.ap-anhang > .act:hover { background: var(--ln); }
+.ap-verlauf-liste { display: flex; flex-direction: column; gap: 8px; }
+.ap-verlauf-liste .ap-stueck { width: 100%; text-align: left; cursor: pointer; background: var(--sf2); }
+.ap-verlauf-liste .ap-stueck:hover { background: var(--prs); }
+.ap-verlauf-chat { display: flex; flex-direction: column; gap: 10px; max-height: min(60vh, 520px); overflow-y: auto; padding-right: 4px; }
+.ap-verlauf-zeile { display: flex; flex-direction: column; align-items: flex-start; }
+.ap-verlauf-zeile.ich { align-items: flex-end; }
+
+/* ---------------------------------------------------------------- Webseite: Seitenwahl, Lesezeichen, Prüfungen */
+.ap-seitenwahl { min-width: 150px; max-width: 240px; }
+.ap-seitenwahl .field { gap: 2px; }
+.ap-versionen-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.ap-lesezeichen { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%; color: var(--mu); cursor: pointer; }
+.ap-lesezeichen:hover { background: var(--sf2); }
+.ap-lesezeichen:focus-visible { outline: 2px solid var(--pr); outline-offset: 2px; }
+.ap-lesezeichen.an { color: var(--pr2); background: var(--prs); }
+.ap-lesezeichen.an svg { fill: currentColor; }
+.ap-pruefung { display: flex; flex-direction: column; }
+.ap-pruefpunkt { display: flex; flex-direction: column; gap: 4px; padding: 10px 0; border-top: 1px solid var(--ln); }
+.ap-pruefpunkt:first-child { border-top: 0; }
+.ap-pruefpunkt > .btw { align-items: center; }
+/* Kopf der Karte «Mit Albatros verbinden»: auf dem Telefon der Stand unter dem Titel statt daneben */
+[data-cloud] > .btw { flex-wrap: wrap; gap: 8px 12px; }
+[data-cloud] > .btw > .col { flex: 1 1 260px; }
+.ap-app-name { hyphens: auto; overflow-wrap: break-word; }
+
+/* Einstellungen online: nummerierte Schritte zum Verbinden des Claude-Abos */
+.ap-online-schritte { margin: 0; padding-left: 20px; }
