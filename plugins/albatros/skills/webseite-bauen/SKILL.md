@@ -1,6 +1,6 @@
 ---
 name: webseite-bauen
-description: 'Baut mit einer Person ohne Vorwissen ihre Webseite auf ihrem Computer, genau nach dem freigegebenen Entwurf (P9 und P10): pruefen.mjs --vor-bau prüft die Freigabe zum Bauen, dann Logbuch (git init, ein Eintrag je Schritt), Bauweise, PRD aus dem Entwurf mit Zugang und Türen (docs/tueren.txt), Bau mit Astro aus Markup und Klassen des Entwurfs und design/tokens.css, vier Prüfungen mit pruefen.mjs und die Türen, Begehung auf Handy und Computer, Vergleich mit dem Entwurf (--vergleich) und Freigabe. Ins Netz geht nichts, das macht lancieren. Meldet prd, lokal, pruefung, freigabe. Nutze den Skill nach entwurf (Freigabe zum Bauen) und bei «bau mir die Seite», «Tech-Stack», «PRD», «lokal anschauen», «vor dem Veröffentlichen prüfen», «Freigabe», «wie geht es nach dem Entwurf weiter».'
+description: 'Baut mit einer Person ohne Vorwissen ihre Webseite auf ihrem Computer, genau nach dem freigegebenen Entwurf (P9 und P10): pruefen.mjs --vor-bau prüft die zwei Ja (Plan bestätigt, Entwurf freigegeben), dann Logbuch (git init, ein Eintrag je Schritt), Bauweise, PRD aus dem Entwurf mit Zugang und Türen (docs/tueren.txt), Bau mit Astro Eintrag für Eintrag der Bauliste, aus Markup und Klassen des Entwurfs, vier Prüfungen mit pruefen.mjs und die Türen, Begehung auf Handy und Computer, Vergleich mit dem Entwurf (--vergleich) und Freigabe. Ins Netz geht nichts, das macht lancieren. Meldet prd, lokal, pruefung, freigabe. Nutze den Skill nach entwurf (Freigabe zum Bauen) und bei «bau mir die Seite», «Tech-Stack», «PRD», «lokal anschauen», «vor dem Veröffentlichen prüfen», «Freigabe», «wie geht es nach dem Entwurf weiter».'
 metadata:
   stand: 0.3.0
 ---
@@ -15,7 +15,7 @@ Der Entwurf ist das begehbare Modell, das die Person freigegeben hat. Jetzt ents
 
 ## So sprichst du
 
-- Die Reihenfolge ist fest. Gebaut wird erst, wenn `pruefen.mjs --vor-bau` die Freigabe zum Bauen findet, und nur, was im Entwurf steht. Soll etwas anders werden als im Entwurf, sagst du das der Person, bevor du es baust.
+- Die Reihenfolge ist fest. Gebaut wird erst, wenn `pruefen.mjs --vor-bau` die zwei Ja findet (Plan bestätigt, Entwurf zum Bauen freigegeben), und nur, was im Entwurf steht. Soll etwas anders werden als im Entwurf, sagst du das der Person, bevor du es baust.
 - In diesem Skill geht nichts ins Netz und nichts in einen Hafen. Alles bleibt auf dem Computer der Person und ist bei Albatros gratis.
 - Du schlägst den nächsten Schritt vor und machst ihn. Die Person muss nie wissen, was als Nächstes kommt.
 - Der Modus steht in `docs/projekt.md` (Zeile `Modus:`): Bei `machen` arbeitest du und erklärst jeden Schritt in einem Satz mit Bild, die Lernmomente bietest du an. Bei `lernen` erklärst du jeden Schritt mit Bild und Warum, und die Person macht die Lernmomente selbst.
@@ -27,12 +27,12 @@ Der Entwurf ist das begehbare Modell, das die Person freigegeben hat. Jetzt ents
 
 | Schritt | Bild | Ergebnis | Insel |
 |---|---|---|---|
-| 0. Vor dem Bau | der Blick auf die Unterschrift unter dem Modell | `pruefen.mjs --vor-bau` endet mit 0 | |
+| 0. Vor dem Bau | der Blick auf die zwei Unterschriften: unter dem Plan und unter dem Modell | `pruefen.mjs --vor-bau` endet mit 0 | |
 | 1. Werkstatt und Logbuch | die Werkbank einrichten, das Logbuch aufschlagen | Logbuch mit dem ersten Eintrag | |
 | 2. Bauweise | wie gebaut wird: Holz oder Stein | `docs/stack.md` | |
 | 3. PRD mit Zugang und Türen | der Bauplan, abgeleitet aus dem Modell | `docs/prd.md` mit `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
-| 4. Bauen | der Rohbau | `web/`, `seite/` | `lokal` |
-| 5. Prüfen | die Abnahme durch Fachleute | `docs/pruefung/` mit vier Berichten, Türen geprüft | `pruefung` |
+| 4. Bauen | der Rohbau, Raum für Raum nach der Bauliste | `web/`, `seite/` | `lokal` |
+| 5. Prüfen | die Abnahme durch Fachleute | `docs/pruefung/` mit vier Berichten, Türen geprüft, jeder Eintrag der Bauliste gebaut | `pruefung` |
 | 6. Freigabe | die Begehung des fertigen Rohbaus | `Lokal gesehen:`, `Vergleich mit Entwurf:` und `Freigegeben:` in `docs/prd.md` | `freigabe` |
 
 Schritte 0 bis 5 sind die Phase P9, Schritt 6 ist P10. Was in der Spalte «Ergebnis» steht, muss am Ende des Schritts da sein. Jeder Schritt endet mit einem Eintrag im Logbuch.
@@ -55,7 +55,7 @@ Nach jedem geschafften Schritt mit einem Eintrag in der Spalte «Insel» rufst d
 
 ## Die Schritte
 
-### 0. Vor dem Bau: Ist der Entwurf freigegeben?
+### 0. Vor dem Bau: Sind beide Ja da?
 
 Das Prüfskript `pruefen.mjs` liegt in diesem Skill. Kopier es ins Projekt, dann prüft es, ob gebaut werden darf:
 
@@ -65,8 +65,8 @@ mkdir -p scripts && cp <Ordner dieses Skills>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Ende mit 0:** Es gibt die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, …` in `docs/entwurf.md`, den Entwurf in `design/entwurf/` und die Tokens in `design/tokens.css`. Weiter mit Schritt 1.
-- **Ende mit 2:** Die Ausgabe nennt, was fehlt. Sag es der Person in einem Satz und geh dorthin zurück: ohne Freigabe zum Bauen zum Skill `entwurf` (Abschnitt «Freigabe»), ohne Entwurf zum Skill `entwurf`, ohne Tokens zum Skill `gestaltung`. Die Zeile `Freigegeben zum Bauen:` schreibst du nie selbst, auch nicht «schnell mal»: Sie steht nur nach dem Ja der Person zum Entwurf.
+- **Ende mit 0:** Es gibt die zwei Ja der Person, `Bestätigt: <TT.MM.JJJJ>, …` in `docs/plan.md` und `Freigegeben zum Bauen: <TT.MM.JJJJ>, …` in `docs/entwurf.md`, dazu den Entwurf in `design/entwurf/` und die Tokens in `design/tokens.css`. Weiter mit Schritt 1.
+- **Ende mit 2:** Die Ausgabe nennt, was fehlt. Sag es der Person in einem Satz und geh dorthin zurück: ohne bestätigten Plan zum Skill `webseite-planen` (Abschnitt «Plan prüfen»), ohne Freigabe zum Bauen zum Skill `entwurf` (Abschnitt «Freigabe»), ohne Entwurf zum Skill `entwurf`, ohne Tokens zum Skill `gestaltung`. Die Zeilen `Bestätigt:` und `Freigegeben zum Bauen:` schreibst du nie selbst, auch nicht «schnell mal», und du baust auch nicht «schon mal vor», wenn die Person drängt: Sie stehen nur nach ihrem Ja zum Plan und zum Entwurf.
 
 ### 1. Werkstatt und Logbuch
 
@@ -134,8 +134,8 @@ Das PRD ist der Bauplan auf einer Seite. Es wird aus dem freigegebenen Entwurf a
 Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <Datum aus docs/entwurf.md>)
 
 **Für wen und wozu:** … (aus docs/projekt.md)
-**Seiten:** wie im Entwurf: Start, …, dazu Impressum und Datenschutz
-**Funktionen:** jede mit Ablauf, Bestätigung, Fehler und leerem Zustand, wie im Entwurf gezeigt (bei einer bestehenden Seite jede Funktion aus docs/bestand.md mit Entscheid)
+**Seiten:** wie in der Bauliste (docs/plan.md) und im Entwurf: S1 Start, …, dazu Impressum und Datenschutz
+**Funktionen:** wie in der Bauliste: F1 …, jede mit Ablauf, Bestätigung, Fehler und leerem Zustand, wie im Entwurf gezeigt (bei einer bestehenden Seite jede Funktion aus docs/bestand.md mit Entscheid)
 **Design:** design/tokens.css und docs/designsystem.md; Markup und Klassen aus design/entwurf/
 **Tech-Stack:** siehe docs/stack.md
 **Nicht dabei:** … (aus docs/plan.md: was für den ersten Flug wegfällt)
@@ -151,18 +151,20 @@ Die Türen stehen in docs/tueren.txt und werden mit pruefen.mjs --tueren geprüf
 
 ## Abnahmekriterien
 
-Abgeleitet aus docs/plan.md (Testing:) und dem Entwurf; freigegeben mit dem Entwurf.
+Abgeleitet aus der Bauliste in docs/plan.md (Spalte Abnahme), aus «Testing:» und dem Entwurf; freigegeben mit dem Entwurf. Je Eintrag der Bauliste ein Abschnitt mit seiner Kennung.
 
-### Start
+### S1 Start
+- [ ] <Abnahme aus der Bauliste, wörtlich>
 - [ ] Überschriften, Menü und Abschnitte wie in design/entwurf/index.html (pruefen.mjs --vergleich)
 - [ ] In den ersten drei Sätzen steht, wer ihr seid, für wen die Seite ist und was Besucher tun sollen
 - [ ] Im Kopf steht ein echtes Foto oder das Wichtigste aus dem Inhalt, nicht bloss Titel und Knopf in einer Farbfläche (Skill gestaltung, «Schlicht heisst nicht ohne Bild»)
 
-### <jede weitere Seite aus design/entwurf/>
+### <Kennung und Titel jeder weiteren Seite, zum Beispiel S2 Angebot>
+- [ ] <Abnahme aus der Bauliste, wörtlich>
 - [ ] Überschriften, Menü und Abschnitte wie in design/entwurf/<seite>.html
-- [ ] …
 
-### <jede Funktion, zum Beispiel ein Formular oder Buchungen>
+### <Kennung und Titel jeder Funktion, zum Beispiel F1 Platz anfragen>
+- [ ] <Abnahme aus der Bauliste, wörtlich>
 - [ ] Absenden geht, fehlende Pflichtfelder melden sich verständlich, die Nachricht kommt bei <Adresse> an
 - [ ] Jede Liste zeigt, ob sie lädt, leer ist (ein Satz und ein Knopf) oder einen Fehler hat (mit «Nochmals versuchen», nie als leere Liste getarnt)
 - [ ] Nach dem Absenden eine Bestätigung: was passiert ist, was als Nächstes kommt, wie man es rückgängig macht
@@ -174,7 +176,9 @@ Abgeleitet aus docs/plan.md (Testing:) und dem Entwurf; freigegeben mit dem Entw
 - [ ] Jede Seite, auch die Seiten der Bausteine, hat Kopf, Menü und Fuss mit Impressum und Datenschutz
 - [ ] Kontrast: Text mindestens 4,5 : 1, Knöpfe und Ränder mindestens 3 : 1
 - [ ] Mit der Tastatur bedienbar, der Fokus ist sichtbar
-- [ ] Tempo: Lighthouse mindestens 90 in Leistung, Zugang, Best Practices und SEO; höchstens 50 KB JavaScript je Seite; Bilder unter 500 KB
+- [ ] Voller Funktionsumfang: Jeder Eintrag der Bauliste ist gebaut (plan-pruefen.mjs --bau ohne Rot)
+- [ ] Eigen statt Baukasten: design-pruefen.mjs --bau ohne Rot; Bewegung nur mit Absicht und mit Rücksicht auf «weniger Bewegung»; 3D nur mit Standbild als Rückfall, die Seite steht ohne WebGL
+- [ ] Gewicht und Tempo: je Seite höchstens 1 MB mit allem, was sie fest einbindet; Lighthouse mindestens 90 in Leistung, Zugang, Best Practices und SEO; höchstens 50 KB JavaScript je Seite; Bilder unter 500 KB
 - [ ] Jede Tür aus docs/tueren.txt antwortet wie erwartet; keine Geheimnisse im Code, keine .env im Netz
 ```
 
@@ -221,7 +225,10 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
   In `web/astro.config.mjs` kommt dazu `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` und neben `outDir` die Zeile `integrations: [albatrosVorschau()]`. Sie wirkt nur bei `astro dev`, im Bau und im Netz ist nichts davon. Startet der Arbeitsplatz den Dev-Server (Werkzeug `vorschau_starten`, unten), lädt sie sein Vorschau-Skript: Dann kann die Person in der Vorschau auf eine Stelle zeigen und Text direkt tippen. Sie schreibt keine Dateien, und ohne Arbeitsplatz tut sie nichts.
 - **Tokens an einem Ort:** Das Layout (zum Beispiel `web/src/layouts/Seite.astro`) bindet `design/tokens.css` direkt ein, als Erstes: `import '../../../design/tokens.css';`. Du kopierst die Datei nie nach `web/`: Zwei Kopien laufen auseinander. Fehlt ein Wert, kommt er zuerst in `design/tokens.css` und `docs/designsystem.md`.
+- **Eintrag für Eintrag nach der Bauliste:** Zuerst das Gemeinsame (Layout mit Tokens, Kopf, Menü, Fuss), dann die Einträge der Bauliste in `docs/plan.md` in ihrer Reihenfolge, `Muss` vor `Kann`: je Eintrag bauen, neu bauen lassen, ansehen, seine Abnahme im PRD prüfen, dann ein Eintrag im Logbuch mit der Kennung (`git commit -m "S2 Angebot gebaut"`). Mit Berts Arbeitsplatz meldest du jeden Eintrag mit `schritt` («S2 Angebot ist gebaut»). So sieht die Person, wie ihre Seite Teil für Teil entsteht, und ein Fehler steckt in einem Teil, nicht irgendwo.
+- **Die Kennungen bleiben im Markup:** Jede Stelle mit `data-bauliste="F1"` aus dem Entwurf trägt das Attribut auch im Bau. Daran prüft `plan-pruefen.mjs --bau`, dass keine Funktion verloren gegangen ist.
 - **Markup und Klassen aus dem Entwurf:** Jede Seite in `design/entwurf/` wird eine Seite in `web/src/pages/`, mit demselben Markup und denselben Klassen. Was auf mehreren Seiten gleich ist (Kopf, Menü, Fuss, Karten, Formularfelder), wird eine Komponente in `web/src/components/`. Die Stil-Dateien, die der Entwurf einbindet (ausser `tokens.css`), kommen unverändert nach `web/src/styles/` und ins Layout gleich nach den Tokens; Stile aus einem `<style>` einer Entwurfsseite kommen in die passende Seite oder Komponente. Skripte, die im Entwurf nur so tun als ob (ein Formular, das nichts sendet, ein Menü, das ein Skript einfügt), ersetzt du durch das Echte.
+- **Bewegung und 3D** baust du genau so, wie sie im Entwurf und in `docs/designsystem.md` stehen (Skill `gestaltung`, Abschnitt «Bewegung und 3D»), und nichts dazu: keine Bewegung ohne ihren Satz, immer mit `prefers-reduced-motion`; 3D lädt erst bei Bedarf nach (`import()` im Skript, nie fest im Kopf der Seite), das Standbild steht im HTML.
 - **Impressum und Datenschutz** stehen nicht im Entwurf: Du baust sie jetzt im selben Layout (Skill `recht-ch`).
 - **Daten zuerst:** Was die Person im Plan genannt hat (Kurse mit Zeiten und Plätzen, Preise, Öffnungszeiten), holst du jetzt, bevor du baust. Ein «haben wir» reicht nicht: Bitte um den Text, die Liste oder ein Foto davon.
 - Listen wie Termine, Turniere oder Sponsoren liegen als Daten in `web/src/data/*.json`, die Seiten lesen sie. Dokumente und Bilder kommen nach `web/public/`, Bilder verkleinert. Stammen sie von einer bestehenden Seite, gilt der Skill `webseite-modernisieren`, Abschnitt «Rechte».
@@ -248,17 +255,21 @@ Vier Fachleute nehmen den Rohbau ab, jede schreibt einen Bericht mit Ampel. `pru
 ```bash
 (cd web && npm run build) && node scripts/pruefen.mjs
 node scripts/pruefen.mjs --tueren                               # mit Baustein: --tueren http://localhost:8090, solange lokal.ts läuft
+node scripts/plan-pruefen.mjs --bau                             # voller Funktionsumfang: Jeder Eintrag der Bauliste ist gebaut
+node scripts/design-pruefen.mjs --bau                           # eigen statt Baukasten, Bewegung, 3D, Gewicht, an der gebauten Seite
 ```
+
+`plan-pruefen.mjs` und `design-pruefen.mjs` liegen seit dem Plan und dem Entwurf in `scripts/` (sonst aus den Skills `webseite-planen` und `gestaltung` kopieren, wie dort beschrieben); sie brauchen nichts nachzuladen.
 
 Beim ersten Mal lädt das Skript die Werkzeuge (Playwright, axe-core, Lighthouse, etwa 200 MB) und braucht einige Minuten. Sag das der Person vorher. Es schreibt `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` und Fotos jeder Seite in 390 und 1440 px nach `docs/pruefung/fotos/`.
 
 Danach schreibst du vier Berichte, je eine Seite, in der Sprache der Person:
 
 - `docs/pruefung/sicherheit.md` (Sicherheit und Recht): Geheimnisse im Code, `npm audit`, keine `.env` in `seite/`, jede Tür aus `docs/tueren.txt` mit ihrem Status, Impressum und Datenschutz vorhanden und vollständig (Skill `recht-ch`), welche fremden Dienste und Cookies die Seite nutzt.
-- `docs/pruefung/ablaeufe.md` (Abläufe und Zugang): die Regeln für Barrierefreiheit (WCAG 2.2 AA, axe) auf jeder Seite, tote Links, jedes Formular selbst einmal ausprobiert, die Startseite mit der Tastatur durchgegangen (Tab), die Abläufe aus dem PRD Schritt für Schritt.
+- `docs/pruefung/ablaeufe.md` (Abläufe und Zugang): die Regeln für Barrierefreiheit (WCAG 2.2 AA, axe) auf jeder Seite, tote Links, jedes Formular selbst einmal ausprobiert, die Startseite mit der Tastatur durchgegangen (Tab), die Abläufe aus dem PRD Schritt für Schritt, und je Eintrag der Bauliste, ob er gebaut ist (`plan-pruefen.mjs --bau`): Fehlt ein `Muss`, ist die Ampel rot.
   - **Grün nur mit Beweis.** Für jede Funktion mit Baustein gehören die Ausgabe des Tests («Alles grün») und ein Foto einer echten Testbuchung oder eines echten Eintrags auf diesem Computer in den Bericht. Lief etwas nicht, ist die Ampel gelb oder rot. Schreib nie «durchgespielt», wenn du es nicht getan hast.
-- `docs/pruefung/aussehen.md` (Aussehen): `design/tokens.css` ist eingebunden, nur Werte daraus im Code, Designsystem eingehalten, jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft. Meldet `pruefen.mjs` das Menü auf dem Handy oder gleich gestaltete Karten auf der Startseite rot, baust du um, bevor es weitergeht. Bei Gelb «kein Foto im ersten Bild» steht das Wichtigste gross im Kopf, und die Person bekommt die Fotoliste.
-- `docs/pruefung/code.md` (Code und Tempo): Lighthouse in den vier Bereichen, JavaScript je Seite, Bildgrössen, und welche Abnahmekriterien erfüllt sind.
+- `docs/pruefung/aussehen.md` (Aussehen): `design/tokens.css` ist eingebunden, nur Werte daraus im Code, Designsystem eingehalten, die Ampeln von `design-pruefen.mjs --bau` je Bereich (Schrift, Farbwelt, Texte, Kopf, Bewegung, 3D, Gewicht), jedes Foto selbst angeschaut (abgeschnitten, verdeckt, lesbar?) und gegen die Liste der KI-Merkmale im Skill `gestaltung` geprüft, dazu die Selbstprüfung mit zweiter Meinung an der gebauten Seite (Skill `gestaltung`, Abschnitt «Selbstprüfung und zweite Meinung»). Mit 3D öffnest du die Seite einmal mit ausgeschaltetem JavaScript: Das Standbild steht, nichts fehlt. Meldet `pruefen.mjs` das Menü auf dem Handy oder gleich gestaltete Karten auf der Startseite rot, baust du um, bevor es weitergeht. Bei Gelb «kein Foto im ersten Bild» steht das Wichtigste gross im Kopf, und die Person bekommt die Fotoliste.
+- `docs/pruefung/code.md` (Code und Tempo): Lighthouse in den vier Bereichen, JavaScript je Seite, Gewicht je Seite (Grenze 1 MB, über 2 MB rot), Bildgrössen, und welche Abnahmekriterien erfüllt sind.
 
 ```markdown
 # Prüfung: <Bereich>
@@ -313,6 +324,8 @@ Danach kommt der Skill `lancieren`: Wo soll die Seite wohnen? Ruf `lage` auf, we
 
 - Bauen ohne `pruefen.mjs --vor-bau`, oder die Zeile `Freigegeben zum Bauen:` selbst schreiben: Dann baut man, was niemand freigegeben hat.
 - Markup neu erfinden statt aus dem Entwurf übernehmen: Bei der Begehung sieht die Person dann etwas anderes als im Modell.
+- Alles in einem Zug bauen statt Eintrag für Eintrag: Dann fehlt am Schluss eine Funktion, und niemand merkt es vor der Begehung.
+- Beim Bauen «verschönern»: ein Verlauf, eine Bewegung oder ein Effekt, die nicht im Entwurf stehen. Gebaut wird, was freigegeben ist.
 - Eine zweite `tokens.css` in `web/`: Dann gibt es zwei Wahrheiten, und eine davon ist bald falsch.
 - Abnahmekriterien, die man nicht prüfen kann («schön», «modern»): Schreib, woran man es sieht oder misst.
 - Ein anderes Framework, «weil es modern ist»: Der Grund ist der Wunsch der Person oder eine Funktion, sonst Astro.

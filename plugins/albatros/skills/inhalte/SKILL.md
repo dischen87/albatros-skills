@@ -48,7 +48,9 @@ Wer auf die Startseite kommt, entscheidet in wenigen Sekunden, ob er bleibt. Die
 - Eine Anrede durchziehen, Du oder Sie, je nach Publikum (im Fahrplan steht sie in `docs/konzept.md` unter `Ton:`).
 - Zwischentitel, die man überfliegen kann.
 - Zahlen, Preise, Öffnungszeiten, Adresse: lieber zweimal prüfen. Falsche Angaben kosten Vertrauen.
-- Was fehlt, erfindest du nicht. Es steht sichtbar im Text, zum Beispiel `[Platzhalter: Öffnungszeiten, liefert Anna bis 7.11.2026]`, damit es niemand übersieht.
+- Was fehlt, erfindest du nicht. Es steht sichtbar im Text, zum Beispiel `[Platzhalter: Öffnungszeiten, liefert Anna bis 7.11.2026]`, damit es niemand übersieht. Nie Lorem-Text oder anderer Fülltext, und nie Emoji anstelle von Icons.
+- Fakten als Sätze, die für sich allein stimmen: wer, was, für wen, wo, wann offen, was es kostet, wie man anfragt. Dazu die fünf Fragen, die am häufigsten gestellt werden, je mit einer Antwort in zwei, drei Sätzen. So versteht es, wer es eilig hat, und so finden es Suchmaschinen und KI-Assistenten (Skill `seo-grundlagen`).
+- Keine erfundenen Bewertungen, Zitate, Kundenzahlen oder Auszeichnungen. Jede Zahl kommt von der Person oder hat eine Quelle.
 
 ### 4. Texte mit KI
 
