@@ -2,7 +2,7 @@
 name: cms
 description: "Helps a person with no prior knowledge decide whether their website needs a system for looking after content (CMS), and sets one up if needed, e.g. Strapi in Docker on the Albatros server, reachable through a secure tunnel. Explains a CMS with the picture of a noticeboard. Use this skill for “CMS”, “Strapi”, “change the content myself without code”, “blog”, “news”, “keep events up to date”, “my colleague should be able to change the texts”, “WordPress”, “admin area”."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '5aebef637f84'
 ---
 

@@ -2,7 +2,7 @@
 name: seo-grundlagen
 description: "Rende un piccolo sito web facile da trovare per i motori di ricerca, spiegato a persone senza conoscenze tecniche con l'immagine dei cartelli stradali e della pianta della città. Titolo e descrizione della pagina, un solo titolo principale, indirizzi parlanti, descrizioni delle immagini, tempo di caricamento, sitemap.xml, robots.txt, dati strutturati per attività locali, Google Search Console e profilo dell'attività. Usa lo skill con «SEO», «farsi trovare su Google», «Google non trova il mio sito», «motore di ricerca», «sitemap», «meta description», «farsi trovare in zona», «comparire su Google Maps»."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '281041258ca8'
 ---
 

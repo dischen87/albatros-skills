@@ -2,7 +2,7 @@
 name: domain
 description: 'Findet, kauft oder verbindet eine eigene Domain (z. B. meinladen.ch) für die Seite oder den Server bei Albatros, mit Light wie mit Pilot; freiwillig, beim Live schalten (P13). Erklärt Domain und DNS mit dem Bild von Adresse und Telefonbuch, schlägt Namen vor, sucht mit domain_suchen, was frei ist, und kauft über Albatros mit domain_kaufen (die Person ist Inhaberin, ihre Angaben gibt sie nur auf der Zahlungsseite ein). Eine Domain, die die Person schon hat, verbindet der Skill mit domain_verbinden: DNS-Einträge, TXT-Beweis _albatros und Prüfung, bis die Seite mit Schloss im Browser erscheint. Nutze den Skill bei «eigene Domain», «meine Adresse», «.ch kaufen», «welche Domain ist frei», «Domain suchen», «DNS», «A-Eintrag», «CNAME», «TXT-Eintrag», «Domain zeigt nicht auf meine Seite», «Zertifikat», «https geht nicht».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Domain: deine Adresse im Telefonbuch

@@ -2,7 +2,7 @@
 name: betrieb
 description: 'Bereitet mit einer Person ohne Vorwissen den Betrieb ihrer Seite vor, bevor die Gäste kommen (P12): wie Besucher sich melden und wer es wie oft liest, wer erfährt, wenn die Seite nicht antwortet (eine einfache, kostenlose Überwachung), wie es auf gestern zurückgeht (Fotos des Servers mit Pilot, das Logbuch mit Light, eine eigene Sicherung bei selbst), ob ein Eingang mit Anmeldung nötig ist (nur mit eigenem Server, Skill bausteine) und ob gezählt wird, wer kommt (Skill statistik, mit Einwilligung, wo es sie braucht). Ergebnis ist docs/betrieb.md. Mit Pilot auf Wunsch Berts Arbeitsplatz online auf dem eigenen Server (Autopilot und Zeitplan rund um die Uhr, nur Mitglieder des Projekts). Nutze den Skill nach dem Wohnort (lancieren) und bei «Betrieb», «Überwachung», «Sicherung», «Backup», «Rückmeldungen», «wer liest das Formular», «was, wenn die Seite ausfällt», «Arbeitsplatz online», «Arbeitsplatz auf meinen Server», «Autopilot in der Nacht».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Betrieb: bevor die Gäste kommen

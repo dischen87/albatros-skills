@@ -2,7 +2,7 @@
 name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web avant le design et la construction, en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md et une esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, contenus existants, docs/recherche.md), plan de la maison (pages, fonctions, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis dans un contexte neuf, docs/plan-pruefung.md, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction sur le parcours site web."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '835d45cf1624'
 ---
 

@@ -2,7 +2,7 @@
 name: konzept
 description: 'Klärt mit einer Person ohne Vorwissen nach dem bestätigten Plan den Charakter ihrer Seite, bevor Farben gewählt werden (Fahrplan P5): Name nach aussen, Kern in drei Sätzen, Ton (du oder Sie), drei Wörter für die Wirkung, was bleiben muss, Bildsprache und immer die Frage, ob eine Figur (Maskottchen) dazugehört: ja, nein oder später. Auf dem Weg Geschäft zuerst mit der Methode marke. Bilder der Figur nur nach Nennung des Preises und einem Ja. Ergebnis ist docs/konzept.md. Nutze den Skill nach webseite-planen (Plan bestätigt) und bei «Konzept», «Marke», «Charakter», «Ton», «Maskottchen», «Figur», «wie soll meine Seite wirken».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Konzept: Charakter vor Farben

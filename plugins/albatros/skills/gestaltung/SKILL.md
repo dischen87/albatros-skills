@@ -2,7 +2,7 @@
 name: gestaltung
 description: 'Gestaltet mit einer Person ohne Vorwissen Bedienung und Aussehen ihrer Seite. Im Fahrplan (P6): graues Mockup («Stimmt die Reihenfolge?»), drei klar verschiedene Richtungen aus dem Konzept, Prüfung gegen den KI-Look, Tokens für Farben, Schrift und Abstände (design/tokens.css), docs/designsystem.md und ein Musterblatt. Bei einer bestehenden Seite: prüfen aus drei Blickwinkeln, Bedienung reparieren, Richtungen, Tokens, Umbau mit Fotos. Immer mit der Frage nach Gestaltungselementen (Icons, Fotos, Maskottchen, 3D; Bild-Werkzeuge nur nach Preis und Ja). Nutze den Skill nach konzept und bei «Design», «Designsystem», «Musterblatt», «sieht langweilig aus», «sieht selbstgebastelt aus», «sieht nach KI aus», «vibe coded», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «wirkt unprofessionell», «Layout», «Icons», «Maskottchen», «3D».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Gestaltung: erst das Fundament, dann die Fassade

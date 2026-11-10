@@ -2,7 +2,7 @@
 name: schnellstart
 description: "Démarrage rapide pour une nouvelle idée en mode faire : la personne raconte son idée, et en quelques minutes les premières pièces sont dans le dossier du projet (docs/projekt.md, public cible et offre en premier brouillon, logo provisoire en SVG, esquisse grise de la page d'accueil) et dans le poste de travail de Bert, la page d'accueil sur son ordinateur, avec trois à cinq propositions, une carte d'idée et deux questions au plus. Ensuite, l'IA récupère avec naechstes ce que la personne a choisi. Les moments du oui seulement comme carte, e-mails et publications seulement comme brouillon ; sans poste de travail, le même chemin dans des fichiers. Utilise ce skill avec « vite », « démarrage rapide », « vas-y, commence », « montre-moi ce que ça peut devenir », « poste de travail de Bert », « ouvrir le poste de travail », et quand le skill start mène ici pour une idée d'entreprise."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: 'f4eb149b368b'
 ---
 

@@ -2,7 +2,7 @@
 name: lotse
 description: "Skill principal d'Albatros : l'aiguilleur du ciel. Demande avec l'outil lage l'état réel de la personne (phase du plan de vol, questions obligatoires ouvertes, abonnement, page ou serveur, mission), puis suit exactement le skill et la section à faire maintenant ; après chaque étape réussie, il redemande. Montre le plan de vol en trois grandes étapes (décoller, voler, atterrir), pose lui-même les questions obligatoires, clarifie apprendre ou faire et signale les lacunes du savoir-faire. Sans connexion, il montre les trois grandes étapes avec la prochaine étape et, sur demande, la bibliothèque ouverte. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et maintenant ? », « c'est quoi la prochaine étape ? », « j'en suis où ? », « ça ne marche pas », « ça coince », « je veux apprendre moi-même », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. « comment je relie mon domaine ? »), le skill spécialisé a la priorité."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: 'd0543c494c28'
 ---
 

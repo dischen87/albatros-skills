@@ -2,7 +2,7 @@
 name: webseite-bauen
 description: 'Baut mit einer Person ohne Vorwissen ihre Webseite auf ihrem Computer, genau nach dem freigegebenen Entwurf (P9 und P10): pruefen.mjs --vor-bau prüft die Freigabe zum Bauen, dann Logbuch (git init, ein Eintrag je Schritt), Bauweise, PRD aus dem Entwurf mit Zugang und Türen (docs/tueren.txt), Bau mit Astro aus Markup und Klassen des Entwurfs und design/tokens.css, vier Prüfungen mit pruefen.mjs und die Türen, Begehung auf Handy und Computer, Vergleich mit dem Entwurf (--vergleich) und Freigabe. Ins Netz geht nichts, das macht lancieren. Meldet prd, lokal, pruefung, freigabe. Nutze den Skill nach entwurf (Freigabe zum Bauen) und bei «bau mir die Seite», «Tech-Stack», «PRD», «lokal anschauen», «vor dem Veröffentlichen prüfen», «Freigabe», «wie geht es nach dem Entwurf weiter».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Webseite bauen: der Rohbau in der eigenen Werkstatt

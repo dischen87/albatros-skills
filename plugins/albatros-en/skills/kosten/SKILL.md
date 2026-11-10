@@ -2,7 +2,7 @@
 name: kosten
 description: "Draws up an honest household budget book for the person's project: Albatros plan (only once the site lives with Albatros; up to the site on their own computer, Albatros is free), domain, AI subscription, email, extra services, a provider or your own server when hosting it yourself. Albatros prices only from konto_status. Explains which costs are fixed and which vary, how to avoid nasty surprises and when a move pays off. Use this skill for “how much does it cost?”, “costs”, “prices”, “too expensive”, “budget”, “invoice”, “bill”, “is it worth it?”, “how much is a server?”, and before the person adds a new paid service."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: 'da041e2a8b74'
 ---
 

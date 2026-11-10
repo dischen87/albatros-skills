@@ -2,7 +2,7 @@
 name: seo-grundlagen
 description: "Makes a small website easy to find for search engines, explained for people with no prior knowledge with the picture of signposts and a city map. Page title and description, one main heading, readable addresses, picture descriptions, loading time, sitemap.xml, robots.txt, structured data for local businesses, Google Search Console and Business Profile. Use this skill for “SEO”, “get found on Google”, “Google can't find my site”, “search engine”, “sitemap”, “meta description”, “get found locally”, “Google Maps listing”."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '281041258ca8'
 ---
 

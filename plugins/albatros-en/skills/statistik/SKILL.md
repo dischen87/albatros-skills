@@ -2,7 +2,7 @@
 name: statistik
 description: "Sets up privacy-friendly statistics for a website with a person who has no prior knowledge, using PostHog. First a small event plan (which ticks do we count, and exactly when), then the set-up, one goal event such as “enquiry sent”, filtering out your own visits and comparing with the real enquiries. Use this skill for “statistics”, “analytics”, “count visitors”, “how many people visit my site”, “PostHog”, “Google Analytics”, “tracking”, “conversion”, “measure an event”, “where do my visitors come from”."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '8e43b3ced7ac'
 ---
 

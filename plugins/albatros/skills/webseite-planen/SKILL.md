@@ -2,7 +2,7 @@
 name: webseite-planen
 description: 'Plant mit einer Person ohne Vorwissen ihre Webseite, bevor gestaltet und gebaut wird, in vier Abschnitten des Fahrplans: Idee (Projektname, Idee in einem Satz, für wen, Hauptsache, docs/projekt.md, AGENTS.md und eine graue Skizze der Startseite), Research (bis zu drei vergleichbare Seiten, Pflichten, vorhandene Inhalte, docs/recherche.md), Grundriss (Seiten, Funktionen, Zugang, Sprachen, Pflege, docs/plan.md) und Plan prüfen (zweite Meinung in frischem Kontext, docs/plan-pruefung.md, Ja der Person). Auf dem Weg Geschäft mit den Methoden ideen-check, zielgruppe, angebot-und-preis und landingpage. Nutze den Skill bei «ich will eine Webseite», «Webseite planen», «wo fange ich an», «was brauche ich für eine Webseite», «welche Seiten», «Sitemap», «Projektname», «Vorbilder», «Plan prüfen», wenn lage webseite-planen nennt, und immer bevor auf dem Weg Webseite gestaltet oder gebaut wird.'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Webseite planen: der Grundriss

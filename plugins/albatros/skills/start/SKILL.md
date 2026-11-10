@@ -2,7 +2,7 @@
 name: start
 description: 'Startet Albatros für eine Person ohne Technik-Vorwissen: verbindet ihre KI mit Albatros (Anmeldung im Browser), fragt, ob sie eine Webseite oder ein Geschäft will, klärt lernen oder machen und führt sofort in den ersten Abschnitt des Fahrplans, die Idee mit Projektname und erster Skizze, bei einer Geschäftsidee oder wenn es schnell gehen soll in den Schnellstart mit Berts Arbeitsplatz. Bis die Seite auf dem eigenen Computer steht, kostet Albatros nichts; Abo, Schlüssel und Seite im Netz kommen erst mit dem Skill lancieren. Nutze den Skill bei /albatros:start, «Albatros starten», «ich will eine Webseite», «ich habe eine Geschäftsidee», «wie fange ich an», «ich bin neu hier», «was kostet Albatros», «brauche ich einen Server», und wenn jemand Albatros erwähnt, aber noch nicht verbunden ist oder noch keinen Weg gewählt hat.'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Start: an Bord gehen

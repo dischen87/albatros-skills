@@ -2,7 +2,7 @@
 name: schnellstart
 description: "Avvio rapido per un'idea nuova nel modo fare: la persona racconta la sua idea, e in pochi minuti i primi pezzi sono nella cartella del progetto (docs/projekt.md, pubblico e offerta come prima stesura, logo provvisorio in SVG, schizzo grigio della pagina iniziale) e nella postazione di Bert, la pagina iniziale sul suo computer, con tre-cinque proposte, una scheda idea e al massimo due domande. Poi l'IA prende con naechstes quello che la persona ha scelto. I momenti del sì solo come scheda, mail e post solo come messaggi in bozza; senza postazione, la stessa strada nei file. Usa lo skill con «in fretta», «avvio rapido», «parti e basta», «fammi vedere cosa può diventare», «postazione di Bert», «aprire la postazione», e quando lo skill start porta qui per un'idea imprenditoriale."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: 'f4eb149b368b'
 ---
 

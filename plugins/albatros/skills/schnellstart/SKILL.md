@@ -2,7 +2,7 @@
 name: schnellstart
 description: 'Schnellstart für eine neue Idee im Modus machen: Die Person erzählt ihre Idee, und in wenigen Minuten liegen die ersten Stücke im Projektordner (docs/projekt.md, Zielgruppe und Angebot als erster Entwurf, Arbeitslogo als SVG, graue Skizze der Startseite) und in Berts Arbeitsplatz, der Startseite auf ihrem Computer, mit drei bis fünf Vorschlägen, einer Ideen-Karte und höchstens zwei Fragen. Danach holt die KI mit naechstes, was die Person gewählt hat. Ja-Momente nur als Karte, Mails und Beiträge nur als Entwurf; ohne Arbeitsplatz derselbe Weg in Dateien. Nutze den Skill bei «schnell», «Schnellstart», «leg einfach los», «zeig mir, was daraus werden kann», «Berts Arbeitsplatz», «Arbeitsplatz öffnen», und wenn der Skill start bei einer Geschäftsidee hierher führt.'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Schnellstart: der erste Rundflug

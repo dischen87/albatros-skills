@@ -2,7 +2,7 @@
 name: start
 description: "Starts Albatros for someone with no technical background: connects their AI to Albatros (sign-in in the browser), asks whether they want a website or a business, sorts out learn or do, and leads straight into the first section of the flight plan, the idea with a project name and a first sketch, or, for a business idea or when it should be quick, into the quick start with Bert's workspace. Until the site exists on their own computer, Albatros costs nothing; subscription, key and the site on the web only come with the skill lancieren. Use this skill on /albatros-en:start, “start Albatros”, “I want a website”, “I've got a business idea”, “how do I get started?”, “I'm new here”, “how much does Albatros cost?”, “do I need a server?”, and whenever someone mentions Albatros but isn't connected yet or hasn't chosen a path."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '60240344b45a'
 ---
 

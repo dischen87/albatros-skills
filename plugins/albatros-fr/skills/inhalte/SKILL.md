@@ -2,7 +2,7 @@
 name: inhalte
 description: "Aide une personne sans connaissances préalables à écrire et à choisir les textes et les images de son site web, dans le plan de vol pour l'ébauche de tout le site (P7) : la page d'accueil en trois phrases, des textes courts dans le ton du concept pour des gens qui lisent sur le natel, les textes manquants bien visibles comme [à compléter], ses propres photos plutôt que des images de banque d'images avec une liste de photos, droits et taille des images, ramener les textes d'IA à sa propre voix. Le résultat est une liste des contenus dans docs/inhalte.md et les textes dans l'ébauche. Utilise ce skill quand on dit « écrire des textes », « qu'est-ce que j'écris sur la page d'accueil », « à propos », « images pour le site », « liste de photos », « est-ce que j'ai le droit d'utiliser cette image », « le texte fait IA », « contenus »."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '3212c0762904'
 ---
 

@@ -2,7 +2,7 @@
 name: seo-grundlagen
 description: 'Macht eine kleine Webseite für Suchmaschinen gut auffindbar, erklärt für Menschen ohne Vorwissen mit dem Bild von Wegweiser und Stadtplan. Seitentitel und Beschreibung, eine Hauptüberschrift, sprechende Adressen, Bildbeschreibungen, Ladezeit, sitemap.xml, robots.txt, strukturierte Daten für lokale Geschäfte, Google Search Console und Unternehmensprofil. Nutze den Skill bei «SEO», «bei Google gefunden werden», «Google findet meine Seite nicht», «Suchmaschine», «Sitemap», «Meta-Beschreibung», «lokal gefunden werden», «Google Maps Eintrag».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # SEO-Grundlagen: Wegweiser und Stadtplan

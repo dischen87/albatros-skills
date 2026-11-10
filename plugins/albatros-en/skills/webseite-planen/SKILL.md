@@ -2,7 +2,7 @@
 name: webseite-planen
 description: "Plans a website with a person who has no prior knowledge, before anything gets designed or built, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md and a grey sketch of the home page), research (up to three comparable sites, obligations, existing content, docs/recherche.md), floor plan (pages, features, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion in a fresh context, docs/plan-pruefung.md, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Use this skill for “I want a website”, “plan my website”, “where do I start”, “what do I need for a website”, “which pages do I need”, “sitemap”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built on the website path."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '835d45cf1624'
 ---
 

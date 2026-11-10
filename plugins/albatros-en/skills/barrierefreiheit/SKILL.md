@@ -2,7 +2,7 @@
 name: barrierefreiheit
 description: "Checks and improves the accessibility of a small website with a person who has no prior knowledge, following WCAG 2.2 AA in plain words: contrast, text size and zoom, picture descriptions, using it with the keyboard, forms, screen readers, motion. The result is a check report in docs/barrierefreiheit.md. Use this skill for “accessibility”, “accessible”, “barrier-free”, “a11y”, “WCAG”, “contrast”, “alt text”, “screen reader”, “readable for older people”, “use it with the keyboard”."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '23d2636b7e7c'
 ---
 

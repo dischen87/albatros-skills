@@ -2,7 +2,7 @@
 name: schnellstart
 description: "Quick start for a new idea in do mode: the person tells their idea, and within a few minutes the first pieces are in the project folder (docs/projekt.md, audience and offer as a first draft, a working logo as SVG, the grey sketch of the home page) and in Bert's workspace, the home page on their own computer, with three to five suggestions, one idea card and at most two questions. Then the AI fetches with naechstes what the person has chosen. Yes moments only as a card, emails and posts only as a draft; without the workspace, the same path in files. Use this skill on “quickly”, “quick start”, “just get going”, “show me what this could become”, “Bert's workspace”, “open the workspace”, and when the skill start leads here for a business idea."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: 'f4eb149b368b'
 ---
 
