@@ -3,7 +3,7 @@ name: inhalte
 description: "Helps a person with no prior knowledge write and choose texts and pictures for their website, in the flight plan for the draft of the whole site (P7): the home page in three sentences, short texts in the tone from the concept for people reading on their phone, missing texts shown visibly as [placeholder], own photos instead of stock images with a photo list, picture rights and image size, bringing AI texts into their own voice. The result is a content list in docs/inhalte.md and the texts in the draft. Use this skill for “write the texts”, “what do I put on my home page”, “about us”, “pictures for my website”, “photo list”, “am I allowed to use this picture”, “this text sounds like AI”, “content”."
 metadata:
   stand: 0.3.0
-  quelle: '3212c0762904'
+  quelle: '0ce83df4206d'
 ---
 
 # Content: the goods in the shop window
@@ -50,7 +50,9 @@ Whoever lands on the home page decides within a few seconds whether to stay. The
 - Keep one way of addressing people throughout, casual or formal, depending on the audience (in the flight plan it's in `docs/konzept.md` under `Ton:`).
 - Subheadings people can skim.
 - Numbers, prices, opening hours, address: better check them twice. Wrong details cost trust.
-- Whatever is missing, you don't make up. It appears visibly in the text, for example `[placeholder: opening hours, Anna delivers them by 7.11.2026]`, so nobody overlooks it.
+- Whatever is missing, you don't make up. It appears visibly in the text, for example `[placeholder: opening hours, Anna delivers them by 7.11.2026]`, so nobody overlooks it. Never lorem text or other filler text, and never emoji in place of icons.
+- Facts as sentences that are true on their own: who, what, for whom, where, when it's open, what it costs, how to send an enquiry. Plus the five questions asked most often, each with an answer in two or three sentences. That way people in a hurry understand it, and that's how search engines and AI assistants find it (skill `seo-grundlagen`).
+- No made-up reviews, quotes, customer numbers or awards. Every number comes from the person or has a source.
 
 ### 4. Texts with AI
 

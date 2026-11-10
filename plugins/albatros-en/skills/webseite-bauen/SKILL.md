@@ -1,9 +1,9 @@
 ---
 name: webseite-bauen
-description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the approval to build, then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro from the draft's markup and classes and design/tokens.css, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
+description: "Builds a website with a person who has no prior knowledge, on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the two yeses (plan confirmed, draft approved), then logbook (git init, one entry per step), way of building, PRD derived from the draft with access and doors (docs/tueren.txt), building with Astro entry by entry of the build list, from the draft's markup and classes, four checks with pruefen.mjs plus the doors, a walk-through on a phone and a computer, comparison with the draft (--vergleich) and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
   stand: 0.3.0
-  quelle: 'd923852dc014'
+  quelle: '32024cc69d90'
 ---
 
 # Building the website: the shell in your own workshop
@@ -18,7 +18,7 @@ The draft is the walk-through model, and the person has approved it. Now, in the
 
 - The Albatros tools answer in German. Pass everything on in English, and always talk to the person in English.
 - The line starts in files under `docs/` (`Freigegeben zum Bauen:`, `Abgeleitet aus:`, `Lokal gesehen:`, `Vergleich mit Entwurf:`, `Freigegeben:`) stay German, like the markers `[Annahme: …]` and `[offen: …]`: `lage` and the checks look for them exactly like that. What comes after the colon you write in English.
-- The order is fixed. Building starts only once `pruefen.mjs --vor-bau` finds the approval to build, and only what's in the draft gets built. If something should be different from the draft, you tell the person before you build it.
+- The order is fixed. Building starts only once `pruefen.mjs --vor-bau` finds the two yeses (plan confirmed, draft approved for building), and only what's in the draft gets built. If something should be different from the draft, you tell the person before you build it.
 - In this skill nothing goes online and nothing goes to a harbour. Everything stays on the person's computer and costs nothing at Albatros.
 - You suggest the next step and do it. The person never has to know what comes next.
 - The mode is in `docs/projekt.md` (line `Modus:`): with `machen` (doing), you do the work and explain each step in one sentence with a picture, and you offer the learning moments. With `lernen` (learning), you explain each step with a picture and the why, and the person does the learning moments themselves.
@@ -30,12 +30,12 @@ The draft is the walk-through model, and the person has approved it. Now, in the
 
 | Step | Picture | Result | Island |
 |---|---|---|---|
-| 0. Before building | a look at the signature under the model | `pruefen.mjs --vor-bau` ends with 0 | |
+| 0. Before building | a look at the two signatures: under the plan and under the model | `pruefen.mjs --vor-bau` ends with 0 | |
 | 1. Workshop and logbook | setting up the workbench, opening the logbook | logbook with the first entry | |
 | 2. Way of building | how it's built: wood or stone | `docs/stack.md` | |
 | 3. PRD with access and doors | the building plan, derived from the model | `docs/prd.md` with `Abgeleitet aus:`, `docs/tueren.txt` | `prd` |
-| 4. Build | the shell | `web/`, `seite/` | `lokal` |
-| 5. Check | inspection by experts | `docs/pruefung/` with four reports, doors checked | `pruefung` |
+| 4. Build | the shell, room by room following the build list | `web/`, `seite/` | `lokal` |
+| 5. Check | inspection by experts | `docs/pruefung/` with four reports, doors checked, every entry of the build list built | `pruefung` |
 | 6. Release | walking through the finished shell | `Lokal gesehen:`, `Vergleich mit Entwurf:` and `Freigegeben:` in `docs/prd.md` | `freigabe` |
 
 Steps 0 to 5 are phase P9, step 6 is P10. Whatever is in the “Result” column has to be there at the end of the step. Every step ends with an entry in the logbook.
@@ -58,7 +58,7 @@ After every step that's done and has an entry in the “Island” column, you ca
 
 ## The steps
 
-### 0. Before building: is the draft approved?
+### 0. Before building: are both yeses there?
 
 The check script `pruefen.mjs` lives in this skill. Copy it into the project, then it checks whether building may start:
 
@@ -68,8 +68,8 @@ mkdir -p scripts && cp <folder of this skill>/pruefen.mjs scripts/
 node scripts/pruefen.mjs --vor-bau
 ```
 
-- **Ends with 0:** there's the line `Freigegeben zum Bauen: <DD.MM.YYYY>, …` in `docs/entwurf.md`, the draft in `design/entwurf/` and the tokens in `design/tokens.css`. Carry on with step 1.
-- **Ends with 2:** the output (in German) says what's missing. Tell the person in one sentence and go back there: without the approval to build, to the skill `entwurf` (part “Freigabe”, the approval); without a draft, to the skill `entwurf`; without tokens, to the skill `gestaltung`. You never write the line `Freigegeben zum Bauen:` yourself, not even “just quickly”: it only exists after the person's yes to the draft.
+- **Ends with 0:** there are the person's two yeses, `Bestätigt: <DD.MM.YYYY>, …` in `docs/plan.md` and `Freigegeben zum Bauen: <DD.MM.YYYY>, …` in `docs/entwurf.md`, plus the draft in `design/entwurf/` and the tokens in `design/tokens.css`. Carry on with step 1.
+- **Ends with 2:** the output (in German) says what's missing. Tell the person in one sentence and go back there: without a confirmed plan, to the skill `webseite-planen` (part “Plan prüfen”, checking the plan); without the approval to build, to the skill `entwurf` (part “Freigabe”, the approval); without a draft, to the skill `entwurf`; without tokens, to the skill `gestaltung`. You never write the lines `Bestätigt:` and `Freigegeben zum Bauen:` yourself, not even “just quickly”, and you don't “build ahead” either when the person pushes: they only exist after their yes to the plan and to the draft.
 
 ### 1. Workshop and logbook
 
@@ -137,8 +137,8 @@ The PRD is the building plan on one page. It's derived from the approved draft: 
 Abgeleitet aus: docs/entwurf.md (Freigegeben zum Bauen: <date from docs/entwurf.md>)
 
 **For whom and what for:** … (from docs/projekt.md)
-**Pages:** as in the draft: home, …, plus legal notice and privacy policy
-**Features:** each with its flow, confirmation, error and empty state, as shown in the draft (for an existing site, every feature from docs/bestand.md with its decision)
+**Pages:** as in the build list (docs/plan.md) and in the draft: S1 Home, …, plus legal notice and privacy policy
+**Features:** as in the build list: F1 …, each with its flow, confirmation, error and empty state, as shown in the draft (for an existing site, every feature from docs/bestand.md with its decision)
 **Design:** design/tokens.css and docs/designsystem.md; markup and classes from design/entwurf/
 **Tech stack:** see docs/stack.md
 **Not included:** … (from docs/plan.md: what's left out for the first flight)
@@ -154,18 +154,20 @@ The doors are listed in docs/tueren.txt and checked with pruefen.mjs --tueren.
 
 ## Acceptance criteria
 
-Derived from docs/plan.md (Testing:) and the draft; approved with the draft.
+Derived from the build list in docs/plan.md (column Abnahme), from “Testing:” and the draft; approved with the draft. One section per entry of the build list, with its ID.
 
-### Home
+### S1 Home
+- [ ] <acceptance check from the build list, word for word>
 - [ ] Headings, menu and sections as in design/entwurf/index.html (pruefen.mjs --vergleich)
 - [ ] The first three sentences say who you are, who the site is for and what visitors should do
 - [ ] The header shows a real photo or the most important content, not just a title and a button on a coloured area (skill gestaltung, “Schlicht heisst nicht ohne Bild”)
 
-### <every other page from design/entwurf/>
+### <ID and title of every other page, for example S2 Offer>
+- [ ] <acceptance check from the build list, word for word>
 - [ ] Headings, menu and sections as in design/entwurf/<page>.html
-- [ ] …
 
-### <every feature, for example a form or bookings>
+### <ID and title of every feature, for example F1 Ask for a place>
+- [ ] <acceptance check from the build list, word for word>
 - [ ] Sending works, missing required fields say so clearly, the message arrives at <address>
 - [ ] Every list shows whether it's loading, empty (a sentence and a button) or has an error (with “Try again”, never disguised as an empty list)
 - [ ] After sending, a confirmation: what happened, what comes next, how to undo it
@@ -177,7 +179,9 @@ Derived from docs/plan.md (Testing:) and the draft; approved with the draft.
 - [ ] Every page, including the building blocks' pages, has a header, menu and footer with legal notice and privacy policy
 - [ ] Contrast: text at least 4.5 : 1, buttons and borders at least 3 : 1
 - [ ] Usable with the keyboard, the focus is visible
-- [ ] Speed: Lighthouse at least 90 in performance, accessibility, best practices and SEO; at most 50 KB of JavaScript per page; pictures under 500 KB
+- [ ] Full scope of features: every entry of the build list is built (plan-pruefen.mjs --bau without red)
+- [ ] Your own, not from a kit: design-pruefen.mjs --bau without red; motion only with a purpose and with respect for “Reduce motion”; 3D only with a still image as fallback, the page stands without WebGL
+- [ ] Weight and speed: per page at most 1 MB with everything it includes directly; Lighthouse at least 90 in performance, accessibility, best practices and SEO; at most 50 KB of JavaScript per page; pictures under 500 KB
 - [ ] Every door in docs/tueren.txt answers as expected; no secrets in the code, no .env on the web
 ```
 
@@ -224,7 +228,10 @@ npm create astro@latest web -- --template minimal --install --no-git --skip-hous
   ```
   In `web/astro.config.mjs`, add `import albatrosVorschau from '../werkzeuge/albatros-vorschau.mjs';` and, next to `outDir`, the line `integrations: [albatrosVorschau()]`. It only works with `astro dev`; nothing of it is in the build or on the web. When the workspace starts the dev server (tool `vorschau_starten`, below), the integration loads its preview script: then the person can point at a spot in the preview and type text directly. It writes no files, and without the workspace it does nothing.
 - **Tokens in one place:** the layout (for example `web/src/layouts/Seite.astro`) includes `design/tokens.css` directly, first of all: `import '../../../design/tokens.css';`. You never copy the file into `web/`: two copies drift apart. If a value is missing, it goes into `design/tokens.css` and `docs/designsystem.md` first.
+- **Entry by entry following the build list:** first what's shared (layout with tokens, header, menu, footer), then the entries of the build list in `docs/plan.md` in their order, `Muss` (must) before `Kann` (can): for each entry build it, run the build again, look at it, check its acceptance check in the PRD, then an entry in the logbook with the ID (`git commit -m "S2 Offer built"`). With Bert's workspace you report every entry with `schritt` (“S2 Offer is built”). That way the person sees their site come into being part by part, and a mistake sits in one part, not just somewhere.
+- **The IDs stay in the markup:** every spot with `data-bauliste="F1"` from the draft carries the attribute in the build too. That's how `plan-pruefen.mjs --bau` checks that no feature has been lost.
 - **Markup and classes from the draft:** every page in `design/entwurf/` becomes a page in `web/src/pages/`, with the same markup and the same classes. Whatever is the same on several pages (header, menu, footer, cards, form fields) becomes a component in `web/src/components/`. The style sheets the draft includes (except `tokens.css`) go unchanged into `web/src/styles/` and into the layout right after the tokens; styles from a `<style>` on a draft page go into the matching page or component. Scripts that only pretend in the draft (a form that sends nothing, a menu inserted by a script) you replace with the real thing.
+- **Motion and 3D** you build exactly as they are in the draft and in `docs/designsystem.md` (skill `gestaltung`, section “Motion and 3D” (Bewegung und 3D)), and nothing on top: no movement without its sentence, always with `prefers-reduced-motion`; 3D only loads when needed (`import()` in the script, never fixed in the head of the page), and the still image is in the HTML.
 - **Legal notice and privacy policy** aren't in the draft: you build them now in the same layout (skill `recht-ch`).
 - **Data first:** whatever the person named in the plan (courses with times and places, prices, opening hours), you get now, before you build. “We've got that” isn't enough: ask for the text, the list or a photo of it.
 - Lists such as dates, tournaments or sponsors are data in `web/src/data/*.json`, and the pages read them. Documents and pictures go into `web/public/`, pictures made smaller. If they come from an existing site, the skill `webseite-modernisieren` applies, part “Rechte” (rights).
@@ -251,17 +258,21 @@ Four experts inspect the shell, and each one writes a report with a traffic ligh
 ```bash
 (cd web && npm run build) && node scripts/pruefen.mjs
 node scripts/pruefen.mjs --tueren                               # with a building block: --tueren http://localhost:8090, while lokal.ts runs
+node scripts/plan-pruefen.mjs --bau                             # full scope of features: every entry of the build list is built
+node scripts/design-pruefen.mjs --bau                           # your own, not from a kit, motion, 3D, weight, on the built site
 ```
+
+`plan-pruefen.mjs` and `design-pruefen.mjs` have been in `scripts/` since the plan and the draft (otherwise copy them from the skills `webseite-planen` and `gestaltung`, as described there); they don't need to download anything.
 
 The first time, the script downloads the tools (Playwright, axe-core, Lighthouse, about 200 MB) and takes a few minutes. Tell the person beforehand. It writes `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` and screenshots of every page at 390 and 1440 px into `docs/pruefung/fotos/`. Its messages are in German: you pass them on in English.
 
 After that you write four reports, one page each, in the person's language:
 
 - `docs/pruefung/sicherheit.md` (security and the law): secrets in the code, `npm audit`, no `.env` in `seite/`, every door from `docs/tueren.txt` with its status, legal notice and privacy policy there and complete (skill `recht-ch`), which outside services and cookies the site uses.
-- `docs/pruefung/ablaeufe.md` (flows and access): the accessibility rules (WCAG 2.2 AA, axe) on every page, dead links, every form tried out once yourself, the home page gone through with the keyboard (Tab), the flows from the PRD step by step.
+- `docs/pruefung/ablaeufe.md` (flows and access): the accessibility rules (WCAG 2.2 AA, axe) on every page, dead links, every form tried out once yourself, the home page gone through with the keyboard (Tab), the flows from the PRD step by step, and for each entry of the build list whether it's built (`plan-pruefen.mjs --bau`): if a `Muss` (must) is missing, the traffic light is red.
   - **Green only with proof.** For every feature with a building block, the test's output (“Alles grün”, all green) and a screenshot of a real test booking or a real entry on this computer go into the report. If something didn't work, the traffic light is yellow or red. Never write “walked through” if you haven't done it.
-- `docs/pruefung/aussehen.md` (looks): `design/tokens.css` is included, only its values in the code, design system followed, every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`. If `pruefen.mjs` marks the phone menu or identical cards on the home page red, you rework the layout before going on. With the yellow “no photo in the first screen”, the most important content goes large in the header, and the person gets the photo list.
-- `docs/pruefung/code.md` (code and speed): Lighthouse in the four areas, JavaScript per page, picture sizes, and which acceptance criteria are met.
+- `docs/pruefung/aussehen.md` (looks): `design/tokens.css` is included, only its values in the code, design system followed, the traffic lights of `design-pruefen.mjs --bau` per area (font, colour world, texts, header, motion, 3D, weight), every screenshot looked at yourself (cut off, covered, readable?) and checked against the list of AI traits in the skill `gestaltung`, plus the self-check with a second opinion on the built site (skill `gestaltung`, section “Self-check and second opinion” (Selbstprüfung und zweite Meinung)). With 3D, you open the page once with JavaScript switched off: the still image is there, nothing is missing. If `pruefen.mjs` marks the phone menu or identical cards on the home page red, you rework the layout before going on. With the yellow “no photo in the first screen”, the most important content goes large in the header, and the person gets the photo list.
+- `docs/pruefung/code.md` (code and speed): Lighthouse in the four areas, JavaScript per page, weight per page (limit 1 MB, over 2 MB is red), picture sizes, and which acceptance criteria are met.
 
 ```markdown
 # Check: <area>
@@ -316,6 +327,8 @@ Next comes the skill `lancieren`: where should the site live? Call `lage` if the
 
 - Building without `pruefen.mjs --vor-bau`, or writing the line `Freigegeben zum Bauen:` yourself: then you're building what nobody approved.
 - Inventing new markup instead of taking it from the draft: at the walk-through the person then sees something different from the model.
+- Building everything in one go instead of entry by entry: then a feature is missing at the end, and nobody notices before the walk-through.
+- “Prettifying” while building: a gradient, a movement or an effect that isn't in the draft. What gets built is what was approved.
 - A second `tokens.css` in `web/`: then there are two truths, and one of them will soon be wrong.
 - Acceptance criteria that can't be checked (“nice”, “modern”): write how you can see or measure it.
 - Another framework “because it's modern”: the reason is the person's wish or a feature, otherwise Astro.

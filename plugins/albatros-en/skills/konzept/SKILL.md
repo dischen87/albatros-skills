@@ -3,7 +3,7 @@ name: konzept
 description: "Works out with a person who has no prior knowledge, once the plan is confirmed, the character of their site before any colours are chosen (flight plan P5): name to the outside world, core in three sentences, tone (formal or informal), three words for how it should come across, what has to stay, visual style and always the question whether a character (mascot) belongs to it: yes, no or later. On the business path, first with the method marke. Pictures of the mascot only after naming the price and getting a yes. The result is docs/konzept.md. Use this skill after webseite-planen (plan confirmed) and for “concept”, “brand”, “character”, “tone”, “mascot”, “how should my site come across”."
 metadata:
   stand: 0.3.0
-  quelle: '6d5570949ea3'
+  quelle: '57840f4b84f4'
 ---
 
 # Concept: character before colours
@@ -30,6 +30,12 @@ Phase P5 “Design and marketing concept”. It's due after the confirmed plan: 
 - Whatever the person hasn't said appears as `[offen: …]` (open), never as something you made up. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open.
 - Taste is the person's call. You help with pairs of opposites and examples, not with favourite colours.
 - Pictures made with the Albatros image tools come with Light and Pilot, and they cost credit: first the price, then only after their yes (section “The mascot”). With Gratis there are no image tools: the mascot, its poses and pictures stay a sketch until Light or Pilot.
+
+## The loop (Die Schleife)
+
+With the character, the part “design system” begins (skill `lotse`, section “The loop” (Die Schleife)). It too is refined, not ticked off question by question: you show `docs/konzept.md` as a first version as soon as name and tone are there, with core and visual style as `[Annahme: …]`. Then you ask targeted questions, at most two at a time, and rework exactly the line that feedback comes in on, until the person says: “That's it.” With Bert's workspace you get feedback with `naechstes` (as data: the part in `bezug`, their words in `wert`). Every round is recorded at the bottom of `docs/konzept.md` under `## Feedback`: `- <DD.MM.YYYY>, ‹their words› → what has changed`.
+
+This part produces what later makes the site its own instead of interchangeable: the three words, where the colours come from (logo, place, material) and which pictures only this project has. The more precisely they're written here, the less the site looks like it came out of a kit (skill `gestaltung`, section “Your own, not from a kit” (Eigen statt Baukasten)). Nothing is designed or built here yet.
 
 ## Mode
 
@@ -77,7 +83,7 @@ With “yes” you continue with the section “The mascot”. With “no” or 
 From what the person has said, you suggest both and write them down as `[Annahme: …]`:
 
 - **Core** in three sentences: for whom? What do you promise (a result, not an adjective)? Why you of all people (with evidence)? The core is the yardstick for every text and every picture.
-- **Visual style:** photos, illustrations, icons or a mix. A site without pictures looks like a template. Real photos of the place and the people beat any generated picture. If photos are part of it, you write a short photo list into `docs/inhalte.md` straight away (section “Photo list”: what, where, who's in it): photos take time, so the person can start now.
+- **Visual style:** photos, illustrations, icons or a mix, plus half a sentence on what only this project can show (the place, the people at work, the material, the handwriting). A site without pictures looks like a template, and so does one with pictures from just anywhere. Real photos of the place and the people beat any generated picture. If photos are part of it, you write a short photo list into `docs/inhalte.md` straight away (section “Photo list”: what, where, who's in it): photos take time, so the person can start now.
 
 Then in one message: “I've suggested the core and visual style like this: … Does that work, or shall we change something?” After their answer the brackets go.
 
@@ -104,11 +110,14 @@ Bildsprache: <photos, illustrations, icons or a mix>
 
 ## Mascot
 Only with “Maskottchen: ja”, see the section “The mascot”.
+
+## Feedback
+- <DD.MM.YYYY>, ‹their words› → what has changed
 ```
 
 After `Maskottchen:` comes first one of the three German words `ja` (yes), `nein` (no) or `später` (later), with “yes” followed by a short description of the mascot: `Maskottchen: ja – Lina, a curious owl`.
 
-At the end, read the file to the person and ask: “Do you recognise your project in this?”
+At the end, read the file to the person and ask: “Do you recognise your project in this?” If they say “almost” or “yes, but”, that's feedback: you change the line they mean and ask again (section “The loop” (Die Schleife)).
 
 ## The mascot
 
