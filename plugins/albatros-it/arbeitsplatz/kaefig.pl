@@ -14,6 +14,10 @@
 #   -P <Port>          Probe: Nach dem Einsperren muss eine Verbindung zu 127.0.0.1:<Port> mit EACCES scheitern, sonst startet nichts
 #   -W <Pfad>          Probe: Nach dem Einsperren muss das Öffnen dieser Datei zum Schreiben mit EACCES scheitern, sonst startet nichts
 #   --abi              nur die Landlock-Version dieses Kerns ausgeben («abi 4») und enden
+#   --anschluss <Pfad> kein Käfig, nur eine Leitung: verbindet stdin und stdout mit dem Unix-Socket <Pfad> und endet, wenn eine Seite schliesst.
+#                      So erreicht die KI im Käfig den MCP-Server des Arbeitsplatzes (src/bruecke/anschluss.ts): Der Server läuft beim
+#                      Arbeitsplatz ausserhalb des Käfigs und schreibt .albatros/; die KI startet im Käfig nur diese Leitung. Landlock ABI 4
+#                      sperrt Verbindungen zu Unix-Sockets mit Pfad nicht, und die Leitung braucht keine Regel für den Ordner des Sockets.
 # Was keine Regel hat, ist zu. Pfade, die es nicht gibt, und symbolische Links werden übergangen (ein Link bekäme sonst Rechte auf sein Ziel).
 # Verlangt Landlock ABI 4 (Linux 6.7): Erst dort lassen sich TCP-Verbindungen sperren (Port des Arbeitsplatzes, ssh). Fehlt etwas oder greift
 # eine Probe nicht, endet das Skript mit Code 126 und startet das Programm nicht (lieber kein Lauf als ein ungeschützter).
@@ -21,7 +25,7 @@ use strict;
 use warnings;
 use Fcntl qw(O_RDONLY O_WRONLY O_APPEND O_NOFOLLOW);
 use POSIX ();
-use Socket qw(PF_INET SOCK_STREAM pack_sockaddr_in inet_aton);
+use Socket qw(PF_INET PF_UNIX SOCK_STREAM pack_sockaddr_in pack_sockaddr_un inet_aton);
 
 # Nummern der Systemaufrufe: Landlock überall gleich; prctl je Architektur
 my ($SYS_CREATE, $SYS_ADD, $SYS_RESTRICT) = (444, 445, 446);
@@ -40,6 +44,50 @@ my $GERAET = $READ_FILE | $READ_DIR | $WRITE_FILE;
 my ($NET_BIND, $NET_CONNECT) = (1 << 0, 1 << 1);
 
 sub ende { my ($m) = @_; print STDERR "kaefig: $m\n"; exit 126; }
+
+# Leitung zum MCP-Server des Arbeitsplatzes: vor allem anderen, ohne Landlock (dieser Aufruf läuft schon im Käfig der KI)
+sub alles_schreiben {
+  my ($h, $daten) = @_;
+  my $weg = 0;
+  while ($weg < length $daten) {
+    my $n = syswrite($h, $daten, length($daten) - $weg, $weg);
+    return 0 unless defined $n;
+    $weg += $n;
+  }
+  return 1;
+}
+sub anschluss {
+  my ($pfad) = @_;
+  $SIG{PIPE} = 'IGNORE';
+  socket(my $s, PF_UNIX, SOCK_STREAM, 0) or ende("Anschluss: socket: $!");
+  my $adresse = eval { pack_sockaddr_un($pfad) } or ende("Anschluss: Pfad zu lang: $pfad");
+  connect($s, $adresse) or ende("Anschluss $pfad: $!");
+  binmode($_) for (\*STDIN, \*STDOUT, $s);
+  my $ein_offen = 1;
+  while (1) {
+    my $rin = '';
+    vec($rin, fileno(STDIN), 1) = 1 if $ein_offen;
+    vec($rin, fileno($s), 1) = 1;
+    my $n = select(my $r = $rin, undef, undef, undef);
+    if ($n < 0) { next if $! == 4; last; }   # EINTR
+    if ($ein_offen && vec($r, fileno(STDIN), 1)) {
+      my $gelesen = sysread(STDIN, my $stueck, 65536);
+      # stdin zu: Der Server bekommt das Ende, beantwortet, was offen ist, und schliesst dann selbst
+      if (!$gelesen) { $ein_offen = 0; shutdown($s, 1); }
+      else { alles_schreiben($s, $stueck) or last; }
+    }
+    if (vec($r, fileno($s), 1)) {
+      my $gelesen = sysread($s, my $stueck, 65536);
+      last unless $gelesen;
+      alles_schreiben(\*STDOUT, $stueck) or last;
+    }
+  }
+  exit 0;
+}
+if (@ARGV && $ARGV[0] eq '--anschluss') {
+  ende('--anschluss braucht genau einen Pfad') unless @ARGV == 2 && length $ARGV[1];
+  anschluss($ARGV[1]);
+}
 
 my (@regeln, @ports, @probe_ports, @probe_dateien, @programm);
 my $nur_abi = 0;

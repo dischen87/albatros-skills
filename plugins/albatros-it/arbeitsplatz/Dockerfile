@@ -9,7 +9,9 @@
 #
 # Im Bild: Node, das Bündel (Server, Oberfläche, MCP-Server), git und ssh, dazu der Käfig für die KI (container/kaefig.pl, Landlock; braucht nur
 # perl-base, das in jedem Debian-Bild ist). Mit ihm darf die KI online auch Dateien ändern; ohne Landlock ABI 4 (Linux vor 6.7) bleibt sie bei
-# «nur lesen» (src/bruecke/kaefig.ts). Nicht im Bild: die KI-CLIs. start.sh installiert beim ersten Start nur
+# «nur lesen» (src/bruecke/kaefig.ts). Derselbe Helfer ist im Käfig die Leitung zum MCP-Server des Arbeitsplatzes (--anschluss,
+# src/bruecke/anschluss.ts): Der Server läuft ausserhalb des Käfigs, darum braucht das Bild dafür nichts Weiteres.
+# Nicht im Bild: die KI-CLIs. start.sh installiert beim ersten Start nur
 # die, die die Person wählt (ARBEITSPLATZ_KI), in ihr Heimverzeichnis (Volume, bleibt über Neustarts). Gründe: Claude Code ist proprietär
 # («All rights reserved», Nutzung nach den Bedingungen von Anthropic); wer es in seinem Produkt vorinstalliert, braucht die Commercial Terms, und
 # es muss unverändert so laufen, wie Anthropic es veröffentlicht (code.claude.com/docs/en/legal-and-compliance). Codex und Gemini CLI sind

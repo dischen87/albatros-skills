@@ -84,7 +84,10 @@ body { background: var(--bg); overflow-x: hidden; }
 /* Dialog: <dialog> mit .modal aus albatros.css, auf dem Telefon als Blatt von unten */
 .ap-dialog { width: min(560px, 94vw); max-width: 100vw; max-height: 100vh; margin: auto; padding: 0; border: 0; background: transparent; overflow: visible; }
 .ap-dialog::backdrop { background: var(--scrim); }
-.ap-dialog .modal { width: 100%; max-width: 100%; margin: 0; }
+.ap-dialog .modal { width: 100%; max-width: 100%; margin: 0; max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
+/* Langer Inhalt (Glocke, Verlauf, Protokoll) scrollt im Dialog; Kopf und Knöpfe bleiben stehen */
+.ap-dialog .modal > section { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.ap-dialog .modal > header, .ap-dialog .modal > footer { flex: none; }
 @media (max-width: 767px) { .ap-dialog { width: 100vw; margin: auto 0 0; max-height: 100dvh; } }
 
 /* ---------------------------------------------------------------- Allgemein */
@@ -400,3 +403,140 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 
 /* Einstellungen online: nummerierte Schritte zum Verbinden des Claude-Abos */
 .ap-online-schritte { margin: 0; padding-left: 20px; }
+
+/* ---------------------------------------------------------------- Abgleich mit Foundable (10.11.2026): Suche, Glocke, Kalender, Chat, Dokument, Prüfen */
+/* Leiste oben auf dem Telefon, Suche und Glocke in der Seitenleiste */
+.ap-oben { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 8px; min-width: 0; padding: 8px 8px 8px 16px; background: var(--glass);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid var(--ln); }
+.ap-oben > b { font-family: var(--font-display); font-weight: 600; min-width: 0; }
+.ap-nav button.ni, .ap-mehr button.ni { width: 100%; text-align: left; cursor: pointer; }
+.ap-nav button.ni .badge { margin-left: auto; }
+.ap-nav-linie { margin: 6px 6px; border-top: 1px solid var(--ln); }
+.ap-kbd { margin-left: auto; padding: 1px 7px; border-radius: 8px; border: 1px solid var(--ln); background: var(--sf2); color: var(--mu); font-family: var(--font-mono); font-size: 11px; font-weight: 500; }
+.ap-glocke .ap-unten-icon .badge { top: -6px; right: -10px; }
+
+.ap-suche { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ap-suche .ctl { width: 100%; }
+.ap-suche-liste { display: flex; flex-direction: column; gap: 10px; min-height: 180px; max-height: min(52vh, 460px); overflow-y: auto; overscroll-behavior: contain; margin: 0 -6px; padding: 2px 6px; }
+.ap-suche-gruppe { display: flex; flex-direction: column; gap: 2px; }
+.ap-suche-gruppe > .up, .ap-suche-liste > .up { padding: 4px 8px; }
+.ap-treffer { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 8px 10px; border-radius: 14px; text-align: left; cursor: pointer; color: inherit; scroll-margin: 8px; }
+.ap-treffer > svg.i { flex: none; color: var(--mu); }
+.ap-treffer.an, .ap-treffer:hover { background: var(--prs); }
+.ap-treffer.an > svg.i { color: var(--primary-ink); }
+.ap-treffer:focus-visible { outline-offset: -2px; }
+
+.ap-glocke-liste { display: flex; flex-direction: column; gap: 8px; }
+.ap-glocke-liste .ap-stueck { background: var(--sf2); min-height: 60px; height: auto; color: inherit; text-decoration: none; }
+.ap-glocke-liste .ap-stueck.neu { box-shadow: inset 3px 0 0 var(--pr2); }
+.ap-neu { margin-left: 8px; padding: 1px 8px; border-radius: var(--radius-pill); background: var(--prs); color: var(--primary-ink); font-size: 11px; font-weight: 700; }
+
+/* Rundgang */
+.ap-rundgang { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.ap-rundgang .steps { align-self: stretch; }
+.ap-rundgang-karte { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+
+/* Schnellstart: «Überrasch mich» und «Ich habe schon eine Webseite» */
+.ap-einstiege { display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid var(--ln); min-width: 0; }
+
+/* Chat: wartende Nachrichten, Weiter, Ändern, Vorbild */
+.ap-lauf-gruppe { display: contents; }
+.ap-wartend > .bub.me { opacity: .78; }
+.ap-wartend-zeile { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px 12px; }
+.ap-wartend-zeile > span { display: inline-flex; align-items: center; gap: 4px; }
+.ap-wartend-zeile .lnk, .ap-nachricht-aendern { min-height: 32px; padding: 4px 2px; cursor: pointer; font-weight: 700; }
+.ap-wartend-form { display: flex; flex-direction: column; gap: 8px; align-self: stretch; }
+.ap-wartend-hilfe { text-align: right; }
+.ap-nachricht-aendern { display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; }
+.ap-weiter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.ap-aendern { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border-radius: var(--radius-inner); background: var(--prs); min-width: 0; }
+.ap-anhang.vorbild { background: var(--prs); box-shadow: inset 0 0 0 1px var(--pr2); }
+.ap-vorbild { display: inline-flex; align-items: center; gap: 4px; flex: none; min-height: 28px; padding: 2px 8px; border-radius: var(--radius-pill); cursor: pointer; color: var(--mu); font-weight: 700; font-size: 12px; }
+.ap-vorbild:hover { background: var(--ln); }
+.ap-vorbild[aria-pressed="true"] { color: var(--primary-ink); }
+#chat-feld[data-vorschlag]::placeholder { font-style: italic; }
+.ap-verlauf-eintrag { display: flex; align-items: center; gap: 2px; min-width: 0; }
+.ap-verlauf-eintrag > .ap-stueck { flex: 1; min-width: 0; height: auto; }
+.ap-verlauf-eintrag > .btn { flex: none; }
+
+/* Kalender */
+.ap-kalender { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ap-kal-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.ap-kal-monat { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ap-kal-zeile { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.ap-kal-zeile.kopf > span { text-align: center; font-weight: 700; }
+.ap-kal-zelle { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; min-height: 72px; padding: 6px; border-radius: 12px; background: var(--sf2); text-align: left; cursor: pointer; color: inherit; overflow: hidden; }
+.ap-kal-zelle:hover { background: var(--prs); }
+.ap-kal-zelle.fremd { background: transparent; color: var(--mu); }
+.ap-kal-zelle.gewaehlt { box-shadow: inset 0 0 0 2px var(--pr2); }
+.ap-kal-zelle:focus-visible, .ap-kal-mini:focus-visible { outline-offset: -2px; }
+.ap-kal-zahl { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 4px; border-radius: 13px; font-weight: 700; font-size: 13px; }
+.ap-kal-zelle.heute .ap-kal-zahl { background: var(--pr2); color: var(--color-on-primary); }
+.ap-kal-punkte { display: flex; align-items: center; gap: 3px; min-height: 8px; }
+.ap-kal-punkte > i, .ap-kal-minitage > i.voll { background: var(--pr2); }
+.ap-kal-punkte > i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.ap-kal-punkte > i.autopilot { background: var(--as); }
+.ap-kal-punkte > i.gelaufen { background: var(--mu); }
+.ap-kal-punkte > small { font-size: 11px; color: var(--mu); font-weight: 700; }
+.ap-kal-erster { align-self: stretch; font-size: 12px; line-height: 1.25; color: var(--mu); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ap-kal-auswahl { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid var(--ln); }
+.ap-kal-woche { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.ap-kal-tag { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ap-kal-woche > .ap-kal-tag { padding: 8px; border-radius: 12px; background: var(--sf2); min-height: 120px; }
+.ap-kal-woche > .ap-kal-tag.heute { box-shadow: inset 0 0 0 2px var(--pr2); }
+.ap-kal-tagkopf { font-weight: 700; font-size: 13px; }
+/* Woche: schmale Spalten, darum die Uhrzeit über dem Titel und ohne Stift */
+@media (min-width: 900px) {
+  .ap-kal-woche .ap-termin-knopf { flex-direction: column; align-items: flex-start; gap: 0; padding: 6px 8px; font-size: 12px; line-height: 1.3; }
+  .ap-kal-woche .ap-termin-knopf > span { overflow-wrap: break-word; }
+  .ap-kal-woche .ap-termin-knopf > svg.i { display: none; }
+}
+.ap-ansicht-wahl { display: flex; }
+.ap-kal-tagkopf .lnk { cursor: pointer; }
+.ap-termine { display: flex; flex-direction: column; gap: 4px; }
+.ap-termin-knopf { display: flex; align-items: baseline; gap: 8px; width: 100%; min-height: 36px; padding: 6px 10px; border-radius: 10px; background: var(--sf); box-shadow: inset 3px 0 0 var(--pr2); text-align: left; font-size: 14px; color: inherit; min-width: 0; }
+button.ap-termin-knopf { cursor: pointer; }
+button.ap-termin-knopf:hover { background: var(--prs); }
+.ap-termin-knopf > time { flex: none; font-variant-numeric: tabular-nums; font-weight: 700; }
+.ap-termin-knopf > svg.i { flex: none; align-self: center; color: var(--mu); }
+.ap-termin.autopilot > .ap-termin-knopf { box-shadow: inset 3px 0 0 var(--as); }
+.ap-termin.gelaufen > .ap-termin-knopf { box-shadow: inset 3px 0 0 var(--mu); color: var(--mu); }
+.ap-kal-tag:not(.ap-kal-woche > *) .ap-termin-knopf { background: var(--sf2); }
+.ap-kal-jahr { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.ap-kal-mini { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 10px; border-radius: 14px; background: var(--sf2); text-align: left; cursor: pointer; color: inherit; }
+.ap-kal-mini:hover { background: var(--prs); }
+.ap-kal-mini.heute { box-shadow: inset 0 0 0 2px var(--pr2); }
+.ap-kal-minitage { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.ap-kal-minitage > i { aspect-ratio: 1; border-radius: 3px; background: var(--ln); }
+.ap-kal-minitage > i.leer { background: transparent; }
+@media (max-width: 899px) {
+  .ap-kal-woche { grid-template-columns: minmax(0, 1fr); }
+  .ap-kal-woche > .ap-kal-tag { min-height: 0; }
+  .ap-kal-jahr { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .ap-kal-zelle { min-height: 52px; padding: 4px; align-items: center; }
+  .ap-kal-erster { display: none; }
+  .ap-kal-jahr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Dokument bearbeiten, Fassungen */
+.ap-dok-form { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ap-dok-text { width: 100%; min-height: min(60vh, 520px); padding: 14px; border-radius: var(--radius-inner); border: 1px solid var(--ln); background: var(--sf2); font-family: var(--font-mono); font-size: 14px; line-height: 1.6; resize: vertical; }
+.ap-dok-text:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
+.ap-fassungen { display: flex; flex-direction: column; }
+.ap-fassung { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--ln); min-width: 0; }
+.ap-fassung:first-child { border-top-color: transparent; }
+
+/* Webseite: Prüfen (Suche und Teilen, Sicherheit) */
+.ap-teilen { min-width: 0; }
+.ap-teilen-suche { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: var(--radius-inner); background: var(--sf2); min-width: 0; }
+.ap-teilen-suche > b { color: var(--primary-ink); font-size: 17px; line-height: 1.3; }
+.ap-teilen-karte { border-radius: var(--radius-inner); border: 1px solid var(--ln); overflow: hidden; background: var(--sf); min-width: 0; }
+.ap-teilen-karte > img { width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; background: var(--sf2); }
+.ap-teilen-ohne { display: flex; align-items: center; justify-content: center; gap: 8px; aspect-ratio: 1200 / 630; max-height: 180px; width: 100%; background: var(--sf2); color: var(--mu); font-weight: 700; }
+.ap-teilen-text { padding: 12px 14px; min-width: 0; }
+.ap-teilen .ap-pruefung { gap: 6px; }
+.ap-teilen .ap-pruefung svg.i { flex: none; margin-top: 2px; color: var(--mu); }
+.ap-protokoll { max-height: min(46vh, 420px); overflow-y: auto; padding: 12px 14px; border-radius: var(--radius-inner); background: var(--sf2); min-width: 0; }
+.ap-protokoll:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
