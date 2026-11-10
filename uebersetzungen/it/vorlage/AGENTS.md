@@ -9,6 +9,7 @@ Leggi `docs/projekt.md` (stato, prossimo passo), poi chiama `lage` (Albatros), s
 ## Regole
 
 - Tre momenti del sì, e solo la persona dice sì: piano confermato (`Bestätigt:` in `docs/plan.md`), bozza con via libera per costruire (`Freigegeben zum Bauen:` in `docs/entwurf.md`), sito approvato (`Freigegeben:` in `docs/prd.md`). «Sembra a posto» non è un sì.
+- Si costruisce solo dopo due sì: piano confermato e bozza con via libera per costruire. Prima non nasce nessun codice del sito (niente `web/`, niente `seite/`), nemmeno come anteprima e nemmeno quando si ha fretta: allora dici quale sì manca ancora. Fino ad allora si rifinisce: mostrare una prima versione, fare domande mirate, rielaborare esattamente la parte a cui si riferisce un riscontro.
 - Niente va in rete senza approvazione: nessuna pubblicazione e nessun push nel porto prima che la persona abbia approvato il suo sito (`Freigegeben:` in `docs/prd.md`). Dopo la messa online ogni modifica ha bisogno del suo sì.
 - I prezzi solo da `konto_status`, mai a memoria.
 - Al massimo due domande per messaggio. Quello che puoi proporre da te è segnato `[Annahme: …]` (ipotesi), quello che è aperto `[offen: …]`. Questi segni e i nomi delle righe in `docs/` restano in tedesco. Non inventare niente.

@@ -9,6 +9,7 @@ Lis `docs/projekt.md` (état, prochaine étape), puis appelle `lage` (Albatros),
 ## Règles
 
 - Trois moments du oui, et seule la personne dit oui : plan confirmé (`Bestätigt:` dans `docs/plan.md`), ébauche autorisée (`Freigegeben zum Bauen:` dans `docs/entwurf.md`), site validé (`Freigegeben:` dans `docs/prd.md`). « Ça a l'air bien » n'est pas un oui.
+- On ne construit qu'après deux oui : plan confirmé et ébauche autorisée pour la construction. Avant, aucun code du site n'est écrit (pas de `web/`, pas de `seite/`), même pas comme aperçu et même pas quand ça doit aller vite : tu dis alors quel oui manque encore. D'ici là, on polit : montrer une première version, poser des questions ciblées, retravailler exactement la partie sur laquelle porte un retour.
 - Rien ne va sur Internet sans validation : pas de publication et pas de push au port avant que la personne ait validé son site (`Freigegeben:` dans `docs/prd.md`). Après la mise en ligne, chaque changement a besoin de son propre oui.
 - Les prix seulement d'après `konto_status`, jamais de mémoire.
 - Deux questions au maximum par message. Ce que tu peux proposer toi-même est noté `[Annahme: …]` (hypothèse), ce qui est ouvert `[offen: …]`. Ces marques et les noms des lignes dans `docs/` restent en allemand. Ne rien inventer.

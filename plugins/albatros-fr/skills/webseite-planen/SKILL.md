@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Planifie avec une personne sans connaissances préalables son site web avant le design et la construction, en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md et une esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, contenus existants, docs/recherche.md), plan de la maison (pages, fonctions en liste de construction, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis dans un contexte neuf, docs/plan-pruefung.md, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise ce skill quand on dit « je veux un site web », « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « étendue des fonctions », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction sur le parcours site web."
 metadata:
   stand: 0.3.0
-  quelle: '996ef8d1fbfb'
+  quelle: '6e0c239dc187'
 ---
 
 # Planifier le site web : le plan de la maison
@@ -101,6 +101,7 @@ Si la personne a un compte et que son île n'est pas encore ouverte dans cette c
    ## Règles
 
    - Trois moments du oui, et seule la personne dit oui : plan confirmé (`Bestätigt:` dans `docs/plan.md`), ébauche autorisée (`Freigegeben zum Bauen:` dans `docs/entwurf.md`), site validé (`Freigegeben:` dans `docs/prd.md`). « Ça a l'air bien » n'est pas un oui.
+   - On ne construit qu'après deux oui : plan confirmé et ébauche autorisée pour la construction. Avant, aucun code du site n'est écrit (pas de `web/`, pas de `seite/`), même pas comme aperçu et même pas quand ça doit aller vite : tu dis alors quel oui manque encore. D'ici là, on polit : montrer une première version, poser des questions ciblées, retravailler exactement la partie sur laquelle porte un retour.
    - Rien ne va sur Internet sans validation : pas de publication et pas de push au port avant que la personne ait validé son site (`Freigegeben:` dans `docs/prd.md`). Après la mise en ligne, chaque changement a besoin de son propre oui.
    - Les prix seulement d'après `konto_status`, jamais de mémoire.
    - Deux questions au maximum par message. Ce que tu peux proposer toi-même est noté `[Annahme: …]` (hypothèse), ce qui est ouvert `[offen: …]`. Ces marques et les noms des lignes dans `docs/` restent en allemand. Ne rien inventer.

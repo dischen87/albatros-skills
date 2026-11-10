@@ -3,7 +3,7 @@ name: schnellstart
 description: "Démarrage rapide pour une nouvelle idée en mode faire : la personne raconte son idée, et en quelques minutes les premières pièces sont dans le dossier du projet (docs/projekt.md, public cible et offre en premier brouillon, logo provisoire en SVG, esquisse grise de la page d'accueil) et dans le poste de travail de Bert, la page d'accueil sur son ordinateur, comme premier état, avec des propositions, une carte d'idée et deux questions au plus. Ensuite, on polit : l'IA récupère avec naechstes les choix et les retours et retravaille partie par partie, jusqu'à ce que la personne dise oui. Les moments du oui seulement comme carte, e-mails et publications seulement comme brouillon ; sans poste de travail, le même chemin dans des fichiers. Utilise ce skill avec « vite », « démarrage rapide », « vas-y, commence », « montre-moi ce que ça peut devenir », « poste de travail de Bert », « ouvrir le poste de travail », et quand le skill start mène ici pour une idée d'entreprise."
 metadata:
   stand: 0.3.0
-  quelle: '3df35a664416'
+  quelle: '059aaafd9ec6'
 ---
 
 # Démarrage rapide : le premier vol panoramique
@@ -123,6 +123,7 @@ Dans cet ordre, chacune en quelques minutes. Toutes sont un premier état de la 
    ## Règles
 
    - Trois moments du oui, et seule la personne dit oui : plan confirmé (`Bestätigt:` dans `docs/plan.md`), ébauche autorisée (`Freigegeben zum Bauen:` dans `docs/entwurf.md`), site validé (`Freigegeben:` dans `docs/prd.md`). « Ça a l'air bien » n'est pas un oui.
+   - On ne construit qu'après deux oui : plan confirmé et ébauche autorisée pour la construction. Avant, aucun code du site n'est écrit (pas de `web/`, pas de `seite/`), même pas comme aperçu et même pas quand ça doit aller vite : tu dis alors quel oui manque encore. D'ici là, on polit : montrer une première version, poser des questions ciblées, retravailler exactement la partie sur laquelle porte un retour.
    - Rien ne va sur Internet sans validation : pas de publication et pas de push au port avant que la personne ait validé son site (`Freigegeben:` dans `docs/prd.md`). Après la mise en ligne, chaque changement a besoin de son propre oui.
    - Les prix seulement d'après `konto_status`, jamais de mémoire.
    - Deux questions au maximum par message. Ce que tu peux proposer toi-même est noté `[Annahme: …]` (hypothèse), ce qui est ouvert `[offen: …]`. Ces marques et les noms des lignes dans `docs/` restent en allemand. Ne rien inventer.

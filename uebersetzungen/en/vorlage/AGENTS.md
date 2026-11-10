@@ -9,6 +9,7 @@ Read `docs/projekt.md` (status, next step), then call `lage` (Albatros), always 
 ## Rules
 
 - Three yes moments, and only the person says yes: plan confirmed (`Bestätigt:` in `docs/plan.md`), draft approved for building (`Freigegeben zum Bauen:` in `docs/entwurf.md`), site released (`Freigegeben:` in `docs/prd.md`). “Looks good” is not a yes.
+- Building starts only after two yeses: plan confirmed and draft approved for building. Before that, no code of the site is written (no `web/`, no `seite/`), not even as a preview and not even when it has to be quick: then you say which yes is still missing. Until then you refine: show a first version, ask targeted questions, rework exactly the part the feedback refers to.
 - Nothing goes online without a release: no publishing and no push to the harbour before the person has released their site (`Freigegeben:` in `docs/prd.md`). After going live, every change needs its own yes.
 - Prices only from `konto_status`, never from memory.
 - At most two questions in one message. Whatever you can suggest yourself is marked `[Annahme: …]` (assumption), whatever is open `[offen: …]`. These markers and the line names in `docs/` stay in German. Don't make anything up.

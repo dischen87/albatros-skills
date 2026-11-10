@@ -3,7 +3,7 @@ name: webseite-planen
 description: "Pianifica con una persona senza conoscenze tecniche il suo sito web prima del design e della costruzione, in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md e uno schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, contenuti esistenti, docs/recherche.md), pianta (pagine, funzioni come lista di costruzione, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere in un contesto nuovo, docs/plan-pruefung.md, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill con «voglio un sito web», «pianificare un sito web», «da dove comincio», «cosa mi serve per un sito web», «quali pagine mi servono», «sitemap», «funzionalità», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione sul percorso sito web."
 metadata:
   stand: 0.3.0
-  quelle: '996ef8d1fbfb'
+  quelle: '6e0c239dc187'
 ---
 
 # Pianificare il sito web: la pianta
@@ -101,6 +101,7 @@ Se la persona ha un account e la sua isola non è ancora aperta in questa conver
    ## Regole
 
    - Tre momenti del sì, e solo la persona dice sì: piano confermato (`Bestätigt:` in `docs/plan.md`), bozza con via libera per costruire (`Freigegeben zum Bauen:` in `docs/entwurf.md`), sito approvato (`Freigegeben:` in `docs/prd.md`). «Sembra a posto» non è un sì.
+   - Si costruisce solo dopo due sì: piano confermato e bozza con via libera per costruire. Prima non nasce nessun codice del sito (niente `web/`, niente `seite/`), nemmeno come anteprima e nemmeno quando si ha fretta: allora dici quale sì manca ancora. Fino ad allora si rifinisce: mostrare una prima versione, fare domande mirate, rielaborare esattamente la parte a cui si riferisce un riscontro.
    - Niente va in rete senza approvazione: nessuna pubblicazione e nessun push nel porto prima che la persona abbia approvato il suo sito (`Freigegeben:` in `docs/prd.md`). Dopo la messa online ogni modifica ha bisogno del suo sì.
    - I prezzi solo da `konto_status`, mai a memoria.
    - Al massimo due domande per messaggio. Quello che puoi proporre da te è segnato `[Annahme: …]` (ipotesi), quello che è aperto `[offen: …]`. Questi segni e i nomi delle righe in `docs/` restano in tedesco. Non inventare niente.

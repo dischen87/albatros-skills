@@ -3,7 +3,7 @@ name: schnellstart
 description: "Quick start for a new idea in do mode: the person tells their idea, and within a few minutes the first pieces are in the project folder (docs/projekt.md, audience and offer as a first draft, a working logo as SVG, the grey sketch of the home page) and in Bert's workspace, the home page on their own computer, as a first version, with suggestions, one idea card and at most two questions. Then comes the refining: the AI fetches choices and feedback with naechstes and reworks part by part until the person says yes. Yes moments only as a card, emails and posts only as a draft; without the workspace, the same path in files. Use this skill on “quickly”, “quick start”, “just get going”, “show me what this could become”, “Bert's workspace”, “open the workspace”, and when the skill start leads here for a business idea."
 metadata:
   stand: 0.3.0
-  quelle: '3df35a664416'
+  quelle: '059aaafd9ec6'
 ---
 
 # Quick start: the first sightseeing flight
@@ -123,6 +123,7 @@ In this order, each in a few minutes. All of them are a first version of the par
    ## Rules
 
    - Three yes moments, and only the person says yes: plan confirmed (`Bestätigt:` in `docs/plan.md`), draft approved for building (`Freigegeben zum Bauen:` in `docs/entwurf.md`), site released (`Freigegeben:` in `docs/prd.md`). “Looks good” is not a yes.
+   - Building starts only after two yeses: plan confirmed and draft approved for building. Before that, no code of the site is written (no `web/`, no `seite/`), not even as a preview and not even when it has to be quick: then you say which yes is still missing. Until then you refine: show a first version, ask targeted questions, rework exactly the part the feedback refers to.
    - Nothing goes online without a release: no publishing and no push to the harbour before the person has released their site (`Freigegeben:` in `docs/prd.md`). After going live, every change needs its own yes.
    - Prices only from `konto_status`, never from memory.
    - At most two questions in one message. Whatever you can suggest yourself is marked `[Annahme: …]` (assumption), whatever is open `[offen: …]`. These markers and the line names in `docs/` stay in German. Don't make anything up.

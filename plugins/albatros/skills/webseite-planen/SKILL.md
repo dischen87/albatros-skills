@@ -99,6 +99,7 @@ Hat die Person ein Konto und ist ihre Insel in diesem Gespräch noch nicht offen
    ## Regeln
 
    - Drei Ja-Momente, und nur die Person sagt Ja: Plan bestätigt (`Bestätigt:` in `docs/plan.md`), Entwurf freigegeben (`Freigegeben zum Bauen:` in `docs/entwurf.md`), Seite freigegeben (`Freigegeben:` in `docs/prd.md`). «Sieht gut aus» ist kein Ja.
+   - Gebaut wird erst nach zwei Ja: Plan bestätigt und Entwurf zum Bauen freigegeben. Vorher entsteht kein Code der Seite (kein `web/`, kein `seite/`), auch nicht als Vorschau und auch nicht, wenn es schnell gehen soll: Dann sagst du, welches Ja noch fehlt. Bis dahin wird geschliffen: einen ersten Stand zeigen, gezielt fragen, genau den Teil überarbeiten, zu dem eine Rückmeldung kommt.
    - Nichts geht ins Netz ohne Freigabe: kein Veröffentlichen und kein Push in den Hafen, bevor die Person ihre Seite freigegeben hat (`Freigegeben:` in `docs/prd.md`). Nach dem Livegang braucht jede Änderung ihr eigenes Ja.
    - Preise nur aus `konto_status`, nie aus dem Gedächtnis.
    - Höchstens zwei Fragen in einer Nachricht. Was du selbst vorschlagen kannst, steht als `[Annahme: …]`, was offen ist, als `[offen: …]`. Nichts erfinden.

@@ -3,7 +3,7 @@ name: schnellstart
 description: "Avvio rapido per un'idea nuova nel modo fare: la persona racconta la sua idea, e in pochi minuti i primi pezzi sono nella cartella del progetto (docs/projekt.md, pubblico e offerta come prima stesura, logo provvisorio in SVG, schizzo grigio della pagina iniziale) e nella postazione di Bert, la pagina iniziale sul suo computer, come prima versione, con proposte, una scheda idea e al massimo due domande. Poi si rifinisce: l'IA prende con naechstes la scelta e i riscontri e rielabora parte per parte, finché la persona dice sì. I momenti del sì solo come scheda, mail e post solo come messaggi in bozza; senza postazione, la stessa strada nei file. Usa lo skill con «in fretta», «avvio rapido», «parti e basta», «fammi vedere cosa può diventare», «postazione di Bert», «aprire la postazione», e quando lo skill start porta qui per un'idea imprenditoriale."
 metadata:
   stand: 0.3.0
-  quelle: '3df35a664416'
+  quelle: '059aaafd9ec6'
 ---
 
 # Avvio rapido: il primo volo panoramico
@@ -123,6 +123,7 @@ In questo ordine, ognuno in pochi minuti. Sono tutti una prima versione della pa
    ## Regole
 
    - Tre momenti del sì, e solo la persona dice sì: piano confermato (`Bestätigt:` in `docs/plan.md`), bozza con via libera per costruire (`Freigegeben zum Bauen:` in `docs/entwurf.md`), sito approvato (`Freigegeben:` in `docs/prd.md`). «Sembra a posto» non è un sì.
+   - Si costruisce solo dopo due sì: piano confermato e bozza con via libera per costruire. Prima non nasce nessun codice del sito (niente `web/`, niente `seite/`), nemmeno come anteprima e nemmeno quando si ha fretta: allora dici quale sì manca ancora. Fino ad allora si rifinisce: mostrare una prima versione, fare domande mirate, rielaborare esattamente la parte a cui si riferisce un riscontro.
    - Niente va in rete senza approvazione: nessuna pubblicazione e nessun push nel porto prima che la persona abbia approvato il suo sito (`Freigegeben:` in `docs/prd.md`). Dopo la messa online ogni modifica ha bisogno del suo sì.
    - I prezzi solo da `konto_status`, mai a memoria.
    - Al massimo due domande per messaggio. Quello che puoi proporre da te è segnato `[Annahme: …]` (ipotesi), quello che è aperto `[offen: …]`. Questi segni e i nomi delle righe in `docs/` restano in tedesco. Non inventare niente.
