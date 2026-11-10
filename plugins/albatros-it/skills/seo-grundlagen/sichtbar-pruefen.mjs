@@ -268,7 +268,7 @@ const sitemapDatei = ['sitemap.xml', 'sitemap-index.xml', 'sitemap_index.xml'].m
   const gut = kandidaten.filter((n) => lies(join(ORDNER, n)).trim() === n.slice(0, -4));
   if (gut.length) melde('indexnow', 'grün', `Schlüsseldatei für IndexNow liegt im Wurzelordner (${gut[0].slice(0, 6)}….txt)`);
   else if (kandidaten.length) melde('indexnow', 'rot', `${kandidaten[0]}: Der Inhalt ist nicht derselbe Schlüssel wie der Dateiname (8 bis 128 Zeichen aus a–z, A–Z, 0–9 und «-»)`);
-  else melde('indexnow', 'gelb', 'Keine Schlüsseldatei für IndexNow: Damit erfahren Bing und andere (nicht Google) sofort von neuen und geänderten Seiten. Mit Albatros Light und Pilot meldet Albatros die Seiten');
+  else melde('indexnow', 'gelb', 'Keine Schlüsseldatei für IndexNow: Damit erfahren Bing und andere (nicht Google) sofort von neuen und geänderten Seiten (Skill seo-grundlagen, Schritt IndexNow)');
 }
 
 // ---------- Zusatz: interne Links und Sprache ----------
