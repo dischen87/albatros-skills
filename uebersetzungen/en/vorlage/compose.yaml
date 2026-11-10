@@ -10,9 +10,10 @@ services:
       interval: 10s
       retries: 6
 
-  # Bert's workspace online: off until you want it (skill betrieb). Turn it on: docker compose --profile arbeitsplatz up -d
-  # It answers at https://<name>.aufwind.sh/arbeitsplatz (nginx.conf passes /arbeitsplatz/ on); only members of your project get in,
-  # signed in with Albatros. Your AI's token is in ~/arbeitsplatz.env on the server, never in the logbook.
+  # Bert's workspace online: off until you want it (skill betrieb, "workspace on my server"). Turn it on: docker compose --profile arbeitsplatz up -d
+  # With your own domain it answers at https://arbeitsplatz.<your-domain> (nginx.conf passes the name on), otherwise at
+  # https://<name>.aufwind.sh/arbeitsplatz. Only members of your project get in, signed in with Albatros. The address and your AI's token
+  # are in ~/arbeitsplatz.env on the server, never in the logbook.
   arbeitsplatz:
     container_name: arbeitsplatz
     image: ghcr.io/dischen87/albatros-arbeitsplatz:0.3.0   # workspace version; the skill betrieb brings newer ones
@@ -25,7 +26,7 @@ services:
     environment:
       ARBEITSPLATZ_PORT: "4747"         # port in the container; sign-in only through Albatros
     volumes:
-      - ./:/projekt                     # your project; the AI reads it, changing it online doesn't work yet
+      - ./:/projekt                     # your project; the AI changes only what its cage allows (never .git/config, .albatros, .claude)
       - arbeitsplatz_heim:/home/arbeitsplatz   # AI program, its sign-in and the workspace's state
     expose:
       - "4747"                          # only for nginx in the website, never directly from outside
