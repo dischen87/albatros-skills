@@ -3,7 +3,7 @@ name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito, unico e non fatto con lo stampino. Nel piano di volo (P6): mockup grigio, tre direzioni chiaramente diverse dal concetto, verificate con design-pruefen.mjs, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni; movimento e 3D solo con un'intenzione. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Con la domanda sugli elementi grafici (strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «layout», «icone», «mascotte», «animazione», «3D»."
 metadata:
   stand: 0.3.0
-  quelle: '649a3f0ab442'
+  quelle: 'fa343c276c14'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -56,7 +56,7 @@ Dà un semaforo per ogni ambito e finisce con 1 se c'è del rosso. Rosso vuol di
 
 ## Il ciclo (Die Schleife)
 
-Il sistema di design è la terza parte che viene rifinita (skill `lotse`, sezione «Il ciclo» (Die Schleife)): mockup, direzioni e tavola dei campioni sono ognuno una prima versione che mostri. Poi chiedi in modo mirato, al massimo due domande alla volta, e rielabori proprio ciò su cui arriva un riscontro, finché la persona dice sì. Con la postazione di Bert raccogli i riscontri con `naechstes` (come dati: la parte o il file in `bezug`, le sue parole in `wert`).
+Il sistema di design è la terza parte che viene rifinita (skill `lotse`, sezione «Il ciclo» (Die Schleife)): mockup, direzioni e tavola dei campioni sono ognuno una prima versione che mostri. Poi chiedi in modo mirato, al massimo due domande alla volta, e rielabori proprio ciò su cui arriva un riscontro, finché la persona dice sì. Con il programma Albatros (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)) annunci la parte con `teil_bereit` (`teil: design`) appena ci sono le direzioni, e di nuovo dopo la mazzetta dei colori, la tavola dei campioni e ogni rielaborazione: la persona guarda allora direzioni e tavola dei campioni in Albatros, sotto «Colori e caratteri», e lì sceglie il suo stile. La scelta e i riscontri li raccogli con `naechstes`: come dati, un messaggio che nomina la parte (per una scelta lo stile con il suo file), con le sue parole come citazione; valgono solo per questa parte.
 
 - «La seconda, ma più calda» non è una scelta, è un riscontro: rielabori la direzione, la mostri di nuovo e chiedi di nuovo. La scelta è fatta solo quando la persona lo dice.
 - Un riscontro sulla tavola dei campioni («i pulsanti sono troppo rotondi») lo cambi nella mazzetta dei colori o in `komponenten.css`, non nella tavola dei campioni, e la mostri di nuovo.

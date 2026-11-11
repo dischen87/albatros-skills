@@ -3,7 +3,7 @@ name: seo-grundlagen
 description: "Rende visibile un piccolo sito web: per i motori di ricerca (SEO) e per gli assistenti IA (GEO), spiegato a persone senza conoscenze tecniche con l'immagine dei cartelli stradali e della pianta della città. Titolo e descrizione della pagina, un solo titolo principale, indirizzo canonico, descrizioni delle immagini, sitemap.xml, robots.txt, dati strutturati secondo il tipo di attività, anteprima quando si condivide, llms.txt, fatti e domande con risposte, Google Search Console, Bing Webmaster Tools, IndexNow e profilo dell'attività; verificato con sichtbar-pruefen.mjs sul sito costruito. Usa lo skill con «SEO», «GEO», «diventare visibile», «farsi trovare su Google», «Google non trova il mio sito», «farsi trovare in ChatGPT», «ricerca con l'IA», «motore di ricerca», «sitemap», «meta description», «Search Console», «Bing», «IndexNow», «llms.txt», «farsi trovare in zona», «comparire su Google Maps»."
 metadata:
   stand: 0.3.0
-  quelle: '9003980b5161'
+  quelle: 'd1e923bdddba'
 ---
 
 # Basi SEO: cartelli stradali e pianta della città
@@ -35,7 +35,7 @@ Le parole tecniche sono **SEO** (farsi trovare nei motori di ricerca) e **GEO** 
 
 - **Durante la costruzione** (skill `webseite-bauen`), sul computer della persona: tutto quello che sta nel sito, passi da 1 a 6. Lo script `sichtbar-pruefen.mjs` lo verifica sul sito costruito.
 - **Dopo la messa online** (skill `lancieren`), con l'indirizzo vero: Search Console, Bing Webmaster Tools, IndexNow e il profilo dell'attività, passi da 7 a 10. La cosa più semplice è con un dominio proprio (skill `domain`).
-- **Con la postazione di Bert** la tappa «Diventare visibile» (Sichtbar werden) mostra gli stessi dodici punti con gli stessi nomi dello script. Quello che la persona lì clicca o dà come riscontro lo prendi con `naechstes`.
+- **Con il programma Albatros** (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)) la tappa «Diventare visibile» mostra gli stessi dodici punti dello script, con parole di tutti i giorni («Farsi trovare su Google»). Chiama `naechstes` all'inizio e dopo ogni passo: dice quanti punti lì mancano ancora e porta quello che la persona chiede in Albatros. Se il suo messaggio nomina dei punti della verifica, ti occupi proprio di quelli e cambi solo ciò che serve per questo.
 
 ## Procedura
 
@@ -151,7 +151,7 @@ IndexNow è un campanello per i motori di ricerca: invece di aspettare che passi
    curl -s -o /dev/null -w '%{http_code}\n' "https://api.indexnow.org/indexnow?url=https://<domain>/&key=<chiave>"
    ```
    200 vuol dire accettata, 202 accettata e la chiave viene ancora verificata, 403 la chiave non corrisponde al file, 422 l'indirizzo non appartiene a questa chiave, 429 troppe segnalazioni. Più indirizzi vanno in una sola segnalazione come JSON (`host`, `key`, `urlList`, fino a 10 000 indirizzi).
-4. Si segnala quello che è nuovo, cambiato o cancellato, non tutto ogni giorno. Se la persona pubblica con la postazione di Bert, la tappa «Diventare visibile» dice se lì la segnalazione parte già insieme; allora non segnali due volte.
+4. Si segnala quello che è nuovo, cambiato o cancellato, non tutto ogni giorno. Se la persona pubblica con il programma Albatros, la tappa «Diventare visibile» dice se lì la segnalazione parte già insieme; allora non segnali due volte.
 
 ### 10. Per le attività locali: il profilo dell'attività
 

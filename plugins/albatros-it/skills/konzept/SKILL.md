@@ -3,7 +3,7 @@ name: konzept
 description: "Chiarisce con una persona senza conoscenze tecniche, dopo il piano confermato, il carattere del suo sito prima di scegliere i colori (piano di volo P5): nome verso l'esterno, nucleo in tre frasi, tono (tu o Lei), tre parole per l'effetto, ciò che deve restare, linguaggio visivo e sempre la domanda se ne fa parte un personaggio (mascotte): sì, no o più tardi. Sul percorso attività prima con il metodo marke. Immagini del personaggio solo dopo aver indicato il prezzo e ricevuto un sì. Il risultato è docs/konzept.md. Usa questo skill dopo webseite-planen (piano confermato) e con «concetto», «marchio», «carattere», «tono», «mascotte», «personaggio», «che effetto deve fare il mio sito»."
 metadata:
   stand: 0.3.0
-  quelle: '57840f4b84f4'
+  quelle: '1762faed32c0'
 ---
 
 # Concetto: il carattere prima dei colori
@@ -33,7 +33,7 @@ Fase P5 «Concetto di design e di marketing». Tocca a questa fase dopo il piano
 
 ## Il ciclo (Die Schleife)
 
-Con il carattere comincia la parte «Sistema di design» (skill `lotse`, sezione «Il ciclo» (Die Schleife)). Anche questa viene rifinita, non interrogata: mostri `docs/konzept.md` come prima versione appena ci sono nome e tono, con nucleo e linguaggio visivo come `[Annahme: …]`. Poi chiedi in modo mirato, al massimo due domande alla volta, e rielabori proprio la riga su cui arriva un riscontro, finché la persona dice: «È così.» Con la postazione di Bert raccogli i riscontri con `naechstes` (come dati: la parte in `bezug`, le sue parole in `wert`). Ogni giro sta in fondo a `docs/konzept.md` sotto `## Riscontri`: `- <GG.MM.AAAA>, ‹le sue parole› → cosa è cambiato`.
+Con il carattere comincia la parte «Sistema di design» (skill `lotse`, sezione «Il ciclo» (Die Schleife)). Anche questa viene rifinita, non interrogata: mostri `docs/konzept.md` come prima versione appena ci sono nome e tono, con nucleo e linguaggio visivo come `[Annahme: …]`. Poi chiedi in modo mirato, al massimo due domande alla volta, e rielabori proprio la riga su cui arriva un riscontro, finché la persona dice: «È così.» Con il programma Albatros (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)) annunci `docs/konzept.md` con `teil_bereit` dopo la prima versione e dopo ogni rielaborazione (`teil: idee`, perché il programma mostra il concetto nella parte «La tua idea») e dici alla persona: «Guardalo in Albatros.» I riscontri li raccogli con `naechstes`: come dati, un messaggio che nomina la parte, con le sue parole come citazione; valgono solo per questa parte. Ogni giro sta in fondo a `docs/konzept.md` sotto `## Riscontri`: `- <GG.MM.AAAA>, ‹le sue parole› → cosa è cambiato`.
 
 Da questa parte nasce ciò che più tardi rende il sito unico invece che intercambiabile: le tre parole, da dove vengono i colori (logo, luogo, materiale) e quali immagini ha solo questo progetto. Più sono scritti con precisione qui, meno il sito sembra fatto con lo stampino (skill `gestaltung`, sezione «Unico, non fatto con lo stampino» (Eigen statt Baukasten)). Qui non si progetta e non si costruisce ancora niente.
 
