@@ -497,7 +497,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-termin-knopf { display: flex; align-items: baseline; gap: 8px; width: 100%; min-height: 36px; padding: 6px 10px; border-radius: 10px; background: var(--sf); box-shadow: inset 3px 0 0 var(--pr2); text-align: left; font-size: 14px; color: inherit; min-width: 0; }
 button.ap-termin-knopf { cursor: pointer; }
 button.ap-termin-knopf:hover { background: var(--prs); }
-.ap-termin-knopf > time { flex: none; font-variant-numeric: tabular-nums; font-weight: 700; }
+.ap-termin-knopf > .ap-termin-zeiten { flex: none; font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
 .ap-termin-knopf > svg.i { flex: none; align-self: center; color: var(--mu); }
 .ap-termin.autopilot > .ap-termin-knopf { box-shadow: inset 3px 0 0 var(--as); }
 .ap-termin.gelaufen > .ap-termin-knopf { box-shadow: inset 3px 0 0 var(--mu); color: var(--mu); }
@@ -540,3 +540,474 @@ button.ap-termin-knopf:hover { background: var(--prs); }
 .ap-teilen .ap-pruefung svg.i { flex: none; margin-top: 2px; color: var(--mu); }
 .ap-protokoll { max-height: min(46vh, 420px); overflow-y: auto; padding: 12px 14px; border-radius: var(--radius-inner); background: var(--sf2); min-width: 0; }
 .ap-protokoll:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
+
+/* ---------------------------------------------------------------- Dein Weg */
+.ap-weg-start { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ap-weg-start > .steps { row-gap: 8px; }
+.ap-weg-naechstes-mehr { grid-column: 1 / -1; }
+.ap-weg-satz { font-family: var(--font-display); font-size: 21px; line-height: 1.3; color: var(--ink); overflow-wrap: break-word; }
+.ap-weg-etappen { display: flex; flex-direction: column; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.ap-weg-etappe { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ap-weg-etappe[data-offen="nein"][data-stand="noch_nicht"] { background: var(--sf2); box-shadow: none; }
+.ap-weg-etappe-kopf { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.ap-weg-etappe-kopf > .chip { flex: none; }
+.ap-weg-nummer { flex: none; width: 36px; height: 36px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--sf2); color: var(--mu); font-weight: 800; }
+.ap-weg-nummer.klein { width: 28px; height: 28px; font-size: 13px; }
+.ap-weg-etappe[data-stand="dran"] > .ap-weg-etappe-kopf > .ap-weg-nummer { background: var(--pr); color: var(--onpr); }
+.ap-weg-etappe[data-stand="fertig"] > .ap-weg-etappe-kopf > .ap-weg-nummer { background: var(--oks); color: var(--oki); }
+.ap-weg-liste { list-style: none; margin: 0; padding: 0; }
+.ap-weg-zeile { flex-wrap: wrap; }
+.ap-weg-zeile > .col { flex: 1 1 180px; }
+div.ap-weg-zeile:hover { background: none; }
+div.ap-weg-zeile > .col > b { color: var(--mu); }
+.ap-weg-ja, .ap-weg-bau { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; padding: 12px 0; border-top: 1px solid var(--ln); min-width: 0; }
+.ap-weg-bau { align-items: center; }
+.ap-weg-ja > .col, .ap-weg-bau > .col { flex: 1 1 180px; }
+.ap-weg-liste > li:first-child { border-top-color: transparent; }
+.ap-weg-ja[data-stand="dran"] { margin: 4px -12px; padding: 14px 12px; border: 0; border-radius: var(--radius-inner); background: var(--prs); }
+.ap-weg-ansehen { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ap-weg-schleifen { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ap-weg-feld { width: 100%; min-height: 96px; padding: 14px; border-radius: var(--radius-inner); border: 1px solid var(--ln); background: var(--sf2); color: var(--ink); font: inherit; line-height: 1.5; resize: vertical; }
+.ap-weg-feld::placeholder { color: var(--placeholder); }
+.ap-weg-feld:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
+.ap-weg-mehr { min-width: 0; }
+.ap-weg-mehr > summary { cursor: pointer; min-height: 32px; }
+.ap-weg-mehr[open] > summary { margin-bottom: 10px; }
+.ap-weg-mehr > * + * { margin-top: 10px; }
+.ap-weg-fassung { flex-wrap: wrap; }
+.ap-weg-fassung > .col { flex: 1 1 200px; }
+.ap-weg-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 20px; list-style: none; margin: 14px 0 0; padding: 0; }
+.ap-weg-raster > li { min-width: 0; }
+.ap-weg-vergleich { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.ap-weg-vergleich > figure { margin: 0; min-width: 0; }
+.ap-weg-diff { list-style: none; margin: 0; padding: 8px 0; max-height: 70vh; overflow: auto; border-radius: var(--radius-inner); background: var(--sf2); font-family: var(--font-mono); font-size: 13px; line-height: 1.5; }
+.ap-weg-diff > li { display: flex; gap: 8px; padding: 1px 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ap-weg-diff > li > svg.i { flex: none; width: 14px; height: 14px; margin-top: 3px; }
+.ap-weg-diff > li.gleich { color: var(--ink-soft); }
+.ap-weg-diff > li.gleich > svg.i { visibility: hidden; }
+.ap-weg-diff > li.neu { background: var(--oks); color: var(--oki); }
+.ap-weg-diff > li.weg { background: var(--fus); color: var(--fui); text-decoration: line-through; }
+.ap-weg-diff > li.luecke { color: var(--mu); justify-content: center; }
+.ap-weg-bereich { border-top: 1px solid var(--ln); min-width: 0; }
+.ap-weg-bereich > summary { display: flex; align-items: center; gap: 12px; padding: 14px 0; cursor: pointer; list-style: none; min-width: 0; }
+.ap-weg-bereich > summary::-webkit-details-marker { display: none; }
+.ap-weg-bereich > summary > .chip { flex: none; }
+.ap-weg-pfeil { flex: none; color: var(--mu); transition: transform .15s; }
+.ap-weg-bereich[open] > summary > .ap-weg-pfeil { transform: rotate(90deg); }
+.ap-weg-bereich-inhalt { padding: 0 0 18px; }
+.ap-weg-punkte { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.ap-weg-punkte > li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 8px 0; min-width: 0; }
+.ap-weg-punkte > li > .col, .ap-weg-punkte > li > .grow { flex: 1 1 200px; }
+.ap-weg-marke { flex: none; width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--sf2); color: var(--mu); }
+.ap-weg-marke > svg.i { width: 15px; height: 15px; }
+.ap-weg-marke.ok { background: var(--oks); color: var(--oki); }
+.ap-weg-marke.fehlt { background: var(--was); color: var(--wai); }
+.ap-weg-schritte { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.ap-weg-schritt { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.ap-weg-wahl { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.ap-weg-wahl > li { min-width: 0; box-shadow: inset 0 0 0 1px var(--ln); }
+@media (max-width: 767px) {
+  .ap-weg-satz { font-size: 19px; }
+  .ap-weg-naechstes .k-naechster-knoepfe > .btn:first-child { flex: 1 1 auto; }
+}
+@media (prefers-reduced-motion: reduce) { .ap-weg-pfeil { transition: none; } }
+
+/* «Heute», «Dein Ja», das eine Feld an Bert und gemeinsame Teile nach dem UX-Konzept (docs/foundable/ux-cockpit.md). Nur Tokens und
+   Klassen aus albatros.css; eigene Klassen heissen ap-*. */
+
+/* Navigation unten am Handy: Heute · Bert · Meine Seite · Mehr (so viele Spalten, wie es Punkte gibt) */
+.ap-unten { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+.ap-oben { min-height: 52px; padding: 8px 16px; }
+
+/* Heute */
+.ap-heute { gap: 20px; }
+.ap-heute-kopf { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; min-width: 0; }
+.ap-heute-kopf > .meta { min-width: 0; }
+.ap-weg-leiste { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 14px; border-radius: var(--radius-inner); background: var(--sf);
+  box-shadow: inset 0 0 0 1px var(--ln); color: inherit; text-decoration: none; min-width: 0; }
+.ap-weg-leiste > .steps { flex: 1; min-width: 0; flex-wrap: wrap; row-gap: 6px; }
+.ap-weg-leiste > svg.i { flex: none; color: var(--mu); }
+.ap-weg-leiste.klickbar:hover { background: var(--sf2); text-decoration: none; }
+.ap-jetzt, .ap-schon-da { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ap-jetzt-titel { color: var(--mu); }
+.ap-jetzt-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
+.ap-jetzt-fuss > .lnk { text-decoration: none; }
+.ap-wartet { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ap-wartet .k-knoepfe { align-items: center; }
+.ap-wartet .btn { white-space: normal; text-align: left; }
+/* Dein Ja: ein Hauptknopf, «Zuerst ansehen» und «Noch nicht» leiser darunter */
+.ap-ja-leise { gap: var(--space-2); margin-top: calc(-1 * var(--space-2)); }
+.ap-wartet .ap-entwurf-text.zu { max-height: 9.5em; overflow: hidden; }
+.ap-jetzt .card.k-naechster { grid-template-columns: auto minmax(0, 1fr); }
+.ap-jetzt .card.k-naechster > .k-naechster-knoepfe { grid-column: 1 / -1; }
+.ap-schon-da > .ap-erstellt { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+
+/* Leerer Start: Bert und das eine Feld gross in der Mitte */
+.ap-idee { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 32px 28px; text-align: center; }
+.ap-idee > .k-maskottchen { width: 120px; }
+.ap-idee-text { font-size: 18px; line-height: 1.45; color: var(--ink-soft); max-width: 34em; }
+.ap-idee > .ap-chat-eingabe { width: 100%; max-width: 640px; text-align: left; }
+.ap-idee-wege { align-items: center; padding-top: 10px; }
+.ap-chat-eingabe.schlicht { padding: 0; background: transparent; border-top: 0; gap: 8px; }
+.ap-chat-eingabe.schlicht .compose { padding: 10px; }
+.ap-chat-eingabe.schlicht textarea { font-size: 17px; }
+.ap-rahmen[data-leer="ja"] .ap-inhalt { max-width: 760px; }
+@media (min-width: 768px) { .ap-rahmen[data-leer="ja"] .ap-heute { padding-top: 6vh; } }
+@media (max-width: 767px) {
+  .ap-idee { padding: 22px 16px; gap: 14px; }
+  .ap-idee > .k-maskottchen { width: 88px; }
+  .ap-idee-wege > .btn.sec { width: 100%; }
+}
+
+/* Das eine Feld an Bert: Vorschläge zum Antippen und der Bezug der Nachricht darüber */
+.ap-chips { display: flex; flex-direction: column; gap: 6px; }
+.ap-chip { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 8px 12px; border-radius: var(--radius-inner); background: var(--prs);
+  color: var(--primary-ink); font-size: 14px; font-weight: 600; line-height: 1.3; text-align: left; cursor: pointer; }
+.ap-chip:hover { background: color-mix(in srgb, var(--prs) 80%, var(--pr) 20%); }
+.ap-chip > svg.i { flex: none; }
+.ap-chip > span { min-width: 0; overflow-wrap: anywhere; }
+.ap-bezug { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 4px 4px 12px; border-radius: var(--radius-inner); background: var(--sf2);
+  font-size: 14px; font-weight: 600; }
+.ap-bezug > svg.i { flex: none; color: var(--mu); }
+.ap-bert-stand { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 20px 12px; border-bottom: 1px solid var(--ln); }
+.ap-bert-stand .chip { white-space: normal; }
+.ap-chat-kopf { border-bottom: 1px solid var(--ln); padding-bottom: 12px; }
+.ap-chat-kopf:has(+ .ap-bert-stand) { border-bottom: 0; padding-bottom: 6px; }
+.ap-chat-hinweis:empty { display: none; }
+.ap-schritte > summary { min-height: 44px; }
+
+/* «Für Neugierige»: aufklappbar, leise */
+.ap-neugierig { border-radius: var(--radius-inner); background: var(--sf2); min-width: 0; }
+.ap-neugierig > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; font-size: 14px; font-weight: 700; color: var(--ink-soft); cursor: pointer; list-style: none; }
+.ap-neugierig > summary::-webkit-details-marker { display: none; }
+.ap-neugierig > summary::before { content: "▸"; color: var(--mu); }
+.ap-neugierig[open] > summary::before { content: "▾"; }
+.ap-neugierig-inhalt { padding: 4px 14px 14px; min-width: 0; font-size: 14px; }
+.ap-neugierig-inhalt code, .ap-neugierig-inhalt pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+.ap-zurueck > svg.i { width: 18px; height: 18px; }
+
+/* Kopf von Bert: neues Gespräch und frühere Gespräche mit Wort */
+.ap-chat-gespraeche { display: flex; flex-wrap: wrap; gap: 0 8px; padding: 0 12px 4px; border-bottom: 1px solid var(--ln); }
+.ap-chat-kopf { border-bottom: 0; padding-bottom: 4px; }
+.ap-chat-gespraeche:has(+ .ap-bert-stand) { border-bottom: 0; }
+.ap-bert-stand { padding-top: 6px; }
+/* Das Beispiel unter dem Feld in der Mitte steht auch am Handy da */
+.ap-chat-eingabe.schlicht .ap-chat-hinweis { display: block; }
+
+/* Dein Ja: Die erste Karte ist offen, die weiteren klappen auf (am Handy bleibt die Liste kurz) */
+.ap-wartet-zu { border-radius: var(--radius-card, 20px); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); min-width: 0; }
+.ap-wartet-zu > summary { display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 16px; cursor: pointer; list-style: none; }
+.ap-wartet-zu > summary::-webkit-details-marker { display: none; }
+.ap-wartet-zu > summary > svg.i { flex: none; color: var(--mu); transition: transform .15s ease; }
+.ap-wartet-zu[open] > summary > svg.i { transform: rotate(90deg); }
+.ap-wartet-zu[open] > summary { border-bottom: 1px solid var(--ln); }
+.ap-wartet-zu > .ap-wartet { box-shadow: none; background: transparent; border-radius: 0; }
+@media (prefers-reduced-motion: reduce) { .ap-wartet-zu > summary > svg.i { transition: none; } }
+
+/* Touch-Ziele mindestens 44 px (gemessen im Foto-Skript) */
+.ap-wartend-zeile .lnk, .ap-nachricht-aendern { min-height: 44px; }
+.ap-vorbild { min-height: 44px; padding: 2px 10px; }
+.ap-anhang > .act { width: 44px; height: 44px; }
+.ap-anhang { min-height: 44px; }
+.ap-termin-knopf { min-height: 44px; align-items: center; }
+/* Was sich nicht antippen lässt («Bert arbeitet allein», Erledigtes), braucht kein Touch-Ziel */
+span.ap-termin-knopf { min-height: 36px; }
+
+/* Kalender am Handy: die Woche als Zeilen (Tag links, Termine rechts), das Jahr in drei Spalten */
+@media (max-width: 767px) {
+  .ap-kal-woche > .ap-kal-tag { flex-direction: row; align-items: flex-start; gap: 8px; padding: 2px 8px; }
+  .ap-kal-woche > .ap-kal-tag > .ap-kal-tagkopf { flex: none; width: 46px; }
+  .ap-kal-tagkopf > .lnk { flex-direction: column; align-items: flex-start; justify-content: center; line-height: 1.25; text-align: left; }
+  .ap-kal-woche > .ap-kal-tag > .ap-termine { flex: 1; min-width: 0; padding: 4px 0; }
+  .ap-kal-woche > .ap-kal-tag > p { min-height: 44px; display: flex; align-items: center; }
+  .ap-kal-jahr { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .ap-kal-mini { padding: 8px 6px; }
+}
+
+/* Ein Link, der allein in einer Zeile steht (Adresse der Seite): als Touch-Ziel 44 px hoch */
+.ap-ziel { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Alles unter «Mehr» und die «Unterlagen» (bildschirme/mehr.tsx, verlauf.tsx, werkzeuge.tsx, apps.tsx, bibliothek.tsx, aufgaben.tsx,
+   kalender.tsx, allein.tsx, suche.tsx). Nur Tokens; hell und dunkel kommen aus den Tokens. Touch-Ziele mindestens 44 px. */
+
+/* Grosse Zeilen: der ganze Eintrag ist der Link («Mehr», Liste der Werkzeuge, Dienste im Konto) */
+.ap-mehr-liste { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ap-mehr-zeile { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 64px; padding: 10px 12px; border: 0; border-radius: var(--radius-inner); background: none;
+  color: inherit; font: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+.ap-mehr-zeile:hover { background: var(--sf2); text-decoration: none; }
+.ap-mehr-zeile:focus-visible { outline: 2px solid var(--pr); outline-offset: -2px; }
+.ap-mehr-zeile > .col { min-width: 0; overflow-wrap: break-word; }
+.ap-mehr-zeile > svg.i { flex: none; color: var(--mu); }
+
+/* Verlauf: Filter als Links, die umbrechen statt seitlich zu rollen */
+.ap-filter { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.ap-filter > .fc { min-height: 44px; white-space: normal; text-decoration: none; }
+.ap-verlauf-karte { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ap-verlauf-karte .k-inhalt { overflow-wrap: anywhere; }
+/* Platz für Tag und Uhrzeit: am Handy auf zwei Zeilen, ab 768 px auf einer */
+.ap-verlauf-karte .ap-zeitstrahl > li { grid-template-columns: 64px 28px minmax(0, 1fr); }
+.ap-verlauf-karte .ap-zeitstrahl > li:not(:last-child)::before { left: 87px; }
+@media (min-width: 768px) {
+  .ap-verlauf-karte .ap-zeitstrahl > li { grid-template-columns: 104px 28px minmax(0, 1fr); }
+  .ap-verlauf-karte .ap-zeitstrahl > li:not(:last-child)::before { left: 127px; }
+}
+
+/* Aufträge einzeln */
+.ap-auftraege { display: flex; flex-direction: column; list-style: none; margin: 0; padding: 0; }
+.ap-auftrag { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-height: 56px; padding: 10px; margin: 0 -10px; border-top: 1px solid var(--ln); border-radius: 14px;
+  color: inherit; text-decoration: none; }
+.ap-auftraege > li:first-child > .ap-auftrag { border-top-color: transparent; }
+.ap-auftrag:hover { background: var(--sf2); text-decoration: none; }
+.ap-auftrag > .col { flex: 1 1 200px; min-width: 0; }
+.ap-auftrag > .chip { flex: none; }
+.ap-auftrag > svg.i { flex: none; color: var(--mu); }
+@media (max-width: 767px) { .ap-auftrag > svg.i { display: none; } }
+
+/* Frühere Stände der Seite */
+.ap-speicher-satz { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.ap-speicher-satz > svg.i { flex: none; color: var(--oki); }
+.ap-staende-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.ap-staende { display: flex; flex-direction: column; list-style: none; margin: 0; padding: 0; }
+.ap-stand { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 0; border-top: 1px solid var(--ln); min-width: 0; }
+.ap-stand:first-child { border-top: 0; }
+.ap-stand > .col { flex: 1 1 180px; min-width: 0; }
+.ap-merk { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; color: var(--mu); cursor: pointer; }
+.ap-merk:hover { background: var(--sf2); }
+.ap-merk:focus-visible { outline: 2px solid var(--pr); outline-offset: 2px; }
+.ap-merk.an { color: var(--pr2); background: var(--prs); }
+.ap-merk.an svg { fill: currentColor; }
+
+/* Unterlagen: eine Liste */
+.ap-unterlagen { display: flex; flex-direction: column; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.ap-unterlage { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px; border-radius: var(--radius-inner); color: inherit; text-decoration: none; }
+.ap-unterlage:hover { background: var(--sf2); text-decoration: none; }
+.ap-unterlage:focus-visible { outline-offset: -2px; }
+.ap-unterlage > .col { min-width: 0; }
+.ap-unterlage > svg.i { flex: none; color: var(--mu); }
+.ap-unterlage-bild { flex: none; width: 44px; height: 44px; object-fit: cover; border-radius: 12px; background: var(--sf2); }
+
+/* Erinnerungen und Automatik */
+.ap-allein-schalter { max-width: 420px; }
+.ap-ansicht-wahl > .seg { max-width: 100%; }
+.ap-termin-knopf { min-height: 44px; }
+.ap-kal-tagkopf > .lnk { display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 767px) {
+  .ap-ansicht-wahl > .seg { display: grid; width: 100%; }
+  .ap-ansicht-wahl > .seg > button { padding: 0 6px; }
+  .ap-ansicht-wahl > .seg > button > svg.i { display: none; }
+  .ap-staende-kopf > .btn { flex: 1 1 100%; }
+}
+
+/* «Meine Projekte» (bildschirme/projekte.tsx) und der Name des Projekts im Kopf als Knopf, nur im Programm «Albatros». Nur Tokens; hell und
+   dunkel kommen aus den Tokens. Touch-Ziele mindestens 44 px. */
+
+/* Name im Kopf: ein Knopf zu «Meine Projekte» */
+.ap-projekt-knopf { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; max-width: 100%; min-width: 0; margin: 0 0 0 -6px; padding: 0 6px;
+  border-radius: var(--radius-inner); color: inherit; text-decoration: none; }
+.ap-projekt-knopf:hover { background: var(--sf2); text-decoration: none; }
+.ap-projekt-knopf:focus-visible { outline: 2px solid var(--pr); outline-offset: 0; }
+.ap-projekt-knopf > svg.i { flex: none; width: 16px; height: 16px; color: var(--mu); }
+.ap-projekt-knopf > span { min-width: 0; }
+.ap-oben-projekt { display: flex; min-width: 0; }
+/* links am Computer: der ganze Name auf höchstens zwei Zeilen statt «Velowerkst…» */
+.ap-marke-projekt { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; line-height: 1.3; }
+.ap-oben-name { font-family: var(--font-display); font-weight: 600; }
+
+/* Liste der Projekte */
+.ap-projekte { display: flex; flex-direction: column; gap: 12px; list-style: none; margin: 0; padding: 0; min-width: 0; }
+.ap-projekt { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ap-projekt.offen { box-shadow: inset 0 0 0 2px var(--pr); }
+.ap-projekt-oeffnen { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; margin: -8px; padding: 8px; border: 0; border-radius: var(--radius-inner);
+  background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; box-sizing: content-box; }
+.ap-projekt-oeffnen:hover { background: var(--sf2); }
+.ap-projekt-oeffnen:focus-visible { outline: 2px solid var(--pr); outline-offset: -2px; }
+.ap-projekt-oeffnen > .col { min-width: 0; overflow-wrap: anywhere; }
+.ap-projekt-oeffnen > svg.i { flex: none; color: var(--mu); }
+.ap-projekt-oeffnen > .chip { flex: none; }
+.ap-projekt-name { font-size: 17px; }
+.ap-projekt-hinweise { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-width: 0; }
+.ap-projekt-hinweise > .meta { margin: 0; }
+.ap-projekt-leise { display: flex; flex-wrap: wrap; gap: 0; margin: 0 -8px -8px; }
+.ap-projekt-leise > .btn { padding: 0 8px; }
+.ap-projekt-frage { display: flex; flex-direction: column; gap: 10px; padding-top: 10px; border-top: 1px solid var(--ln); }
+.ap-projekt-frage > p { margin: 0; overflow-wrap: anywhere; }
+
+/* Feld «Wie heisst deine Idee?» und Umbenennen */
+.ap-projekt-form { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ap-projekt-knoepfe { display: flex; flex-wrap: wrap; gap: 8px; }
+.ap-projekt-laedt { display: grid; place-items: center; min-height: 120px; }
+
+/* Frage vor dem Wechsel und «Albatros öffnet dein Projekt» */
+.ap-projekt-wechsel-knoepfe { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.ap-projekt-oeffnet { position: fixed; inset: 0; z-index: 90; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  background: var(--bg); color: var(--ink); }
+
+/* «Meine Seite», Einstellungen, «Mit Albatros verbinden» und «Bert einrichten» (bildschirme/webseite.tsx, einstellungen.tsx, verbinden.tsx,
+   einrichten.tsx). Nur Tokens aus packages/ui (hell und dunkel kommen von dort); alles andere sind Klassen aus albatros.css und
+   arbeitsplatz.css. */
+
+/* ---- Meine Seite: der eine Satz fürs Speichern unter dem Titel, dazu die Adresse im Netz */
+.ap-seite-stand { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); min-width: 0; }
+.ap-seite-stand > b { color: var(--ink); font-size: 15px; font-weight: 700; }
+.ap-seite-stand > .lnk { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; }
+
+/* ---- Ins Netz stellen: ein Satz, der nächste Schritt, die volle Liste zum Aufklappen */
+.ap-netz-kopf { align-items: center; }
+.ap-netz-kopf > h2:focus { outline: none; }
+.ap-netz-kopf > h2:focus-visible { outline: 2px solid var(--pr2); outline-offset: 4px; border-radius: var(--radius-thumb); }
+.ap-netz-satz { margin: 0; font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); overflow-wrap: break-word; }
+.ap-netz-naechster { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-inner); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); min-width: 0; }
+.ap-netz-naechster > b { font-size: 17px; line-height: 1.3; overflow-wrap: break-word; }
+.ap-netz-naechster > .meta { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.ap-netz-naechster > .k-knoepfe { margin-top: var(--space-1); }
+.ap-netz-alle > summary, .ap-seite-mehr summary { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; width: fit-content; max-width: 100%; cursor: pointer; list-style: none; font-weight: 700; color: var(--pr2); border-radius: var(--radius-thumb); }
+.ap-netz-alle > summary::-webkit-details-marker, .ap-seite-mehr summary::-webkit-details-marker { display: none; }
+.ap-netz-alle > summary::before, .ap-seite-mehr summary::before { content: "▸"; flex: none; }
+.ap-netz-alle[open] > summary::before, .ap-seite-mehr details[open] > summary::before { content: "▾"; }
+.ap-netz-alle > summary:focus-visible, .ap-seite-mehr summary:focus-visible { outline: 2px solid var(--pr2); outline-offset: 2px; }
+.ap-netz-alle > .ap-pruefung { margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.ap-netz-alle .ap-pruefpunkt > .k-knoepfe { margin-top: var(--space-1); }
+
+/* ---- Mehr zu deiner Seite (eingeklappt am Ende) */
+.ap-seite-mehr summary { color: var(--ink); }
+.ap-seite-mehr summary > h2 { margin: 0; font-size: 17px; }
+.ap-seite-mehr-inhalt { margin-top: var(--space-3); min-width: 0; }
+.ap-seite-mehr-inhalt > .lnk { align-self: flex-start; margin-left: 0; }
+@media (max-width: 767px) {
+  .ap-seite-mehr-inhalt > .k-knoepfe > .btn { width: 100%; }
+}
+
+/* ---- Vorschau ohne Seite: ein Satz, ein Knopf */
+.ap-keine-vorschau .ap-vorschau-stand > h2 { margin: 0; }
+.ap-keine-vorschau .ap-ausgabe > pre { margin: 0; }
+
+/* ---- Bert einrichten: die vier Schritte, darunter die eine Karte */
+.ap-einrichten-schritte { min-width: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-inner); background: var(--sf2); }
+.ap-einrichten-karte h2 { margin: 0; }
+.ap-einrichten-karte p { margin: 0; overflow-wrap: break-word; }
+.ap-einrichten-karte > [role="status"] { align-items: center; }
+
+/* ---- Einstellungen: vier kurze Karten, der Rest unter «Für Neugierige» */
+.ap-einstellungen h2 > label { cursor: pointer; }
+.ap-einstellungen .card > .col > p { margin: 0; }
+
+/* «Dein Weg» nach dem UX-Konzept (bildschirme/weg.tsx, weg-teil.tsx, weg-sichtbar.tsx, weg-online.tsx): ergänzt und überschreibt die Regeln
+   ap-weg-* aus arbeitsplatz.css. Nur Tokens; hell und dunkel kommen aus den Tokens. Touch-Ziele mindestens 44 px, am Handy jede Ansicht
+   höchstens zwei Bildschirmlängen (Langes ist zugeklappt). */
+
+/* Etappen: offen ist eine. Zu und schon begonnen: Die ganze Zeile führt hinein. Zu und noch nicht dran: eine Zeile mit einem Satz. */
+.ap-weg-etappe-kopf h2 { margin: 0; }
+.ap-weg-etappe-kopf .meta { margin: 0; }
+.ap-weg-etappe-link { align-items: center; min-height: 44px; margin: calc(-1 * var(--space-3)); padding: var(--space-3); border-radius: var(--radius-inner); color: inherit; text-decoration: none; }
+.ap-weg-etappe-link:hover { background: var(--sf2); text-decoration: none; }
+.ap-weg-etappe-link:focus-visible { outline: 2px solid var(--pr); outline-offset: -2px; }
+.ap-weg-etappe-link > svg.i { flex: none; color: var(--mu); }
+@media (max-width: 767px) {
+  .ap-weg-etappe[data-offen="nein"] { padding: var(--space-4); }
+  .ap-weg-etappen { gap: var(--space-2); }
+}
+
+/* Karte «Jetzt dran»: der Satz bricht um, der Hauptknopf steht am Handy in voller Breite darunter */
+.ap-weg-naechstes > .col { min-width: 0; }
+.ap-weg-naechstes .k-naechster-knoepfe { align-items: center; }
+/* In einer Etappe («Sichtbar werden», «Online») ist die Karte schmaler: die Knöpfe unter dem Satz statt daneben */
+.ap-weg-etappe .card.ap-weg-naechstes { grid-template-columns: auto minmax(0, 1fr); }
+.ap-weg-etappe .ap-weg-naechstes .k-naechster-knoepfe { grid-column: 1 / -1; justify-content: flex-start; }
+
+/* «Alle ansehen», «Schon gebaut», «Schon gut»: zugeklappt, was nicht als Nächstes zu tun ist */
+.ap-weg-alle { min-width: 0; }
+.ap-weg-alle > summary { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 2px; border-radius: 12px; cursor: pointer; list-style: none; font-weight: 600; color: var(--pr2); }
+.ap-weg-alle > summary::-webkit-details-marker { display: none; }
+.ap-weg-alle > summary > .ap-weg-pfeil { width: 16px; height: 16px; color: inherit; }
+.ap-weg-alle[open] > summary > .ap-weg-pfeil { transform: rotate(90deg); }
+
+/* «Frühere Stände»: Titel und Pfeil in einer Zeile, die Liste erst nach dem Aufklappen */
+details.ap-weg-mehr.card { display: block; }
+.ap-weg-mehr > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 44px; list-style: none; }
+.ap-weg-mehr > summary::-webkit-details-marker { display: none; }
+.ap-weg-mehr[open] > summary > .ap-weg-pfeil { transform: rotate(90deg); }
+.ap-weg-fassung { align-items: center; }
+.ap-weg-fassung > .chip { flex: none; }
+
+/* Teil ansehen: Ein langes Dokument ist am Handy gekürzt, darunter «Ganzen Text zeigen» (ab 768 px steht alles da) */
+.ap-weg-lang { min-width: 0; }
+.ap-weg-lang > div { min-width: 0; }
+@media (max-width: 767px) {
+  .ap-weg-lang[data-ganz="nein"] { max-height: 420px; overflow: hidden; }
+  .ap-weg-lang[data-ganz="nein"][data-lang="ja"] {
+    -webkit-mask-image: linear-gradient(to bottom, var(--ink) calc(100% - 64px), transparent);
+    mask-image: linear-gradient(to bottom, var(--ink) calc(100% - 64px), transparent);
+  }
+}
+@media (min-width: 768px) { .ap-weg-lang-knopf { display: none; } }
+
+/* «Etwas soll anders werden»: ein Knopf (füllt das eine Feld an Bert) und ein Satz daneben */
+.ap-weg-anders { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); min-width: 0; }
+.ap-weg-anders > .meta { flex: 1 1 220px; min-width: 0; }
+
+/* Sichtbar werden: fünf Bereiche, zu nur Titel und Stand */
+.ap-weg-bereiche { display: flex; flex-direction: column; min-width: 0; }
+.ap-weg-bereiche > .ap-weg-bereich:first-child { border-top-color: transparent; }
+.ap-weg-bereich > summary { min-height: 56px; padding: var(--space-2) 0; }
+.ap-weg-bereich-inhalt > .meta { margin: 0; }
+.ap-weg-punkte > li { min-height: 44px; }
+
+/* Online: die Adresse der Seite als Link zum Antippen */
+.ap-weg-adresse { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.ap-weg-adresse > svg.i { flex: none; }
+
+@media (max-width: 767px) {
+  .ap-weg-bau { padding: var(--space-2) 0; }
+  .ap-weg-raster { gap: var(--space-4); }
+  /* Teile der Etappe «Idee schleifen»: Der erklärende Satz steht nur bei dem, was gerade zum Ansehen da ist; sonst Titel und Stand in einer Zeile */
+  .ap-weg-liste > li[data-stand="fehlt"] > .ap-weg-zeile > .col, .ap-weg-liste > li[data-stand="steht"] > .ap-weg-zeile > .col { flex: 1 1 120px; }
+  .ap-weg-liste > li[data-stand="fehlt"] > .ap-weg-zeile .meta, .ap-weg-liste > li[data-stand="steht"] > .ap-weg-zeile .meta { display: none; }
+  .ap-weg-ja[data-stand="offen"][data-bereit="nein"] .meta { display: none; }
+  /* Punkte der Prüfung: «Nur das» steht neben dem Punkt statt darunter */
+  .ap-weg-punkte > li > .col, .ap-weg-punkte > li > .grow { flex: 1 1 140px; }
+  /* Zugeklapptes («Frühere Stände», «Dein Stil») braucht am Handy keine hohe Karte */
+  details.ap-weg-mehr.card { padding: var(--space-3) var(--space-4); }
+}
+
+/* Am Handy: Bei einem offenen Bauteil sagt der Knopf «Bert, bau das» schon, dass es offen ist; ohne den Chip steht er in derselben Zeile
+   (so bleibt die Etappe «Bauen» mit sieben Teilen unter zwei Bildschirmlängen, gemessen im Foto-Skript) */
+@media (max-width: 767px) {
+  .ap-weg-bau[data-stand="offen"]:has(> .btn) > .chip { display: none; }
+  .ap-weg-bau > .col { flex-basis: 120px; }
+}
+
+/* Korrekturrunde nach dem Anfänger-Test (11.11.2026) */
+/* Vergleich zweier Stände eines Texts: lesbare Sätze («Neu: …», «Weg: …», «Geändert: …») in der Schrift des Lauftexts, ohne Farbflächen */
+.ap-weg-aenderungen { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); max-height: 70vh; overflow: auto; }
+.ap-weg-aenderungen > li { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+.ap-weg-aenderungen > li > .ap-weg-marke { margin-top: 1px; }
+/* Eine spätere Etappe: eine Zeile, die ihren einen Satz aufklappt */
+.ap-weg-spaeter-etappe > summary { align-items: center; min-height: 44px; cursor: pointer; list-style: none; }
+.ap-weg-spaeter-etappe > summary::-webkit-details-marker { display: none; }
+.ap-weg-spaeter-etappe > summary > .ap-weg-pfeil { flex: none; width: 16px; height: 16px; color: var(--mu); }
+.ap-weg-spaeter-etappe[open] > summary > .ap-weg-pfeil { transform: rotate(90deg); }
+.ap-weg-spaeter-etappe > p { margin: var(--space-2) 0 0 48px; }
+.ap-weg-etappe-kopf { align-items: center; }
+.ap-weg-etappe-kopf > h2 { min-width: 0; }
+/* «Kommt noch»: nur die Namen, nichts zum Drücken */
+.ap-weg-kommt { list-style: none; margin: 0; padding: 0 0 0 2px; display: flex; flex-direction: column; gap: 6px; }
+/* Ein Teil der Etappe «Idee schleifen»: eine Zeile */
+a.ap-weg-zeile { align-items: center; flex-wrap: nowrap; min-height: 56px; }
+a.ap-weg-zeile > b { flex: 1 1 auto; min-width: 0; }
+a.ap-weg-zeile > .chip, a.ap-weg-zeile > svg.i { flex: none; }
+/* «Das kannst du auch später machen»: leiser Titel, darunter Zeilen mit je einem Knopf */
+.ap-weg-spaeter { min-width: 0; padding-top: var(--space-3); border-top: 1px solid var(--ln); }
+.ap-weg-spaeter > h3 { margin: 0; }
+.ap-weg-spaeter > .meta { margin: 0; }
+.ap-weg-spaeter .ap-weg-punkte > li { border-top: 1px solid var(--ln); padding: var(--space-3) 0; }
+.ap-weg-spaeter .ap-weg-punkte > li:first-child { border-top: 0; }
+/* Geführter Ablauf (Google, Bing): ein Schritt, ein Knopf */
+.ap-weg-ablauf > h2, .ap-weg-ablauf > p { margin: 0; }
+.ap-weg-ablauf > h2:focus { outline: none; }
+/* Preis von Albatros: ein Satz und dahinter der Link «Preise ansehen» */
+.ap-preis { margin: 0; min-width: 0; }
+/* «Meine Seite»: Die Knöpfe «Text ändern», «Foto ändern», «Bert etwas zeigen» stehen in derselben umbrechenden Zeile wie Seitenwahl, Grösse
+   und «neu laden»; so braucht die Leiste am Handy zwei Zeilen statt drei */
+.ap-werkzeuge { display: contents; }
+.ap-werkzeug-hilfe { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-width: 0; }
+.ap-werkzeug-hilfe > .meta { margin: 0; flex: 1 1 220px; }
