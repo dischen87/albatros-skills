@@ -13622,7 +13622,7 @@ function neuerAnmelder(k, o = {}) {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        client_name: "Berts Arbeitsplatz",
+        client_name: "Albatros",
         redirect_uris: [rueckkehrAdresse],
         grant_types: ["authorization_code"],
         response_types: ["code"],
@@ -18512,11 +18512,11 @@ function koepfe(res) {
 function seite(res, k, status, titel, text, o = {}) {
   const b = `${k.basis}/`;
   const knopf = o.knopf ? `<p><a class="btn lg" href="${esc3(b)}anmelden">${esc3(o.knopf)}</a></p>` : "";
-  const html = '<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' + `<meta name="referrer" content="no-referrer"><title>${esc3(titel)} · Berts Arbeitsplatz</title><link rel="icon" href="${esc3(b)}favicon.svg" type="image/svg+xml">` + ["schriften.css", "tokens.css", "albatros.css", "arbeitsplatz.css"].map((c) => `<link rel="stylesheet" href="${esc3(b)}${c}">`).join("") + `</head><body><main class="ap-vorher" id="inhalt"><section class="card p24 ap-vorher-karte"><h1 class="t2">${esc3(titel)}</h1><p>${esc3(text)}</p>${knopf}</section></main></body></html>`;
+  const html = '<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' + `<meta name="referrer" content="no-referrer"><title>${esc3(titel)} · Albatros</title><link rel="icon" href="${esc3(b)}favicon.svg" type="image/svg+xml">` + ["schriften.css", "tokens.css", "albatros.css", "arbeitsplatz.css"].map((c) => `<link rel="stylesheet" href="${esc3(b)}${c}">`).join("") + `</head><body><main class="ap-vorher" id="inhalt"><section class="card p24 ap-vorher-karte"><h1 class="t2">${esc3(titel)}</h1><p>${esc3(text)}</p>${knopf}</section></main></body></html>`;
   res.writeHead(status, { "content-type": "text/html; charset=utf-8", "content-length": Buffer.byteLength(html), "cache-control": "no-store", ...o.koepfe });
   res.end(html);
 }
-var anmeldeSeite = (res, k, status = 200) => seite(res, k, status, "Berts Arbeitsplatz", "Hier arbeitet deine KI für dein Projekt, auch wenn dein Computer aus ist. Hinein kommen nur Mitglieder des Projekts.", { knopf: k.anmeldung.art === "dev" ? "Mit Albatros anmelden (lokal)" : "Mit Albatros anmelden" });
+var anmeldeSeite = (res, k, status = 200) => seite(res, k, status, "Albatros", "Hier arbeitet deine KI für dein Projekt, auch wenn dein Computer aus ist. Hinein kommen nur Mitglieder des Projekts.", { knopf: k.anmeldung.art === "dev" ? "Mit Albatros anmelden (lokal)" : "Mit Albatros anmelden" });
 var vonInnen = (req) => {
   const a = req.socket.remoteAddress ?? "";
   return a === "127.0.0.1" || a === "::1" || a === "::ffff:127.0.0.1";
@@ -43248,7 +43248,7 @@ async function starteServer(o) {
 }
 
 // src/main.ts
-var HILFE = `Berts Arbeitsplatz für dein Projekt
+var HILFE = `Albatros für dein Projekt
 
 Aufruf: node arbeitsplatz.mjs [Optionen]
 
@@ -43350,7 +43350,7 @@ async function main() {
   }
   const schon = infoLesen(projekt);
   if (schon && lebt2(schon.pid) && await hallo(schon.port)) {
-    process.stdout.write(`Berts Arbeitsplatz für «${basename3(projekt)}» läuft schon:
+    process.stdout.write(`Albatros für «${basename3(projekt)}» läuft schon:
 ${adresse(schon)}
 `);
     return;
@@ -43396,7 +43396,7 @@ ${adresse(schon)}
     } catch {}
   };
   const adresse2 = `${laufend.adresse}?t=${token}`;
-  process.stdout.write(`Berts Arbeitsplatz für «${basename3(projekt)}» läuft. Öffne diese Adresse im Browser:
+  process.stdout.write(`Albatros für «${basename3(projekt)}» läuft. Öffne diese Adresse im Browser:
 ${adresse2}
 Beenden mit Ctrl+C.
 `);
@@ -43490,7 +43490,7 @@ async function online(projekt, ui) {
     process.stderr.write("Hinweis: Der Arbeitsplatz läuft unter einem Pfad auf dem Namen der Webseite. Skripte der Webseite könnten einen angemeldeten Arbeitsplatz bedienen; " + `sicherer ist ein eigener Name (ARBEITSPLATZ_ADRESSE ohne Pfad, Skill betrieb).
 `);
   }
-  process.stdout.write(`Berts Arbeitsplatz online für «${basename3(projekt)}» läuft unter ${laufend.adresse} (Port ${laufend.port}, ${konfig.anmeldung.art === "dev" ? "lokale Anmeldung" : "Anmeldung mit Albatros"}${konfig.ereignisSchluessel ? ", Ereignisse aus der Cloud an" : ""}, ${kaefig.ok ? `KI im Käfig (Landlock ABI ${kaefig.kaefig.abi})` : `KI nur lesend: ${kaefig.grund}`}).
+  process.stdout.write(`Albatros online für «${basename3(projekt)}» läuft unter ${laufend.adresse} (Port ${laufend.port}, ${konfig.anmeldung.art === "dev" ? "lokale Anmeldung" : "Anmeldung mit Albatros"}${konfig.ereignisSchluessel ? ", Ereignisse aus der Cloud an" : ""}, ${kaefig.ok ? `KI im Käfig (Landlock ABI ${kaefig.kaefig.abi})` : `KI nur lesend: ${kaefig.grund}`}).
 `);
   let endet = false;
   const beenden = () => {

@@ -1,4 +1,4 @@
-# Berts Arbeitsplatz 0.3.0
+# Albatros 0.3.0
 
 Gebündelt aus [dischen87/albatros](https://github.com/dischen87/albatros) `apps/arbeitsplatz` mit `bun run buendeln --nach <dieser Ordner>`. Nicht von Hand ändern.
 
