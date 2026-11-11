@@ -856,6 +856,11 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-netz-kopf > h2:focus { outline: none; }
 .ap-netz-kopf > h2:focus-visible { outline: 2px solid var(--pr2); outline-offset: 4px; border-radius: var(--radius-thumb); }
 .ap-netz-satz { margin: 0; font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); overflow-wrap: break-word; }
+.ap-netz-saetze { list-style: none; margin: 0; padding: 0; min-width: 0; }
+/* Die drei Sätze vor dem ersten Knopf (Korrekturrunde C): gut lesbar, nicht als leiser Hinweis */
+.ap-netz-saetze > .k-leise { font-size: 15px; line-height: 1.45; color: var(--ink); align-items: center; }
+.ap-netz-saetze > .k-leise > :last-child { min-width: 0; overflow-wrap: break-word; }
+.ap-netz-saetze .ap-preis { margin: 0; }
 .ap-netz-naechster { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-inner); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); min-width: 0; }
 .ap-netz-naechster > b { font-size: 17px; line-height: 1.3; overflow-wrap: break-word; }
 .ap-netz-naechster > .meta { margin: 0; font-size: 14px; color: var(--ink-soft); }
@@ -910,7 +915,7 @@ span.ap-termin-knopf { min-height: 36px; }
 /* Karte «Jetzt dran»: der Satz bricht um, der Hauptknopf steht am Handy in voller Breite darunter */
 .ap-weg-naechstes > .col { min-width: 0; }
 .ap-weg-naechstes .k-naechster-knoepfe { align-items: center; }
-/* In einer Etappe («Sichtbar werden», «Online») ist die Karte schmaler: die Knöpfe unter dem Satz statt daneben */
+/* In einer Etappe («Gefunden werden», «Online») ist die Karte schmaler: die Knöpfe unter dem Satz statt daneben */
 .ap-weg-etappe .card.ap-weg-naechstes { grid-template-columns: auto minmax(0, 1fr); }
 .ap-weg-etappe .ap-weg-naechstes .k-naechster-knoepfe { grid-column: 1 / -1; justify-content: flex-start; }
 
@@ -945,7 +950,7 @@ details.ap-weg-mehr.card { display: block; }
 .ap-weg-anders { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); min-width: 0; }
 .ap-weg-anders > .meta { flex: 1 1 220px; min-width: 0; }
 
-/* Sichtbar werden: fünf Bereiche, zu nur Titel und Stand */
+/* Gefunden werden: fünf Bereiche, zu nur Titel und Stand */
 .ap-weg-bereiche { display: flex; flex-direction: column; min-width: 0; }
 .ap-weg-bereiche > .ap-weg-bereich:first-child { border-top-color: transparent; }
 .ap-weg-bereich > summary { min-height: 56px; padding: var(--space-2) 0; }
@@ -959,7 +964,7 @@ details.ap-weg-mehr.card { display: block; }
 @media (max-width: 767px) {
   .ap-weg-bau { padding: var(--space-2) 0; }
   .ap-weg-raster { gap: var(--space-4); }
-  /* Teile der Etappe «Idee schleifen»: Der erklärende Satz steht nur bei dem, was gerade zum Ansehen da ist; sonst Titel und Stand in einer Zeile */
+  /* Teile der Etappe «Planen»: Der erklärende Satz steht nur bei dem, was gerade zum Ansehen da ist; sonst Titel und Stand in einer Zeile */
   .ap-weg-liste > li[data-stand="fehlt"] > .ap-weg-zeile > .col, .ap-weg-liste > li[data-stand="steht"] > .ap-weg-zeile > .col { flex: 1 1 120px; }
   .ap-weg-liste > li[data-stand="fehlt"] > .ap-weg-zeile .meta, .ap-weg-liste > li[data-stand="steht"] > .ap-weg-zeile .meta { display: none; }
   .ap-weg-ja[data-stand="offen"][data-bereit="nein"] .meta { display: none; }
@@ -991,7 +996,7 @@ details.ap-weg-mehr.card { display: block; }
 .ap-weg-etappe-kopf > h2 { min-width: 0; }
 /* «Kommt noch»: nur die Namen, nichts zum Drücken */
 .ap-weg-kommt { list-style: none; margin: 0; padding: 0 0 0 2px; display: flex; flex-direction: column; gap: 6px; }
-/* Ein Teil der Etappe «Idee schleifen»: eine Zeile */
+/* Ein Teil der Etappe «Planen»: eine Zeile */
 a.ap-weg-zeile { align-items: center; flex-wrap: nowrap; min-height: 56px; }
 a.ap-weg-zeile > b { flex: 1 1 auto; min-width: 0; }
 a.ap-weg-zeile > .chip, a.ap-weg-zeile > svg.i { flex: none; }
@@ -1011,3 +1016,8 @@ a.ap-weg-zeile > .chip, a.ap-weg-zeile > svg.i { flex: none; }
 .ap-werkzeuge { display: contents; }
 .ap-werkzeug-hilfe { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-width: 0; }
 .ap-werkzeug-hilfe > .meta { margin: 0; flex: 1 1 220px; }
+
+/* «Was deine Seite kann» als lesbare Liste (Korrekturrunde C): Seiten und was Besucher tun können, der Plan zugeklappt dahinter */
+.ap-umfang { margin: 0; }
+.ap-umfang dt { margin: 0; color: var(--ink); }
+.ap-umfang dd { margin: var(--space-1) 0 0; font-size: 15px; line-height: 1.45; color: var(--ink); }
