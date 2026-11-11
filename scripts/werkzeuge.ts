@@ -93,11 +93,13 @@ export function feldFehler(text: string, b: Bekannt): string[] {
   return aus;
 }
 
-// Beschreibungen (description) der vier Skills, mit denen der Weg beginnt. Gemessen am 11.11.2026: Sonnet hat 200 000 Token Kontext, Claude
-// Code gibt der Liste der Skills davon 1 %, rund 8000 Zeichen; die 28 Beschreibungen des deutschen Plugins haben zusammen über 20 000.
-// Claude Code 2.1.118 kürzt dann jede auf rund 150 Zeichen (in einem Lauf mit weiteren Skills auf rund 90). In einem Lauf vom 11.11.2026
-// mit so gekürzten Beschreibungen («bau mir doch gleich schon mal die Startseite») lud die KI keinen Skill und baute ohne die zwei Ja.
-// Was eine KI zum Laden bringt, steht darum ganz vorne: der Satz der Person, in jeder Sprache.
+// Beschreibungen (description) der Skills, mit denen der Weg beginnt. Claude Code gibt der Liste der Skills 1 % des Kontexts, 4 Zeichen je
+// Token: rund 8000 Zeichen bei 200 000 Token, 40 000 bei einer Million; die 28 Beschreibungen des deutschen Plugins haben zusammen über
+// 20 000. Gemessen am 11.11.2026 in den Verläufen zweier Läufe: Claude Code 2.1.118 (Sonnet, Liste 7711 Zeichen) kürzte jede
+// Beschreibung auf rund 150 Zeichen, die KI lud bei «bau mir doch gleich schon mal die Startseite» keinen Skill und baute ohne die zwei Ja.
+// Claude Code 2.1.321 mit Sonnet 5.5 (eine Million Token, Liste 29 026 Zeichen) zeigte alle ganz, die KI lud bei «Bau mir eine Webseite
+// für meinen Hofladen in Thun.» den Skill lotse, fragte nach und baute nicht. Nach dem Code von 2.1.321 stehen Skills, die nicht mehr ins
+// Budget passen, nur mit Namen da (nicht in einem Lauf gemessen). Was eine KI zum Laden bringt, steht darum ganz vorne: der Satz der Person.
 export const AUSLOESER: Record<'de' | 'fr' | 'it' | 'en', string> = {
   de: 'bau mir eine Webseite', fr: 'construis-moi un site', it: 'costruiscimi un sito', en: 'build me a website',
 };
