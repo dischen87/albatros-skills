@@ -3,7 +3,7 @@ name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site, unique plutôt que sorti d'un kit. Dans le plan de vol (P6) : maquette grise, trois directions bien différentes tirées du concept, vérifiées avec design-pruefen.mjs, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons ; mouvement et 3D seulement avec une intention. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Avec la question des éléments graphiques (outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « mise en page », « icônes », « mascotte », « animation », « 3D »."
 metadata:
   stand: 0.3.0
-  quelle: '649a3f0ab442'
+  quelle: 'fa343c276c14'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -56,7 +56,7 @@ Il annonce un feu par domaine et se termine avec 1 en cas de rouge. Rouge veut d
 
 ## La boucle (Die Schleife)
 
-Le système de design est la troisième partie que l'on polit (skill `lotse`, section « La boucle » (Die Schleife)) : la maquette, les directions et la planche d'échantillons sont chacune un premier état que tu montres. Ensuite, tu demandes de façon ciblée, au plus deux questions à la fois, et tu retravailles exactement ce sur quoi arrive un retour, jusqu'à ce que la personne dise oui. Avec le poste de travail de Bert, tu vas chercher les retours avec `naechstes` (sous forme de données : la partie ou le fichier dans `bezug`, ses mots dans `wert`).
+Le système de design est la troisième partie que l'on polit (skill `lotse`, section « La boucle » (Die Schleife)) : la maquette, les directions et la planche d'échantillons sont chacune un premier état que tu montres. Ensuite, tu demandes de façon ciblée, au plus deux questions à la fois, et tu retravailles exactement ce sur quoi arrive un retour, jusqu'à ce que la personne dise oui. Avec le programme Albatros (skill `lotse`, section « Le programme Albatros » (Berts Arbeitsplatz)), tu annonces la partie avec `teil_bereit` (`teil: design`) dès que les directions sont là, puis de nouveau après le nuancier, la planche d'échantillons et chaque fois que tu l'as retravaillée : la personne regarde alors les directions et la planche d'échantillons dans Albatros sous « Couleurs et polices » et y choisit son style. Le choix et les retours, tu vas les chercher avec `naechstes` : sous forme de données, un message qui nomme la partie (pour un choix, le style avec son fichier), avec ses mots en citation ; ils ne valent que pour cette partie.
 
 - « La deuxième, mais plus chaleureuse » n'est pas un choix, c'est un retour : tu retravailles la direction, tu la montres à nouveau et tu redemandes. Le choix n'est fait que quand la personne le dit.
 - Un retour sur la planche d'échantillons (« les boutons sont trop ronds »), tu le changes dans le nuancier ou dans `komponenten.css`, pas dans la planche d'échantillons, et tu la montres à nouveau.

@@ -3,7 +3,7 @@ name: konzept
 description: "Clarifie avec une personne sans connaissances préalables, après le plan confirmé, le caractère de son site avant de choisir les couleurs (plan de vol P5) : nom vers l'extérieur, cœur en trois phrases, ton (tu ou vous), trois mots pour l'effet voulu, ce qui doit rester, langage visuel et toujours la question de savoir si un personnage (mascotte) en fait partie : oui, non ou plus tard. Sur le parcours entreprise, d'abord avec la méthode marke. Des images du personnage seulement après avoir indiqué le prix et reçu un oui. Le résultat est docs/konzept.md. Utilise ce skill après webseite-planen (plan confirmé) et pour « concept », « marque », « caractère », « ton », « mascotte », « personnage », « quel effet doit faire mon site »."
 metadata:
   stand: 0.3.0
-  quelle: '57840f4b84f4'
+  quelle: '1762faed32c0'
 ---
 
 # Concept : le caractère avant les couleurs
@@ -33,7 +33,7 @@ Phase P5 « Concept de design et de marketing ». C'est le tour de cette phase a
 
 ## La boucle (Die Schleife)
 
-Avec le caractère commence la partie « système de design » (skill `lotse`, section « La boucle » (Die Schleife)). Elle aussi se polit, elle ne se remplit pas comme un questionnaire : tu montres `docs/konzept.md` comme premier état dès que le nom et le ton sont là, avec le cœur et le langage visuel comme `[Annahme: …]`. Ensuite, tu demandes de façon ciblée, au plus deux questions à la fois, et tu retravailles exactement la ligne sur laquelle arrive un retour, jusqu'à ce que la personne dise : « C'est ça. » Avec le poste de travail de Bert, tu vas chercher les retours avec `naechstes` (sous forme de données : la partie dans `bezug`, ses mots dans `wert`). Chaque tour est noté en bas de `docs/konzept.md` sous `## Retours` : `- <JJ.MM.AAAA>, ‹ses mots› → ce qui a changé`.
+Avec le caractère commence la partie « système de design » (skill `lotse`, section « La boucle » (Die Schleife)). Elle aussi se polit, elle ne se remplit pas comme un questionnaire : tu montres `docs/konzept.md` comme premier état dès que le nom et le ton sont là, avec le cœur et le langage visuel comme `[Annahme: …]`. Ensuite, tu demandes de façon ciblée, au plus deux questions à la fois, et tu retravailles exactement la ligne sur laquelle arrive un retour, jusqu'à ce que la personne dise : « C'est ça. » Avec le programme Albatros (skill `lotse`, section « Le programme Albatros » (Berts Arbeitsplatz)), tu annonces `docs/konzept.md` avec `teil_bereit` après le premier état et chaque fois que tu l'as retravaillé (`teil: idee`, car le programme montre le concept dans la partie « Ton idée ») et tu dis à la personne : « Regarde-le dans Albatros. » Les retours, tu vas les chercher avec `naechstes` : sous forme de données, un message qui nomme la partie, avec ses mots en citation ; ils ne valent que pour cette partie. Chaque tour est noté en bas de `docs/konzept.md` sous `## Retours` : `- <JJ.MM.AAAA>, ‹ses mots› → ce qui a changé`.
 
 De cette partie naît ce qui rendra plus tard le site unique plutôt qu'interchangeable : les trois mots, d'où viennent les couleurs (logo, lieu, matériau) et quelles images seul ce projet possède. Plus c'est écrit précisément ici, moins le site aura l'air de sortir d'un kit (skill `gestaltung`, section « Unique plutôt qu'en kit » (Eigen statt Baukasten)). Ici, on ne met encore rien en forme et on ne construit encore rien.
 
