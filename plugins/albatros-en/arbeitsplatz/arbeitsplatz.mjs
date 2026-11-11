@@ -6,7 +6,7 @@
 import { spawn as spawn9, spawnSync as spawnSync2 } from "node:child_process";
 import { randomBytes as randomBytes22 } from "node:crypto";
 import { existsSync as existsSync14, statSync as statSync17 } from "node:fs";
-import { homedir as homedir5, tmpdir as tmpdir4 } from "node:os";
+import { homedir as homedir5, tmpdir as tmpdir3 } from "node:os";
 import { basename as basename3, dirname as dirname7, join as join43, resolve as resolve10 } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -36271,7 +36271,8 @@ function neueBruecke(speicher, optionen = {}) {
       };
     },
     kiStand: (frisch = false) => kiStand(frisch),
-    werkzeugePruefen: (frist = 1e4) => werkzeugePruefen(mcpStart(optionen.mcpServer, projekt, "pruefung"), frist)
+    werkzeugePruefen: (frist = 1e4) => werkzeugePruefen(mcpStart(optionen.mcpServer, projekt, "pruefung"), frist),
+    ohneSandkasten: (art) => ADAPTER[art].ohneSandkasten?.(projekt, umfeld, "arbeiten") ?? null
   };
 }
 function werkzeugePruefen(start, frist) {
@@ -48448,7 +48449,6 @@ function lesezeichenSetzen(projekt, commit, an) {
 
 // src/server/kipruefung.ts
 import { lookup } from "node:dns/promises";
-import { tmpdir as tmpdir3 } from "node:os";
 var INTERNET_NAME = { claude: "api.anthropic.com", codex: "api.openai.com", gemini: "generativelanguage.googleapis.com", cursor: "api2.cursor.sh", opencode: "openrouter.ai" };
 var INTERNET_NAME_OHNE_KI = "albatros.build";
 var INTERNET_FRIST = 3000;
@@ -48524,7 +48524,7 @@ async function kiPruefen(k, frisch = true, frist = KI_PRUEF_FRIST, mitWerkzeugen
   const auftraege = { heute: auftraegeHeute(k.speicher, k.uhr(), einst.laeufe_pro_tag), grenze: einst.laeufe_pro_tag };
   const adapter = ADAPTER[art ?? "claude"];
   const befehle = k.online ? { installieren: null, anmelden: null } : { installieren: adapter.installieren || null, anmelden: adapter.anmelden || null };
-  const sicher = art ? (ADAPTER[art].ohneSandkasten?.(k.speicher.projekt, { heim: heimOrdner(), tmp: tmpdir3(), plattform: process.platform }, "arbeiten") ?? null) === null : true;
+  const sicher = art ? (k.bruecke.ohneSandkasten?.(art) ?? null) === null : true;
   let werkzeuge = null;
   if (mitWerkzeugen && art && ki[art].installiert) {
     try {
@@ -52030,7 +52030,7 @@ function imKaefig(projekt, rechte, befehl) {
   const port = Number(process.env.ARBEITSPLATZ_PORT ?? 4747);
   const k = kaefigLauf(stand.kaefig, projekt, rechte, {
     heim,
-    tmp: tmpdir4(),
+    tmp: tmpdir3(),
     konfig: process.env.CLAUDE_CONFIG_DIR?.trim() || join43(heim, ".claude"),
     programme: [process.env.NPM_CONFIG_PREFIX?.trim() || join43(heim, ".npm-global")],
     port: Number.isInteger(port) ? port : null
@@ -52047,7 +52047,7 @@ async function online(projekt, ui) {
   const zugang = zugangNehmen();
   const kaefig = kaefigStand({ plattform: process.platform, env: process.env });
   if (kaefig.ok)
-    gitHuelleSetzen(gitHuelle(kaefig.kaefig, { heim: process.env.HOME || homedir5(), tmp: tmpdir4() }));
+    gitHuelleSetzen(gitHuelle(kaefig.kaefig, { heim: process.env.HOME || homedir5(), tmp: tmpdir3() }));
   const sp = speicher(projekt);
   sp.sicherstellen();
   let bruecke;
