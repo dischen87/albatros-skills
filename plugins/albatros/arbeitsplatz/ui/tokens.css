@@ -191,7 +191,7 @@
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* Dunkel tauscht nur Farben, nur im Cockpit und nur nach Wahl (data-theme="dark"); die Website bleibt hell */
+/* Dunkel tauscht nur Farben und Schatten, nur im Cockpit und nur nach Wahl (data-theme="dark"); die Website bleibt hell */
 :root[data-theme="dark"] {
   --ink: #EAF0FF;
   --mu: #A6B0D2;
@@ -237,6 +237,24 @@
   --dawn: #1E2849;
   --glass: rgba(24,33,63,0.94);
   --glass-header: rgba(15,23,48,0.66);
+  --shadow-raised: inset 0 1px 0 rgba(238,234,251,.06), 0 1px 2px rgba(0,0,0,.3), 5px 14px 32px -20px rgba(0,0,0,.6);
+  --shadow-floating: inset 0 1px 0 rgba(238,234,251,.08), 0 1px 2px rgba(0,0,0,.3), 0 18px 36px -16px rgba(0,0,0,.6);
+  --shadow-dialog: inset 0 1px 0 rgba(238,234,251,.06), 0 2px 6px rgba(0,0,0,.3), 10px 32px 64px -28px rgba(0,0,0,.7);
+  --shadow-card: inset 0 1px 0 rgba(238,234,251,.06), 0 1px 2px rgba(0,0,0,.3), 6px 18px 40px -20px rgba(0,0,0,.6);
+  --shadow-hero: inset 0 1px 0 rgba(238,234,251,.06), 0 2px 4px rgba(0,0,0,.3), 6px 20px 40px -20px rgba(0,0,0,.65);
+  --shadow-panel: inset 0 1px 0 rgba(238,234,251,.06), 0 1px 2px rgba(0,0,0,.3), 8px 24px 56px -28px rgba(0,0,0,.6);
+  --shadow-button: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.4), 4px 14px 28px -12px rgba(169,155,255,.35);
+  --shadow-chip-on: 0 8px 16px -10px rgba(169,155,255,.4);
+  --shadow-segment-on: inset 0 1px 0 rgba(255,255,255,.2);
+  --shadow-tab-on: inset 0 1px 0 rgba(238,234,251,.08), 0 6px 12px -8px rgba(0,0,0,.6);
+  --shadow-bubble: inset 0 1px 0 rgba(238,234,251,.08), inset 0 -3px 6px rgba(0,0,0,.25);
+  --shadow-float: 0 8px 18px -10px rgba(0,0,0,.6);
+  --shadow-tag: inset 0 1px 0 rgba(238,234,251,.08), 0 10px 24px -14px rgba(0,0,0,.6);
+  --shadow-sheet: 0 -14px 30px -22px rgba(0,0,0,.7);
+  --shadow-bar: 0 -1px 0 rgba(238,234,251,.06), 0 -16px 32px -20px rgba(0,0,0,.7);
+  --shadow-header: inset 0 1px 0 rgba(238,234,251,.08), 0 14px 34px -22px rgba(0,0,0,.6);
+  --shadow-toast: 0 14px 30px -12px rgba(0,0,0,.6);
+  --shadow-polaroid: 0 1px 2px rgba(0,0,0,.3), 0 6px 10px -6px rgba(0,0,0,.6);
 }
 
 @theme {

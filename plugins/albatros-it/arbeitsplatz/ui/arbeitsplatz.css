@@ -148,7 +148,6 @@ body { background: var(--bg); overflow-x: hidden; }
 .ap-ja-stand > .steps { padding-bottom: 0; border-bottom: 0; }
 .steps > li > span { white-space: normal; }
 .ap-frage { gap: 14px; }
-.btn .ap-empfohlen { min-height: 20px; padding: 2px 8px; background: color-mix(in srgb, var(--onpr) 24%, transparent); color: inherit; }
 .ap-idee .chip { flex: none; }
 
 .ap-vorschlaege { display: flex; flex-direction: column; }
@@ -460,7 +459,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-verlauf-eintrag > .btn { flex: none; }
 
 /* Kalender */
-.ap-kalender { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ap-kalender { display: flex; flex-direction: column; gap: 14px; min-width: 0; container: kalender / inline-size; }
 .ap-kal-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
 .ap-kal-monat { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .ap-kal-zeile { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
@@ -471,7 +470,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-kal-zelle.gewaehlt { box-shadow: inset 0 0 0 2px var(--pr2); }
 .ap-kal-zelle:focus-visible, .ap-kal-mini:focus-visible { outline-offset: -2px; }
 .ap-kal-zahl { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 4px; border-radius: 13px; font-weight: 700; font-size: 13px; }
-.ap-kal-zelle.heute .ap-kal-zahl { background: var(--pr2); color: var(--color-on-primary); }
+.ap-kal-zelle.heute .ap-kal-zahl { background: var(--pr2); color: var(--onpr); }
 .ap-kal-punkte { display: flex; align-items: center; gap: 3px; min-height: 8px; }
 .ap-kal-punkte > i, .ap-kal-minitage > i.voll { background: var(--pr2); }
 .ap-kal-punkte > i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
@@ -485,14 +484,15 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-kal-woche > .ap-kal-tag { padding: 8px; border-radius: 12px; background: var(--sf2); min-height: 120px; }
 .ap-kal-woche > .ap-kal-tag.heute { box-shadow: inset 0 0 0 2px var(--pr2); }
 .ap-kal-tagkopf { font-weight: 700; font-size: 13px; }
-/* Woche: schmale Spalten, darum die Uhrzeit über dem Titel und ohne Stift */
-@media (min-width: 900px) {
+/* Woche: schmale Spalten, darum die Uhrzeit über dem Titel und ohne Stift. Nach der Breite des Kalenders, nicht des Fensters (11.11.2026):
+   Neben dem Gespräch ist der Kalender bei 1440 px nur 680 px breit, sieben Spalten wären dort 90 px schmal. */
+@container kalender (min-width: 760px) {
   .ap-kal-woche .ap-termin-knopf { flex-direction: column; align-items: flex-start; gap: 0; padding: 6px 8px; font-size: 12px; line-height: 1.3; }
   .ap-kal-woche .ap-termin-knopf > span { overflow-wrap: break-word; }
   .ap-kal-woche .ap-termin-knopf > svg.i { display: none; }
 }
 .ap-ansicht-wahl { display: flex; }
-.ap-kal-tagkopf .lnk { cursor: pointer; }
+.ap-kal-tagkopf .lnk { cursor: pointer; gap: 0 var(--space-1); }
 .ap-termine { display: flex; flex-direction: column; gap: 4px; }
 .ap-termin-knopf { display: flex; align-items: baseline; gap: 8px; width: 100%; min-height: 36px; padding: 6px 10px; border-radius: 10px; background: var(--sf); box-shadow: inset 3px 0 0 var(--pr2); text-align: left; font-size: 14px; color: inherit; min-width: 0; }
 button.ap-termin-knopf { cursor: pointer; }
@@ -509,12 +509,12 @@ button.ap-termin-knopf:hover { background: var(--prs); }
 .ap-kal-minitage { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
 .ap-kal-minitage > i { aspect-ratio: 1; border-radius: 3px; background: var(--ln); }
 .ap-kal-minitage > i.leer { background: transparent; }
-@media (max-width: 899px) {
+@container kalender (max-width: 759px) {
   .ap-kal-woche { grid-template-columns: minmax(0, 1fr); }
   .ap-kal-woche > .ap-kal-tag { min-height: 0; }
   .ap-kal-jahr { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-@media (max-width: 767px) {
+@container kalender (max-width: 559px) {
   .ap-kal-zelle { min-height: 52px; padding: 4px; align-items: center; }
   .ap-kal-erster { display: none; }
   .ap-kal-jahr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -623,11 +623,12 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-heute { gap: 20px; }
 .ap-heute-kopf { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; min-width: 0; }
 .ap-heute-kopf > .meta { min-width: 0; }
-.ap-weg-leiste { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 14px; border-radius: var(--radius-inner); background: var(--sf);
-  box-shadow: inset 0 0 0 1px var(--ln); color: inherit; text-decoration: none; min-width: 0; }
-.ap-weg-leiste > .steps { flex: 1; min-width: 0; flex-wrap: wrap; row-gap: 6px; }
+/* Der Weg als Flugbahn (Steps bahn): vier gleiche Spalten, die Namen darunter, auch am Handy in einer Reihe */
+.ap-weg-leiste { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; padding: var(--space-3) var(--space-3) var(--space-3) var(--space-2);
+  border-radius: var(--radius-inner); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); color: inherit; text-decoration: none; min-width: 0; }
+.ap-weg-leiste > .steps { flex: 1; min-width: 0; }
 .ap-weg-leiste > svg.i { flex: none; color: var(--mu); }
-.ap-weg-leiste.klickbar:hover { background: var(--sf2); text-decoration: none; }
+.ap-weg-leiste.klickbar:hover { box-shadow: inset 0 0 0 1.5px var(--pr); text-decoration: none; }
 .ap-jetzt, .ap-schon-da { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ap-jetzt-titel { color: var(--mu); }
 .ap-jetzt-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
@@ -695,7 +696,7 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-chat-eingabe.schlicht .ap-chat-hinweis { display: block; }
 
 /* Dein Ja: Die erste Karte ist offen, die weiteren klappen auf (am Handy bleibt die Liste kurz) */
-.ap-wartet-zu { border-radius: var(--radius-card, 20px); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); min-width: 0; }
+.ap-wartet-zu { border-radius: var(--radius-card); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); min-width: 0; }
 .ap-wartet-zu > summary { display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 16px; cursor: pointer; list-style: none; }
 .ap-wartet-zu > summary::-webkit-details-marker { display: none; }
 .ap-wartet-zu > summary > svg.i { flex: none; color: var(--mu); transition: transform .15s ease; }
@@ -713,8 +714,8 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 /* Was sich nicht antippen lässt («Bert arbeitet allein», Erledigtes), braucht kein Touch-Ziel */
 span.ap-termin-knopf { min-height: 36px; }
 
-/* Kalender am Handy: die Woche als Zeilen (Tag links, Termine rechts), das Jahr in drei Spalten */
-@media (max-width: 767px) {
+/* Kalender schmal (am Handy und neben dem Gespräch): die Woche als Zeilen (Tag links, Termine rechts), das Jahr in drei Spalten */
+@container kalender (max-width: 759px) {
   .ap-kal-woche > .ap-kal-tag { flex-direction: row; align-items: flex-start; gap: 8px; padding: 2px 8px; }
   .ap-kal-woche > .ap-kal-tag > .ap-kal-tagkopf { flex: none; width: 46px; }
   .ap-kal-tagkopf > .lnk { flex-direction: column; align-items: flex-start; justify-content: center; line-height: 1.25; text-align: left; }
@@ -895,6 +896,12 @@ span.ap-termin-knopf { min-height: 36px; }
 /* ---- Einstellungen: vier kurze Karten, der Rest unter «Für Neugierige» */
 .ap-einstellungen h2 > label { cursor: pointer; }
 .ap-einstellungen .card > .col > p { margin: 0; }
+/* KI verbinden, Schritt 1: drei Karten als Radioknöpfe; «Bedingungen ansehen» als leiser Knopf, links bündig, gross genug für den Finger */
+.ap-ki-wahl .rd { padding: var(--space-3); border-radius: var(--radius-inner); box-shadow: inset 0 0 0 1px var(--ln); width: 100%; }
+.ap-ki-wahl .rd.on { box-shadow: inset 0 0 0 2px var(--pr); }
+.ap-ki-wahl-text .btn { align-self: flex-start; padding-inline: 0; min-height: 44px; }
+/* «Andere Modelle»: die Schritte bei OpenRouter mit Nummern (Anfänger sehen, wie viele es sind) */
+.ap-modelle-schritte { list-style: decimal; margin: 0; padding-inline-start: var(--space-5); }
 
 /* «Dein Weg» nach dem UX-Konzept (bildschirme/weg.tsx, weg-teil.tsx, weg-sichtbar.tsx, weg-online.tsx): ergänzt und überschreibt die Regeln
    ap-weg-* aus arbeitsplatz.css. Nur Tokens; hell und dunkel kommen aus den Tokens. Touch-Ziele mindestens 44 px, am Handy jede Ansicht

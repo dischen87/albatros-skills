@@ -72,7 +72,7 @@
   /* ---------- Knöpfe (Bausteine 3 bis 6): Pillen. Primär Veilchen mit shadow.button, gibt beim Drücken auf 0,97 nach; sekundär und
      ghost weiss mit Rand control (Baustein 4); weich primarySoft mit primaryInk (5a); Textknopf primaryStrong (5b); glas für runde
      Knöpfe über Fotos und Bühne (6). Mindestens 44 hoch (Regel am Schluss). ---------- */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:var(--pr);color:var(--onpr);font-size:15px;font-weight:700;line-height:1.15;white-space:nowrap;flex:none;box-shadow:var(--shadow-button);transition:transform .1s ease-out,background-color .16s,box-shadow .16s;-webkit-tap-highlight-color:transparent}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:var(--pr);color:var(--onpr);font-size:15px;font-weight:700;line-height:1.15;white-space:normal;text-wrap:balance;max-width:100%;flex:none;box-shadow:var(--shadow-button);transition:transform .1s ease-out,background-color .16s,box-shadow .16s;-webkit-tap-highlight-color:transparent}
   .btn svg.i{width:18px;height:18px;stroke-width:2}
   .btn:active:not(:disabled,.dis,.load){transform:scale(.97)}
   .btn.sec,.btn.gh{background:var(--sf);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--control)}
@@ -90,6 +90,10 @@
   .btn.xl{min-height:56px;padding:0 30px 0 26px;font-size:17px;gap:10px}
   .btn.xl svg.i{width:20px;height:20px}
   .btn.full{width:100%}
+  /* Lange Beschriftung (11.11.2026): Ein Knopf wird nie breiter als sein Platz, der Text bricht um statt aus der Karte zu laufen; kurze
+     Beschriftungen stehen wie bisher in einer Zeile (flex:none, so breit wie der Text). Doppelte Klasse, damit sm, lg, xl und tx ihren Rand
+     innen oben und unten behalten. */
+  .btn.btn{padding-top:var(--space-2);padding-bottom:var(--space-2)}
   .btn.io{width:44px;padding:0}.btn.io.lg{width:52px}.btn.io.xl{width:56px}
   .btn.hov{filter:brightness(.94)}
   .btn.sec.hov,.btn.gh.hov{filter:none;background:var(--sf2)}
@@ -704,7 +708,7 @@
   .ctl select{padding-right:4px;cursor:pointer}
   .ctl input::placeholder,.ctl textarea::placeholder,.inp input::placeholder{color:var(--placeholder)}
   .ctl:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
-  .ctl.err:focus-within{box-shadow:inset 0 0 0 2px var(--fu),0 0 0 4px var(--fus)}
+  .ctl.err:focus-within{box-shadow:inset 0 0 0 2px var(--fu),0 0 0 2px var(--sf),0 0 0 4px var(--fu)} /* Fokus im Feld mit Fehler: fester Ring statt des weichen Hofs, sonst sah das Feld fokussiert gleich aus (11.11.2026, Foto-Skript) */
   .ctl .caret{pointer-events:none;margin-left:-24px}
   .inp{cursor:text}
   .inp input{border:0;outline:0;background:transparent;padding:0;font:inherit;font-size:15px;font-weight:600;color:inherit;min-width:0;width:100%}
@@ -730,6 +734,17 @@
   .steps>li>span.now{color:var(--ink)}.steps>li>span.now i{background:var(--pr);color:var(--onpr)}
   .steps>li>em{width:24px;height:2px;background:var(--ln);border-radius:1px;flex:none}
   .steps.sm>li>span{font-size:12.5px}.steps.sm>li>span i{width:22px;height:22px;font-size:12px}
+  /* Flugbahn (Steps bahn, 11.11.2026): gleich breite Spalten, Zahl auf einer Linie, Name darunter; die Strecke bis zum aktuellen Schritt in
+     free, der aktuelle mit Hof in primarySoft. Der Hof in surface trennt die Linie von der Scheibe (Grund der Leiste ist surface). */
+  .steps.bahn{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0;align-items:start;margin:0;padding:0;list-style:none}
+  .steps.bahn>li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--space-1);min-width:0;padding:0 var(--space-1);text-align:center;font-size:var(--text-small);font-weight:700;line-height:1.25;color:var(--mu)}
+  .steps.bahn>li>i{position:relative;z-index:1;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu);box-shadow:0 0 0 var(--space-1) var(--sf)}
+  .steps.bahn>li>span{max-width:100%;overflow-wrap:break-word;hyphens:auto}
+  .steps.bahn>li+li::before{content:"";position:absolute;top:12px;right:50%;width:100%;height:2px;border-radius:1px;background:var(--ln)}
+  .steps.bahn>li.done+li::before{background:var(--ok)}
+  .steps.bahn>li.done>i{background:var(--oks);color:var(--oki)}
+  .steps.bahn>li.now{color:var(--ink)}
+  .steps.bahn>li.now>i{background:var(--pr);color:var(--onpr);box-shadow:0 0 0 var(--space-1) var(--sf),0 0 0 calc(var(--space-1) + 3px) var(--prs)}
   /* Der Pfeil liegt über dem rechten Rand der Auswahl: Platz lassen, damit kurze Auswahlen den Text nicht überdecken */
   .ctl:has(>.caret) select{padding-right:26px}
 }
@@ -1361,4 +1376,37 @@
   /* Zugeklappt für Fortgeschrittene (Befehle selbst tippen) */
   .k-selbst summary{cursor:pointer;font-weight:700;margin-left:var(--space-5)}
   .k-selbst[open] summary{margin-bottom:var(--space-5)}
+
+  /* Antworten zum Wählen (Antworten in base.tsx, 11.11.2026): kurze als Pillen, lange als Zeilen über die ganze Breite der Karte, die
+     umbrechen; ein Tipp antwortet. Die empfohlene: Pille gefüllt bzw. Zeile mit Ring und Etikett «Empfohlen» (Wort, nicht nur Farbe). Der
+     Pfeil rechts sagt «antippen, dann geht es weiter». Bewegung nur ohne prefers-reduced-motion. */
+  .k-antworten{display:flex;flex-direction:column;gap:var(--space-2);margin:0;padding:0;list-style:none;min-width:0}
+  .k-antworten.pillen{flex-direction:row;flex-wrap:wrap;gap:var(--space-2) var(--space-3)}
+  .k-antworten>li{min-width:0;max-width:100%}
+  .k-antwort{display:flex;align-items:center;gap:var(--space-3);width:100%;max-width:100%;min-height:44px;margin:0;border:0;font:inherit;font-size:var(--text-body);color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .16s,box-shadow .16s,transform .1s ease-out}
+  .k-antwort-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);flex:1;min-width:0;overflow-wrap:break-word}
+  .k-antwort-emp{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-label);font-weight:800;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--primary-ink)}
+  .k-antwort-emp svg.i{width:14px;height:14px;fill:currentColor;stroke:currentColor;color:currentColor}
+  .k-antworten.liste .k-antwort{min-height:56px;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-4);border-radius:var(--radius-inner);background:var(--sf);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--line-strong);font-weight:600;line-height:1.4}
+  .k-antwort-pfeil{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--sf2);color:var(--primary-ink);transition:background-color .16s,color .16s,transform .16s}
+  .k-antwort-pfeil svg.i{width:16px;height:16px;stroke-width:2.2}
+  .k-antworten.liste .k-antwort.emp{background:var(--prs);box-shadow:inset 0 0 0 2px var(--pr)}
+  .k-antworten.liste .k-antwort.emp .k-antwort-pfeil{background:var(--pr);color:var(--onpr)}
+  .k-antworten.pillen .k-antwort{width:auto;padding:var(--space-2) var(--space-5);border-radius:var(--radius-pill);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-weight:700;line-height:1.2}
+  .k-antworten.pillen .k-antwort.emp{background:var(--pr);color:var(--onpr);box-shadow:var(--shadow-button)}
+  .k-antworten.pillen .k-antwort-text{flex:none;max-width:100%}
+  .k-antworten.pillen .k-antwort-emp{flex:none;padding:2px var(--space-2);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--onpr) 24%,transparent);color:inherit;letter-spacing:.04em}
+  @media (hover:hover){
+    .k-antworten.liste .k-antwort:not(:disabled):hover{box-shadow:var(--shadow-raised),inset 0 0 0 2px var(--pr)}
+    .k-antworten.liste .k-antwort:not(:disabled):hover .k-antwort-pfeil{background:var(--pr);color:var(--onpr);transform:translateX(2px)}
+    .k-antworten.pillen .k-antwort:not(:disabled,.emp):hover{background:var(--sf2)}
+    .k-antworten.pillen .k-antwort.emp:not(:disabled):hover{filter:brightness(1.05)}
+  }
+  .k-antwort:active:not(:disabled){transform:scale(.98)}
+  .k-antwort:disabled{cursor:default}
+  .k-antworten:has([aria-busy]) .k-antwort:not([aria-busy]){opacity:.55}
+  .k-antwort[aria-busy] .k-antwort-pfeil{display:none}
+  .k-antwort[aria-busy]::after{content:"";flex:none;width:18px;height:18px;margin-right:var(--space-2);border-radius:50%;border:2.5px solid var(--prs);border-top-color:var(--pr);animation:kspin .8s linear infinite}
+  .k-antworten.pillen .k-antwort.emp[aria-busy]::after{border-color:color-mix(in srgb,var(--onpr) 40%,transparent);border-top-color:var(--onpr)}
+  @media (prefers-reduced-motion:reduce){.k-antwort,.k-antwort-pfeil{transition:none}.k-antwort:active:not(:disabled){transform:none}.k-antwort[aria-busy]::after{animation:none}}
 }
