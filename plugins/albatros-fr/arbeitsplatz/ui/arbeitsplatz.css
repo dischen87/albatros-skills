@@ -37,6 +37,9 @@ body { background: var(--bg); overflow-x: hidden; }
 .ap-marke-text b { font-family: var(--font-display); font-variation-settings: "SOFT" 100, "WONK" 0; font-weight: 600; font-size: 16px; }
 .ap-nav .ni { text-decoration: none; }
 .ap-nav .ni .badge { margin-left: auto; }
+/* Der gewählte Punkt in einer Farbe für alle (vorher je Punkt eine Markenfarbe: Heute blau, Meine Seite mint, Mehr grau) */
+.ap-nav .ni.k-nav[aria-current="page"] { background: var(--prs); color: var(--primary-ink); box-shadow: inset 3px 0 0 var(--pr); }
+.ap-nav .ni.k-nav[aria-current="page"] svg.i { color: var(--primary-ink); }
 .ap-nav-fuss { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 6px 4px; border-top: 1px solid var(--ln); }
 .ap-nav-fuss .chip, .ap-mehr ~ .col .chip { white-space: normal; max-width: 100%; }
 
@@ -46,6 +49,8 @@ body { background: var(--bg); overflow-x: hidden; }
 .ap-verbindung { padding: 16px 32px 0; max-width: 880px; width: 100%; margin: 0 auto; }
 @media (max-width: 767px) {
   .ap-inhalt { padding: 16px 16px 32px; }
+  /* Karten am Handy mit 16 statt 24 Innenrand: mehr Breite für Text (weniger Umbrüche), kürzere Ansichten (Regel 9) */
+  .ap-inhalt .card.p24 { padding: var(--space-4); }
   .ap-verbindung { padding: 12px 16px 0; }
 }
 
@@ -65,7 +70,7 @@ body { background: var(--bg); overflow-x: hidden; }
 .ap-unten a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; min-width: 0; padding: 4px 2px;
   border-radius: 16px; color: var(--mu); font-size: 12px; font-weight: 700; line-height: 1.1; text-align: center; text-decoration: none; overflow-wrap: anywhere; }
 .ap-unten a[aria-current="page"] { color: var(--primary-ink); background: var(--prs); }
-.ap-unten a:focus-visible { outline-offset: -2px; }
+.ap-unten a:focus-visible { outline-offset: var(--focus-inset); }
 .ap-unten-icon { position: relative; display: inline-flex; }
 .ap-unten-icon .badge { position: absolute; top: -7px; right: -14px; box-shadow: 0 0 0 2px var(--sf); }
 
@@ -214,7 +219,8 @@ a.ap-stueck:hover { background: var(--prs); text-decoration: none; }
 .ap-chat-verlauf > .btn { align-self: center; }
 .ap-lauf { display: flex; flex-direction: column; gap: 8px; scroll-margin-top: 12px; min-width: 0; }
 .ap-lauf:focus { outline: none; }
-.ap-lauf.markiert { padding: 10px; margin: -10px; border-radius: var(--radius-inner); box-shadow: inset 0 0 0 2px var(--pr); }
+/* Der Auftrag, zu dem man gesprungen ist: leise getönt statt Rahmen (ein Rahmen über mehrere Blasen sah aus wie ein Fehler, Prüfung 11.11.2026) */
+.ap-lauf.markiert { padding: 10px; margin: -10px; border-radius: var(--radius-inner); background: color-mix(in srgb, var(--prs) 70%, transparent); }
 .ap-lauf > .bub { overflow-wrap: anywhere; }
 .ap-lauf > .bub.me { white-space: pre-wrap; }
 .ap-lauf > .bub.sys { max-width: 100%; }
@@ -277,12 +283,15 @@ a.ap-stueck:hover { background: var(--prs); text-decoration: none; }
 .ap-md th { text-align: left; padding: 8px 12px; background: var(--sf2); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mu); }
 .ap-md td { padding: 8px 12px; border-top: 1px solid var(--ln); vertical-align: top; }
 .ap-md .ap-links { text-align: left; } .ap-md .ap-mitte { text-align: center; } .ap-md .ap-rechts { text-align: right; }
-.ap-md pre:focus-visible, .ap-md-tabelle:focus-visible { outline-offset: 2px; }
+.ap-md pre:focus-visible, .ap-md-tabelle:focus-visible { outline-offset: var(--focus-offset); }
 
 /* ---------------------------------------------------------------- Webseite */
 .ap-vorschau-karte { gap: 14px; }
 .ap-werkzeugleiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .ap-werkzeugleiste .ml { margin-left: auto; }
+/* Leiste der Vorschau in eigener Zeile wie im Browser: Breite links, «Neu laden» und «Öffnen» rechts (vorher hing sie rechts unter den Werkzeugen) */
+.ap-vorschau-rand { flex: 1 1 100%; justify-content: flex-end; gap: var(--space-1) var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--ln); }
+.ap-vorschau-rand > .seg { margin-right: auto; }
 .ap-vorschau-huelle { width: 100%; min-width: 0; min-height: 120px; display: flex; justify-content: center; }
 .ap-vorschau-rahmen { position: relative; flex: none; overflow: hidden; border-radius: 16px; background: var(--sf); box-shadow: var(--shadow-raised), 0 0 0 1px var(--ln); }
 .ap-vorschau-rahmen > iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; background: var(--sf); max-width: none; }
@@ -293,7 +302,7 @@ a.ap-stueck:hover { background: var(--prs); text-decoration: none; }
 .ap-ausgabe > summary { cursor: pointer; width: fit-content; }
 .ap-ausgabe > pre { margin-top: 6px; max-height: 240px; overflow: auto; padding: 12px 14px; border-radius: var(--radius-thumb); background: var(--sf2);
   font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; white-space: pre; overflow-wrap: normal; }
-.ap-ausgabe > pre:focus-visible { outline-offset: 2px; }
+.ap-ausgabe > pre:focus-visible { outline-offset: var(--focus-offset); }
 .ap-versionen { display: flex; flex-direction: column; }
 .ap-version { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 0; border-top: 1px solid var(--ln); }
 .ap-version > .col { flex: 1 1 220px; }
@@ -343,7 +352,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-starter-knopf { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 12px 14px; border-radius: var(--radius-inner); background: var(--sf2);
   text-align: left; cursor: pointer; line-height: 1.35; }
 .ap-starter-knopf:hover { background: var(--prs); }
-.ap-starter-knopf:focus-visible { outline: 2px solid var(--pr); outline-offset: 2px; }
+.ap-starter-knopf:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-offset); }
 .ap-starter-knopf > span { flex: 1; overflow-wrap: anywhere; }
 .ap-starter-knopf > svg.i { flex: none; color: var(--mu); }
 .ap-weg { display: flex; flex-direction: column; }
@@ -388,7 +397,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-versionen-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
 .ap-lesezeichen { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%; color: var(--mu); cursor: pointer; }
 .ap-lesezeichen:hover { background: var(--sf2); }
-.ap-lesezeichen:focus-visible { outline: 2px solid var(--pr); outline-offset: 2px; }
+.ap-lesezeichen:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-offset); }
 .ap-lesezeichen.an { color: var(--pr2); background: var(--prs); }
 .ap-lesezeichen.an svg { fill: currentColor; }
 .ap-pruefung { display: flex; flex-direction: column; }
@@ -421,9 +430,11 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-suche-gruppe > .up, .ap-suche-liste > .up { padding: 4px 8px; }
 .ap-treffer { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 8px 10px; border-radius: 14px; text-align: left; cursor: pointer; color: inherit; scroll-margin: 8px; }
 .ap-treffer > svg.i { flex: none; color: var(--mu); }
-.ap-treffer.an, .ap-treffer:hover { background: var(--prs); }
+.ap-treffer:hover { background: var(--sf2); }
+/* Nur die gewählte Zeile ist getönt; die Maus allein zeigt leiser (vorher sahen zwei Treffer gewählt aus) */
+.ap-treffer.an { background: var(--prs); }
 .ap-treffer.an > svg.i { color: var(--primary-ink); }
-.ap-treffer:focus-visible { outline-offset: -2px; }
+.ap-treffer:focus-visible { outline-offset: var(--focus-inset); }
 
 .ap-glocke-liste { display: flex; flex-direction: column; gap: 8px; }
 .ap-glocke-liste .ap-stueck { background: var(--sf2); min-height: 60px; height: auto; color: inherit; text-decoration: none; }
@@ -468,7 +479,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-kal-zelle:hover { background: var(--prs); }
 .ap-kal-zelle.fremd { background: transparent; color: var(--mu); }
 .ap-kal-zelle.gewaehlt { box-shadow: inset 0 0 0 2px var(--pr2); }
-.ap-kal-zelle:focus-visible, .ap-kal-mini:focus-visible { outline-offset: -2px; }
+.ap-kal-zelle:focus-visible, .ap-kal-mini:focus-visible { outline-offset: var(--focus-inset); }
 .ap-kal-zahl { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 4px; border-radius: 13px; font-weight: 700; font-size: 13px; }
 .ap-kal-zelle.heute .ap-kal-zahl { background: var(--pr2); color: var(--onpr); }
 .ap-kal-punkte { display: flex; align-items: center; gap: 3px; min-height: 8px; }
@@ -477,6 +488,12 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-kal-punkte > i.autopilot { background: var(--as); }
 .ap-kal-punkte > i.gelaufen { background: var(--mu); }
 .ap-kal-punkte > small { font-size: 11px; color: var(--mu); font-weight: 700; }
+.ap-kal-zelle.fremd .ap-kal-punkte { opacity: .6; }
+.ap-kal-legende { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin: 0; padding: 0; list-style: none; }
+.ap-kal-legende > li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.ap-kal-legende > li > i { width: 8px; height: 8px; border-radius: 50%; background: var(--pr2); }
+.ap-kal-legende > li > i.autopilot { background: var(--as); }
+.ap-kal-legende > li > i.gelaufen { background: var(--mu); }
 .ap-kal-erster { align-self: stretch; font-size: 12px; line-height: 1.25; color: var(--mu); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ap-kal-auswahl { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid var(--ln); }
 .ap-kal-woche { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
@@ -523,7 +540,7 @@ button.ap-termin-knopf:hover { background: var(--prs); }
 /* Dokument bearbeiten, Fassungen */
 .ap-dok-form { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ap-dok-text { width: 100%; min-height: min(60vh, 520px); padding: 14px; border-radius: var(--radius-inner); border: 1px solid var(--ln); background: var(--sf2); font-family: var(--font-mono); font-size: 14px; line-height: 1.6; resize: vertical; }
-.ap-dok-text:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
+.ap-dok-text:focus-visible { outline: var(--focus-width) solid var(--pr2); outline-offset: var(--focus-offset); }
 .ap-fassungen { display: flex; flex-direction: column; }
 .ap-fassung { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--ln); min-width: 0; }
 .ap-fassung:first-child { border-top-color: transparent; }
@@ -539,7 +556,7 @@ button.ap-termin-knopf:hover { background: var(--prs); }
 .ap-teilen .ap-pruefung { gap: 6px; }
 .ap-teilen .ap-pruefung svg.i { flex: none; margin-top: 2px; color: var(--mu); }
 .ap-protokoll { max-height: min(46vh, 420px); overflow-y: auto; padding: 12px 14px; border-radius: var(--radius-inner); background: var(--sf2); min-width: 0; }
-.ap-protokoll:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
+.ap-protokoll:focus-visible { outline: var(--focus-width) solid var(--pr2); outline-offset: var(--focus-offset); }
 
 /* ---------------------------------------------------------------- Dein Weg */
 .ap-weg-start { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
@@ -569,7 +586,7 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-weg-schleifen { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ap-weg-feld { width: 100%; min-height: 96px; padding: 14px; border-radius: var(--radius-inner); border: 1px solid var(--ln); background: var(--sf2); color: var(--ink); font: inherit; line-height: 1.5; resize: vertical; }
 .ap-weg-feld::placeholder { color: var(--placeholder); }
-.ap-weg-feld:focus-visible { outline: 2px solid var(--pr2); outline-offset: 1px; }
+.ap-weg-feld:focus-visible { outline: var(--focus-width) solid var(--pr2); outline-offset: var(--focus-offset); }
 .ap-weg-mehr { min-width: 0; }
 .ap-weg-mehr > summary { cursor: pointer; min-height: 32px; }
 .ap-weg-mehr[open] > summary { margin-bottom: 10px; }
@@ -592,7 +609,7 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-weg-bereich > summary { display: flex; align-items: center; gap: 12px; padding: 14px 0; cursor: pointer; list-style: none; min-width: 0; }
 .ap-weg-bereich > summary::-webkit-details-marker { display: none; }
 .ap-weg-bereich > summary > .chip { flex: none; }
-.ap-weg-pfeil { flex: none; color: var(--mu); transition: transform .15s; }
+.ap-weg-pfeil { flex: none; color: var(--mu); transition: transform var(--motion-standard-dauer) var(--motion-standard-kurve); }
 .ap-weg-bereich[open] > summary > .ap-weg-pfeil { transform: rotate(90deg); }
 .ap-weg-bereich-inhalt { padding: 0 0 18px; }
 .ap-weg-punkte { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
@@ -633,6 +650,19 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-jetzt-titel { color: var(--mu); }
 .ap-jetzt-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
 .ap-jetzt-fuss > .lnk { text-decoration: none; }
+/* «Noch 4 weitere» in der Flucht der Karten (ap-zurueck zieht sonst 8 px nach links) */
+.ap-jetzt-fuss > .ap-zurueck { margin-left: 0; }
+/* Weg-Leiste: das Wort zum Pfeil, nur wo Platz ist */
+.ap-weg-leiste-wort { display: none; flex: none; font-size: var(--text-meta); font-weight: 700; color: var(--pr2); }
+@media (min-width: 1024px) { .ap-weg-leiste-wort { display: inline; } }
+/* Kein einzelnes Wort allein auf der letzten Zeile (Prüfung: «Ja.» allein) */
+.ap-rahmen :is(p, h1, h2, h3, li) { text-wrap: pretty; }
+/* Löschen leise, aber in der Farbe für Störung: nicht gleich wie «Pausieren» */
+.btn.tx.ap-loeschen { color: var(--fui); }
+/* Senden im leeren Feld: getönt statt grau, damit man den Weg sieht; benutzbar erst mit Text */
+.compose > .btn:disabled:not(.load) { background: var(--prs); color: var(--primary-ink); opacity: .7; }
+/* Gespräch: oben weich ausblenden, damit eine angeschnittene Blase nicht abgeschnitten wirkt */
+.ap-chat-verlauf { -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--space-4)); mask-image: linear-gradient(to bottom, transparent 0, black var(--space-4)); }
 .ap-wartet { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .ap-wartet .k-knoepfe { align-items: center; }
 .ap-wartet .btn { white-space: normal; text-align: left; }
@@ -685,6 +715,11 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-neugierig[open] > summary::before { content: "▾"; }
 .ap-neugierig-inhalt { padding: 4px 14px 14px; min-width: 0; font-size: 14px; }
 .ap-neugierig-inhalt code, .ap-neugierig-inhalt pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+/* Ein Aufklapper in einem Aufklapper hebt sich mit der Fläche ab */
+.ap-neugierig .ap-neugierig { background: var(--sf); }
+/* Alle Aufklapper gleich (Prüfung der Elemente, 11.11.2026): Pfeil, 14 px fett, 44 px hoch; «Was Bert dafür getan hat» war 13 px grau */
+.ap-schritte > summary { font-size: var(--text-meta); color: var(--ink-soft); }
+.ap-schritte > summary::before, .ap-neugierig > summary::before { display: inline-block; width: 1em; color: var(--pr2); }
 .ap-zurueck > svg.i { width: 18px; height: 18px; }
 
 /* Kopf von Bert: neues Gespräch und frühere Gespräche mit Wort */
@@ -699,7 +734,7 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-wartet-zu { border-radius: var(--radius-card); background: var(--sf); box-shadow: inset 0 0 0 1px var(--ln); min-width: 0; }
 .ap-wartet-zu > summary { display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 16px; cursor: pointer; list-style: none; }
 .ap-wartet-zu > summary::-webkit-details-marker { display: none; }
-.ap-wartet-zu > summary > svg.i { flex: none; color: var(--mu); transition: transform .15s ease; }
+.ap-wartet-zu > summary > svg.i { flex: none; color: var(--mu); transition: transform var(--motion-standard-dauer) var(--motion-standard-kurve); }
 .ap-wartet-zu[open] > summary > svg.i { transform: rotate(90deg); }
 .ap-wartet-zu[open] > summary { border-bottom: 1px solid var(--ln); }
 .ap-wartet-zu > .ap-wartet { box-shadow: none; background: transparent; border-radius: 0; }
@@ -736,7 +771,7 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-mehr-zeile { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 64px; padding: 10px 12px; border: 0; border-radius: var(--radius-inner); background: none;
   color: inherit; font: inherit; text-align: left; text-decoration: none; cursor: pointer; }
 .ap-mehr-zeile:hover { background: var(--sf2); text-decoration: none; }
-.ap-mehr-zeile:focus-visible { outline: 2px solid var(--pr); outline-offset: -2px; }
+.ap-mehr-zeile:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-inset); }
 .ap-mehr-zeile > .col { min-width: 0; overflow-wrap: break-word; }
 .ap-mehr-zeile > svg.i { flex: none; color: var(--mu); }
 
@@ -774,7 +809,7 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-stand > .col { flex: 1 1 180px; min-width: 0; }
 .ap-merk { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; color: var(--mu); cursor: pointer; }
 .ap-merk:hover { background: var(--sf2); }
-.ap-merk:focus-visible { outline: 2px solid var(--pr); outline-offset: 2px; }
+.ap-merk:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-offset); }
 .ap-merk.an { color: var(--pr2); background: var(--prs); }
 .ap-merk.an svg { fill: currentColor; }
 
@@ -782,7 +817,7 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-unterlagen { display: flex; flex-direction: column; gap: 2px; list-style: none; margin: 0; padding: 0; }
 .ap-unterlage { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px; border-radius: var(--radius-inner); color: inherit; text-decoration: none; }
 .ap-unterlage:hover { background: var(--sf2); text-decoration: none; }
-.ap-unterlage:focus-visible { outline-offset: -2px; }
+.ap-unterlage:focus-visible { outline-offset: var(--focus-inset); }
 .ap-unterlage > .col { min-width: 0; }
 .ap-unterlage > svg.i { flex: none; color: var(--mu); }
 .ap-unterlage-bild { flex: none; width: 44px; height: 44px; object-fit: cover; border-radius: 12px; background: var(--sf2); }
@@ -806,7 +841,7 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-projekt-knopf { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; max-width: 100%; min-width: 0; margin: 0 0 0 -6px; padding: 0 6px;
   border-radius: var(--radius-inner); color: inherit; text-decoration: none; }
 .ap-projekt-knopf:hover { background: var(--sf2); text-decoration: none; }
-.ap-projekt-knopf:focus-visible { outline: 2px solid var(--pr); outline-offset: 0; }
+.ap-projekt-knopf:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: 0; }
 .ap-projekt-knopf > svg.i { flex: none; width: 16px; height: 16px; color: var(--mu); }
 .ap-projekt-knopf > span { min-width: 0; }
 .ap-oben-projekt { display: flex; min-width: 0; }
@@ -821,11 +856,10 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-projekt-oeffnen { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; margin: -8px; padding: 8px; border: 0; border-radius: var(--radius-inner);
   background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; box-sizing: content-box; }
 .ap-projekt-oeffnen:hover { background: var(--sf2); }
-.ap-projekt-oeffnen:focus-visible { outline: 2px solid var(--pr); outline-offset: -2px; }
+.ap-projekt-oeffnen:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-inset); }
 .ap-projekt-oeffnen > .col { min-width: 0; overflow-wrap: anywhere; }
 .ap-projekt-oeffnen > svg.i { flex: none; color: var(--mu); }
 .ap-projekt-oeffnen > .chip { flex: none; }
-.ap-projekt-name { font-size: 17px; }
 .ap-projekt-hinweise { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-width: 0; }
 .ap-projekt-hinweise > .meta { margin: 0; }
 .ap-projekt-leise { display: flex; flex-wrap: wrap; gap: 0; margin: 0 -8px -8px; }
@@ -855,7 +889,7 @@ span.ap-termin-knopf { min-height: 36px; }
 /* ---- Ins Netz stellen: ein Satz, der nächste Schritt, die volle Liste zum Aufklappen */
 .ap-netz-kopf { align-items: center; }
 .ap-netz-kopf > h2:focus { outline: none; }
-.ap-netz-kopf > h2:focus-visible { outline: 2px solid var(--pr2); outline-offset: 4px; border-radius: var(--radius-thumb); }
+.ap-netz-kopf > h2:focus-visible { outline: var(--focus-width) solid var(--pr2); outline-offset: 4px; border-radius: var(--radius-thumb); }
 .ap-netz-satz { margin: 0; font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); overflow-wrap: break-word; }
 .ap-netz-saetze { list-style: none; margin: 0; padding: 0; min-width: 0; }
 /* Die drei Sätze vor dem ersten Knopf (Korrekturrunde C): gut lesbar, nicht als leiser Hinweis */
@@ -866,18 +900,16 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-netz-naechster > b { font-size: 17px; line-height: 1.3; overflow-wrap: break-word; }
 .ap-netz-naechster > .meta { margin: 0; font-size: 14px; color: var(--ink-soft); }
 .ap-netz-naechster > .k-knoepfe { margin-top: var(--space-1); }
-.ap-netz-alle > summary, .ap-seite-mehr summary { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; width: fit-content; max-width: 100%; cursor: pointer; list-style: none; font-weight: 700; color: var(--pr2); border-radius: var(--radius-thumb); }
-.ap-netz-alle > summary::-webkit-details-marker, .ap-seite-mehr summary::-webkit-details-marker { display: none; }
-.ap-netz-alle > summary::before, .ap-seite-mehr summary::before { content: "▸"; flex: none; }
-.ap-netz-alle[open] > summary::before, .ap-seite-mehr details[open] > summary::before { content: "▾"; }
-.ap-netz-alle > summary:focus-visible, .ap-seite-mehr summary:focus-visible { outline: 2px solid var(--pr2); outline-offset: 2px; }
+.ap-netz-alle > summary { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; width: fit-content; max-width: 100%; cursor: pointer; list-style: none; font-weight: 700; color: var(--pr2); border-radius: var(--radius-thumb); }
+.ap-netz-alle > summary::-webkit-details-marker { display: none; }
+.ap-netz-alle > summary::before { content: "▸"; flex: none; }
+.ap-netz-alle[open] > summary::before { content: "▾"; }
+.ap-netz-alle > summary:focus-visible { outline: var(--focus-width) solid var(--pr2); outline-offset: var(--focus-offset); }
 .ap-netz-alle > .ap-pruefung { margin: var(--space-2) 0 0; padding: 0; list-style: none; }
 .ap-netz-alle .ap-pruefpunkt > .k-knoepfe { margin-top: var(--space-1); }
 
 /* ---- Mehr zu deiner Seite (eingeklappt am Ende) */
-.ap-seite-mehr summary { color: var(--ink); }
-.ap-seite-mehr summary > h2 { margin: 0; font-size: 17px; }
-.ap-seite-mehr-inhalt { margin-top: var(--space-3); min-width: 0; }
+.ap-seite-mehr summary > h2 { margin: 0; font: inherit; }
 .ap-seite-mehr-inhalt > .lnk { align-self: flex-start; margin-left: 0; }
 @media (max-width: 767px) {
   .ap-seite-mehr-inhalt > .k-knoepfe > .btn { width: 100%; }
@@ -889,6 +921,7 @@ span.ap-termin-knopf { min-height: 36px; }
 
 /* ---- Bert einrichten: die vier Schritte, darunter die eine Karte */
 .ap-einrichten-schritte { min-width: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-inner); background: var(--sf2); }
+.ap-einrichten-schritte > .steps.bahn { --bahn-grund: var(--sf2); }
 .ap-einrichten-karte h2 { margin: 0; }
 .ap-einrichten-karte p { margin: 0; overflow-wrap: break-word; }
 .ap-einrichten-karte > [role="status"] { align-items: center; }
@@ -912,7 +945,7 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-weg-etappe-kopf .meta { margin: 0; }
 .ap-weg-etappe-link { align-items: center; min-height: 44px; margin: calc(-1 * var(--space-3)); padding: var(--space-3); border-radius: var(--radius-inner); color: inherit; text-decoration: none; }
 .ap-weg-etappe-link:hover { background: var(--sf2); text-decoration: none; }
-.ap-weg-etappe-link:focus-visible { outline: 2px solid var(--pr); outline-offset: -2px; }
+.ap-weg-etappe-link:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-inset); }
 .ap-weg-etappe-link > svg.i { flex: none; color: var(--mu); }
 @media (max-width: 767px) {
   .ap-weg-etappe[data-offen="nein"] { padding: var(--space-4); }

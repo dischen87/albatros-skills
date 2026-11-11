@@ -11,7 +11,7 @@
   html{-webkit-font-smoothing:antialiased;text-size-adjust:100%}
   body{font-family:var(--font-sans);font-size:15px;line-height:1.5;color:var(--ink);background:var(--bg);font-variant-numeric:tabular-nums}
   a{color:var(--pr2);text-decoration:none}
-  :focus-visible{outline:2px solid var(--pr);outline-offset:2px}
+  :focus-visible{outline:var(--focus-width) solid var(--pr);outline-offset:var(--focus-offset)}
   button{cursor:pointer}
   button:disabled{cursor:default}
   input,textarea,select{font:inherit;color:inherit}
@@ -59,7 +59,7 @@
   .t3{font-size:19px;line-height:1.25} /* Kartentitel (Tagesbericht, Sheet) */
   .t4{font-size:15px;line-height:1.35;font-weight:700} /* headline, Website 18 */
   .lead{font-size:18px;line-height:1.5;color:var(--ink-soft)}
-  .meta{font-size:13px;line-height:1.45;color:var(--mu)}
+  .meta{font-size:var(--text-meta);line-height:1.45;color:var(--mu)} /* 14 statt 13 (11.11.2026, Prüfung: «die grauen kleinen Texte sind blass und klein») */
   .sm{font-size:13px;line-height:1.45}
   .xs{font-size:12px;line-height:1.4}
   .up{font-size:12px;line-height:1.3;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
@@ -72,7 +72,7 @@
   /* ---------- Knöpfe (Bausteine 3 bis 6): Pillen. Primär Veilchen mit shadow.button, gibt beim Drücken auf 0,97 nach; sekundär und
      ghost weiss mit Rand control (Baustein 4); weich primarySoft mit primaryInk (5a); Textknopf primaryStrong (5b); glas für runde
      Knöpfe über Fotos und Bühne (6). Mindestens 44 hoch (Regel am Schluss). ---------- */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:var(--pr);color:var(--onpr);font-size:15px;font-weight:700;line-height:1.15;white-space:normal;text-wrap:balance;max-width:100%;flex:none;box-shadow:var(--shadow-button);transition:transform .1s ease-out,background-color .16s,box-shadow .16s;-webkit-tap-highlight-color:transparent}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:var(--pr);color:var(--onpr);font-size:var(--text-control);font-weight:700;line-height:1.15;white-space:normal;text-wrap:balance;max-width:100%;flex:none;box-shadow:var(--shadow-button);transition:transform var(--motion-press-dauer) var(--motion-press-kurve),background-color var(--motion-standard-dauer),box-shadow var(--motion-standard-dauer);-webkit-tap-highlight-color:transparent}
   .btn svg.i{width:18px;height:18px;stroke-width:2}
   .btn:active:not(:disabled,.dis,.load){transform:scale(.97)}
   .btn.sec,.btn.gh{background:var(--sf);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--control)}
@@ -94,6 +94,7 @@
      Beschriftungen stehen wie bisher in einer Zeile (flex:none, so breit wie der Text). Doppelte Klasse, damit sm, lg, xl und tx ihren Rand
      innen oben und unten behalten. */
   .btn.btn{padding-top:var(--space-2);padding-bottom:var(--space-2)}
+  .btn.full{padding-left:var(--space-3);padding-right:var(--space-3)} /* volle Breite: Text steht mittig, der breite Innenrand nähme nur Platz weg (Einwilligung am Handy: «Nur notwendige» in einer Zeile) */
   .btn.io{width:44px;padding:0}.btn.io.lg{width:52px}.btn.io.xl{width:56px}
   .btn.hov{filter:brightness(.94)}
   .btn.sec.hov,.btn.gh.hov{filter:none;background:var(--sf2)}
@@ -145,7 +146,7 @@
   .field .err-t{font-size:13px;color:var(--fui);font-weight:600;display:flex;gap:6px;align-items:center}
   /* Ränder von Feldern, Schaltern, Checkboxen und Steppern in control (3.37:1 auf Weiss), nicht line-strong (1.49:1); gesperrt bleibt
      line (WCAG 1.4.11 gilt nicht für Gesperrtes). UX-Prüfung 27.10.2026, ZG-01; farben.test.ts prüft die Selektoren. */
-  .ctl{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border-radius:var(--radius-control);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-size:15px;min-width:0}
+  .ctl{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border-radius:var(--radius-control);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-size:var(--text-control);min-width:0}
   .ctl .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ctl .phd{color:var(--placeholder)}
   .ctl svg.i{color:var(--mu)}
@@ -165,8 +166,8 @@
   .inp b.phd{color:var(--placeholder);font-weight:500}
   .inp.foc{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
   /* Schalter (Baustein 10): Spur 52 × 32, aus control, an Veilchen, Knopf 28 weiss mit shadow.float */
-  .tog{width:52px;height:32px;border-radius:999px;background:var(--control);position:relative;flex:none;display:inline-block;transition:background-color .16s}
-  .tog::after{content:"";position:absolute;top:2px;left:2px;width:28px;height:28px;border-radius:50%;background:var(--sf);box-shadow:var(--shadow-float);transition:left .16s cubic-bezier(.2,.8,.2,1)}
+  .tog{width:52px;height:32px;border-radius:999px;background:var(--control);position:relative;flex:none;display:inline-block;transition:background-color var(--motion-standard-dauer)}
+  .tog::after{content:"";position:absolute;top:2px;left:2px;width:28px;height:28px;border-radius:50%;background:var(--sf);box-shadow:var(--shadow-float);transition:left var(--motion-standard-dauer) var(--motion-standard-kurve)}
   .tog.on{background:var(--pr)}.tog.on::after{left:22px}
   .tog.dis{opacity:.45}
   .tog.ios.on{background:var(--pr)} /* früher grün wie iOS; seit «Plüsch» gleich wie überall */
@@ -181,7 +182,7 @@
   /* Segmente (Baustein 10): Rahmen als Pille mit Rand control, gewählt Veilchen (ZG-01) */
   .seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sf);border-radius:999px;padding:3px;font-size:15px;font-weight:600;gap:2px;box-shadow:inset 0 0 0 1.5px var(--control)}
   .seg>span{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;color:var(--ink);text-align:center;white-space:nowrap}
-  .seg>span.on{background:var(--pr);color:var(--onpr);font-weight:700;box-shadow:var(--shadow-segment-on)}
+  .seg>span.on{background:var(--prs);color:var(--primary-ink);font-weight:700;box-shadow:inset 0 0 0 1.5px var(--pr)} /* gewählt getönt mit Ring: die volle Füllung gehört dem einen Hauptknopf (11.11.2026, Prüfung der Elemente) */
   .seg.sm{font-size:14px}.seg.sm>span{padding:0 12px}
   .days{display:flex;gap:6px}
   .days span{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font-size:14px;font-weight:700;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);color:var(--ink-soft)}
@@ -456,6 +457,7 @@
   .minze{--k:var(--brand-minze);--k-soft:var(--brand-minze-soft);--k-ink:var(--brand-minze-ink);--k-on:var(--onpr);--k-ikon:var(--brand-minze);--k-pastel:var(--brand-minze-pastel)}
   .meer,.blau{--k:var(--brand-meer);--k-soft:var(--brand-meer-soft);--k-ink:var(--brand-meer-ink);--k-on:var(--onpr);--k-ikon:var(--brand-meer);--k-pastel:var(--brand-meer-pastel)}
   .schal,.himbeer{--k:var(--brand-schal);--k-soft:var(--brand-schal-soft);--k-ink:var(--brand-schal-ink);--k-on:var(--ink);--k-ikon:var(--brand-schal-ink);--k-pastel:var(--brand-schal-pastel)}
+  :root[data-theme="dark"] :is(.sonne,.schal){--k-on:var(--onas)} /* brandDark: Sonne und Schal bleiben hell, die Schrift darauf dunkel */
   .wolke,.flieder{--k:var(--brand-wolke);--k-soft:var(--brand-wolke-soft);--k-ink:var(--brand-wolke-ink);--k-on:var(--onpr);--k-ikon:var(--brand-wolke);--k-pastel:var(--brand-wolke-pastel)}
   .k-streifen{display:flex;height:4px;width:100%}
   .k-streifen>span{flex:1}
@@ -633,7 +635,7 @@
   /* Tablet */
   @media (max-width:1023px){
     .shell{grid-template-columns:1fr}
-    .sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-100%);transition:transform .2s cubic-bezier(.2,.8,.2,1),visibility .2s;visibility:hidden}
+    .sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-100%);transition:transform var(--motion-overlay-dauer) var(--motion-overlay-kurve),visibility var(--motion-overlay-dauer);visibility:hidden}
     .sidebar[data-open="true"]{transform:none;visibility:visible;box-shadow:var(--sh3)}
     .drawer-nav[data-open="true"]{display:block;position:fixed;inset:0;background:var(--scrim);z-index:55}
     .topbar{padding:10px 16px;gap:10px}
@@ -693,7 +695,7 @@
   .tabs{overflow-x:auto;scrollbar-width:none;padding:4px 4px 10px;margin:-4px -4px -10px} /* Platz für Schatten und Fokus im Scroll-Rahmen */
   button.li{border:0;border-bottom:1px solid var(--ln);background:none;font:inherit;color:inherit}
   a.li:hover{text-decoration:none;background:var(--bg)}
-  :is(a,button).li:focus-visible{outline-offset:-2px} /* Zeilen füllen oft eine Liste mit overflow: Umriss innen, sonst schneidet sie ihn ab (ZG-02) */
+  :is(a,button).li:focus-visible{outline-offset:var(--focus-inset)} /* Zeilen füllen oft eine Liste mit overflow: Umriss innen, sonst schneidet sie ihn ab (ZG-02) */
   .btn:hover{text-decoration:none}
   button.fc,a.fc{border:0;font:inherit;cursor:pointer;text-decoration:none}
   button.fc.on,a.fc.on{color:var(--onpr)}
@@ -715,11 +717,11 @@
   .inp:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
   button.tog{border:0;padding:0;cursor:pointer}
   .cb,.rd{cursor:pointer;position:relative}
-  .cb:has(input:focus-visible) i,.rd:has(input:focus-visible) i{outline:2px solid var(--pr);outline-offset:2px}
+  .cb:has(input:focus-visible) i,.rd:has(input:focus-visible) i{outline:var(--focus-width) solid var(--pr);outline-offset:var(--focus-offset)}
   .seg>button{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 16px;border-radius:999px;color:var(--ink);text-align:center;white-space:nowrap;border:0;background:none;font:inherit;font-weight:600;cursor:pointer}
   .seg.sm>button{padding:0 12px}
   /* Gewählt als Fläche in Primärfarbe wie in der App, nicht Weiss auf Hellgrau (1.09:1); ZG-01 */
-  .seg>button.on{background:var(--pr);color:var(--onpr);font-weight:700;box-shadow:var(--shadow-segment-on)}
+  .seg>button.on{background:var(--prs);color:var(--primary-ink);font-weight:700;box-shadow:inset 0 0 0 1.5px var(--pr)}
   .days>button{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font-size:14px;font-weight:700;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);color:var(--ink-soft);border:0;cursor:pointer;font-family:inherit}
   .days>button.on{background:var(--pr);color:var(--onpr);box-shadow:none}
   .days>button.x{background:var(--sf2);color:var(--neutral);box-shadow:none;text-decoration:line-through;cursor:default}
@@ -735,16 +737,17 @@
   .steps>li>em{width:24px;height:2px;background:var(--ln);border-radius:1px;flex:none}
   .steps.sm>li>span{font-size:12.5px}.steps.sm>li>span i{width:22px;height:22px;font-size:12px}
   /* Flugbahn (Steps bahn, 11.11.2026): gleich breite Spalten, Zahl auf einer Linie, Name darunter; die Strecke bis zum aktuellen Schritt in
-     free, der aktuelle mit Hof in primarySoft. Der Hof in surface trennt die Linie von der Scheibe (Grund der Leiste ist surface). */
-  .steps.bahn{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0;align-items:start;margin:0;padding:0;list-style:none}
+     free, der aktuelle mit Hof in primarySoft. Der Hof in der Farbe des Grunds (--bahn-grund, Standard surface) trennt die Linie von der Scheibe. */
+  .steps.bahn{--bahn-grund:var(--sf);display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0;align-items:start;margin:0;padding:0;list-style:none}
   .steps.bahn>li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--space-1);min-width:0;padding:0 var(--space-1);text-align:center;font-size:var(--text-small);font-weight:700;line-height:1.25;color:var(--mu)}
-  .steps.bahn>li>i{position:relative;z-index:1;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu);box-shadow:0 0 0 var(--space-1) var(--sf)}
-  .steps.bahn>li>span{max-width:100%;overflow-wrap:break-word;hyphens:auto}
+  .steps.bahn>li>i{position:relative;z-index:1;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu);box-shadow:0 0 0 var(--space-1) var(--bahn-grund)}
+  .steps.bahn>li>span{max-width:100%;overflow-wrap:break-word;hyphens:manual} /* keine Silbentrennung («Angemel-det»); Umbruch nur zwischen Wörtern */
+  @media (max-width:767px){.steps.bahn.sm>li{font-size:var(--text-label);padding:0 2px}}
   .steps.bahn>li+li::before{content:"";position:absolute;top:12px;right:50%;width:100%;height:2px;border-radius:1px;background:var(--ln)}
   .steps.bahn>li.done+li::before{background:var(--ok)}
   .steps.bahn>li.done>i{background:var(--oks);color:var(--oki)}
   .steps.bahn>li.now{color:var(--ink)}
-  .steps.bahn>li.now>i{background:var(--pr);color:var(--onpr);box-shadow:0 0 0 var(--space-1) var(--sf),0 0 0 calc(var(--space-1) + 3px) var(--prs)}
+  .steps.bahn>li.now>i{background:var(--pr);color:var(--onpr);box-shadow:0 0 0 var(--space-1) var(--bahn-grund),0 0 0 calc(var(--space-1) + 3px) var(--prs)}
   /* Der Pfeil liegt über dem rechten Rand der Auswahl: Platz lassen, damit kurze Auswahlen den Text nicht überdecken */
   .ctl:has(>.caret) select{padding-right:26px}
 }
@@ -779,7 +782,7 @@
 @layer components {
   .seg>a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px} /* Umschalter als Links (SegLinks) wie .seg>button */
   /* Gewählt wie .seg>button.on (ZG-01); !important, weil SegLinks und der Trichter in /intern Weiss mit Tailwind setzen (Schicht utilities) */
-  .seg>a[aria-current]{background:var(--pr)!important;color:var(--onpr)!important;box-shadow:none!important}
+  .seg>a[aria-current]{background:var(--prs)!important;color:var(--primary-ink)!important;box-shadow:inset 0 0 0 1.5px var(--pr)!important}
   /* Umschalter aus Links (SegLinks.astro, Cockpit und Intern): Breite je nach Text; wird es auf dem Telefon zu eng, scrollt nur der
      Umschalter, nie die Seite; der gewählte Link mit sichtbarem Fokus */
   .seg.k-seglinks{grid-auto-columns:auto;max-width:100%;overflow-x:auto;scrollbar-width:none}
@@ -787,7 +790,7 @@
   .seg.k-seglinks>a:hover:not([aria-current]){background:var(--sf2)}
   .seg.k-seglinks>a[aria-current]{font-weight:700}
   .seg.k-seglinks>a:focus-visible{outline-offset:-3px}
-  .seg.k-seglinks>a[aria-current]:focus-visible{outline-color:var(--onpr)}
+  .seg.k-seglinks>a[aria-current]:focus-visible{outline-color:var(--pr)}
   .sidebar .me>a{display:inline-grid;place-items:center;min-width:44px;min-height:44px;border-radius:12px} /* Abmelden */
   .sidebar .me>a:hover{background:var(--sf2)}
   .sidebar .lg>a{display:inline-flex;align-items:center;min-height:44px}
@@ -796,7 +799,7 @@
     .sidebar .drawer-zu{display:inline-flex;margin-left:auto}
     /* Beim Öffnen sofort sichtbar (sonst ist die Schublade im ersten Bild noch hidden und nimmt den Fokus nicht an); beim Schliessen bleibt
        sie sichtbar, bis sie hinausgeglitten ist */
-    .sidebar[data-open="true"]{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+    .sidebar[data-open="true"]{transition:transform var(--motion-overlay-dauer) var(--motion-overlay-kurve)}
   }
   /* Reiter: scrollen sie auf dem Telefon, zeigt ein weicher Rand rechts, dass es weitergeht */
   .bereich-tabs{mask-image:linear-gradient(to right,var(--ink) calc(100% - 28px),transparent);-webkit-mask-image:linear-gradient(to right,var(--ink) calc(100% - 28px),transparent)}
@@ -1024,7 +1027,7 @@
   .k-foto-leer{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--album-photo-empty);color:var(--ink-soft);font-size:12px;font-weight:700;line-height:1.15;text-align:center}
   li.k-polaroid>a{display:block;color:inherit;border-radius:1px}
   li.k-polaroid>a::after{content:"";position:absolute;inset:0}
-  li.k-polaroid:has(a:focus-visible){outline:2px solid var(--pr);outline-offset:3px}
+  li.k-polaroid:has(a:focus-visible){outline:var(--focus-width) solid var(--pr);outline-offset:3px}
   li.k-polaroid>a:focus-visible{outline:none}
   .k-polaroid-unter{display:block;padding:6px 2px 0;margin-bottom:-8px;font-size:12px;line-height:1.3;color:var(--ink-soft)}
   .k-einwilligung{display:flex;align-items:flex-start;gap:6px;font-size:12px;line-height:1.4;color:var(--mu)}
@@ -1090,7 +1093,7 @@
   .k-wahl>.k-ikon{--s:30px;box-shadow:none}
   .k-wahl:has(input:checked){background:var(--pr);color:var(--onpr);font-weight:700;box-shadow:var(--shadow-chip-on)}
   .k-wahl:has(input:checked)>.k-ikon{background:var(--sf);color:var(--primary-ink)}
-  .k-wahl:has(input:focus-visible){outline:2px solid var(--pr);outline-offset:2px}
+  .k-wahl:has(input:focus-visible){outline:var(--focus-width) solid var(--pr);outline-offset:var(--focus-offset)}
   /* Auswahl als Pille (Ab, Alter): das echte select liegt darin */
   .k-pillwahl{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 16px;border-radius:999px;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-size:15px;font-weight:600;color:var(--ink)}
   .k-pillwahl select{appearance:none;-webkit-appearance:none;border:0;outline:0;background:transparent;padding:0 22px 0 0;margin-right:-22px;font:inherit;color:inherit;cursor:pointer;max-width:200px;field-sizing:content}
@@ -1326,7 +1329,7 @@
   .shell .k-zeilen>a{display:flex;min-height:44px;padding:10px 14px;border-radius:var(--radius-inner);color:inherit;text-decoration:none}
   .shell .k-zeilen>a:hover{background:var(--sf2)}
   .shell .k-zeilen>a[aria-current]{background:var(--prs);box-shadow:inset 0 0 0 2px var(--pr)}
-  .shell .k-zeilen>a:focus-visible{outline-offset:-2px}
+  .shell .k-zeilen>a:focus-visible{outline-offset:var(--focus-inset)}
   /* Kennzahl, die Alarm gibt (Notbremse aktiv, Quelle fehlt): weiche Fläche in fullSoft, die Bedeutung steht als Wort mit Zeichen */
   .shell .kpi.k-kpi-alarm{background:var(--fus);box-shadow:none}
   .shell .kpi.k-kpi-alarm :is(small,b,em){color:var(--fui)}
@@ -1339,7 +1342,7 @@
   .shell .card .k-zeitstrahl>li>.k-ikon{box-shadow:0 0 0 3px var(--sf)}
   /* Diagramme (Charts.tsx) in fester Breite: Schrift bleibt 12 px; ist die Karte schmaler, scrollt der Rahmen seitlich */
   .shell .k-diagramm{max-width:100%;overflow-x:auto;scrollbar-width:thin;border-radius:var(--radius-thumb)}
-  .shell .k-diagramm:focus-visible{outline-offset:-2px}
+  .shell .k-diagramm:focus-visible{outline-offset:var(--focus-inset)}
   /* Breite Tabellen (Protokoll, Leads): scrollen auf dem Telefon im Kissen, statt jede Zeile in schmale Spalten zu quetschen */
   .shell .tbl.k-breit{min-width:760px}
   /* Text- und Code-Kästen (Snippet, Mail-Text, Meta-Tag): Fläche statt Linie, Radius 14; Vorschau in einem Rahmen (Mail, Widget) als Kissen */
@@ -1383,12 +1386,12 @@
   .k-antworten{display:flex;flex-direction:column;gap:var(--space-2);margin:0;padding:0;list-style:none;min-width:0}
   .k-antworten.pillen{flex-direction:row;flex-wrap:wrap;gap:var(--space-2) var(--space-3)}
   .k-antworten>li{min-width:0;max-width:100%}
-  .k-antwort{display:flex;align-items:center;gap:var(--space-3);width:100%;max-width:100%;min-height:44px;margin:0;border:0;font:inherit;font-size:var(--text-body);color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .16s,box-shadow .16s,transform .1s ease-out}
+  .k-antwort{display:flex;align-items:center;gap:var(--space-3);width:100%;max-width:100%;min-height:44px;margin:0;border:0;font:inherit;font-size:var(--text-body);color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color var(--motion-standard-dauer),box-shadow var(--motion-standard-dauer),transform var(--motion-press-dauer) var(--motion-press-kurve)}
   .k-antwort-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);flex:1;min-width:0;overflow-wrap:break-word}
   .k-antwort-emp{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-label);font-weight:800;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--primary-ink)}
   .k-antwort-emp svg.i{width:14px;height:14px;fill:currentColor;stroke:currentColor;color:currentColor}
   .k-antworten.liste .k-antwort{min-height:56px;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-4);border-radius:var(--radius-inner);background:var(--sf);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--line-strong);font-weight:600;line-height:1.4}
-  .k-antwort-pfeil{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--sf2);color:var(--primary-ink);transition:background-color .16s,color .16s,transform .16s}
+  .k-antwort-pfeil{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--sf2);color:var(--primary-ink);transition:background-color var(--motion-standard-dauer),color var(--motion-standard-dauer),transform var(--motion-standard-dauer)}
   .k-antwort-pfeil svg.i{width:16px;height:16px;stroke-width:2.2}
   .k-antworten.liste .k-antwort.emp{background:var(--prs);box-shadow:inset 0 0 0 2px var(--pr)}
   .k-antworten.liste .k-antwort.emp .k-antwort-pfeil{background:var(--pr);color:var(--onpr)}
@@ -1397,10 +1400,16 @@
   .k-antworten.pillen .k-antwort-text{flex:none;max-width:100%}
   .k-antworten.pillen .k-antwort-emp{flex:none;padding:2px var(--space-2);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--onpr) 24%,transparent);color:inherit;letter-spacing:.04em}
   @media (hover:hover){
-    .k-antworten.liste .k-antwort:not(:disabled):hover{box-shadow:var(--shadow-raised),inset 0 0 0 2px var(--pr)}
-    .k-antworten.liste .k-antwort:not(:disabled):hover .k-antwort-pfeil{background:var(--pr);color:var(--onpr);transform:translateX(2px)}
+    .k-antworten.liste .k-antwort:not(:disabled,.emp):hover{background:var(--sf2);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--control)}
+    .k-antworten.liste .k-antwort:not(:disabled):hover .k-antwort-pfeil{transform:translateX(2px)}
     .k-antworten.pillen .k-antwort:not(:disabled,.emp):hover{background:var(--sf2)}
     .k-antworten.pillen .k-antwort.emp:not(:disabled):hover{filter:brightness(1.05)}
+  }
+  /* Am Handy dichter (11.11.2026): ganze Sätze brauchen dort drei bis vier Zeilen; Innenrand und Pfeil kleiner, Schrift bleibt 16 */
+  @media (max-width:767px){
+    .k-antworten{gap:var(--space-2)}
+    .k-antworten.liste .k-antwort{min-height:48px;padding:var(--space-2) var(--space-2) var(--space-2) var(--space-3);gap:var(--space-2);line-height:1.35}
+    .k-antwort-pfeil{width:28px;height:28px}
   }
   .k-antwort:active:not(:disabled){transform:scale(.98)}
   .k-antwort:disabled{cursor:default}

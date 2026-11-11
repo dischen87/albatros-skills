@@ -34995,6 +34995,63 @@ class OpencodeUebersetzer {
 import { randomBytes as randomBytes8 } from "node:crypto";
 import { createServer as createServer3 } from "node:http";
 import { Readable } from "node:stream";
+var istObjekt2 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+var anzahl = (x) => typeof x === "number" && Number.isFinite(x) && x >= 0 ? x : 0;
+function usageAus(j) {
+  const u = istObjekt2(j) && istObjekt2(j.usage) ? j.usage : null;
+  if (!u || typeof u.cost !== "number" || !Number.isFinite(u.cost) || u.cost < 0)
+    return null;
+  return { usd: u.cost, eingabe: anzahl(u.prompt_tokens), ausgabe: anzahl(u.completion_tokens) };
+}
+var MAX_MITLESEN = 2 * 1024 * 1024;
+
+class KostenLeser {
+  zeile = "";
+  ganz = [];
+  laenge = 0;
+  strom = false;
+  gefunden = null;
+  dekoder = new TextDecoder;
+  stueck(b) {
+    const t = this.dekoder.decode(b, { stream: true });
+    if (this.laenge <= MAX_MITLESEN) {
+      this.ganz.push(t);
+      this.laenge += t.length;
+    }
+    const teile = (this.zeile + t).split(`
+`);
+    this.zeile = teile.pop() ?? "";
+    if (this.zeile.length > MAX_MITLESEN)
+      this.zeile = "";
+    for (const z of teile)
+      this.zeileLesen(z);
+  }
+  zeileLesen(z) {
+    const s = z.trim();
+    if (!s.startsWith("data:"))
+      return;
+    this.strom = true;
+    const d = s.slice(5).trim();
+    if (!d || d === "[DONE]")
+      return;
+    try {
+      this.gefunden = usageAus(JSON.parse(d)) ?? this.gefunden;
+    } catch {}
+  }
+  ende() {
+    this.zeile += this.dekoder.decode();
+    if (this.zeile) {
+      this.zeileLesen(this.zeile);
+      this.zeile = "";
+    }
+    if (!this.gefunden && !this.strom && this.laenge <= MAX_MITLESEN) {
+      try {
+        this.gefunden = usageAus(JSON.parse(this.ganz.join("")));
+      } catch {}
+    }
+    return this.gefunden;
+  }
+}
 var PFAD = "/api/v1/chat/completions";
 var MAX_KOERPER = 8 * 1024 * 1024;
 var fehlerAntwort = (antwort, status, meldung) => {
@@ -35020,6 +35077,10 @@ async function pforteOeffnen(o) {
   let anzahl = 0;
   let zu = false;
   const offen = new Set;
+  const k = { usd: 0, mitAngabe: 0, ohneAngabe: 0, eingabeTokens: 0, ausgabeTokens: 0, abgewiesen: 0 };
+  let unterwegs = 0;
+  const grenze = o.kostenGrenze ?? null;
+  const geschaetzt = () => k.usd + (grenze ? (k.ohneAngabe + unterwegs) * grenze.reserveUsd : 0);
   async function annehmen(anfrage, antwort) {
     if (zu)
       return fehlerAntwort(antwort, 410, "Lauf beendet");
@@ -35028,22 +35089,48 @@ async function pforteOeffnen(o) {
     const auth = anfrage.headers.authorization ?? "";
     if (!gleich(auth, `Bearer ${zeichen}`))
       return fehlerAntwort(antwort, 401, "Zeichen gilt nicht");
-    const koerper = await koerperLesen(anfrage).catch(() => null);
+    let koerper = await koerperLesen(anfrage).catch(() => null);
     if (!koerper)
       return fehlerAntwort(antwort, 413, "Zu gross");
-    let modell;
+    let j;
     try {
-      modell = JSON.parse(koerper.toString("utf8")).model;
+      j = JSON.parse(koerper.toString("utf8"));
     } catch {
       return fehlerAntwort(antwort, 400, "Kein JSON");
     }
-    if (modell !== o.modell)
+    if (!istObjekt2(j) || j.model !== o.modell)
       return fehlerAntwort(antwort, 403, "Nur das gewählte Modell");
+    if (grenze) {
+      if (geschaetzt() + grenze.reserveUsd > grenze.usd) {
+        k.abgewiesen++;
+        return fehlerAntwort(antwort, 402, "Obergrenze des Messlaufs erreicht");
+      }
+      koerper = Buffer.from(JSON.stringify({ ...j, usage: { ...istObjekt2(j.usage) ? j.usage : {}, include: true } }));
+    }
     const schluessel = await schluesselLesen(o.heim);
     if (!schluessel)
       return fehlerAntwort(antwort, 401, "Nicht verbunden");
     const abbruch = new AbortController;
     offen.add(abbruch);
+    unterwegs++;
+    let gezaehlt = false;
+    const leser = new KostenLeser;
+    const zaehlen = (ok) => {
+      if (gezaehlt)
+        return;
+      gezaehlt = true;
+      unterwegs--;
+      if (!ok)
+        return;
+      const u = leser.ende();
+      if (u) {
+        k.usd += u.usd;
+        k.mitAngabe++;
+        k.eingabeTokens += u.eingabe;
+        k.ausgabeTokens += u.ausgabe;
+      } else
+        k.ohneAngabe++;
+    };
     const uhr = setTimeout(() => abbruch.abort(), o.frist ?? 15 * 60000);
     antwort.on("close", () => {
       if (!antwort.writableFinished)
@@ -35065,10 +35152,13 @@ async function pforteOeffnen(o) {
         }
       });
       anzahl++;
+      const bezahlt = r.status === 200;
       antwort.writeHead(r.status, { "content-type": r.headers.get("content-type") ?? "application/json", "cache-control": "no-store" });
       if (r.body) {
         await new Promise((fertig) => {
           const strom = Readable.fromWeb(r.body);
+          if (bezahlt)
+            strom.on("data", (b) => leser.stueck(b));
           strom.on("error", () => {
             antwort.destroy();
             fertig();
@@ -35079,12 +35169,15 @@ async function pforteOeffnen(o) {
         });
       } else
         antwort.end();
+      zaehlen(bezahlt);
     } catch {
+      zaehlen(true);
       if (!antwort.headersSent)
         fehlerAntwort(antwort, 502, "OpenRouter antwortet nicht");
       else
         antwort.destroy();
     } finally {
+      zaehlen(true);
       clearTimeout(uhr);
       offen.delete(abbruch);
     }
@@ -35109,6 +35202,7 @@ async function pforteOeffnen(o) {
     zeichen,
     port,
     weitergereicht: () => anzahl,
+    kosten: () => ({ ...k, geschaetztUsd: geschaetzt() }),
     schliessen: () => {
       if (zu)
         return;
@@ -35662,6 +35756,8 @@ function gehoert(pfad, lauf) {
 
 // src/bruecke/index.ts
 var ADAPTER = { claude, codex, gemini, cursor, opencode };
+var MESSUNG_HOECHSTENS_USD = 1;
+var messungGueltig = (m) => !!m && Number.isFinite(m.grenzeUsd) && m.grenzeUsd > 0 && m.grenzeUsd <= MESSUNG_HOECHSTENS_USD && Number.isFinite(m.reserveUsd) && m.reserveUsd > 0 && m.reserveUsd < m.grenzeUsd;
 var STOPP_FRIST = 1e4;
 var ZUERICH_TAG = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Zurich", year: "numeric", month: "2-digit", day: "2-digit" });
 var zuerichTag = (d) => ZUERICH_TAG.format(d);
@@ -35829,7 +35925,9 @@ function neueBruecke(speicher, optionen = {}) {
       if (nicht)
         return { ok: false, grund: "nicht_angemeldet", meldung: nicht };
     }
-    const ohne = adapter.ohneSandkasten?.(projekt, umfeld, rechte) ?? null;
+    let ohne = adapter.ohneSandkasten?.(projekt, umfeld, rechte) ?? null;
+    if (ohne === OPENCODE_NICHT_GEMESSEN && adapter.art === "opencode" && messungGueltig(optionen.opencodeMessen))
+      ohne = null;
     if (ohne)
       return { ok: false, grund: "fehler", meldung: ohne };
     if (laeufeHeute(einst.laeufe_pro_tag) >= einst.laeufe_pro_tag)
@@ -36009,9 +36107,20 @@ function neueBruecke(speicher, optionen = {}) {
     const q = adapter.art === "opencode" ? modellQuelle(modell) : null;
     if (q?.quelle !== "openrouter")
       return null;
-    const p = await pforteOeffnen({ heim: umfeld.heim, modell: q.id, ...optionen.pforteZiel ? { ziel: optionen.pforteZiel } : {} });
+    const m = messungGueltig(optionen.opencodeMessen) ? optionen.opencodeMessen : null;
+    const p = await pforteOeffnen({
+      heim: umfeld.heim,
+      modell: q.id,
+      ...optionen.pforteZiel ? { ziel: optionen.pforteZiel } : {},
+      ...m ? { kostenGrenze: { usd: m.grenzeUsd, reserveUsd: m.reserveUsd } } : {}
+    });
     if (!p)
       logFehler("Pforte zu OpenRouter nicht geöffnet");
+    if (p && m?.pforte) {
+      try {
+        m.pforte(p);
+      } catch {}
+    }
     return p;
   }
   function starten(adapter, auftrag, id, modell, o = {}, anschluss = null, pforte = null) {
@@ -36124,6 +36233,12 @@ function neueBruecke(speicher, optionen = {}) {
       } catch {}
     }
     const uebersetzer = adapter.uebersetzer(wurzeln(projekt));
+    const roh = adapter.art === "opencode" && messungGueltig(optionen.opencodeMessen) ? optionen.opencodeMessen.roh ?? null : null;
+    const rohMelden = (text, quelle) => {
+      try {
+        roh?.(text, quelle);
+      } catch {}
+    };
     let stdoutZu = !kind.stdout;
     let kindZu = false;
     let code = null;
@@ -36134,6 +36249,8 @@ function neueBruecke(speicher, optionen = {}) {
     if (kind.stdout) {
       const zeilen = createInterface({ input: kind.stdout, crlfDelay: Infinity });
       zeilen.on("line", (zeile) => {
+        if (roh)
+          rohMelden(zeile, "stdout");
         if (!zeile.trim())
           return;
         let j;
@@ -36151,6 +36268,8 @@ function neueBruecke(speicher, optionen = {}) {
       });
     }
     kind.stderr?.on("data", (d) => {
+      if (roh)
+        rohMelden(d.toString("utf8"), "stderr");
       l.stderr = (l.stderr + d.toString("utf8")).slice(-4000);
     });
     kind.on("error", (e) => {
@@ -37194,7 +37313,9 @@ var mehrDe = {
     kalender: {
       neuAm: "Neue Erinnerung am {datum}",
       allein: "Bert arbeitet allein",
-      erledigt: "erledigt"
+      erledigt: "erledigt",
+      erinnerung: "Erinnerung",
+      erledigtGross: "Erledigt"
     },
     neugierig: {
       zeitzone: "Die Zeiten gelten in der Zeitzone {zone}."
@@ -38520,6 +38641,8 @@ var de2 = {
     },
     neuLaden: "Vorschau neu laden",
     neuerTab: "In neuem Fenster öffnen",
+    neuLadenKurz: "Neu laden",
+    neuerTabKurz: "Öffnen",
     vorschau: {
       stoppen: "Vorschau beenden"
     },
@@ -38543,6 +38666,7 @@ Stelle auf der Webseite: {stelle}`,
       zurueck: "Früher",
       vor: "Später",
       keine: "Keine Termine an diesem Tag.",
+      frei: "Nichts geplant",
       neuAm: "Neue Erinnerung am {datum}",
       autopilot: "Bert arbeitet allein",
       gelaufen: "gelaufen",
@@ -39460,7 +39584,9 @@ var mehrEn = {
     kalender: {
       neuAm: "New reminder on {datum}",
       allein: "Bert works on his own",
-      erledigt: "done"
+      erledigt: "done",
+      erinnerung: "Reminder",
+      erledigtGross: "Done"
     },
     neugierig: {
       zeitzone: "The times apply in the time zone {zone}."
@@ -39991,6 +40117,8 @@ var en2 = {
     },
     neuLaden: "Reload preview",
     neuerTab: "Open in a new window",
+    neuLadenKurz: "Reload",
+    neuerTabKurz: "Open",
     vorschau: {
       stoppen: "Stop preview"
     },
@@ -40014,6 +40142,7 @@ Spot on the website: {stelle}`,
       zurueck: "Earlier",
       vor: "Later",
       keine: "Nothing planned on this day.",
+      frei: "Nothing planned",
       neuAm: "New reminder on {datum}",
       autopilot: "Bert works on his own",
       gelaufen: "done",
@@ -40931,7 +41060,9 @@ var mehrFr = {
     kalender: {
       neuAm: "Nouveau rappel le {datum}",
       allein: "Bert travaille seul",
-      erledigt: "fait"
+      erledigt: "fait",
+      erinnerung: "Rappel",
+      erledigtGross: "Fait"
     },
     neugierig: {
       zeitzone: "Les heures valent pour le fuseau horaire {zone}."
@@ -41462,6 +41593,8 @@ var fr2 = {
     },
     neuLaden: "Recharger l’aperçu",
     neuerTab: "Ouvrir dans une nouvelle fenêtre",
+    neuLadenKurz: "Recharger",
+    neuerTabKurz: "Ouvrir",
     vorschau: {
       stoppen: "Arrêter l’aperçu"
     },
@@ -41485,6 +41618,7 @@ Endroit sur le site web : {stelle}`,
       zurueck: "Plus tôt",
       vor: "Plus tard",
       keine: "Rien de prévu ce jour-là.",
+      frei: "Rien de prévu",
       neuAm: "Nouveau rappel le {datum}",
       autopilot: "Bert travaille seul",
       gelaufen: "effectué",
@@ -42402,7 +42536,9 @@ var mehrIt = {
     kalender: {
       neuAm: "Nuovo promemoria il {datum}",
       allein: "Bert lavora da solo",
-      erledigt: "fatto"
+      erledigt: "fatto",
+      erinnerung: "Promemoria",
+      erledigtGross: "Fatto"
     },
     neugierig: {
       zeitzone: "Gli orari valgono nel fuso orario {zone}."
@@ -42933,6 +43069,8 @@ var it2 = {
     },
     neuLaden: "Ricarica l’anteprima",
     neuerTab: "Apri in una nuova finestra",
+    neuLadenKurz: "Ricarica",
+    neuerTabKurz: "Apri",
     vorschau: {
       stoppen: "Ferma l’anteprima"
     },
@@ -42956,6 +43094,7 @@ Punto sul sito web: {stelle}`,
       zurueck: "Prima",
       vor: "Dopo",
       keine: "Nessun impegno in questo giorno.",
+      frei: "Niente in programma",
       neuAm: "Nuovo promemoria il {datum}",
       autopilot: "Bert lavora da solo",
       gelaufen: "eseguito",
@@ -45472,9 +45611,9 @@ var Anfrage = object({
 var Aufruf = object({ name: string2(), arguments: unknown().optional() });
 var fehler4 = (id, code, message) => ({ jsonrpc: "2.0", id, error: { code, message } });
 var erfolg = (id, result) => ({ jsonrpc: "2.0", id, result });
-var istObjekt2 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+var istObjekt3 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
 var idVon = (x) => {
-  const id = istObjekt2(x) ? x.id : undefined;
+  const id = istObjekt3(x) ? x.id : undefined;
   return typeof id === "string" || typeof id === "number" ? id : null;
 };
 var kurz3 = (s, max) => s.length > max ? `${s.slice(0, max - 1)}…` : s;
@@ -45497,7 +45636,7 @@ function neuerHandler(u, log = () => {}) {
       return fehler4(null, -32600, "Batches werden nicht unterstützt: Schick jede Nachricht einzeln, eine je Zeile.");
     const a = Anfrage.safeParse(roh);
     if (!a.success) {
-      if (istObjekt2(roh) && "id" in roh && !("method" in roh) && (("result" in roh) || ("error" in roh)))
+      if (istObjekt3(roh) && "id" in roh && !("method" in roh) && (("result" in roh) || ("error" in roh)))
         return null;
       return fehler4(idVon(roh), -32600, 'Ungültige Anfrage: erwartet wird JSON-RPC 2.0 mit jsonrpc "2.0" und method.');
     }
@@ -45584,8 +45723,8 @@ import { join as join27 } from "node:path";
 var WARTEN_MS2 = 30000;
 var TAKT_MS2 = 500;
 var ANFRAGE_MS = 5000;
-var istObjekt3 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
-var vorschauVon = (d) => istObjekt3(d) && istObjekt3(d.vorschau) ? d.vorschau : null;
+var istObjekt4 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+var vorschauVon = (d) => istObjekt4(d) && istObjekt4(d.vorschau) ? d.vorschau : null;
 var text3 = (t, fehler = false) => fehler ? { text: t, fehler: true } : { text: t };
 var NICHT_DA = "Albatros läuft nicht. Ruf arbeitsplatz_oeffnen auf und danach nochmals vorschau_starten. Ohne Albatros " + "startest du den Dev-Server wie bisher im Terminal (Skill webseite-bauen, Schritt 4).";
 var IM_SANDKASTEN = "Aus deinem Sandkasten erreichst du Albatros nicht. Die Vorschau startet von selbst, sobald die Person in " + "Albatros «Webseite» öffnet (sonst dort mit «Vorschau starten»). Starte keinen eigenen Dev-Server.";
@@ -45616,7 +45755,7 @@ function standText(v) {
   }
 }
 function abgelehnt(a) {
-  const d = istObjekt3(a.daten) ? a.daten : {};
+  const d = istObjekt4(a.daten) ? a.daten : {};
   const v = vorschauVon(d);
   switch (d.grund) {
     case "selbst":
@@ -45789,7 +45928,7 @@ var FRIST_MS = 1e4;
 var OFFEN_MS = 10 * 60000;
 var OFFEN_HOECHSTENS = 500;
 var b64u = (b) => b.toString("base64url");
-var istObjekt4 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+var istObjekt5 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
 var text4 = (x) => typeof x === "string" && x.length > 0 && x.length <= 2000 ? x : null;
 function gleicherUrsprung(adresse, aussteller) {
   const a = text4(adresse);
@@ -45822,7 +45961,7 @@ function neuerAnmelder(k, o = {}) {
     if (r.status === 403)
       return { status: "kein_mitglied" };
     const j = r.json;
-    if (r.status === 200 && istObjekt4(j) && text4(j.user) && istRolle(j.rolle))
+    if (r.status === 200 && istObjekt5(j) && text4(j.user) && istRolle(j.rolle))
       return { status: "ok", user: j.user, rolle: j.rolle };
     log({ level: "error", msg: "Anmeldung: mcp antwortet unerwartet", status: r.status });
     return { status: "fehler" };
@@ -45831,12 +45970,12 @@ function neuerAnmelder(k, o = {}) {
     if (metadaten)
       return metadaten;
     const res = await jsonHolen(f, `${a.mcp}/.well-known/oauth-protected-resource`);
-    const server = res?.status === 200 && istObjekt4(res.json) && Array.isArray(res.json.authorization_servers) ? text4(res.json.authorization_servers[0]) : null;
+    const server = res?.status === 200 && istObjekt5(res.json) && Array.isArray(res.json.authorization_servers) ? text4(res.json.authorization_servers[0]) : null;
     const aussteller = server ? URL.parse(server) : null;
     if (!aussteller || aussteller.protocol !== "https:")
       return null;
     const as = await jsonHolen(f, `${aussteller.href.replace(/\/+$/, "")}/.well-known/oauth-authorization-server`);
-    if (as?.status !== 200 || !istObjekt4(as.json))
+    if (as?.status !== 200 || !istObjekt5(as.json))
       return null;
     const authorize = gleicherUrsprung(as.json.authorization_endpoint, aussteller.href);
     const token = gleicherUrsprung(as.json.token_endpoint, aussteller.href);
@@ -45852,7 +45991,7 @@ function neuerAnmelder(k, o = {}) {
     const datei = join28(k.zustand, "oauth-client.json");
     try {
       const j = JSON.parse(readFileSync15(datei, "utf8"));
-      if (istObjekt4(j) && j.aussteller === m.aussteller && j.rueckkehr === rueckkehrAdresse && text4(j.client_id)) {
+      if (istObjekt5(j) && j.aussteller === m.aussteller && j.rueckkehr === rueckkehrAdresse && text4(j.client_id)) {
         clientId = j.client_id;
         return clientId;
       }
@@ -45871,7 +46010,7 @@ function neuerAnmelder(k, o = {}) {
         ...a.art === "albatros" ? { scope: a.scope } : {}
       })
     });
-    const id = r && (r.status === 200 || r.status === 201) && istObjekt4(r.json) ? text4(r.json.client_id) : null;
+    const id = r && (r.status === 200 || r.status === 201) && istObjekt5(r.json) ? text4(r.json.client_id) : null;
     if (!id) {
       log({ level: "error", msg: "Anmeldung: Registrierung beim Anmeldedienst fehlgeschlagen", status: r?.status ?? null });
       return null;
@@ -45934,8 +46073,8 @@ function neuerAnmelder(k, o = {}) {
         headers: { "content-type": "application/x-www-form-urlencoded", accept: "application/json" },
         body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: rueckkehrAdresse, client_id: clientId, code_verifier: o2.verifier, resource: a.mcp }).toString()
       });
-      const token = r?.status === 200 && istObjekt4(r.json) ? text4(r.json.access_token) : null;
-      if (!token || !r || !istObjekt4(r.json)) {
+      const token = r?.status === 200 && istObjekt5(r.json) ? text4(r.json.access_token) : null;
+      if (!token || !r || !istObjekt5(r.json)) {
         log({ level: "error", msg: "Anmeldung: Code nicht eingelöst", status: r?.status ?? null });
         return { status: "fehler" };
       }
@@ -46287,14 +46426,14 @@ function kanalStaendeAus(wert) {
 }
 
 // src/cloud/preise.ts
-var istObjekt5 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+var istObjekt6 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
 function stufenAus(wert) {
   if (!Array.isArray(wert) || wert.length === 0 || wert.length > 20)
     return null;
   const aus = [];
   for (const x of wert) {
-    const l = istObjekt5(x) ? x.leistung : null;
-    if (!istObjekt5(x) || typeof x.stufe !== "string" || !x.stufe || x.stufe.length > 40 || !istObjekt5(l))
+    const l = istObjekt6(x) ? x.leistung : null;
+    if (!istObjekt6(x) || typeof x.stufe !== "string" || !x.stufe || x.stufe.length > 40 || !istObjekt6(l))
       return null;
     const preis = l.preisChfMonat;
     if (typeof preis !== "number" || !Number.isFinite(preis) || preis < 0 || preis > 1e5 || typeof l.seite !== "boolean" || typeof l.server !== "boolean")
@@ -46366,7 +46505,7 @@ var MELDUNG2 = {
   ohnePostfach: "Dein Geschäft hat in deinem Konto bei Albatros noch kein Postfach, darum ginge diese Mail nach deinem Ja nicht raus. Öffne dort dein Postfach; fehlt deinem Geschäft noch der Name, gibst du ihn dort ein. Leg den Mail-Entwurf danach nochmals für dein Ja bereit."
 };
 var LEER = { konto: null, live_url: null, seite: null, domains: [], projekte: [] };
-var istObjekt6 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
+var istObjekt7 = (x) => typeof x === "object" && x !== null && !Array.isArray(x);
 var text5 = (x, max = 200) => typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null;
 var GERAET = {
   de: { auf: (n) => `Albatros auf ${n}`, ohne: "Albatros" },
@@ -46413,7 +46552,7 @@ function neueCloud(o) {
     } catch {}
     if (res.ok)
       return { ok: true, wert: daten };
-    return { ok: false, fehler: { status: res.status, error: (istObjekt6(daten) ? text5(daten.error, 500) : null) ?? MELDUNG2.nichtErreichbar } };
+    return { ok: false, fehler: { status: res.status, error: (istObjekt7(daten) ? text5(daten.error, 500) : null) ?? MELDUNG2.nichtErreichbar } };
   }
   function zeitgeberAus() {
     clearTimeout(zeitgeber);
@@ -46436,7 +46575,7 @@ function neueCloud(o) {
     const r = await rufe("POST", "/web/konto/geraete/start", { name: o.geraeteName ?? geraeteName(hostname(), sprache), sprache }, null);
     if (!r.ok)
       return { ok: false, fehler: r.fehler.status === 404 ? { status: 503, error: MELDUNG2.ausgeschaltet } : { status: r.fehler.status === 429 ? 429 : 502, error: r.fehler.error } };
-    const d = istObjekt6(r.wert) ? r.wert : {};
+    const d = istObjekt7(r.wert) ? r.wert : {};
     const code = text5(d.user_code, 20);
     const geheim = text5(d.geraete_code, 100);
     const adresse = text5(d.adresse, 500);
@@ -46472,8 +46611,8 @@ function neueCloud(o) {
       naechstesAbholen();
       return "wartet";
     }
-    const d = istObjekt6(r.wert) ? r.wert : {};
-    const g = istObjekt6(d.geraet) ? d.geraet : {};
+    const d = istObjekt7(r.wert) ? r.wert : {};
+    const g = istObjekt7(d.geraet) ? d.geraet : {};
     wartend = null;
     try {
       cloudZugangSchreiben({
@@ -46537,15 +46676,15 @@ function neueCloud(o) {
         return;
       }
       fehler = null;
-      const k = istObjekt6(ich.wert) ? ich.wert : {};
-      const s = seite.ok && istObjekt6(seite.wert) ? seite.wert : null;
-      const abo = istObjekt6(k.abo) ? text5(k.abo.status, 40) : null;
+      const k = istObjekt7(ich.wert) ? ich.wert : {};
+      const s = seite.ok && istObjekt7(seite.wert) ? seite.wert : null;
+      const abo = istObjekt7(k.abo) ? text5(k.abo.status, 40) : null;
       gelesen = {
         konto: { stufe: text5(k.stufe, 20) ?? "gratis", weg: text5(k.weg, 20), server: text5(k.server, 80), abo },
         seite: text5(k.seite, 80),
-        live_url: s && istObjekt6(s.stand) ? text5(s.adresse, 300) : null,
-        domains: domains.ok && Array.isArray(domains.wert) ? domains.wert.flatMap((d) => istObjekt6(d) && text5(d.name) ? [{ name: text5(d.anzeige) ?? text5(d.name), status: text5(d.status, 40) ?? "" }] : []).slice(0, 50) : [],
-        projekte: projekte.ok && Array.isArray(projekte.wert) ? projekte.wert.flatMap((p) => istObjekt6(p) && text5(p.id, 100) ? [{ id: text5(p.id, 100), name: text5(p.name, 120), rolle: text5(p.rolle, 30) ?? "" }] : []).slice(0, 50) : []
+        live_url: s && istObjekt7(s.stand) ? text5(s.adresse, 300) : null,
+        domains: domains.ok && Array.isArray(domains.wert) ? domains.wert.flatMap((d) => istObjekt7(d) && text5(d.name) ? [{ name: text5(d.anzeige) ?? text5(d.name), status: text5(d.status, 40) ?? "" }] : []).slice(0, 50) : [],
+        projekte: projekte.ok && Array.isArray(projekte.wert) ? projekte.wert.flatMap((p) => istObjekt7(p) && text5(p.id, 100) ? [{ id: text5(p.id, 100), name: text5(p.name, 120), rolle: text5(p.rolle, 30) ?? "" }] : []).slice(0, 50) : []
       };
     })().catch(() => {
       fehler = "nicht_erreichbar";
@@ -46613,7 +46752,7 @@ function neueCloud(o) {
     if (!projekt)
       return { ok: false, fehler: { status: 409, error: MELDUNG2.keinProjekt } };
     const pf = await rufe("GET", `/cockpit/post/projekte/${encodeURIComponent(projekt)}/zaehler`, undefined, z.token);
-    if (pf.ok && istObjekt6(pf.wert) && pf.wert.postfach === false)
+    if (pf.ok && istObjekt7(pf.wert) && pf.wert.postfach === false)
       return { ok: false, fehler: { status: 409, error: MELDUNG2.ohnePostfach, grund: "ohne_postfach" } };
     const eineZeile = (s, max) => s.replace(/[\x00-\x1f\x7f]+/g, " ").trim().slice(0, max);
     const r = await rufe("POST", `/cockpit/bert/projekte/${encodeURIComponent(projekt)}/entwuerfe`, {
@@ -46633,7 +46772,7 @@ function neueCloud(o) {
         return r;
       return { ok: false, fehler: { status: 502, error: r.fehler.status === 404 ? MELDUNG2.freigabenAus : r.fehler.status >= 500 ? MELDUNG2.hochladenNicht : r.fehler.error } };
     }
-    const id = istObjekt6(r.wert) ? text5(r.wert.id, 80) : null;
+    const id = istObjekt7(r.wert) ? text5(r.wert.id, 80) : null;
     return id ? { ok: true, wert: { id } } : { ok: false, fehler: { status: 502, error: MELDUNG2.hochladenNicht } };
   }
   async function kanaele() {
@@ -48125,8 +48264,18 @@ function auszug(text, q) {
   const i = flach.toLowerCase().indexOf(q.toLowerCase());
   if (i < 0)
     return null;
-  const von = Math.max(0, i - 50);
-  const bis = Math.min(flach.length, i + q.length + 90);
+  let von = Math.max(0, i - 50);
+  let bis = Math.min(flach.length, i + q.length + 90);
+  if (von > 0 && flach[von - 1] !== " ") {
+    const l = flach.indexOf(" ", von);
+    if (l >= 0 && l < i)
+      von = l + 1;
+  }
+  if (bis < flach.length && flach[bis] !== " ") {
+    const l = flach.lastIndexOf(" ", bis);
+    if (l > i + q.length)
+      bis = l;
+  }
   return `${von > 0 ? "… " : ""}${flach.slice(von, bis)}${bis < flach.length ? " …" : ""}`;
 }
 function chatsListe(projekt, q) {

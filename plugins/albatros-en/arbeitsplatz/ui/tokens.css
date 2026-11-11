@@ -83,6 +83,7 @@
   --text-title3: 18px;
   --text-lead: 19px;
   --text-body: 16px;
+  --text-control: 15px;
   --text-meta: 14px;
   --text-small: 13px;
   --text-label: 12px;
@@ -95,6 +96,18 @@
   --space-7: 48px;
   --space-8: 64px;
   --space-9: 96px;
+  --motion-press-dauer: 100ms;
+  --motion-press-kurve: ease-out;
+  --motion-standard-dauer: 160ms;
+  --motion-standard-kurve: cubic-bezier(.2,.8,.2,1);
+  --motion-overlay-dauer: 200ms;
+  --motion-overlay-kurve: cubic-bezier(.2,.8,.2,1);
+  --motion-sheet-dauer: 280ms;
+  --motion-reduced-dauer: 150ms;
+  --motion-reduced-kurve: ease-out;
+  --focus-width: 2px;
+  --focus-offset: 2px;
+  --focus-inset: -2px;
   --stage-sky: radial-gradient(70% 50% at 8% 0%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, #EAF2FF 0%, #FFF4EC 52%, #FFE9DA 100%);
   --stage-sky-top: radial-gradient(70% 60% at 6% 0%, rgba(255,255,255,.85) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, #EAF2FF 0%, #FFF5EF 64%, #FFFAF5 100%);
   --stage-sky-hero: radial-gradient(60% 46% at 10% 0%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, #EAF2FF 0%, #FFF6F0 40%, #FFEDE1 66%, #FFF6EF 100%);
@@ -204,8 +217,8 @@
   --pr2: #B9CCFF;
   --prs: #23356B;
   --as: #FF8A4C;
-  --ass: #3A2419;
-  --asl: #5C3522;
+  --ass: #2D2236;
+  --asl: #4E3A52;
   --asi: #FFC7AE;
   --ok: #4CC38A;
   --oks: #123A2A;
@@ -237,14 +250,38 @@
   --dawn: #1E2849;
   --glass: rgba(24,33,63,0.94);
   --glass-header: rgba(15,23,48,0.66);
+  --brand-himmel: #8FB0FF;
+  --brand-himmel-soft: #23356B;
+  --brand-himmel-ink: #B9CCFF;
+  --brand-himmel-pastel: #B9D3FF;
+  --brand-sonne: #FFC24D;
+  --brand-sonne-soft: #3A2C10;
+  --brand-sonne-ink: #F3CB7E;
+  --brand-sonne-pastel: #FFD98A;
+  --brand-meer: #3FBDB5;
+  --brand-meer-soft: #0E3A3A;
+  --brand-meer-ink: #A6E3DE;
+  --brand-meer-pastel: #A6E3DE;
+  --brand-schal: #FF8A4C;
+  --brand-schal-soft: #35263A;
+  --brand-schal-ink: #FFC7AE;
+  --brand-schal-pastel: #FFC09E;
+  --brand-minze: #4CC38A;
+  --brand-minze-soft: #123A2A;
+  --brand-minze-ink: #8FE0B8;
+  --brand-minze-pastel: #A8E8CF;
+  --brand-wolke: #A6B0D2;
+  --brand-wolke-soft: #202B4E;
+  --brand-wolke-ink: #CBD4F0;
+  --brand-wolke-pastel: #3A4675;
   --shadow-raised: inset 0 1px 0 rgba(238,234,251,.06), 0 1px 2px rgba(0,0,0,.3), 5px 14px 32px -20px rgba(0,0,0,.6);
   --shadow-floating: inset 0 1px 0 rgba(238,234,251,.08), 0 1px 2px rgba(0,0,0,.3), 0 18px 36px -16px rgba(0,0,0,.6);
   --shadow-dialog: inset 0 1px 0 rgba(238,234,251,.06), 0 2px 6px rgba(0,0,0,.3), 10px 32px 64px -28px rgba(0,0,0,.7);
   --shadow-card: inset 0 1px 0 rgba(238,234,251,.06), 0 1px 2px rgba(0,0,0,.3), 6px 18px 40px -20px rgba(0,0,0,.6);
   --shadow-hero: inset 0 1px 0 rgba(238,234,251,.06), 0 2px 4px rgba(0,0,0,.3), 6px 20px 40px -20px rgba(0,0,0,.65);
   --shadow-panel: inset 0 1px 0 rgba(238,234,251,.06), 0 1px 2px rgba(0,0,0,.3), 8px 24px 56px -28px rgba(0,0,0,.6);
-  --shadow-button: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.4), 4px 14px 28px -12px rgba(169,155,255,.35);
-  --shadow-chip-on: 0 8px 16px -10px rgba(169,155,255,.4);
+  --shadow-button: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.4), 4px 14px 28px -12px rgba(143,176,255,.35);
+  --shadow-chip-on: 0 8px 16px -10px rgba(143,176,255,.4);
   --shadow-segment-on: inset 0 1px 0 rgba(255,255,255,.2);
   --shadow-tab-on: inset 0 1px 0 rgba(238,234,251,.08), 0 6px 12px -8px rgba(0,0,0,.6);
   --shadow-bubble: inset 0 1px 0 rgba(238,234,251,.08), inset 0 -3px 6px rgba(0,0,0,.25);
@@ -255,6 +292,7 @@
   --shadow-header: inset 0 1px 0 rgba(238,234,251,.08), 0 14px 34px -22px rgba(0,0,0,.6);
   --shadow-toast: 0 14px 30px -12px rgba(0,0,0,.6);
   --shadow-polaroid: 0 1px 2px rgba(0,0,0,.3), 0 6px 10px -6px rgba(0,0,0,.6);
+  --shadow-terminal: inset 0 1px 0 rgba(238,234,251,.06), 0 2px 6px rgba(0,0,0,.35), 10px 28px 56px -26px rgba(0,0,0,.7);
 }
 
 @theme {
