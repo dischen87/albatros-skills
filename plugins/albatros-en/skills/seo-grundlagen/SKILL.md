@@ -3,7 +3,7 @@ name: seo-grundlagen
 description: "Makes a small website visible: for search engines (SEO) and for AI assistants (GEO), explained for people with no prior knowledge with the picture of signposts and a city map. Page title and description, one main heading, canonical address, picture descriptions, sitemap.xml, robots.txt, structured data by kind of business, the preview when sharing, llms.txt, facts and questions with answers, Google Search Console, Bing Webmaster Tools, IndexNow and Business Profile; checked with sichtbar-pruefen.mjs on the built site. Use this skill for “SEO”, “GEO”, “become visible”, “get found on Google”, “Google can't find my site”, “get found in ChatGPT”, “AI search”, “search engine”, “sitemap”, “meta description”, “Search Console”, “Bing”, “IndexNow”, “llms.txt”, “get found locally”, “Google Maps listing”."
 metadata:
   stand: 0.3.0
-  quelle: '9003980b5161'
+  quelle: 'd1e923bdddba'
 ---
 
 # SEO basics: signposts and a city map
@@ -35,7 +35,7 @@ The technical words for this are **SEO** (getting found in search engines) and *
 
 - **While building** (skill `webseite-bauen`), on the person's computer: everything that's in the site, steps 1 to 6. The script `sichtbar-pruefen.mjs` checks it on the built site.
 - **After going live** (skill `lancieren`), with the real address: Search Console, Bing Webmaster Tools, IndexNow and the Business Profile, steps 7 to 10. Easiest with an own domain (skill `domain`).
-- **With Bert's workspace**, the stage “Becoming visible” (Sichtbar werden) shows the same twelve points with the same names as the script. What the person clicks or feeds back there, you fetch with `naechstes`.
+- **With the Albatros app** (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)), the stage “Get found” shows the same twelve points as the script, in everyday words (“Show up on Google”). Call `naechstes` at the start and after every step: it says how many points are still missing there, and brings what the person asks for in Albatros. If their message names points of the check, you take care of exactly those and change only what's needed for that.
 
 ## Steps
 
@@ -151,7 +151,7 @@ IndexNow is a doorbell for search engines: instead of waiting until the messenge
    curl -s -o /dev/null -w '%{http_code}\n' "https://api.indexnow.org/indexnow?url=https://<domain>/&key=<key>"
    ```
    200 means accepted, 202 accepted and the key is still being checked, 403 the key doesn't match the file, 422 the address doesn't belong to this key, 429 too many reports. Several addresses go in one report as JSON (`host`, `key`, `urlList`, up to 10 000 addresses).
-4. You report what's new, changed or deleted, not everything every day. If the person publishes with Bert's workspace, the stage “Becoming visible” (Sichtbar werden) says whether the report already runs along there; then you don't report twice.
+4. You report what's new, changed or deleted, not everything every day. If the person publishes with the Albatros app, the stage “Get found” says whether the report already runs along there; then you don't report twice.
 
 ### 10. For local businesses: the Business Profile
 

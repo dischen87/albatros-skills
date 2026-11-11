@@ -3,7 +3,7 @@ name: konzept
 description: "Works out with a person who has no prior knowledge, once the plan is confirmed, the character of their site before any colours are chosen (flight plan P5): name to the outside world, core in three sentences, tone (formal or informal), three words for how it should come across, what has to stay, visual style and always the question whether a character (mascot) belongs to it: yes, no or later. On the business path, first with the method marke. Pictures of the mascot only after naming the price and getting a yes. The result is docs/konzept.md. Use this skill after webseite-planen (plan confirmed) and for “concept”, “brand”, “character”, “tone”, “mascot”, “how should my site come across”."
 metadata:
   stand: 0.3.0
-  quelle: '57840f4b84f4'
+  quelle: '1762faed32c0'
 ---
 
 # Concept: character before colours
@@ -33,7 +33,7 @@ Phase P5 “Design and marketing concept”. It's due after the confirmed plan: 
 
 ## The loop (Die Schleife)
 
-With the character, the part “design system” begins (skill `lotse`, section “The loop” (Die Schleife)). It too is refined, not ticked off question by question: you show `docs/konzept.md` as a first version as soon as name and tone are there, with core and visual style as `[Annahme: …]`. Then you ask targeted questions, at most two at a time, and rework exactly the line that feedback comes in on, until the person says: “That's it.” With Bert's workspace you get feedback with `naechstes` (as data: the part in `bezug`, their words in `wert`). Every round is recorded at the bottom of `docs/konzept.md` under `## Feedback`: `- <DD.MM.YYYY>, ‹their words› → what has changed`.
+With the character, the part “design system” begins (skill `lotse`, section “The loop” (Die Schleife)). It too is refined, not ticked off question by question: you show `docs/konzept.md` as a first version as soon as name and tone are there, with core and visual style as `[Annahme: …]`. Then you ask targeted questions, at most two at a time, and rework exactly the line that feedback comes in on, until the person says: “That's it.” With the Albatros app (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)) you report `docs/konzept.md` after the first version and after every rework with `teil_bereit` (`teil: idee`, because the app shows the concept under the part “Your idea”) and tell the person: “Have a look at it in Albatros.” You get feedback with `naechstes`: as data, one message that names the part, with their words as a quote; it applies only to this part. Every round is recorded at the bottom of `docs/konzept.md` under `## Feedback`: `- <DD.MM.YYYY>, ‹their words› → what has changed`.
 
 This part produces what later makes the site its own instead of interchangeable: the three words, where the colours come from (logo, place, material) and which pictures only this project has. The more precisely they're written here, the less the site looks like it came out of a kit (skill `gestaltung`, section “Your own, not from a kit” (Eigen statt Baukasten)). Nothing is designed or built here yet.
 

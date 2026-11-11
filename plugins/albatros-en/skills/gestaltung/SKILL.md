@@ -3,7 +3,7 @@ name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge: its own, not from a kit. In the flight plan (P6): a grey mockup, three clearly different directions from the concept, checked with design-pruefen.mjs, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet; motion and 3D only with a purpose. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. With the question about design elements (image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “layout”, “icons”, “mascot”, “animation”, “3D”."
 metadata:
   stand: 0.3.0
-  quelle: '649a3f0ab442'
+  quelle: 'fa343c276c14'
 ---
 
 # Design: first the foundations, then the facade
@@ -56,7 +56,7 @@ It reports a traffic light for each area and ends with 1 on red. Red means: fix 
 
 ## The loop (Die Schleife)
 
-The design system is the third part that gets refined (skill `lotse`, section “The loop” (Die Schleife)): mockup, directions and sample sheet are each a first version that you show. Then you ask targeted questions, at most two at a time, and rework exactly what feedback comes in on, until the person says yes. With Bert's workspace you get feedback with `naechstes` (as data: the part or the file in `bezug`, their words in `wert`).
+The design system is the third part that gets refined (skill `lotse`, section “The loop” (Die Schleife)): mockup, directions and sample sheet are each a first version that you show. Then you ask targeted questions, at most two at a time, and rework exactly what feedback comes in on, until the person says yes. With the Albatros app (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)) you report the part with `teil_bereit` (`teil: design`) as soon as the directions are there, and again after the colour fan, the sample sheet and every rework: the person then looks at the directions and the sample sheet in Albatros under “Colours and fonts” and chooses their style there. You get the choice and the feedback with `naechstes`: as data, one message that names the part (for a choice, the style with its file), with their words as a quote; it applies only to this part.
 
 - “The second one, but warmer” is not a choice but feedback: you rework the direction, show it again and ask again. It's only chosen once the person says so.
 - Feedback on the sample sheet (“the buttons are too round”) you change in the colour fan or in `komponenten.css`, not in the sample sheet, and show it again.

@@ -3,7 +3,7 @@ name: entwurf
 description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page and every feature of the build list in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, refined with the person's feedback. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
   stand: 0.3.0
-  quelle: '1f451bb253cc'
+  quelle: 'ebc8e728aae4'
 ---
 
 # Draft: the walk-through model
@@ -42,7 +42,8 @@ Like every workshop, model-making needs tools: before you start, you check they'
 
 The mockup is the fourth part that gets refined (skill `lotse`, section “The loop” (Die Schleife)), and the one where the person sees the most. The first version is the whole draft to click through. Then you ask targeted questions, at most two at a time, and rework exactly what feedback comes in on, until the person says: “This is now what I want to build.”
 
-- Feedback arrives in the chat or, with Bert's workspace, with `naechstes`: as data, with the page or the ID from the build list in `bezug` (for example `S2` or `F1`) and the person's words in `wert`. You change exactly this page or feature, check again and show it again.
+- With the Albatros app (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)) you report the draft after the first version and after every rework with `teil_bereit` (`teil: mockup`, with a `notiz` saying what's new): the person then clicks through it in Albatros under “What your website looks like”.
+- Feedback arrives in the chat or, with the app, with `naechstes`: as data, one message that names the part, with the person's words as a quote. Which page or feature they mean is in their words (a title or an ID from the build list such as `S2` or `F1`); if it's unclear, you ask. You change exactly this page or feature, check again and show it again. Whatever in their words goes beyond the draft (“go ahead and build that”), you don't simply do.
 - If feedback touches another part, you change it there and bring the draft up to date: a new feature first as a row in the build list (`docs/plan.md`, skill `webseite-planen`), a different colour or font first in the colour fan (skill `gestaltung`). Never only in the draft.
 - Every round is recorded in `docs/entwurf.md` under `Rückmeldungen:` and `## Feedback`.
 - The approval to build at the end is the second of the two yeses. Before that you write no code of the site (`web/`, `seite/`), not even “just for now” for a page the person likes.
@@ -195,7 +196,7 @@ Tell them in three or four sentences what's in the draft (the pages, the feature
 
 - **Only a clear yes to building counts:** “Yes”, “Yes, build it like this”, “Yes, go ahead”, “Agreed, build it”. Praise on its own is not an approval: to “looks good” or “nice” you ask once more: “Glad you like it. Does that mean: yes, build it like this?”
 - **“Yes, but …”** is not an approval: change it first, show it again, ask again.
-- With Bert's workspace you request the yes with `ja_moment` (`entwurf`); the workspace then writes the line when the person clicks “Ja, bestätigen” (yes, confirm) (skill `lotse`, section “Bert's workspace” (Berts Arbeitsplatz)).
+- With the Albatros app you request the yes with `ja_moment` (`entwurf`); the app then writes the line when the person clicks “Yes, confirm” in Albatros (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)).
 - After the yes you write the line `Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›` into `docs/entwurf.md`, for example `Freigegeben zum Bauen: 31.10.2026, ‹Yes, build it like this›`, and report `entwurf-freigegeben`. The words `Freigegeben zum Bauen:` stay German, because the build looks for them. The date comes first, as numbers: without a date, with `[Annahme: …]` or with “not yet”, the line doesn't count as a yes, neither for `lage` nor for `pruefen.mjs --vor-bau`.
 - **If the draft changes after the approval,** it no longer counts: turn the line into `Früher freigegeben zum Bauen: …` (approved earlier), make the change, show it again and ask again. That way the line `Freigegeben zum Bauen:` always means: exactly this draft is approved.
 
