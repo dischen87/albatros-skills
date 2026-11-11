@@ -1,9 +1,9 @@
 ---
 name: betrieb
-description: "Prepares running the site with a person who has no prior knowledge, before the guests arrive (P12): how visitors get in touch and who reads it how often, who finds out when the site stops responding (simple, free monitoring), how to get back to yesterday (photos of the server with Pilot, the logbook with Light, a backup of your own when hosting it yourself), whether an entrance with sign-in is needed (only with your own server, skill bausteine) and whether visitors are counted (skill statistik, with consent where it's required). The result is docs/betrieb.md. Use this skill after choosing where the site lives (lancieren) and for “running it”, “monitoring”, “backup”, “feedback”, “who reads the form”, “what if the site goes down?”."
+description: "Prepares running the site with a person who has no prior knowledge, before the guests arrive (P12): how visitors get in touch and who reads it how often, who finds out when the site stops responding (simple, free monitoring), how to get back to yesterday (photos of the server with Pilot, the logbook with Light, a backup of your own when hosting it yourself), whether an entrance with sign-in is needed (only with your own server, skill bausteine) and whether visitors are counted (skill statistik, with consent where it's required). The result is docs/betrieb.md. With Pilot, on request, Bert's workspace online on their own server (autopilot and schedule around the clock, project members only). Use this skill after choosing where the site lives (lancieren) and for “running it”, “monitoring”, “backup”, “feedback”, “who reads the form”, “what if the site goes down?”, “workspace online”, “workspace on my server”, “autopilot at night”."
 metadata:
-  stand: 0.2.0
-  quelle: 'b68eee2fb444'
+  stand: 0.3.0
+  quelle: '6b2bb7374057'
 ---
 
 # Running it: before the guests arrive
@@ -100,6 +100,55 @@ Once every line has an answer, you make the logbook entry (`git add docs/betrieb
 
 Next comes going live: skill `lancieren`, part 2.
 
+## Workspace on my server (Arbeitsplatz online, optional, Pilot only)
+
+The workspace on the computer sleeps when the computer is closed. With Pilot, a second workspace can live on the person’s own server, like an office that stays open at night: there the AI works on a schedule and as soon as a mail or a sale comes in. Only members of the project get in, signed in with Albatros. You only offer this when the person asks for it (“workspace on my server”, “workspace online”) or when `docs/betrieb.md` is finished; it is not a step of the roadmap.
+
+**What works online (as of 10.11.2026); you say this first:**
+- Online, only Claude Code works, with the owner’s own Claude subscription. The AI works in a cage there, like a workshop with a single door into the project: it changes files only in the project and saves versions (`git commit`). It cannot reach the workspace itself, the person’s keys or anything outside the project, and it cannot publish. It creates nothing new at the top level of the project; that is what the AI on the computer is for.
+- If the server cannot lock the AI in (older system), it only reads there. The workspace shows which applies in the settings under “Your AI on the server”.
+- Only the owner can start the AI: it works with her own Claude subscription, and under Anthropic’s terms nobody else may use that. Members see everything; whoever has “read only” only reads.
+- You do not set up Codex or Gemini CLI online. With OpenAI it is open whether a program like the workspace may start Codex with a ChatGPT subscription on a server; sign-in with Google has not existed for Gemini CLI since 18.06.2026. If the person asks about it, tell her exactly that.
+
+**May the Claude subscription do this?** Ask first: “Is your project commercial, do you sell something or advertise for a company?” Why: which subscription is needed depends on it.
+- Anthropic itself describes the way without a browser: `claude setup-token` for scripts and machines without a browser. The account belongs to one person and is never shared.
+- In Switzerland and the EEA, Pro and Max are only for non-commercial purposes (Anthropic’s consumer terms, section 11). A commercial project needs Claude Team or Enterprise; `claude setup-token` works there too. If the project is commercial and the person only has Pro or Max, you stop here, say why, and she keeps working with the workspace on the computer.
+- Read the terms with her before she decides: https://code.claude.com/docs/en/legal-and-compliance and https://www.anthropic.com/legal/consumer-terms
+
+**Setting it up: seven steps, three of them done by the person.** She types the token herself; you never see it, and it never goes through Albatros.
+
+1. **Register with Albatros (you).** Call `arbeitsplatz_online` with `an: true`. The answer names `ALBATROS_PROJEKT` and the address `https://{name}.aufwind.sh/arbeitsplatz`. If the tool does not exist or says “only with Pilot”, you stop here: the workspace online is not switched on at Albatros yet, or the own server is missing.
+2. **Choose the address (you, with the person).** The workspace should have its own address, not a room in the website’s house: at `{name}.aufwind.sh/arbeitsplatz`, a script on the website could operate the workspace while the person is signed in.
+   - **With an own domain** (skill `domain`): register `arbeitsplatz.<domain>` with `domain_verbinden` and guide the person through the entries at the domain’s provider, exactly as in the skill `domain`. The workspace’s address is then `https://arbeitsplatz.<domain>`.
+   - **Without an own domain:** it stays at `https://{name}.aufwind.sh/arbeitsplatz`. Tell the person the sentence above and that the workspace itself warns about it in the settings. No third-party scripts are added to this website as long as the workspace lives there.
+3. **Check the template and fetch the image (you).** `grep -c arbeitsplatz compose.yaml nginx.conf` in the project: if the service `arbeitsplatz` is missing in `compose.yaml` or the section is missing in `nginx.conf` (older template), take both from the template, make the logbook entry and deliver (skill `webseite-aendern`). Then:
+   ```bash
+   ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz pull arbeitsplatz'
+   ```
+   If Docker reports that the image does not exist (“manifest unknown”, “denied”, “not found”), it has not been published yet. Then you build it once on the server from the plugin, from the folder `arbeitsplatz` next to the skills (`<folder of this skill>/../../arbeitsplatz`). If the file `Dockerfile` is missing there, the plugin is too old: update it, otherwise stop here.
+   ```bash
+   scp -r "<folder of this skill>/../../arbeitsplatz" {name}@aufwind.sh:arbeitsplatz-bild
+   ssh {name}@aufwind.sh 'docker build -t "$(grep -o "ghcr.io/dischen87/albatros-arbeitsplatz:[0-9.]*" ~/projekt/compose.yaml)" ~/arbeitsplatz-bild && rm -r ~/arbeitsplatz-bild'
+   ```
+4. **Create the settings (you),** without the token, outside the project (this way the file never gets into the logbook, and the AI in the workspace does not read it):
+   ```bash
+   ssh {name}@aufwind.sh 'umask 077 && printf "%s\n" "ARBEITSPLATZ_ADRESSE=<address from step 2>" "ALBATROS_PROJEKT=<project>" "ARBEITSPLATZ_KI=claude" > ~/arbeitsplatz.env'
+   ```
+   With an own domain, one more line is added so that new mails and sales keep arriving: `ARBEITSPLATZ_EREIGNIS_ADRESSE=https://{name}.aufwind.sh/arbeitsplatz` (the address from step 1).
+5. **Create the token (the person, on her computer).** In the terminal: `claude setup-token`. She confirms in the browser, and the terminal shows the token (valid for one year). Tell her: “Copy it, but never send it in the chat, not even to me.”
+6. **Enter the token on the server (the person, in her own terminal, not you).** She copies this one line, pastes the token at the question (it is not shown while pasting) and presses Enter:
+   ```bash
+   ssh -t {name}@aufwind.sh 'printf "Paste the token, then Enter (it stays hidden): "; stty -echo; IFS= read -r t; stty echo; echo; touch ~/arbeitsplatz.env; chmod 600 ~/arbeitsplatz.env; sed -i "/^CLAUDE_CODE_OAUTH_TOKEN=/d" ~/arbeitsplatz.env; printf "CLAUDE_CODE_OAUTH_TOKEN=%s\n" "$t" >> ~/arbeitsplatz.env; echo Saved.'
+   ```
+   Never run this command yourself, and never read `~/arbeitsplatz.env` with `cat` afterwards: the token is access to her subscription.
+7. **Start (you), then sign in (the person).** `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz up -d --wait'`. On the first start, the workspace fetches Claude Code from Anthropic (once, a few minutes). The person opens the address in the browser and clicks “Sign in with Albatros”. In the settings, under “Your AI on the server”, it says “Claude connected” and “May change files” after about a minute; there she chooses Claude Code and the autopilot’s times, and under tasks for example “When a mail arrives: suggest a reply”.
+
+**Check:** the page loads, sign-in works, “Claude connected” is shown, and a member with “read only” sees everything but cannot start anything. If it says “Claude not connected”, the workspace shows steps 5 to 7 again; after a new token you restart it: `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz up -d --force-recreate arbeitsplatz'`.
+
+**Turning it off:** `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz stop arbeitsplatz'` and `arbeitsplatz_online` with `an: false`. Then the person deletes the token line: `ssh {name}@aufwind.sh 'sed -i "/^CLAUDE_CODE_OAUTH_TOKEN=/d" ~/arbeitsplatz.env'`.
+
+In `docs/betrieb.md` add the line `Arbeitsplatz online: nein` or `Arbeitsplatz online: ja, seit <date>, <address>, Claude Code with the owner’s subscription`.
+
 ## Pitfalls
 
 - A form whose messages nobody reads.
@@ -108,6 +157,9 @@ Next comes going live: skill `lancieren`, part 2.
 - A backup that has never been restored: it only counts after the test.
 - Building an entrance because it sounds professional: only when the criteria are met and with your own server.
 - Statistics with cookies without consent, where it's required.
+- Writing the AI's token into the chat, the logbook or a file in the project: it only belongs in `~/arbeitsplatz.env` on the server, typed by the person.
+- Leaving the workspace online at the website’s address although there is an own domain: with `arbeitsplatz.<domain>` it has its own door.
+- Running the workspace online with a plan that isn't meant for it (Pro or Max for a business, someone else's account).
 
 ## Checking the mission
 

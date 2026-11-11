@@ -4,11 +4,16 @@
       "type": "http",
       "url": "https://mcp.albatros.build",
       "headers": {
-        "X-Albatros-Skills-Stand": "0.2.0"
+        "X-Albatros-Skills-Stand": "0.3.0"
       },
       "http_headers": {
-        "X-Albatros-Skills-Stand": "0.2.0"
+        "X-Albatros-Skills-Stand": "0.3.0"
       }
+    },
+    "albatros-arbeitsplatz": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs", "--mcp"]
     }
   }
 }

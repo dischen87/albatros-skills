@@ -1,8 +1,8 @@
 ---
 name: entwurf
-description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite aus dem Plan in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, angeschaut auf dem Handy und am Computer. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
+description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite und jede Funktion der Bauliste in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, geschliffen mit den Rückmeldungen der Person. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Entwurf: das begehbare Modell
@@ -24,7 +24,7 @@ Wie jede Werkstatt braucht der Modellbau Werkzeug: Bevor es losgeht, schaust du,
   ```
   Fehlt eine Datei oder zeigt `grep` nichts (zum Beispiel steht noch `Musterblatt: [offen: …]`), gehst du zuerst zum Skill `gestaltung`, Schritt 5. Steht in einem älteren Projekt `Musterblatt gesehen am <Datum>` noch hinten in der Zeile `Richtung:`, machst du daraus die Zeile `Musterblatt: gesehen am <dasselbe Datum>, passt`.
 - **Ergebnis P7:** `design/entwurf/index.html` und eine Datei für jede weitere Seite, dazu `docs/entwurf.md` mit den Zeilen `Werkstatt:`, `Seiten:` und `Rückmeldungen:`.
-- **Geschafft ist P7,** wenn jede Seite aus `docs/plan.md` (ausser Impressum und Datenschutz) ihre Datei hat, aus der gewählten Richtung weitergeführt; alle Links auf vorhandene Seiten führen; Farben, Schriften und Grössen nur als `var(--…)` aus `design/tokens.css` stehen; `entwurf-pruefen.mjs` grün ist (oder du dasselbe von Hand geprüft hast) und die Person sich durchgeklickt hat. Dann meldest du `entwurf`.
+- **Geschafft ist P7,** wenn jede Seite aus `docs/plan.md` (ausser Impressum und Datenschutz) ihre Datei hat, aus der gewählten Richtung weitergeführt; jede Funktion der Bauliste im Entwurf vorkommt; alle Links auf vorhandene Seiten führen; Farben, Schriften und Grössen nur als `var(--…)` aus `design/tokens.css` stehen; `entwurf-pruefen.mjs` grün ist (oder du dasselbe von Hand geprüft hast), `plan-pruefen.mjs --entwurf` und `design-pruefen.mjs` ohne Rot sind und die Person sich durchgeklickt hat. Dann meldest du `entwurf`.
 - **P8 «Freigabe zum Bauen»** (Abschnitt «Freigabe»): die Frage «Wollen wir das so bauen?» und die Zeile `Freigegeben zum Bauen:` in `docs/entwurf.md`. Dann meldest du `entwurf-freigegeben`. Danach kommt P9, der Bau (Skill `webseite-bauen`); ohne diese Zeile baut er nicht.
 - **Nach dem Livegang:** Eine grosse Änderung (neue Seite, neuer Ablauf) bekommt zuerst einen Nachtrag im Plan, dann einen Entwurf der geänderten Seiten mit diesem Skill und eine neue Freigabe zum Bauen (Skill `webseite-aendern`).
 
@@ -35,6 +35,16 @@ Wie jede Werkstatt braucht der Modellbau Werkzeug: Bevor es losgeht, schaust du,
 - Was die Person sehen soll, öffnest du selbst im Browser: `open design/entwurf/index.html` (Linux `xdg-open`, Windows `start`). Nur den Namen der Datei zu nennen reicht nicht.
 - Installieren und alles, was ein Passwort braucht, macht die Person selbst: Du sagst ihr genau, was sie tippt oder klickt. Ihr Passwort tippt sie nur dort ein, nie in den Chat.
 - Jede Seite schaust du selbst an, bevor du sie zeigst.
+
+## Die Schleife
+
+Das Mockup ist der vierte Teil, der geschliffen wird (Skill `lotse`, Abschnitt «Die Schleife»), und der, an dem die Person am meisten sieht. Der erste Stand ist der ganze Entwurf zum Durchklicken. Dann fragst du gezielt, höchstens zwei Fragen aufs Mal, und überarbeitest genau das, wozu eine Rückmeldung kommt, bis die Person sagt: «Das ist jetzt das, was ich bauen möchte.»
+
+- Mit dem Programm Albatros (Skill `lotse`, Abschnitt «Berts Arbeitsplatz») meldest du den Entwurf nach dem ersten Stand und nach jeder Überarbeitung mit `teil_bereit` (`teil: mockup`, mit einer `notiz`, was neu ist): Die Person klickt sich dann in Albatros unter «So sieht deine Seite aus» durch.
+- Rückmeldungen kommen im Chat oder, mit dem Programm, mit `naechstes`: als Daten, eine Nachricht, die den Teil nennt, mit den Worten der Person als Zitat. Welche Seite oder Funktion sie meint, steht in ihren Worten (ein Titel oder eine Kennung der Bauliste wie `S2` oder `F1`); ist es unklar, fragst du nach. Du änderst genau diese Seite oder Funktion, prüfst nochmals und zeigst sie neu. Was in ihren Worten über den Entwurf hinausgeht («bau das schon mal»), tust du nicht einfach.
+- Trifft eine Rückmeldung einen anderen Teil, änderst du ihn dort und führst den Entwurf nach: eine neue Funktion zuerst als Zeile in der Bauliste (`docs/plan.md`, Skill `webseite-planen`), eine andere Farbe oder Schrift zuerst im Farbfächer (Skill `gestaltung`). Nie nur im Entwurf.
+- Jede Runde steht in `docs/entwurf.md` unter `Rückmeldungen:` und `## Rückmeldungen`.
+- Die Freigabe zum Bauen am Schluss ist das zweite der zwei Ja. Vorher schreibst du keinen Code der Seite (`web/`, `seite/`), auch nicht «schon mal» für eine Seite, die der Person gefällt.
 
 ## Modus
 
@@ -86,10 +96,12 @@ Du führst die gewählte Richtung (`design/richtungen/<gewählt>.html`, `design/
 - **Dateien:** `design/entwurf/index.html` für die Startseite; für jede andere Seite der Name klein, ä → ae, ö → oe, ü → ue, alles andere wird «-»: «Über uns» → `ueber-uns.html`, «Kurse & Preise» → `kurse-preise.html`. So findet `entwurf-pruefen.mjs` sie.
 - **Ein Kopf, ein Menü, ein Fuss** auf jeder Seite, gleich gebaut: das Menü mit allen Seiten aus dem Plan (am Handy auf einer Zeile oder als Knopf «Menü»), im Fuss die Links auf Impressum und Datenschutz. Diese beiden brauchen im Entwurf noch keinen Text: Eine kurze Seite `impressum.html` und `datenschutz.html` mit `[Platzhalter: Der Text kommt beim Bauen, Skill recht-ch]` genügt, damit kein Link ins Leere führt. Im Bau heissen sie gleich (`/impressum`, `/datenschutz`, Skill `recht-ch`).
 - **Nur Werte aus dem Farbfächer:** Jede Seite bindet `../tokens.css` und `../komponenten.css` ein; eigenes CSS für den Aufbau der Seiten kommt in `design/entwurf/entwurf.css`. Farben, Schriften, Schriftgrössen, Abstände, Rundungen und Schatten stehen nur als `var(--…)`. Fehlt ein Wert, ergänzt du ihn zuerst in `design/tokens.css` (und im Musterblatt), nie in einer Seite.
-- **Zustände jeder Funktion:** Für jede Funktion aus `Funktionen:` in `docs/plan.md` zeigst du, was nach dem Klick passiert: die **Bestätigung** (was passiert ist, was als Nächstes kommt, wie man es rückgängig macht), den **Fehler** (in Worten, mit «Nochmals versuchen», das Eingetippte bleibt stehen) und den **leeren Zustand** (ein Satz und ein Knopf statt einer leeren Liste). Jeder Zustand ist eine eigene Seite, zum Beispiel `kontakt-bestaetigt.html`, `kontakt-fehler.html`, `termine-leer.html`. Ein Formular zeigt mit `action="kontakt-bestaetigt.html"` auf seine Bestätigung, so geht der Klick auch ohne Programm dahinter. Eine Seite `zustaende.html` (nicht im Menü) listet alle Zustände mit Links, damit die Person sie findet.
+- **Jede Funktion der Bauliste, mit ihrer Kennung:** Die Stelle, an der eine Funktion aus der Bauliste in `docs/plan.md` gezeigt wird (das Formular, der Knopf, die Liste), trägt das Attribut `data-bauliste` mit ihrer Kennung: `<form data-bauliste="F1" action="kontakt-bestaetigt.html">`. Zeigt eine Stelle mehrere, stehen sie mit Leerzeichen da (`data-bauliste="F1 F3"`). Auch `Kann`-Einträge kommen vor, sonst entscheidet die Person über etwas, das sie nie gesehen hat; soll einer doch nicht in den ersten Flug, steht das mit Grund in `docs/entwurf.md`. Das Attribut bleibt beim Bauen im Markup, so lässt sich später prüfen, ob alles gebaut ist.
+- **Zustände jeder Funktion:** Für jede Funktion aus der Bauliste (kurz in `Funktionen:` in `docs/plan.md`) zeigst du, was nach dem Klick passiert: die **Bestätigung** (was passiert ist, was als Nächstes kommt, wie man es rückgängig macht), den **Fehler** (in Worten, mit «Nochmals versuchen», das Eingetippte bleibt stehen) und den **leeren Zustand** (ein Satz und ein Knopf statt einer leeren Liste). Jeder Zustand ist eine eigene Seite, zum Beispiel `kontakt-bestaetigt.html`, `kontakt-fehler.html`, `termine-leer.html`. Ein Formular zeigt mit `action="kontakt-bestaetigt.html"` auf seine Bestätigung, so geht der Klick auch ohne Programm dahinter. Eine Seite `zustaende.html` (nicht im Menü) listet alle Zustände mit Links, damit die Person sie findet.
 - **Seiten der Bausteine als Attrappe:** Braucht der Plan einen Baustein (`Setup:`, Skill `bausteine`: Anmeldeliste, Buchungen, Login, Pinnwand), entwirfst du seine Seiten genauso, mit Kopf, Menü und Fuss: zum Beispiel `buchen.html` mit den Terminen, `buchen-bestaetigt.html`, `buchen-voll.html` («Dieser Platz ist eben weg»), `buchen-leer.html` und «Meine Buchungen» (`verwaltung.html`, nicht im Menü). Sie sehen echt aus, arbeiten aber noch nicht; gebaut werden sie in P9 aus dem Rezept des Bausteins.
 - **Die Figur,** falls `Maskottchen: ja` in `docs/konzept.md`: nur an den Stellen, die dort stehen (Willkommen, Erfolg, leer), als Bild aus `design/figur/` oder als Skizze. Nie bei Fehlern.
 - **Bilder:** eigene Fotos aus der Fotoliste in `docs/inhalte.md` nach `design/entwurf/bilder/`, sonst eine graue Fläche mit `alt="[Platzhalter: Foto …]"`. Jedes `<img>` hat `width`, `height` und eine Beschreibung.
+- **Eigen, nicht aus dem Baukasten:** Es gelten die Kriterien aus dem Skill `gestaltung`, Abschnitt «Eigen statt Baukasten»: kein zentrierter Titel mit zwei Knöpfen als Kopf, keine Emoji als Icons, keine Lorem-Texte, keine gleich grossen Karten. Bewegung und 3D nur wie im Abschnitt «Bewegung und 3D» dort: jede Bewegung mit ihrem Satz in `docs/designsystem.md` und mit Rücksicht auf «weniger Bewegung», 3D nur mit Standbild (`data-3d-standbild`) und erst bei Bedarf geladen.
 - **Für das Handy gebaut:** `<meta name="viewport" content="width=device-width, initial-scale=1">` in jeder Seite, kein seitliches Schieben bei 390 px, Knöpfe mindestens 44 px hoch.
 - **Links** immer mit dem Weg ab der Seite und mit `.html` (`kontakt.html`, `../index.html`), nie mit «/» am Anfang und nie auf einen Ordner: Der Entwurf wird als Datei geöffnet, ohne Server.
 
@@ -110,7 +122,16 @@ Es meldet je Bereich eine Ampel und endet bei Rot mit 1:
 - **Farbfächer:** Farben, Schriften und Grössen nur als `var(--…)` aus `design/tokens.css`, auch im Musterblatt und in `komponenten.css`; jede `var(--…)` gibt es; jeder Kontrast-Kommentar in `tokens.css` ist nachgerechnet.
 - **Menü, Handy und Notizen:** dasselbe Menü auf jeder Seite, die Zeile für das Handy (`viewport`), die Zahl der `[Platzhalter]`, die Zeilen in `docs/entwurf.md`.
 
-Rot heisst: beheben und nochmals prüfen, bis nichts mehr rot ist. Gelb bleibt nur mit Grund in `docs/entwurf.md`. **Ohne Node** prüfst du dasselbe von Hand, Seite für Seite: jede Seite aus dem Plan als Datei; jeden `href`, `src` und `action` gegen die Liste der Dateien (`ls design/entwurf`); im CSS und in `style="…"` keine `#…`, `rgb(`, `hsl(`, Farbnamen, keine `font-family` ausser `var(--…)` und keine Zahlen mit `px`, `rem` oder `em` bei Schrift, Abständen, Rundungen und Schatten; jeden Kontrast-Kommentar mit der Formel aus dem Skill `barrierefreiheit` nachgerechnet. Dann schreibst du `Prüfung von Hand` mit dem Datum in `docs/entwurf.md`.
+Dazu laufen die zwei Skripte aus den Skills `webseite-planen` und `gestaltung` (dort kopiert; fehlen sie in `scripts/`, holst du sie wie oben aus dem Ordner des jeweiligen Skills):
+
+```bash
+node scripts/plan-pruefen.mjs --entwurf     # voller Funktionsumfang: Jede Seite und jede Funktion der Bauliste kommt im Entwurf vor
+node scripts/design-pruefen.mjs             # eigen statt Baukasten: Schrift, Farbwelt, Texte, Kopf, Bewegung, 3D, Gewicht
+```
+
+Fehlt ein `Muss`-Eintrag der Bauliste im Entwurf, ist das rot, ein `Kann`-Eintrag gelb. Danach kommt, was kein Skript sieht: die Selbstprüfung und die zweite Meinung in frischem Kontext (Skill `gestaltung`, Abschnitt «Selbstprüfung und zweite Meinung»), mit dem Ergebnis in `docs/entwurf.md` unter `## Prüfung`.
+
+Rot heisst: beheben und nochmals prüfen, bis nichts mehr rot ist. Gelb bleibt nur mit Grund in `docs/entwurf.md`. **Ohne Node** prüfst du dasselbe von Hand, Seite für Seite: jede Seite aus dem Plan als Datei; jeden `href`, `src` und `action` gegen die Liste der Dateien (`ls design/entwurf`); im CSS und in `style="…"` keine `#…`, `rgb(`, `hsl(`, Farbnamen, keine `font-family` ausser `var(--…)` und keine Zahlen mit `px`, `rem` oder `em` bei Schrift, Abständen, Rundungen und Schatten; jeden Kontrast-Kommentar mit der Formel aus dem Skill `barrierefreiheit` nachgerechnet; jede Zeile der Bauliste gegen die Seiten (wo ist sie gezeigt?); die Liste aus dem Skill `gestaltung`, Abschnitt «Eigen statt Baukasten». Dann schreibst du `Prüfung von Hand` mit dem Datum in `docs/entwurf.md`.
 
 ### 5. Zeigen: auf dem Handy und am Computer
 
@@ -128,9 +149,9 @@ Dann öffnest du `design/entwurf/index.html` und `design/entwurf/zustaende.html`
 
 ### 6. Rückmeldungen (`Rückmeldungen:`)
 
-Frag: «Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört?» Warum: Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau. Jede Rückmeldung kommt mit Datum und ihren Worten nach `docs/entwurf.md`; du änderst den Entwurf, prüfst nochmals mit `entwurf-pruefen.mjs` und zeigst ihn neu. Auf dem Weg Geschäft gehört der Fünf-Sekunden-Test aus der Methode `landingpage` dazu: Die Person zeigt das erste Bild am Handy zwei, drei Menschen aus der Zielgruppe; ihre Antworten kommen ebenfalls unter `Rückmeldungen:`.
+Frag: «Klick dich durch, auf dem Handy und am Computer: Was fehlt, was stört?» Warum: Jetzt ist eine Änderung ein Satz, nach dem Bau ein Umbau. Jede Rückmeldung kommt mit Datum und ihren Worten nach `docs/entwurf.md`; du änderst genau die Seite oder Funktion, die sie meint, prüfst nochmals mit den drei Skripten und zeigst sie neu (Abschnitt «Die Schleife»). Fragt sie nichts und sagt nur «gut», hilfst du mit zwei gezielten Fragen nach, zum Beispiel: «Findest du auf der Startseite in fünf Sekunden, was du anbietest?» und «Fehlt bei der Anfrage ein Feld, das du brauchst?» Auf dem Weg Geschäft gehört der Fünf-Sekunden-Test aus der Methode `landingpage` dazu: Die Person zeigt das erste Bild am Handy zwei, drei Menschen aus der Zielgruppe; ihre Antworten kommen ebenfalls unter `Rückmeldungen:`.
 
-Ist nichts mehr rot und fehlt oder stört die Person nichts mehr, meldest du `entwurf` (Abschnitt «Die Insel») und gehst zur Freigabe.
+Das geht so viele Runden, wie es braucht. Ist nichts mehr rot und fehlt oder stört die Person nichts mehr, meldest du `entwurf` (Abschnitt «Die Insel») und gehst zur Freigabe.
 
 ### docs/entwurf.md
 
@@ -157,6 +178,8 @@ Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›
 
 ## Prüfung
 - <TT.MM.JJJJ>: entwurf-pruefen.mjs grün (oder: Prüfung von Hand)
+- <TT.MM.JJJJ>: plan-pruefen.mjs --entwurf: <Zahl> von <Zahl> Einträgen der Bauliste; design-pruefen.mjs <grün | gelb, weil …>
+- <TT.MM.JJJJ>: zweite Meinung (<KI und Weg>): <Anzahl> ok, <Anzahl> Risiko, <Anzahl> offen
 ```
 
 Die Zeile `Freigegeben zum Bauen:` kommt erst mit der Freigabe dazu.
@@ -171,6 +194,7 @@ Sag ihr in drei, vier Sätzen, was im Entwurf steht (die Seiten, die Funktionen 
 
 - **Nur ein klares Ja zum Bauen gilt:** «Ja», «Ja, so bauen», «Ja, bau es», «Einverstanden, bauen». Lob allein ist keine Freigabe: Auf «sieht gut aus» oder «schön» fragst du einmal nach: «Freut mich. Heisst das: Ja, so bauen?»
 - **«Ja, aber …»** ist keine Freigabe: zuerst ändern, neu zeigen, neu fragen.
+- Mit dem Programm Albatros fragst du das Ja mit `ja_moment` (`entwurf`) an; die Zeile schreibt dann das Programm, wenn die Person in Albatros «Ja, bestätigen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»).
 - Nach dem Ja schreibst du in `docs/entwurf.md` die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›`, zum Beispiel `Freigegeben zum Bauen: 31.10.2026, ‹Ja, so bauen›`, und meldest `entwurf-freigegeben`. Das Datum steht vorne, als Zahl: Ohne Datum, mit `[Annahme: …]` oder mit «noch nicht» gilt die Zeile nicht als Ja, weder für `lage` noch für `pruefen.mjs --vor-bau`.
 - **Ändert sich der Entwurf nach der Freigabe,** gilt sie nicht mehr: Mach aus der Zeile `Früher freigegeben zum Bauen: …`, ändere, zeig neu und frag nochmals. So heisst die Zeile `Freigegeben zum Bauen:` immer: genau dieser Entwurf ist freigegeben.
 
@@ -182,7 +206,9 @@ Nach Schritt 6 rufst du das Werkzeug `schritt_melden` mit `schritt: entwurf` und
 
 ## Stolpersteine
 
-- **Nur zwei, drei Seiten entworfen:** Dann zeigen sich die Lücken erst beim Bau. Jede Seite aus dem Plan gehört in den Entwurf.
+- **Nur zwei, drei Seiten entworfen:** Dann zeigen sich die Lücken erst beim Bau. Jede Seite und jede Funktion der Bauliste gehört in den Entwurf.
+- **Eine Runde, dann Freigabe:** Der erste Stand ist selten der, den die Person bauen möchte. Frag gezielt nach, bis sie es sagt.
+- **Ein Kopf wie überall:** zentrierter Titel, eine Zeile, zwei Knöpfe. `design-pruefen.mjs` meldet ihn rot.
 - **Nur der Weg, wenn alles klappt:** Bestätigung, Fehler und leere Liste fehlen. Gute Seiten fallen bei Fehlern nicht auseinander.
 - **Erfundene Texte:** Was fehlt, steht als [Platzhalter] da, damit es niemand übersieht.
 - **Farben oder Abstände direkt in einer Seite:** Dann zeigt der Entwurf etwas anderes als das Musterblatt, und der Bau erbt den Fehler.

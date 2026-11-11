@@ -2,8 +2,8 @@
 name: inhalte
 description: "Aide une personne sans connaissances préalables à écrire et à choisir les textes et les images de son site web, dans le plan de vol pour l'ébauche de tout le site (P7) : la page d'accueil en trois phrases, des textes courts dans le ton du concept pour des gens qui lisent sur le natel, les textes manquants bien visibles comme [à compléter], ses propres photos plutôt que des images de banque d'images avec une liste de photos, droits et taille des images, ramener les textes d'IA à sa propre voix. Le résultat est une liste des contenus dans docs/inhalte.md et les textes dans l'ébauche. Utilise ce skill quand on dit « écrire des textes », « qu'est-ce que j'écris sur la page d'accueil », « à propos », « images pour le site », « liste de photos », « est-ce que j'ai le droit d'utiliser cette image », « le texte fait IA », « contenus »."
 metadata:
-  stand: 0.2.0
-  quelle: '3212c0762904'
+  stand: 0.3.0
+  quelle: '0ce83df4206d'
 ---
 
 # Contenus : la marchandise dans la vitrine
@@ -50,7 +50,9 @@ Qui arrive sur la page d'accueil décide en quelques secondes s'il reste. Les tr
 - Garder une seule forme d'adresse, tu ou vous, selon le public (dans le plan de vol, elle figure dans `docs/konzept.md` sous `Ton:`).
 - Des intertitres qu'on peut survoler.
 - Chiffres, prix, horaires, adresse : mieux vaut vérifier deux fois. Des informations fausses coûtent la confiance.
-- Ce qui manque, tu ne l'inventes pas. Ça figure de façon visible dans le texte, par exemple `[à compléter : horaires, Anna les livre d'ici le 7.11.2026]`, pour que personne ne l'oublie.
+- Ce qui manque, tu ne l'inventes pas. Ça figure de façon visible dans le texte, par exemple `[à compléter : horaires, Anna les livre d'ici le 7.11.2026]`, pour que personne ne l'oublie. Jamais de texte Lorem ni d'autre texte de remplissage, et jamais d'emoji à la place des icônes.
+- Les faits sous forme de phrases qui sont justes à elles seules : qui, quoi, pour qui, où, quand c'est ouvert, ce que ça coûte, comment on fait une demande. En plus, les cinq questions posées le plus souvent, chacune avec une réponse en deux ou trois phrases. Ainsi, qui est pressé comprend, et ainsi les moteurs de recherche et les assistants IA le trouvent (skill `seo-grundlagen`).
+- Pas d'avis, de citations, de nombres de clients ni de distinctions inventés. Chaque chiffre vient de la personne ou a une source.
 
 ### 4. Textes avec l'IA
 

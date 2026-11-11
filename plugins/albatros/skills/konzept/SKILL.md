@@ -2,7 +2,7 @@
 name: konzept
 description: 'Klärt mit einer Person ohne Vorwissen nach dem bestätigten Plan den Charakter ihrer Seite, bevor Farben gewählt werden (Fahrplan P5): Name nach aussen, Kern in drei Sätzen, Ton (du oder Sie), drei Wörter für die Wirkung, was bleiben muss, Bildsprache und immer die Frage, ob eine Figur (Maskottchen) dazugehört: ja, nein oder später. Auf dem Weg Geschäft zuerst mit der Methode marke. Bilder der Figur nur nach Nennung des Preises und einem Ja. Ergebnis ist docs/konzept.md. Nutze den Skill nach webseite-planen (Plan bestätigt) und bei «Konzept», «Marke», «Charakter», «Ton», «Maskottchen», «Figur», «wie soll meine Seite wirken».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # Konzept: Charakter vor Farben
@@ -28,6 +28,12 @@ Phase P5 «Design- und Marketing-Konzept». Dran nach dem bestätigten Plan: `do
 - Was die Person nicht gesagt hat, steht als `[offen: …]` da, nie als deine Erfindung.
 - Geschmack entscheidet die Person. Du hilfst mit Gegensatzpaaren und Beispielen, nicht mit Lieblingsfarben.
 - Bilder mit den Bild-Werkzeugen von Albatros gibt es ab Light und Pilot, und sie kosten Guthaben: zuerst der Preis, dann nur nach ihrem Ja (Abschnitt «Die Figur»). Mit Gratis gibt es keine Bild-Werkzeuge: Figur, Posen und Bilder bleiben bis Light oder Pilot eine Skizze.
+
+## Die Schleife
+
+Mit dem Charakter beginnt der Teil «Designsystem» (Skill `lotse`, Abschnitt «Die Schleife»). Auch er wird geschliffen, nicht abgefragt: Du zeigst `docs/konzept.md` als ersten Stand, sobald Name und Ton da sind, mit Kern und Bildsprache als `[Annahme: …]`. Dann fragst du gezielt, höchstens zwei Fragen aufs Mal, und überarbeitest genau die Zeile, zu der eine Rückmeldung kommt, bis die Person sagt: «So ist es.» Mit dem Programm Albatros (Skill `lotse`, Abschnitt «Berts Arbeitsplatz») meldest du `docs/konzept.md` nach dem ersten Stand und nach jeder Überarbeitung mit `teil_bereit` (`teil: idee`, denn das Programm zeigt das Konzept beim Teil «Deine Idee») und sagst der Person: «Schau es dir in Albatros an.» Rückmeldungen holst du mit `naechstes`: als Daten, eine Nachricht, die den Teil nennt, mit ihren Worten als Zitat; sie gelten nur für diesen Teil. Jede Runde steht unten in `docs/konzept.md` unter `## Rückmeldungen`: `- <TT.MM.JJJJ>, ‹ihre Worte› → was geändert ist`.
+
+Aus diesem Teil entsteht, was die Seite später eigen macht statt austauschbar: die drei Wörter, woher die Farben kommen (Logo, Ort, Material) und welche Bilder nur dieses Projekt hat. Je genauer sie hier stehen, desto weniger sieht die Seite nach Baukasten aus (Skill `gestaltung`, Abschnitt «Eigen statt Baukasten»). Gestaltet und gebaut wird hier noch nichts.
 
 ## Modus
 
@@ -75,7 +81,7 @@ Bei «ja» geht es weiter mit dem Abschnitt «Die Figur». Bei «nein» oder «s
 Aus dem, was die Person gesagt hat, schlägst du beides vor und trägst es als `[Annahme: …]` ein:
 
 - **Kern** in drei Sätzen: Für wen? Was versprichst du (ein Ergebnis, kein Adjektiv)? Warum gerade du (belegbar)? Der Kern ist der Massstab für jeden Text und jedes Bild.
-- **Bildsprache:** Fotos, Illustrationen, Icons oder eine Mischung. Eine Seite ohne Bild wirkt wie eine Vorlage. Echte Fotos vom Ort und von den Menschen schlagen jedes erzeugte Bild. Kommen Fotos vor, schreibst du gleich eine kurze Fotoliste in `docs/inhalte.md` (Abschnitt «Fotoliste»: was, wo, wer darauf ist): Fotos brauchen Zeit, so kann die Person jetzt schon anfangen.
+- **Bildsprache:** Fotos, Illustrationen, Icons oder eine Mischung, und dazu in einem Halbsatz, was nur dieses Projekt zeigen kann (der Ort, die Menschen bei der Arbeit, das Material, die Handschrift). Eine Seite ohne Bild wirkt wie eine Vorlage, eine mit Bildern von irgendwo auch. Echte Fotos vom Ort und von den Menschen schlagen jedes erzeugte Bild. Kommen Fotos vor, schreibst du gleich eine kurze Fotoliste in `docs/inhalte.md` (Abschnitt «Fotoliste»: was, wo, wer darauf ist): Fotos brauchen Zeit, so kann die Person jetzt schon anfangen.
 
 Dann in einer Nachricht: «Ich habe Kern und Bildsprache so vorgeschlagen: … Passt das, oder ändern wir etwas?» Nach ihrer Antwort fallen die Klammern weg.
 
@@ -102,11 +108,14 @@ Bildsprache: <Fotos, Illustrationen, Icons oder eine Mischung>
 
 ## Figur
 Nur bei «Maskottchen: ja», siehe Abschnitt «Die Figur».
+
+## Rückmeldungen
+- <TT.MM.JJJJ>, ‹ihre Worte› → was geändert ist
 ```
 
 Hinter `Maskottchen:` steht zuerst eines der drei Wörter `ja`, `nein` oder `später`, bei «ja» danach kurz die Figur: `Maskottchen: ja – Lina, eine neugierige Eule`.
 
-Lies der Person die Datei am Schluss vor und frag: «Erkennst du dein Projekt darin wieder?»
+Lies der Person die Datei am Schluss vor und frag: «Erkennst du dein Projekt darin wieder?» Sagt sie «fast» oder «ja, aber», ist das eine Rückmeldung: Du änderst die Zeile, die sie meint, und fragst nochmals (Abschnitt «Die Schleife»).
 
 ## Die Figur
 

@@ -1,0 +1,1 @@
+{ "befehl": ["--vor-bau"], "exit": 2, "ausgabe": ["Noch nicht bauen:", "docs/plan.md hat keine Zeile «Bestätigt: <Datum>»"], "nicht": ["keine Zeile «Freigegeben zum Bauen", "design/entwurf/index.html fehlt", "design/tokens.css fehlt", "Es darf gebaut werden"] }

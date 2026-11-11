@@ -2,7 +2,7 @@
 name: sicherheit
 description: "Sécurise le projet d'une personne sans connaissances préalables, avec l'image de la maison avec son trousseau, son coffre-fort, ses fenêtres et ses serrures : jamais de secrets dans le journal de bord (Git), mais dans .env sur le serveur (et, si le tapis roulant en a besoin, dans le coffre-fort du port) ; régénérer tout de suite une clé publiée par erreur ; une clé par usage ; seulement les portes nécessaires ouvertes ; mises à jour. Utilise ce skill pour « sécurité », « mot de passe dans le code », « clé API », « .env », « secret », « j'ai mis une clé sur GitHub », « mon site est-il sûr ? », « je me suis fait pirater », « mises à jour », « pare-feu », et avant qu'un nouveau secret entre dans le projet."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '51d4dfe6fcfe'
 ---
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Prüfungen des Skills webseite-bauen auf dem Computer der Person. Misst die gebaute Seite wie die vier Prüfungen einer Software-Fabrik
 // und schreibt die Messwerte nach docs/pruefung/; die Berichte in einfachen Worten schreibt danach die KI.
-//   node scripts/pruefen.mjs --vor-bau              vor dem Bau: Ende mit 2 ohne «Freigegeben zum Bauen: <Datum>» in docs/entwurf.md,
-//                                                    ohne design/entwurf/index.html oder ohne design/tokens.css
+//   node scripts/pruefen.mjs --vor-bau              vor dem Bau: Ende mit 2 ohne die zwei Ja («Bestätigt: <Datum>» in docs/plan.md und
+//                                                    «Freigegeben zum Bauen: <Datum>» in docs/entwurf.md), ohne design/entwurf/index.html
+//                                                    oder ohne design/tokens.css
 //   node scripts/pruefen.mjs --freigabe             vor dem Wohnort und vor dem Livegang (lancieren): Ende mit 0 und «Seite freigegeben: …»,
 //                                                    wenn die letzte Zeile «Freigegeben:» in docs/prd.md ein Ja ist (wie albatros kit jaBelegt),
 //                                                    sonst mit 2 und dem Grund
@@ -41,7 +42,7 @@ const WIN = process.platform === 'win32';
 const fehlt = (...texte) => { console.error(texte.join('\n')); process.exit(2); };
 
 const alle = (d) => (existsSync(d) ? readdirSync(d, { withFileTypes: true }) : [])
-  .flatMap((e) => (['node_modules', '.git', '.astro', '.cache'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
+  .flatMap((e) => (['node_modules', '.git', '.astro', '.cache', '.albatros'].includes(e.name) ? [] : e.isDirectory() ? alle(join(d, e.name)) : [join(d, e.name)]));
 const rel = (f) => relative(WURZEL, f).split(sep).join('/');
 
 // ---------- Ja-Momente wie albatros kit jaWert und jaBelegt (packages/kit/src/phasen.ts), Zeichen für Zeichen dieselben Ausdrücke ----------
@@ -69,12 +70,15 @@ if (args.includes('--freigabe')) {
   process.exit(0);
 }
 
-// ---------- Vor dem Bau: gebaut wird nur ein Entwurf mit Freigabe zum Bauen (Skill entwurf); es zählt die letzte solche Zeile ----------
+// ---------- Vor dem Bau: gebaut wird nur ein Entwurf mit Freigabe zum Bauen (Skill entwurf); es zählt die letzte solche Zeile. Seit dem
+// 10.11.2026 (Entscheid Mathias: nie bauen ohne die zwei Ja) dazu der bestätigte Plan, mit derselben Regel für das Ja ----------
 if (args.includes('--vor-bau')) {
   const md = join(WURZEL, 'docs', 'entwurf.md');
   const freigabe = jaWert(lies(md) ?? '', 'Freigegeben zum Bauen:') ?? '';
   const annahme = ANNAHME_DARIN.test(freigabe);
+  const plan = jaWert(lies(join(WURZEL, 'docs', 'plan.md')) ?? '', 'Bestätigt:') ?? '';
   const luecken = [
+    (!datiert(plan) || ANNAHME_DARIN.test(plan)) && 'docs/plan.md hat keine Zeile «Bestätigt: <Datum>». Gebaut wird erst nach dem Ja der Person zum Plan (Skill webseite-planen, Abschnitt Plan prüfen).',
     !existsSync(md) ? 'docs/entwurf.md fehlt: zuerst die ganze Seite entwerfen und freigeben lassen (Skill entwurf).'
       : !datiert(freigabe) ? 'docs/entwurf.md hat keine Zeile «Freigegeben zum Bauen: <Datum>». Gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).'
       : annahme && 'docs/entwurf.md: Die Zeile «Freigegeben zum Bauen:» trägt eine [Annahme]. Eine Annahme ist kein Ja; gebaut wird erst nach dem Ja der Person zum Entwurf (Skill entwurf, Abschnitt Freigabe).',
@@ -83,7 +87,7 @@ if (args.includes('--vor-bau')) {
   ].filter(Boolean);
   if (luecken.length) fehlt('Noch nicht bauen:', ...luecken.map((l) => `- ${l}`));
   const n = alle(ENTWURF).filter((f) => f.endsWith('.html')).length;
-  console.log(`Freigegeben zum Bauen: ${freigabe}. Entwurf mit ${n} ${n === 1 ? 'Seite' : 'Seiten'} in design/entwurf/. Es darf gebaut werden.`);
+  console.log(`Plan bestätigt: ${plan}. Freigegeben zum Bauen: ${freigabe}. Entwurf mit ${n} ${n === 1 ? 'Seite' : 'Seiten'} in design/entwurf/. Es darf gebaut werden.`);
   process.exit(0);
 }
 

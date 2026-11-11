@@ -2,7 +2,7 @@
 name: cms
 description: 'Hilft einer Person ohne Vorwissen zu entscheiden, ob ihre Webseite ein System zur Inhaltspflege (CMS) braucht, und richtet es bei Bedarf ein, z. B. Strapi in Docker auf dem Albatros-Server, erreichbar über einen sicheren Tunnel. Erklärt CMS mit dem Bild der Pinnwand. Nutze den Skill bei «CMS», «Strapi», «Inhalte selbst ändern ohne Code», «Blog», «News», «Veranstaltungen pflegen», «meine Kollegin soll Texte ändern können», «WordPress», «Admin-Bereich».'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # CMS: die Pinnwand im Flur

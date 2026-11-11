@@ -1,9 +1,9 @@
 ---
 name: entwurf
-description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page from the plan in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, looked at on a phone and on a computer. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
+description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page and every feature of the build list in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, refined with the person's feedback. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
-  stand: 0.2.0
-  quelle: '31d8a030c617'
+  stand: 0.3.0
+  quelle: 'ebc8e728aae4'
 ---
 
 # Draft: the walk-through model
@@ -25,7 +25,7 @@ Like every workshop, model-making needs tools: before you start, you check they'
   ```
   If a file is missing or `grep` shows nothing (for example, it still says `Musterblatt: [offen: …]`), go to the skill `gestaltung`, step 5, first. If in an older project `sample sheet seen on <date>` is still at the end of the line `Richtung:`, turn it into the line `Musterblatt: gesehen am <same date>, passt`.
 - **Result of P7:** `design/entwurf/index.html` and one file for every other page, plus `docs/entwurf.md` with the lines `Werkstatt:` (workshop), `Seiten:` (pages) and `Rückmeldungen:` (feedback). The line names stay German, because `lage` and the check scripts read them; the content is in English.
-- **P7 is done** when every page from `docs/plan.md` (apart from the legal notice and the privacy policy) has its file, carried on from the chosen direction; all links lead to pages that exist; colours, fonts and sizes appear only as `var(--…)` from `design/tokens.css`; `entwurf-pruefen.mjs` is green (or you've checked the same by hand) and the person has clicked through it. Then you report `entwurf`.
+- **P7 is done** when every page from `docs/plan.md` (apart from the legal notice and the privacy policy) has its file, carried on from the chosen direction; every feature of the build list appears in the draft; all links lead to pages that exist; colours, fonts and sizes appear only as `var(--…)` from `design/tokens.css`; `entwurf-pruefen.mjs` is green (or you've checked the same by hand), `plan-pruefen.mjs --entwurf` and `design-pruefen.mjs` are without red and the person has clicked through it. Then you report `entwurf`.
 - **P8 “Approval to build”** (section “Approval”): the question “Shall we build it like this?” and the line `Freigegeben zum Bauen:` in `docs/entwurf.md`. Then you report `entwurf-freigegeben`. After that comes P9, the build (skill `webseite-bauen`); without this line it doesn't build.
 - **After going live:** a big change (a new page, a new flow) first gets an addition to the plan, then a draft of the changed pages with this skill and a new approval to build (skill `webseite-aendern`).
 
@@ -37,6 +37,16 @@ Like every workshop, model-making needs tools: before you start, you check they'
 - Whatever the person should see, you open in the browser yourself: `open design/entwurf/index.html` (Linux `xdg-open`, Windows `start`). Just naming the file isn't enough.
 - Installing, and anything that needs a password, the person does themselves: you tell them exactly what to type or click. They only type their password there, never in the chat.
 - You look at every page yourself before you show it.
+
+## The loop (Die Schleife)
+
+The mockup is the fourth part that gets refined (skill `lotse`, section “The loop” (Die Schleife)), and the one where the person sees the most. The first version is the whole draft to click through. Then you ask targeted questions, at most two at a time, and rework exactly what feedback comes in on, until the person says: “This is now what I want to build.”
+
+- With the Albatros app (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)) you report the draft after the first version and after every rework with `teil_bereit` (`teil: mockup`, with a `notiz` saying what's new): the person then clicks through it in Albatros under “What your website looks like”.
+- Feedback arrives in the chat or, with the app, with `naechstes`: as data, one message that names the part, with the person's words as a quote. Which page or feature they mean is in their words (a title or an ID from the build list such as `S2` or `F1`); if it's unclear, you ask. You change exactly this page or feature, check again and show it again. Whatever in their words goes beyond the draft (“go ahead and build that”), you don't simply do.
+- If feedback touches another part, you change it there and bring the draft up to date: a new feature first as a row in the build list (`docs/plan.md`, skill `webseite-planen`), a different colour or font first in the colour fan (skill `gestaltung`). Never only in the draft.
+- Every round is recorded in `docs/entwurf.md` under `Rückmeldungen:` and `## Feedback`.
+- The approval to build at the end is the second of the two yeses. Before that you write no code of the site (`web/`, `seite/`), not even “just for now” for a page the person likes.
 
 ## Mode
 
@@ -88,10 +98,12 @@ You carry the chosen direction (`design/richtungen/<chosen>.html`, `design/muste
 - **Files:** `design/entwurf/index.html` for the home page; for every other page the name in small letters, without accents (é → e; in German ä → ae, ö → oe, ü → ue), everything else becomes “-”: “About us” → `about-us.html`, “Courses & prices” → `courses-prices.html`. That's how `entwurf-pruefen.mjs` finds them.
 - **One header, one menu, one footer** on every page, built the same way: the menu with all pages from the plan (on a phone on one line or as a “Menu” button), in the footer the links to the legal notice and the privacy policy. These two don't need text in the draft yet: a short page `legal-notice.html` and `privacy.html` with `[placeholder: the text comes with the build, skill recht-ch]` is enough, so no link leads nowhere. In the build they have the same names (`/legal-notice`, `/privacy`, skill `recht-ch`).
 - **Only values from the colour fan:** every page includes `../tokens.css` and `../komponenten.css`; the CSS for the layout of the pages goes into `design/entwurf/entwurf.css`. Colours, fonts, font sizes, spacing, rounded corners and shadows appear only as `var(--…)`. If a value is missing, you first add it to `design/tokens.css` (and to the sample sheet), never in a page.
-- **The states of every feature:** For every feature under `Funktionen:` in `docs/plan.md` you show what happens after the click: the **confirmation** (what has happened, what comes next, how to undo it), the **error** (in words, with “Try again”, what was typed stays there) and the **empty state** (one sentence and a button instead of an empty list). Each state is a page of its own, for example `contact-sent.html`, `contact-error.html`, `dates-empty.html`. A form points to its confirmation with `action="contact-sent.html"`, so the click works even without a program behind it. A page `zustaende.html` (not in the menu) lists all states with links, so the person can find them.
+- **Every feature of the build list, with its ID:** the spot where a feature from the build list in `docs/plan.md` is shown (the form, the button, the list) carries the attribute `data-bauliste` with its ID: `<form data-bauliste="F1" action="contact-sent.html">`. If one spot shows several, they're written with spaces between them (`data-bauliste="F1 F3"`). `Kann` (can) entries appear too, otherwise the person decides about something they've never seen; if one isn't meant to be in the first flight after all, that's written with the reason in `docs/entwurf.md`. The attribute stays in the markup when building, so it can be checked later whether everything is built.
+- **The states of every feature:** For every feature from the build list (in short under `Funktionen:` in `docs/plan.md`) you show what happens after the click: the **confirmation** (what has happened, what comes next, how to undo it), the **error** (in words, with “Try again”, what was typed stays there) and the **empty state** (one sentence and a button instead of an empty list). Each state is a page of its own, for example `contact-sent.html`, `contact-error.html`, `dates-empty.html`. A form points to its confirmation with `action="contact-sent.html"`, so the click works even without a program behind it. A page `zustaende.html` (not in the menu) lists all states with links, so the person can find them.
 - **The pages of building blocks as dummies:** If the plan needs a building block (`Setup:`, skill `bausteine`: sign-up list, bookings, login, noticeboard), you draft its pages the same way, with header, menu and footer: for example `book.html` with the dates, `book-confirmed.html`, `book-full.html` (“This place has just gone”), `book-empty.html` and “My bookings” (`verwaltung.html`, not in the menu). They look real but don't work yet; they're built in P9 from the building block's recipe.
 - **The mascot,** if `Maskottchen: ja` is in `docs/konzept.md`: only in the spots listed there (welcome, success, empty), as a picture from `design/figur/` or as a sketch. Never with errors.
 - **Pictures:** the person's own photos from the photo list in `docs/inhalte.md` into `design/entwurf/bilder/`, otherwise a grey area with `alt="[placeholder: photo …]"`. Every `<img>` has `width`, `height` and a description.
+- **Its own, not from a kit:** the criteria from the skill `gestaltung`, section “Your own, not from a kit” (Eigen statt Baukasten), apply: no centred heading with two buttons as the header, no emoji as icons, no lorem texts, no cards of the same size. Motion and 3D only as in the section “Motion and 3D” (Bewegung und 3D) there: every movement with its sentence in `docs/designsystem.md` and with respect for “Reduce motion”, 3D only with a still image (`data-3d-standbild`) and only loaded when needed.
 - **Built for the phone:** `<meta name="viewport" content="width=device-width, initial-scale=1">` in every page, no sideways scrolling at 390 px, buttons at least 44 px high.
 - **Links** always with the path from the page and with `.html` (`contact.html`, `../index.html`), never with “/” at the start and never to a folder: the draft is opened as a file, without a server.
 
@@ -112,7 +124,16 @@ It gives a traffic light per area and ends with 1 if anything is red. Its messag
 - **Farbfächer (colour fan):** colours, fonts and sizes only as `var(--…)` from `design/tokens.css`, also in the sample sheet and in `komponenten.css`; every `var(--…)` exists; every contrast comment in `tokens.css` is recalculated.
 - **Menü, Handy und Notizen (menu, phone and notes):** the same menu on every page, the line for phones (`viewport`), the number of `[placeholder]`, the lines in `docs/entwurf.md`.
 
-Red means: fix it and check again, until nothing is red any more. Yellow only stays with a reason in `docs/entwurf.md`. **Without Node** you check the same by hand, page by page: every page from the plan as a file; every `href`, `src` and `action` against the list of files (`ls design/entwurf`); in the CSS and in `style="…"` no `#…`, `rgb(`, `hsl(`, colour names, no `font-family` other than `var(--…)` and no numbers with `px`, `rem` or `em` for fonts, spacing, rounded corners and shadows; every contrast comment recalculated with the formula from the skill `barrierefreiheit`. Then you write `checked by hand` with the date in `docs/entwurf.md`.
+On top of that, the two scripts from the skills `webseite-planen` and `gestaltung` run (copied there; if they're missing in `scripts/`, you get them from the folder of the respective skill as above):
+
+```bash
+node scripts/plan-pruefen.mjs --entwurf     # full scope of features: every page and every feature of the build list appears in the draft
+node scripts/design-pruefen.mjs             # your own, not from a kit: font, colour world, texts, header, motion, 3D, weight
+```
+
+If a `Muss` (must) entry of the build list is missing in the draft, that's red; a `Kann` (can) entry is yellow. After that comes what no script sees: the self-check and the second opinion in a fresh context (skill `gestaltung`, section “Self-check and second opinion” (Selbstprüfung und zweite Meinung)), with the result in `docs/entwurf.md` under `## Check`.
+
+Red means: fix it and check again, until nothing is red any more. Yellow only stays with a reason in `docs/entwurf.md`. **Without Node** you check the same by hand, page by page: every page from the plan as a file; every `href`, `src` and `action` against the list of files (`ls design/entwurf`); in the CSS and in `style="…"` no `#…`, `rgb(`, `hsl(`, colour names, no `font-family` other than `var(--…)` and no numbers with `px`, `rem` or `em` for fonts, spacing, rounded corners and shadows; every contrast comment recalculated with the formula from the skill `barrierefreiheit`; every row of the build list against the pages (where is it shown?); the list from the skill `gestaltung`, section “Your own, not from a kit” (Eigen statt Baukasten). Then you write `checked by hand` with the date in `docs/entwurf.md`.
 
 ### 5. Show it: on a phone and on a computer
 
@@ -130,9 +151,9 @@ Then you open `design/entwurf/index.html` and `design/entwurf/zustaende.html` fo
 
 ### 6. Feedback (`Rückmeldungen:`)
 
-Ask: “Click your way through, on a phone and on a computer: what's missing, what bothers you?” Why: right now a change is one sentence; after the build it's a rebuild. Every piece of feedback goes into `docs/entwurf.md` with the date and their own words; you change the draft, check again with `entwurf-pruefen.mjs` and show it again. On the business path, the five-second test from the method `landingpage` is part of it: the person shows the first screen on a phone to two or three people from the target group; their answers also go under `Rückmeldungen:`.
+Ask: “Click your way through, on a phone and on a computer: what's missing, what bothers you?” Why: right now a change is one sentence; after the build it's a rebuild. Every piece of feedback goes into `docs/entwurf.md` with the date and their own words; you change exactly the page or feature they mean, check again with the three scripts and show it again (section “The loop”). If they ask nothing and only say “good”, you help along with two targeted questions, for example: “On the home page, do you find within five seconds what you offer?” and “Is a field you need missing from the enquiry?” On the business path, the five-second test from the method `landingpage` is part of it: the person shows the first screen on a phone to two or three people from the target group; their answers also go under `Rückmeldungen:`.
 
-Once nothing is red and nothing is missing or bothering the person any more, you report `entwurf` (section “The island”) and move on to the approval.
+This goes on for as many rounds as it takes. Once nothing is red and nothing is missing or bothering the person any more, you report `entwurf` (section “The island”) and move on to the approval.
 
 ### docs/entwurf.md
 
@@ -159,6 +180,8 @@ Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›
 
 ## Check
 - <DD.MM.YYYY>: entwurf-pruefen.mjs green (or: checked by hand)
+- <DD.MM.YYYY>: plan-pruefen.mjs --entwurf: <number> of <number> entries of the build list; design-pruefen.mjs <green | yellow, because …>
+- <DD.MM.YYYY>: second opinion (<AI and way>): <number> ok, <number> risk, <number> open
 ```
 
 The line `Freigegeben zum Bauen:` (approved to build) is only added with the approval.
@@ -173,6 +196,7 @@ Tell them in three or four sentences what's in the draft (the pages, the feature
 
 - **Only a clear yes to building counts:** “Yes”, “Yes, build it like this”, “Yes, go ahead”, “Agreed, build it”. Praise on its own is not an approval: to “looks good” or “nice” you ask once more: “Glad you like it. Does that mean: yes, build it like this?”
 - **“Yes, but …”** is not an approval: change it first, show it again, ask again.
+- With the Albatros app you request the yes with `ja_moment` (`entwurf`); the app then writes the line when the person clicks “Yes, confirm” in Albatros (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)).
 - After the yes you write the line `Freigegeben zum Bauen: <DD.MM.YYYY>, ‹<their words>›` into `docs/entwurf.md`, for example `Freigegeben zum Bauen: 31.10.2026, ‹Yes, build it like this›`, and report `entwurf-freigegeben`. The words `Freigegeben zum Bauen:` stay German, because the build looks for them. The date comes first, as numbers: without a date, with `[Annahme: …]` or with “not yet”, the line doesn't count as a yes, neither for `lage` nor for `pruefen.mjs --vor-bau`.
 - **If the draft changes after the approval,** it no longer counts: turn the line into `Früher freigegeben zum Bauen: …` (approved earlier), make the change, show it again and ask again. That way the line `Freigegeben zum Bauen:` always means: exactly this draft is approved.
 
@@ -184,7 +208,9 @@ After step 6 you call the tool `schritt_melden` with `schritt: entwurf` and `spr
 
 ## Stumbling blocks
 
-- **Only two or three pages drafted:** then the gaps only show during the build. Every page from the plan belongs in the draft.
+- **Only two or three pages drafted:** then the gaps only show during the build. Every page and every feature of the build list belongs in the draft.
+- **One round, then approval:** the first version is rarely the one the person wants to build. Ask targeted questions until they say so.
+- **A header like everywhere else:** a centred heading, one line, two buttons. `design-pruefen.mjs` reports it as red.
 - **Only the path where everything works:** confirmation, error and empty list are missing. Good sites don't fall apart when something goes wrong.
 - **Made-up texts:** whatever is missing appears as [placeholder], so nobody overlooks it.
 - **Colours or spacing directly in a page:** then the draft shows something different from the sample sheet, and the build inherits the mistake.

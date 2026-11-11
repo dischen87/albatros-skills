@@ -1,9 +1,9 @@
 ---
 name: betrieb
-description: "Prépare avec une personne sans connaissances préalables l'exploitation de son site, avant que les invités arrivent (P12) : comment les visiteurs la contactent et qui le lit à quelle fréquence, qui est prévenu quand le site ne répond pas (une surveillance simple et gratuite), comment revenir à hier (photos du serveur avec Pilot, le journal de bord avec Light, une propre sauvegarde par soi-même), si une entrée avec connexion est nécessaire (seulement avec un propre serveur, skill bausteine) et si on compte qui vient (skill statistik, avec consentement là où il le faut). Le résultat est docs/betrieb.md. Utilise ce skill après le domicile (lancieren) et pour « exploitation », « surveillance », « sauvegarde », « backup », « retours », « qui lit le formulaire », « et si le site tombe en panne ? »."
+description: "Prépare avec une personne sans connaissances préalables l'exploitation de son site, avant que les invités arrivent (P12) : comment les visiteurs la contactent et qui le lit à quelle fréquence, qui est prévenu quand le site ne répond pas (une surveillance simple et gratuite), comment revenir à hier (photos du serveur avec Pilot, le journal de bord avec Light, une propre sauvegarde par soi-même), si une entrée avec connexion est nécessaire (seulement avec un propre serveur, skill bausteine) et si on compte qui vient (skill statistik, avec consentement là où il le faut). Le résultat est docs/betrieb.md. Avec Pilot, sur demande, l'espace de travail de Bert en ligne (jour et nuit, membres du projet seulement). Utilise ce skill après le domicile (lancieren) et pour « exploitation », « surveillance », « sauvegarde », « backup », « retours », « qui lit le formulaire », « et si le site tombe en panne ? », « espace de travail en ligne », « pilote automatique la nuit »."
 metadata:
-  stand: 0.2.0
-  quelle: 'b68eee2fb444'
+  stand: 0.3.0
+  quelle: '6b2bb7374057'
 ---
 
 # Exploitation : avant que les invités arrivent
@@ -100,6 +100,55 @@ Quand chaque ligne a une réponse, tu fais l'entrée dans le journal de bord (`g
 
 Ensuite vient la mise en ligne : skill `lancieren`, partie 2.
 
+## Espace de travail sur mon serveur (Arbeitsplatz online, facultatif, seulement avec Pilot)
+
+L'espace de travail sur l'ordinateur dort quand l'ordinateur est fermé. Avec Pilot, un deuxième espace de travail peut habiter sur le serveur de la personne, comme un bureau qui reste ouvert la nuit : l'IA y travaille selon l'horaire et dès qu'un mail ou une vente arrive. Seuls les membres du projet entrent, connectés avec Albatros. Tu ne le proposes que si la personne le demande (« espace de travail sur mon serveur », « espace de travail en ligne ») ou si `docs/betrieb.md` est terminé ; ce n'est pas une étape de la feuille de route.
+
+**Ce qui marche en ligne (état au 10.11.2026), tu le dis d'abord :**
+- En ligne, seul Claude Code travaille, avec l'abonnement Claude de la propriétaire. L'IA y travaille dans une cage, comme un atelier avec une seule porte vers le projet : elle ne modifie des fichiers que dans le projet et enregistre des versions (`git commit`). Elle n'atteint ni l'espace de travail lui-même, ni les clés de la personne, ni rien en dehors du projet, et elle ne peut pas publier. Au niveau le plus haut du projet, elle ne crée rien de nouveau ; pour cela, il y a l'IA sur l'ordinateur.
+- Si le serveur ne peut pas enfermer l'IA (système plus ancien), elle se contente d'y lire. L'espace de travail montre ce qui vaut dans les réglages, sous « Ton IA sur le serveur ».
+- Seule la propriétaire peut démarrer l'IA : elle travaille avec son propre abonnement Claude, et selon les conditions d'Anthropic personne d'autre ne peut l'utiliser. Les membres voient tout ; qui a « lecture seule » ne fait que lire.
+- Tu n'installes ni Codex ni Gemini CLI en ligne. Chez OpenAI, il n'est pas clair si un programme comme l'espace de travail peut démarrer Codex avec un abonnement ChatGPT sur un serveur ; la connexion avec Google n'existe plus pour Gemini CLI depuis le 18.06.2026. Si la personne pose la question, dis-lui exactement cela.
+
+**L'abonnement Claude le permet-il ?** Demande d'abord : « Ton projet est-il commercial, vends-tu quelque chose ou fais-tu de la publicité pour une entreprise ? » Pourquoi : l'abonnement nécessaire en dépend.
+- Anthropic décrit lui-même la voie sans navigateur : `claude setup-token` pour les scripts et les machines sans navigateur. Le compte appartient à une personne et ne se partage jamais.
+- En Suisse et dans l'EEE, Pro et Max ne valent que pour un usage non commercial (conditions d'Anthropic pour les consommateurs, section 11). Un projet commercial demande Claude Team ou Enterprise ; `claude setup-token` y marche aussi. Si le projet est commercial et que la personne n'a que Pro ou Max, tu t'arrêtes ici, tu dis pourquoi, et elle continue avec l'espace de travail sur l'ordinateur.
+- Relis les conditions avec elle avant qu'elle décide : https://code.claude.com/docs/en/legal-and-compliance et https://www.anthropic.com/legal/consumer-terms
+
+**Mise en place : sept étapes, dont trois faites par la personne.** Elle tape le jeton elle-même ; tu ne le vois jamais, et il ne passe jamais par Albatros.
+
+1. **S'annoncer chez Albatros (toi).** Appelle `arbeitsplatz_online` avec `an: true`. La réponse donne `ALBATROS_PROJEKT` et l'adresse `https://{name}.aufwind.sh/arbeitsplatz`. Si l'outil n'existe pas ou dit « seulement avec Pilot », tu t'arrêtes ici : l'espace de travail en ligne n'est pas encore activé chez Albatros, ou il manque le serveur.
+2. **Choisir l'adresse (toi, avec la personne).** L'espace de travail doit avoir sa propre adresse, pas une chambre dans la maison du site : sous `{name}.aufwind.sh/arbeitsplatz`, un script du site pourrait piloter l'espace de travail pendant que la personne est connectée.
+   - **Avec un domaine à elle** (skill `domain`) : annonce `arbeitsplatz.<domaine>` avec `domain_verbinden` et guide la personne à travers les entrées chez le fournisseur du domaine, exactement comme dans le skill `domain`. L'adresse de l'espace de travail est alors `https://arbeitsplatz.<domaine>`.
+   - **Sans domaine à elle :** on reste sur `https://{name}.aufwind.sh/arbeitsplatz`. Dis à la personne la phrase ci-dessus et que l'espace de travail lui-même en avertit dans les réglages. Aucun script de tiers ne s'ajoute à ce site tant que l'espace de travail y habite.
+3. **Vérifier le modèle et récupérer l'image (toi).** `grep -c arbeitsplatz compose.yaml nginx.conf` dans le projet : s'il manque le service `arbeitsplatz` dans `compose.yaml` ou la section dans `nginx.conf` (ancien modèle), reprends les deux du modèle, fais l'entrée dans le journal de bord et livre (skill `webseite-aendern`). Ensuite :
+   ```bash
+   ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz pull arbeitsplatz'
+   ```
+   Si Docker annonce que l'image n'existe pas (« manifest unknown », « denied », « not found »), elle n'est pas encore publiée. Tu la construis alors une fois sur le serveur à partir du plugin, depuis le dossier `arbeitsplatz` à côté des skills (`<dossier de ce skill>/../../arbeitsplatz`). S'il y manque le fichier `Dockerfile`, le plugin est trop ancien : mets-le à jour, sinon arrête-toi ici.
+   ```bash
+   scp -r "<dossier de ce skill>/../../arbeitsplatz" {name}@aufwind.sh:arbeitsplatz-bild
+   ssh {name}@aufwind.sh 'docker build -t "$(grep -o "ghcr.io/dischen87/albatros-arbeitsplatz:[0-9.]*" ~/projekt/compose.yaml)" ~/arbeitsplatz-bild && rm -r ~/arbeitsplatz-bild'
+   ```
+4. **Créer les réglages (toi),** sans le jeton, en dehors du projet (ainsi le fichier n'arrive jamais dans le journal de bord, et l'IA dans l'espace de travail ne le lit pas) :
+   ```bash
+   ssh {name}@aufwind.sh 'umask 077 && printf "%s\n" "ARBEITSPLATZ_ADRESSE=<adresse de l'étape 2>" "ALBATROS_PROJEKT=<projet>" "ARBEITSPLATZ_KI=claude" > ~/arbeitsplatz.env'
+   ```
+   Avec un domaine à elle, une ligne s'ajoute pour que les nouveaux mails et les ventes continuent d'arriver : `ARBEITSPLATZ_EREIGNIS_ADRESSE=https://{name}.aufwind.sh/arbeitsplatz` (l'adresse de l'étape 1).
+5. **Créer le jeton (la personne, sur son ordinateur).** Dans le terminal : `claude setup-token`. Elle confirme dans le navigateur, le terminal affiche le jeton (valable un an). Dis-lui : « Copie-le, mais ne l'envoie jamais dans le chat, même pas à moi. »
+6. **Inscrire le jeton sur le serveur (la personne, dans son propre terminal, pas toi).** Elle copie cette seule ligne, colle le jeton à la question (on ne le voit pas en collant) et appuie sur Entrée :
+   ```bash
+   ssh -t {name}@aufwind.sh 'printf "Colle le jeton, puis Entree (il reste cache) : "; stty -echo; IFS= read -r t; stty echo; echo; touch ~/arbeitsplatz.env; chmod 600 ~/arbeitsplatz.env; sed -i "/^CLAUDE_CODE_OAUTH_TOKEN=/d" ~/arbeitsplatz.env; printf "CLAUDE_CODE_OAUTH_TOKEN=%s\n" "$t" >> ~/arbeitsplatz.env; echo Enregistre.'
+   ```
+   N'exécute jamais cette commande toi-même, et ne lis jamais `~/arbeitsplatz.env` avec `cat` ensuite : le jeton est un accès à son abonnement.
+7. **Démarrer (toi), puis se connecter (la personne).** `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz up -d --wait'`. Au premier démarrage, l'espace de travail va chercher Claude Code chez Anthropic (une fois, quelques minutes). La personne ouvre l'adresse dans le navigateur et clique sur « Se connecter avec Albatros ». Dans les réglages, sous « Ton IA sur le serveur », on lit après une minute environ « Claude connecté » et « Peut modifier des fichiers » ; elle y choisit Claude Code et les heures du pilote automatique, et sous Tâches par exemple « Quand un mail arrive : proposer une réponse ».
+
+**Vérifier :** la page se charge, la connexion marche, « Claude connecté » s'affiche, et un membre avec « lecture seule » voit tout mais ne peut rien démarrer. Si on lit « Claude non connecté », l'espace de travail montre de nouveau les étapes 5 à 7 ; après un nouveau jeton, tu le redémarres : `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz up -d --force-recreate arbeitsplatz'`.
+
+**Éteindre :** `ssh {name}@aufwind.sh 'cd ~/projekt && docker compose --profile arbeitsplatz stop arbeitsplatz'` et `arbeitsplatz_online` avec `an: false`. Ensuite, la personne efface la ligne du jeton : `ssh {name}@aufwind.sh 'sed -i "/^CLAUDE_CODE_OAUTH_TOKEN=/d" ~/arbeitsplatz.env'`.
+
+Dans `docs/betrieb.md` s'ajoute la ligne `Arbeitsplatz online: nein` ou `Arbeitsplatz online: ja, seit <date>, <adresse>, Claude Code avec l'abonnement de la propriétaire`.
+
 ## Pièges
 
 - Un formulaire dont personne ne lit les messages.
@@ -108,6 +157,9 @@ Ensuite vient la mise en ligne : skill `lancieren`, partie 2.
 - Une sauvegarde qui n'a jamais été restaurée : elle ne compte qu'après l'essai.
 - Construire une entrée parce que ça fait professionnel : seulement si les critères sont remplis et avec un propre serveur.
 - Des statistiques avec cookies sans consentement, là où il le faut.
+- Écrire le jeton de l'IA dans le chat, dans le journal de bord ou dans un fichier du projet : il va seulement dans `~/arbeitsplatz.env` sur le serveur, tapé par la personne.
+- Laisser l'espace de travail en ligne sous l'adresse du site alors qu'il existe un domaine à elle : avec `arbeitsplatz.<domaine>`, il a sa propre porte.
+- Faire tourner l'espace de travail en ligne avec un abonnement qui n'est pas prévu pour ça (Pro ou Max pour une entreprise, le compte de quelqu'un d'autre).
 
 ## Vérifier la mission
 

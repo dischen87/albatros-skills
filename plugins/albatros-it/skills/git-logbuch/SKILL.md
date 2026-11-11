@@ -2,7 +2,7 @@
 name: git-logbuch
 description: "Spiega Git a una persona senza conoscenze con l'immagine del diario di bordo sulla nave e della copia nel porto (il servizio Git di Albatros, code.aufwind.sh). Accompagna nelle prime voci (commit) con buone note. Finché il sito non è approvato, il diario di bordo resta solo sul computer (git init, nessun push); solo alla messa online prende il repo dal porto o vi collega il proprio come origin, manda le voci al porto (push) e verifica che la copia arrivi sul server Albatros in ~/projekt. Regole: solo su main, solo i propri file aggiunti uno per uno, mai force-push. Usa lo skill con «Git», «GitHub», «porto», «commit», «push», «pull», «repo», «cos'è un repository?», «voglio salvare le mie modifiche», «il push è stato rifiutato», «conflitto», e prima di fare un commit per la persona."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '6cb54ed614fa'
 ---
 

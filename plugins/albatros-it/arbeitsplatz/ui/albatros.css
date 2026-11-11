@@ -1,0 +1,1421 @@
+/* Albatros Komponenten-CSS: die Bausteine von kidou (kidou/packages/ui/src/kidou.css, Richtung A «Plüsch», 27.10.2026) mit den
+   Werten von Albatros (tokens.css aus tokens.json, Kopie von albatros-studio/marke). Entscheid Mathias, 27.10.2026: genau gleich wie
+   kidou, einfach mit dem Albatros. Geändert gegenüber kidou: Markenfarben (himmel, sonne, minze, meer, schal, wolke; die Namen von
+   kidou himbeer, blau und flieder gelten weiter als Aliase für schal, meer und wolke), Hügel heisst Meer (.k-meer, --meer), Lumi heisst
+   Maskottchen (.k-maskottchen, .maskottchen-clip, quadratische Clips), Bauklötze in den Farben von stage.toy, Logo breiter.
+   Werte nur aus den Tokens, keine eigenen Farben. Die Klassen behalten ihre Namen; Neues heisst k-*. Gilt auch im Cockpit: dort
+   bleiben die Masse dicht (Schrift 15, Felder 44), die Website (body.k-web) nimmt den grösseren Massstab (Text 16, Felder 52,
+   Titel bis 58). Liegt in der Tailwind-Schicht «components»: Utilities können einzelne Werte überschreiben. */
+@layer base {
+  :root{--sh1:var(--shadow-raised);--sh2:var(--shadow-floating);--sh3:var(--shadow-dialog);--scrim:color-mix(in srgb,var(--ink) 42%,transparent);--kopf-oben:0px;--kopf-h:72px}
+  html{-webkit-font-smoothing:antialiased;text-size-adjust:100%}
+  body{font-family:var(--font-sans);font-size:15px;line-height:1.5;color:var(--ink);background:var(--bg);font-variant-numeric:tabular-nums}
+  a{color:var(--pr2);text-decoration:none}
+  :focus-visible{outline:var(--focus-width) solid var(--pr);outline-offset:var(--focus-offset)}
+  button{cursor:pointer}
+  button:disabled{cursor:default}
+  input,textarea,select{font:inherit;color:inherit}
+  @media (max-width:767px){:root{--kopf-h:60px}}
+  /* Raster für Abstände (28.10.2026): nur diese Rollen, Werte aus tokens.space (4 8 12 16 24 32 48 64 96). Abschnitt zwischen Abschnitten
+     der Website, Block zwischen Blöcken einer Seite (Kopf, Karten, Listen), Raster zwischen Karten nebeneinander, Karte innen und Innen
+     zwischen den Teilen einer Karte, Kopf zwischen Titel und Text, Liste zwischen Zeilen-Karten. Klassen dazu am Schluss der Datei. */
+  :root{--abstand-abschnitt:var(--space-9);--abstand-block:var(--space-6);--abstand-raster:var(--space-5);--abstand-karte:var(--space-5);--abstand-innen:var(--space-4);--abstand-kopf:var(--space-3);--abstand-liste:var(--space-3)}
+  @media (max-width:767px){:root{--abstand-abschnitt:var(--space-8);--abstand-block:var(--space-5);--abstand-raster:var(--space-4)}}
+}
+
+@layer components {
+  /* ---------- Icons ---------- */
+  svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+  svg.i.s{width:16px;height:16px}svg.i.l{width:24px;height:24px}svg.i.xl{width:32px;height:32px;stroke-width:1.6}
+  svg.i.sp{color:var(--as);fill:var(--as);stroke:var(--as);stroke-width:1.2}
+  svg.i.f{fill:currentColor}
+  svg.logo{height:28px;width:164px;flex:none;color:var(--ink)}
+  svg.logo.s{height:22px;width:129px}
+
+  /* ---------- Layout ---------- */
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+  .row.nw{flex-wrap:nowrap}
+  .row.top{align-items:flex-start}
+  .btw{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+  .btw.top{align-items:flex-start}
+  .col{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .g2,.g3,.g4,.g5,.g6{display:grid;gap:16px;min-width:0}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.g6{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .gap4{gap:4px}.gap6{gap:6px}.gap12{gap:12px}.gap16{gap:16px}.gap20{gap:20px}.gap24{gap:24px}.gap32{gap:32px}
+  .grow{flex:1;min-width:0}.sh{flex-shrink:0}
+  .ml{margin-left:auto}.mt{margin-top:auto}
+  .hr{height:1px;background:var(--ln);border:0;margin:0;flex:none}
+  .vr{width:1px;align-self:stretch;background:var(--ln)}
+  .ctr{text-align:center}.right{text-align:right}
+  .scroll-x{overflow:hidden}
+
+  /* ---------- Schrift (Typografie der Bauanleitung): Fraunces SOFT 100, 700 für Held und Abschnitte, sonst 600 ---------- */
+  .t0,.t1,.t2,.t3{font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:600;overflow-wrap:break-word}
+  .t0,.t1{font-weight:700}
+  .t0{font-size:clamp(36px,5vw + 16px,58px);line-height:1.04;letter-spacing:-.01em;text-wrap:balance} /* display */
+  .t1{font-size:32px;line-height:1.1;letter-spacing:-.01em;text-wrap:balance} /* section, Website bis 44 (unten bei .k-web) */
+  .t2{font-size:26px;line-height:1.15;letter-spacing:-.01em;text-wrap:balance} /* title */
+  .t3{font-size:19px;line-height:1.25} /* Kartentitel (Tagesbericht, Sheet) */
+  .t4{font-size:15px;line-height:1.35;font-weight:700} /* headline, Website 18 */
+  .lead{font-size:18px;line-height:1.5;color:var(--ink-soft)}
+  .meta{font-size:var(--text-meta);line-height:1.45;color:var(--mu)} /* 14 statt 13 (11.11.2026, Prüfung: «die grauen kleinen Texte sind blass und klein») */
+  .sm{font-size:13px;line-height:1.45}
+  .xs{font-size:12px;line-height:1.4}
+  .up{font-size:12px;line-height:1.3;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+  .mu{color:var(--mu)}.pr-c{color:var(--pr)}.ok-c{color:var(--oki)}.wa-c{color:var(--wai)}.fu-c{color:var(--fui)}.as-c{color:var(--asi)}
+  .b5{font-weight:500}.b6{font-weight:600}.b7{font-weight:700}.b8{font-weight:800}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.55}
+  .ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .strike{text-decoration:line-through;color:var(--mu)}
+
+  /* ---------- Knöpfe (Bausteine 3 bis 6): Pillen. Primär Veilchen mit shadow.button, gibt beim Drücken auf 0,97 nach; sekundär und
+     ghost weiss mit Rand control (Baustein 4); weich primarySoft mit primaryInk (5a); Textknopf primaryStrong (5b); glas für runde
+     Knöpfe über Fotos und Bühne (6). Mindestens 44 hoch (Regel am Schluss). ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:var(--pr);color:var(--onpr);font-size:var(--text-control);font-weight:700;line-height:1.15;white-space:normal;text-wrap:balance;max-width:100%;flex:none;box-shadow:var(--shadow-button);transition:transform var(--motion-press-dauer) var(--motion-press-kurve),background-color var(--motion-standard-dauer),box-shadow var(--motion-standard-dauer);-webkit-tap-highlight-color:transparent}
+  .btn svg.i{width:18px;height:18px;stroke-width:2}
+  .btn:active:not(:disabled,.dis,.load){transform:scale(.97)}
+  .btn.sec,.btn.gh{background:var(--sf);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--control)}
+  .btn.tx{background:transparent;color:var(--pr2);padding:0 8px;box-shadow:none}
+  .btn.weich{background:var(--prs);color:var(--primary-ink);box-shadow:none}
+  .btn.glas{background:var(--glass);color:var(--ink);box-shadow:var(--shadow-float)}
+  .btn.as{background:var(--as);color:var(--onas);box-shadow:0 8px 18px -10px color-mix(in srgb,var(--as) 90%,transparent)}
+  .btn.as svg.i.sp{color:var(--onas);fill:var(--onas);stroke:var(--onas)}
+  .btn.dg{background:var(--fu);color:var(--onpr);box-shadow:none}
+  .btn.dgo{background:var(--sf);color:var(--fui);box-shadow:inset 0 0 0 1.5px var(--control)}
+  .btn.inv{background:var(--sf);color:var(--ink);box-shadow:none}
+  .btn.sm{padding:0 14px;font-size:14px;gap:6px}
+  .btn.sm svg.i{width:16px;height:16px}
+  .btn.lg{min-height:52px;padding:0 24px;font-size:16px}
+  .btn.xl{min-height:56px;padding:0 30px 0 26px;font-size:17px;gap:10px}
+  .btn.xl svg.i{width:20px;height:20px}
+  .btn.full{width:100%}
+  /* Lange Beschriftung (11.11.2026): Ein Knopf wird nie breiter als sein Platz, der Text bricht um statt aus der Karte zu laufen; kurze
+     Beschriftungen stehen wie bisher in einer Zeile (flex:none, so breit wie der Text). Doppelte Klasse, damit sm, lg, xl und tx ihren Rand
+     innen oben und unten behalten. */
+  .btn.btn{padding-top:var(--space-2);padding-bottom:var(--space-2)}
+  .btn.full{padding-left:var(--space-3);padding-right:var(--space-3)} /* volle Breite: Text steht mittig, der breite Innenrand nähme nur Platz weg (Einwilligung am Handy: «Nur notwendige» in einer Zeile) */
+  .btn.io{width:44px;padding:0}.btn.io.lg{width:52px}.btn.io.xl{width:56px}
+  .btn.hov{filter:brightness(.94)}
+  .btn.sec.hov,.btn.gh.hov{filter:none;background:var(--sf2)}
+  .btn.prs{transform:scale(.97);filter:brightness(.9)}
+  .btn.foc{box-shadow:0 0 0 3px var(--sf),0 0 0 5px var(--pr)}
+  .btn.dis,.btn:disabled:not(.load){background:var(--sf2);color:var(--disabled);box-shadow:none}
+  .btn.load{color:transparent;position:relative}
+  .btn.load::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;border:2.5px solid color-mix(in srgb,var(--onpr) 40%,transparent);border-top-color:var(--onpr);animation:kspin .8s linear infinite}
+  .btn:is(.sec,.gh,.weich,.glas,.inv,.dgo,.tx).load::after{border-color:var(--prs);border-top-color:var(--pr)}
+  @keyframes kspin{to{transform:rotate(360deg)}}
+  @media (hover:hover){
+    .btn:not(:disabled,.dis):hover{filter:brightness(1.05)}
+    .btn:is(.sec,.gh,.glas,.inv,.dgo):not(:disabled,.dis):hover{filter:none;background:var(--sf2)}
+    .btn.weich:not(:disabled,.dis):hover{filter:none;background:color-mix(in srgb,var(--prs) 70%,var(--sf))}
+    .btn.tx:not(:disabled,.dis):hover{filter:none;text-decoration:underline;text-underline-offset:4px}
+  }
+  @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:active:not(:disabled,.dis,.load){transform:none}.btn.load::after{animation:none}}
+  .lnk{color:var(--pr2);font-weight:600}
+
+  /* ---------- Etikett (Baustein 8) und Status-Etikett (Baustein 9): Pille, nicht tippbar. Frei, Warteliste und voll mit Scheibe 16 und
+     Zeichen davor (StatusChip), nie nur Farbe ---------- */
+  .chip{display:inline-flex;align-items:center;gap:6px;min-height:24px;padding:4px 10px;border-radius:999px;background:var(--sf2);color:var(--ink);font-size:12px;font-weight:700;line-height:1.2;white-space:nowrap;flex:none}
+  .chip svg.i{width:14px;height:14px}
+  .chip.ok{background:var(--oks);color:var(--oki)}.chip.wa{background:var(--was);color:var(--wai)}.chip.fu{background:var(--fus);color:var(--fui)}
+  .chip.pr{background:var(--prs);color:var(--primary-ink)}.chip.as{background:var(--ass);color:var(--asi);box-shadow:inset 0 0 0 1px var(--asl)}
+  .chip.on{background:var(--pr);color:var(--onpr)}.chip.ln{background:var(--sf);box-shadow:inset 0 0 0 1px var(--line-strong);color:var(--ink-soft)}
+  .chip.ind::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:1px}
+  .chip.lg{min-height:30px;padding:5px 12px;font-size:13px}
+  .chip>.k-stand:first-child{width:16px;height:16px;margin-left:-6px}
+  .chip>.k-stand.wa{background:transparent}.chip>.k-stand.wa::after{inset:0;background:var(--wai)} /* Warteliste: Uhr als Ring */
+  .chip:is(.himmel,.sonne,.minze,.meer,.schal,.wolke,.himbeer,.blau,.flieder){background:var(--k-soft);color:var(--k-ink)}
+  .chip.k-typ{background:var(--sf);color:var(--ink)} /* Art mit Punkt auf Fotos */
+  /* Chip zum Wählen (Baustein 8): Pille 44, aus weiss mit Rand control, an Veilchen mit Häkchen davor (nie nur Farbe) */
+  .fc{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;background:var(--sf);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--control);font-size:14px;font-weight:600;line-height:1.2;white-space:nowrap;flex:none}
+  .fc svg.i{width:16px;height:16px}
+  .fc.on{background:var(--pr);color:var(--onpr);box-shadow:var(--shadow-chip-on);font-weight:700}
+  .fc.on::before{content:"";width:14px;height:14px;flex:none;margin-left:-2px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat}
+  .fc .n{font-weight:700;color:var(--mu)}.fc.on .n{color:inherit} /* voll deckend: mit opacity .85 nur 4,36 : 1 auf Veilchen (axe, K1) */
+  .badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--pr);color:var(--onpr);font-size:12px;font-weight:800;line-height:1;flex:none}
+  .badge.as{background:var(--as);color:var(--onas)}.badge.fu{background:var(--fu)}.badge.mu{background:var(--sf2);color:var(--mu)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--pr);flex:none;display:inline-block}
+  .dot.ok{background:var(--ok)}.dot.wa{background:var(--wa)}.dot.fu{background:var(--fu)}.dot.as{background:var(--as)}.dot.mu{background:var(--neutral)}
+
+  /* ---------- Eingaben (Baustein 7): Label über dem Wert, Hilfe und Fehler darunter; Feld Radius 18, Rand 1,5 control ---------- */
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .field>label,.field>.lbl{font-size:13px;font-weight:700;color:var(--ink)}
+  .field .opt{font-weight:600;color:var(--mu)}
+  .field .help{font-size:13px;line-height:1.45;color:var(--mu)}
+  .field .err-t{font-size:13px;color:var(--fui);font-weight:600;display:flex;gap:6px;align-items:center}
+  /* Ränder von Feldern, Schaltern, Checkboxen und Steppern in control (3.37:1 auf Weiss), nicht line-strong (1.49:1); gesperrt bleibt
+     line (WCAG 1.4.11 gilt nicht für Gesperrtes). UX-Prüfung 27.10.2026, ZG-01; farben.test.ts prüft die Selektoren. */
+  .ctl{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border-radius:var(--radius-control);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-size:var(--text-control);min-width:0}
+  .ctl .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ctl .phd{color:var(--placeholder)}
+  .ctl svg.i{color:var(--mu)}
+  .ctl.foc{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
+  .ctl.err{box-shadow:inset 0 0 0 2px var(--fu),0 0 0 4px var(--fus)}
+  .ctl.dis{background:var(--sf2);color:var(--mu);box-shadow:inset 0 0 0 1px var(--ln)}
+  .ctl.ta{align-items:flex-start;padding:12px 16px;min-height:96px;line-height:1.5}
+  .ctl.ta .v{white-space:normal}
+  .ctl.sm{min-height:36px;font-size:14px;padding:0 12px}
+  .ctl .caret{margin-left:auto;color:var(--mu)}
+  .ctl.srch{border-radius:999px;background:var(--sf2);box-shadow:none}
+  .caret-blink{display:inline-block;width:1.5px;height:18px;background:var(--pr);vertical-align:-3px;margin-left:1px}
+  /* Eingabe mit Label im Feld (Suche, Filter) */
+  .inp{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:56px;padding:8px 16px;border-radius:var(--radius-control);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);min-width:0}
+  .inp small{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+  .inp b{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .inp b.phd{color:var(--placeholder);font-weight:500}
+  .inp.foc{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
+  /* Schalter (Baustein 10): Spur 52 × 32, aus control, an Veilchen, Knopf 28 weiss mit shadow.float */
+  .tog{width:52px;height:32px;border-radius:999px;background:var(--control);position:relative;flex:none;display:inline-block;transition:background-color var(--motion-standard-dauer)}
+  .tog::after{content:"";position:absolute;top:2px;left:2px;width:28px;height:28px;border-radius:50%;background:var(--sf);box-shadow:var(--shadow-float);transition:left var(--motion-standard-dauer) var(--motion-standard-kurve)}
+  .tog.on{background:var(--pr)}.tog.on::after{left:22px}
+  .tog.dis{opacity:.45}
+  .tog.ios.on{background:var(--pr)} /* früher grün wie iOS; seit «Plüsch» gleich wie überall */
+  @media (prefers-reduced-motion:reduce){.tog,.tog::after{transition:none}}
+  .cb,.rd{display:inline-flex;align-items:center;gap:10px;font-size:15px;min-width:0}
+  .cb i,.rd i{width:22px;height:22px;flex:none;border-radius:7px;box-shadow:inset 0 0 0 1.5px var(--control);background:var(--sf);display:grid;place-items:center}
+  .rd i{border-radius:50%}
+  .cb.on i{background:var(--pr);box-shadow:none}
+  .cb.on i::after{content:"";width:10px;height:5px;border:2px solid var(--onpr);border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+  .rd.on i{box-shadow:inset 0 0 0 7px var(--pr)}
+  .cb.mix i{background:var(--pr);box-shadow:none}.cb.mix i::after{content:"";width:10px;height:2px;background:var(--onpr);border-radius:1px}
+  /* Segmente (Baustein 10): Rahmen als Pille mit Rand control, gewählt Veilchen (ZG-01) */
+  .seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sf);border-radius:999px;padding:3px;font-size:15px;font-weight:600;gap:2px;box-shadow:inset 0 0 0 1.5px var(--control)}
+  .seg>span{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;color:var(--ink);text-align:center;white-space:nowrap}
+  .seg>span.on{background:var(--prs);color:var(--primary-ink);font-weight:700;box-shadow:inset 0 0 0 1.5px var(--pr)} /* gewählt getönt mit Ring: die volle Füllung gehört dem einen Hauptknopf (11.11.2026, Prüfung der Elemente) */
+  .seg.sm{font-size:14px}.seg.sm>span{padding:0 12px}
+  .days{display:flex;gap:6px}
+  .days span{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font-size:14px;font-weight:700;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);color:var(--ink-soft)}
+  .days span.on{background:var(--pr);color:var(--onpr);box-shadow:none}
+  .days span.x{background:var(--sf2);color:var(--neutral);box-shadow:none;text-decoration:line-through}
+  .days.sm span{width:32px;height:32px;font-size:12.5px;border-radius:10px}
+  .stepper{display:inline-flex;align-items:center;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--control);background:var(--sf);height:40px}
+  .stepper span{width:40px;display:grid;place-items:center;color:var(--pr);height:100%}
+  .stepper b{min-width:36px;text-align:center}
+  .slider{position:relative;height:24px}
+  .slider::before{content:"";position:absolute;left:0;right:0;top:10px;height:4px;border-radius:2px;background:var(--sf2)}
+  .slider i{position:absolute;left:0;top:10px;height:4px;border-radius:2px;background:var(--pr)}
+  .slider b{position:absolute;top:2px;width:20px;height:20px;border-radius:50%;background:var(--sf);box-shadow:0 0 0 2px var(--pr),0 2px 6px color-mix(in srgb,var(--ink) 20%,transparent);margin-left:-10px}
+  .drop{border-radius:var(--radius-inner);border:1.5px dashed var(--control);background:var(--sf);padding:24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+  .drop.on{border-color:var(--pr);background:var(--prs)}
+  .mic{width:72px;height:72px;border-radius:50%;background:var(--pr);color:var(--onpr);display:grid;place-items:center;box-shadow:0 0 0 10px var(--prs);flex:none}
+  .mic svg.i{width:30px;height:30px}
+  .mic.rec{background:var(--fu);box-shadow:0 0 0 10px var(--fus),0 0 0 22px color-mix(in srgb,var(--fu) 8%,transparent)}
+  .wave{display:flex;align-items:center;gap:3px;height:32px}
+  .wave i{width:3px;border-radius:2px;background:var(--pr);display:block}
+
+  /* ---------- Kissen-Karte (Baustein 1): weiss ohne Linie mit weichem Doppelschatten, Radius 28; hervorgehoben (.hervor) mit
+     shadow.hero und warmem Verlauf. Der Rand bleibt durchsichtig, damit nichts um 1 px springt; Assistent mit Pfirsich-Rand. ---------- */
+  .card{background:var(--sf);border:1px solid transparent;border-radius:var(--radius-card);padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--shadow-card)}
+  .card.p0{padding:0;gap:0;overflow:hidden}
+  .card.p20{padding:20px}.card.p24{padding:var(--abstand-karte);gap:var(--abstand-innen)}.card.p12{padding:12px;gap:8px}
+  .card.fill{background:var(--sf2)}
+  .card.blue{background:var(--prs)}
+  .card.as{background:var(--ass);border-color:var(--asl)}
+  .card.warn{background:var(--was)}
+  .card.okc{background:var(--oks)}
+  .card.err{background:var(--fus)}
+  .card.inv{background:var(--inv);border-color:var(--inv);color:var(--onpr)}
+  .card.fill,.card.blue,.card.as,.card.warn,.card.okc,.card.err{box-shadow:none}
+  .card.sh{box-shadow:var(--sh1)}
+  .card.sel{box-shadow:inset 0 0 0 2px var(--pr),var(--shadow-card)}
+  .card.app{border-radius:var(--radius-app-card)}
+  .card.hervor{background:linear-gradient(160deg,var(--sf) 0%,var(--surface-warm) 100%);box-shadow:var(--shadow-hero)}
+  .card.hervor.sel{box-shadow:inset 0 0 0 2px var(--pr),var(--shadow-hero)} /* gewählt und hervorgehoben (Preiskarte Pro): sonst nähme .hervor den Ring weg */
+  .card .hd-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .sect{display:flex;flex-direction:column;gap:12px}
+  .kv{display:grid;grid-template-columns:minmax(120px,max-content) 1fr;gap:8px 20px;font-size:14px}
+  .kv dt{color:var(--mu)}.kv dd{margin:0;font-weight:600}
+  /* Liste und Zeile (Baustein 11): Zeile ab 56, die ganze Zeile tippbar; Trennlinie nur, wo Zeilen ohne Abstand stehen */
+  .list{display:flex;flex-direction:column}
+  .li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;min-height:56px;padding:10px 0;border-bottom:1px solid var(--ln);min-width:0}
+  .li:last-child{border-bottom:0}
+  .li.p{padding:10px 16px}
+  .li.sel{background:var(--prs)}
+  .li .ttl{font-weight:700;font-size:15px;min-width:0}
+  .li .sub{font-size:13px;color:var(--mu);min-width:0}
+  .li.nolead{grid-template-columns:minmax(0,1fr) auto}
+  .li.unread .ttl::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pr);margin-left:8px;vertical-align:2px}
+
+  /* ---------- Avatare ---------- */
+  .av{width:32px;height:32px;border-radius:50%;display:inline-grid;place-items:center;color:var(--onpr);font-weight:800;font-size:13px;flex:none;background:var(--avatar-1);letter-spacing:.01em}
+  .av.sm{width:24px;height:24px;font-size:12px}
+  .av.md{width:40px;height:40px;font-size:14px}
+  .av.lg{width:48px;height:48px;font-size:16px}
+  .av.xl{width:72px;height:72px;font-size:24px}
+  .av.sq{border-radius:12px}.av.sq.lg,.av.sq.xl{border-radius:var(--radius-thumb)}
+  .av.ring{box-shadow:0 0 0 2px var(--sf)}
+  .av.img{background:var(--sf);box-shadow:inset 0 0 0 1px var(--ln);overflow:hidden}.av.img img{width:100%;height:100%;object-fit:contain}
+  .avs{display:flex}.avs .av{box-shadow:0 0 0 2px var(--sf)}.avs .av+.av{margin-left:-8px}
+  .av.as{background:conic-gradient(from 200deg,var(--as),var(--assistant-glow),var(--as))}
+  .av.as svg.i{color:var(--onas);stroke:var(--onas);fill:var(--onas);width:16px;height:16px}
+
+  /* ---------- Assistent (immer Pfirsich) ---------- */
+  .asl{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--asi)}
+  .asl svg.i{width:16px;height:16px}
+  .ast{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--asi)}
+  .src{font-size:12px;color:var(--mu);display:inline-flex;align-items:center;gap:5px}
+  .src svg.i{width:13px;height:13px}
+  .draft{background:var(--sf);border:1px solid var(--asl);border-radius:var(--radius-inner);padding:12px 14px;font-size:14.5px;line-height:1.55}
+  .ai-tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--asi);background:var(--ass);border-radius:999px;padding:3px 9px;font-weight:600}
+  .hl{background:linear-gradient(transparent 55%,var(--asl) 55%)}
+
+  /* ---------- Kennzahlen ---------- */
+  .kpi{background:var(--sf);border:1px solid var(--ln);border-radius:var(--radius-inner);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+  .kpi small{font-size:12px;font-weight:700;color:var(--mu)}
+  .kpi b{font-size:28px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+  .kpi em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--oki)}
+  .kpi em.dn{color:var(--fui)}.kpi em.mu{color:var(--mu);font-weight:600}
+  .kpi.fill{background:var(--sf2);border-color:transparent}
+  /* Kennzahl in einer Markenfarbe (farbe an StatTile): Strich oben wie der Farbstreifen, Zahl in der dunklen Farbe */
+  .kpi.k-kpi{box-shadow:inset 0 4px 0 var(--k);padding-top:18px}
+  .kpi.k-kpi b{color:var(--k-ink)}
+  .kpi.dark{background:var(--inv);color:var(--onpr);border-color:var(--inv)}.kpi.dark small{color:var(--invm)}
+  .bar{height:8px;border-radius:4px;background:var(--sf2);overflow:hidden;flex:none}
+  .bar>i{display:block;height:100%;border-radius:4px;background:var(--pr)}
+  .bar.ok>i{background:var(--ok)}.bar.wa>i{background:var(--wa)}.bar.fu>i{background:var(--fu)}
+  .bar.sm{height:5px}
+  .meter{display:flex;gap:2px;height:10px}.meter i{flex:1;border-radius:2px;background:var(--sf2)}.meter i.f{background:var(--pr)}.meter i.o{background:var(--ok)}
+
+  /* ---------- Tabellen ---------- */
+  .tbl{width:100%;border-collapse:collapse;font-size:14px;background:var(--sf)}
+  .tbl th{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);text-align:left;padding:10px 14px;background:var(--sf2);white-space:nowrap}
+  .tbl td{padding:12px 14px;border-top:1px solid var(--ln);vertical-align:middle}
+  .tbl tr.sel td{background:var(--prs)}
+  .tbl tr.dim td{color:var(--mu)}
+  .tbl td.num,.tbl th.num{text-align:right}
+  .tbl-wrap{border:1px solid var(--ln);border-radius:var(--radius-inner);overflow:hidden;background:var(--sf)}
+  .tbl .sub{display:block;font-size:12.5px;color:var(--mu);font-weight:500}
+
+  /* ---------- Plätze-Matrix ---------- */
+  .mx{width:100%;border-collapse:separate;border-spacing:4px;font-size:13px}
+  .mx th{font-size:12px;font-weight:700;color:var(--mu);text-align:center;padding:0 0 2px}
+  .mx th:first-child{text-align:left}
+  .mx td{text-align:center;border-radius:10px;padding:9px 4px;font-weight:700;font-size:13px;line-height:1.2}
+  .mx td small{display:block;font-size:12px;font-weight:600;opacity:.85;margin-top:1px}
+  .mx td.l{text-align:left;background:transparent;padding-left:0;font-weight:700;font-size:14px}
+  .mx td.l small{color:var(--mu);font-weight:500;font-size:12px;opacity:1}
+  .mx td.ok{background:var(--oks);color:var(--oki)}.mx td.wa{background:var(--was);color:var(--wai)}
+  .mx td.fu{background:var(--fus);color:var(--fui)}.mx td.na{background:var(--sf2);color:var(--mu);font-weight:600}
+  .mx td.ed{background:var(--sf);box-shadow:inset 0 0 0 2px var(--pr);color:var(--pr)}
+  .mx.sm{font-size:12px}.mx.sm td{padding:6px 3px;font-size:12px}
+
+  /* ---------- Navigation: Reiter als Pillen, der aktive als Kissen in primarySoft (wie der aktive Reiter der Tab-Pille) ---------- */
+  .tabs{display:flex;gap:4px;font-size:15px;font-weight:600;color:var(--ink-soft)}
+  .tabs>span{min-height:44px;padding:0 16px;border-radius:999px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap}
+  .tabs>span.on{color:var(--primary-ink);background:var(--prs);box-shadow:var(--shadow-tab-on);font-weight:700}
+  .tabs.sm{font-size:14px}.tabs.sm>span{padding:0 12px}
+  .crumbs{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--mu);flex-wrap:wrap}
+  .crumbs svg.i{width:14px;height:14px}
+  .crumbs b{color:var(--ink);font-weight:600}
+  .pager{display:flex;gap:4px;align-items:center;font-size:14px;font-weight:600}
+  .pager span{min-width:34px;height:34px;border-radius:999px;display:grid;place-items:center;color:var(--mu)}
+  .pager span.on{background:var(--prs);color:var(--primary-ink)}
+  .steps{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .steps>span{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--mu);white-space:nowrap}
+  .steps>span i{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu)}
+  .steps>span.done i{background:var(--oks);color:var(--oki)}
+  .steps>span.now{color:var(--ink)}.steps>span.now i{background:var(--pr);color:var(--onpr)}
+  .steps>em{width:24px;height:2px;background:var(--ln);border-radius:1px;flex:none}
+  .steps.sm>span{font-size:12.5px}.steps.sm>span i{width:22px;height:22px;font-size:12px}
+  .prog{display:flex;gap:4px}.prog i{height:4px;flex:1;border-radius:2px;background:var(--sf2)}.prog i.f{background:var(--pr)}
+  .menu{background:var(--sf);border-radius:var(--radius-inner);box-shadow:var(--sh2);padding:6px;display:flex;flex-direction:column;min-width:220px}
+  .menu>span{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:14px;font-size:14.5px;font-weight:500}
+  .menu>span.on{background:var(--sf2)}.menu>span.dg{color:var(--fui)}
+  .menu>hr{border:0;height:1px;background:var(--ln);margin:4px 0}
+  .tip{background:var(--ink);color:var(--onpr);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:10px;display:inline-block;position:relative}
+  .tip::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:var(--ink)}
+
+  /* ---------- Hinweis und Fehler (Baustein 15): Fläche je Ton, Radius 20, links Symbol-Kissen 28, nie nur Farbe ---------- */
+  .alert{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-inner);font-size:14px;line-height:1.45;background:var(--sf2);color:var(--ink)}
+  .alert>svg.i{box-sizing:border-box;width:28px;height:28px;padding:6px;margin:-4px 0;border-radius:50%;background:var(--sf);color:var(--primary-ink);stroke-width:2.2}
+  .alert>svg.i.sp{stroke-width:1.2}
+  .alert b{display:block;margin-bottom:1px}
+  .alert.ok{background:var(--oks)}.alert.ok>svg.i{color:var(--oki)}
+  .alert.warn{background:var(--was)}.alert.warn>svg.i{color:var(--wai)}
+  .alert.err{background:var(--fus)}.alert.err>svg.i{color:var(--fu)}.alert.err b{color:var(--fui)}
+  .alert.as{background:var(--ass);box-shadow:inset 0 0 0 1px var(--asl)}.alert.as>svg.i{color:var(--as)}
+  .alert .act{margin-left:auto;align-self:center}
+  /* Toast (Baustein 14): Tinte, Radius 20, unten mittig, höchstens 480 breit */
+  .toast{display:inline-flex;align-items:center;gap:12px;max-width:min(480px,100%);background:var(--ink);color:var(--sf);padding:10px 10px 10px 16px;border-radius:var(--radius-inner);font-size:14px;font-weight:600;line-height:1.4;box-shadow:var(--shadow-toast)}
+  .toast svg.i{color:var(--inverse-ok)}
+  .toast .act{color:var(--inverse-link);font-weight:700;margin-left:4px}
+  /* Knöpfe im Toast (overlay.tsx): 44 px Klickfläche ohne höheren Toast, Fokus hell auf Tinte; Fehler mit Symbol in Rot (ZG-13, ZS-09) */
+  .toast button.act{display:inline-flex;align-items:center;min-height:44px;margin-block:-10px;padding:0 8px;border:0;border-radius:14px;background:none;font:inherit;font-weight:700;cursor:pointer}
+  .toast button.act svg.i{color:inherit}
+  .toast :focus-visible{outline-color:var(--inverse-link)}
+  .toast.err>svg.i{color:var(--fus)}
+  /* Leerer Zustand (Baustein 21): Kissen-Fläche stage.band, Maskottchen-Clip 120, Titel Fraunces 600 19, ein Satz 14 inkSoft, ein Knopf */
+  .empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:24px;border-radius:var(--radius-card);background:var(--stage-band)}
+  .empty .meta{font-size:14px;color:var(--ink-soft)}
+  .empty>.k-maskottchen{width:112px;height:112px;margin-bottom:2px}
+  .empty>.maskottchen-clip{margin-bottom:2px}
+  /* In einer Karte wird die Karte selbst zur Fläche des leeren Zustands */
+  .card:has(>.empty:only-child){background:var(--stage-band);box-shadow:none}
+  .card>.empty:only-child{background:none;padding:8px 0}
+  .skel{display:block;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--sf2),var(--bg),var(--sf2));background-size:200% 100%}
+  .spin{width:24px;height:24px;border-radius:50%;border:3px solid var(--prs);border-top-color:var(--pr);display:inline-block;animation:kspin .8s linear infinite}
+  @media (prefers-reduced-motion:reduce){.spin{animation:none}}
+
+  /* ---------- Tagesablauf, Chat ---------- */
+  .tl{display:flex;flex-direction:column}
+  .tl>div{display:grid;grid-template-columns:52px 20px 1fr;gap:10px;align-items:start;padding:0}
+  .tl time{font-size:13px;color:var(--mu);font-weight:700;padding-top:10px}
+  .tl .dt{position:relative;align-self:stretch;display:flex;justify-content:center}
+  .tl .dt::before{content:"";position:absolute;top:0;bottom:0;width:2px;background:var(--line-strong)}
+  .tl>div:first-child .dt::before{top:16px}.tl>div:last-child .dt::before{bottom:calc(100% - 16px)}
+  .tl .dt i{position:relative;margin-top:11px;width:12px;height:12px;border-radius:50%;background:var(--sf);box-shadow:inset 0 0 0 3px var(--pr)}
+  .tl .dt i.ok{box-shadow:inset 0 0 0 3px var(--ok)}.tl .dt i.as{box-shadow:inset 0 0 0 3px var(--as)}
+  .tl .bd{padding:8px 0 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+  .chat{display:flex;flex-direction:column;gap:8px}
+  .bub{background:var(--sf);border:1px solid transparent;border-radius:6px 20px 20px 20px;padding:10px 14px;max-width:82%;font-size:14.5px;line-height:1.5;align-self:flex-start;box-shadow:var(--shadow-raised)}
+  .bub.me{align-self:flex-end;background:var(--pr);color:var(--onpr);border-color:transparent;border-radius:20px 6px 20px 20px;box-shadow:none}
+  .bub.sys{align-self:center;background:var(--sf2);border:0;border-radius:999px;font-size:12.5px;color:var(--mu);padding:5px 12px;font-weight:600;box-shadow:none}
+  .bub.as{background:var(--ass);border-color:var(--asl);box-shadow:none}
+  .bmeta{font-size:12px;color:var(--mu);display:flex;gap:6px;align-items:center}
+  .bmeta.r{align-self:flex-end}
+  .compose{display:flex;align-items:center;gap:8px;padding:8px;border-radius:var(--radius-inner);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control)}
+  .compose:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)} /* das Feld darin hat keinen eigenen Umriss */
+
+  /* ---------- Kalender ---------- */
+  .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-size:13px}
+  .cal>b{font-size:12px;color:var(--mu);font-weight:700;text-align:center;padding:4px 0}
+  .cal>span,.cal>button{min-height:34px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:600;position:relative}
+  .cal>span.o{color:var(--mu)}.cal>:is(span,button).t{background:var(--pr);color:var(--onpr)}
+  .cal>span.x{background:var(--fus);color:var(--fui)}
+  .cal>span.e::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--pr)}
+  .cal>span.t.e::after{background:var(--onpr)}
+  .cal>span.g{background:var(--oks);color:var(--oki)}
+  .cal.big>span{min-height:84px;align-items:stretch;justify-content:flex-start;padding:6px;border:1px solid var(--ln);background:var(--sf);font-size:12.5px;border-radius:12px;gap:4px}
+  .cal.big>span.o{background:var(--bg)}
+  .cal.big>span>em{font-style:normal;font-weight:700;font-size:12.5px;align-self:flex-end}
+  .cal.big .ev{font-size:12px;font-weight:700;border-radius:999px;padding:2px 7px;background:var(--prs);color:var(--primary-ink);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cal.big .ev.x{background:var(--fus);color:var(--fui)}.cal.big .ev.ok{background:var(--oks);color:var(--oki)}.cal.big .ev.as{background:var(--ass);color:var(--asi)}
+  .date{width:48px;flex:none;border-radius:var(--radius-thumb);background:var(--sf2);display:flex;flex-direction:column;align-items:center;padding:5px 0;line-height:1.1}
+  .date small{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--mu);letter-spacing:.05em}
+  .date b{font-size:19px;font-weight:800}
+  .date.pr{background:var(--prs)}.date.pr small,.date.pr b{color:var(--primary-ink)}
+
+  /* ---------- Pipeline ---------- */
+  .kan{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:12px;align-items:start}
+  .kan>div{background:var(--sf2);border-radius:var(--radius-inner);padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+  .kan h6{margin:0 0 2px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);display:flex;justify-content:space-between}
+  .tk{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:13px;min-width:0}
+  .tk b{font-size:14px}
+  .tk.sel{box-shadow:0 0 0 2px var(--pr);border-color:transparent}
+  .tk .fit{font-size:12px;font-weight:700;color:var(--oki)}
+
+  /* ---------- Fotos, Karte ---------- */
+  .ph{position:relative;border-radius:var(--radius-photo);overflow:hidden;background:var(--sf2);flex:none}
+  .ph>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .ph .cap{position:absolute;left:10px;bottom:10px;background:color-mix(in srgb,var(--sf) 92%,transparent);color:var(--ink);font-size:12.5px;font-weight:700;border-radius:999px;padding:4px 10px}
+  .ph .lock{position:absolute;right:8px;top:8px;background:color-mix(in srgb,var(--ink) 72%,transparent);color:var(--onpr);border-radius:999px;padding:3px 8px;font-size:12px;font-weight:700;display:flex;gap:4px;align-items:center}
+  .ph .lock svg.i{width:12px;height:12px}
+  .phs{display:grid;gap:4px}
+  .map{position:relative;border-radius:var(--radius-card);overflow:hidden;background:var(--sf2);min-height:120px}
+  .maplibregl-canvas:focus-visible{outline-offset:-3px} /* die Karte schneidet ab (overflow), der Umriss aussen war unsichtbar: innen (27.10.2026) */
+  .map>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center}
+  .pin b{display:inline-flex;align-items:center;gap:4px;background:var(--sf);color:var(--ink);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;box-shadow:var(--shadow-float);white-space:nowrap}
+  .pin b i{width:8px;height:8px;border-radius:50%;background:var(--ok)} /* ohne Stand: Standorte im Cockpit */
+  /* Stand als Form und Farbe, nie nur als Farbe (ZG-14): frei Haken, Warteliste Uhr, voll Kreuz, unbekannt Strich, das Wort daneben oder im
+     Namen des Pins. StatusMark (base.tsx) und die Pins der Karte (.pin b i.ok|wa|fu|mu). Das Zeichen ist eine Maske; Weiss darauf hat auf
+     jeder der vier Farben mindestens 3:1, die Scheibe auf Weiss ebenso. */
+  .k-stand,.pin b i:is(.ok,.wa,.fu,.mu){position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;flex:none;background:var(--ok);--k-zeichen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+  .k-stand::after,.pin b i:is(.ok,.wa,.fu,.mu)::after{content:"";position:absolute;inset:2px;background:var(--onpr);-webkit-mask:var(--k-zeichen) center/contain no-repeat;mask:var(--k-zeichen) center/contain no-repeat}
+  .k-stand.wa,.pin b i.wa{background:var(--wa);--k-zeichen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8'/%3E%3Cpath d='M12 8v4l2.5 1.5'/%3E%3C/svg%3E")}
+  .k-stand.fu,.pin b i.fu{background:var(--fu);--k-zeichen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M7 7l10 10M17 7L7 17'/%3E%3C/svg%3E")}
+  .k-stand.mu,.pin b i.mu{background:var(--mu);--k-zeichen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M7 12h10'/%3E%3C/svg%3E")}
+  .pin.sel b{background:var(--ink);color:var(--onpr)}
+  .pin.sel b i:is(.ok,.wa,.fu,.mu){box-shadow:0 0 0 1.5px var(--sf)} /* Rot auf Tinte hat nur 2.8:1: weisser Ring */
+  .pin::after{content:"";width:2px;height:6px;background:var(--ink);opacity:.5}
+  .me-dot{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--pr);box-shadow:0 0 0 3px var(--sf),0 0 0 12px color-mix(in srgb,var(--pr) 18%,transparent);transform:translate(-50%,-50%)}
+
+  /* ---------- Dialog (Baustein 13), Sheet (12) und Schublade: Fläche weiss, ohne Linien; Titel Fraunces 600 22, unten rechts der
+     Hauptknopf. Auf dem Telefon kommt der Dialog als Sheet von unten (Radius 32, Griff, Fuss aus Glas). ---------- */
+  .scrim{position:absolute;inset:0;background:var(--scrim);display:flex;z-index:5}
+  .modal{margin:auto;background:var(--sf);border-radius:var(--radius-card);box-shadow:var(--sh3);width:560px;max-width:92%;display:flex;flex-direction:column;overflow:hidden}
+  .modal>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 14px 4px 24px}
+  .modal>header .t3{font-size:22px;line-height:1.2}
+  .modal>section{padding:14px 24px 24px;display:flex;flex-direction:column;gap:16px}
+  .modal>footer{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;padding:0 24px 24px}
+  .drawer{margin-left:auto;height:100%;width:480px;background:var(--sf);box-shadow:var(--sh3);display:flex;flex-direction:column;border-radius:var(--radius-sheet) 0 0 var(--radius-sheet);overflow:hidden}
+  .drawer>header{display:flex;align-items:center;justify-content:space-between;padding:18px 14px 8px 24px}
+  .drawer>section{padding:12px 24px 20px;display:flex;flex-direction:column;gap:16px;flex:1;overflow:hidden}
+  .drawer>footer{display:flex;gap:10px;padding:12px 24px 20px;background:var(--glass);box-shadow:var(--shadow-bar)}
+  .pop{background:var(--sf);border-radius:var(--radius-inner);box-shadow:var(--sh2);padding:14px;display:flex;flex-direction:column;gap:10px}
+  .cookie{background:var(--sf);border-radius:var(--radius-card);box-shadow:var(--sh2);padding:16px 18px;display:flex;gap:16px;align-items:center}
+}
+
+/* =================== Erkennungszeichen: Bogen, Punkt, Streifen, Tor (marke.tsx) =================== */
+@layer components {
+  /* Markenfarbe als Klasse (himmel, sonne …): setzt --k (kräftig), --k-soft (Fläche), --k-ink (Schrift), --k-on (Schrift auf
+     kräftig) und --k-ikon (Symbol auf hell; Sonne und Schal sind dafür zu hell und nehmen ihre dunkle Farbe). Die Namen von kidou
+     gelten weiter: himbeer = schal, blau = meer, flieder = wolke. Weiss auf meer (4,21) und wolke (4,38) liegt knapp unter 4,5 : 1. */
+  .himmel{--k:var(--brand-himmel);--k-soft:var(--brand-himmel-soft);--k-ink:var(--brand-himmel-ink);--k-on:var(--onpr);--k-ikon:var(--brand-himmel);--k-pastel:var(--brand-himmel-pastel)}
+  .sonne{--k:var(--brand-sonne);--k-soft:var(--brand-sonne-soft);--k-ink:var(--brand-sonne-ink);--k-on:var(--ink);--k-ikon:var(--brand-sonne-ink);--k-pastel:var(--brand-sonne-pastel)}
+  .minze{--k:var(--brand-minze);--k-soft:var(--brand-minze-soft);--k-ink:var(--brand-minze-ink);--k-on:var(--onpr);--k-ikon:var(--brand-minze);--k-pastel:var(--brand-minze-pastel)}
+  .meer,.blau{--k:var(--brand-meer);--k-soft:var(--brand-meer-soft);--k-ink:var(--brand-meer-ink);--k-on:var(--onpr);--k-ikon:var(--brand-meer);--k-pastel:var(--brand-meer-pastel)}
+  .schal,.himbeer{--k:var(--brand-schal);--k-soft:var(--brand-schal-soft);--k-ink:var(--brand-schal-ink);--k-on:var(--ink);--k-ikon:var(--brand-schal-ink);--k-pastel:var(--brand-schal-pastel)}
+  :root[data-theme="dark"] :is(.sonne,.schal){--k-on:var(--onas)} /* brandDark: Sonne und Schal bleiben hell, die Schrift darauf dunkel */
+  .wolke,.flieder{--k:var(--brand-wolke);--k-soft:var(--brand-wolke-soft);--k-ink:var(--brand-wolke-ink);--k-on:var(--onpr);--k-ikon:var(--brand-wolke);--k-pastel:var(--brand-wolke-pastel)}
+  .k-streifen{display:flex;height:4px;width:100%}
+  .k-streifen>span{flex:1}
+  .k-bogen{display:block;flex:none}
+  .k-punkte{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .k-punkte>span{position:absolute;border-radius:50%;opacity:.85}
+  /* Flächen in Markenfarben: hell mit dunkler Schrift (je Schritt, Hinweis, Karte) */
+  .k-fl{border-radius:var(--radius-card);padding:22px;display:flex;flex-direction:column;gap:8px;background:var(--k-soft);color:var(--k-ink)}
+  .k-fl h2,.k-fl h3,.k-fl b{color:inherit}
+  .k-fl .meta{color:inherit;opacity:.9}
+  .k-num{width:34px;height:34px;border-radius:50%;display:inline-grid;place-items:center;font-weight:800;font-size:15px;flex:none;background:var(--k);color:var(--k-on)}
+  .k-num.s{width:26px;height:26px;font-size:13px}
+  /* Symbol-Kissen (Baustein 2): Kreis mit Symbol, immer Schmuck (die Bedeutung steht daneben). Fläche brand.<farbe>.soft bzw.
+     primarySoft, Symbol in brand.<farbe>.ink bzw. primaryInk, Schatten shadow.bubble. Grösse über --s (SymbolKissen in base.tsx). */
+  .k-ikon{--s:40px;width:var(--s);height:var(--s);border-radius:50%;display:grid;place-items:center;flex:none;background:var(--k-soft,var(--prs));color:var(--k-ink,var(--primary-ink));box-shadow:var(--shadow-bubble)}
+  .k-ikon>svg.i{width:calc(var(--s) * .5);height:calc(var(--s) * .5);stroke-width:2}
+  .k-ikon.xs{--s:28px}.k-ikon.s{--s:32px}.k-ikon.l{--s:56px}.k-ikon.xl{--s:60px}
+  .k-ikon.xs>svg.i{width:15px;height:15px;stroke-width:2.2}
+  .k-ikon.weiss{background:var(--sf);box-shadow:var(--shadow-float)} /* auf Fotos und Bühne */
+  .k-ikon.leise{background:var(--sf2);color:var(--mu);box-shadow:none} /* heikler Moment (Baustein 23) */
+  /* Im Ton eines Stands (SymbolKissen ton): frei, Warteliste, voll je Soft mit Ink, Vorschlag des Assistenten in Pfirsich, leise für
+     Erledigtes; die Bedeutung steht daneben */
+  .k-ikon.ton-ok{--k-soft:var(--oks);--k-ink:var(--oki)}.k-ikon.ton-wa{--k-soft:var(--was);--k-ink:var(--wai)}
+  .k-ikon.ton-fu{--k-soft:var(--fus);--k-ink:var(--fui)}.k-ikon.ton-as{--k-soft:var(--ass);--k-ink:var(--asi)}
+  .k-ikon.ton-leise{--k-soft:var(--sf2);--k-ink:var(--mu);box-shadow:none}
+  /* Art mit Punkt in ihrer Farbe: --typ setzt die Seite */
+  .k-typ{display:inline-flex;align-items:center;gap:6px}
+  .k-typ::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--typ,var(--brand-meer));flex:none}
+  /* Wort mit Lächeln darunter, wie das «u» im Logo */
+  .k-markiert{position:relative;white-space:nowrap;isolation:isolate}
+  .k-markiert::after{content:'';position:absolute;left:-.02em;right:-.02em;bottom:-.05em;height:.3em;border:.08em solid var(--brand-sonne);border-top:0;border-radius:0 0 50% 50%/0 0 100% 100%;z-index:-1}
+  /* Regenbogentor (Tor): Bild mit Bogen oben, aussen herum Bögen in den Markenfarben; --tor-n und --i setzt Tor */
+  .k-tor{--w:13px;--gap:5px;--r:calc(var(--w) + var(--gap));position:relative;container-type:inline-size;margin:calc(var(--tor-n) * var(--r)) calc(var(--tor-n) * var(--r)) 0}
+  .k-tor>span{position:absolute;inset:calc(var(--i) * var(--r) * -1) calc(var(--i) * var(--r) * -1) 0;border:var(--w) solid;border-bottom:0;border-radius:999px 999px 0 0}
+  .k-tor-bild{position:relative;overflow:hidden;border-radius:50cqw 50cqw 20px 20px;isolation:isolate}
+  /* Morgenhimmel: helle Fläche von Dunst zu Morgenrot (hervorgehobene Flächen, Einstieg für Anbieter) */
+  .k-morgen{background:var(--stage-band);color:var(--ink);position:relative;overflow:hidden;isolation:isolate}
+  .k-morgen .meta,.k-morgen .mu{color:var(--mu)}
+  .k-morgen>.k-aufgang{position:absolute;right:max(16px,4%);bottom:-30px;z-index:-1;pointer-events:none}
+  /* Der Albatros als Standbild (Maskottchen in maskottchen.tsx) */
+  .k-maskottchen{display:block;flex:none;height:auto;aspect-ratio:1/1;object-fit:contain}
+  /* Einstieg mit Bogen und Punkten im Hintergrund */
+  .k-held{position:relative;isolation:isolate}
+  .k-held>.k-punkte{z-index:-1}
+}
+
+/* =================== Layouts (echt, responsive) =================== */
+@layer components {
+  /* Öffentliche Seiten und Eltern-Bereich (PublicLayout): Kopf als Pille aus Glas (Baustein 17), 16 vom Rand, auf dem Morgenhimmel */
+  .k-web{font-size:16px;line-height:1.55;background-image:var(--stage-sky-top);background-size:100% 340px;background-repeat:no-repeat}
+  /* Kopf über die ganze Breite und fast deckend (Mathias, 29.10.2026: in der Pille aus Glas schien der Inhalt durch); der Inhalt steht in 1280 px wie .k-wrap */
+  .site-header{position:sticky;top:0;z-index:30;box-sizing:border-box;display:flex;align-items:center;gap:8px 24px;width:100%;min-height:var(--kopf-h);margin:0;padding:0 max(40px,calc(50% - 600px));background:color-mix(in srgb,var(--bg) 96%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}
+  .site-header>a:first-child{display:inline-flex;align-items:center;min-height:44px;border-radius:14px}
+  .site-header svg.logo{height:32px;width:188px}
+  .site-header nav{display:flex;gap:2px;font-size:15px;font-weight:600;color:var(--ink)}
+  .site-header nav a{color:inherit;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;white-space:nowrap}
+  .site-header nav a svg.i{width:18px;height:18px;stroke-width:2}
+  .site-header nav a:hover{background:color-mix(in srgb,var(--sf) 70%,transparent)}
+  .site-header nav a[aria-current="page"]{color:var(--primary-ink);background:var(--prs);box-shadow:var(--shadow-tab-on);font-weight:700}
+  .site-header .menu>a{min-height:44px;align-items:center;border-radius:14px}
+  .site-header .menu>a:hover{background:var(--sf2)}
+  .site-header .menu>a[aria-current="page"]{background:var(--prs);color:var(--primary-ink);font-weight:700}
+  .site-header .r{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .site-header .ibtn{position:relative;display:inline-grid;place-items:center;min-width:44px;min-height:44px;border-radius:50%;color:var(--ink)}
+  .site-header .ibtn:hover{background:color-mix(in srgb,var(--sf) 70%,transparent)}
+  .site-header .ibtn .badge{position:absolute;top:0;right:-2px;min-width:20px;height:20px;font-size:12px;padding:0 5px;box-shadow:0 0 0 2px var(--sf)}
+  .site-header summary.konto{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 10px 0 4px;border-radius:999px;cursor:pointer;list-style:none}
+  .site-header summary.konto:hover{background:color-mix(in srgb,var(--sf) 70%,transparent)}
+  .site-header summary::-webkit-details-marker{display:none}
+  /* Sprachwahl (apps/web Sprachwahl.astro): im Kopf ein Menü mit der aktuellen Sprache, im Menü die Kürzel nebeneinander */
+  .site-header summary.sprache{display:flex;align-items:center;gap:var(--space-1);min-height:44px;padding:0 var(--space-3);border-radius:999px;cursor:pointer;list-style:none;font-size:15px;font-weight:700;color:var(--ink)}
+  .site-header summary.sprache:hover{background:color-mix(in srgb,var(--sf) 70%,transparent)}
+  .site-header .menu>.sprachen{display:flex;justify-content:space-between;gap:var(--space-1)}
+  .site-header .menu>.sprachen a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border-radius:14px;color:inherit;font-weight:700}
+  .site-header .menu>.sprachen a:hover{background:var(--sf2)}
+  .site-header .menu>.sprachen a[aria-current]{background:var(--prs);color:var(--primary-ink)}
+  :target{scroll-margin-top:96px} /* Anker aus Mitteilungen (#bericht-…) nicht unter der klebenden Kopfzeile */
+  .page{width:100%;max-width:1280px;margin:0 auto;padding:var(--space-7) 40px var(--space-8);display:flex;flex-direction:column;gap:var(--abstand-block);min-width:0}
+  .page.narrow{max-width:880px}
+  /* Seiten mit eigenem Aufbau über die ganze Breite (Startseite): main ohne Rahmen, die Abschnitte bringen .k-wrap mit */
+  .page.voll{max-width:none;padding:0;gap:0}
+  .k-wrap{box-sizing:border-box;width:100%;max-width:1280px;margin:0 auto;padding:0 40px}
+  /* Fuss der Website (Baustein 18): Morgenhimmel, oben der Farbstreifen 6 hoch, unten rechts das Regenbogen-Tor im Ausschnitt */
+  .site-footer{position:relative;overflow:hidden;margin-top:auto;background:var(--stage-footer);color:var(--ink-soft);font-size:15px}
+  .site-footer>.k-streifen{height:6px}
+  .site-footer .fuss{position:relative;z-index:1;box-sizing:border-box;max-width:1280px;margin:0 auto;padding:var(--space-8) 40px 250px;display:flex;flex-wrap:wrap;gap:var(--space-7)}
+  .site-footer .marke{flex:1 1 300px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+  .site-footer .marke svg.logo{height:36px;width:211px}
+  .site-footer .marke p{margin:0;max-width:320px;font-size:16px;line-height:1.55}
+  .site-footer .gruppe{display:flex;flex-direction:column;gap:2px;flex:0 1 170px}
+  .site-footer .gruppe.breit{flex-basis:220px}
+  .site-footer .gruppe.schmal{flex-basis:150px}
+  .site-footer .gruppe>p{margin:0 0 6px;font-size:14px;font-weight:700;color:var(--ink)}
+  .site-footer .gruppe a{display:flex;align-items:center;min-height:44px;color:inherit}
+  .site-footer .gruppe a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+  .site-footer .sprachen{display:flex;flex-wrap:wrap;gap:4px}
+  .site-footer .sprachen a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:999px;color:var(--ink);font-weight:600}
+  .site-footer .sprachen a[aria-current]{background:var(--sf);font-weight:700;padding:0 14px}
+  .site-footer>.k-regenbogen{position:absolute;right:max(24px,calc(50% - 600px));bottom:0;width:520px;max-width:80%;height:auto;pointer-events:none}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+  .srchbar{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr auto;gap:8px;background:var(--sf);border-radius:var(--radius-sheet);padding:10px;box-shadow:var(--shadow-dialog)}
+  .srchbar .inp{background:var(--bg);border-radius:var(--radius-control)} /* Rand von .inp bleibt (ZG-01): ohne ihn sieht man die Felder der Suchleiste nicht */
+  .srchbar .btn{height:auto;min-height:56px}
+  .res{display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:16px;align-items:stretch;background:var(--sf);border:1px solid transparent;border-radius:var(--radius-app-card);box-shadow:var(--sh1);padding:10px;min-width:0;color:inherit}
+  .res .ph{height:auto;min-height:104px;border-radius:18px}
+  .res.sel{box-shadow:inset 0 0 0 2px var(--pr),var(--sh1)}
+  .res:has(a:focus-visible){box-shadow:0 0 0 3px var(--pr);border-color:transparent} /* Fokus am ganzen Treffer, der Link deckt ihn mit ::after (ZG-02) */
+  .res .price{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;justify-content:space-between}
+  .price b{font-size:17px;font-weight:800}
+
+  /* Cockpit und Intern: Seitenleiste, Kopfzeile, Inhalt */
+  .shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+  .sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--sf);border-right:1px solid var(--ln);padding:18px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+  .sidebar .lg{padding:4px 10px 14px}
+  .sidebar .org{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--radius-inner);background:var(--sf2);margin-bottom:12px;min-width:0;color:inherit}
+  .sidebar .org .t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+  .sidebar .org .t b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sidebar .org .t span{font-size:12px;color:var(--mu)}
+  .sidebar .grp{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--placeholder);padding:14px 12px 6px}
+  .ni{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:14px;color:var(--ink-soft);font-weight:600;font-size:14.5px;white-space:nowrap}
+  .ni:hover{background:var(--sf2);text-decoration:none}
+  .ni svg.i{color:var(--mu)}
+  .ni[aria-current="page"]{background:var(--prs);color:var(--pr);box-shadow:inset 3px 0 0 var(--pr)}
+  .ni[aria-current="page"] svg.i{color:var(--pr)}
+  /* Cockpit: jeder Bereich hat seine Markenfarbe (Symbol, und aktiv Fläche und Strich) */
+  .ni.k-nav svg.i{color:var(--k-ikon)}
+  .ni.k-nav[aria-current="page"]{background:var(--k-soft);color:var(--k-ink);box-shadow:inset 3px 0 0 var(--k)}
+  .ni.k-nav[aria-current="page"] svg.i{color:var(--k-ikon)}
+  .sidebar>.side-streifen{margin:-18px -12px 12px;width:auto;flex:none}
+  .ni .badge{margin-left:auto}
+  .ni .pro{margin-left:auto;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pr);background:var(--prs);border-radius:5px;padding:2px 6px}
+  .sidebar .me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-top:1px solid var(--ln)}
+  /* Intern: hell wie das Cockpit, aber im Dunst (haze), damit man sieht, wo man ist */
+  .sidebar.int{background:var(--haze)}
+  .sidebar.int .ni:hover{background:color-mix(in srgb,var(--pr) 8%,transparent)}
+  .sidebar.int .ni[aria-current="page"]{background:var(--sf);color:var(--pr);box-shadow:inset 3px 0 0 var(--pr)}
+  .sidebar.int .org{background:var(--sf)}
+  .shell-main{display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+  .sidebar .grp-gap{display:block;height:1px;background:var(--ln);margin:14px 12px;flex:none}
+  /* Reiter des Bereichs (Cockpit): eine Ebene unter der Kopfzeile, scrollt auf dem Telefon für sich */
+  .bereich-tabs{display:flex;gap:4px;padding:0 32px;border-bottom:1px solid var(--ln);background:var(--sf);overflow-x:auto;scrollbar-width:none}
+  .bereich-tabs a{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 14px;font-size:15px;font-weight:600;color:var(--ink-soft);white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
+  .bereich-tabs a:hover{color:var(--ink);text-decoration:none;background:var(--sf2)}
+  .bereich-tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--pr)}
+  .bereich-tabs.k-nav a[aria-current="page"]{border-bottom-color:var(--k)}
+  .bereich-tabs .pro{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pr);background:var(--prs);border-radius:5px;padding:2px 6px}
+  /* Kopfzeile und Reiter kleben zusammen oben (.shell-kopf). Wird es eng (Suche und viele Aktionen), rutschen die Aktionen in eine zweite
+     Zeile, statt den Titel auf null zu drücken; die Reiter bleiben darunter, egal wie hoch die Kopfzeile ist. */
+  .shell-kopf{position:sticky;top:0;z-index:20}
+  .topbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;min-height:68px;padding:10px 32px;background:color-mix(in srgb,var(--sf) 90%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--ln)}
+  .topbar h1{font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-size:23px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .topbar .r{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px}
+  .topbar .act{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px}
+  .topbar .act:empty{display:none}
+  .topbar .menu-btn{display:none}
+  .content{padding:28px 32px 48px;display:flex;flex-direction:column;gap:24px;min-width:0;flex:1}
+  .split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
+  .split.ev{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .split.l{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
+  .split.r3{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+  .panel{display:grid;grid-template-columns:360px minmax(0,1fr);min-height:0;flex:1}
+  .panel>.pl{border-right:1px solid var(--ln);background:var(--sf);display:flex;flex-direction:column;min-width:0}
+  .panel>.pr{display:flex;flex-direction:column;min-width:0}
+  .tbl-wrap{overflow-x:auto}
+  /* sr-only-Elemente (absolut positioniert) in Tabellen bleiben im Scroll-Rahmen, sonst scrollt die ganze Seite seitlich */
+  .tbl-wrap{position:relative}
+  .scrim{position:fixed;inset:0;background:var(--scrim);display:flex;z-index:50}
+  .drawer-nav{display:none}
+
+  /* Navigation des Kopfs erst ab 1024 px; darunter im Menü (die Pille hätte sonst zwei Zeilen) */
+  @media (max-width:1023px){
+    .site-header{gap:8px 12px;padding:0 24px}
+    .site-header nav{display:none}
+  }
+  /* Tablet */
+  @media (max-width:1023px){
+    .shell{grid-template-columns:1fr}
+    .sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-100%);transition:transform var(--motion-overlay-dauer) var(--motion-overlay-kurve),visibility var(--motion-overlay-dauer);visibility:hidden}
+    .sidebar[data-open="true"]{transform:none;visibility:visible;box-shadow:var(--sh3)}
+    .drawer-nav[data-open="true"]{display:block;position:fixed;inset:0;background:var(--scrim);z-index:55}
+    .topbar{padding:10px 16px;gap:10px}
+    .topbar .menu-btn{display:inline-flex}
+    .topbar .hide-md{display:none}
+    .content{padding:20px 16px 40px}
+    .bereich-tabs{padding:0 12px}
+    .split,.split.ev,.split.l,.split.r3,.hero{grid-template-columns:1fr}
+    .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .g5,.g6{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .panel{grid-template-columns:1fr}
+    .panel>.pl{border-right:0;border-bottom:1px solid var(--ln)}
+    .kan{grid-auto-columns:minmax(240px,1fr);overflow-x:auto;padding-bottom:6px}
+    .page{padding:var(--space-6) 24px var(--space-8)}
+    .k-wrap{padding:0 24px}
+    .srchbar{grid-template-columns:1fr 1fr}
+    .srchbar .btn{grid-column:1/-1}
+  }
+  /* Telefon */
+  @media (max-width:767px){
+    /* Knöpfe mit langem Text brechen um, statt über den Rand zu ragen (Plus Jakarta Sans läuft breiter als die alte Schrift) */
+    .btn{max-width:100%;white-space:normal;text-align:center;line-height:1.2}
+    .site-header{padding:0 12px 0 16px}
+    .site-header svg.logo{height:28px;width:164px}
+    .site-header .r>.btn{min-height:40px;padding:0 14px;font-size:14px}   /* auf dem Handy ein kleiner Knopf neben dem Menü */
+    .page{padding:var(--space-5) 16px var(--space-7)}
+    .page.voll{padding:0;gap:0}
+    .k-wrap{padding:0 16px}
+    .site-footer .fuss{padding:var(--space-7) 16px 150px;gap:var(--space-6)}
+    .site-footer .gruppe{flex:1 1 140px}
+    .g2,.g3{grid-template-columns:minmax(0,1fr)} /* nicht 1fr: sonst sprengt breiter Inhalt die Spalte (Cockpit «Dokumente» bei 360 px) */
+    .g4,.g5,.g6{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .shell-kopf{display:contents} /* Telefon: nur die Kopfzeile klebt, die Reiter scrollen mit */
+    .t1{font-size:26px}
+    .srchbar{grid-template-columns:1fr}
+    .res{grid-template-columns:88px minmax(0,1fr)}
+    .res .price{grid-column:2;align-items:flex-start;flex-direction:row;gap:8px;text-align:left}
+    /* Dialog als Sheet von unten (Baustein 12) */
+    .modal{width:100%;max-width:100%;margin:auto 0 0;border-radius:var(--radius-sheet) var(--radius-sheet) 0 0;box-shadow:var(--shadow-sheet)}
+    .modal::before{content:"";align-self:center;flex:none;width:36px;height:5px;margin-top:8px;border-radius:3px;background:var(--line-strong)}
+    .modal>header{padding:12px 10px 0 20px}
+    .modal>section{padding:12px 20px 20px}
+    .modal>footer{padding:12px 16px calc(16px + env(safe-area-inset-bottom,0px));border-radius:28px 28px 0 0;background:var(--glass);box-shadow:var(--shadow-bar)}
+    .drawer{width:100%;border-radius:0}
+    .kv{grid-template-columns:1fr;gap:2px}
+    .kv dd{margin-bottom:8px}
+    .hide-sm{display:none}
+    .k-tor{--w:8px;--gap:4px}
+  }
+}
+
+@layer components {
+  .ph>span>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .tabs>a,.tabs>button{min-height:44px;padding:0 16px;border:0;border-radius:999px;background:none;font:inherit;color:inherit;display:inline-flex;gap:8px;align-items:center;white-space:nowrap;text-decoration:none}
+  .tabs>a:hover,.tabs>button:hover{background:color-mix(in srgb,var(--prs) 55%,transparent)}
+  .tabs>[aria-selected="true"],.tabs>[aria-current]{color:var(--primary-ink);background:var(--prs);box-shadow:var(--shadow-tab-on);font-weight:700} /* aria-current: Reiter als Links (nav, ZG-33) */
+  .tabs{overflow-x:auto;scrollbar-width:none;padding:4px 4px 10px;margin:-4px -4px -10px} /* Platz für Schatten und Fokus im Scroll-Rahmen */
+  button.li{border:0;border-bottom:1px solid var(--ln);background:none;font:inherit;color:inherit}
+  a.li:hover{text-decoration:none;background:var(--bg)}
+  :is(a,button).li:focus-visible{outline-offset:var(--focus-inset)} /* Zeilen füllen oft eine Liste mit overflow: Umriss innen, sonst schneidet sie ihn ab (ZG-02) */
+  .btn:hover{text-decoration:none}
+  button.fc,a.fc{border:0;font:inherit;cursor:pointer;text-decoration:none}
+  button.fc.on,a.fc.on{color:var(--onpr)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+}
+
+/* Echte Eingaben in den Hüllen .ctl, .inp, .seg, .days, .stepper */
+@layer components {
+  .ctl input,.ctl textarea,.ctl select{flex:1;min-width:0;border:0;outline:0;background:transparent;padding:0;font:inherit;color:inherit;appearance:none;-webkit-appearance:none}
+  .ctl input,.ctl select,.ctl textarea{align-self:stretch} /* die ganze Höhe der Hülle trifft das Feld, nicht nur die Textzeile */
+  .ctl textarea{resize:vertical;line-height:1.5}
+  .ctl select{padding-right:4px;cursor:pointer}
+  .ctl input::placeholder,.ctl textarea::placeholder,.inp input::placeholder{color:var(--placeholder)}
+  .ctl:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
+  .ctl.err:focus-within{box-shadow:inset 0 0 0 2px var(--fu),0 0 0 2px var(--sf),0 0 0 4px var(--fu)} /* Fokus im Feld mit Fehler: fester Ring statt des weichen Hofs, sonst sah das Feld fokussiert gleich aus (11.11.2026, Foto-Skript) */
+  .ctl .caret{pointer-events:none;margin-left:-24px}
+  .inp{cursor:text}
+  .inp input{border:0;outline:0;background:transparent;padding:0;font:inherit;font-size:15px;font-weight:600;color:inherit;min-width:0;width:100%}
+  .inp:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
+  button.tog{border:0;padding:0;cursor:pointer}
+  .cb,.rd{cursor:pointer;position:relative}
+  .cb:has(input:focus-visible) i,.rd:has(input:focus-visible) i{outline:var(--focus-width) solid var(--pr);outline-offset:var(--focus-offset)}
+  .seg>button{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 16px;border-radius:999px;color:var(--ink);text-align:center;white-space:nowrap;border:0;background:none;font:inherit;font-weight:600;cursor:pointer}
+  .seg.sm>button{padding:0 12px}
+  /* Gewählt als Fläche in Primärfarbe wie in der App, nicht Weiss auf Hellgrau (1.09:1); ZG-01 */
+  .seg>button.on{background:var(--prs);color:var(--primary-ink);font-weight:700;box-shadow:inset 0 0 0 1.5px var(--pr)}
+  .days>button{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font-size:14px;font-weight:700;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);color:var(--ink-soft);border:0;cursor:pointer;font-family:inherit}
+  .days>button.on{background:var(--pr);color:var(--onpr);box-shadow:none}
+  .days>button.x{background:var(--sf2);color:var(--neutral);box-shadow:none;text-decoration:line-through;cursor:default}
+  .days.sm>button{width:32px;height:32px;font-size:12.5px;border-radius:10px}
+  .stepper>button{width:40px;height:100%;display:grid;place-items:center;color:var(--pr);border:0;background:none;cursor:pointer;border-radius:999px}
+  .stepper>button:disabled{color:var(--neutral);cursor:default}
+  .field>.lbl{font-size:13px;font-weight:700}
+  /* Steps rendert jeden Schritt in <li style="display:contents">: dieselben Regeln wie .steps>span und .steps>em */
+  .steps>li>span{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--mu);white-space:nowrap}
+  .steps>li>span i{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu)}
+  .steps>li>span.done i{background:var(--oks);color:var(--oki)}
+  .steps>li>span.now{color:var(--ink)}.steps>li>span.now i{background:var(--pr);color:var(--onpr)}
+  .steps>li>em{width:24px;height:2px;background:var(--ln);border-radius:1px;flex:none}
+  .steps.sm>li>span{font-size:12.5px}.steps.sm>li>span i{width:22px;height:22px;font-size:12px}
+  /* Flugbahn (Steps bahn, 11.11.2026): gleich breite Spalten, Zahl auf einer Linie, Name darunter; die Strecke bis zum aktuellen Schritt in
+     free, der aktuelle mit Hof in primarySoft. Der Hof in der Farbe des Grunds (--bahn-grund, Standard surface) trennt die Linie von der Scheibe. */
+  .steps.bahn{--bahn-grund:var(--sf);display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0;align-items:start;margin:0;padding:0;list-style:none}
+  .steps.bahn>li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--space-1);min-width:0;padding:0 var(--space-1);text-align:center;font-size:var(--text-small);font-weight:700;line-height:1.25;color:var(--mu)}
+  .steps.bahn>li>i{position:relative;z-index:1;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu);box-shadow:0 0 0 var(--space-1) var(--bahn-grund)}
+  .steps.bahn>li>span{max-width:100%;overflow-wrap:break-word;hyphens:manual} /* keine Silbentrennung («Angemel-det»); Umbruch nur zwischen Wörtern */
+  @media (max-width:767px){.steps.bahn.sm>li{font-size:var(--text-label);padding:0 2px}}
+  .steps.bahn>li+li::before{content:"";position:absolute;top:12px;right:50%;width:100%;height:2px;border-radius:1px;background:var(--ln)}
+  .steps.bahn>li.done+li::before{background:var(--ok)}
+  .steps.bahn>li.done>i{background:var(--oks);color:var(--oki)}
+  .steps.bahn>li.now{color:var(--ink)}
+  .steps.bahn>li.now>i{background:var(--pr);color:var(--onpr);box-shadow:0 0 0 var(--space-1) var(--bahn-grund),0 0 0 calc(var(--space-1) + 3px) var(--prs)}
+  /* Der Pfeil liegt über dem rechten Rand der Auswahl: Platz lassen, damit kurze Auswahlen den Text nicht überdecken */
+  .ctl:has(>.caret) select{padding-right:26px}
+}
+
+/* Überall (Cockpit und Intern seit 24.10.2026, öffentliche Seiten und Eltern seit 25.10.2026): jede Klickfläche mindestens 44 px hoch
+   (e2e/tests/ux-regeln.e2e.ts, ux-regeln-eltern.e2e.ts). Schalter und Chips behalten ihre Form; ein durchsichtiger Rand oben und unten
+   vergrössert die Fläche, die man trifft. Ohne .shell davor ist die Spezifität kleiner: Regeln wie .days.sm>button oder button.tog hier
+   mitnennen. */
+@layer components {
+  .btn,.fc,.seg>button,.ctl.sm{min-height:44px}
+  .btn.io{min-width:44px}
+  input[type=file]{min-height:44px}
+  .days>button,.days.sm>button{width:44px;height:44px} /* .days.sm>button (32 px) schlägt sonst .days>button */
+  .stepper{height:44px}
+  .stepper>button{width:44px}
+  .cb,.rd,label:has(>input:is([type=checkbox],[type=radio])){min-height:44px}
+  summary{min-height:44px;align-content:center}
+  .tog,button.tog,.tog.on{height:44px;border-block:6px solid transparent;background-clip:padding-box} /* button.tog (border:0) und .tog.on (background setzt clip zurück) schlagen sonst .tog: Schalter als volle Kreise; Spur 32 */
+  :is(button,summary):is(.chip,.chip.lg){height:44px;border-block:10px solid transparent;background-clip:padding-box}
+  :is(button,summary).chip.lg{border-block-width:7px}
+  input[type=range]{min-height:44px}
+  .maplibregl-ctrl-group button,.maplibregl-ctrl-attrib-button{width:44px!important;height:44px!important;background-position:center}
+  /* Telefon: Eingaben mindestens 16 px, sonst vergrössert iOS beim Tippen die ganze Seite (auch Felder mit font:inherit) */
+  @media (max-width:767px){input:not([type=checkbox],[type=radio],[type=range]),select,textarea{font-size:16px!important}}
+  /* Telefon: Fliesstext auf öffentlichen Seiten und bei Eltern (.page) 16 px; ohne Spezifität, damit .lead, .t3 und Nebeninfos bleiben */
+  /* Telefon: Reiter, die nicht in die Zeile passen, laufen am rechten Rand aus (sonst sieht niemand, dass es weitere gibt) */
+  @media (max-width:767px){.page .tabs{mask-image:linear-gradient(to right,var(--ink) calc(100% - 40px),transparent);padding-right:32px}}
+  @media (max-width:767px){:where(.page) :where(p,li,dd,blockquote):not(:where(.meta,.sm,.xs,.help,small,.src) *){font-size:16px}}
+}
+
+/* Cockpit-Hülle, Prüfung «Alltag» 25.10.2026 (design/dashboard-2026-10-24/pruefung/kritik-alltag.md) */
+@layer components {
+  .seg>a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px} /* Umschalter als Links (SegLinks) wie .seg>button */
+  /* Gewählt wie .seg>button.on (ZG-01); !important, weil SegLinks und der Trichter in /intern Weiss mit Tailwind setzen (Schicht utilities) */
+  .seg>a[aria-current]{background:var(--prs)!important;color:var(--primary-ink)!important;box-shadow:inset 0 0 0 1.5px var(--pr)!important}
+  /* Umschalter aus Links (SegLinks.astro, Cockpit und Intern): Breite je nach Text; wird es auf dem Telefon zu eng, scrollt nur der
+     Umschalter, nie die Seite; der gewählte Link mit sichtbarem Fokus */
+  .seg.k-seglinks{grid-auto-columns:auto;max-width:100%;overflow-x:auto;scrollbar-width:none}
+  .seg.k-seglinks>a{padding:0 14px;color:var(--ink);font-weight:600;white-space:nowrap;text-decoration:none}
+  .seg.k-seglinks>a:hover:not([aria-current]){background:var(--sf2)}
+  .seg.k-seglinks>a[aria-current]{font-weight:700}
+  .seg.k-seglinks>a:focus-visible{outline-offset:-3px}
+  .seg.k-seglinks>a[aria-current]:focus-visible{outline-color:var(--pr)}
+  .sidebar .me>a{display:inline-grid;place-items:center;min-width:44px;min-height:44px;border-radius:12px} /* Abmelden */
+  .sidebar .me>a:hover{background:var(--sf2)}
+  .sidebar .lg>a{display:inline-flex;align-items:center;min-height:44px}
+  .shell .back-io,.sidebar .drawer-zu{display:none}
+  @media (max-width:1023px){
+    .sidebar .drawer-zu{display:inline-flex;margin-left:auto}
+    /* Beim Öffnen sofort sichtbar (sonst ist die Schublade im ersten Bild noch hidden und nimmt den Fokus nicht an); beim Schliessen bleibt
+       sie sichtbar, bis sie hinausgeglitten ist */
+    .sidebar[data-open="true"]{transition:transform var(--motion-overlay-dauer) var(--motion-overlay-kurve)}
+  }
+  /* Reiter: scrollen sie auf dem Telefon, zeigt ein weicher Rand rechts, dass es weitergeht */
+  .bereich-tabs{mask-image:linear-gradient(to right,var(--ink) calc(100% - 28px),transparent);-webkit-mask-image:linear-gradient(to right,var(--ink) calc(100% - 28px),transparent)}
+  .bereich-tabs.ganz{mask-image:none;-webkit-mask-image:none}
+  @media (max-width:767px){
+    /* Titel, Suche und Menü in einer Zeile; zu lange Titel kürzen statt die Suche in eine zweite Zeile zu schieben */
+    .topbar h1{flex:1 1 120px;min-width:0;font-size:20px}
+    /* Aktionen (Status, Knöpfe) rutschen als eigene Zeile unter den Titel, die Suche bleibt neben dem Titel (UX-Prüfung 25.10.2026) */
+    .topbar .r{display:contents}
+    .topbar .act{justify-content:flex-start}
+    .shell .back-io{display:inline-flex}
+    /* Listen: Chips rechts brechen um, statt den Namen auf ein Wort pro Zeile zu drücken */
+    .li{grid-template-columns:auto minmax(0,1fr) fit-content(45%)}
+    .li.nolead{grid-template-columns:minmax(0,1fr) fit-content(45%)}
+    .li>.row:last-child{flex-wrap:wrap;justify-content:flex-end}
+    /* Umschalter mit langen Namen (Standorte) brechen um, statt die Seite seitlich zu schieben */
+    .seg{max-width:100%}
+    .seg>button{white-space:normal;line-height:1.2}
+    /* Hinweise: der Knopf rutscht unter den Text, statt ihn auf eine schmale Spalte zu drücken */
+    .alert{flex-wrap:wrap}
+    .alert>.grow{flex:1 1 calc(100% - 40px);min-width:0}
+    .alert .act{margin-left:40px;align-self:flex-start}
+  }
+}
+
+/* Öffentliche Seiten und Eltern: Sprunglink, Kopf auf schmalen Telefonen, feste Leisten unten (UX-Prüfung 27.10.2026) */
+@layer components {
+  /* «Zum Inhalt» und andere Sprunglinks erscheinen beim Fokus (ZG-18); !important gegen .sr-only aus der Schicht utilities */
+  a.sr-only:focus-visible{position:fixed!important;top:12px;left:16px;z-index:100;width:auto!important;height:auto!important;margin:0!important;padding:10px 16px!important;overflow:visible!important;clip:auto!important;clip-path:none!important;white-space:normal!important;background:var(--sf);color:var(--pr2);border-radius:999px;box-shadow:var(--sh2)}
+  /* Feste Leisten unten (Profil, Karte und Liste, Cookie-Hinweis) verdecken den Fokus nicht (ZG-28, WCAG 2.4.11) */
+  html:has(.leiste-unten:not([hidden])){scroll-padding-bottom:120px}
+  @media (max-width:767px){html:has(.cookie.leiste-unten:not([hidden])){scroll-padding-bottom:220px}}
+  /* Zahl an «Nachrichten» und «Anfragen» in der Navigation (ZS-15) */
+  .site-header nav a .badge{margin-left:2px}
+  /* Kopf für angemeldete Eltern bei 320 und 375 px ohne seitliches Scrollen (ZG-15): kleines Logo, das Herz steht dann im Menü */
+  @media (max-width:400px){.site-header svg.logo{height:22px;width:129px}.site-header .merk-kopf{display:none}.site-header{padding-left:12px}}
+  /* Kopf im Cockpit mit Meilen (BERT_CLOUD) oder Glocke (POSTFACH) auf dem Handy ohne seitliches Scrollen (10.11.2026; gemessen bei 320 bis
+     430 px mit zwei- bis fünfstelligen Meilen: vorher 22 von 36 Messungen zu breit, bei 390 px 7 px mit «310»). Bis 480 px: kleines Logo,
+     engerer Abstand, das Konto ohne Pfeil; bis 400 px die Meilen ohne Zeichen. Reicht auch das nicht (320 px), bricht der Kopf in eine
+     zweite Zeile um, statt die Seite seitlich zu schieben (WCAG 1.4.10). Ohne Meilen und Glocke bleibt der Kopf, wie er war. */
+  @media (max-width:480px){
+    .site-header:has([data-meilen-kopf],[data-glocke]){flex-wrap:wrap;padding-left:12px}
+    .site-header:has([data-meilen-kopf],[data-glocke]) svg.logo{height:22px;width:129px}
+    .site-header:has([data-meilen-kopf],[data-glocke]) .r{gap:4px}
+    .site-header:has([data-meilen-kopf],[data-glocke]) summary.konto{gap:0;padding:0 4px}
+    .site-header:has([data-meilen-kopf],[data-glocke]) summary.konto>svg.i{display:none}
+  }
+  @media (max-width:400px){.site-header [data-meilen-kopf] .chip svg.i{display:none}}
+  /* Tablet und kleiner Laptop: ohne den Namen neben dem Bild (das Konto heisst weiter «Konto von …») */
+  @media (max-width:1279px){.site-header summary .hide-sm{display:none}}
+  @media (min-width:1024px) and (max-width:1279px){.site-header{gap:8px 12px}.site-header nav a{padding:0 11px}}
+  /* Wenig Höhe (Telefon quer, 400 % Zoom): Kopf und Leisten kleben nicht, sonst bleibt kaum Platz für den Inhalt (ZG-15) */
+  @media (max-height:500px){.site-header{position:relative;top:auto}.leiste-unten{position:static!important;transform:none!important;translate:none!important}}
+  /* Chips, die länger sind als ihr Platz (Französisch bei 320 px), brechen um, statt die Seite seitlich zu schieben (WCAG 1.4.10,
+     27.10.2026). Was in eine Zeile passt, sieht aus wie bisher; Chips als Knöpfe behalten ihre 44 px (Regel oben, spezifischer). */
+  @media (max-width:767px){
+    .page .chip{max-width:100%;white-space:normal;height:auto;min-height:24px;padding-block:4px;line-height:1.25}
+    .page .chip.lg{min-height:30px;padding-block:5px}
+  }
+}
+
+/* =================== Website und Eltern-Web im Massstab der Bauanleitung (body.k-web) =================== */
+@layer components {
+  .k-web .t1{font-size:clamp(30px,3vw + 14px,44px);line-height:1.08}
+  .k-web .t4{font-size:18px;line-height:1.25}
+  .k-web .lead{font-size:19px}
+  .k-web .meta{font-size:14px;line-height:1.4}
+  .k-web .li .ttl{font-size:16px}
+  .k-web .ctl{min-height:52px;font-size:16px}
+  .k-web .ctl.sm{min-height:44px;font-size:15px}
+  .k-web .btn{font-size:16px}
+  .k-web .btn.sm{font-size:15px}
+  .k-web .btn.xl{font-size:17px}
+  .k-web :is(.chip.ok,.chip.wa,.chip.fu){font-size:13px}
+  .k-web .field .help,.k-web .field .err-t{font-size:13px}
+  /* Umschalter mit langen Wörtern (Tagesfamilie, Nachmittage, Ganze Spielgruppe, Zurückziehen) ragten bei 320 px 10 bis 39 px hinaus
+     (WCAG 1.4.10, E): bis 400 px Schrift 14 und Segmente so breit wie ihr Wort; reicht die Breite nicht, bricht der Umschalter in eine
+     zweite Reihe um. Getrennt wird in Bedienelementen nie (Entscheid 27.10.2026, vorher «Zurückzie-hen» bei 375 px); Radius 24 statt
+     Pille, damit zwei Reihen rund bleiben (eine Reihe ist 50 hoch, sieht also gleich aus) */
+  @media (max-width:400px){
+    .k-web .seg{display:inline-flex;flex-wrap:wrap;max-width:100%;border-radius:24px}
+    .k-web .seg>button{flex:1 1 auto;padding:0 8px;font-size:14px;overflow-wrap:normal;hyphens:manual}
+  }
+  /* Grosse Fläche der Website (Versprechen, Band für Anbieter): Radius 40, Innen 48, auf dem Telefon wie eine Karte (24), shadow.panel */
+  .k-panel{box-sizing:border-box;border-radius:var(--radius-panel);background:var(--sf);box-shadow:var(--shadow-panel);padding:var(--space-7)}
+  @media (max-width:767px){.k-panel{padding:var(--abstand-karte)}} /* nach der Grundregel, sonst gälte auf dem Telefon 48 */
+  /* Abschnitt der Website: 96 auseinander (Telefon 64), der letzte auch 96 bis zum Fuss (layout.web); darin Kopf und Inhalt einen Block
+     auseinander, auch ein Teil über die ganze Breite neben .k-wrap (Scroll-Flug) */
+  .k-abschnitt{display:flex;flex-direction:column;gap:var(--abstand-block);padding:var(--abstand-abschnitt) 0 0}
+  .k-abschnitt:last-child{padding-bottom:var(--abstand-abschnitt)}
+  .k-abschnitt>.k-wrap{display:flex;flex-direction:column;gap:var(--abstand-block)}
+  /* Gruppe als eine Karte (Baustein 11): Fläche background, Zeilen mit Radius 20 und Abstand 4, die gewählte mit Ring Veilchen */
+  .k-gruppe{display:flex;flex-direction:column;gap:4px;margin:0;padding:6px;list-style:none;border-radius:var(--radius-app-card);background:var(--bg);box-shadow:var(--shadow-raised)}
+  .k-gruppe>.li,.k-gruppe>li{border:0;border-radius:var(--radius-inner);padding:12px}
+  .k-gruppe>:is(.li,li):is(.sel,[aria-current]){background:var(--sf);box-shadow:inset 0 0 0 2px var(--pr)}
+  .k-gruppe>a.li:hover{background:var(--sf)}
+}
+
+/* =================== Bühne (Baustein 19), Maskottchen-Clip (20), Erfolg (22) =================== */
+@layer components {
+  /* Morgenhimmel: stage.sky für hohe Bühnen, .kopf (skyTop) für den Kopf über Inhalt, .held (skyHero) für den Website-Kopf. Nie hinter
+     Listen oder Formularen; Text darauf nur ink, inkSoft, muted, primaryStrong. */
+  .k-buehne{position:relative;overflow:hidden;isolation:isolate;background:var(--stage-sky)}
+  .k-buehne.kopf{background:var(--stage-sky-top)}
+  .k-buehne.held{background:var(--stage-sky-hero)}
+  /* Meer (stage.hill): sehr breite Ellipse, der Albatros und die Gegenstände stehen auf der Kante (--meer: Höhe ab Unterkante) */
+  .k-meer{position:absolute;z-index:-1;left:50%;bottom:0;width:1240px;height:var(--meer,140px);margin-left:-620px;border-radius:620px 620px 0 0/92px 92px 0 0;background:var(--stage-hill);box-shadow:var(--stage-hill-shadow);pointer-events:none}
+  .k-meer.fern{width:860px;margin-left:0;border-radius:50%;background:var(--stage-hill-far);box-shadow:none}
+  /* Wolke aus drei Kreisen, der mittlere grösser; --w und --h setzen die Grösse */
+  .k-wolke{position:absolute;z-index:-1;width:var(--w,152px);height:var(--h,64px);pointer-events:none}
+  .k-wolke>i{position:absolute;bottom:0;border-radius:50%;background:var(--stage-cloud);box-shadow:var(--stage-cloud-shadow)}
+  .k-wolke>i:nth-child(1){left:0;width:48%;height:70%}
+  .k-wolke>i:nth-child(2){left:24%;bottom:8%;width:52%;height:96%;box-shadow:none}
+  .k-wolke>i:nth-child(3){right:0;width:46%;height:72%}
+  .k-wolke.fern{opacity:.8;filter:blur(1px)}
+  /* Bauklötze: Würfel (--w, --r, --kippen), Bogen mit Halbkreis-Maske, Ball; Fläche und Schatten aus stage.toy */
+  .k-klotz{position:absolute;width:var(--w,64px);height:var(--w,64px);border-radius:var(--r,16px);transform:rotate(var(--kippen,0deg));pointer-events:none}
+  .k-klotz.sonne{background:var(--stage-toy-sonne-fill);box-shadow:var(--stage-toy-sonne-shadow)}
+  .k-klotz.schal{background:var(--stage-toy-schal-fill);box-shadow:var(--stage-toy-schal-shadow)}
+  .k-klotz.meer{background:var(--stage-toy-meer-fill);box-shadow:var(--stage-toy-meer-shadow)}
+  .k-klotz.himmel{background:var(--stage-toy-himmel-fill);box-shadow:var(--stage-toy-himmel-shadow)}
+  .k-klotz.ball{border-radius:50%}
+  .k-klotz.bogen{height:calc(var(--w,64px) * .6);border-radius:16px 16px 10px 10px;-webkit-mask:radial-gradient(circle at 50% 100%,transparent 23%,black calc(23% + 1px));mask:radial-gradient(circle at 50% 100%,transparent 23%,black calc(23% + 1px))}
+  /* Bodenschatten unter Figur und Gegenständen, etwas breiter und nach rechts versetzt */
+  .k-kontakt{position:absolute;z-index:-1;height:28px;border-radius:50%;background:var(--stage-contact);pointer-events:none}
+  /* Regenbogen-Tor (RegenbogenTor in buehne.tsx): der Bogen aus marke.tsx in Pastell, im Ausschnitt nur der obere Teil */
+  .k-regenbogen{display:block;max-width:100%;height:auto;pointer-events:none}
+  .k-tor-ausschnitt{display:block;aspect-ratio:1200/388;overflow:hidden;pointer-events:none}
+  .k-tor-ausschnitt>svg{display:block;width:100%;height:auto}
+  /* Konfetti nur bei Erfolg: Stäbchen und Punkte in Pastell, gedreht (Konfetti in buehne.tsx setzt Lage und Farbe) */
+  .k-konfetti{position:absolute;inset:0;z-index:-1;pointer-events:none}
+  .k-konfetti>i{position:absolute;width:8px;height:16px;border-radius:3px;background:var(--k-pastel)}
+  .k-konfetti>i.p{width:11px;height:11px;border-radius:50%}
+
+  /* Maskottchen-Clip (Baustein 20): Platz quadratisch (--gr), die Clips des Albatros sind quadratisch (960 × 960) und füllen ihn. Immer Schmuck. Bei «weniger Bewegung» bleibt das Poster (das Standbild, erstes Bild jedes Clips). */
+  .maskottchen-clip{position:relative;display:block;flex:none;width:var(--gr,120px);height:var(--gr,120px);pointer-events:none}
+  .maskottchen-clip>video,.maskottchen-clip>img{position:absolute;top:0;left:0;width:100%;height:100%;display:block;object-fit:contain}
+  /* Auf der Bühne: der Albatros landet auf einem Stück Meer */
+  .maskottchen-clip.auf-buehne::before{content:"";position:absolute;left:-30%;right:-30%;bottom:-6%;height:34%;border-radius:50% 50% 0 0/100% 100% 0 0;background:var(--stage-hill);box-shadow:var(--stage-hill-shadow);-webkit-mask-image:linear-gradient(black 40%,transparent);mask-image:linear-gradient(black 40%,transparent)}
+
+  /* Erfolg (Baustein 22, Erfolg.astro): hohe Bühne mit Meer, Wolken, Konfetti und dem Albatros, darunter die Fläche mit Titel und Schritten */
+  .k-erfolg{position:relative;display:flex;flex-direction:column;border-radius:var(--radius-panel);overflow:hidden;background:var(--sf);box-shadow:var(--shadow-panel)}
+  .k-erfolg>.k-buehne{height:var(--hoch,360px);display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+  .k-erfolg>.k-buehne>.maskottchen-clip{margin-bottom:24px}
+  .k-erfolg .k-etikett{position:absolute;top:24px;left:50%;transform:translateX(-50%);z-index:2}
+  .k-erfolg>.k-erfolg-inhalt{position:relative;z-index:1;margin-top:-32px;padding:28px 32px 32px;border-radius:var(--radius-sheet) var(--radius-sheet) 0 0;background:var(--sf);box-shadow:var(--shadow-sheet);display:flex;flex-direction:column;gap:14px}
+  .k-erfolg-inhalt>h1,.k-erfolg-inhalt>h2{margin:0;font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:700;font-size:30px;line-height:1.1}
+  @media (max-width:767px){.k-erfolg{border-radius:var(--radius-card)}.k-erfolg>.k-erfolg-inhalt{padding:22px 18px 22px}}
+  /* Etikett auf dem Himmel (Baustein 8): Pille surface mit shadow.tag, Symbol-Kissen 26 bis 28 */
+  .k-etikett{display:inline-flex;align-items:center;gap:8px;padding:5px 16px 5px 5px;border-radius:999px;background:var(--sf);box-shadow:var(--shadow-tag);font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap}
+  .k-etikett>.k-ikon{--s:28px}
+  .k-etikett>.k-stand{width:28px;height:28px}
+  .k-etikett>.k-stand::after{inset:6px}
+}
+
+/* =================== Album (Bausteine 24 bis 28, album.tsx): «Alltag» im Eltern-Web =================== */
+@layer components {
+  /* Kind-Wechsler: Pille aus Glas mit Rand controlStrong; gewählt Veilchen 700 mit Ring um den Avatar */
+  .k-kindwahl{display:inline-flex;flex-wrap:wrap;gap:4px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--sf) 85%,transparent);box-shadow:inset 0 0 0 1.5px var(--control-strong);max-width:100%}
+  .k-kindwahl>:is(a,button){display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px 0 6px;border:0;border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .k-kindwahl>:is(a,button):hover{background:var(--sf2)}
+  .k-kindwahl>:is([aria-current],[aria-pressed="true"]){background:var(--pr);color:var(--onpr);font-weight:700;box-shadow:var(--shadow-segment-on)}
+  .k-kindwahl>:is([aria-current],[aria-pressed="true"]) .av{box-shadow:0 0 0 2px var(--sf)}
+  /* Tagesstreifen: fünf Tage; Betreuungstag als Kissen mit Punkt in der Farbe der Angebotsart, heute mit Ring Veilchen */
+  .k-woche{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
+  .k-woche>li{display:flex;min-width:0}
+  .k-tag{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:52px;padding:4px 2px;border-radius:var(--radius-control);color:var(--mu);font-variant-numeric:tabular-nums}
+  .k-tag>span{font-size:12px;font-weight:700;line-height:1.2}
+  .k-tag>b{font-size:17px;font-weight:800;line-height:1.2}
+  .k-tag>i{width:6px;height:6px;border-radius:50%;background:var(--typ,var(--pr))}
+  .k-tag.betreuung{background:var(--sf);color:var(--ink);box-shadow:var(--shadow-raised)}
+  .k-tag.betreuung>span{color:var(--ink-soft)}
+  .k-tag.heute{background:var(--sf);color:var(--ink);box-shadow:inset 0 0 0 2px var(--pr),var(--shadow-raised)}
+  .k-tag.heute>span{color:var(--primary-ink);font-weight:800}
+  a.k-tag:hover{text-decoration:none;box-shadow:inset 0 0 0 1.5px var(--control),var(--shadow-raised)}
+  a.k-tag.heute:hover{box-shadow:inset 0 0 0 2px var(--pr),var(--shadow-raised)}
+  /* Zeitstrahl: Zeit 40, Punkt 28 (Symbol-Kissen mit Ring im Grund), Inhalt; die Linie geht als Stück je Eintrag von Punkt zu Punkt.
+     --mitte: Mitte der ersten Zeile des Inhalts, darauf stehen Zeit und Punkt (Moment-Karte 22). Kommendes gestrichelt. */
+  .k-zeitstrahl{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+  .k-zeitstrahl>li{--mitte:22px;position:relative;display:grid;grid-template-columns:40px 28px minmax(0,1fr);column-gap:10px;align-items:start}
+  .k-zeitstrahl>li>time{padding-top:calc(var(--mitte) - 8px);font-size:12px;font-weight:700;line-height:16px;color:var(--mu);font-variant-numeric:tabular-nums}
+  .k-zeitstrahl>li>.k-ikon{--s:28px;position:relative;z-index:1;margin-top:calc(var(--mitte) - 14px);box-shadow:0 0 0 3px var(--bg)}
+  .k-zeitstrahl>li>.k-ikon>svg.i{width:15px;height:15px;stroke-width:2.2}
+  .k-zeitstrahl>li:not(:last-child)::before{content:"";position:absolute;left:63px;top:var(--mitte);width:2px;height:calc(100% + 10px);border-radius:1px;background:var(--line-strong)}
+  .k-zeitstrahl>li.kommend>.k-ikon{background:var(--sf);color:var(--ink-soft);box-shadow:0 0 0 3px var(--bg),inset 0 0 0 1.5px var(--control);background-clip:padding-box}
+  .k-zeitstrahl>li:has(+li.kommend)::before,.k-zeitstrahl>li.kommend:not(:last-child)::before{width:0;border-radius:0;background:none;border-left:2px dashed var(--line-strong)}
+  .k-zeitstrahl>li>.k-inhalt{min-width:0;display:flex;flex-direction:column;gap:6px}
+  /* Moment-Karte (Baustein 28): kleine Kissen-Karte, das Ereignis fett */
+  .k-moment{box-sizing:border-box;min-height:44px;margin:0;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--radius-inner);background:var(--sf);box-shadow:var(--shadow-raised);font-size:14px;line-height:1.35;color:var(--ink-soft)}
+  .k-moment b{font-weight:700;color:var(--ink)}
+  .k-moment.leise{background:transparent;box-shadow:none;padding-inline:0;color:var(--mu)}
+  /* Tagesbericht als grosse Moment-Karte: Kopf mit Titel und Absender, Angaben als Kacheln, Notiz als Zitat; die ganze Karte tippbar */
+  .k-bericht{position:relative;display:flex;flex-direction:column;gap:8px;padding:12px 14px 14px;border-radius:var(--radius-app-card);background:var(--sf);box-shadow:var(--shadow-raised)}
+  .k-bericht:has(.k-bericht-link:focus-visible){box-shadow:0 0 0 3px var(--pr),var(--shadow-raised)}
+  .k-bericht-kopf{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;min-height:24px} /* bricht um: «Rapporto giornaliero» und der Absender bei 320 px */
+  .k-bericht-kopf>h2,.k-bericht-kopf>h3{margin:0;font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:600;font-size:19px;line-height:1.25}
+  .k-bericht-link{color:var(--ink)}
+  .k-bericht-link::after{content:"";position:absolute;inset:0;border-radius:inherit}
+  .k-bericht-link:focus-visible{outline:none}
+  .k-bericht-von{display:inline-flex;align-items:center;gap:4px;min-width:0;font-size:12px;color:var(--mu);text-align:right}
+  .k-bericht-von>svg.i{width:16px;height:16px;color:var(--pr2);stroke-width:2.4}
+  .k-bericht p{margin:0;font-size:14px;line-height:1.45;color:var(--ink-soft)}
+  .k-bericht .k-zitat{font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:600;font-size:15px;line-height:1.4;color:var(--ink);text-wrap:pretty}
+  .k-kacheln{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .k-kacheln>div{padding:6px 10px;border-radius:var(--radius-thumb);background:var(--k-soft,var(--sf2));display:flex;flex-direction:column;gap:1px}
+  .k-kacheln dt{font-size:12px;font-weight:700;color:var(--k-ink,var(--mu))}
+  .k-kacheln dd{margin:0;font-size:13px;line-height:1.35;font-weight:700;color:var(--ink)}
+  .k-bericht :is(a,button,summary):not(.k-bericht-link){position:relative;z-index:2}
+  .k-bericht-zeiten{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.4;color:var(--ink-soft)}
+  .k-bericht-zeiten time{margin-right:6px;font-weight:700;color:var(--mu);font-variant-numeric:tabular-nums}
+  .k-fotos-titel{display:block;font-size:14px;line-height:20px;font-weight:700;color:var(--ink)}
+  /* Kommendes (Abholen um 11:30): gestrichelt, ohne Fläche und Schatten */
+  .k-kommend{box-sizing:border-box;display:flex;align-items:center;gap:8px;min-height:44px;padding:3px 4px 3px 14px;border-radius:var(--radius-inner);border:1.5px dashed var(--control)}
+  .k-kommend>span{flex:1;min-width:0;display:flex;flex-direction:column}
+  .k-kommend b{font-size:14px;line-height:1.35}
+  .k-kommend small{font-size:12px;line-height:1.4;color:var(--mu)}
+  /* Polaroid mit Klebestreifen (Baustein 27): Rahmen weiss, Rand 5 5 18, gedreht der Reihe nach (album.tilt), Streifen 34 × 12 oben
+     mittig in Pastell (album.tape). --kippen, --band und --band-kippen setzt Polaroid aus den Tokens. */
+  .k-polaroids{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:8px 0 4px;list-style:none;color:var(--ink-soft)}
+  a.k-polaroids:hover{text-decoration:none}
+  a.k-polaroids:focus-visible{outline-offset:4px;border-radius:var(--radius-thumb)}
+  .k-polaroid{position:relative;box-sizing:border-box;flex:1 1 80px;min-width:0;max-width:200px;display:block;padding:5px 5px 18px;border-radius:var(--radius-polaroid);background:var(--sf);box-shadow:var(--shadow-polaroid);transform:rotate(var(--kippen,0deg))}
+  .k-polaroid::before{content:"";position:absolute;z-index:1;top:-6px;left:50%;width:34px;height:12px;margin-left:-17px;background:var(--band,var(--brand-sonne-pastel));opacity:.88;transform:rotate(var(--band-kippen,0deg))}
+  .k-polaroid img,.k-polaroid .k-foto-leer{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:1px}
+  .k-foto-leer{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--album-photo-empty);color:var(--ink-soft);font-size:12px;font-weight:700;line-height:1.15;text-align:center}
+  li.k-polaroid>a{display:block;color:inherit;border-radius:1px}
+  li.k-polaroid>a::after{content:"";position:absolute;inset:0}
+  li.k-polaroid:has(a:focus-visible){outline:var(--focus-width) solid var(--pr);outline-offset:3px}
+  li.k-polaroid>a:focus-visible{outline:none}
+  .k-polaroid-unter{display:block;padding:6px 2px 0;margin-bottom:-8px;font-size:12px;line-height:1.3;color:var(--ink-soft)}
+  .k-einwilligung{display:flex;align-items:flex-start;gap:6px;font-size:12px;line-height:1.4;color:var(--mu)}
+  .k-einwilligung>svg.i{width:14px;height:14px;margin-top:1px;stroke-width:2}
+}
+
+/* =================== Kopf des Alltags als Album (pages/alltag/index.astro) =================== */
+@layer components {
+  .k-album-kopf{position:relative;display:flex;flex-direction:column;gap:14px}
+  .k-album-zeile{display:flex;align-items:center;gap:12px;min-height:44px;padding-right:56px}
+  .k-album-kalender{position:absolute;z-index:2;top:0;right:0}
+  .k-album-titel{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+  .k-album-titel p{margin:0}
+  .k-album-datum{font-size:13px;font-weight:700;color:var(--mu)}
+  .k-album-art{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .k-album-art>i{width:8px;height:8px;border-radius:50%;flex:none}
+  .k-album-tor{flex:none;width:320px;max-width:38%;margin:-24px 0 -8px}
+  .k-album-kopf>.k-woche{max-width:560px}
+  .k-album-knoepfe{display:flex;flex-wrap:wrap;gap:8px}
+  .k-der-tag{display:flex;flex-direction:column;gap:14px}
+  @media (max-width:767px){
+    .k-album-tor{display:none}
+    .k-album-knoepfe .btn{flex:1 1 180px}
+    .k-album-titel{padding-right:52px} /* Platz für den Kalender oben rechts */
+    /* Fliesstext auf dem Telefon 16 px (ux-regeln: Absätze ab 50 Zeichen) */
+    .k-bericht p:not(.meta,.xs,.sm),.k-bericht-zeiten>li{font-size:16px}
+  }
+}
+
+/* =================== Startseite: Kopf mit Bühne und Suche (index.astro, SearchForm held) =================== */
+@layer components {
+  /* Der Himmel des Helden reicht unter die Kopfzeile (die Pille liegt darauf): so weit nach oben, wie Kopf und Abstand hoch sind */
+  .k-start-kopf{position:relative;margin-top:calc(-1 * (var(--kopf-oben) + var(--kopf-h)));padding:calc(var(--kopf-oben) + var(--kopf-h)) 0 48px;background:linear-gradient(transparent calc(100% - 140px),var(--bg)),var(--stage-sky-hero)} /* ohne overflow: die Vorschläge unter «Wo» ragen hinaus */
+  .k-start-titel{display:flex;flex-direction:column;align-items:center;gap:var(--space-4);padding-top:var(--space-6);text-align:center}
+  .k-start-titel>h1{max-width:1180px;margin:0}
+  /* Ort als Etikett auf dem Himmel */
+  .k-start-titel>p.k-etikett{margin:0;font-size:14px;font-weight:600;background:color-mix(in srgb,var(--sf) 80%,transparent)}
+  .k-start-unter{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-4);padding-top:var(--space-5);text-align:center}
+  .k-start-unter>p{margin:0;max-width:640px;font-size:16px;line-height:1.55;color:var(--ink-soft)}
+  /* «Lieber in eigenen Worten?»: Pille mit Pfirsich (der Assistent ist immer an Pfirsich erkennbar) */
+  .k-worte{display:inline-flex;align-items:center;gap:12px;max-width:100%;min-height:48px;padding:6px 20px 6px 6px;border-radius:999px;background:color-mix(in srgb,var(--sf) 84%,transparent);box-shadow:var(--shadow-tag);color:var(--ink);font-size:15px;line-height:1.35;text-align:left}
+  .k-worte>.k-ikon{--s:36px;background:var(--as);color:var(--onas);box-shadow:none}
+  .k-worte>.k-ikon svg.i{stroke:var(--onas);fill:var(--onas)}
+  .k-worte:hover{text-decoration:none;background:var(--sf)}
+  /* Suchformular im Kopf: Kissen 32 mit shadow.dialog, das Suchfeld (Ort als Pflicht) und daneben der Hauptknopf; darunter optional */
+  .k-suche{position:relative;z-index:1;box-sizing:border-box;width:min(880px,calc(100% - 32px));margin:0 auto;padding:14px;border-radius:var(--radius-sheet);background:var(--sf);box-shadow:var(--shadow-dialog);display:flex;flex-direction:column;gap:12px}
+  .k-suche-zeile{display:flex;flex-wrap:wrap;gap:10px}
+  .k-suchfeld{position:relative;flex:1 1 340px;box-sizing:border-box;display:flex;align-items:flex-start;gap:14px;min-height:68px;padding:12px 18px 0 12px;border-radius:22px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--control);cursor:text}
+  .k-suchfeld:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
+  .k-suchfeld>.k-ikon{--s:44px;position:relative;z-index:1;pointer-events:none}
+  .k-suchfeld>.lbl{position:relative;z-index:1;padding-top:2px;font-size:13px;font-weight:700;line-height:1.3;color:var(--ink);pointer-events:none}
+  .k-suchfeld>.lbl>small{font-size:13px;font-weight:600;color:var(--mu)}
+  /* Das Feld liegt über der ganzen Fläche: jeder Tipp ins Feld trifft es, auch neben dem Text */
+  .k-suchfeld>input{position:absolute;inset:0;box-sizing:border-box;width:100%;height:100%;padding:30px 18px 6px 70px;border:0;outline:0;border-radius:inherit;background:transparent;font:inherit;font-size:18px;font-weight:600;color:var(--ink)}
+  .k-suchfeld>input::placeholder{color:var(--placeholder);font-weight:500}
+  .k-suche-zeile>.btn{min-height:68px;flex:0 0 auto}
+  .k-suche-optional{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 4px}
+  .k-suche-optional>.lbl{margin-right:4px;font-size:13px;font-weight:700;color:var(--mu);text-transform:capitalize}
+  .k-suche-optional>.vr{height:26px;align-self:center;margin:0 4px;background:var(--line-strong)}
+  @media (max-width:767px){.k-suche-optional>.vr{display:none}}
+  /* Art als Chip zum Wählen: Checkbox, die wie ein Chip aussieht (geht ohne JavaScript); Symbol-Kissen 30 in der Farbe der Art */
+  .k-wahl{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 6px;border-radius:999px;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-size:15px;font-weight:600;color:var(--ink);cursor:pointer}
+  .k-wahl>.k-ikon{--s:30px;box-shadow:none}
+  .k-wahl:has(input:checked){background:var(--pr);color:var(--onpr);font-weight:700;box-shadow:var(--shadow-chip-on)}
+  .k-wahl:has(input:checked)>.k-ikon{background:var(--sf);color:var(--primary-ink)}
+  .k-wahl:has(input:focus-visible){outline:var(--focus-width) solid var(--pr);outline-offset:var(--focus-offset)}
+  /* Auswahl als Pille (Ab, Alter): das echte select liegt darin */
+  .k-pillwahl{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 16px;border-radius:999px;background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-size:15px;font-weight:600;color:var(--ink)}
+  .k-pillwahl select{appearance:none;-webkit-appearance:none;border:0;outline:0;background:transparent;padding:0 22px 0 0;margin-right:-22px;font:inherit;color:inherit;cursor:pointer;max-width:200px;field-sizing:content}
+  .k-pillwahl:focus-within{box-shadow:inset 0 0 0 2px var(--pr),0 0 0 4px var(--prs)}
+  .k-pillwahl>svg.i:last-child{pointer-events:none;width:16px;height:16px}
+  @media (max-width:767px){
+    .k-start-titel{padding-top:var(--space-5);gap:var(--space-3)}
+    .k-start-kopf{padding-bottom:32px}
+    .k-suche{padding:10px;border-radius:var(--radius-card)}
+    .k-suchfeld{flex-basis:100%;min-height:64px;padding:10px 14px 0 10px;gap:10px}
+    .k-suchfeld>input{padding:28px 14px 6px 64px}
+    .k-suche-zeile>.btn{flex:1 1 100%;min-height:56px}
+    .k-worte{font-size:14px;padding-right:14px}
+  }
+  /* Angebotskarte (ProvCard, Baustein 1): Foto 8 vom Rand, darauf Art und «Merken», die ganze Karte ist der Link im Titel */
+  .k-angebot{position:relative;flex:1 1 auto}
+  .k-angebot:has(h3 a:focus-visible){box-shadow:0 0 0 3px var(--pr),var(--shadow-card)}
+  .k-angebot h3{margin:0}
+  .k-angebot h3 a{color:var(--ink)}
+  .k-angebot h3 a::after{content:"";position:absolute;inset:0;border-radius:inherit}
+  .k-angebot h3 a:focus-visible{outline:none}
+  .k-angebot-foto{position:relative;margin:8px 8px 0}
+  .k-angebot-foto>.chip.k-typ{position:absolute;left:10px;top:10px}
+  .k-angebot-merken{position:absolute;z-index:2;right:8px;top:8px}
+  .k-angebot-merken .btn{box-shadow:var(--shadow-float)}
+  .k-angebot-merken .btn[aria-pressed="true"]{background:var(--prs)}
+  .k-angebot-text{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:16px 18px 20px}
+  .k-angebot-text>p{margin:0}
+  .k-angebot .k-preis{margin-top:auto;padding-top:4px;font-size:14px;color:var(--mu)}
+  .k-angebot .k-preis b{font-size:17px;font-weight:800;color:var(--ink)}
+  .k-angebote{display:flex;flex-wrap:wrap;gap:24px;margin:0;padding:0;list-style:none}
+  .k-angebote>li{flex:1 1 262px;min-width:0;display:flex}
+  /* So funktioniert's: der Albatros auf dem Sockel, die Höhe steigt (Baustein 19 Sockel) */
+  .k-schritte{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:48px 56px;margin:0;padding:0;list-style:none}
+  .k-schritte>li{flex:1 1 280px;max-width:340px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .k-auf-sockel{position:relative;z-index:1;display:block}
+  .k-sockel{position:relative;width:232px;height:var(--hoch,128px);flex:none}
+  .k-sockel::before{content:"";position:absolute;left:-12px;right:-28px;bottom:-20px;height:40px;border-radius:50%;background:var(--stage-contact)}
+  .k-sockel>i{position:absolute;left:0;right:0;top:30px;bottom:0;border-radius:0 0 116px 116px/0 0 30px 30px;background:linear-gradient(90deg,color-mix(in srgb,var(--k-soft) 45%,var(--sf)) 0%,var(--k-soft) 48%,color-mix(in srgb,var(--k-soft) 82%,var(--k-ink)) 100%)}
+  .k-sockel>i+i{top:0;bottom:auto;height:60px;border-radius:50%;background:radial-gradient(circle at 36% 32%,var(--sf) 0%,color-mix(in srgb,var(--k-soft) 50%,var(--sf)) 52%,color-mix(in srgb,var(--k-soft) 88%,var(--k-ink)) 100%)}
+  .k-sockel>b{position:absolute;left:0;right:0;top:66px;font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:700;font-size:46px;line-height:1;color:var(--k-ink)}
+  .k-schritte h3{margin:36px 0 0}
+  .k-schritte p{margin:10px 0 0;max-width:300px;font-size:17px;line-height:1.5;color:var(--mu)}
+  .k-start-so{background:radial-gradient(55% 36% at 50% 74%,color-mix(in srgb,var(--sunrise) 75%,transparent) 0%,transparent 100%)}
+  /* Versprechen: drei Punkte mit Symbol-Kissen 60 */
+  .k-versprechen{display:flex;flex-wrap:wrap;gap:32px 48px;margin:0;padding:0;list-style:none}
+  .k-versprechen>li{flex:1 1 300px;display:flex;align-items:flex-start;gap:18px}
+  .k-versprechen h3{margin:0}
+  /* Textknopf im Fluss der Website (Baustein 5b): unterstrichen, mit Pfeil */
+  .k-weiter{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--pr2);font-size:16px;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+  .k-weiter:hover{color:var(--ink)}
+  .k-weiter>svg.i{width:18px;height:18px;stroke-width:2}
+  /* Liste mit Haken (Band für Anbieter) */
+  .k-haken{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0;padding:0;list-style:none;font-size:15px;font-weight:600;color:var(--ink)}
+  .k-haken>li{display:inline-flex;align-items:center;gap:8px}
+  .k-haken svg.i{width:18px;height:18px;color:var(--oki);stroke-width:2.4}
+  /* Suche über der Bühne: sie darf die untersten 26 % überdecken (dort liegt nur Meer, AlbatrosBuehne) */
+  .k-start-suche{position:relative;z-index:2;margin-top:-19.5vw} /* über dem Text darunter: die Vorschläge liegen darüber */
+  @media (min-width:600px){.k-start-suche{margin-top:calc(-.26 * clamp(380px,25vw + 200px,580px))}}
+  /* Band für Anbieter: Morgenhimmel mit Bauklötzen rechts */
+  .k-band{position:relative;overflow:hidden;isolation:isolate;box-sizing:border-box;border-radius:var(--radius-panel);padding:56px 64px;background:var(--stage-band-warm);display:flex;flex-wrap:wrap;align-items:center;gap:32px 48px}
+  .k-band .btn.sec{box-shadow:inset 0 0 0 1.5px var(--control-strong),var(--shadow-float)}
+  .k-kloetze{position:relative;flex:0 0 300px;height:230px;margin-left:auto}
+  @media (max-width:767px){.k-band{padding:28px 20px}.k-kloetze{display:none}}
+  /* Suchalarm als Band (Baustein 15) */
+  .k-alarm{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;padding:18px 20px 18px 18px;border-radius:var(--radius-card);background:var(--stage-band);box-shadow:inset 0 1px 0 var(--sf)}
+  .k-alarm .btn.sec{box-shadow:inset 0 0 0 1.5px var(--control-strong)}
+}
+
+/* =================== Website und Eltern-Web: Bausteine aus Welle 2 (O, E), zusammengeführt im Nachlauf (NW, 27.10.2026) ===================
+   Vorher lokal in components/oeffentlich/oeffentlich.css (o-*) und components/eltern/eltern.css; dort bleibt nur, was eine einzige Seite
+   braucht. Astro-Bausteine dazu in apps/web/src/components/bausteine/ (SeitenKopf, Ruhig, Ck, SegLinks). */
+@layer components {
+  /* Seitenkopf (SeitenKopf.astro). held: Kopf einer Inhaltsseite der Website, der Morgenhimmel des Startseiten-Kopfs (stage.skyHero) bis
+     unter die Kopfzeile, Etikett auf dem Himmel, Titel .t0 mittig, ferne Wolken; braucht PublicLayout voll, die Abschnitte darunter
+     bringen .k-wrap mit. Mit Bild (Slot bild) ab 1024 px Text links und Bild rechts. */
+  .k-seitenkopf.held{position:relative;isolation:isolate;overflow:hidden;margin-top:calc(-1 * (var(--kopf-oben) + var(--kopf-h)));padding:calc(var(--kopf-oben) + var(--kopf-h) + 48px) 0 72px;background:linear-gradient(transparent calc(100% - 120px),var(--bg)),var(--stage-sky-hero)}
+  .k-seitenkopf-wrap{display:flex;flex-direction:column;align-items:center;gap:36px;text-align:center}
+  .k-seitenkopf-text{display:flex;flex-direction:column;align-items:center;gap:18px;max-width:900px;min-width:0}
+  .k-seitenkopf-text>h1{margin:0}
+  .k-seitenkopf-text>.lead{margin:0;max-width:660px}
+  .k-seitenkopf-text>.k-etikett{max-width:100%;box-sizing:border-box;font-size:14px;font-weight:600;white-space:normal;text-align:left;background:color-mix(in srgb,var(--sf) 80%,transparent)}
+  .k-seitenkopf-knoepfe{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 16px;padding-top:6px}
+  .k-seitenkopf-knoepfe>.k-haken{justify-content:center}
+  .k-seitenkopf-bild{width:100%;min-width:0}
+  @media (min-width:1024px){
+    .k-seitenkopf.mit-bild .k-seitenkopf-wrap{flex-direction:row;align-items:center;gap:64px;text-align:left}
+    .k-seitenkopf.mit-bild .k-seitenkopf-text{flex:1 1 0;align-items:flex-start}
+    .k-seitenkopf.mit-bild .k-seitenkopf-knoepfe,.k-seitenkopf.mit-bild .k-seitenkopf-knoepfe>.k-haken{justify-content:flex-start}
+    .k-seitenkopf.mit-bild .k-seitenkopf-bild{flex:1.05 1 0}
+  }
+  @media (max-width:767px){
+    .k-seitenkopf.held{padding:calc(var(--kopf-oben) + var(--kopf-h) + 24px) 0 44px}
+    .k-seitenkopf-wrap{gap:28px}
+    .k-seitenkopf-text{gap:14px}
+  }
+  /* Ohne held: Kopf einer Seite im Eltern-Bereich wie der Kopf des Alltags (.k-album-kopf), dazu Brotkrumen oben, das Tor kleiner und
+     Etiketten neben den Knöpfen */
+  .k-album-kopf.k-seitenkopf>.crumbs{margin-bottom:-4px}
+  .k-album-kopf.k-seitenkopf .k-album-titel{align-items:center}
+  .k-album-kopf.k-seitenkopf .k-album-knoepfe{align-items:center}
+  .k-album-kopf.k-seitenkopf .k-album-tor{width:280px;margin:-12px 0 -16px}
+  .k-album-kopf.k-seitenkopf .lead{max-width:760px}
+  /* Kopf eines Abschnitts: Titel (section) mit Einleitung (lead) */
+  .k-titel{display:flex;flex-direction:column;gap:var(--abstand-kopf);max-width:780px;min-width:0}
+  .k-titel>*{margin:0}
+  .k-titel.mitte{align-self:center;align-items:center;text-align:center}
+
+  /* Heikler Moment (Baustein 23, Ruhig.astro): Kissen-Karte ohne den Albatros, ohne Bühne und ohne Pastell, Symbol-Kissen in surfaceSubtle (Fehler
+     fullSoft mit full, erledigt freeSoft mit free). Im Fluss einer Seite (Absage, Rückzug, Fehlerseite) das Symbol links; als ganze Seite
+     (seite: Abmelden, Abbestellen, abgelaufener Link) mittig 560 breit mit dem Symbol oben. */
+  .card.k-ruhig-karte{flex-direction:row;align-items:flex-start;gap:14px;padding:18px 20px}
+  .k-ruhig-karte>.k-ikon{--s:40px}
+  .k-ruhig-karte>.k-ikon.fehler{background:var(--fus);color:var(--fu);box-shadow:none}
+  .k-ruhig-karte>.k-ikon.ok{background:var(--oks);color:var(--ok);box-shadow:none}
+  .k-ruhig-text{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+  .k-ruhig-text>:is(h1,h2,h3,p){margin:0}
+  .k-ruhig-text>p{color:var(--ink-soft)}
+  .k-ruhig-aktion{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .card.k-ruhig-karte.seite{box-sizing:border-box;width:100%;max-width:560px;margin:8px auto 24px;border:0;flex-direction:column;align-items:stretch;gap:16px;padding:32px}
+  .k-ruhig-karte.seite>.k-ikon{--s:48px}
+  .k-ruhig-karte.seite>.k-ruhig-text{gap:16px}
+  .k-ruhig-karte.seite .k-ruhig-aktion{flex-direction:column;flex-wrap:nowrap;gap:16px;margin-top:0}
+  @media (max-width:767px){.card.k-ruhig-karte{padding:16px}.card.k-ruhig-karte.seite{padding:24px 20px}}
+
+  /* Karte, die ganz tippbar ist (Baustein 1): der Link im Titel (.k-karte-link) deckt die ganze Karte, der Fokus steht als Ring an der
+     Karte; eigene Knöpfe und Links liegen darüber (Anfragen, Stellen) */
+  .card:has(.k-karte-link){position:relative}
+  .card:has(.k-karte-link:focus-visible){box-shadow:0 0 0 3px var(--pr),var(--shadow-card)}
+  .k-karte-link{color:var(--ink)}
+  .k-karte-link::after{content:"";position:absolute;inset:0;border-radius:inherit}
+  .k-karte-link:focus-visible{outline:none}
+  .card:has(.k-karte-link) :is(a,button,summary,select,input,label):not(.k-karte-link){position:relative;z-index:2}
+  /* Nächster Schritt: hervorgehobene Karte (.card.hervor) mit Datum oder Symbol-Kissen links und dem Hauptknopf rechts */
+  .card.k-naechster{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px 18px;align-items:center;padding:18px 20px}
+  .k-naechster>.col{gap:2px}
+  .k-naechster .k-naechster-knoepfe{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  @media (max-width:767px){.card.k-naechster{grid-template-columns:auto minmax(0,1fr)}.k-naechster .k-naechster-knoepfe{grid-column:1/-1;justify-content:flex-start}}
+
+  /* Fester Fuss (Baustein 12): Glas mit shadow.bar; unten angedockt oben rund 28, Innen 12 16 und Platz für den Rand des Telefons; fest:
+     am unteren Rand des Fensters (Profil, Angebot; ohne eigenes display, damit lg:hidden greift). Als Karte (.card.k-fuss), die über dem
+     Inhalt schwebt, bleibt sie rund. Darunter der beruhigende Satz 13 muted. */
+  .k-fuss{background:var(--glass);box-shadow:var(--shadow-bar);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+  .k-fuss:not(.card){padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-radius:var(--radius-card) var(--radius-card) 0 0}
+  .k-fuss.fest{position:fixed;left:0;right:0;bottom:0;z-index:30}
+  .k-fuss-zeile{display:flex;align-items:center;gap:14px}
+  .k-fuss-satz{margin:8px 0 0;font-size:13px;line-height:1.4;text-align:center;color:var(--mu)}
+
+  /* Fläche für leere Zustände mit mehr als einem Knopf (Suche ohne Treffer, Ort ohne Angebote): Morgenhimmel stage.band wie .empty, darin
+     der leere Zustand ohne eigene Fläche, darunter Knöpfe und Etiketten */
+  .k-leer{display:flex;flex-direction:column;align-items:center;gap:16px;padding:28px 24px;border-radius:var(--radius-card);background:var(--stage-band);text-align:center}
+  .k-leer>.empty{padding:0;background:none}
+  .k-leer .row{justify-content:center}
+  /* «Kurz gesagt» (Hilfe-Artikel, Rechtliches): Fläche aus Morgenhimmel */
+  .k-kurz{display:flex;flex-direction:column;gap:8px;padding:20px 22px;border-radius:var(--radius-card);background:var(--stage-band);box-shadow:inset 0 1px 0 var(--sf)}
+  /* Leiser Hinweis ohne Fläche (Baustein 15, «… ist pausiert»): Symbol-Kissen 28 in surfaceSubtle und Text 13 inkSoft */
+  .k-leise{display:flex;align-items:flex-start;gap:10px;margin:0;font-size:13px;line-height:1.45;color:var(--ink-soft)}
+  .k-leise>.k-ikon{--s:28px;flex:none;background:var(--sf2);color:var(--mu);box-shadow:none}
+  .k-leise>.k-ikon>svg.i{width:14px;height:14px;stroke-width:2.4}
+  .k-leise>span{padding-top:5px}
+  /* Zitat in Fraunces 600 (wie die Notiz der Betreuung im Tagesbericht), zum Beispiel «Über Lina» */
+  .k-zitat{font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:600;color:var(--ink)}
+  /* Tabelle als Kissen-Karte im Massstab der Website (Rechnungen im Alltag); in einer Karte ohne eigenen Schatten mit feiner Linie */
+  .tbl-wrap.k-tabelle{border:0;border-radius:var(--radius-card);box-shadow:var(--shadow-card)}
+  .tbl-wrap.k-tabelle-innen{border:0;border-radius:var(--radius-inner);box-shadow:inset 0 0 0 1px var(--ln)}
+
+  /* Erfolg (Baustein 22) im Fluss einer Seite: Angebot 15/700, Tage 14 inkSoft, Datum 13 muted */
+  .k-erfolg-ort{margin:0;font-size:15px;line-height:1.4;font-weight:700;color:var(--ink)}
+  .k-erfolg-tage{margin:0;font-size:14px;line-height:1.4;color:var(--ink-soft)}
+  .k-erfolg-datum{margin:0;font-size:13px;line-height:1.4;color:var(--mu)}
+  /* Erfolg neben dem Rest (Sammelanfrage gesendet, Zusage bestätigt): links die Bühne mit dem Albatros (klebt ab 1024 px), rechts die
+     Einzelheiten; auf dem Telefon untereinander */
+  .k-erfolg-raster{display:grid;gap:24px;align-items:start}
+  .k-erfolg-raster>.k-erfolg{min-width:0}
+  @media (min-width:1024px){.k-erfolg-raster{grid-template-columns:minmax(0,480px) minmax(0,1fr);gap:32px}.k-erfolg-raster>.k-erfolg{position:sticky;top:96px}}
+  /* Willkommen: die Fläche von Erfolg ohne Konfetti und Etikett, 560 breit und mittig; die Höhe der Bühne setzt die Seite mit --hoch */
+  .k-erfolg.k-willkommen{box-sizing:border-box;width:100%;max-width:560px;margin:0 auto}
+  /* Sockel klein (Baustein 19) als Marke eines Schritts: der Sockel aus buehne.tsx mit zoom, ohne Bodenschatten, Ziffer mittig */
+  .k-sockel-klein{display:flex;flex:none;align-self:flex-start}
+  .k-sockel-klein .k-sockel{zoom:.3}
+  .k-sockel-klein .k-sockel::before{display:none}
+  .k-sockel-klein .k-sockel>b{text-align:center}
+}
+
+/* =================== Cockpit und Intern (.shell): Bausteine im Massstab der Arbeit (K1, 27.10.2026; nach kidou.css verschoben von K2) ===================
+   Aus CockpitLayout.astro (dort unter .k-cockpit), damit Cockpit und Intern dieselben Regeln haben. Steht am Schluss: bei gleicher
+   Spezifität gewinnen diese Regeln wie vorher ohne Schicht. Nur Rollen aus den Tokens. */
+@layer components {
+  /* Kennzahl (StatTile): Kissen ohne Linie; mit Farbe des Bereichs eine weiche Kachel wie die Angaben im Tagesbericht (Baustein 28),
+     die Zahl in Fraunces wie die Zeit im Tag. Kein Strich mehr oben. */
+  .shell .kpi{border:0;border-radius:var(--radius-inner);padding:14px 18px 16px;gap:2px;box-shadow:var(--shadow-card)}
+  .shell .kpi.fill{box-shadow:none}
+  .shell .kpi.k-kpi{background:var(--k-soft);box-shadow:var(--shadow-bubble);padding-top:14px}
+  .shell .kpi.k-kpi small{color:var(--k-ink)}
+  .shell .kpi.k-kpi em.mu{color:var(--ink-soft)}
+  .shell .kpi b{font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-.01em;margin:2px 0}
+  /* Tabelle: Kissen ohne Linie (Table in data.tsx setzt Rand und Radius 12 inline, darum !important); in einer Karte trägt die Karte
+     den Schatten. Die Plätze-Matrix (.mx) steht ohne Rahmen, ihre Zellen sind die Flächen. */
+  .shell .tbl-wrap{border:0!important;border-radius:var(--radius-inner)!important;background:var(--sf)!important;box-shadow:var(--shadow-card)}
+  .shell .card .tbl-wrap{border-radius:16px!important;box-shadow:none}
+  .shell .tbl-wrap:has(>.mx){background:transparent!important;box-shadow:none;border-radius:0!important}
+  .shell .tbl th{background:var(--sf2);color:var(--mu)}
+  .shell .mx td{border-radius:12px}
+  /* Pipeline (Pipeline aus data.tsx): Spalten als Gruppe in surfaceSubtle, Karten als kleine Kissen */
+  .shell .tk{border-color:transparent;border-radius:18px;box-shadow:var(--shadow-raised)}
+  .shell .tk.sel{box-shadow:inset 0 0 0 2px var(--pr),var(--shadow-raised)}
+  /* Monat (MonthCalendar big): Tage als Flächen im Grund statt Kästchen mit Linie */
+  .shell .cal.big>span{border:0;background:var(--bg);border-radius:14px}
+  .shell .cal.big>span.o{background:transparent}
+  /* Seitenkarte neben einer Liste (gewählte Anfrage im Board): Kissen statt Spalte mit Linie */
+  .shell .k-seitenkarte{background:var(--sf);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin:20px 20px 24px 0;align-self:start;min-width:0}
+  /* Leerer Zustand ohne den Albatros (Leer mit maskottchen={false} oder heiklem Symbol): Baustein 23, ohne Morgenhimmel; ruhige Fläche surfaceSubtle,
+     ist er allein in einer Karte, bleibt die Karte weiss */
+  .shell .empty.k-ruhig{background:var(--sf2)}
+  .shell .card:has(>.empty.k-ruhig:only-child){background:var(--sf);box-shadow:var(--shadow-card)}
+  /* allein in der Karte ohne eigene Fläche; das leise Symbol-Kissen weiss auf der ruhigen Fläche, in der weissen Karte in surfaceSubtle (K2) */
+  .shell .card>.empty.k-ruhig:only-child{background:none}
+  .shell .empty.k-ruhig>.k-ikon.leise{background:var(--sf)}
+  .shell .card>.empty.k-ruhig:only-child>.k-ikon.leise{background:var(--sf2)}
+  /* Liste und Verlauf (Elternnachrichten, Freigaben, .panel): zwei Kissen nebeneinander statt Spalten mit Linie. Ab 1024 px füllt die
+     Seite den Bildschirm (k-voll-hoehe am main), beide scrollen für sich. Zeilen schrumpfen nie (sonst überlappten zweizeilige Vorschauen). */
+  .shell .panel{gap:16px;padding:0 20px 20px 16px}
+  .shell .panel>.pl,.shell .panel>.pr{background:var(--sf);border:0;border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden}
+  .shell .panel .list>.li{flex-shrink:0}
+  @media (min-width:1024px){
+    .shell .shell-main:has(>.k-voll-hoehe){height:100vh;height:100dvh}
+    .shell .k-voll-hoehe{min-height:0}
+  }
+  @media (max-width:1023px){.shell .panel{padding:0 12px 16px}}
+  /* Aus InternLayout.astro (K2, dort ohne Schicht unter .k-intern; hier unter .shell für Cockpit und Intern, am Schluss der Datei):
+     Zeilen als Gruppe in einer Karte (Mails, Listen ohne .li): Radius 20, gewählt mit Fläche und Ring Veilchen */
+  .shell .k-zeilen{padding:6px;gap:2px}
+  .shell .k-zeilen>a{display:flex;min-height:44px;padding:10px 14px;border-radius:var(--radius-inner);color:inherit;text-decoration:none}
+  .shell .k-zeilen>a:hover{background:var(--sf2)}
+  .shell .k-zeilen>a[aria-current]{background:var(--prs);box-shadow:inset 0 0 0 2px var(--pr)}
+  .shell .k-zeilen>a:focus-visible{outline-offset:var(--focus-inset)}
+  /* Kennzahl, die Alarm gibt (Notbremse aktiv, Quelle fehlt): weiche Fläche in fullSoft, die Bedeutung steht als Wort mit Zeichen */
+  .shell .kpi.k-kpi-alarm{background:var(--fus);box-shadow:none}
+  .shell .kpi.k-kpi-alarm :is(small,b,em){color:var(--fui)}
+  .shell .kpi.k-kpi-alarm b{display:flex;align-items:center;gap:8px}
+  /* Zeitstrahl (Baustein 26) dicht, für Schritte eines Laufs und den Verlauf eines Leads: Text statt Moment-Karten, Zeit und Punkt auf
+     der ersten Textzeile; in einer Karte ist der Ring um den Punkt weiss statt im Grund */
+  .shell .k-zeitstrahl.dicht{gap:6px}
+  .shell .k-zeitstrahl.dicht>li{--mitte:14px}
+  .shell .k-zeitstrahl.dicht .k-inhalt{padding-top:4px;gap:2px}
+  .shell .card .k-zeitstrahl>li>.k-ikon{box-shadow:0 0 0 3px var(--sf)}
+  /* Diagramme (Charts.tsx) in fester Breite: Schrift bleibt 12 px; ist die Karte schmaler, scrollt der Rahmen seitlich */
+  .shell .k-diagramm{max-width:100%;overflow-x:auto;scrollbar-width:thin;border-radius:var(--radius-thumb)}
+  .shell .k-diagramm:focus-visible{outline-offset:var(--focus-inset)}
+  /* Breite Tabellen (Protokoll, Leads): scrollen auf dem Telefon im Kissen, statt jede Zeile in schmale Spalten zu quetschen */
+  .shell .tbl.k-breit{min-width:760px}
+  /* Text- und Code-Kästen (Snippet, Mail-Text, Meta-Tag): Fläche statt Linie, Radius 14; Vorschau in einem Rahmen (Mail, Widget) als Kissen */
+  .shell .k-kasten{padding:10px 12px;border-radius:var(--radius-thumb);background:var(--sf2);overflow-wrap:anywhere}
+  .shell iframe.k-vorschau{display:block;width:100%;border:0;border-radius:var(--radius-inner);background:var(--sf);box-shadow:var(--shadow-raised)}
+}
+
+/* =================== Raster für Abstände (28.10.2026): die Rollen --abstand-* oben in der Schicht base, hier die Klassen dazu ===================
+   Öffentliche Seiten, Cockpit und Intern nutzen nur diese Klassen statt eigener Werte im style-Attribut. Karte: .card.p24 (Innen 24,
+   zwischen den Teilen 16). */
+@layer components {
+  /* Blöcke einer Seite untereinander (32, Telefon 24); weit für Gruppen aus mehreren Blöcken (48, Telefon 32); mitte für kurze Seiten */
+  .k-stapel{display:flex;flex-direction:column;gap:var(--abstand-block);min-width:0}
+  .k-stapel.weit{gap:var(--space-7)}
+  .k-stapel.mitte{align-items:center;text-align:center}
+  @media (max-width:767px){.k-stapel.weit{gap:var(--space-6)}}
+  /* Kopf einer Seite mit dem Albatros links (.k-titel daneben); auf dem Telefon der Albatros 72, damit der Text nicht schmal umbricht */
+  .k-seitentitel{display:flex;align-items:center;gap:var(--space-5);min-width:0}
+  @media (max-width:767px){.k-seitentitel{gap:var(--space-4)}.k-seitentitel>.k-maskottchen{width:72px}}
+  /* Karten nebeneinander: so viele Spalten, wie mit --min (Standard 280) Platz haben; Lücke 24, Telefon 16 */
+  .k-raster{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--min,280px)),1fr));gap:var(--abstand-raster);margin:0;padding:0;list-style:none}
+  /* Zeilen-Karten untereinander (Missionen, Flugbuch, Dienste): 12 */
+  .k-liste{display:flex;flex-direction:column;gap:var(--abstand-liste);margin:0;padding:0;list-style:none}
+  /* Knöpfe nebeneinander: brechen um, 12 untereinander und 16 nebeneinander */
+  .k-knoepfe{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3) var(--space-4)}
+  /* Formular untereinander: 12; der Knopf ab 768 so breit wie sein Text, auf dem Telefon über die ganze Breite */
+  .k-formular{display:flex;flex-direction:column;gap:var(--space-3);min-width:0}
+  @media (min-width:768px){.k-formular>.btn{align-self:flex-start}}
+  /* Fach in einer Karte (Snapshot, Schloss, Domain): Fläche surfaceSubtle, 12 16 innen, Radius 14 */
+  .k-fach{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-radius:var(--radius-thumb);background:var(--sf2);min-width:0}
+  /* Listen im Fliesstext mit Zeichen (Tailwind nimmt sie sonst weg, dann stand der Text eingerückt ohne Punkt oder Zahl) */
+  .k-aufzaehlung{margin:0;padding-left:var(--space-5);list-style:disc;display:flex;flex-direction:column;gap:var(--space-2)}
+  ol.k-aufzaehlung{list-style:decimal}
+  /* Zugeklappt für Fortgeschrittene (Befehle selbst tippen) */
+  .k-selbst summary{cursor:pointer;font-weight:700;margin-left:var(--space-5)}
+  .k-selbst[open] summary{margin-bottom:var(--space-5)}
+
+  /* Antworten zum Wählen (Antworten in base.tsx, 11.11.2026): kurze als Pillen, lange als Zeilen über die ganze Breite der Karte, die
+     umbrechen; ein Tipp antwortet. Die empfohlene: Pille gefüllt bzw. Zeile mit Ring und Etikett «Empfohlen» (Wort, nicht nur Farbe). Der
+     Pfeil rechts sagt «antippen, dann geht es weiter». Bewegung nur ohne prefers-reduced-motion. */
+  .k-antworten{display:flex;flex-direction:column;gap:var(--space-2);margin:0;padding:0;list-style:none;min-width:0}
+  .k-antworten.pillen{flex-direction:row;flex-wrap:wrap;gap:var(--space-2) var(--space-3)}
+  .k-antworten>li{min-width:0;max-width:100%}
+  .k-antwort{display:flex;align-items:center;gap:var(--space-3);width:100%;max-width:100%;min-height:44px;margin:0;border:0;font:inherit;font-size:var(--text-body);color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color var(--motion-standard-dauer),box-shadow var(--motion-standard-dauer),transform var(--motion-press-dauer) var(--motion-press-kurve)}
+  .k-antwort-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);flex:1;min-width:0;overflow-wrap:break-word}
+  .k-antwort-emp{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-label);font-weight:800;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--primary-ink)}
+  .k-antwort-emp svg.i{width:14px;height:14px;fill:currentColor;stroke:currentColor;color:currentColor}
+  .k-antworten.liste .k-antwort{min-height:56px;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-4);border-radius:var(--radius-inner);background:var(--sf);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--line-strong);font-weight:600;line-height:1.4}
+  .k-antwort-pfeil{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--sf2);color:var(--primary-ink);transition:background-color var(--motion-standard-dauer),color var(--motion-standard-dauer),transform var(--motion-standard-dauer)}
+  .k-antwort-pfeil svg.i{width:16px;height:16px;stroke-width:2.2}
+  .k-antworten.liste .k-antwort.emp{background:var(--prs);box-shadow:inset 0 0 0 2px var(--pr)}
+  .k-antworten.liste .k-antwort.emp .k-antwort-pfeil{background:var(--pr);color:var(--onpr)}
+  .k-antworten.pillen .k-antwort{width:auto;padding:var(--space-2) var(--space-5);border-radius:var(--radius-pill);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-weight:700;line-height:1.2}
+  .k-antworten.pillen .k-antwort.emp{background:var(--pr);color:var(--onpr);box-shadow:var(--shadow-button)}
+  .k-antworten.pillen .k-antwort-text{flex:none;max-width:100%}
+  .k-antworten.pillen .k-antwort-emp{flex:none;padding:2px var(--space-2);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--onpr) 24%,transparent);color:inherit;letter-spacing:.04em}
+  @media (hover:hover){
+    .k-antworten.liste .k-antwort:not(:disabled,.emp):hover{background:var(--sf2);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--control)}
+    .k-antworten.liste .k-antwort:not(:disabled):hover .k-antwort-pfeil{transform:translateX(2px)}
+    .k-antworten.pillen .k-antwort:not(:disabled,.emp):hover{background:var(--sf2)}
+    .k-antworten.pillen .k-antwort.emp:not(:disabled):hover{filter:brightness(1.05)}
+  }
+  /* Am Handy dichter (11.11.2026): ganze Sätze brauchen dort drei bis vier Zeilen; Innenrand und Pfeil kleiner, Schrift bleibt 16 */
+  @media (max-width:767px){
+    .k-antworten{gap:var(--space-2)}
+    .k-antworten.liste .k-antwort{min-height:48px;padding:var(--space-2) var(--space-2) var(--space-2) var(--space-3);gap:var(--space-2);line-height:1.35}
+    .k-antwort-pfeil{width:28px;height:28px}
+  }
+  .k-antwort:active:not(:disabled){transform:scale(.98)}
+  .k-antwort:disabled{cursor:default}
+  .k-antworten:has([aria-busy]) .k-antwort:not([aria-busy]){opacity:.55}
+  .k-antwort[aria-busy] .k-antwort-pfeil{display:none}
+  .k-antwort[aria-busy]::after{content:"";flex:none;width:18px;height:18px;margin-right:var(--space-2);border-radius:50%;border:2.5px solid var(--prs);border-top-color:var(--pr);animation:kspin .8s linear infinite}
+  .k-antworten.pillen .k-antwort.emp[aria-busy]::after{border-color:color-mix(in srgb,var(--onpr) 40%,transparent);border-top-color:var(--onpr)}
+  @media (prefers-reduced-motion:reduce){.k-antwort,.k-antwort-pfeil{transition:none}.k-antwort:active:not(:disabled){transform:none}.k-antwort[aria-busy]::after{animation:none}}
+}

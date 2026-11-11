@@ -2,7 +2,7 @@
 name: pipeline
 description: "Explique le CI/CD à une personne sans connaissances préalables avec l'image du tapis roulant avec contrôle qualité, et le met en place : un workflow au port d'Albatros (Forgejo, code.aufwind.sh) démarre à chaque push sur main. L'ouvrier (runner) sur son propre serveur construit la page, la livre avec un contrôle de santé, la vérifie par l'adresse publique et revient sinon à la dernière bonne version. Utilise ce skill pour « pipeline », « CI/CD », « GitHub Actions », « Forgejo Actions », « workflow », « runner », « livrer automatiquement », « déployer », « comment ma modification arrive sur le serveur ? », « le tapis roulant est rouge », « le déploiement a échoué »."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: '9afeadd99f65'
 ---
 

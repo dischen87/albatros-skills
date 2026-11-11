@@ -54,7 +54,7 @@ test('Tabelle «Türen der Bausteine»: in jeder Sprache dieselben Pfade und Sta
 test('echte Skills in vier Sprachen: Listen von PocketBase mit der Regel, Status wie in der Tabelle', async () => {
   const soll = tabelle(await Bun.file(`${wurzel}plugins/albatros/skills/bausteine/SKILL.md`).text());
   const alle = await skills();
-  expect(alle.length).toBe(4 * 27);
+  expect(alle.length).toBe(4 * 28); // 28 Skills seit schnellstart (07.11.2026)
   // Es gibt solche Sätze (sonst prüft der Test nichts): in bausteine, lancieren und webseite-bauen je Sprache
   expect(alle.filter(({ text }) => satzteile(text).some((s) => LISTEN.test(s))).length).toBeGreaterThanOrEqual(12);
   expect(alle.flatMap(({ datei, text }) => tuerenPruefen(datei, text, soll))).toEqual([]);

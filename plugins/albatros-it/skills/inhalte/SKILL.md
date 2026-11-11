@@ -2,8 +2,8 @@
 name: inhalte
 description: "Aiuta una persona senza conoscenze tecniche a scrivere e scegliere testi e immagini per il suo sito web, nel piano di volo per la bozza di tutto il sito (P7): la pagina iniziale in tre frasi, testi brevi nel tono del concetto per chi legge sul telefonino, i testi mancanti ben visibili come [da completare], foto proprie invece di immagini di repertorio con una lista delle foto, diritti e dimensioni delle immagini, testi dell'IA riportati nella propria voce. Il risultato è una lista dei contenuti in docs/inhalte.md e i testi nella bozza. Usa lo skill con «scrivere i testi», «cosa scrivo sulla pagina iniziale», «chi siamo», «immagini per il sito», «lista delle foto», «posso usare questa immagine?», «il testo sembra scritto dall'IA», «contenuti»."
 metadata:
-  stand: 0.2.0
-  quelle: '3212c0762904'
+  stand: 0.3.0
+  quelle: '0ce83df4206d'
 ---
 
 # Contenuti: la merce in vetrina
@@ -50,7 +50,9 @@ Chi arriva sulla pagina iniziale decide in pochi secondi se restare. Le tre fras
 - Mantieni un solo modo di rivolgerti, tu o Lei, a seconda del pubblico (nel piano di volo sta in `docs/konzept.md` sotto `Ton:`).
 - Sottotitoli che si possono scorrere con lo sguardo.
 - Numeri, prezzi, orari d'apertura, indirizzo: meglio controllarli due volte. Indicazioni sbagliate costano fiducia.
-- Ciò che manca non lo inventi. Compare in modo visibile nel testo, per esempio `[da completare: orari d'apertura, li fornisce Anna entro il 7.11.2026]`, perché nessuno lo dimentichi.
+- Ciò che manca non lo inventi. Compare in modo visibile nel testo, per esempio `[da completare: orari d'apertura, li fornisce Anna entro il 7.11.2026]`, perché nessuno lo dimentichi. Mai testo Lorem o altro testo riempitivo, e mai emoji al posto delle icone.
+- I fatti come frasi che sono vere anche da sole: chi, che cosa, per chi, dove, quando è aperto, quanto costa, come si chiede. In più le cinque domande che vengono fatte più spesso, ognuna con una risposta in due o tre frasi. Così lo capisce chi ha fretta, e così lo trovano i motori di ricerca e gli assistenti IA (skill `seo-grundlagen`).
+- Niente recensioni, citazioni, numeri di clienti o riconoscimenti inventati. Ogni numero viene dalla persona o ha una fonte.
 
 ### 4. Testi con l'IA
 

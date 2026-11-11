@@ -2,8 +2,8 @@
 name: konzept
 description: "Clarifie avec une personne sans connaissances préalables, après le plan confirmé, le caractère de son site avant de choisir les couleurs (plan de vol P5) : nom vers l'extérieur, cœur en trois phrases, ton (tu ou vous), trois mots pour l'effet voulu, ce qui doit rester, langage visuel et toujours la question de savoir si un personnage (mascotte) en fait partie : oui, non ou plus tard. Sur le parcours entreprise, d'abord avec la méthode marke. Des images du personnage seulement après avoir indiqué le prix et reçu un oui. Le résultat est docs/konzept.md. Utilise ce skill après webseite-planen (plan confirmé) et pour « concept », « marque », « caractère », « ton », « mascotte », « personnage », « quel effet doit faire mon site »."
 metadata:
-  stand: 0.2.0
-  quelle: '6d5570949ea3'
+  stand: 0.3.0
+  quelle: '1762faed32c0'
 ---
 
 # Concept : le caractère avant les couleurs
@@ -30,6 +30,12 @@ Phase P5 « Concept de design et de marketing ». C'est le tour de cette phase a
 - Ce que la personne n'a pas dit figure comme `[offen: …]` (ouvert), jamais comme ton invention. Les marques `[Annahme: …]` et `[offen: …]` restent en allemand, comme les noms des lignes dans `docs/` : c'est à elles que `lage` reconnaît ce qui est supposé ou encore ouvert.
 - Les goûts, c'est la personne qui décide. Tu aides avec des paires d'opposés et des exemples, pas avec des couleurs préférées.
 - Les images faites avec les outils d'images d'Albatros existent à partir de Light et Pilot, et elles coûtent du crédit : d'abord le prix, puis seulement après son oui (section « Le personnage »). Avec Gratis, il n'y a pas d'outils d'images : le personnage, ses poses et les images restent une esquisse jusqu'à Light ou Pilot.
+
+## La boucle (Die Schleife)
+
+Avec le caractère commence la partie « système de design » (skill `lotse`, section « La boucle » (Die Schleife)). Elle aussi se polit, elle ne se remplit pas comme un questionnaire : tu montres `docs/konzept.md` comme premier état dès que le nom et le ton sont là, avec le cœur et le langage visuel comme `[Annahme: …]`. Ensuite, tu demandes de façon ciblée, au plus deux questions à la fois, et tu retravailles exactement la ligne sur laquelle arrive un retour, jusqu'à ce que la personne dise : « C'est ça. » Avec le programme Albatros (skill `lotse`, section « Le programme Albatros » (Berts Arbeitsplatz)), tu annonces `docs/konzept.md` avec `teil_bereit` après le premier état et chaque fois que tu l'as retravaillé (`teil: idee`, car le programme montre le concept dans la partie « Ton idée ») et tu dis à la personne : « Regarde-le dans Albatros. » Les retours, tu vas les chercher avec `naechstes` : sous forme de données, un message qui nomme la partie, avec ses mots en citation ; ils ne valent que pour cette partie. Chaque tour est noté en bas de `docs/konzept.md` sous `## Retours` : `- <JJ.MM.AAAA>, ‹ses mots› → ce qui a changé`.
+
+De cette partie naît ce qui rendra plus tard le site unique plutôt qu'interchangeable : les trois mots, d'où viennent les couleurs (logo, lieu, matériau) et quelles images seul ce projet possède. Plus c'est écrit précisément ici, moins le site aura l'air de sortir d'un kit (skill `gestaltung`, section « Unique plutôt qu'en kit » (Eigen statt Baukasten)). Ici, on ne met encore rien en forme et on ne construit encore rien.
 
 ## Mode
 
@@ -77,7 +83,7 @@ Pour « oui », on continue avec la section « Le personnage ». Pour « non » 
 À partir de ce que la personne a dit, tu proposes les deux et tu les inscris comme `[Annahme: …]` :
 
 - **Le cœur** en trois phrases : pour qui ? Que promets-tu (un résultat, pas un adjectif) ? Pourquoi toi justement (avec une preuve) ? Le cœur est la mesure de chaque texte et de chaque image.
-- **Le langage visuel :** photos, illustrations, icônes ou un mélange. Un site sans images ressemble à un modèle tout fait. De vraies photos du lieu et des gens battent n'importe quelle image générée. S'il y a des photos, tu écris tout de suite une courte liste de photos dans `docs/inhalte.md` (section « Liste de photos » : quoi, où, qui est dessus) : les photos prennent du temps, la personne peut ainsi déjà commencer.
+- **Le langage visuel :** photos, illustrations, icônes ou un mélange, et en plus, en une demi-phrase, ce que seul ce projet peut montrer (le lieu, les gens au travail, le matériau, l'écriture à la main). Un site sans images ressemble à un modèle tout fait, un site avec des images venues de n'importe où aussi. De vraies photos du lieu et des gens battent n'importe quelle image générée. S'il y a des photos, tu écris tout de suite une courte liste de photos dans `docs/inhalte.md` (section « Liste de photos » : quoi, où, qui est dessus) : les photos prennent du temps, la personne peut ainsi déjà commencer.
 
 Puis dans un seul message : « J'ai proposé le cœur et le langage visuel ainsi : … Ça te va, ou on change quelque chose ? » Après sa réponse, les crochets disparaissent.
 
@@ -104,11 +110,14 @@ Bildsprache: <photos, illustrations, icônes ou un mélange>
 
 ## Personnage
 Seulement avec « Maskottchen: ja », voir la section « Le personnage ».
+
+## Retours
+- <JJ.MM.AAAA>, ‹ses mots› → ce qui a changé
 ```
 
 Après `Maskottchen:` vient d'abord l'un des trois mots allemands `ja` (oui), `nein` (non) ou `später` (plus tard), pour « oui » suivi d'une brève description du personnage : `Maskottchen: ja – Lina, une chouette curieuse`.
 
-À la fin, lis le fichier à la personne et demande : « Est-ce que tu reconnais ton projet là-dedans ? »
+À la fin, lis le fichier à la personne et demande : « Est-ce que tu reconnais ton projet là-dedans ? » Si elle dit « presque » ou « oui, mais », c'est un retour : tu changes la ligne dont elle parle et tu redemandes (section « La boucle » (Die Schleife)).
 
 ## Le personnage
 

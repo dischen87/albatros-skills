@@ -1,9 +1,9 @@
 ---
 name: entwurf
-description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina del piano nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, guardato sul telefonino e sul computer. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
+description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina e ogni funzione della lista di costruzione nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, rifinito con i riscontri della persona. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
 metadata:
-  stand: 0.2.0
-  quelle: '31d8a030c617'
+  stand: 0.3.0
+  quelle: 'ebc8e728aae4'
 ---
 
 # Bozza: il modello in cui si può entrare
@@ -25,7 +25,7 @@ Come ogni officina, anche la costruzione del modello ha bisogno di attrezzi: pri
   ```
   Se manca un file o se `grep` non mostra niente (per esempio c'è ancora `Musterblatt: [offen: …]`), vai prima allo skill `gestaltung`, passo 5. Se in un progetto più vecchio `tavola dei campioni vista il <data>` sta ancora in fondo alla riga `Richtung:`, ne fai la riga `Musterblatt: gesehen am <stessa data>, passt`.
 - **Risultato di P7:** `design/entwurf/index.html` e un file per ogni altra pagina, più `docs/entwurf.md` con le righe `Werkstatt:` (officina), `Seiten:` (pagine) e `Rückmeldungen:` (riscontri). I nomi delle righe restano in tedesco, perché `lage` e gli script di verifica li leggono; il contenuto è in italiano.
-- **P7 è fatta** quando ogni pagina di `docs/plan.md` (tranne impressum e protezione dei dati) ha il suo file, continuato dalla direzione scelta; tutti i link portano a pagine esistenti; colori, caratteri e dimensioni compaiono solo come `var(--…)` da `design/tokens.css`; `entwurf-pruefen.mjs` è verde (o hai controllato lo stesso a mano) e la persona ha sfogliato tutto cliccando. Allora annunci `entwurf`.
+- **P7 è fatta** quando ogni pagina di `docs/plan.md` (tranne impressum e protezione dei dati) ha il suo file, continuato dalla direzione scelta; ogni funzione della lista di costruzione (Bauliste) compare nella bozza; tutti i link portano a pagine esistenti; colori, caratteri e dimensioni compaiono solo come `var(--…)` da `design/tokens.css`; `entwurf-pruefen.mjs` è verde (o hai controllato lo stesso a mano), `plan-pruefen.mjs --entwurf` e `design-pruefen.mjs` sono senza rosso e la persona ha sfogliato tutto cliccando. Allora annunci `entwurf`.
 - **P8 «Via libera per costruire»** (sezione «Via libera»): la domanda «Lo costruiamo così?» e la riga `Freigegeben zum Bauen:` in `docs/entwurf.md`. Allora annunci `entwurf-freigegeben`. Dopo viene P9, la costruzione (skill `webseite-bauen`); senza questa riga non costruisce.
 - **Dopo la messa online:** una modifica grande (nuova pagina, nuovo percorso) riceve prima un'aggiunta nel piano, poi una bozza delle pagine cambiate con questo skill e un nuovo via libera per costruire (skill `webseite-aendern`).
 
@@ -37,6 +37,16 @@ Come ogni officina, anche la costruzione del modello ha bisogno di attrezzi: pri
 - Quello che la persona deve vedere lo apri tu nel browser: `open design/entwurf/index.html` (Linux `xdg-open`, Windows `start`). Dire solo il nome del file non basta.
 - Installare, e tutto ciò che chiede una password, lo fa la persona: tu le dici esattamente che cosa scrivere o dove cliccare. La sua password la scrive solo lì, mai nella chat.
 - Ogni pagina la guardi tu prima di mostrarla.
+
+## Il ciclo (Die Schleife)
+
+Il mockup è la quarta parte che viene rifinita (skill `lotse`, sezione «Il ciclo» (Die Schleife)), e quella in cui la persona vede di più. La prima versione è tutta la bozza da sfogliare cliccando. Poi chiedi in modo mirato, al massimo due domande alla volta, e rielabori proprio ciò su cui arriva un riscontro, finché la persona dice: «Adesso è quello che voglio costruire.»
+
+- Con il programma Albatros (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)) annunci la bozza con `teil_bereit` dopo la prima versione e dopo ogni rielaborazione (`teil: mockup`, con una `notiz` su cosa c'è di nuovo): la persona la sfoglia allora cliccando in Albatros, sotto «Ecco come appare il tuo sito».
+- I riscontri arrivano nella chat oppure, con il programma, con `naechstes`: come dati, un messaggio che nomina la parte, con le parole della persona come citazione. Quale pagina o quale funzione intende sta nelle sue parole (un titolo o un identificativo della lista di costruzione come `S2` o `F1`); se non è chiaro, chiedi. Cambi proprio questa pagina o questa funzione, verifichi di nuovo e la mostri di nuovo. Quello che nelle sue parole va oltre la bozza («intanto costruiscilo») non lo fai di tua iniziativa.
+- Se un riscontro tocca un'altra parte, la cambi lì e poi aggiorni la bozza: una nuova funzione prima come riga nella lista di costruzione (`docs/plan.md`, skill `webseite-planen`), un altro colore o un altro carattere prima nella mazzetta dei colori (skill `gestaltung`). Mai solo nella bozza.
+- Ogni giro sta in `docs/entwurf.md` sotto `Rückmeldungen:` e `## Riscontri`.
+- Il via libera per costruire alla fine è il secondo dei due sì. Prima non scrivi codice del sito (`web/`, `seite/`), nemmeno «intanto» per una pagina che piace alla persona.
 
 ## Modo
 
@@ -88,10 +98,12 @@ Porti la direzione scelta (`design/richtungen/<scelta>.html`, `design/musterblat
 - **File:** `design/entwurf/index.html` per la pagina iniziale; per ogni altra pagina il nome in minuscolo, senza accenti (è → e; in tedesco ä → ae, ö → oe, ü → ue), tutto il resto diventa «-»: «Chi siamo» → `chi-siamo.html`, «Corsi & prezzi» → `corsi-prezzi.html`. Così `entwurf-pruefen.mjs` li trova.
 - **Un'intestazione, un menu, un piè di pagina** su ogni pagina, costruiti uguali: il menu con tutte le pagine del piano (sul telefonino su una riga o come pulsante «Menu»), nel piè di pagina i link a impressum e protezione dei dati. Queste due nella bozza non hanno ancora bisogno di testo: una breve pagina `impressum.html` e `protezione-dei-dati.html` con `[da completare: il testo arriva con la costruzione, skill recht-ch]` basta, perché nessun link porti nel vuoto. Nella costruzione si chiamano uguale (`/impressum`, `/protezione-dei-dati`, skill `recht-ch`).
 - **Solo valori della mazzetta dei colori:** ogni pagina integra `../tokens.css` e `../komponenten.css`; il CSS proprio per la struttura delle pagine va in `design/entwurf/entwurf.css`. Colori, caratteri, dimensioni dei caratteri, spaziature, arrotondamenti e ombre compaiono solo come `var(--…)`. Se manca un valore, lo aggiungi prima in `design/tokens.css` (e nella tavola dei campioni), mai in una pagina.
-- **Gli stati di ogni funzione:** Per ogni funzione di `Funktionen:` in `docs/plan.md` mostri che cosa succede dopo il clic: la **conferma** (che cosa è successo, che cosa viene dopo, come annullarlo), l'**errore** (a parole, con «Riprova», ciò che è stato scritto resta lì) e lo **stato vuoto** (una frase e un pulsante invece di una lista vuota). Ogni stato è una pagina a sé, per esempio `contatto-confermato.html`, `contatto-errore.html`, `date-vuoto.html`. Un modulo punta con `action="contatto-confermato.html"` alla sua conferma; così il clic funziona anche senza un programma dietro. Una pagina `zustaende.html` (non nel menu) elenca tutti gli stati con dei link, perché la persona li trovi.
+- **Ogni funzione della lista di costruzione, con il suo identificativo:** il punto in cui si mostra una funzione della lista di costruzione in `docs/plan.md` (il modulo, il pulsante, la lista) porta l'attributo `data-bauliste` con il suo identificativo: `<form data-bauliste="F1" action="contatto-confermato.html">`. Se un punto ne mostra più di una, stanno separate da spazi (`data-bauliste="F1 F3"`). Compaiono anche le voci `Kann` (può arrivare dopo), altrimenti la persona decide su qualcosa che non ha mai visto; se una non deve proprio entrare nel primo volo, sta scritto con il motivo in `docs/entwurf.md`. Durante la costruzione l'attributo resta nel markup, così più tardi si può verificare se tutto è costruito.
+- **Gli stati di ogni funzione:** Per ogni funzione della lista di costruzione (in breve in `Funktionen:` in `docs/plan.md`) mostri che cosa succede dopo il clic: la **conferma** (che cosa è successo, che cosa viene dopo, come annullarlo), l'**errore** (a parole, con «Riprova», ciò che è stato scritto resta lì) e lo **stato vuoto** (una frase e un pulsante invece di una lista vuota). Ogni stato è una pagina a sé, per esempio `contatto-confermato.html`, `contatto-errore.html`, `date-vuoto.html`. Un modulo punta con `action="contatto-confermato.html"` alla sua conferma; così il clic funziona anche senza un programma dietro. Una pagina `zustaende.html` (non nel menu) elenca tutti gli stati con dei link, perché la persona li trovi.
 - **Le pagine dei blocchi come simulazione:** se il piano ha bisogno di un blocco (`Setup:`, skill `bausteine`: lista di iscrizione, prenotazioni, accesso, bacheca), progetti le sue pagine allo stesso modo, con intestazione, menu e piè di pagina: per esempio `prenotare.html` con le date, `prenotare-confermato.html`, `prenotare-completo.html` («Questo posto è appena stato preso»), `prenotare-vuoto.html` e «Le mie prenotazioni» (`verwaltung.html`, non nel menu). Sembrano vere ma ancora non funzionano; si costruiscono in P9 dalla ricetta del blocco.
 - **Il personaggio,** se in `docs/konzept.md` c'è `Maskottchen: ja`: solo nei punti indicati lì (benvenuto, successo, vuoto), come immagine da `design/figur/` o come schizzo. Mai con errori.
 - **Immagini:** foto proprie dalla lista delle foto in `docs/inhalte.md` in `design/entwurf/bilder/`, altrimenti una superficie grigia con `alt="[da completare: foto …]"`. Ogni `<img>` ha `width`, `height` e una descrizione.
+- **Unico, non fatto con lo stampino:** valgono i criteri dello skill `gestaltung`, sezione «Unico, non fatto con lo stampino» (Eigen statt Baukasten): niente titolo centrato con due pulsanti come testata, niente emoji come icone, niente testi Lorem, niente schede tutte della stessa grandezza. Movimento e 3D solo come nella sezione «Movimento e 3D» (Bewegung und 3D) di quello skill: ogni movimento con la sua frase in `docs/designsystem.md` e con riguardo per «Riduci movimento», il 3D solo con un'immagine ferma (`data-3d-standbild`) e caricato solo quando serve.
 - **Costruito per il telefonino:** `<meta name="viewport" content="width=device-width, initial-scale=1">` in ogni pagina, nessuno scorrimento laterale a 390 px, pulsanti alti almeno 44 px.
 - **Link** sempre con il percorso dalla pagina e con `.html` (`contatto.html`, `../index.html`), mai con «/» all'inizio e mai verso una cartella: la bozza si apre come file, senza server.
 
@@ -112,7 +124,16 @@ Dà un semaforo per ogni ambito e finisce con 1 se c'è del rosso. I suoi messag
 - **Farbfächer (mazzetta dei colori):** colori, caratteri e dimensioni solo come `var(--…)` da `design/tokens.css`, anche nella tavola dei campioni e in `komponenten.css`; ogni `var(--…)` esiste; ogni commento di contrasto in `tokens.css` è ricalcolato.
 - **Menü, Handy und Notizen (menu, telefonino e note):** lo stesso menu su ogni pagina, la riga per il telefonino (`viewport`), il numero di `[da completare]`, le righe in `docs/entwurf.md`.
 
-Rosso vuol dire: correggere e verificare di nuovo, finché niente è più rosso. Il giallo resta solo con un motivo in `docs/entwurf.md`. **Senza Node** verifichi lo stesso a mano, pagina per pagina: ogni pagina del piano come file; ogni `href`, `src` e `action` contro la lista dei file (`ls design/entwurf`); nel CSS e in `style="…"` niente `#…`, `rgb(`, `hsl(`, nomi di colori, niente `font-family` tranne `var(--…)` e niente numeri con `px`, `rem` o `em` per caratteri, spaziature, arrotondamenti e ombre; ogni commento di contrasto ricalcolato con la formula dello skill `barrierefreiheit`. Poi scrivi `verifica a mano` con la data in `docs/entwurf.md`.
+In più girano i due script degli skill `webseite-planen` e `gestaltung` (copiati lì; se mancano in `scripts/`, li prendi come sopra dalla cartella del rispettivo skill):
+
+```bash
+node scripts/plan-pruefen.mjs --entwurf     # funzionalità complete: ogni pagina e ogni funzione della lista di costruzione compare nella bozza
+node scripts/design-pruefen.mjs             # unico, non fatto con lo stampino: carattere, mondo dei colori, testi, testata, movimento, 3D, peso
+```
+
+Se nella bozza manca una voce `Muss` (deve esserci) della lista di costruzione, è rosso; una voce `Kann`, giallo. Poi viene quello che nessuno script vede: l'autoverifica e il secondo parere in un contesto nuovo (skill `gestaltung`, sezione «Autoverifica e secondo parere» (Selbstprüfung und zweite Meinung)), con il risultato in `docs/entwurf.md` sotto `## Verifica`.
+
+Rosso vuol dire: correggere e verificare di nuovo, finché niente è più rosso. Il giallo resta solo con un motivo in `docs/entwurf.md`. **Senza Node** verifichi lo stesso a mano, pagina per pagina: ogni pagina del piano come file; ogni `href`, `src` e `action` contro la lista dei file (`ls design/entwurf`); nel CSS e in `style="…"` niente `#…`, `rgb(`, `hsl(`, nomi di colori, niente `font-family` tranne `var(--…)` e niente numeri con `px`, `rem` o `em` per caratteri, spaziature, arrotondamenti e ombre; ogni commento di contrasto ricalcolato con la formula dello skill `barrierefreiheit`; ogni riga della lista di costruzione contro le pagine (dov'è mostrata?); la lista dello skill `gestaltung`, sezione «Unico, non fatto con lo stampino» (Eigen statt Baukasten). Poi scrivi `verifica a mano` con la data in `docs/entwurf.md`.
 
 ### 5. Mostrare: sul telefonino e sul computer
 
@@ -130,9 +151,9 @@ Poi apri `design/entwurf/index.html` e `design/entwurf/zustaende.html` per la pe
 
 ### 6. Riscontri (`Rückmeldungen:`)
 
-Chiedi: «Clicca dappertutto, sul telefonino e sul computer: che cosa manca, che cosa disturba?» Perché: adesso una modifica è una frase; dopo la costruzione è una ristrutturazione. Ogni riscontro va con la data e le sue parole in `docs/entwurf.md`; tu cambi la bozza, verifichi di nuovo con `entwurf-pruefen.mjs` e la mostri di nuovo. Sul percorso attività ne fa parte il test dei cinque secondi del metodo `landingpage`: la persona mostra la prima schermata sul telefonino a due o tre persone del pubblico; anche le loro risposte vanno sotto `Rückmeldungen:`.
+Chiedi: «Clicca dappertutto, sul telefonino e sul computer: che cosa manca, che cosa disturba?» Perché: adesso una modifica è una frase; dopo la costruzione è una ristrutturazione. Ogni riscontro va con la data e le sue parole in `docs/entwurf.md`; tu cambi proprio la pagina o la funzione che intende, verifichi di nuovo con i tre script e la mostri di nuovo (sezione «Il ciclo»). Se non chiede niente e dice solo «bene», la aiuti con due domande mirate, per esempio: «Sulla pagina iniziale trovi in cinque secondi che cosa offri?» e «Nella richiesta manca un campo che ti serve?» Sul percorso attività ne fa parte il test dei cinque secondi del metodo `landingpage`: la persona mostra la prima schermata sul telefonino a due o tre persone del pubblico; anche le loro risposte vanno sotto `Rückmeldungen:`.
 
-Quando niente è più rosso e alla persona non manca né disturba più niente, annunci `entwurf` (sezione «L'isola») e passi al via libera.
+Si va avanti per tutti i giri che servono. Quando niente è più rosso e alla persona non manca né disturba più niente, annunci `entwurf` (sezione «L'isola») e passi al via libera.
 
 ### docs/entwurf.md
 
@@ -159,6 +180,8 @@ Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›
 
 ## Verifica
 - <GG.MM.AAAA>: entwurf-pruefen.mjs verde (oppure: verifica a mano)
+- <GG.MM.AAAA>: plan-pruefen.mjs --entwurf: <numero> di <numero> voci della lista di costruzione; design-pruefen.mjs <verde | giallo, perché …>
+- <GG.MM.AAAA>: secondo parere (<IA e modo>): <numero> ok, <numero> rischio, <numero> aperto
 ```
 
 La riga `Freigegeben zum Bauen:` (via libera per costruire) si aggiunge solo con il via libera.
@@ -173,6 +196,7 @@ Dille in tre o quattro frasi che cosa c'è nella bozza (le pagine, le funzioni c
 
 - **Vale solo un sì chiaro alla costruzione:** «Sì», «Sì, costruiscilo così», «Sì, vai», «D'accordo, costruiamo». Un complimento da solo non è un via libera: a «sembra bello» o «carino» chiedi una volta: «Mi fa piacere. Vuol dire: sì, lo costruiamo così?»
 - **«Sì, ma …»** non è un via libera: prima cambiare, mostrare di nuovo, chiedere di nuovo.
+- Con il programma Albatros chiedi il sì con `ja_moment` (`entwurf`); la riga la scrive allora il programma, quando la persona clicca in Albatros su «Sì, confermo» (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)).
 - Dopo il sì scrivi in `docs/entwurf.md` la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›`, per esempio `Freigegeben zum Bauen: 31.10.2026, ‹Sì, costruiscilo così›`, e annunci `entwurf-freigegeben`. Le parole `Freigegeben zum Bauen:` restano in tedesco, perché la costruzione le cerca. La data viene davanti, in cifre: senza data, con `[Annahme: …]` o con «non ancora» la riga non conta come sì, né per `lage` né per `pruefen.mjs --vor-bau`.
 - **Se la bozza cambia dopo il via libera,** questo non vale più: trasforma la riga in `Früher freigegeben zum Bauen: …` (via libera precedente), cambia, mostra di nuovo e chiedi di nuovo. Così la riga `Freigegeben zum Bauen:` vuol sempre dire: proprio questa bozza ha il via libera.
 
@@ -184,7 +208,9 @@ Dopo il passo 6 chiami lo strumento `schritt_melden` con `schritt: entwurf` e `s
 
 ## Trappole
 
-- **Progettate solo due o tre pagine:** le lacune si vedono allora solo durante la costruzione. Ogni pagina del piano fa parte della bozza.
+- **Progettate solo due o tre pagine:** le lacune si vedono allora solo durante la costruzione. Ogni pagina e ogni funzione della lista di costruzione fa parte della bozza.
+- **Un giro, poi il via libera:** la prima versione è di rado quella che la persona vuole costruire. Chiedi in modo mirato finché lo dice.
+- **Una testata come dappertutto:** titolo centrato, una riga, due pulsanti. `design-pruefen.mjs` la segnala in rosso.
 - **Solo il percorso in cui tutto va bene:** mancano conferma, errore e lista vuota. Un buon sito non va in pezzi quando c'è un errore.
 - **Testi inventati:** ciò che manca compare come [da completare], perché nessuno lo dimentichi.
 - **Colori o spaziature direttamente in una pagina:** allora la bozza mostra altro rispetto alla tavola dei campioni, e la costruzione eredita l'errore.

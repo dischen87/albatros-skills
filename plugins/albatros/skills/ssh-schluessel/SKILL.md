@@ -2,7 +2,7 @@
 name: ssh-schluessel
 description: 'Erklärt einer Person ohne Vorwissen den SSH-Schlüssel mit dem Bild von Hausschlüssel und Schloss, erzeugt das Schlüsselpaar lokal auf ihrem Computer, hinterlegt nur den öffentlichen Teil bei Albatros und testet den ersten Besuch auf dem Server. Nutze den Skill bei «SSH-Schlüssel», «ssh-keygen», «ich komme nicht auf meinen Server», «Permission denied (publickey)», «was ist ein public key», «neuer Computer», und als Schritt 4 von /albatros:start.'
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
 ---
 
 # SSH-Schlüssel: Hausschlüssel und Schloss

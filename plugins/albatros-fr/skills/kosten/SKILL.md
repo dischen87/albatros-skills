@@ -2,7 +2,7 @@
 name: kosten
 description: "Tient avec la personne un cahier de comptes honnête pour son projet : abonnement Albatros (seulement dès le domicile, jusqu'au site sur son propre ordinateur Albatros est gratuit), domaine, abonnement IA, e-mail, services en plus, un fournisseur ou un propre serveur par soi-même. Prix d'Albatros seulement depuis konto_status. Explique quels coûts sont fixes et lesquels varient, comment éviter les mauvaises surprises et quand un déménagement vaut la peine. Utilise ce skill pour « ça coûte combien ? », « coûts », « prix », « trop cher », « budget », « facture », « est-ce que ça vaut la peine ? », « combien coûte un serveur ? », et avant que la personne ajoute un nouveau service payant."
 metadata:
-  stand: 0.2.0
+  stand: 0.3.0
   quelle: 'da041e2a8b74'
 ---
 
