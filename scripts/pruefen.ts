@@ -13,6 +13,7 @@ import { guteAntwort, ZIEL } from './gute-antwort.ts';
 import { lektionenFehlen } from './lektionen.ts';
 import { ladeFragen, missionsverweise, type SkillText } from './missionsverweise.ts';
 import { hoeher, KOPF_SCHLUESSEL, KOPF_STAND, kopfzeileStand, quelle } from './stand.ts';
+import { pruefeVerzeichnisse } from './verzeichnisse.ts';
 
 type Mission = {
   id: string;
@@ -329,6 +330,8 @@ for (const p of (await Bun.file(wurzel + '.claude-plugin/marketplace.json').json
     fehler.push(`${ordner}/.mcp.json: Server albatros-arbeitsplatz muss node \${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp starten`);
   if (!(await Bun.file(`${wurzel}${ordner}/arbeitsplatz/README.md`).exists())) fehler.push(`${ordner}/arbeitsplatz/README.md fehlt`);
 }
+// Plugin-Verzeichnisse von Claude, Cursor sowie ChatGPT und Codex (scripts/verzeichnisse.ts, docs/verzeichnisse.md)
+fehler.push(...(await pruefeVerzeichnisse(wurzel)));
 const VORSCHAU = 'plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs';
 if ((await lies(VORSCHAU)) !== (await lies('vorlage/werkzeuge/albatros-vorschau.mjs'))) fehler.push(`vorlage/werkzeuge/albatros-vorschau.mjs: anders als ${VORSCHAU}`);
 
