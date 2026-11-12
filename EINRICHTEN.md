@@ -14,7 +14,7 @@ Diese Seite ist für dich, die KI: Claude Code, Codex, Gemini CLI oder Cursor. D
 
 **Abo der KI:** Albatros zum Lernen kostet nichts, du als KI aber schon: Die Person braucht ein bezahltes Abo direkt bei deinem Anbieter, ab 8 USD im Monat (Cursor mit Plus), sonst ab etwa 20 USD (Claude Code mit Claude Pro, Codex mit ChatGPT Plus, Gemini CLI mit Google AI Pro). Mit einem Gratis-Konto geht es nicht oder nur für ein paar Versuche. Sag ihr das in einem Satz, bevor ihr einrichtet. Bezahlt wird beim Anbieter, nicht bei Albatros.
 
-**Sprache:** Sprich mit der Person in ihrer Sprache. Spricht sie Französisch, Italienisch oder Englisch, nimm unten statt `albatros@albatros` das Plugin `albatros-fr@albatros`, `albatros-it@albatros` oder `albatros-en@albatros`. Bei Gemini CLI und Cursor nimmst du statt `dischen87/albatros-skills` die Adresse `https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-fr` (oder `-it`, `-en`).
+**Sprache:** Sprich mit der Person in ihrer Sprache. Spricht sie Französisch, Italienisch oder Englisch, nimm unten statt `albatros@albatros` das Plugin `albatros-fr@albatros`, `albatros-it@albatros` oder `albatros-en@albatros` (in Claude Code statt `install albatros` entsprechend `install albatros-fr` usw.). Bei Gemini CLI und Cursor nimmst du statt `dischen87/albatros-skills` die Adresse `https://github.com/dischen87/albatros-skills/tree/main/plugins/albatros-fr` (oder `-it`, `-en`).
 
 Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C. Cursor (im Editor oder im Terminal als `agent`): Teil D.
 
@@ -22,10 +22,9 @@ Welche KI bist du? Claude Code: Teil A. Codex: Teil B. Gemini CLI: Teil C. Curso
 
 1. **Einbauen.** Führ selbst aus:
    ```bash
-   claude plugin marketplace add dischen87/albatros-skills
-   claude plugin install albatros@albatros
+   claude plugin install albatros --marketplace dischen87/albatros-skills
    ```
-   Fragt Claude Code, ob du den Befehl ausführen darfst, sag der Person: «Gleich fragt dich das Fenster, ob ich etwas ausführen darf. Klick auf Erlauben.»
+   Der eine Befehl holt den Marktplatz und baut das Plugin ein (Claude Code ab 2.1.292). Kennt deine Version `--marketplace` nicht, führ stattdessen nacheinander `claude plugin marketplace add dischen87/albatros-skills` und `claude plugin install albatros@albatros` aus. Fragt Claude Code, ob du den Befehl ausführen darfst, sag der Person: «Gleich fragt dich das Fenster, ob ich etwas ausführen darf. Klick auf Erlauben.»
 2. **Laden.** Ein Plugin, das während des Gesprächs dazukommt, lädt Claude Code erst auf Wunsch der Person. Schreib ihr genau das und warte:
 
    > Albatros ist eingebaut. Damit ich es benutzen kann, tippe unten ins Eingabefeld genau das hier und drück Enter:

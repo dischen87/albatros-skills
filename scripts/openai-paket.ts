@@ -6,13 +6,15 @@
 //   headers»), dazu die Anmeldung über OAuth mit CIMD (Rückfall DCR) unter extensions.com.openai.auth. Ohne Kopfzeile schickt die KI den
 //   Stand der Skills als skills_stand bei lage mit, wie bei Gemini CLI und Cursor (Skills start und lotse).
 // - Ohne Berts Arbeitsplatz: ein lokaler MCP-Server macht das Plugin zu «desktop-only» (eigener Weg, developers.openai.com/plugins/deploy/desktop-only).
-// - Ohne evals/, .claude-plugin/, .cursor-plugin/ und mcp.json von Cursor: Sie gehören zu den anderen Verzeichnissen und zum Prüfen hier.
+// - Ohne evals/, .claude-plugin/, .cursor-plugin/, mcp.json von Cursor und README.md: Sie gehören zu den anderen Verzeichnissen und zum Prüfen hier.
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { dateien, MCP_URL, OPENAI_PLUGIN } from './verzeichnisse.ts';
 
-const MIT = ['.codex-plugin', 'skills', 'assets', 'README.md'];
+// Ohne README.md: Sie beschreibt Kopfzeile und Arbeitsplatz des Plugins im Repo, die das Paket nicht hat; den Text des Eintrags liest
+// OpenAI aus interface.
+const MIT = ['.codex-plugin', 'skills', 'assets'];
 
 export async function baueOpenaiPaket(wurzel: string, plugin: string, ziel: string) {
   const quelle = `${wurzel.replace(/\/$/, '')}/plugins/${plugin}`;

@@ -86,7 +86,7 @@ test('ChatGPT und Codex: zu lange Texte, falsches Werkzeug, fehlende Fälle, alt
   ]);
 });
 
-test('Paket für OpenAI: nur Skills, Manifest, Bild und README, ein Server ohne Kopfzeilen', async () => {
+test('Paket für OpenAI: nur Skills, Manifest und Bild, ein Server ohne Kopfzeilen', async () => {
   const ziel = neu('openai-paket');
   await baueOpenaiPaket(wurzel, 'albatros-en', ziel);
   expect(await pruefeOpenaiPaket(ziel)).toEqual([]);
