@@ -49,11 +49,22 @@ Getestet am 28.10.2026:
 - **Gemini CLI:** nicht getestet, nach der Dokumentation.
 - **Cursor:** nach der Dokumentation (29.10.2026). Clerk nimmt die Rücksprünge von Cursor an (`http://localhost:8787/callback`, ältere Versionen `cursor://anysphere.cursor-mcp/oauth/callback`). Der Einbau ohne Anmeldung läuft im Check `einbau`.
 
+### Ein Befehl oder ein Klick
+
+| Wo | So | Stand |
+|---|---|---|
+| Claude Code ab 2.1.292 | `claude plugin install albatros --marketplace dischen87/albatros-skills` (im Programm: `/plugin install albatros --marketplace dischen87/albatros-skills`) | geht; gemessen am 12.11.2026 mit 2.1.321 in leerem `CLAUDE_CONFIG_DIR`, gegen GitHub (`main`) und gegen diesen Zweig |
+| claude.ai, Cowork und Claude Code | im Verzeichnis von Claude «Albatros» hinzufügen | ein Klick, sobald Albatros dort steht (Einreichung: [docs/verzeichnisse.md](docs/verzeichnisse.md)) |
+| Cursor | im Marktplatz von Cursor «Albatros» installieren | ein Klick, sobald Albatros dort steht; bis dahin Teil D in EINRICHTEN.md |
+| ChatGPT und Codex | im Plugin-Verzeichnis von ChatGPT und Codex «Albatros» hinzufügen | ein Klick, sobald Albatros dort steht; in Codex CLI bis dahin die zwei Befehle unten |
+
+Was die drei Verzeichnisse verlangen, was erfüllt ist und was offen, steht in [docs/verzeichnisse.md](docs/verzeichnisse.md); `bun run pruefen` prüft die Manifeste dafür (`scripts/verzeichnisse.ts`).
+
 Von Hand, für alle, die selbst tippen wollen:
 
 | KI | Befehle |
 |---|---|
-| Claude Code | `/plugin marketplace add dischen87/albatros-skills`, `/plugin install albatros@albatros`, dann `/mcp`, `albatros`, «Authenticate» |
+| Claude Code | `/plugin install albatros --marketplace dischen87/albatros-skills` (ab 2.1.275; älter: `/plugin marketplace add dischen87/albatros-skills`, `/plugin install albatros@albatros`), dann `/mcp`, `albatros`, «Authenticate» |
 | Codex | `codex plugin marketplace add dischen87/albatros-skills`, `codex plugin add albatros@albatros`, `codex mcp login albatros` |
 | Gemini CLI | `npx skills add dischen87/albatros-skills -a gemini-cli -g -y --skill '*'`, `gemini mcp add --transport http -s user albatros https://mcp.albatros.build`, im Programm `/mcp auth albatros` |
 | Cursor | `npx skills add dischen87/albatros-skills -a cursor -g -y --skill '*'`, in `~/.cursor/mcp.json` unter `mcpServers` der Eintrag `"albatros": { "url": "https://mcp.albatros.build" }`, dann `agent mcp login albatros` oder im Editor unter MCP anmelden |
@@ -109,8 +120,13 @@ Die Werkzeuge von Albatros antworten auf Deutsch; die Skills sagen der KI, dass 
 
 ```
 .claude-plugin/marketplace.json     Marktplatz «albatros» mit vier Plugins: albatros (Deutsch), albatros-fr, albatros-it, albatros-en
+.cursor-plugin/marketplace.json     dieselben vier Plugins für Cursor (docs/verzeichnisse.md)
 plugins/albatros/
-  .claude-plugin/plugin.json
+  .claude-plugin/plugin.json        mit icon und den Adressen fürs Verzeichnis von Claude (Datenschutz, AGB, Hilfe, Anleitung)
+  .cursor-plugin/plugin.json        Plugin für Cursor; mcp.json daneben: nur die Verbindung zu Albatros, mit der Kopfzeile X-Albatros-Skills-Stand
+  .codex-plugin/plugin.json         Codex-Format für ChatGPT und Codex (interface; bei albatros-en dazu Testfälle und Übersetzungen für die Einreichung)
+  assets/icon.png                   Zeichen 512 px (aus albatros apps/web/public/logo/zeichen-512.png), Icon in allen drei Verzeichnissen
+  README.md                         was das Plugin enthält, startet und wohin es sich verbindet (die Verzeichnisse zeigen sie an)
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk), mit der Kopfzeile X-Albatros-Skills-Stand (Abschnitt «Aktualisieren»),
                                     und albatros-arbeitsplatz (stdio: node ${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp, Abschnitt «Berts Arbeitsplatz»)
   arbeitsplatz/                     Bündel von Berts Arbeitsplatz aus albatros apps/arbeitsplatz (bun run buendeln --nach …), seit 0.3.0 im Repo: das Plugin wird über git verteilt
@@ -144,6 +160,8 @@ scripts/bewertung.ts                Grader ohne Modell wie in plugin eval, mit B
 scripts/testseiten/                 Fälle für pruefen.mjs (--vor-bau, --tueren, --vergleich, Tokens, Recht fr und it), je mit erwartet.json: bun scripts/testseiten/test.ts
 scripts/gute-antwort.ts             erzeugt evals/GUTE-ANTWORT.md
 scripts/einbau-test.sh              Einbau nach EINRICHTEN.md in einem leeren Home
+scripts/verzeichnisse.ts            Regeln der Plugin-Verzeichnisse von Claude, Cursor sowie ChatGPT und Codex (in pruefen.ts; Fehlerfälle in verzeichnisse.test.ts)
+scripts/openai-paket.ts             ZIP für die Einreichung bei ChatGPT und Codex: Skills, Manifest, Icon, eine Verbindung ohne Kopfzeilen, ohne Arbeitsplatz
 scripts/durchspiel.ts               Durchspiel-Test (Abschnitt «Durchspiel-Test»)
 ```
 
@@ -240,7 +258,8 @@ bun bausteine/pocketbase/rezepte/buchungen/test.ts   # Rezepte und Eingang gegen
 bun bausteine/pocketbase/rezepte/mitglieder/test.ts
 bun bausteine/eingang/test.ts
 claude plugin validate .              # Marktplatz
-for p in albatros albatros-fr albatros-it albatros-en; do claude plugin validate plugins/$p; done   # jedes Plugin
+for p in albatros albatros-fr albatros-it albatros-en; do claude plugin validate --strict plugins/$p; done   # jedes Plugin, mit den Prüfungen fürs Verzeichnis (ab 2.1.281)
+bun scripts/openai-paket.ts <ziel.zip>   # ZIP für ChatGPT und Codex aus albatros-en, Ziel ausserhalb des Repos (docs/verzeichnisse.md)
 QUELLE=$PWD bash scripts/einbau-test.sh   # Einbau nach EINRICHTEN.md in leerem Home (CI: Job einbau)
 ```
 
