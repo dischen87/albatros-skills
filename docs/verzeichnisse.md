@@ -129,3 +129,5 @@ Prompts: “Start Albatros.”, “I want a website for my flower shop.”, “W
 ## Version
 
 Bleibt 0.3.0: Unter `plugins/*/skills` hat sich nichts geändert, und neu sind nur Manifeste, README, Icon und `mcp.json` für Cursor. Wer 0.3.0 schon hat, behält die alte Kopie ohne diese Dateien; das ändert nichts an Skills und Verbindung. `SKILLS_STAND` in der Plattform bleibt.
+
+Nachtrag 12.11.2026: Version 0.3.1 (Skills `gestaltung` und `inhalte` mit dem Leitfaden frontend-design und Regeln aus ux-copy von Anthropic); die Manifeste für Codex und Cursor und `mcp.json` nennen 0.3.1 wie `plugin.json`.
