@@ -28,6 +28,7 @@
   svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
   svg.i.s{width:16px;height:16px}svg.i.l{width:24px;height:24px}svg.i.xl{width:32px;height:32px;stroke-width:1.6}
   svg.i.sp{color:var(--as);fill:var(--as);stroke:var(--as);stroke-width:1.2}
+  svg.i.fe{color:var(--as);stroke-width:1.7}.btn svg.i.fe{color:inherit} /* Feder: Zeichen für Bert (im Knopf in der Farbe der Schrift) */
   svg.i.f{fill:currentColor}
   svg.logo{height:28px;width:164px;flex:none;color:var(--ink)}
   svg.logo.s{height:22px;width:129px}
@@ -743,11 +744,16 @@
   .steps.bahn>li>i{position:relative;z-index:1;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-style:normal;font-size:12.5px;background:var(--sf2);color:var(--mu);box-shadow:0 0 0 var(--space-1) var(--bahn-grund)}
   .steps.bahn>li>span{max-width:100%;overflow-wrap:break-word;hyphens:manual} /* keine Silbentrennung («Angemel-det»); Umbruch nur zwischen Wörtern */
   @media (max-width:767px){.steps.bahn.sm>li{font-size:var(--text-label);padding:0 2px}}
-  .steps.bahn>li+li::before{content:"";position:absolute;top:12px;right:50%;width:100%;height:2px;border-radius:1px;background:var(--ln)}
+  .steps.bahn>li+li::before{content:"";position:absolute;top:12px;right:50%;width:100%;height:2px;border-radius:1px;background:repeating-linear-gradient(90deg,var(--line-strong) 0 6px,transparent 6px 11px)}
   .steps.bahn>li.done+li::before{background:var(--ok)}
   .steps.bahn>li.done>i{background:var(--oks);color:var(--oki)}
   .steps.bahn>li.now{color:var(--ink)}
   .steps.bahn>li.now>i{background:var(--pr);color:var(--onpr);box-shadow:0 0 0 var(--space-1) var(--bahn-grund),0 0 0 calc(var(--space-1) + 3px) var(--prs)}
+  .steps.bahn>li.now+li::before{background:repeating-linear-gradient(90deg,var(--pr) 0 6px,transparent 6px 11px)} /* die Strecke, die gerade geflogen wird */
+  /* Bert am aktuellen Schritt (Steps zeichen): die Scheibe etwas grösser, sie sitzt mittig auf der Linie */
+  .steps.bahn>li>i.zeichen{width:28px;height:28px;margin:-3px 0;padding:0;background:none;overflow:hidden} /* nimmt so viel Höhe wie die Zahl: die Namen stehen auf einer Linie */
+  .steps.bahn:has(i.zeichen)>li{gap:var(--space-2)} /* Platz für den Hof um Bert, für alle Namen gleich */
+  .steps.bahn>li>i.zeichen>svg{width:100%;height:100%}
   /* Der Pfeil liegt über dem rechten Rand der Auswahl: Platz lassen, damit kurze Auswahlen den Text nicht überdecken */
   .ctl:has(>.caret) select{padding-right:26px}
 }
@@ -1388,7 +1394,7 @@
   .k-antworten>li{min-width:0;max-width:100%}
   .k-antwort{display:flex;align-items:center;gap:var(--space-3);width:100%;max-width:100%;min-height:44px;margin:0;border:0;font:inherit;font-size:var(--text-body);color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color var(--motion-standard-dauer),box-shadow var(--motion-standard-dauer),transform var(--motion-press-dauer) var(--motion-press-kurve)}
   .k-antwort-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);flex:1;min-width:0;overflow-wrap:break-word}
-  .k-antwort-emp{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-label);font-weight:800;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--primary-ink)}
+  .k-antwort-emp{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-small);font-weight:700;line-height:1.3;color:var(--primary-ink)} /* Satzschreibung, keine Grossbuchstaben (Leitfaden frontend-design, 12.11.2026) */
   .k-antwort-emp svg.i{width:14px;height:14px;fill:currentColor;stroke:currentColor;color:currentColor}
   .k-antworten.liste .k-antwort{min-height:56px;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-4);border-radius:var(--radius-inner);background:var(--sf);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--line-strong);font-weight:600;line-height:1.4}
   .k-antwort-pfeil{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--sf2);color:var(--primary-ink);transition:background-color var(--motion-standard-dauer),color var(--motion-standard-dauer),transform var(--motion-standard-dauer)}
@@ -1398,7 +1404,7 @@
   .k-antworten.pillen .k-antwort{width:auto;padding:var(--space-2) var(--space-5);border-radius:var(--radius-pill);background:var(--sf);box-shadow:inset 0 0 0 1.5px var(--control);font-weight:700;line-height:1.2}
   .k-antworten.pillen .k-antwort.emp{background:var(--pr);color:var(--onpr);box-shadow:var(--shadow-button)}
   .k-antworten.pillen .k-antwort-text{flex:none;max-width:100%}
-  .k-antworten.pillen .k-antwort-emp{flex:none;padding:2px var(--space-2);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--onpr) 24%,transparent);color:inherit;letter-spacing:.04em}
+  .k-antworten.pillen .k-antwort-emp{flex:none;padding:2px var(--space-2);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--onpr) 24%,transparent);color:inherit}
   @media (hover:hover){
     .k-antworten.liste .k-antwort:not(:disabled,.emp):hover{background:var(--sf2);box-shadow:var(--shadow-raised),inset 0 0 0 1px var(--control)}
     .k-antworten.liste .k-antwort:not(:disabled):hover .k-antwort-pfeil{transform:translateX(2px)}
