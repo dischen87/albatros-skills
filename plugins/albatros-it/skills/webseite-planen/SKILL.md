@@ -2,7 +2,7 @@
 name: webseite-planen
 description: "Da caricare per primo con «costruiscimi un sito per …» e «voglio un sito web»: prima pianificare e mostrare, non si costruisce ancora niente. Pianifica con una persona senza conoscenze tecniche il suo sito web in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md, schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, docs/recherche.md), pianta (pagine, funzioni come lista di costruzione, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill anche con «pianificare un sito web», «da dove comincio», «quali pagine mi servono», «sitemap», «funzionalità», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: '26e9feb9d007'
 ---
 

@@ -2,7 +2,7 @@
 name: ssh-schluessel
 description: "Explique la clé SSH à une personne sans connaissances préalables avec l'image de la clé de la maison et de la serrure, crée la paire de clés en local sur son ordinateur, ne dépose chez Albatros que la partie publique et teste la première visite sur le serveur. Utilise ce skill pour « clé SSH », « ssh-keygen », « je n'arrive pas à me connecter à mon serveur », « Permission denied (publickey) », « c'est quoi une clé publique ? », « j'ai un nouvel ordinateur », et comme étape 4 de /albatros-fr:start."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: 'f920c0e1e021'
 ---
 

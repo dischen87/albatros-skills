@@ -2,7 +2,7 @@
 name: kosten
 description: "Con la persona tiene un libro dei conti di casa onesto per il suo progetto: abbonamento Albatros (solo dal domicilio, fino al sito sul proprio computer Albatros è gratis), dominio, abbonamento all'IA, e-mail, servizi aggiuntivi, un fornitore o un server proprio se se ne occupa da sé. Prezzi di Albatros solo da konto_status. Spiega quali costi sono fissi e quali variabili, come evitare brutte sorprese e quando conviene un trasloco. Usa lo skill con «quanto costa?», «costi», «prezzi», «è troppo caro», «budget», «fattura», «ne vale la pena?», «quanto costa un server?», e prima che la persona aggiunga un nuovo servizio a pagamento."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: 'da041e2a8b74'
 ---
 

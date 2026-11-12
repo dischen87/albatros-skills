@@ -2,7 +2,7 @@
 name: barrierefreiheit
 description: 'Prüft und verbessert die Barrierefreiheit einer kleinen Webseite mit einer Person ohne Vorwissen, nach WCAG 2.2 AA in einfachen Worten: Kontrast, Schriftgrösse und Zoom, Bildbeschreibungen, Bedienung mit der Tastatur, Formulare, Vorlesen, Bewegung. Ergebnis ist ein Prüfprotokoll in docs/barrierefreiheit.md. Nutze den Skill bei «Barrierefreiheit», «barrierefrei», «Accessibility», «a11y», «WCAG», «Kontrast», «Alt-Text», «Screenreader», «für ältere Menschen lesbar», «mit Tastatur bedienen».'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Barrierefreiheit: die Rampe neben der Treppe

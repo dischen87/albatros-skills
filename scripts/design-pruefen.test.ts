@@ -10,7 +10,7 @@ const wurzel = new URL('..', import.meta.url).pathname;
 const SKRIPT = join(wurzel, 'plugins/albatros/skills/gestaltung/design-pruefen.mjs');
 const GUT = join(wurzel, 'scripts/entwurf-pruefen/gut');
 const NODE = Bun.which('node') ?? process.execPath;
-const BEREICHE = ['schrift', 'farbe', 'texte', 'kopf', 'richtungen', 'bewegung', 'dreid', 'gewicht'];
+const BEREICHE = ['schrift', 'farbe', 'texte', 'kopf', 'richtungen', 'vorlage', 'bewegung', 'dreid', 'gewicht'];
 
 const richtung = (schrift: string, farbe: string, rund: string) => `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Richtung</title>
 <style>
@@ -69,7 +69,7 @@ const pruefe = (aendern: (h: Hilfe) => void = () => {}, ...args: string[]) => {
   };
 };
 
-test('gut: alle acht Bereiche grün, Exit 0', () => {
+test('gut: alle neun Bereiche grün, Exit 0', () => {
   const r = pruefe();
   expect(Object.keys(r.e.bereiche)).toEqual(BEREICHE);
   expect(r.nichtGruen()).toEqual([]);
@@ -114,6 +114,11 @@ const FEHLER: [string, string, string, (h: Hilfe) => void, string][] = [
   ['richtungen', 'rot', 'nur eine Richtung', (h) => h.schreibe({ 'design/richtungen/klar.html': null, 'design/richtungen/kraeftig.html': null }), '1 Richtung in design/richtungen/'],
   ['richtungen', 'rot', 'zweimal dieselbe', (h) => h.schreibe({ 'design/richtungen/kraeftig.html': RICHTUNGEN['design/richtungen/klar.html'] }), 'klar.html und kraeftig.html: gleiche Schrift, gleiche Farben, gleiche Formen'],
   ['richtungen', 'rot', 'nur andere Farben', (h) => h.schreibe({ 'design/richtungen/kraeftig.html': richtung('"Source Serif 4", Georgia, serif', '#b3261e', '2px') }), 'klar.html und kraeftig.html unterscheiden sich nur in den Farben'],
+  ['vorlage', 'gelb', 'Etiketten in Grossbuchstaben', (h) => { h.ersetze('design/entwurf/index.html', '<h2>Nächstes Konzert</h2>', '<p>KONZERTE</p><h2>Nächstes Konzert</h2><span class="etikett">Verein</span><h3>Wer wir sind</h3>'); h.ersetze('design/entwurf/entwurf.css', /$/, '\n.etikett { text-transform: uppercase; letter-spacing: .1em; }\n'); }, '2 Etiketten in Grossbuchstaben über Titeln'],
+  ['vorlage', 'gelb', 'Mittelpunkte', (h) => h.ersetze('design/entwurf/index.html', '<h2>Nächstes Konzert</h2>', '<h2>Nächstes Konzert</h2><p>Schulhaus · 20 Uhr · Eintritt frei · Apéro</p>'), '3 Angaben mit Mittelpunkt'],
+  ['vorlage', 'gelb', 'Pfeile hinter Knöpfen', (h) => h.ersetze('design/entwurf/index.html', '<h2>Nächstes Konzert</h2>', '<h2>Nächstes Konzert</h2><a href="konzerte.html">Alle Konzerte →</a> <a href="mitspielen.html">Mitspielen &rarr;</a>'), '2 Knöpfe oder Links mit «→»'],
+  ['vorlage', 'gelb', 'Monospace für Etiketten', (h) => h.ersetze('design/entwurf/entwurf.css', /$/, '\n.datum { font-family: "IBM Plex Mono", monospace; }\n'), 'Monospace ausserhalb von Code (.datum)'],
+  ['vorlage', 'gelb', 'Creme mit Terrakotta', (h) => h.ersetze('design/entwurf/entwurf.css', /$/, '\n.band { background: #f3f0e9; color: #1d1b18; border-color: #d97757; }\n'), 'Creme mit Terrakotta'],
   ['bewegung', 'rot', 'Bewegung ohne «weniger Bewegung»', (h) => h.ersetze('design/komponenten.css', /$/, '\n.knopf { transition: transform 160ms; }\n'), 'Bewegung im CSS ohne @media (prefers-reduced-motion: reduce)'],
   ['bewegung', 'rot', 'Skript bewegt ohne Rücksicht', (h) => h.ersetze('design/entwurf/index.html', '</body>', '<script>requestAnimationFrame(function zappeln() { requestAnimationFrame(zappeln); });</script></body>'), 'Bewegung im Skript ohne matchMedia'],
   ['bewegung', 'rot', 'Lauftext', (h) => h.ersetze('design/entwurf/index.html', '<h2>Nächstes Konzert</h2>', '<marquee>Jetzt anmelden</marquee>'), 'Lauftext (<marquee> oder <blink>)'],
@@ -213,5 +218,5 @@ test('unbekannter Bereich und leeres Projekt: Exit 2', () => {
   expect(Bun.spawnSync([NODE, SKRIPT, d]).exitCode).toBe(2);
   const r = Bun.spawnSync([NODE, SKRIPT, d, '--nur', 'bunt']);
   expect(r.exitCode).toBe(2);
-  expect(r.stderr.toString()).toContain('--nur kennt schrift, farbe, texte, kopf, richtungen, bewegung, dreid, gewicht, nicht bunt');
+  expect(r.stderr.toString()).toContain('--nur kennt schrift, farbe, texte, kopf, richtungen, vorlage, bewegung, dreid, gewicht, nicht bunt');
 });

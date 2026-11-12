@@ -2,7 +2,7 @@
 name: gestaltung
 description: 'Gestaltet mit einer Person ohne Vorwissen Bedienung und Aussehen ihrer Seite, eigen statt aus dem Baukasten. Im Fahrplan (P6): graues Mockup, drei klar verschiedene Richtungen aus dem Konzept, geprüft mit design-pruefen.mjs, Tokens für Farben, Schrift und Abstände (design/tokens.css), docs/designsystem.md und ein Musterblatt; Bewegung und 3D nur mit Absicht. Bei einer bestehenden Seite: prüfen aus drei Blickwinkeln, Bedienung reparieren, Richtungen, Tokens, Umbau mit Fotos. Mit der Frage nach Gestaltungselementen (Bild-Werkzeuge nur nach Preis und Ja). Nutze den Skill nach konzept und bei «Design», «Designsystem», «Musterblatt», «sieht langweilig aus», «sieht selbstgebastelt aus», «sieht nach KI aus», «vibe coded», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «Layout», «Icons», «Maskottchen», «Animation», «3D».'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Gestaltung: erst das Fundament, dann die Fassade
@@ -36,6 +36,7 @@ Das ist der Anspruch an jede Seite, die mit Albatros entsteht (Kriterien vom 10.
 | Echte Texte | keine Lorem-Texte, keine Floskeln; was fehlt, steht als `[Platzhalter: …]` da | Skript (`texte`) |
 | Kein austauschbarer Kopf | nie ein zentrierter Titel mit einer Zeile und ein oder zwei Knöpfen auf einer Farbfläche; der Kopf trägt ein echtes Foto oder das Wichtigste aus dem Inhalt | Skript (`kopf`); gleich grosse Karten und Hierarchie: du |
 | Wahl | mindestens zwei klar verschiedene Richtungen, im Fahrplan drei: andere Idee, Schrift, Rolle der Farbe und Formen, nicht nur andere Farben | Skript (`richtungen`); ob die Idee verschieden ist: du |
+| Kein Vorlagen-Rahmen | kein Etikett in Grossbuchstaben über jedem Titel, keine Angaben mit Mittelpunkten («A · B · C»), kein «→» hinter jedem Knopf, Kleingedrucktes nicht in Monospace, kein Fast-Schwarz (#111) statt einer eigenen dunklen Farbe, nicht die Standard-Paletten (Creme mit Terrakotta, Schwarz mit einer Neonfarbe); gewählt ist jedes erlaubt, mit Grund in `docs/designsystem.md` | Skript (`vorlage`); ob es gewählt ist: du |
 | Bewegung mit Absicht | jede Bewegung erklärt etwas oder führt den Blick; «weniger Bewegung» wird beachtet; nichts läuft endlos, nichts zappelt | Skript (`bewegung`); die Absicht je Bewegung: du |
 | 3D nur, wo es dem Inhalt dient | ein Produkt zum Drehen, eine räumliche Erklärung; mit Standbild als Rückfall, Ladegrenze, und die Seite steht auch ohne WebGL | Skript (`dreid`); ob es dem Inhalt dient: du |
 | Voller Funktionsumfang | jede Seite und jede Funktion der Bauliste kommt im Entwurf vor, mit ihren Zuständen | `plan-pruefen.mjs --entwurf` (Skill `entwurf`) |
@@ -101,6 +102,8 @@ Jetzt kommt der Charakter dazu. Lies in `docs/konzept.md` die drei Wörter unter
 - Jede Richtung hat ihre eigene Titelschrift, ihre eigene Farbwelt mit Herkunft (Logo, Ort, Material) und ihre eigene Art von Bild. Zwei Richtungen mit derselben Schrift und denselben Formen sind eine Richtung in zwei Farben.
 - Jede Richtung hat ihre eigenen vorläufigen Werte in einem `<style>` oben in der Datei. Das ist erlaubt, denn erst nach der Wahl entsteht der Farbfächer als einzige Quelle.
 - Gehört eine Figur dazu (`Maskottchen: ja`), steht sie in jeder Richtung an der Stelle, an der sie auftaucht, als Bild oder als Skizze aus `design/figur/`.
+
+Bevor du die erste Richtung schreibst, lies den Leitfaden `anthropic-frontend-design.md` in diesem Skill (von Anthropic, auf Englisch, Lizenz in `anthropic-LICENSE.txt`). Er gilt im Rahmen dieses Skills: Vorgaben der Person und `Muss bleiben:` gehen vor, die Barrierefreiheit bleibt Pflicht, die Texte schreibst du in der Sprache der Person. Vor allem übernimmst du daraus die **Gegenprobe**: Plane jede Richtung zuerst knapp (vier bis sechs Farben mit Namen und Hex-Wert, die Schriften und ihre Rolle, den Aufbau als Skizze aus Zeichen, ein Satz, was diese Seite eigen macht) und frag dich, ob du für eine ähnliche Seite auf dasselbe kämest. Wenn ja, ist es ein Standard und kein Entscheid: Ändere diesen Teil und schreib in den Kasten oben, was du geändert hast und warum. Und: Kühnheit an einer Stelle, alles andere ruhig; vor dem Zeigen nimmst du ein Schmuckstück weg.
 
 ### 3. Prüfung gegen den KI-Look und Wahl
 
@@ -210,11 +213,13 @@ KI-Seiten erkennt man an denselben Merkmalen. Prüf jede Richtung und die fertig
 - Füllfloskeln: «Willkommen auf unserer Webseite», «Entdecken Sie», «Ihr Partner für», «mit Leidenschaft», «innovativ», «nahtlos».
 - Erfundene Zahlen, Bewertungen, Zitate oder Kundenlogos. Zeitversprechen wie «in 60 Sekunden».
 - Graue Schatten, zwei Arten von Tiefe nebeneinander (Schatten hier, Rahmen dort), gemischte Icon-Sätze.
+- Vorlagen-Rahmen, egal worum es geht: ein Etikett in Grossbuchstaben über jedem Titel, Angaben mit Mittelpunkten («Schulhaus · 20 Uhr · gratis»), ein «→» hinter jedem Knopf, Kleingedrucktes in Monospace, Fast-Schwarz (#111) statt einer eigenen dunklen Farbe, ein einzelnes Wort im Titel ohne Grund in anderer Farbe oder kursiv.
+- Die Standard-Paletten erzeugter Seiten: Creme mit Serifen-Titel und Terrakotta, Schwarz mit einer einzigen Neonfarbe, Zeitungslayout mit Haarlinien und ohne Rundungen. Gewählt, weil es zur Marke passt, ist jede erlaubt; als Standard nicht.
 - Mehr als sechs Abschnitte auf der Startseite.
 
 Prüf nach dem Muster, nicht nach dem Wortlaut: Ein Knopf statt zwei oder Karten untereinander statt nebeneinander sind dasselbe Merkmal. Dafür schaust du die Seiten oder Fotos an, nicht nur den Code.
 
-Stattdessen: ein einziges Erkennungszeichen, sparsam eingesetzt (ein Strich unter einem Wort im Titel, ein Leuchtstift für höchstens ein Wort pro Abschnitt), echte Fotos des Ortes und der Menschen, eine Schrift mit Charakter passend zu den Eigenschaften, Farben aus Logo und Umgebung, ein Aufbau aus dem Inhalt (sind Termine die Hauptsache, stehen sie oben) und konkrete Sätze mit Namen, Zahlen und Orten. Verläufe, Standardschriften, Farben aus dem Baukasten, Emoji, Lorem, Floskeln und den austauschbaren Kopf findet `design-pruefen.mjs` (Abschnitt «Eigen statt Baukasten»); ohne Node suchst du mit `grep -rnE "linear-gradient|radial-gradient|Inter" design src` und in den Texten. Den Rest siehst nur du, mit den Augen.
+Stattdessen: ein einziges Erkennungszeichen, sparsam eingesetzt (aus der Marke gewählt, zum Beispiel eine Form aus dem Logo; ein Strich unter einem Wort im Titel nur, wenn er zur Marke gehört), echte Fotos des Ortes und der Menschen, eine Schrift mit Charakter passend zu den Eigenschaften, Farben aus Logo und Umgebung, ein Aufbau aus dem Inhalt (sind Termine die Hauptsache, stehen sie oben) und konkrete Sätze mit Namen, Zahlen und Orten. Verläufe, Standardschriften, Farben aus dem Baukasten, Emoji, Lorem, Floskeln und den austauschbaren Kopf findet `design-pruefen.mjs` (Abschnitt «Eigen statt Baukasten»); ohne Node suchst du mit `grep -rnE "linear-gradient|radial-gradient|Inter" design src` und in den Texten. Den Rest siehst nur du, mit den Augen.
 
 ## Der Farbfächer (Tokens)
 

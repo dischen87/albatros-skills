@@ -2,7 +2,7 @@
 name: landung
 description: 'Plant und begleitet den Umzug eines Projekts von Albatros auf einen eigenen Server, erklärt mit dem Bild vom Umzug ins eigene Haus: Umzugsliste, Server mieten und einrichten (SSH nur mit Schlüssel, Firewall, Updates, Caddy für HTTPS), Logbuch zu GitHub mitnehmen, Fliessband dort mit eigenem Schlüssel, Daten und Geheimnisse mitnehmen, testen, Adresse im DNS umstellen oder eine bei Albatros gekaufte Domain mit dem Auth-Code aus domain_mitnehmen umziehen, Sicherungen selbst übernehmen. Dazu der Weg direkt vom Computer ins Netz, ohne Hafen von Albatros: Logbuch, GitHub, ein Anbieter für statische Seiten oder ein eigener Server. Nutze den Skill bei «eigener Server», «umziehen», «weg von Albatros», «ohne Albatros», «selber hosten», «Hetzner», «VPS», «GitHub Pages», «Netlify», «Landung».'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Landung: Umzug ins eigene Haus

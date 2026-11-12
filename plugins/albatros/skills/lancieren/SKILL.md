@@ -2,7 +2,7 @@
 name: lancieren
 description: 'Bringt die freigegebene Seite einer Person ohne Vorwissen ins Netz, in zwei Teilen. Wohnort (P11): immer dieselbe Frage, Albatros (Light ohne Baustein, Pilot mit Baustein) oder selbst, Preise nur aus konto_status, upgrade_link mit bestaetigt erst nach der Wahl, SSH-Schlüssel, seite_erstellen oder server_erstellen, bei selbst GitHub Pages, Cloudflare Pages, Netlify oder eigener Server. Live schalten (P13): nur mit «Freigegeben:» die freigegebene Seite in den Hafen oder zum Anbieter, mit Baustein und Login der Eingang davor, Prüfung von aussen (pruefen.mjs --live und --tueren), Domain freiwillig, go-live-check beim Weg Geschäft, Ankündigung. Ergebnis: docs/lancieren.md, docs/live.md. Nutze den Skill nach der Freigabe und bei «online stellen», «veröffentlichen», «live schalten», «wo soll meine Seite wohnen», «Abo wählen», «selber hosten».'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Lancieren: Wohnort und Eröffnung

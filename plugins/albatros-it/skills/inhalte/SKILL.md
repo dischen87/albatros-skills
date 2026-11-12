@@ -2,7 +2,7 @@
 name: inhalte
 description: "Aiuta una persona senza conoscenze tecniche a scrivere e scegliere testi e immagini per il suo sito web, nel piano di volo per la bozza di tutto il sito (P7): la pagina iniziale in tre frasi, testi brevi nel tono del concetto per chi legge sul telefonino, i testi mancanti ben visibili come [da completare], foto proprie invece di immagini di repertorio con una lista delle foto, diritti e dimensioni delle immagini, testi dell'IA riportati nella propria voce. Il risultato è una lista dei contenuti in docs/inhalte.md e i testi nella bozza. Usa lo skill con «scrivere i testi», «cosa scrivo sulla pagina iniziale», «chi siamo», «immagini per il sito», «lista delle foto», «posso usare questa immagine?», «il testo sembra scritto dall'IA», «contenuti»."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: '0ce83df4206d'
 ---
 

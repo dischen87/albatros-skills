@@ -2,7 +2,7 @@
 name: zurueck-auf-gestern
 description: "Spiega gli snapshot con l'immagine della foto quotidiana di tutto l'appartamento, prima di modifiche rischiose scatta una foto propria e con il «ritorno a ieri» rimette in piedi il server. Contiene l'esercizio «rompere apposta e riparare». Usa lo skill con «snapshot», «backup», «ho cancellato qualcosa», «il sito è rotto», «la pagina non va più», «il server non funziona più», «annullare», «tornare indietro», «ritorno a ieri», e prima di fare un grosso cambiamento sul server."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: '00e9b5ea8832'
 ---
 

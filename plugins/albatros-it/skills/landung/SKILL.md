@@ -2,7 +2,7 @@
 name: landung
 description: "Pianifica e accompagna il trasloco di un progetto da Albatros a un server proprio, spiegato con l'immagine del trasloco in una casa propria: lista del trasloco, affittare e configurare il server (SSH solo con chiave, firewall, aggiornamenti, Caddy per HTTPS), portare il diario di bordo su GitHub, spostare lì il nastro trasportatore con una chiave propria, portare con sé dati e segreti, testare, cambiare l'indirizzo nel DNS oppure trasferire un dominio comprato tramite Albatros con l'auth-code di domain_mitnehmen, occuparsi da sé dei backup. In più la strada direttamente dal computer in rete, senza porto di Albatros: diario di bordo, GitHub, un fornitore per siti statici o un server proprio. Usa lo skill con «server proprio», «traslocare», «andare via da Albatros», «senza Albatros», «ospitare da solo», «Hetzner», «VPS», «GitHub Pages», «Netlify», «atterraggio»."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: 'b8aa3d9b69ff'
 ---
 

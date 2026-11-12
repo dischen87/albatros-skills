@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito, unico e non fatto con lo stampino. Nel piano di volo (P6): mockup grigio, tre direzioni chiaramente diverse dal concetto, verificate con design-pruefen.mjs, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni; movimento e 3D solo con un'intenzione. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Con la domanda sugli elementi grafici (strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «layout», «icone», «mascotte», «animazione», «3D»."
 metadata:
-  stand: 0.3.0
-  quelle: 'fa343c276c14'
+  stand: 0.3.1
+  quelle: '0f0c77561818'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -37,6 +37,7 @@ Per entrambe valgono le sezioni «Unico, non fatto con lo stampino», «Tre dire
 | Testi veri | niente testi Lorem, niente frasi fatte; quello che manca compare come `[da completare: …]` | script (`texte`) |
 | Nessuna testata intercambiabile | mai un titolo centrato con una riga e uno o due pulsanti su una superficie colorata; la testata porta una foto vera o la cosa più importante del contenuto | script (`kopf`); schede della stessa grandezza e gerarchia: tu |
 | Scelta | almeno due direzioni chiaramente diverse, nel piano di volo tre: altra idea, altro carattere, altro ruolo del colore e altre forme, non solo altri colori | script (`richtungen`); se l'idea è diversa: tu |
+| Nessuna cornice da modello | nessuna etichetta in maiuscolo sopra ogni titolo, nessuna indicazione separata da punti mediani («A · B · C»), nessuna «→» dopo ogni pulsante, niente caratteri piccoli in monospace, niente quasi-nero (#111) al posto di un colore scuro proprio, non le tavolozze standard (crema con terracotta, nero con un solo colore fluo); se scelto, ognuno è permesso, con un motivo in `docs/designsystem.md` | Script (`vorlage`); se è una scelta: tu |
 | Movimento con un'intenzione | ogni movimento spiega qualcosa o guida lo sguardo; «Riduci movimento» viene rispettato; niente gira all'infinito, niente si agita | script (`bewegung`); l'intenzione di ogni movimento: tu |
 | 3D solo dove serve al contenuto | un prodotto da girare, una spiegazione nello spazio; con un'immagine ferma come ripiego, un limite di caricamento, e il sito regge anche senza WebGL | script (`dreid`); se serve al contenuto: tu |
 | Funzionalità complete | ogni pagina e ogni funzione della lista di costruzione (Bauliste) compare nella bozza, con i suoi stati | `plan-pruefen.mjs --entwurf` (skill `entwurf`) |
@@ -103,6 +104,8 @@ Adesso entra in gioco il carattere. Leggi in `docs/konzept.md` le tre parole sot
 - Ogni direzione ha il suo carattere per i titoli, il suo mondo di colori con un'origine (logo, luogo, materiale) e il suo tipo di immagine. Due direzioni con lo stesso carattere e le stesse forme sono una sola direzione in due colori.
 - Ogni direzione ha i suoi valori provvisori in uno `<style>` in alto nel file. È permesso, perché solo dopo la scelta nasce la mazzetta dei colori come unica fonte.
 - Se ne fa parte un personaggio (`Maskottchen: ja`), sta in ogni direzione nel punto in cui appare, come immagine o come schizzo da `design/figur/`.
+
+Prima di scrivere la prima direzione, leggi la guida `anthropic-frontend-design.md` in questo skill (di Anthropic, in inglese, licenza in `anthropic-LICENSE.txt`). Vale nel quadro di questo skill: le indicazioni della persona e `Muss bleiben:` vengono prima, l'accessibilità resta obbligatoria e scrivi i testi nella lingua della persona. Da lì riprendi soprattutto la **controprova**: pianifica prima ogni direzione in breve (da quattro a sei colori con nome e valore esadecimale, i caratteri e il loro ruolo, la struttura come schizzo di caratteri, una frase su cosa rende unico questo sito) e chiediti se arriveresti allo stesso risultato per un sito simile. Se sì, è uno standard e non una scelta: cambia quella parte e scrivi nel riquadro in alto cosa hai cambiato e perché. E: l'audacia in un solo punto, tutto il resto calmo; prima di mostrarlo, togli un accessorio.
 
 ### 3. Controllo contro l'aspetto da IA e scelta
 
@@ -212,11 +215,13 @@ I siti fatti con l'IA si riconoscono dagli stessi tratti. Controlla ogni direzio
 - Frasi fatte: «Benvenuti sul nostro sito», «Scopri», «Il vostro partner per», «con passione», «innovativo», «senza intoppi».
 - Numeri, recensioni, citazioni o loghi di clienti inventati. Promesse di tempo come «in 60 secondi».
 - Ombre grigie, due tipi di profondità uno accanto all'altro (ombra qui, bordo là), set di icone mescolati.
+- Cornice da modello, qualunque sia il tema: un'etichetta in maiuscolo sopra ogni titolo, indicazioni separate da punti mediani («scuola · ore 20 · gratis»), una «→» dopo ogni pulsante, caratteri piccoli in monospace, quasi-nero (#111) al posto di un colore scuro proprio, una sola parola del titolo in un altro colore o in corsivo senza motivo.
+- Le tavolozze standard dei siti generati: crema con titolo graziato e terracotta, nero con un solo colore fluo, impaginazione da giornale con filetti sottili e senza arrotondamenti. Scelta perché si adatta al marchio, ognuna è permessa; come standard no.
 - Più di sei sezioni sulla pagina iniziale.
 
 Controlla lo schema, non la formulazione: un pulsante invece di due o schede una sotto l'altra invece che affiancate sono lo stesso tratto. Per questo guardi le pagine o le foto, non solo il codice.
 
-Invece: un unico segno distintivo, usato con parsimonia (una linea sotto una parola del titolo, un evidenziatore per al massimo una parola per sezione), foto vere del luogo e delle persone, un carattere tipografico con personalità, adatto alle caratteristiche, colori dal logo e dall'ambiente, una struttura che nasce dal contenuto (se gli appuntamenti sono la cosa principale, stanno in alto) e frasi concrete con nomi, numeri e luoghi. Sfumature, caratteri standard, colori da kit già pronto, emoji, Lorem, frasi fatte e la testata intercambiabile li trova `design-pruefen.mjs` (sezione «Unico, non fatto con lo stampino»); senza Node cerchi con `grep -rnE "linear-gradient|radial-gradient|Inter" design src` e nei testi. Il resto lo vedi solo tu, con gli occhi.
+Invece: un unico segno distintivo, usato con parsimonia (scelto dal marchio, per esempio una forma del logo; una linea sotto una parola del titolo solo se appartiene al marchio), foto vere del luogo e delle persone, un carattere tipografico con personalità, adatto alle caratteristiche, colori dal logo e dall'ambiente, una struttura che nasce dal contenuto (se gli appuntamenti sono la cosa principale, stanno in alto) e frasi concrete con nomi, numeri e luoghi. Sfumature, caratteri standard, colori da kit già pronto, emoji, Lorem, frasi fatte e la testata intercambiabile li trova `design-pruefen.mjs` (sezione «Unico, non fatto con lo stampino»); senza Node cerchi con `grep -rnE "linear-gradient|radial-gradient|Inter" design src` e nei testi. Il resto lo vedi solo tu, con gli occhi.
 
 ## La mazzetta dei colori (token)
 

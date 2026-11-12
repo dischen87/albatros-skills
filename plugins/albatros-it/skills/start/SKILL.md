@@ -2,7 +2,7 @@
 name: start
 description: "Avvia Albatros per una persona senza conoscenze tecniche: collega la sua IA ad Albatros (accesso dal browser), chiede se vuole un sito web o un'attività, chiarisce imparare o fare e porta subito alla prima sezione del piano di volo, l'idea con il nome del progetto e un primo schizzo, oppure, con un'idea imprenditoriale o quando deve andare in fretta, all'avvio rapido con il programma Albatros. Finché il sito non c'è sul proprio computer, Albatros non costa niente; abbonamento, chiave e sito in rete arrivano solo con lo skill lancieren. Usa lo skill con /albatros-it:start, «avvia Albatros», «voglio un sito web», «voglio fare un sito», «ho un'idea imprenditoriale», «ho un'idea per un'attività», «da dove comincio?», «sono nuovo qui», «quanto costa Albatros?», «mi serve un server?», e quando qualcuno nomina Albatros ma non è ancora collegato o non ha ancora scelto un percorso."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: '20d000d098e5'
 ---
 

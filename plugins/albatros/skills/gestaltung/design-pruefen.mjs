@@ -5,7 +5,7 @@
 // prüft die KI selbst und mit einer zweiten Meinung in frischem Kontext (Skill gestaltung, Abschnitt «Selbstprüfung und zweite Meinung»).
 //   node design-pruefen.mjs [projektordner]   design/: die Richtungen (design/richtungen/), sobald es ihn gibt der Entwurf (design/entwurf/)
 //   --bau [ordner]                            die gebaute Seite statt des Entwurfs (Standard seite/, sonst dist/)
-//   --nur schrift,farbe,texte,kopf,richtungen,bewegung,dreid,gewicht
+//   --nur schrift,farbe,texte,kopf,richtungen,vorlage,bewegung,dreid,gewicht
 //   --json                                    das Ergebnis als JSON
 // schrift     Eigene Schriftwahl: Die Titelschrift ist keine Standardschrift (Inter, Roboto, Arial …), höchstens zwei eigene Familien,
 //             keine Schrift von fremden Servern; Typo-Skala mit mindestens vier Grössen in design/tokens.css.
@@ -14,6 +14,9 @@
 // texte       Keine Lorem-Texte, keine Emoji als Icons, keine Bilder von Platzhalter-Diensten, ein Icon-Satz; Floskeln gelb.
 // kopf        Der Kopf der Startseite ist kein austauschbarer: zentrierte Zeile mit einem oder zwei Knöpfen, ohne Bild und ohne Inhalt.
 // richtungen  Mindestens zwei Richtungen in design/richtungen/, klar verschieden (Schrift, Farben, Formen), nicht nur andere Farben.
+// vorlage     Kein Vorlagen-Rahmen (nach dem Leitfaden frontend-design von Anthropic, 11.11.2026): Etiketten in Grossbuchstaben über den
+//             Titeln, Angaben mit Mittelpunkten («A · B · C»), «→» hinter Knöpfen und Links, Kleingedrucktes in Monospace, Fast-Schwarz
+//             (#0b0b0b, #111) und Creme mit Terrakotta (#f4f1ea, #d97757). Gewählt sind sie erlaubt: gelb, mit Grund stehen lassen.
 // bewegung    Wer bewegt, beachtet prefers-reduced-motion (CSS und Skript); nichts läuft endlos; die Absicht steht in docs/designsystem.md.
 // dreid       3D nur mit Standbild als Rückfall (<img data-3d-standbild>), erst bei Sichtbarkeit geladen, nicht bei «weniger Bewegung»,
 //             Modell höchstens 2 MB; die Seite steht ohne WebGL und ohne Skript.
@@ -24,7 +27,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 
 const args = process.argv.slice(2);
-const BEREICHE = ['schrift', 'farbe', 'texte', 'kopf', 'richtungen', 'bewegung', 'dreid', 'gewicht'];
+const BEREICHE = ['schrift', 'farbe', 'texte', 'kopf', 'richtungen', 'vorlage', 'bewegung', 'dreid', 'gewicht'];
 const nurBei = args.indexOf('--nur');
 const bauBei = args.indexOf('--bau');
 const BAU = bauBei >= 0;
@@ -45,7 +48,7 @@ const GEBAUT = BAU ? (bauOrdner ? resolve(WURZEL, bauOrdner) : [join(WURZEL, 'se
 
 const STUFE = { hinweis: -1, grün: 0, gelb: 1, rot: 2 };
 const NAMEN = { schrift: 'Eigene Schrift und Typo-Skala', farbe: 'Eigene Farbwelt, kein Standard-Verlauf', texte: 'Echte Texte, keine Emoji als Icons',
-  kopf: 'Kopf der Startseite', richtungen: 'Mindestens zwei klar verschiedene Richtungen', bewegung: 'Bewegung mit Absicht', dreid: '3D nur mit Rückfall', gewicht: 'Gewicht' };
+  kopf: 'Kopf der Startseite', richtungen: 'Mindestens zwei klar verschiedene Richtungen', vorlage: 'Kein Vorlagen-Rahmen', bewegung: 'Bewegung mit Absicht', dreid: '3D nur mit Rückfall', gewicht: 'Gewicht' };
 const B = Object.fromEntries(BEREICHE.filter((b) => NUR.has(b) && !(BAU && b === 'richtungen')).map((b) => [b, { ampel: 'grün', punkte: [] }]));
 const melde = (b, ampel, text) => {
   if (!B[b]) return;
@@ -297,6 +300,41 @@ if (B.dreid) {
 }
 
 // ---------- Gewicht ----------
+// ---------- Vorlagen-Rahmen ----------
+// Merkmale, die eine Seite wie aus der Vorlage aussehen lassen, egal worum es geht (Leitfaden frontend-design von Anthropic, Abschnitt
+// «Process», Punkt 5, und die Standard-Paletten 1 und 2). Jedes ist erlaubt, wenn es gewählt ist: darum gelb, nie rot.
+const NAH = (a, b) => { const z = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const [x, y] = [z(a), z(b)]; return Math.hypot(x[0] - y[0], x[1] - y[1], x[2] - y[2]) < 18; };
+const hexe = (text) => [...text.matchAll(/#([0-9a-f]{6}|[0-9a-f]{3})\b/gi)].map((m) => `#${m[1].length === 3 ? [...m[1]].map((c) => c + c).join('') : m[1]}`.toLowerCase());
+if (B.vorlage) {
+  let ruhig = true;
+  const grossKlassen = new Set(regeln(css).filter((r) => /text-transform\s*:\s*uppercase/i.test(r.inhalt)).flatMap((r) => [...r.auswahl.matchAll(/\.([\w-]+)/g)].map((m) => m[1])));
+  for (const [f, h] of html) {
+    const t = ohneKommentare(h).replace(/<(script|style)\b[\s\S]*?<\/\1\s*>/gi, leer);
+    let etiketten = 0;
+    for (const m of t.matchAll(/<(p|span|div|small|strong|b|em)\b([^>]*)>\s*([^<]{2,48}?)\s*<\/\1>\s*<h[1-4]\b/gi)) {
+      const gross = /\p{L}{3}/u.test(m[3]) && m[3] === m[3].toUpperCase() && m[3] !== m[3].toLowerCase();
+      const klasse = (m[2].match(/class\s*=\s*["']([^"']*)["']/i)?.[1] ?? '').split(/\s+/).some((k) => grossKlassen.has(k));
+      if (gross || klasse) etiketten++;
+    }
+    if (etiketten >= 2) { ruhig = false; melde('vorlage', 'gelb', `${rel(f)}: ${etiketten} Etiketten in Grossbuchstaben über Titeln: Die Überschrift sagt es selbst, ein Etikett nur, wo es etwas Eigenes sagt`); }
+    // Nur im Inhalt: Fenstertitel, Kopf, Navigation und Fuss («Impressum · Datenschutz») zählen nicht
+    const inhalt = sichtbarerText(t.replace(/<(head|header|nav|footer)\b[\s\S]*?<\/\1\s*>/gi, ' '));
+    const punkte = (inhalt.match(/\s·\s/g) ?? []).length;
+    if (punkte >= 3) { ruhig = false; melde('vorlage', 'gelb', `${rel(f)}: ${punkte} Angaben mit Mittelpunkt («A · B»): als Satz oder als Liste mit Namen`); }
+    const pfeile = [...t.matchAll(/<(a|button)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi)].filter((m) => /(→|&rarr;|&#8594;|&#x2192;)$/i.test(m[2].replace(/<[^>]+>/g, '').trim())).length;
+    if (pfeile >= 2) { ruhig = false; melde('vorlage', 'gelb', `${rel(f)}: ${pfeile} Knöpfe oder Links mit «→» am Ende: Der Text sagt, was passiert, ein Pfeil nur, wo es wirklich weitergeht`); }
+  }
+  const nurCode = (a) => a.split(',').every((x) => /^(code|pre|kbd|samp|var)\b/i.test(x.trim()));
+  const mono = regeln(css).filter((r) => /font-family\s*:[^;]*\b(monospace|ui-monospace|courier|menlo|consolas)\b/i.test(r.inhalt) && !nurCode(r.auswahl)).map((r) => r.auswahl.trim());
+  if (mono.length) { ruhig = false; melde('vorlage', 'gelb', `Monospace ausserhalb von Code (${[...new Set(mono)].slice(0, 3).join(', ')}): Kleingedrucktes in der Textschrift`); }
+  const farben = hexe(css);
+  if (farben.some((x) => NAH(x, '#f4f1ea')) && farben.some((x) => NAH(x, '#d97757'))) { ruhig = false; melde('vorlage', 'gelb', 'Creme mit Terrakotta (nahe #f4f1ea und #d97757): die häufigste Palette erzeugter Seiten; die Farben kommen aus der Marke'); }
+  const fastSchwarz = [...new Set(farben.filter((x) => ['#0b0b0b', '#111111', '#0a0a0a', '#121212'].includes(x)))];
+  if (fastSchwarz.length) { ruhig = false; melde('vorlage', 'gelb', `Fast-Schwarz (${fastSchwarz.join(', ')}): die eigene dunkle Farbe aus der Palette, getönt aus der Marke`); }
+  if (ruhig && html.size) melde('vorlage', 'grün', `Kein Vorlagen-Rahmen auf ${html.size} ${html.size === 1 ? 'Seite' : 'Seiten'} (Etiketten, Mittelpunkte, Pfeile, Monospace, Standard-Paletten)`);
+  if (!html.size) melde('vorlage', 'hinweis', 'Noch keine Seiten zum Prüfen');
+}
+
 if (B.gewicht) {
   const kb = (n) => `${Math.round(n / 1024)} KB`;
   const groesse = (f) => (existsSync(f) && statSync(f).isFile() ? statSync(f).size : 0);

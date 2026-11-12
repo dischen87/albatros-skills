@@ -2,7 +2,7 @@
 name: pipeline
 description: "Spiega la CI/CD a una persona senza conoscenze tecniche con l'immagine del nastro trasportatore con controllo qualità e lo configura: un workflow nel porto di Albatros (Forgejo, code.aufwind.sh) parte a ogni push su main. L'operaio (runner) sul proprio server costruisce la pagina, la consegna con un controllo di salute, la verifica dall'indirizzo pubblico e altrimenti torna all'ultima versione buona. Usa lo skill con «pipeline», «CI/CD», «GitHub Actions», «Forgejo Actions», «workflow», «runner», «pubblicare in automatico», «fare il deploy», «come arriva la mia modifica sul server?», «il nastro è rosso», «il deploy non è andato a buon fine», «deploy fallito»."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: '9afeadd99f65'
 ---
 

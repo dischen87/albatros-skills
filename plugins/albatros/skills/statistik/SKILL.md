@@ -2,7 +2,7 @@
 name: statistik
 description: 'Richtet mit einer Person ohne Vorwissen eine datenschutzfreundliche Statistik für ihre Webseite ein, mit PostHog. Zuerst ein kleiner Ereignis-Plan (welche Striche zählen wir, und wann genau), dann Einbau, ein Ziel-Ereignis wie «Anfrage gesendet», eigene Besuche herausfiltern und mit den echten Anfragen abgleichen. Nutze den Skill bei «Statistik», «Besucher zählen», «wie viele Leute kommen auf meine Seite», «PostHog», «Google Analytics», «Tracking», «Conversion», «Ereignis messen», «woher kommen meine Besucher».'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Statistik: die Strichliste an der Ladentür
