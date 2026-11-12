@@ -1,0 +1,53 @@
+{
+  "name": "albatros-it",
+  "version": "0.3.0",
+  "description": "Il controllore di volo ti dice, secondo il tuo stato reale, quale skill tocca adesso (con accesso), su un piano di volo fisso dall'idea fino al sito online. Finché il tuo sito non è finito sul tuo computer, Albatros non costa niente; poi scegli dove abita: da Albatros (Light per un sito di testi e immagini, Pilot con un vero server tuo) o da te. In più la biblioteca aperta: scuola di volo e percorso sito web con chiave SSH, server, Git, nastro trasportatore, dominio, foto del server e tutto per il tuo primo sito web, in italiano e senza gergo tecnico.",
+  "author": {
+    "name": "Albatros Partner",
+    "url": "https://albatros.build"
+  },
+  "homepage": "https://albatros.build",
+  "repository": "https://github.com/dischen87/albatros-skills",
+  "license": "MIT",
+  "keywords": [
+    "albatros",
+    "imparare",
+    "server",
+    "ssh",
+    "git",
+    "sito web",
+    "italiano"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Albatros",
+    "shortDescription": "Dall'idea al tuo sito web",
+    "longDescription": "Albatros è una scuola di volo per persone senza conoscenze tecniche. Dici alla tua IA «Voglio un sito web» o «Ho un'idea d'impresa», e Albatros la guida secondo un piano di volo fisso in 13 fasi: idea, ricerca, piano, concetto, grafica e bozza, poi costruire il sito sul tuo computer, controllarlo e metterlo online. A ogni passo Albatros fa le domande che contano, si ricorda a che punto sei e dice alla tua IA quale skill tocca adesso. Scegli se imparare i passi da te (chiave SSH, Git, nastro trasportatore) o lasciarli all'IA.\n\nPer chi: persone che vogliono un proprio sito web o una piccola attività online e non hanno mai usato un terminale.\n\nChe cosa serve: un account Albatros (accesso nel browser con Google, Apple o GitHub). Imparare e costruire finché il sito non è finito sul tuo computer non costa niente. Mettere il sito online da Albatros (Light, oppure Pilot con un vero server tuo) o comprare un dominio è facoltativo e si paga su albatros.build; Albatros ti dà un link alla sua pagina di pagamento, nella chat non si paga niente.\n\nLimiti: per costruire, la tua IA esegue comandi e scrive file sul tuo computer; per questo serve Codex (nell'app desktop di ChatGPT o Codex CLI). In una normale chat di ChatGPT, Albatros può pianificare, spiegare e annotare i tuoi progressi, ma non costruire né pubblicare il sito. Albatros viene dalla Svizzera; l'aiuto per note legali e privacy vale per i siti in Svizzera.",
+    "developerName": "Albatros Partner",
+    "category": "Productivity",
+    "capabilities": [
+      "Guida passo per passo dall'idea al sito",
+      "Ricorda i progressi e il prossimo passo",
+      "Configurare server, dominio e nastro trasportatore"
+    ],
+    "websiteURL": "https://albatros.build/it",
+    "supportURL": "https://github.com/dischen87/albatros-skills/issues",
+    "privacyPolicyURL": "https://albatros.build/it/datenschutz",
+    "termsOfServiceURL": "https://albatros.build/it/agb",
+    "defaultPrompt": [
+      "Avvia Albatros.",
+      "Voglio un sito web per il mio negozio di fiori.",
+      "Qual è il mio prossimo passo con Albatros?"
+    ],
+    "brandColor": "#2B5AD2",
+    "brandColorDark": "#B9D3FF",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/start/SKILL.md"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "albatros",
+  "version": "0.3.0",
+  "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung), auf einem festen Fahrplan von der Idee bis zur Seite im Netz. Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts; dann wählst du, wo sie wohnt: bei Albatros (Light für eine Seite aus Texten und Bildern, Pilot mit einem echten eigenen Server) oder selbst. Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+  "author": {
+    "name": "Albatros Partner",
+    "url": "https://albatros.build"
+  },
+  "homepage": "https://albatros.build",
+  "repository": "https://github.com/dischen87/albatros-skills",
+  "license": "MIT",
+  "keywords": [
+    "albatros",
+    "lernen",
+    "server",
+    "ssh",
+    "git",
+    "webseite",
+    "deutsch"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Albatros",
+    "shortDescription": "Von der Idee zur eigenen Seite",
+    "longDescription": "Albatros ist eine Flugschule für Menschen ohne Technik-Vorwissen. Du sagst deiner KI «Ich will eine Webseite» oder «Ich habe eine Geschäftsidee», und Albatros führt sie nach einem festen Fahrplan in 13 Phasen: Idee, Research, Plan, Konzept, Gestaltung und Entwurf, dann die Seite auf deinem eigenen Computer bauen, prüfen und ins Netz bringen. Albatros stellt bei jedem Schritt die Fragen, auf die es ankommt, merkt sich, wo du stehst, und sagt deiner KI, welcher Skill jetzt dran ist. Du wählst, ob du die Schritte selbst lernst (SSH-Schlüssel, Git, Fliessband) oder die KI sie macht.\n\nFür wen: Menschen, die eine eigene Webseite oder ein kleines Geschäft im Netz wollen und noch nie mit einem Terminal gearbeitet haben.\n\nWas es braucht: ein Konto bei Albatros (Anmeldung im Browser mit Google, Apple oder GitHub). Lernen und bauen, bis deine Seite auf deinem Computer fertig ist, kostet nichts. Die Seite bei Albatros ins Netz stellen (Light, oder Pilot mit einem echten eigenen Server) oder eine Domain kaufen ist freiwillig und wird auf albatros.build bezahlt; Albatros gibt dir dafür einen Link zu seiner Zahlungsseite, im Chat wird nichts bezahlt.\n\nGrenzen: Beim Bauen führt deine KI Befehle aus und schreibt Dateien auf deinem Computer; dafür braucht es Codex (in der Desktop-App von ChatGPT oder Codex CLI). In einem gewöhnlichen Chat von ChatGPT kann Albatros planen, erklären und deinen Fortschritt festhalten, aber die Seite nicht bauen oder veröffentlichen. Albatros kommt aus der Schweiz; die Hilfe zu Impressum und Datenschutz gilt für Seiten in der Schweiz.",
+    "developerName": "Albatros Partner",
+    "category": "Productivity",
+    "capabilities": [
+      "Führt Schritt für Schritt von der Idee zur Seite",
+      "Merkt sich Fortschritt und nächsten Schritt",
+      "Server, Domain und Fliessband einrichten"
+    ],
+    "websiteURL": "https://albatros.build",
+    "supportURL": "https://github.com/dischen87/albatros-skills/issues",
+    "privacyPolicyURL": "https://albatros.build/datenschutz",
+    "termsOfServiceURL": "https://albatros.build/agb",
+    "defaultPrompt": [
+      "Starte Albatros.",
+      "Ich will eine Webseite für meinen Blumenladen.",
+      "Was ist mein nächster Schritt mit Albatros?"
+    ],
+    "brandColor": "#2B5AD2",
+    "brandColorDark": "#B9D3FF",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/start/SKILL.md"
+    }
+  }
+}
