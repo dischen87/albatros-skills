@@ -2,7 +2,7 @@
 name: bausteine
 description: 'Findet mit einer Person ohne Vorwissen heraus, was ihre Seite können soll, und baut die passenden fertigen Bausteine ein, zuerst auf ihrem Computer: Anmeldeliste, Buchungen für Kurse und Termine, Mitgliederbereich mit Login und Freigabe, Pinnwand (PocketBase), ein Eingang mit einem Login für mehrere Teile oder ein grosses CMS (Strapi mit Postgres), mit gemessenem Arbeitsspeicher. Erklärt mit dem Bild der Fertigteile beim Hausbau. Nutze den Skill bei «Anmeldung», «Anmeldeliste», «Buchung», «Buchungstool», «Kurse buchen», «Termin buchen», «Reservation», «Platz reservieren», «Formular speichern», «Login», «Mitgliederbereich», «Admin-Bereich», «Benutzer verwalten», «Rollen», «Eingang», «Datenbank», «Strapi», «CMS», «PocketBase», «Baustein», «was passt auf meinen Server», «reicht mein Server», und wenn eine Seite mehr können soll als Texte und Bilder zeigen.'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Bausteine: Fertigteile für deine Seite

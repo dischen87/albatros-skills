@@ -2,7 +2,7 @@
 name: webseite-aendern
 description: 'Ändert mit einer Person ohne Vorwissen ihre fertige Webseite mit ihrer eigenen KI, ob sie im Hafen von Albatros liegt oder selbst wohnt: Logbuch holen, zuerst docs/ lesen (Plan, Designsystem, Tech-Stack, PRD, Wohnort), dann klein (Text, Termin, Bild: lokal ändern, vorher und nachher zeigen, Freigabe, Push) oder gross (neue Seite, Funktion, anderes Aussehen: Nachtrag im Plan, Entwurf der geänderten Seiten, Freigabe zum Bauen, bauen und prüfen, zeigen, Freigabe, Push), immer im bestehenden Designsystem, danach im Netz nachprüfen. Nutze den Skill bei «ändere meine Seite», «neuer Termin», «Text ändern», «Bild austauschen», «es fehlt …», «neue Seite», «mach die Seite …», «auf der Seite steht etwas Falsches», und immer, wenn an einer Seite im Netz etwas anders werden soll.'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Webseite ändern: Umbau im bewohnten Haus

@@ -2,8 +2,8 @@
 name: inhalte
 description: "Aide une personne sans connaissances préalables à écrire et à choisir les textes et les images de son site web, dans le plan de vol pour l'ébauche de tout le site (P7) : la page d'accueil en trois phrases, des textes courts dans le ton du concept pour des gens qui lisent sur le natel, les textes manquants bien visibles comme [à compléter], ses propres photos plutôt que des images de banque d'images avec une liste de photos, droits et taille des images, ramener les textes d'IA à sa propre voix. Le résultat est une liste des contenus dans docs/inhalte.md et les textes dans l'ébauche. Utilise ce skill quand on dit « écrire des textes », « qu'est-ce que j'écris sur la page d'accueil », « à propos », « images pour le site », « liste de photos », « est-ce que j'ai le droit d'utiliser cette image », « le texte fait IA », « contenus »."
 metadata:
-  stand: 0.3.0
-  quelle: '0ce83df4206d'
+  stand: 0.3.1
+  quelle: '6cd702581612'
 ---
 
 # Contenus : la marchandise dans la vitrine
@@ -53,6 +53,10 @@ Qui arrive sur la page d'accueil décide en quelques secondes s'il reste. Les tr
 - Ce qui manque, tu ne l'inventes pas. Ça figure de façon visible dans le texte, par exemple `[à compléter : horaires, Anna les livre d'ici le 7.11.2026]`, pour que personne ne l'oublie. Jamais de texte Lorem ni d'autre texte de remplissage, et jamais d'emoji à la place des icônes.
 - Les faits sous forme de phrases qui sont justes à elles seules : qui, quoi, pour qui, où, quand c'est ouvert, ce que ça coûte, comment on fait une demande. En plus, les cinq questions posées le plus souvent, chacune avec une réponse en deux ou trois phrases. Ainsi, qui est pressé comprend, et ainsi les moteurs de recherche et les assistants IA le trouvent (skill `seo-grundlagen`).
 - Pas d'avis, de citations, de nombres de clients ni de distinctions inventés. Chaque chiffre vient de la personne ou a une source.
+
+- Les boutons disent ce qui se passe, avec un verbe : « Demander une semaine », pas « Envoyer ». Une même chose porte partout le même nom : le bouton « Demander une semaine » mène au message « Demande envoyée ».
+- Les messages d'erreur en trois parties : ce qui s'est passé, pourquoi, ce qu'on peut faire maintenant (« La demande n'est pas arrivée. La connexion a été interrompue. Réessaie, ton texte reste là. »). Sans excuses, jamais vague.
+- Les endroits vides disent ce qui va venir ici et quand (« Pas encore de dates. Dès que la société inscrit la prochaine, elle apparaît ici. »). Les questions avant une suppression nomment la chose et la conséquence (« Supprimer 2 photos ? On ne pourra pas revenir en arrière. »), et les boutons portent le nom de l'action (« Supprimer les photos », « Garder »), jamais « OK » et « Annuler ». (Ces trois règles d'après le skill ux-copy d'Anthropic, 12.11.2026.)
 
 ### 4. Textes avec l'IA
 

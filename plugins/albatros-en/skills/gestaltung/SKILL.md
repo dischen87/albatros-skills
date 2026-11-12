@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge: its own, not from a kit. In the flight plan (P6): a grey mockup, three clearly different directions from the concept, checked with design-pruefen.mjs, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet; motion and 3D only with a purpose. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. With the question about design elements (image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “layout”, “icons”, “mascot”, “animation”, “3D”."
 metadata:
-  stand: 0.3.0
-  quelle: 'fa343c276c14'
+  stand: 0.3.1
+  quelle: '0f0c77561818'
 ---
 
 # Design: first the foundations, then the facade
@@ -37,6 +37,7 @@ This is the standard for every site made with Albatros (criteria of 10.11.2026):
 | Real texts | no lorem texts, no filler phrases; whatever is missing is there as `[placeholder: …]` | script (`texte`) |
 | No interchangeable header | never a centred heading with one line and one or two buttons on a colour block; the header carries a real photo or the most important content | script (`kopf`); cards of the same size and hierarchy: you |
 | Choice | at least two clearly different directions, three in the flight plan: a different idea, font, role of colour and shapes, not just different colours | script (`richtungen`); whether the idea is different: you |
+| No template chrome | no all-caps label above every heading, no details joined with middle dots (“A · B · C”), no “→” after every button, no small print in monospace, no near-black (#111) instead of your own dark colour, not the default palettes (cream with terracotta, black with a single neon colour); each is allowed when chosen, with a reason in `docs/designsystem.md` | Script (`vorlage`); whether it is chosen: you |
 | Motion with a purpose | every movement explains something or guides the eye; “Reduce motion” is respected; nothing runs endlessly, nothing fidgets | script (`bewegung`); the purpose of each movement: you |
 | 3D only where it serves the content | a product to turn round, a spatial explanation; with a still image as fallback, a loading limit, and the page stands without WebGL too | script (`dreid`); whether it serves the content: you |
 | Full scope of features | every page and every feature of the build list appears in the draft, with its states | `plan-pruefen.mjs --entwurf` (skill `entwurf`) |
@@ -103,6 +104,8 @@ Now the character comes in. Read in `docs/konzept.md` the three words under `Cha
 - Each direction has its own heading font, its own colour world with its origin (logo, place, material) and its own kind of picture. Two directions with the same font and the same shapes are one direction in two colours.
 - Each direction has its own provisional values in a `<style>` at the top of the file. That's allowed, because only after the choice does the colour fan come into being as the single source.
 - If a mascot is part of it (`Maskottchen: ja`), it appears in every direction in the spot where it turns up, as a picture or as a sketch from `design/figur/`.
+
+Before you write the first direction, read the guide `anthropic-frontend-design.md` in this skill (by Anthropic, licence in `anthropic-LICENSE.txt`). It applies within this skill: the person's requirements and `Muss bleiben:` come first, accessibility stays mandatory, and you write the texts in the person's language. Above all, take the **counter-check** from it: first plan each direction briefly (four to six colours with name and hex value, the fonts and their role, the layout as a sketch made of characters, one sentence on what makes this site its own) and ask yourself whether you would arrive at the same for a similar site. If so, it is a default, not a choice: change that part and write in the box at the top what you changed and why. And: boldness in one place, everything else quiet; before showing it, take one accessory off.
 
 ### 3. Check against the AI look, and the choice
 
@@ -212,11 +215,13 @@ AI sites give themselves away with the same traits. Check every direction and th
 - Filler phrases: “Welcome to our website”, “Discover”, “Your partner for”, “with passion”, “innovative”, “seamless”.
 - Made-up numbers, reviews, quotes or customer logos. Time promises like “in 60 seconds”.
 - Grey shadows, two kinds of depth side by side (shadow here, border there), mixed icon sets.
+- Template chrome, whatever the subject: an all-caps label above every heading, details joined with middle dots (“school · 8 pm · free”), a “→” after every button, small print in monospace, near-black (#111) instead of your own dark colour, a single word in the heading in another colour or italic for no reason.
+- The default palettes of generated sites: cream with a serif heading and terracotta, black with a single neon colour, newspaper layout with hairlines and no rounding. Each is allowed when chosen because it suits the brand; as a default, no.
 - More than six sections on the home page.
 
 Check for the pattern, not the wording: one button instead of two, or cards stacked instead of side by side, is the same trait. For this you look at the pages or screenshots, not just the code.
 
-Instead: one single signature mark, used sparingly (a stroke under one word in the heading, a highlighter on at most one word per section), real photos of the place and the people, a font with character that suits the qualities, colours from the logo and surroundings, a structure that comes from the content (if dates are the main thing, they go at the top), and concrete sentences with names, numbers and places. Gradients, default fonts, colours from a kit, emoji, lorem, filler phrases and the interchangeable header are found by `design-pruefen.mjs` (section “Your own, not from a kit”); without Node you search with `grep -rnE "linear-gradient|radial-gradient|Inter" design src` and in the texts. The rest only you can see, with your eyes.
+Instead: one single signature mark, used sparingly (chosen from the brand, for example a shape from the logo; a stroke under one word in the heading only if it belongs to the brand), real photos of the place and the people, a font with character that suits the qualities, colours from the logo and surroundings, a structure that comes from the content (if dates are the main thing, they go at the top), and concrete sentences with names, numbers and places. Gradients, default fonts, colours from a kit, emoji, lorem, filler phrases and the interchangeable header are found by `design-pruefen.mjs` (section “Your own, not from a kit”); without Node you search with `grep -rnE "linear-gradient|radial-gradient|Inter" design src` and in the texts. The rest only you can see, with your eyes.
 
 ## The colour fan (tokens)
 

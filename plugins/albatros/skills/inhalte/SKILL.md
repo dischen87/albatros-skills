@@ -2,7 +2,7 @@
 name: inhalte
 description: 'Hilft einer Person ohne Vorwissen, Texte und Bilder für ihre Webseite zu schreiben und auszuwählen, im Fahrplan für den Entwurf der ganzen Seite (P7): Startseite in drei Sätzen, kurze Texte im Ton aus dem Konzept für Lesende am Handy, fehlende Texte sichtbar als [Platzhalter], eigene Fotos statt Stockbilder mit einer Fotoliste, Bildrechte und Bildgrösse, KI-Texte in die eigene Stimme bringen. Ergebnis ist eine Inhaltsliste in docs/inhalte.md und die Texte im Entwurf. Nutze den Skill bei «Texte schreiben», «was schreibe ich auf die Startseite», «Über uns», «Bilder für die Webseite», «Fotoliste», «darf ich dieses Bild verwenden», «Text klingt nach KI», «Inhalte».'
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
 ---
 
 # Inhalte: die Ware im Schaufenster
@@ -51,6 +51,10 @@ Wer auf die Startseite kommt, entscheidet in wenigen Sekunden, ob er bleibt. Die
 - Was fehlt, erfindest du nicht. Es steht sichtbar im Text, zum Beispiel `[Platzhalter: Öffnungszeiten, liefert Anna bis 7.11.2026]`, damit es niemand übersieht. Nie Lorem-Text oder anderer Fülltext, und nie Emoji anstelle von Icons.
 - Fakten als Sätze, die für sich allein stimmen: wer, was, für wen, wo, wann offen, was es kostet, wie man anfragt. Dazu die fünf Fragen, die am häufigsten gestellt werden, je mit einer Antwort in zwei, drei Sätzen. So versteht es, wer es eilig hat, und so finden es Suchmaschinen und KI-Assistenten (Skill `seo-grundlagen`).
 - Keine erfundenen Bewertungen, Zitate, Kundenzahlen oder Auszeichnungen. Jede Zahl kommt von der Person oder hat eine Quelle.
+
+- Knöpfe sagen, was passiert, mit einem Tu-Wort: «Woche anfragen», nicht «Senden». Dieselbe Sache heisst überall gleich: Der Knopf «Woche anfragen» führt zur Meldung «Anfrage gesendet».
+- Fehlermeldungen in drei Teilen: was passiert ist, warum, was man jetzt tun kann («Die Anfrage ist nicht angekommen. Die Verbindung war unterbrochen. Versuch es nochmals, dein Text bleibt stehen.»). Ohne Entschuldigung, nie vage.
+- Leere Stellen sagen, was hierher gehört und wann es kommt («Noch keine Termine. Sobald der Verein den nächsten einträgt, steht er hier.»). Fragen vor dem Löschen nennen die Sache und die Folge («2 Fotos löschen? Das lässt sich nicht rückgängig machen.»), und die Knöpfe heissen nach der Tat («Fotos löschen», «Behalten»), nie «OK» und «Abbrechen». (Diese drei Regeln nach dem Skill ux-copy von Anthropic, 12.11.2026.)
 
 ### 4. Texte mit KI
 

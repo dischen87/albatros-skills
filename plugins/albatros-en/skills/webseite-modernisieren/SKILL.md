@@ -2,7 +2,7 @@
 name: webseite-modernisieren
 description: "Modernises an existing website (club, shop, practice, old Jimdo, Wix or WordPress site) for a person with no prior knowledge, as a variant of the flight plan. Gets going straight away with the inventory, without asking first: all pages, every feature (forms, sign-ups, dates, PDFs, prices, galleries, maps, languages) and all content, with screenshots of the old site in docs/bestand.md. After that it only asks what only the person knows, above all what has to stay, and leads via the floor plan and checking the plan (no feature gets lost without a decision) to the new site; when going live, the domain moves over with redirects and the email stays untouched. Use this skill for “Modernise …”, “modernise our website”, “our site is out of date”, “renew the website”, “relaunch”, “move away from Jimdo, Wix or WordPress”, “redo the old site”, and straight away when someone just sends the address of a website (https://…) with no other words."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: 'e407114c3bdd'
 ---
 

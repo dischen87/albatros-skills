@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site, unique plutôt que sorti d'un kit. Dans le plan de vol (P6) : maquette grise, trois directions bien différentes tirées du concept, vérifiées avec design-pruefen.mjs, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons ; mouvement et 3D seulement avec une intention. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Avec la question des éléments graphiques (outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « mise en page », « icônes », « mascotte », « animation », « 3D »."
 metadata:
-  stand: 0.3.0
-  quelle: 'fa343c276c14'
+  stand: 0.3.1
+  quelle: '0f0c77561818'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -37,6 +37,7 @@ C'est l'exigence pour chaque site qui naît avec Albatros (critères du 10.11.20
 | De vrais textes | pas de textes Lorem, pas de formules creuses ; ce qui manque est noté `[à compléter : …]` | le script (`texte`) |
 | Pas d'en-tête interchangeable | jamais un titre centré avec une ligne et un ou deux boutons sur une surface de couleur ; l'en-tête porte une vraie photo ou l'essentiel du contenu | le script (`kopf`) ; cartes de même taille et hiérarchie : toi |
 | Un choix | au moins deux directions bien différentes, trois dans le plan de vol : une autre idée, une autre police, un autre rôle de la couleur et d'autres formes, pas seulement d'autres couleurs | le script (`richtungen`) ; si l'idée est différente : toi |
+| Pas de cadre de modèle | pas d'étiquette en majuscules au-dessus de chaque titre, pas d'indications reliées par des points médians (« A · B · C »), pas de « → » derrière chaque bouton, pas de petits caractères en monospace, pas de quasi-noir (#111) au lieu d'une couleur sombre propre, pas les palettes standard (crème avec terracotta, noir avec une seule couleur fluo) ; choisi, chacun est permis, avec une raison dans `docs/designsystem.md` | Script (`vorlage`) ; si c'est un choix : toi |
 | Du mouvement avec une intention | chaque mouvement explique quelque chose ou guide le regard ; « Réduire les animations » est respecté ; rien ne tourne sans fin, rien ne gigote | le script (`bewegung`) ; l'intention de chaque mouvement : toi |
 | De la 3D seulement là où elle sert le contenu | un produit à faire tourner, une explication dans l'espace ; avec une image fixe comme solution de repli, une limite de chargement, et le site tient aussi sans WebGL | le script (`dreid`) ; si elle sert le contenu : toi |
 | Toute l'étendue des fonctions | chaque page et chaque fonction de la liste de construction (`## Bauliste` dans `docs/plan.md`) apparaît dans l'ébauche, avec ses états | `plan-pruefen.mjs --entwurf` (skill `entwurf`) |
@@ -103,6 +104,8 @@ Maintenant, le caractère entre en jeu. Lis dans `docs/konzept.md` les trois mot
 - Chaque direction a sa propre police de titre, son propre univers de couleurs avec son origine (logo, lieu, matériau) et son propre genre d'image. Deux directions avec la même police et les mêmes formes, c'est une seule direction en deux couleurs.
 - Chaque direction a ses propres valeurs provisoires dans un `<style>` en haut du fichier. C'est permis, car c'est seulement après le choix que naît le nuancier comme source unique.
 - Si un personnage en fait partie (`Maskottchen: ja`), il figure dans chaque direction à l'endroit où il apparaît, en image ou en esquisse tirée de `design/figur/`.
+
+Avant d'écrire la première direction, lis le guide `anthropic-frontend-design.md` dans ce skill (d'Anthropic, en anglais, licence dans `anthropic-LICENSE.txt`). Il s'applique dans le cadre de ce skill : les consignes de la personne et `Muss bleiben:` passent avant, l'accessibilité reste obligatoire, et tu écris les textes dans la langue de la personne. Tu en reprends surtout la **contre-épreuve** : planifie d'abord chaque direction en bref (quatre à six couleurs avec nom et valeur hex, les polices et leur rôle, la structure en croquis de caractères, une phrase sur ce qui rend ce site unique) et demande-toi si tu arriverais au même résultat pour un site semblable. Si oui, c'est un standard et pas un choix : change cette partie et écris dans l'encadré du haut ce que tu as changé et pourquoi. Et : l'audace à un seul endroit, tout le reste calme ; avant de montrer, enlève un accessoire.
 
 ### 3. Vérification contre le look IA et choix
 
@@ -212,11 +215,13 @@ Les sites faits par une IA se reconnaissent aux mêmes signes. Vérifie chaque d
 - Des formules creuses : « Bienvenue sur notre site web », « Découvrez », « Votre partenaire pour », « avec passion », « innovant », « sans couture ».
 - Des chiffres, des avis, des citations ou des logos de clients inventés. Des promesses de temps comme « en 60 secondes ».
 - Des ombres grises, deux sortes de profondeur côte à côte (une ombre ici, une bordure là), des jeux d'icônes mélangés.
+- Un cadre de modèle, quel que soit le sujet : une étiquette en majuscules au-dessus de chaque titre, des indications reliées par des points médians (« école · 20 h · gratuit »), un « → » derrière chaque bouton, des petits caractères en monospace, du quasi-noir (#111) au lieu d'une couleur sombre propre, un seul mot du titre dans une autre couleur ou en italique sans raison.
+- Les palettes standard des sites générés : crème avec titre à empattements et terracotta, noir avec une seule couleur fluo, mise en page de journal avec filets fins et sans arrondis. Choisie parce qu'elle va avec la marque, chacune est permise ; par défaut, non.
 - Plus de six sections sur la page d'accueil.
 
 Vérifie le motif, pas la formulation : un bouton au lieu de deux ou des cartes les unes sous les autres au lieu de côte à côte, c'est le même signe. Pour cela, tu regardes les pages ou les photos, pas seulement le code.
 
-À la place : un seul signe distinctif, utilisé avec parcimonie (un trait sous un mot du titre, un surligneur pour au plus un mot par section), de vraies photos du lieu et des gens, une police avec du caractère, adaptée aux traits choisis, des couleurs tirées du logo et de l'environnement, une structure qui vient du contenu (si les dates sont l'essentiel, elles sont en haut) et des phrases concrètes avec des noms, des chiffres et des lieux. Les dégradés, les polices standard, les couleurs de kit, les emoji, le Lorem, les formules creuses et l'en-tête interchangeable, c'est `design-pruefen.mjs` qui les trouve (section « Unique plutôt qu'en kit ») ; sans Node, tu cherches avec `grep -rnE "linear-gradient|radial-gradient|Inter" design src` et dans les textes. Le reste, toi seul le vois, avec les yeux.
+À la place : un seul signe distinctif, utilisé avec parcimonie (choisi à partir de la marque, par exemple une forme du logo ; un trait sous un mot du titre seulement s'il appartient à la marque), de vraies photos du lieu et des gens, une police avec du caractère, adaptée aux traits choisis, des couleurs tirées du logo et de l'environnement, une structure qui vient du contenu (si les dates sont l'essentiel, elles sont en haut) et des phrases concrètes avec des noms, des chiffres et des lieux. Les dégradés, les polices standard, les couleurs de kit, les emoji, le Lorem, les formules creuses et l'en-tête interchangeable, c'est `design-pruefen.mjs` qui les trouve (section « Unique plutôt qu'en kit ») ; sans Node, tu cherches avec `grep -rnE "linear-gradient|radial-gradient|Inter" design src` et dans les textes. Le reste, toi seul le vois, avec les yeux.
 
 ## Le nuancier (tokens)
 

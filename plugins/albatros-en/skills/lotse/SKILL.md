@@ -2,7 +2,7 @@
 name: lotse
 description: "Load first for “build me a website”, “what's next?” and any wish about a website or a business: the main Albatros skill, the air traffic controller. It says what's up now; building only starts after the person's two yeses. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server) and follows exactly the skill and section that are up now; after every step it asks again. Asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and the library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “where am I?”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. about the domain), the topic skill comes first."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: '400a63bef670'
 ---
 

@@ -2,7 +2,7 @@
 name: schnellstart
 description: "Pour « vas-y, commence », « fais-le » ou « construis-moi vite un site » : en quelques minutes, un premier état à montrer ; le site lui-même n'est construit qu'après deux oui de la personne. Démarrage rapide pour une nouvelle idée en mode faire : les premières pièces sont dans le dossier du projet (docs/projekt.md, public cible et offre en premier brouillon, logo provisoire, esquisse grise de la page d'accueil) et dans le programme Albatros sur son ordinateur, avec des propositions, une carte d'idée et deux questions au plus. Ensuite, on polit : l'IA annonce chaque partie à regarder avec teil_bereit, récupère avec naechstes les choix et les retours et retravaille partie par partie, jusqu'au oui de la personne. Moments du oui seulement comme carte, e-mails et publications seulement comme brouillon ; sans le programme, le même chemin dans des fichiers. Utilise ce skill avec « démarrage rapide », « montre-moi ce que ça peut devenir », « ouvrir Albatros », et quand le skill start mène ici."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: 'cd2ea8c18e31'
 ---
 

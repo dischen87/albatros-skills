@@ -2,8 +2,8 @@
 name: inhalte
 description: "Aiuta una persona senza conoscenze tecniche a scrivere e scegliere testi e immagini per il suo sito web, nel piano di volo per la bozza di tutto il sito (P7): la pagina iniziale in tre frasi, testi brevi nel tono del concetto per chi legge sul telefonino, i testi mancanti ben visibili come [da completare], foto proprie invece di immagini di repertorio con una lista delle foto, diritti e dimensioni delle immagini, testi dell'IA riportati nella propria voce. Il risultato è una lista dei contenuti in docs/inhalte.md e i testi nella bozza. Usa lo skill con «scrivere i testi», «cosa scrivo sulla pagina iniziale», «chi siamo», «immagini per il sito», «lista delle foto», «posso usare questa immagine?», «il testo sembra scritto dall'IA», «contenuti»."
 metadata:
-  stand: 0.3.0
-  quelle: '0ce83df4206d'
+  stand: 0.3.1
+  quelle: '6cd702581612'
 ---
 
 # Contenuti: la merce in vetrina
@@ -53,6 +53,10 @@ Chi arriva sulla pagina iniziale decide in pochi secondi se restare. Le tre fras
 - Ciò che manca non lo inventi. Compare in modo visibile nel testo, per esempio `[da completare: orari d'apertura, li fornisce Anna entro il 7.11.2026]`, perché nessuno lo dimentichi. Mai testo Lorem o altro testo riempitivo, e mai emoji al posto delle icone.
 - I fatti come frasi che sono vere anche da sole: chi, che cosa, per chi, dove, quando è aperto, quanto costa, come si chiede. In più le cinque domande che vengono fatte più spesso, ognuna con una risposta in due o tre frasi. Così lo capisce chi ha fretta, e così lo trovano i motori di ricerca e gli assistenti IA (skill `seo-grundlagen`).
 - Niente recensioni, citazioni, numeri di clienti o riconoscimenti inventati. Ogni numero viene dalla persona o ha una fonte.
+
+- I pulsanti dicono cosa succede, con un verbo: «Richiedi una settimana», non «Invia». La stessa cosa ha ovunque lo stesso nome: il pulsante «Richiedi una settimana» porta al messaggio «Richiesta inviata».
+- I messaggi di errore in tre parti: cosa è successo, perché, cosa si può fare adesso («La richiesta non è arrivata. La connessione si è interrotta. Riprova, il tuo testo resta.»). Senza scuse, mai vaghi.
+- I punti vuoti dicono cosa verrà qui e quando («Ancora nessun appuntamento. Appena la società inserisce il prossimo, compare qui.»). Le domande prima di eliminare nominano la cosa e la conseguenza («Eliminare 2 foto? Non si potrà annullare.»), e i pulsanti hanno il nome dell'azione («Elimina le foto», «Tieni»), mai «OK» e «Annulla». (Queste tre regole secondo lo skill ux-copy di Anthropic, 12.11.2026.)
 
 ### 4. Testi con l'IA
 

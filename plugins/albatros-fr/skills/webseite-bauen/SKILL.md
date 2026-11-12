@@ -2,7 +2,7 @@
 name: webseite-bauen
 description: "À charger avant d'écrire du code pour un site (« construis-moi un site ») : on ne construit qu'après deux oui de la personne (plan confirmé, ébauche autorisée) ; s'il en manque un, même pour « construis déjà la page d'accueil », le skill ramène à la planification. Construit ensuite le site web sur son ordinateur, exactement selon l'ébauche autorisée (P9 et P10) : pruefen.mjs --vor-bau vérifie les deux oui, puis journal de bord, mode de construction, PRD tiré de l'ébauche avec accès et portes, construction avec Astro entrée par entrée de la liste de construction, quatre vérifications avec pruefen.mjs, visite sur natel et ordinateur, comparaison avec l'ébauche et validation. Rien ne va en ligne, c'est lancieren qui s'en charge. Annonce prd, lokal, pruefung, freigabe. Utilise ce skill après entwurf (autorisation de construire) et pour « construis-moi le site », « stack technique », « PRD », « regarder en local », « vérifier avant de publier », « validation », « et après l'ébauche ? »."
 metadata:
-  stand: 0.3.0
+  stand: 0.3.1
   quelle: 6a629232a284
 ---
 
