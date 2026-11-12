@@ -1,0 +1,12 @@
+{
+  "name": "albatros",
+  "displayName": "Albatros",
+  "version": "0.3.0",
+  "description": "Der Lotse sagt nach deinem echten Stand, welcher Skill jetzt dran ist (mit Anmeldung), auf einem festen Fahrplan von der Idee bis zur Seite im Netz. Bis deine Seite auf deinem Computer fertig ist, kostet Albatros nichts; dann wählst du, wo sie wohnt: bei Albatros (Light für eine Seite aus Texten und Bildern, Pilot mit einem echten eigenen Server) oder selbst. Dazu die offene Bibliothek: Flugschule und Weg Webseite mit SSH-Schlüssel, Server, Git, Pipeline, Domain, Snapshots und allem für deine erste Webseite, auf Deutsch und ohne Fachjargon.",
+  "author": { "name": "Albatros Partner" },
+  "homepage": "https://albatros.build",
+  "repository": "https://github.com/dischen87/albatros-skills",
+  "license": "MIT",
+  "keywords": ["albatros", "lernen", "server", "ssh", "git", "webseite", "deutsch"],
+  "logo": "assets/icon.png"
+}
