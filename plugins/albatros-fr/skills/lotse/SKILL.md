@@ -2,7 +2,7 @@
 name: lotse
 description: "À charger en premier pour « construis-moi un site », « et maintenant ? » et tout souhait de site web ou d'entreprise : skill principal d'Albatros, l'aiguilleur du ciel. Il dit ce qui est à faire maintenant ; on ne construit qu'après deux oui de la personne. Demande avec l'outil lage l'état réel (phase du plan de vol, questions obligatoires ouvertes, abonnement, page ou serveur) et suit exactement le skill et la section à faire maintenant ; après chaque étape, il redemande. Pose lui-même les questions obligatoires, clarifie apprendre ou faire et signale les lacunes du savoir-faire. Sans connexion, il montre les trois grandes étapes avec la prochaine étape et la bibliothèque des skills. Utilise ce skill dès que quelqu'un continue son projet Albatros ou demande « et ensuite ? », « j'en suis où ? », « ça coince », « je veux apprendre moi-même », avec /albatros-fr:lotse et à la fin du skill start. Pour une question claire sur un sujet (p. ex. le domaine), le skill spécialisé passe avant."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '3c5f2cd6958f'
 ---
 

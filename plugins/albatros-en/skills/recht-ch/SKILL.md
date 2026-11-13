@@ -2,7 +2,7 @@
 name: recht-ch
 description: "Gets a small Swiss website legally in order, explained for people with no prior knowledge with the picture of the doorbell nameplate and house rules: legal notice (Impressum, UWG Art. 3 para. 1 let. s), privacy policy under the revised Swiss data protection act revDSG (duty to inform, Art. 19), cookies (Art. 45c FMG), logins (cookie, logs, retention), when the EU's GDPR comes in as well, picture rights, marketing emails only with consent. Not legal advice. Use this skill for “Impressum”, “legal notice”, “data protection”, “privacy policy”, “DSG”, “GDPR”, “DSGVO”, “cookie banner”, “do I legally need this”, “what has to be on my website”, “contact form and data protection”, “login and data protection”."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'e1db985e5990'
 ---
 

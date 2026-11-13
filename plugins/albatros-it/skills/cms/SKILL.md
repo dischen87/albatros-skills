@@ -2,7 +2,7 @@
 name: cms
 description: "Aiuta una persona senza conoscenze tecniche a decidere se il suo sito web ha bisogno di un sistema per gestire i contenuti (CMS) e, se serve, lo installa, per esempio Strapi in Docker sul server Albatros, raggiungibile attraverso un tunnel sicuro. Spiega il CMS con l'immagine della bacheca. Usa lo skill con «CMS», «Strapi», «cambiare i contenuti da solo senza codice», «blog», «news», «gestire gli eventi», «la mia collega deve poter cambiare i testi», «WordPress», «area admin»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '5aebef637f84'
 ---
 

@@ -2,7 +2,7 @@
 name: webseite-bauen
 description: "Load before any code for a website is written (“build me a website”): building only starts after the person's two yeses (plan confirmed, draft approved to build); if one is missing, even for “just build the home page already”, the skill leads back to planning. Then builds the website on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the two yeses, then logbook, way of building, PRD derived from the draft with access and doors, building with Astro entry by entry of the build list, four checks with pruefen.mjs, a walk-through on a phone and a computer, comparison with the draft and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 6a629232a284
 ---
 

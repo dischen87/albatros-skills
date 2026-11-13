@@ -2,7 +2,7 @@
 name: blog
 description: "Imposta con una persona senza conoscenze preliminari un blog sul suo sito Astro e scrive articoli con lei: ogni articolo è un file Markdown nel diario di bordo (web/src/content/blog/<slug>.md con title, date, description, bild), la persona racconta l’idea, Bert scrive il file, lei lo legge nell’anteprima e clicca su pubblica in Albatros. Con un modello per i consigli alle famiglie (per chi, cosa, quando e meteo, viaggio, costi, il mio consiglio, link) e regole per le proprie foto. Usa lo skill per «blog», «articolo del blog», «nuovo articolo», «scrivere un articolo», «pubblicare un consiglio», «scrivere un’idea per una gita», «novità sul mio sito»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '040425d83711'
 ---
 

@@ -2,7 +2,7 @@
 name: projekt-planen
 description: "Plan a website project with Albatros, read saved project state and record confirmed steps. Use for Albatros project planning or the next step of an Albatros project."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Plan a project with Albatros

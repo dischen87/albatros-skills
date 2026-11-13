@@ -2,7 +2,7 @@
 name: webseite-planen
 description: "À charger en premier pour « construis-moi un site pour … » et « je veux un site web » : d'abord planifier et montrer, on ne construit encore rien. Planifie avec une personne sans connaissances préalables son site web en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md, esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, docs/recherche.md), plan de la maison (pages, fonctions en liste de construction, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise-le aussi pour « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « étendue des fonctions », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '26e9feb9d007'
 ---
 

@@ -2,7 +2,7 @@
 name: kanaele
 description: "Aiuta una persona senza conoscenze preliminari a creare da sé account sui social per il suo sito (Instagram come account professionale, pagina Facebook, pagina LinkedIn, Pinterest, TikTok facoltativo), con lo stesso nome del sito e una bio con link; password e codici restano a lei. Poi «condividere i nuovi articoli»: per ogni nuovo articolo del blog Bert scrive un breve post per canale come messaggio in bozza (strumento entwurf), la persona approva e pubblica da sé; come aiuto ricorrente con lo strumento aufgabe. Usa lo skill per «social media», «Instagram», «pagina Facebook», «LinkedIn», «Pinterest», «TikTok», «creare un account», «condividere un articolo», «scrivere un post», «come faccio conoscere il mio sito»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'e939e5cb6500'
 ---
 

@@ -2,7 +2,7 @@
 name: swissactivities
 description: "Integra elementi di SwissActivities in un sito personale di consigli per famiglie, per collaboratrici e collaboratori di SwissActivities senza conoscenze preliminari. Collega l’IA al server pubblico di SwissActivities (senza accesso), prepara un consiglio solo con dati reali (età, meteo, prezzo con data, viaggio con i mezzi pubblici), chiede l’esperienza della persona invece di inventarne una, mette il link di prenotazione e integra il widget dell’area partner come componente Astro, con la nota «Lavoro da SwissActivities» e una riga per l’informativa sulla privacy. Usa lo skill per «SwissActivities», «integrare un widget», «area partner», «ID del widget», «scrivere un consiglio», «cosa fare con i bambini», «gita in famiglia», «link di prenotazione», «mostrare attività sul mio sito»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '8f395bf66d54'
 ---
 

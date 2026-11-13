@@ -2,7 +2,7 @@
 name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito, unico e non fatto con lo stampino. Nel piano di volo (P6): mockup grigio, tre direzioni chiaramente diverse dal concetto, verificate con design-pruefen.mjs, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni; movimento e 3D solo con un'intenzione. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Con la domanda sugli elementi grafici (strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «layout», «icone», «mascotte», «animazione», «3D»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '0f0c77561818'
 ---
 

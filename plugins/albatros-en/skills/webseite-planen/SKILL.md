@@ -2,7 +2,7 @@
 name: webseite-planen
 description: "Load first for “build me a website for …” and “I want a website”: plan and show first, nothing is built yet. Plans a website with a person who has no prior knowledge, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md, a grey sketch of the home page), research (up to three comparable sites, obligations, docs/recherche.md), floor plan (pages, features as a build list, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Also use this skill for “plan my website”, “where do I start”, “which pages do I need”, “sitemap”, “scope of features”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '26e9feb9d007'
 ---
 

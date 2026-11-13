@@ -2,7 +2,7 @@
 name: blog
 description: 'Richtet mit einer Person ohne Vorwissen einen Blog auf ihrer Astro-Seite ein und schreibt mit ihr Beiträge: jeder Beitrag eine Markdown-Datei im Logbuch (web/src/content/blog/<slug>.md mit title, date, description, bild), die Person erzählt die Idee, Bert schreibt die Datei, sie liest in der Vorschau und klickt in Albatros auf «Veröffentlichen». Mit Vorlage für Familien-Empfehlungen (Für wen, Was, Wann und Wetter, Anreise, Kosten, Mein Tipp, Link) und Regeln für eigene Fotos. Nutze den Skill bei «Blog», «Blogbeitrag», «neuer Beitrag», «Artikel schreiben», «Empfehlung veröffentlichen», «Ausflugstipp aufschreiben», «News auf meiner Seite».'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Blog: der Ordner mit den Ausflugsblättern

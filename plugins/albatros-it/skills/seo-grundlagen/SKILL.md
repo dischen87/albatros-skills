@@ -2,7 +2,7 @@
 name: seo-grundlagen
 description: "Rende visibile un piccolo sito web: per i motori di ricerca (SEO) e per gli assistenti IA (GEO), spiegato a persone senza conoscenze tecniche con l'immagine dei cartelli stradali e della pianta della città. Titolo e descrizione della pagina, un solo titolo principale, indirizzo canonico, descrizioni delle immagini, sitemap.xml, robots.txt, dati strutturati secondo il tipo di attività, anteprima quando si condivide, llms.txt, fatti e domande con risposte, Google Search Console, Bing Webmaster Tools, IndexNow e profilo dell'attività; verificato con sichtbar-pruefen.mjs sul sito costruito. Usa lo skill con «SEO», «GEO», «diventare visibile», «farsi trovare su Google», «Google non trova il mio sito», «farsi trovare in ChatGPT», «ricerca con l'IA», «motore di ricerca», «sitemap», «meta description», «Search Console», «Bing», «IndexNow», «llms.txt», «farsi trovare in zona», «comparire su Google Maps»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'd1e923bdddba'
 ---
 

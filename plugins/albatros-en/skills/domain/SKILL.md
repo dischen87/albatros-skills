@@ -2,7 +2,7 @@
 name: domain
 description: "Finds, buys or connects an own domain (e.g. meinladen.ch) for the site or server at Albatros, with Light as with Pilot; optional, when going live (P13). Explains domain and DNS with the picture of an address in the phone book, suggests names, uses domain_suchen to search what's free and buys through Albatros with domain_kaufen (the person is the owner and only enters their details on the payment page). A domain the person already has gets connected with domain_verbinden: DNS records, the TXT proof _albatros and a check, until the site shows the padlock in the browser. Use this skill for “my own domain”, “my own address”, “buy a .ch”, “which domain is free”, “search for a domain”, “DNS”, “A record”, “CNAME”, “TXT record”, “my domain doesn't point to my site”, “certificate”, “https isn't working”."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'ac1706205469'
 ---
 

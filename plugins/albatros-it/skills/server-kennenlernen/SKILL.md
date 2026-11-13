@@ -2,7 +2,7 @@
 name: server-kennenlernen
 description: "Giro del proprio server Albatros per una persona senza conoscenze. Spiega terminale, cartelle, spazio su disco, memoria di lavoro, programmi in esecuzione e il passe-partout sudo con immagini prese da un appartamento. La persona digita da sé i primi comandi. Usa lo skill con «cosa c'è sul mio server?», «come mi muovo nel terminale?», «cos'è una cartella sul server?», «ls cd pwd», «quanto spazio ho?», «cosa sta girando?», «fammi fare un giro del server», e dopo la prima visita SSH riuscita."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '1fd252993459'
 ---
 

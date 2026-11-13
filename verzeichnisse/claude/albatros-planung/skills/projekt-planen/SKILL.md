@@ -2,7 +2,7 @@
 name: projekt-planen
 description: "Plant ein Webseitenprojekt mit Albatros, liest den gespeicherten Projektstand und hält bestätigte Schritte fest. Nutze den Skill für Albatros-Projektplanung oder die Frage nach dem nächsten Projektschritt."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Projekt mit Albatros planen

@@ -2,7 +2,7 @@
 name: domain
 description: "Trova, compra o collega un dominio proprio (p. es. mionegozio.ch) per la pagina o il server su Albatros, con Light come con Pilot; facoltativo, alla messa online (P13). Spiega dominio e DNS con l'immagine dell'indirizzo e dell'elenco telefonico, propone nomi, cerca con domain_suchen cosa è libero e compra tramite Albatros con domain_kaufen (la persona è titolare, i suoi dati li inserisce solo sulla pagina di pagamento). Un dominio che la persona ha già, lo skill lo collega con domain_verbinden: voci DNS, prova TXT _albatros e verifica, finché la pagina compare nel browser con il lucchetto. Usa lo skill con «dominio proprio», «il mio indirizzo», «comprare un .ch», «quale dominio è libero?», «cercare un dominio», «DNS», «record A», «CNAME», «record TXT», «il dominio non punta alla mia pagina», «certificato», «https non funziona»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'ac1706205469'
 ---
 

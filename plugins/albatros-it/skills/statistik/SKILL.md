@@ -2,7 +2,7 @@
 name: statistik
 description: "Installa con una persona senza conoscenze tecniche statistiche rispettose della privacy per il suo sito web, con PostHog. Prima un piccolo piano degli eventi (quali tacche contiamo, e quando esattamente), poi l'integrazione, un evento obiettivo come «richiesta inviata», escludere le proprie visite e confrontare con le richieste vere. Usa lo skill con «statistiche», «contare i visitatori», «quante persone vengono sul mio sito?», «PostHog», «Google Analytics», «tracking», «conversion», «misurare un evento», «da dove arrivano i miei visitatori?»."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '8e43b3ced7ac'
 ---
 
