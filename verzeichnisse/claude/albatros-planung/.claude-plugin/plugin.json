@@ -1,0 +1,24 @@
+{
+  "name": "albatros-planung",
+  "version": "0.3.1",
+  "description": "Plant ein Webseitenprojekt mit Albatros und hält den bestätigten Fortschritt fest. Für Idee, Recherche, Seitenplan, Entwurf und die Prüfung eines lokalen Prototyps.",
+  "author": {
+    "name": "Albatros Partner",
+    "email": "mathias@albatrospartner.ch",
+    "url": "https://albatros.build"
+  },
+  "homepage": "https://albatros.build",
+  "repository": "https://github.com/dischen87/albatros-skills",
+  "license": "MIT",
+  "keywords": [
+    "albatros",
+    "planning",
+    "website"
+  ],
+  "displayName": "Albatros Projektplanung",
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://github.com/dischen87/albatros-skills/blob/main/verzeichnisse/claude/albatros-planung/README.md",
+  "supportUrl": "https://github.com/dischen87/albatros-skills/issues",
+  "privacyPolicyUrl": "https://albatros.build/datenschutz",
+  "termsOfServiceUrl": "https://albatros.build/agb"
+}
