@@ -3,7 +3,7 @@ name: swissactivities
 description: "Embeds SwissActivities building blocks in a person’s own website with family recommendations, for SwissActivities employees with no prior knowledge. Connects the AI to the public SwissActivities server (no sign-in), researches a recommendation with real facts only (age, weather, price with date, getting there by public transport), asks about the person’s own experience instead of inventing one, links with the booking link and embeds the widget from the partner area as an Astro component, with the note “I work at SwissActivities” and a line for the privacy policy. Use this skill for “SwissActivities”, “embed a widget”, “partner area”, “widget ID”, “write a recommendation”, “what to do with the kids”, “day trip with children”, “booking link”, “show activities on my site”."
 metadata:
   stand: 0.3.2
-  quelle: 'd6c73f8c489e'
+  quelle: '8f395bf66d54'
 ---
 
 # SwissActivities: the signpost on the hiking trail
@@ -29,7 +29,7 @@ A yellow signpost shows the destination and the time, and it is right because so
 
 ## 1. Connect the tools
 
-The SwissActivities server is public and needs no sign-in: `https://gateway.swissactivities.com/mcp`. In the Albatros app, Bert is meant to bring it along on his own; that is being built right now. So first check whether you already have tools such as `search_activities`. If not, connect it with the person’s yes:
+The SwissActivities server is public and needs no sign-in: `https://gateway.swissactivities.com/mcp`. In the Albatros app, Bert brings it along as soon as the person turns on the switch in the checklist step «Days out from SwissActivities» (read only, built on 13.11.2026). So first check whether you already have tools such as `search_activities`. If not, connect it with the person’s yes:
 
 | AI | How |
 |---|---|

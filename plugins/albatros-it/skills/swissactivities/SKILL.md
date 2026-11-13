@@ -3,7 +3,7 @@ name: swissactivities
 description: "Integra elementi di SwissActivities in un sito personale di consigli per famiglie, per collaboratrici e collaboratori di SwissActivities senza conoscenze preliminari. Collega l’IA al server pubblico di SwissActivities (senza accesso), prepara un consiglio solo con dati reali (età, meteo, prezzo con data, viaggio con i mezzi pubblici), chiede l’esperienza della persona invece di inventarne una, mette il link di prenotazione e integra il widget dell’area partner come componente Astro, con la nota «Lavoro da SwissActivities» e una riga per l’informativa sulla privacy. Usa lo skill per «SwissActivities», «integrare un widget», «area partner», «ID del widget», «scrivere un consiglio», «cosa fare con i bambini», «gita in famiglia», «link di prenotazione», «mostrare attività sul mio sito»."
 metadata:
   stand: 0.3.2
-  quelle: 'd6c73f8c489e'
+  quelle: '8f395bf66d54'
 ---
 
 # SwissActivities: il cartello del sentiero
@@ -29,7 +29,7 @@ Un cartello giallo indica la meta e il tempo di cammino, ed è giusto perché qu
 
 ## 1. Collegare gli strumenti
 
-Il server di SwissActivities è pubblico e non richiede accesso: `https://gateway.swissactivities.com/mcp`. Nel programma Albatros, Bert dovrebbe portarlo con sé da solo; lo si sta costruendo proprio ora. Guarda quindi prima se hai già strumenti come `search_activities`. Se no, collegalo con il sì della persona:
+Il server di SwissActivities è pubblico e non richiede accesso: `https://gateway.swissactivities.com/mcp`. Nel programma Albatros, Bert lo porta con sé non appena la persona attiva l’interruttore nel passo «Gite di SwissActivities» della lista di controllo (solo lettura, costruito il 13.11.2026). Guarda quindi prima se hai già strumenti come `search_activities`. Se no, collegalo con il sì della persona:
 
 | IA | Come |
 |---|---|

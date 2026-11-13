@@ -28,7 +28,7 @@ Ein gelber Wegweiser zeigt Ziel und Zeit, und er stimmt, weil jemand nachgemesse
 
 ## 1. Die Werkzeuge verbinden
 
-Der Server von SwissActivities ist öffentlich und braucht keine Anmeldung: `https://gateway.swissactivities.com/mcp`. Im Programm Albatros soll Bert ihn von selbst mitbringen; das wird gerade eingebaut. Schau darum zuerst, ob du Werkzeuge wie `search_activities` schon hast. Wenn nicht, verbindest du ihn mit dem Ja der Person:
+Der Server von SwissActivities ist öffentlich und braucht keine Anmeldung: `https://gateway.swissactivities.com/mcp`. Im Programm Albatros bringt Bert ihn mit, sobald die Person in der Checkliste beim Schritt «Ausflüge von SwissActivities» den Schalter einschaltet (nur lesen, gebaut am 13.11.2026). Schau darum zuerst, ob du Werkzeuge wie `search_activities` schon hast. Wenn nicht, verbindest du ihn mit dem Ja der Person:
 
 | KI | So |
 |---|---|
