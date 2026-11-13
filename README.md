@@ -54,11 +54,11 @@ Getestet am 28.10.2026:
 | Wo | So | Stand |
 |---|---|---|
 | Claude Code ab 2.1.292 | `claude plugin install albatros --marketplace dischen87/albatros-skills` (im Programm: `/plugin install albatros --marketplace dischen87/albatros-skills`) | geht; gemessen am 12.11.2026 mit 2.1.321 in leerem `CLAUDE_CONFIG_DIR`, gegen GitHub (`main`) und gegen diesen Zweig |
-| claude.ai, Cowork und Claude Code | im Verzeichnis von Claude «Albatros» hinzufügen | ein Klick, sobald Albatros dort steht (Einreichung: [docs/verzeichnisse.md](docs/verzeichnisse.md)) |
+| claude.ai, Cowork und Claude Code | im Verzeichnis «Albatros Projektplanung» hinzufügen | separate Planungsfassung P1–P10, sobald freigegeben; [Einreichung](docs/verzeichnisse.md) |
 | Cursor | im Marktplatz von Cursor «Albatros» installieren | ein Klick, sobald Albatros dort steht; bis dahin Teil D in EINRICHTEN.md |
-| ChatGPT und Codex | im Plugin-Verzeichnis von ChatGPT und Codex «Albatros» hinzufügen | ein Klick, sobald Albatros dort steht; in Codex CLI bis dahin die zwei Befehle unten |
+| ChatGPT und Codex | im Verzeichnis «Albatros Project Planning» hinzufügen | separate Planungsfassung P1–P10, sobald freigegeben; für die persönliche Vollfassung die zwei Codex-Befehle unten |
 
-Was die drei Verzeichnisse verlangen, was erfüllt ist und was offen, steht in [docs/verzeichnisse.md](docs/verzeichnisse.md); `bun run pruefen` prüft die Manifeste dafür (`scripts/verzeichnisse.ts`).
+Die getrennten Verzeichnisfassungen, ihre Profiladressen und die noch offenen Einreichungsschritte stehen in [docs/verzeichnisse.md](docs/verzeichnisse.md). Persönliche Vollplugins und Cursor behalten ihre bisherigen Verbindungen. `bun run pruefen` prüft beide Paketarten.
 
 Von Hand, für alle, die selbst tippen wollen:
 

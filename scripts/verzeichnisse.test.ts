@@ -3,7 +3,8 @@
 import { afterAll, expect, test } from 'bun:test';
 import { cpSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { baueOpenaiPaket, pruefeOpenaiPaket } from './openai-paket.ts';
+import { baueOpenaiPaket, OPENAI_VERZEICHNIS_PLUGIN, pruefeOpenaiPaket } from './openai-paket.ts';
+import { PROFIL_URL } from './verzeichnis-pakete.ts';
 import { kontrast, MCP_URL, pngGroesse, pruefeVerzeichnisse, woerter } from './verzeichnisse.ts';
 
 const wurzel = new URL('..', import.meta.url).pathname;
@@ -88,20 +89,19 @@ test('ChatGPT und Codex: zu lange Texte, falsches Werkzeug, fehlende Fälle, alt
 
 test('Paket für OpenAI: nur Skills, Manifest und Bild, ein Server ohne Kopfzeilen', async () => {
   const ziel = neu('openai-paket');
-  await baueOpenaiPaket(wurzel, 'albatros-en', ziel);
+  await baueOpenaiPaket(wurzel, OPENAI_VERZEICHNIS_PLUGIN, ziel);
   expect(await pruefeOpenaiPaket(ziel)).toEqual([]);
   const mcp = await Bun.file(`${ziel}/.mcp.json`).json();
-  expect(mcp).toEqual({ mcpServers: { albatros: { url: MCP_URL, extensions: { 'com.openai': { auth: { type: 'oauth', client: { mode: 'cimd' } } } } } } });
+  expect(mcp).toEqual({ mcpServers: { albatros: { url: PROFIL_URL.openai, extensions: { 'com.openai': { auth: { type: 'oauth', client: { mode: 'cimd' } } } } } } });
   // Eingebaute Fehler: Arbeitsplatz, Kopfzeile, zweiter Server
   cpSync(`${wurzel}plugins/albatros-en/.mcp.json`, `${ziel}/.mcp.json`);
   await Bun.write(`${ziel}/arbeitsplatz/README.md`, 'x');
-  expect(await pruefeOpenaiPaket(ziel)).toEqual([
-    'arbeitsplatz/README.md: gehört nicht ins Paket',
-    '.mcp.json: genau ein Server albatros, nicht albatros, albatros-arbeitsplatz',
-    '.mcp.json: keine Kopfzeilen und kein lokaler Befehl (Einreichung bei OpenAI)',
-    '.mcp.json: auth.type oauth fehlt',
-  ]);
-  expect(baueOpenaiPaket(wurzel, 'albatros-en', ziel)).rejects.toThrow('ist nicht leer');
+  const f = await pruefeOpenaiPaket(ziel);
+  expect(f).toContain('Dateiliste stimmt nicht mit dem kuratierten Paket überein.');
+  expect(f).toContain('.mcp.json: weicht von der kuratierten Quelle ab.');
+  expect(f.some((x) => x.includes('falsche MCP-Adresse'))).toBe(true);
+  expect(baueOpenaiPaket(wurzel, OPENAI_VERZEICHNIS_PLUGIN, ziel)).rejects.toThrow('ist nicht leer');
+  expect(baueOpenaiPaket(wurzel, 'albatros-en', neu('kein-vollplugin'))).rejects.toThrow('keine persönlichen Vollplugins');
 });
 
 test('Hilfen: PNG-Grösse, Kontrast, Wörter ohne Code-Blöcke', async () => {

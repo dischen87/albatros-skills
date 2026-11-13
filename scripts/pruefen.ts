@@ -14,6 +14,7 @@ import { lektionenFehlen } from './lektionen.ts';
 import { ladeFragen, missionsverweise, type SkillText } from './missionsverweise.ts';
 import { hoeher, KOPF_SCHLUESSEL, KOPF_STAND, kopfzeileStand, quelle } from './stand.ts';
 import { pruefeVerzeichnisse } from './verzeichnisse.ts';
+import { claudePfad, pruefeVerzeichnisPaket, SPRACHEN } from './verzeichnis-pakete.ts';
 
 type Mission = {
   id: string;
@@ -332,6 +333,7 @@ for (const p of (await Bun.file(wurzel + '.claude-plugin/marketplace.json').json
 }
 // Plugin-Verzeichnisse von Claude, Cursor sowie ChatGPT und Codex (scripts/verzeichnisse.ts, docs/verzeichnisse.md)
 fehler.push(...(await pruefeVerzeichnisse(wurzel)));
+for (const sprache of SPRACHEN) fehler.push(...(await pruefeVerzeichnisPaket(wurzel, 'claude', sprache, `${wurzel}${claudePfad(sprache)}`)));
 const VORSCHAU = 'plugins/albatros/skills/webseite-bauen/albatros-vorschau.mjs';
 if ((await lies(VORSCHAU)) !== (await lies('vorlage/werkzeuge/albatros-vorschau.mjs'))) fehler.push(`vorlage/werkzeuge/albatros-vorschau.mjs: anders als ${VORSCHAU}`);
 

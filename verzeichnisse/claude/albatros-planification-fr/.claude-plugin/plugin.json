@@ -1,0 +1,24 @@
+{
+  "name": "albatros-planification-fr",
+  "version": "0.3.1",
+  "description": "Planifie un projet de site web avec Albatros et note les étapes confirmées : idée, recherche, plan des pages, maquette et vérification du prototype local.",
+  "author": {
+    "name": "Albatros Partner",
+    "email": "mathias@albatrospartner.ch",
+    "url": "https://albatros.build"
+  },
+  "homepage": "https://albatros.build/fr",
+  "repository": "https://github.com/dischen87/albatros-skills",
+  "license": "MIT",
+  "keywords": [
+    "albatros",
+    "planning",
+    "website"
+  ],
+  "displayName": "Albatros Planification",
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://github.com/dischen87/albatros-skills/blob/main/verzeichnisse/claude/albatros-planification-fr/README.md",
+  "supportUrl": "https://github.com/dischen87/albatros-skills/issues",
+  "privacyPolicyUrl": "https://albatros.build/fr/datenschutz",
+  "termsOfServiceUrl": "https://albatros.build/fr/agb"
+}
