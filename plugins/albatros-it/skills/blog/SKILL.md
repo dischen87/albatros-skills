@@ -3,7 +3,7 @@ name: blog
 description: "Imposta con una persona senza conoscenze preliminari un blog sul suo sito Astro e scrive articoli con lei: ogni articolo è un file Markdown nel diario di bordo (web/src/content/blog/<slug>.md con title, date, description, bild), la persona racconta l’idea, Bert scrive il file, lei lo legge nell’anteprima e clicca su pubblica in Albatros. Con un modello per i consigli alle famiglie (per chi, cosa, quando e meteo, viaggio, costi, il mio consiglio, link) e regole per le proprie foto. Usa lo skill per «blog», «articolo del blog», «nuovo articolo», «scrivere un articolo», «pubblicare un consiglio», «scrivere un’idea per una gita», «novità sul mio sito»."
 metadata:
   stand: 0.3.2
-  quelle: '1d602af4dfb6'
+  quelle: '040425d83711'
 ---
 
 # Blog: il raccoglitore delle schede delle gite
@@ -22,6 +22,8 @@ Sullo scaffale c’è un raccoglitore. Ogni gita è una scheda, sempre etichetta
 ## Dove stanno gli articoli
 
 Ogni articolo è un file nel diario di bordo: `web/src/content/blog/<slug>.md`. Lo `<slug>` è il titolo in minuscolo con trattini, per esempio `parco-avventura-bambini`; diventa l’indirizzo `/blog/parco-avventura-bambini/`. È il livello più semplice dello skill `cms` (testi nel progetto): niente CMS, niente banca dati, Bert scrive i file. Se più tardi altri devono scrivere senza Bert, lo skill `cms` mostra il passo successivo.
+
+**Prima dei due sì** (piano confermato, bozza con via libera; `naechstes` dice `bauen_erlaubt: false`) non costruisci niente sul sito. Scrivi allora l’articolo come bozza in `docs/beitraege/<slug>.md`, con la stessa intestazione (title, date, description). Dopo i due sì lo sposti in `web/src/content/blog/`. Albatros controlla i due posti allo stesso modo.
 
 ## 1. Impostare il blog una volta
 

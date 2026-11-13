@@ -22,6 +22,8 @@ Im Regal steht ein Ordner. Jeder Ausflug ist ein Blatt darin, oben immer gleich 
 
 Jeder Beitrag ist eine Datei im Logbuch: `web/src/content/blog/<slug>.md`. Der `<slug>` ist der Titel in kleinen Buchstaben mit Bindestrichen, zum Beispiel `seilpark-mit-kindern`; er wird die Adresse `/blog/seilpark-mit-kindern/`. Das ist die einfachste Stufe aus dem Skill `cms` (Texte im Projekt): kein CMS, keine Datenbank, Bert schreibt die Dateien. Wollen später andere ohne Bert schreiben, zeigt der Skill `cms` den nächsten Schritt.
 
+**Vor den zwei Ja** (Plan bestätigt, Entwurf freigegeben; `naechstes` sagt `bauen_erlaubt: false`) baust du nichts an der Seite. Einen Beitrag schreibst du dann als Entwurf nach `docs/beitraege/<slug>.md`, mit demselben Kopf (title, date, description). Nach den zwei Ja ziehst du ihn nach `web/src/content/blog/`. Albatros prüft beide Orte gleich.
+
 ## 1. Den Blog einmal einrichten
 
 Der Blog ist ein Teil der Seite wie jeder andere. Ist die Seite noch in Planung, steht er in der Bauliste (Skill `webseite-planen`) und wird mit dem Skill `webseite-bauen` gebaut. Ist sie schon im Netz, ist er eine grosse Änderung (Skill `webseite-aendern`). Gebaut wird er so (Astro 7, gemessen am 13.11.2026 mit 7.4.11):

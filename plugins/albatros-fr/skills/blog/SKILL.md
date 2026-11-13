@@ -3,7 +3,7 @@ name: blog
 description: "Met en place avec une personne sans connaissances préalables un blog sur son site Astro et écrit des articles avec elle : chaque article est un fichier Markdown dans le journal de bord (web/src/content/blog/<slug>.md avec title, date, description, bild), la personne raconte l’idée, Bert écrit le fichier, elle le lit dans l’aperçu et clique sur publier dans Albatros. Avec un modèle pour les recommandations aux familles (pour qui, quoi, quand et météo, trajet, coût, mon conseil, lien) et des règles pour ses propres photos. Utilise ce skill pour « blog », « article de blog », « nouvel article », « écrire un article », « publier une recommandation », « noter une idée de sortie », « actualités sur mon site »."
 metadata:
   stand: 0.3.2
-  quelle: '1d602af4dfb6'
+  quelle: '040425d83711'
 ---
 
 # Blog : le classeur des fiches de sortie
@@ -22,6 +22,8 @@ Sur l’étagère, il y a un classeur. Chaque sortie est une fiche dedans, toujo
 ## Où se trouvent les articles
 
 Chaque article est un fichier dans le journal de bord : `web/src/content/blog/<slug>.md`. Le `<slug>` est le titre en minuscules avec des traits d’union, par exemple `parc-accrobranche-enfants` ; il devient l’adresse `/blog/parc-accrobranche-enfants/`. C’est le niveau le plus simple du skill `cms` (textes dans le projet) : pas de CMS, pas de base de données, Bert écrit les fichiers. Si d’autres doivent écrire plus tard sans Bert, le skill `cms` montre l’étape suivante.
+
+**Avant les deux oui** (plan confirmé, ébauche validée ; `naechstes` indique `bauen_erlaubt: false`), tu ne construis rien sur le site. Écris alors l’article comme brouillon dans `docs/beitraege/<slug>.md`, avec le même en-tête (title, date, description). Après les deux oui, tu le déplaces dans `web/src/content/blog/`. Albatros vérifie les deux endroits de la même façon.
 
 ## 1. Mettre en place le blog une fois
 
