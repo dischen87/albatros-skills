@@ -2,7 +2,7 @@
 name: sicherheit
 description: 'Macht mit einer Person ohne Vorwissen ihr Projekt sicher, mit dem Bild vom Haus mit Schlüsselbund, Tresor, Fenstern und Schlössern: Geheimnisse nie ins Logbuch (Git), sondern in .env auf dem Server (und, falls das Fliessband eines braucht, im Tresor des Hafens); versehentlich veröffentlichte Schlüssel sofort neu erzeugen; ein Schlüssel pro Zweck; nur nötige Türen offen; Updates. Nutze den Skill bei «Sicherheit», «Passwort im Code», «API-Schlüssel», «.env», «Secret», «ich habe einen Schlüssel auf GitHub hochgeladen», «ist meine Seite sicher», «gehackt», «Updates», «Firewall», und bevor ein neues Geheimnis ins Projekt kommt.'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Sicherheit: den Schlüssel nicht unter die Fussmatte

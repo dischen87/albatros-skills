@@ -2,7 +2,7 @@
 name: blog
 description: 'Richtet mit einer Person ohne Vorwissen einen Blog auf ihrer Astro-Seite ein und schreibt mit ihr Beiträge: jeder Beitrag eine Markdown-Datei im Logbuch (web/src/content/blog/<slug>.md mit title, date, description, bild), die Person erzählt die Idee, Bert schreibt die Datei, sie liest in der Vorschau und klickt in Albatros auf «Veröffentlichen». Mit Vorlage für Familien-Empfehlungen (Für wen, Was, Wann und Wetter, Anreise, Kosten, Mein Tipp, Link) und Regeln für eigene Fotos. Nutze den Skill bei «Blog», «Blogbeitrag», «neuer Beitrag», «Artikel schreiben», «Empfehlung veröffentlichen», «Ausflugstipp aufschreiben», «News auf meiner Seite».'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Blog: der Ordner mit den Ausflugsblättern
@@ -21,6 +21,8 @@ Im Regal steht ein Ordner. Jeder Ausflug ist ein Blatt darin, oben immer gleich 
 ## Wo die Beiträge liegen
 
 Jeder Beitrag ist eine Datei im Logbuch: `web/src/content/blog/<slug>.md`. Der `<slug>` ist der Titel in kleinen Buchstaben mit Bindestrichen, zum Beispiel `seilpark-mit-kindern`; er wird die Adresse `/blog/seilpark-mit-kindern/`. Das ist die einfachste Stufe aus dem Skill `cms` (Texte im Projekt): kein CMS, keine Datenbank, Bert schreibt die Dateien. Wollen später andere ohne Bert schreiben, zeigt der Skill `cms` den nächsten Schritt.
+
+**Vor den zwei Ja** (Plan bestätigt, Entwurf freigegeben; `naechstes` sagt `bauen_erlaubt: false`) baust du nichts an der Seite. Einen Beitrag schreibst du dann als Entwurf nach `docs/beitraege/<slug>.md`, mit demselben Kopf (title, date, description). Nach den zwei Ja ziehst du ihn nach `web/src/content/blog/`. Albatros prüft beide Orte gleich.
 
 ## 1. Den Blog einmal einrichten
 

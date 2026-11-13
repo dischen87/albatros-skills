@@ -2,7 +2,7 @@
 name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site, unique plutôt que sorti d'un kit. Dans le plan de vol (P6) : maquette grise, trois directions bien différentes tirées du concept, vérifiées avec design-pruefen.mjs, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons ; mouvement et 3D seulement avec une intention. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Avec la question des éléments graphiques (outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « mise en page », « icônes », « mascotte », « animation », « 3D »."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '0f0c77561818'
 ---
 

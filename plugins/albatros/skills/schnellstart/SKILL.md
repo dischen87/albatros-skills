@@ -2,7 +2,7 @@
 name: schnellstart
 description: 'Bei «leg einfach los», «mach mal» oder «bau mir schnell eine Webseite»: in Minuten ein erster Stand zum Zeigen; die Seite selbst wird erst nach zwei Ja der Person gebaut. Schnellstart für eine neue Idee im Modus machen: Die ersten Stücke liegen im Projektordner (docs/projekt.md, Zielgruppe und Angebot als erster Entwurf, Arbeitslogo, graue Skizze der Startseite) und im Programm Albatros auf ihrem Computer, mit Vorschlägen, einer Ideen-Karte und höchstens zwei Fragen. Danach wird geschliffen: Die KI meldet jeden Teil mit teil_bereit zum Ansehen, holt mit naechstes Wahl und Rückmeldungen und überarbeitet Teil für Teil, bis die Person Ja sagt. Ja-Momente nur als Karte, Mails und Beiträge nur als Entwurf; ohne das Programm derselbe Weg in Dateien. Nutze den Skill bei «schnell», «Schnellstart», «zeig mir, was daraus werden kann», «Albatros öffnen», und wenn der Skill start hierher führt.'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Schnellstart: der erste Rundflug

@@ -2,7 +2,7 @@
 name: webseite-aendern
 description: "Changes a finished website with a person who has no prior knowledge, with their own AI, whether it's in the Albatros harbour or they host it themselves: fetch the logbook, read docs/ first (plan, design system, tech stack, PRD, where it lives), then small (text, date, picture: change locally, show before and after, release, push) or big (new page, feature, different look: addition to the plan, draft of the changed pages, approval to build, build and check, show, release, push), always within the existing design system, then check on the web. Use this skill for “change my site”, “new date”, “change a text”, “swap a picture”, “… is missing”, “new page”, “make the site …”, “something on the site is wrong”, and whenever something on a site that's online should be different."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'e3f90bc93ad6'
 ---
 

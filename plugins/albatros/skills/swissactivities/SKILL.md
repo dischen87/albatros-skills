@@ -2,7 +2,7 @@
 name: swissactivities
 description: 'Baut Bausteine von SwissActivities in eine eigene Webseite mit Familien-Empfehlungen ein, für Mitarbeitende von SwissActivities ohne Vorwissen. Verbindet die KI mit dem öffentlichen Server von SwissActivities (ohne Anmeldung), recherchiert eine Empfehlung nur mit echten Angaben (Alter, Wetter, Preis mit Datum, Anreise mit dem ÖV), fragt nach dem eigenen Erlebnis statt eines zu erfinden, verlinkt mit dem Buchungslink und baut das Widget aus dem Partnerbereich als Astro-Komponente ein, mit Hinweis «Ich arbeite bei SwissActivities» und Zeile für die Datenschutzerklärung. Nutze den Skill bei «SwissActivities», «Widget einbauen», «Partnerbereich», «Widget-ID», «Empfehlung schreiben», «was kann man mit dem Kind machen», «Ausflug mit Kindern», «Buchungslink», «Aktivitäten auf meiner Seite zeigen».'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # SwissActivities: der Wegweiser am Wanderweg
@@ -28,7 +28,7 @@ Ein gelber Wegweiser zeigt Ziel und Zeit, und er stimmt, weil jemand nachgemesse
 
 ## 1. Die Werkzeuge verbinden
 
-Der Server von SwissActivities ist öffentlich und braucht keine Anmeldung: `https://gateway.swissactivities.com/mcp`. Im Programm Albatros soll Bert ihn von selbst mitbringen; das wird gerade eingebaut. Schau darum zuerst, ob du Werkzeuge wie `search_activities` schon hast. Wenn nicht, verbindest du ihn mit dem Ja der Person:
+Der Server von SwissActivities ist öffentlich und braucht keine Anmeldung: `https://gateway.swissactivities.com/mcp`. Im Programm Albatros bringt Bert ihn mit, sobald die Person in der Checkliste beim Schritt «Ausflüge von SwissActivities» den Schalter einschaltet (nur lesen, gebaut am 13.11.2026). Schau darum zuerst, ob du Werkzeuge wie `search_activities` schon hast. Wenn nicht, verbindest du ihn mit dem Ja der Person:
 
 | KI | So |
 |---|---|

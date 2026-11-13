@@ -2,7 +2,7 @@
 name: domain
 description: "Trouve, achète ou relie un propre domaine (par exemple monmagasin.ch) pour le site ou le serveur chez Albatros, avec Light comme avec Pilot ; facultatif, à la mise en ligne (P13). Explique le domaine et le DNS avec l'image de l'adresse et de l'annuaire, propose des noms, cherche avec domain_suchen ce qui est libre et achète via Albatros avec domain_kaufen (la personne est titulaire, elle ne donne ses coordonnées que sur la page de paiement). Un domaine que la personne a déjà, le skill le relie avec domain_verbinden : entrées DNS, preuve TXT _albatros et contrôle, jusqu'à ce que le site s'affiche avec le cadenas dans le navigateur web. Utilise ce skill pour « propre domaine », « mon adresse », « acheter un .ch », « quel domaine est libre ? », « chercher un domaine », « DNS », « entrée A », « CNAME », « entrée TXT », « mon domaine ne pointe pas sur mon site », « certificat », « https ne marche pas »."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'ac1706205469'
 ---
 

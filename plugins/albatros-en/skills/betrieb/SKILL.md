@@ -2,7 +2,7 @@
 name: betrieb
 description: "Prepares running the site with a person who has no prior knowledge, before the guests arrive (P12): how visitors get in touch and who reads it how often, who finds out when the site stops responding (simple, free monitoring), how to get back to yesterday (photos of the server with Pilot, the logbook with Light, a backup of your own when hosting it yourself), whether an entrance with sign-in is needed (only with your own server, skill bausteine) and whether visitors are counted (skill statistik, with consent where it's required). The result is docs/betrieb.md. With Pilot, on request, Bert's workspace online on their own server (autopilot and schedule around the clock, project members only). Use this skill after choosing where the site lives (lancieren) and for “running it”, “monitoring”, “backup”, “feedback”, “who reads the form”, “what if the site goes down?”, “workspace online”, “workspace on my server”, “autopilot at night”."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '6b2bb7374057'
 ---
 

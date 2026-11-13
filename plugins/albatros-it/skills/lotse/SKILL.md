@@ -2,7 +2,7 @@
 name: lotse
 description: "Da caricare per primo con «costruiscimi un sito», «come vado avanti?» e ogni richiesta su sito web o attività: skill principale di Albatros, il controllore di volo. Dice cosa tocca adesso; si costruisce solo dopo due sì della persona. Con lo strumento lage chiede lo stato reale (fase del piano di volo, domande obbligatorie aperte, abbonamento, pagina o server) e segue esattamente lo skill e la sezione che toccano adesso; dopo ogni passo chiede di nuovo. Fa da sé le domande obbligatorie, chiarisce imparare o fare e segnala le lacune nel know-how. Senza accesso mostra le tre tappe con il prossimo passo e la biblioteca di tutti gli skill. Usa lo skill appena qualcuno continua il suo progetto Albatros o chiede «e adesso?», «a che punto sono?», «sono bloccato», «voglio impararlo da me», con /albatros-it:lotse e alla fine dello skill start. Per una domanda chiara su un tema (p. es. sul dominio) ha la precedenza lo skill specifico."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '3c5f2cd6958f'
 ---
 

@@ -2,7 +2,7 @@
 name: inhalte
 description: 'Hilft einer Person ohne Vorwissen, Texte und Bilder für ihre Webseite zu schreiben und auszuwählen, im Fahrplan für den Entwurf der ganzen Seite (P7): Startseite in drei Sätzen, kurze Texte im Ton aus dem Konzept für Lesende am Handy, fehlende Texte sichtbar als [Platzhalter], eigene Fotos statt Stockbilder mit einer Fotoliste, Bildrechte und Bildgrösse, KI-Texte in die eigene Stimme bringen. Ergebnis ist eine Inhaltsliste in docs/inhalte.md und die Texte im Entwurf. Nutze den Skill bei «Texte schreiben», «was schreibe ich auf die Startseite», «Über uns», «Bilder für die Webseite», «Fotoliste», «darf ich dieses Bild verwenden», «Text klingt nach KI», «Inhalte».'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Inhalte: die Ware im Schaufenster

@@ -2,7 +2,7 @@
 name: webseite-bauen
 description: 'Laden, bevor Code für eine Webseite entsteht («bau mir eine Webseite»): Gebaut wird erst nach zwei Ja der Person (Plan bestätigt, Entwurf freigegeben); fehlt eines, auch bei «bau schon mal die Startseite», führt der Skill zurück zum Planen. Baut dann die Webseite auf ihrem Computer, genau nach dem freigegebenen Entwurf (P9 und P10): pruefen.mjs --vor-bau prüft die zwei Ja, dann Logbuch, Bauweise, PRD aus dem Entwurf mit Zugang und Türen, Bau mit Astro Eintrag für Eintrag der Bauliste, vier Prüfungen mit pruefen.mjs, Begehung auf Handy und Computer, Vergleich mit dem Entwurf und Freigabe. Ins Netz geht nichts, das macht lancieren. Meldet prd, lokal, pruefung, freigabe. Nutze den Skill nach entwurf (Freigabe zum Bauen) und bei «bau mir die Seite», «Tech-Stack», «PRD», «lokal anschauen», «vor dem Veröffentlichen prüfen», «Freigabe», «wie geht es nach dem Entwurf weiter».'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Webseite bauen: der Rohbau in der eigenen Werkstatt

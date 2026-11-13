@@ -1,7 +1,7 @@
 {
   "name": "albatros-fr",
   "displayName": "Albatros (français)",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "L'aiguilleur du ciel te dit, d'après ton état réel, quel skill est à faire maintenant (avec connexion), sur un plan de vol fixe, de l'idée jusqu'au site en ligne. Jusqu'à ce que ton site soit terminé sur ton ordinateur, Albatros ne coûte rien ; ensuite, tu choisis où il habite : chez Albatros (Light pour un site de textes et d'images, Pilot avec un vrai serveur à toi) ou par toi-même. En plus, la bibliothèque ouverte : école de vol et parcours site web avec clé SSH, serveur, Git, tapis roulant, domaine, photos du serveur et tout ce qu'il faut pour ton premier site web, en français et sans jargon technique.",
   "author": { "name": "Albatros Partner", "url": "https://albatros.build" },
   "homepage": "https://albatros.build",

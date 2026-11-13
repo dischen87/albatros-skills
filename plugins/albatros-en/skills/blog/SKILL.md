@@ -2,8 +2,8 @@
 name: blog
 description: "Sets up a blog on an Astro site with a person who has no prior knowledge and writes posts with her: each post a Markdown file in the logbook (web/src/content/blog/<slug>.md with title, date, description, bild), the person tells the idea, Bert writes the file, she reads it in the preview and clicks publish in Albatros. With a template for family recommendations (for whom, what, when and weather, getting there, cost, my tip, link) and rules for her own photos. Use this skill for “blog”, “blog post”, “new post”, “write an article”, “publish a recommendation”, “write up a day-trip tip”, “news on my site”."
 metadata:
-  stand: 0.3.2
-  quelle: '1d602af4dfb6'
+  stand: 0.3.3
+  quelle: '040425d83711'
 ---
 
 # Blog: the binder of day-trip sheets
@@ -22,6 +22,8 @@ A binder stands on the shelf. Each outing is a sheet in it, always labelled the 
 ## Where the posts live
 
 Each post is a file in the logbook: `web/src/content/blog/<slug>.md`. The `<slug>` is the title in lower case with hyphens, for example `seilpark-mit-kindern`; it becomes the address `/blog/seilpark-mit-kindern/`. This is the simplest level from the skill `cms` (texts in the project): no CMS, no database, Bert writes the files. If others are to write without Bert later, the skill `cms` shows the next step.
+
+**Before the two yeses** (plan confirmed, draft approved; `naechstes` says `bauen_erlaubt: false`) you build nothing on the site. Write a post as a draft to `docs/beitraege/<slug>.md` instead, with the same header (title, date, description). After the two yeses you move it to `web/src/content/blog/`. Albatros checks both places the same way.
 
 ## 1. Set up the blog once
 

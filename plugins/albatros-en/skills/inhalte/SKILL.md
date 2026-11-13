@@ -2,7 +2,7 @@
 name: inhalte
 description: "Helps a person with no prior knowledge write and choose texts and pictures for their website, in the flight plan for the draft of the whole site (P7): the home page in three sentences, short texts in the tone from the concept for people reading on their phone, missing texts shown visibly as [placeholder], own photos instead of stock images with a photo list, picture rights and image size, bringing AI texts into their own voice. The result is a content list in docs/inhalte.md and the texts in the draft. Use this skill for “write the texts”, “what do I put on my home page”, “about us”, “pictures for my website”, “photo list”, “am I allowed to use this picture”, “this text sounds like AI”, “content”."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: '6cd702581612'
 ---
 

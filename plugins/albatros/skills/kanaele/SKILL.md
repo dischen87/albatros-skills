@@ -2,7 +2,7 @@
 name: kanaele
 description: 'Hilft einer Person ohne Vorwissen, Social-Media-Konten für ihre Webseite selbst anzulegen (Instagram als professionelles Konto, Facebook-Seite, LinkedIn-Seite, Pinterest, TikTok freiwillig), mit gleichem Namen wie die Seite und Bio mit Link; Passwörter und Codes bleiben bei ihr. Danach «Neue Beiträge teilen»: Zu jedem neuen Blogbeitrag schreibt Bert je Kanal einen kurzen Beitrag als Entwurf (Werkzeug entwurf), die Person gibt frei und postet selbst; als wiederkehrende Hilfe mit dem Werkzeug aufgabe. Nutze den Skill bei «Social Media», «Instagram», «Facebook-Seite», «LinkedIn», «Pinterest», «TikTok», «Konto anlegen», «Beitrag teilen», «Post schreiben», «wie mache ich meine Seite bekannt».'
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
 ---
 
 # Kanäle: die Plakatsäulen in der Stadt

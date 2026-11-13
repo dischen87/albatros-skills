@@ -1,6 +1,6 @@
 {
   "name": "albatros-planification-fr",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Planifie un projet de site web avec Albatros et note les étapes confirmées : idée, recherche, plan des pages, maquette et vérification du prototype local.",
   "author": {
     "name": "Albatros Partner",

@@ -2,7 +2,7 @@
 name: kanaele
 description: "Helps a person with no prior knowledge set up social media accounts for her website herself (Instagram as a professional account, Facebook page, LinkedIn page, Pinterest, TikTok optional), with the same name as the site and a bio with a link; passwords and codes stay with her. Then “share new posts”: for each new blog post Bert writes one short post per channel as a draft (tool entwurf), the person approves and posts herself; as a recurring helper with the tool aufgabe. Use this skill for “social media”, “Instagram”, “Facebook page”, “LinkedIn”, “Pinterest”, “TikTok”, “create an account”, “share a post”, “write a post”, “how do I make my site known”."
 metadata:
-  stand: 0.3.2
+  stand: 0.3.3
   quelle: 'e939e5cb6500'
 ---
 

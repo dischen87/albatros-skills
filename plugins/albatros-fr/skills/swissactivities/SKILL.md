@@ -2,8 +2,8 @@
 name: swissactivities
 description: "Intègre des éléments de SwissActivities dans un site personnel de recommandations pour les familles, pour des collaboratrices et collaborateurs de SwissActivities sans connaissances préalables. Connecte l’IA au serveur public de SwissActivities (sans connexion), prépare une recommandation uniquement avec des faits réels (âge, météo, prix avec date, trajet en transports publics), demande le vécu de la personne au lieu d’en inventer un, met le lien de réservation et intègre le widget de l’espace partenaire comme composant Astro, avec la mention « Je travaille chez SwissActivities » et une ligne pour la déclaration de confidentialité. Utilise ce skill pour « SwissActivities », « intégrer un widget », « espace partenaire », « ID du widget », « écrire une recommandation », « que faire avec les enfants », « sortie en famille », « lien de réservation », « montrer des activités sur mon site »."
 metadata:
-  stand: 0.3.2
-  quelle: 'd6c73f8c489e'
+  stand: 0.3.3
+  quelle: '8f395bf66d54'
 ---
 
 # SwissActivities : le panneau indicateur du sentier
@@ -29,7 +29,7 @@ Un panneau jaune indique la destination et le temps de marche, et il est juste p
 
 ## 1. Connecter les outils
 
-Le serveur de SwissActivities est public et ne demande pas de connexion : `https://gateway.swissactivities.com/mcp`. Dans le programme Albatros, Bert doit l’apporter de lui-même ; c’est en cours de construction. Regarde donc d’abord si tu as déjà des outils comme `search_activities`. Sinon, connecte-le avec le oui de la personne :
+Le serveur de SwissActivities est public et ne demande pas de connexion : `https://gateway.swissactivities.com/mcp`. Dans le programme Albatros, Bert l’apporte dès que la personne active l’interrupteur dans l’étape « Excursions de SwissActivities » de la liste de contrôle (lecture seule, construit le 13.11.2026). Regarde donc d’abord si tu as déjà des outils comme `search_activities`. Sinon, connecte-le avec le oui de la personne :
 
 | IA | Comment |
 |---|---|
