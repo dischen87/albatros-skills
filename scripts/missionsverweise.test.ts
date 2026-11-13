@@ -20,7 +20,7 @@ const skills = async () => {
 
 test('echte Skills in vier Sprachen: verstanden_melden, Kontrollfragen und mission_pruefen zeigen auf die Lektionen', async () => {
   const s = await skills();
-  expect(s.length).toBe(4 * 28); // 28 Skills seit schnellstart (07.11.2026)
+  expect(s.length).toBe(4 * 31); // 31 Skills seit swissactivities, blog und kanaele (13.11.2026), vorher 28 seit schnellstart (07.11.2026)
   // Kontrollfragen aus missionen/ und uebersetzungen/<sprache>/missionen/; jede Lektion hat sie in jeder Sprache (sonst prüft Regel 6 nichts)
   const fragen = await ladeFragen(wurzel);
   const lektionen = (await missionen()).filter((m) => !m.optional && (m.verstehen?.length ?? 0) > 0);

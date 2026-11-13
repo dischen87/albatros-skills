@@ -2,7 +2,7 @@
 name: zurueck-auf-gestern
 description: 'Erklärt Snapshots mit dem Bild vom täglichen Foto der ganzen Wohnung, macht vor riskanten Änderungen ein eigenes Foto und holt den Server mit «Zurück auf gestern» wieder her. Enthält die Übung «absichtlich kaputt machen und reparieren». Nutze den Skill bei «Snapshot», «Backup», «ich habe etwas gelöscht», «Seite ist kaputt», «Server geht nicht mehr», «rückgängig machen», «zurück auf gestern», und bevor du auf dem Server etwas Grosses umbaust.'
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
 ---
 
 # Zurück auf gestern: das Foto der ganzen Wohnung

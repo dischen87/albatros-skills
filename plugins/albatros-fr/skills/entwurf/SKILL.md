@@ -2,7 +2,7 @@
 name: entwurf
 description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git, avec une brique aussi Bun), puis chaque page et chaque fonction de la liste de construction dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, poli avec les retours de la personne. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'ebc8e728aae4'
 ---
 

@@ -2,7 +2,7 @@
 name: sicherheit
 description: "Makes a project secure together with someone with no background, using the picture of a house with a key ring, a safe, windows and locks: secrets never go into the logbook (Git) but into .env on the server (and, if the conveyor belt needs one, into the harbour's safe); keys published by accident get recreated straight away; one key per purpose; only the doors you need stay open; updates. Use this skill for “security”, “password in the code”, “API key”, “.env”, “secret”, “I pushed a key to GitHub”, “I leaked my API key”, “is my site secure?”, “I've been hacked”, “updates”, “firewall”, and before a new secret goes into the project."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '51d4dfe6fcfe'
 ---
 

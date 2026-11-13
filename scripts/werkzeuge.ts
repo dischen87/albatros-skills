@@ -24,6 +24,11 @@ export const KEIN_WERKZEUG: ReadonlySet<string> = new Set([
   'schritt_2', 'passo_2', // Anker in Texten
   'nicht_abgedeckt', 'geraten', 'skill_unklar', 'skill_falsch', 'werkzeug_fehlt', 'fehler_bei_albatros', 'fehler_albatros', // Werte von luecke_melden und coach_fragen
   'naechster_schritt', 'bauen_erlaubt', // Schlüssel in der Lage, die naechstes als Daten nennt (apps/arbeitsplatz/src/weg/lage.ts)
+  // Werkzeuge und Felder des öffentlichen Servers von SwissActivities (https://gateway.swissactivities.com/mcp, Skill swissactivities),
+  // gelesen mit tools/list und search_activities am 13.11.2026; nicht aus der Plattform von Albatros
+  'search_activities', 'get_activity_details', 'check_availability', 'search_places', 'get_place_details', 'search_hikes', 'get_hike_details',
+  'get_weather', 'plan_journey', 'find_rail_passes', 'recommend_rail_pass', 'get_point_of_interest', 'show_on_map', 'plan_free_time',
+  'booking_url', 'for_families', 'min_age', 'max_age', 'rain_ok',
 ]);
 
 /** Text ohne Codeblöcke (```), damit Befehle und Vorlagen nicht als Werkzeug zählen. */

@@ -2,7 +2,7 @@
 name: schnellstart
 description: "For “just get going”, “go ahead” or “build me a website quickly”: within minutes a first version to show; the site itself is only built after the person's two yeses. Quick start for a new idea in do mode: the first pieces are in the project folder (docs/projekt.md, audience and offer as a first draft, a working logo, the grey sketch of the home page) and in the Albatros app on their computer, with suggestions, one idea card and at most two questions. Then comes the refining: the AI reports every part with teil_bereit so that the person can look at it, fetches choices and feedback with naechstes and reworks part by part until the person says yes. Yes moments only as a card, emails and posts only as a draft; without the app, the same path in files. Use this skill on “quickly”, “quick start”, “show me what this could become”, “open Albatros”, and when the skill start leads here."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'cd2ea8c18e31'
 ---
 

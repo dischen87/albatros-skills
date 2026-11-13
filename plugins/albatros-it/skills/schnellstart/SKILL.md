@@ -2,7 +2,7 @@
 name: schnellstart
 description: "Con «parti e basta», «fallo tu» o «costruiscimi in fretta un sito»: in pochi minuti una prima versione da mostrare; il sito stesso si costruisce solo dopo due sì della persona. Avvio rapido per un'idea nuova nel modo fare: i primi pezzi sono nella cartella del progetto (docs/projekt.md, pubblico e offerta come prima stesura, logo provvisorio, schizzo grigio della pagina iniziale) e nel programma Albatros sul suo computer, con proposte, una scheda idea e al massimo due domande. Poi si rifinisce: l'IA annuncia ogni parte con teil_bereit perché la persona la guardi, prende con naechstes la scelta e i riscontri e rielabora parte per parte, finché la persona dice sì. I momenti del sì solo come scheda, mail e post solo come messaggi in bozza; senza il programma, la stessa strada nei file. Usa lo skill con «in fretta», «avvio rapido», «fammi vedere cosa può diventare», «aprire Albatros», e quando lo skill start porta qui."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'cd2ea8c18e31'
 ---
 

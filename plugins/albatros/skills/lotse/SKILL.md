@@ -2,7 +2,7 @@
 name: lotse
 description: 'Zuerst laden bei «bau mir eine Webseite», «wie weiter?» und jedem Wunsch zu Webseite oder Geschäft: Hauptskill von Albatros, der Fluglotse. Er sagt, was jetzt dran ist; gebaut wird erst nach zwei Ja der Person. Fragt mit dem Werkzeug lage den echten Stand ab (Phase im Fahrplan, offene Pflichtfragen, Abo, Seite oder Server) und folgt genau dem Skill und Abschnitt, der jetzt dran ist; nach jedem Schritt fragt er neu. Stellt die Pflichtfragen selbst, klärt lernen oder machen und meldet Lücken im Know-how. Ohne Anmeldung zeigt er die drei Etappen mit dem nächsten Schritt und die Bibliothek aller Skills. Nutze den Skill, sobald jemand an seinem Albatros-Projekt weiterarbeitet oder fragt «was jetzt?», «wo stehe ich?», «es klemmt», «ich will das selbst lernen», bei /albatros:lotse und am Ende des Skills start. Bei einer klaren Frage zu einem Thema (z. B. zur Domain) hat der Fach-Skill Vorrang.'
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
 ---
 
 # Lotse: im richtigen Moment das Richtige
@@ -251,6 +251,9 @@ Antwortet Albatros mit einem anderen Fehler oder gar nicht: Sag ehrlich, dass Al
 | `barrierefreiheit` | Die Seite soll für alle gut lesbar und bedienbar sein |
 | `recht-ch` | Impressum und Datenschutzerklärung für die Schweiz |
 | `statistik` | Zählen, wer kommt und was die Besucher tun |
+| `blog` | Beiträge für deine Seite schreiben, zum Beispiel Ausflugstipps, und veröffentlichen |
+| `kanaele` | Instagram, Facebook und Co. selbst anlegen, neue Beiträge als Entwürfe teilen |
+| `swissactivities` | Angebote von SwissActivities empfehlen und als Widget einbauen |
 
 Für den Weg Geschäft gibt es zusätzlich Methoden (von der Idee bis zu den ersten Zahlen). Sie kommen mit dem Werkzeug `methode`.
 

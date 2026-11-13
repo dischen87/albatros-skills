@@ -2,7 +2,7 @@
 name: zurueck-auf-gestern
 description: "Explains snapshots using the picture of the daily photo of the whole flat, takes a photo of its own before risky changes and brings the server back with “back to yesterday”. Includes the exercise “break it on purpose and repair it”. Use this skill for “snapshot”, “backup”, “I deleted something”, “my site is broken”, “my server isn't working any more”, “undo”, “roll back”, “back to yesterday”, and before you rebuild anything big on the server."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '00e9b5ea8832'
 ---
 

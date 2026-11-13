@@ -2,7 +2,7 @@
 name: entwurf
 description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page and every feature of the build list in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, refined with the person's feedback. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'ebc8e728aae4'
 ---
 

@@ -2,7 +2,7 @@
 name: webseite-aendern
 description: "Modifie avec une personne sans connaissances préalables son site web terminé, avec sa propre IA, qu'il soit au port d'Albatros ou qu'elle l'héberge elle-même : récupérer le journal de bord, lire d'abord docs/ (plan, système de design, stack technique, PRD, domicile), puis petit (texte, date, image : changer en local, montrer avant et après, validation, push) ou grand (nouvelle page, fonction, autre apparence : complément au plan, ébauche des pages modifiées, autorisation de construire, construire et vérifier, montrer, validation, push), toujours dans le système de design existant, puis vérifier en ligne. Utilise ce skill pour « modifie mon site », « nouvelle date », « changer un texte », « remplacer une image », « il manque … », « nouvelle page », « rends le site … », « il y a une erreur sur le site », et chaque fois que quelque chose doit changer sur un site en ligne."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'e3f90bc93ad6'
 ---
 

@@ -2,7 +2,7 @@
 name: sicherheit
 description: "Con una persona senza conoscenze tecniche rende sicuro il suo progetto, con l'immagine della casa con mazzo di chiavi, cassaforte, finestre e serrature: i segreti mai nel diario di bordo (Git), ma in .env sul server (e, se il nastro trasportatore ne ha bisogno, nella cassaforte del porto); chiavi pubblicate per sbaglio da rigenerare subito; una chiave per ogni scopo; aperte solo le porte necessarie; aggiornamenti. Usa lo skill con «sicurezza», «password nel codice», «chiave API», «API key», «.env», «secret», «ho caricato una chiave su GitHub», «il mio sito è sicuro?», «mi hanno hackerato», «aggiornamenti», «firewall», e prima che un nuovo segreto entri nel progetto."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '51d4dfe6fcfe'
 ---
 

@@ -2,7 +2,7 @@
 name: lancieren
 description: "Gets the released site of a person with no prior knowledge online, in two parts. Where it lives (P11): always the same question, Albatros (Light without building blocks, Pilot with one) or hosting it yourself, prices only from konto_status, upgrade_link with bestaetigt only after the choice, SSH key, seite_erstellen or server_erstellen; self-hosted on GitHub Pages, Cloudflare Pages, Netlify or your own server. Going live (P13): only with “Freigegeben:” the released site to the harbour or the provider, with a building block and login the entrance in front, check from outside (pruefen.mjs --live and --tueren), domain optional, go-live-check on the business path, announcement. Result: docs/lancieren.md, docs/live.md. Use this skill after the release and for “put it online”, “publish”, “go live”, “where should my site live”, “choose a plan”, “host it myself”."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'd75f241bcaf6'
 ---
 

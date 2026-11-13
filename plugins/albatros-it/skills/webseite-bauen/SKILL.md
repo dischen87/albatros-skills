@@ -2,7 +2,7 @@
 name: webseite-bauen
 description: "Da caricare prima di scrivere codice per un sito («costruiscimi un sito»): si costruisce solo dopo due sì della persona (piano confermato, bozza con via libera); se ne manca uno, anche con «intanto costruisci la pagina iniziale», lo skill riporta alla pianificazione. Poi costruisce il sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla i due sì, poi diario di bordo, modo di costruzione, PRD ricavato dalla bozza con accesso e porte, costruzione con Astro voce per voce della lista di costruzione, quattro controlli con pruefen.mjs, sopralluogo sul telefonino e sul computer, confronto con la bozza e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 6a629232a284
 ---
 
