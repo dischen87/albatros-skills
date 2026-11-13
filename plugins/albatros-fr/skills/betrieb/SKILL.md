@@ -2,7 +2,7 @@
 name: betrieb
 description: "Prépare avec une personne sans connaissances préalables l'exploitation de son site, avant que les invités arrivent (P12) : comment les visiteurs la contactent et qui le lit à quelle fréquence, qui est prévenu quand le site ne répond pas (une surveillance simple et gratuite), comment revenir à hier (photos du serveur avec Pilot, le journal de bord avec Light, une propre sauvegarde par soi-même), si une entrée avec connexion est nécessaire (seulement avec un propre serveur, skill bausteine) et si on compte qui vient (skill statistik, avec consentement là où il le faut). Le résultat est docs/betrieb.md. Avec Pilot, sur demande, l'espace de travail de Bert en ligne (jour et nuit, membres du projet seulement). Utilise ce skill après le domicile (lancieren) et pour « exploitation », « surveillance », « sauvegarde », « backup », « retours », « qui lit le formulaire », « et si le site tombe en panne ? », « espace de travail en ligne », « pilote automatique la nuit »."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '6b2bb7374057'
 ---
 

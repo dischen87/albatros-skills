@@ -2,7 +2,7 @@
 name: seo-grundlagen
 description: "Makes a small website visible: for search engines (SEO) and for AI assistants (GEO), explained for people with no prior knowledge with the picture of signposts and a city map. Page title and description, one main heading, canonical address, picture descriptions, sitemap.xml, robots.txt, structured data by kind of business, the preview when sharing, llms.txt, facts and questions with answers, Google Search Console, Bing Webmaster Tools, IndexNow and Business Profile; checked with sichtbar-pruefen.mjs on the built site. Use this skill for “SEO”, “GEO”, “become visible”, “get found on Google”, “Google can't find my site”, “get found in ChatGPT”, “AI search”, “search engine”, “sitemap”, “meta description”, “Search Console”, “Bing”, “IndexNow”, “llms.txt”, “get found locally”, “Google Maps listing”."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'd1e923bdddba'
 ---
 

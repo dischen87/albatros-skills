@@ -2,7 +2,7 @@
 name: projekt-planen
 description: "Planifie un projet de site web avec Albatros, lit son état enregistré et note les étapes confirmées. À utiliser pour la planification Albatros ou la prochaine étape d'un projet Albatros."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
 ---
 
 # Planifier un projet avec Albatros

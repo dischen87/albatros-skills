@@ -2,7 +2,7 @@
 name: start
 description: "Lance Albatros pour une personne sans connaissances techniques : relie son IA à Albatros (connexion dans le navigateur web), demande si elle veut un site web ou une entreprise, clarifie apprendre ou faire et mène tout de suite à la première section du plan de vol, l'idée avec le nom du projet et une première esquisse, ou, pour une idée d'entreprise ou quand ça doit aller vite, au démarrage rapide avec le programme Albatros. Jusqu'à ce que le site existe sur son propre ordinateur, Albatros ne coûte rien ; abonnement, clé et site sur Internet ne viennent qu'avec le skill lancieren. Utilise ce skill avec /albatros-fr:start, « lancer Albatros », « je veux un site web », « j'ai une idée d'entreprise », « comment je commence ? », « je suis nouveau ici », « je suis nouvelle ici », « combien coûte Albatros ? », « est-ce que j'ai besoin d'un serveur ? », et quand quelqu'un parle d'Albatros mais n'est pas encore connecté ou n'a pas encore choisi de parcours."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '20d000d098e5'
 ---
 

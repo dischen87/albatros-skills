@@ -2,7 +2,7 @@
 name: webseite-modernisieren
 description: "Modernizza un sito web esistente (associazione, negozio, studio, vecchio sito Jimdo, Wix o WordPress) per una persona senza conoscenze tecniche, come variante del piano di volo. Comincia subito, senza domande, con l'inventario: tutte le pagine, ogni funzione (moduli, iscrizioni, appuntamenti, PDF, prezzi, gallerie, mappe, lingue) e tutti i contenuti, con foto del vecchio sito in docs/bestand.md. Dopo chiede solo quello che sa solo la persona, soprattutto cosa deve restare, e porta attraverso la pianta e la verifica del piano (nessuna funzione va persa senza decisione) al nuovo sito; alla messa online il dominio trasloca con reindirizzamenti, l'e-mail resta intatta. Usa lo skill con «Modernizza …», «il nostro sito è datato», «rinnovare il sito web», «relaunch», «via da Jimdo, Wix o WordPress», «rifare il vecchio sito», e subito quando qualcuno manda solo l'indirizzo di un sito web (https://…), senza altre parole."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'e407114c3bdd'
 ---
 

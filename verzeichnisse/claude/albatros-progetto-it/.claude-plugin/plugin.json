@@ -1,6 +1,6 @@
 {
   "name": "albatros-progetto-it",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Pianifica un progetto web con Albatros e registra i passi confermati: idea, ricerca, piano delle pagine, bozza e verifica del prototipo locale.",
   "author": {
     "name": "Albatros Partner",

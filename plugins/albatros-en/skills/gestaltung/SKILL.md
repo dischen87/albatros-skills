@@ -2,7 +2,7 @@
 name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge: its own, not from a kit. In the flight plan (P6): a grey mockup, three clearly different directions from the concept, checked with design-pruefen.mjs, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet; motion and 3D only with a purpose. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. With the question about design elements (image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “layout”, “icons”, “mascot”, “animation”, “3D”."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '0f0c77561818'
 ---
 

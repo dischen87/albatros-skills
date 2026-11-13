@@ -2,7 +2,7 @@
 name: server-kennenlernen
 description: "Visite guidée de son propre serveur Albatros pour une personne sans connaissances préalables. Explique le terminal, les dossiers, l'espace disque, la mémoire vive, les programmes qui tournent et le passe-partout sudo avec des images tirées d'un appartement. La personne tape elle-même ses premières commandes. Utilise ce skill pour « qu'est-ce qu'il y a sur mon serveur ? », « comment je me déplace dans le terminal ? », « c'est quoi un dossier sur le serveur ? », « ls cd pwd », « combien de place j'ai ? », « qu'est-ce qui tourne là-dessus ? », et après la première visite SSH réussie."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '1fd252993459'
 ---
 

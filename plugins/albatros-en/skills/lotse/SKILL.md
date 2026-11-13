@@ -2,8 +2,8 @@
 name: lotse
 description: "Load first for “build me a website”, “what's next?” and any wish about a website or a business: the main Albatros skill, the air traffic controller. It says what's up now; building only starts after the person's two yeses. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server) and follows exactly the skill and section that are up now; after every step it asks again. Asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and the library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “where am I?”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. about the domain), the topic skill comes first."
 metadata:
-  stand: 0.3.1
-  quelle: '400a63bef670'
+  stand: 0.3.2
+  quelle: '3c5f2cd6958f'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -253,6 +253,9 @@ If Albatros answers with a different error or not at all: say honestly that Alba
 | `barrierefreiheit` | The site should be easy for everyone to read and use |
 | `recht-ch` | Legal notice and privacy policy for Switzerland |
 | `statistik` | Count who comes and what visitors do |
+| `blog` | Write posts for your site, for example day-trip tips, and publish them |
+| `kanaele` | Set up Instagram, Facebook and the rest yourself, share new posts as drafts |
+| `swissactivities` | Recommend SwissActivities offers and embed them as a widget |
 
 For the business path there are also methods (from the idea to your first numbers). They arrive through the tool `methode`.
 

@@ -2,7 +2,7 @@
 name: seo-grundlagen
 description: 'Macht eine kleine Webseite sichtbar: für Suchmaschinen (SEO) und für KI-Assistenten (GEO), erklärt für Menschen ohne Vorwissen mit dem Bild von Wegweiser und Stadtplan. Seitentitel und Beschreibung, eine Hauptüberschrift, kanonische Adresse, Bildbeschreibungen, sitemap.xml, robots.txt, strukturierte Daten je Art des Geschäfts, Vorschau beim Teilen, llms.txt, Fakten und Fragen mit Antworten, Google Search Console, Bing Webmaster Tools, IndexNow und Unternehmensprofil; geprüft mit sichtbar-pruefen.mjs an der gebauten Seite. Nutze den Skill bei «SEO», «GEO», «sichtbar werden», «bei Google gefunden werden», «Google findet meine Seite nicht», «in ChatGPT gefunden werden», «KI-Suche», «Suchmaschine», «Sitemap», «Meta-Beschreibung», «Search Console», «Bing», «IndexNow», «llms.txt», «lokal gefunden werden», «Google Maps Eintrag».'
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
 ---
 
 # SEO-Grundlagen: Wegweiser und Stadtplan

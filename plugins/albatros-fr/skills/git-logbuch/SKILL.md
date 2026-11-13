@@ -2,7 +2,7 @@
 name: git-logbuch
 description: "Explique Git à une personne sans connaissances préalables avec l'image du journal de bord à bord et de sa copie au port (le service Git d'Albatros, code.aufwind.sh). Accompagne les premières entrées (commit) avec de bonnes notes. Tant que le site n'est pas validé, le journal de bord reste seulement sur l'ordinateur (git init, pas de push) ; c'est seulement à la mise en ligne qu'il récupère le repo au port ou y relie le sien comme origin, envoie les entrées au port (push) et vérifie que la copie arrive sur le serveur Albatros dans ~/projekt. Règles : seulement sur main, ajouter seulement ses propres fichiers, un par un, jamais de force-push. Utilise ce skill pour « Git », « GitHub », « port », « commit », « push », « pull », « repo », « c'est quoi un repository ? », « sauvegarder mes modifications », « mon push est refusé », « conflit », et avant de faire un commit pour la personne."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: '6cb54ed614fa'
 ---
 

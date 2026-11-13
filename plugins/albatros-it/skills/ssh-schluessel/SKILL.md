@@ -2,7 +2,7 @@
 name: ssh-schluessel
 description: "Spiega la chiave SSH a una persona senza conoscenze con l'immagine della chiave di casa e della serratura, crea la coppia di chiavi in locale sul suo computer, deposita da Albatros solo la parte pubblica e prova la prima visita sul server. Usa lo skill con «chiave SSH», «ssh-keygen», «non riesco a entrare nel mio server», «Permission denied (publickey)», «cos'è una public key», «cos'è una chiave pubblica», «computer nuovo», «ho cambiato computer», e come passo 4 di /albatros-it:start."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'f920c0e1e021'
 ---
 

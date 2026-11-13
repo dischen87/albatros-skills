@@ -130,7 +130,7 @@ plugins/albatros/
   .mcp.json                         MCP-Server https://mcp.albatros.build (Streamable HTTP, OAuth über Clerk), mit der Kopfzeile X-Albatros-Skills-Stand (Abschnitt «Aktualisieren»),
                                     und albatros-arbeitsplatz (stdio: node ${CLAUDE_PLUGIN_ROOT}/arbeitsplatz/arbeitsplatz.mjs --mcp, Abschnitt «Berts Arbeitsplatz»)
   arbeitsplatz/                     Bündel von Berts Arbeitsplatz aus albatros apps/arbeitsplatz (bun run buendeln --nach …), seit 0.3.0 im Repo: das Plugin wird über git verteilt
-  skills/<name>/SKILL.md            28 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start), schnellstart und die Bibliothek
+  skills/<name>/SKILL.md            31 Skills: lotse (Hauptskill, /albatros:lotse), start (/albatros:start), schnellstart und die Bibliothek
   skills/webseite-planen/plan-pruefen.mjs  Prüfskript für den Plan (P3, P4): Pflichtzeilen und die Bauliste (## Bauliste in docs/plan.md: Kennung, Art, Titel, Muss/Kann, Abnahme),
                                     --json so, wie das Cockpit sie liest, --entwurf und --bau: Jede Seite und Funktion der Bauliste kommt im Entwurf und im Bau vor
   skills/gestaltung/design-pruefen.mjs   Prüfskript für die Design-Kriterien vom 10.11.2026 (P6, P7, mit --bau P9): Schrift, Farbwelt, Texte, Kopf, Richtungen, Bewegung, 3D, Gewicht
@@ -199,6 +199,9 @@ Nach dem Fahrplan geordnet; «Wann» nennt die Phasen, in denen ein Skill dran i
 | P13, freiwillig | `statistik` | Strichliste an der Ladentür |
 | P13, freiwillig | `landung` | Umzug ins eigene Haus |
 | nach dem Livegang | `webseite-aendern` | ein Umbau im bewohnten Haus: klein (lokal, zeigen, Freigabe, Push) oder gross (Nachtrag im Plan, Entwurf, Freigabe, bauen) |
+| freiwillig, ausserhalb des Fahrplans | `blog` | der Ordner mit den Ausflugsblättern: jeder Beitrag eine Markdown-Datei im Logbuch, mit Vorlage für Familien-Empfehlungen; veröffentlicht wird mit dem Klick der Person |
+| freiwillig, ausserhalb des Fahrplans | `kanaele` | Plakatsäulen in der Stadt: Social-Media-Konten legt die Person selbst an, neue Beiträge kommen als Entwürfe (`entwurf`), wöchentlich mit `aufgabe` |
+| freiwillig, ausserhalb des Fahrplans | `swissactivities` | der Wegweiser am Wanderweg: Empfehlungen nur mit Angaben aus dem öffentlichen Server von SwissActivities, eigenes Erlebnis der Person, Widget aus dem Partnerbereich, Hinweis «Ich arbeite bei SwissActivities» |
 
 Alle Skills: Deutsch, Du-Form, kein Fachjargon. Ein Begriff kommt erst, wenn er gebraucht wird, und zuerst mit seinem Bild.
 

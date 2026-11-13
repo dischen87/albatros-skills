@@ -2,7 +2,7 @@
 name: entwurf
 description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite und jede Funktion der Bauliste in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, geschliffen mit den Rückmeldungen der Person. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
 ---
 
 # Entwurf: das begehbare Modell

@@ -2,7 +2,7 @@
 name: recht-ch
 description: "Met en ordre sur le plan juridique un petit site web suisse, expliqué à des personnes sans connaissances préalables avec l'image de la plaque de sonnette et du règlement de maison : mentions légales (impressum, art. 3, al. 1, let. s, LCD), déclaration de protection des données selon la LPD révisée (devoir d'informer, art. 19), cookies (art. 45c LTC), connexion avec login (cookie, journaux, délais), quand le RGPD de l'UE s'ajoute, droits sur les images, e-mails publicitaires seulement avec consentement. Pas de conseil juridique. Utilise ce skill pour « impressum », « mentions légales », « protection des données », « déclaration de protection des données », « LPD », « RGPD », « bannière cookies », « est-ce que j'en ai besoin légalement ? », « qu'est-ce qui doit figurer sur mon site ? », « formulaire de contact et protection des données », « connexion et protection des données »."
 metadata:
-  stand: 0.3.1
+  stand: 0.3.2
   quelle: 'e1db985e5990'
 ---
 
