@@ -81,6 +81,18 @@ body { background: var(--bg); overflow-x: hidden; }
 .ap-vorher-karte .alert { text-align: left; }
 
 /* Meldungen (Toasts): unten mittig, auf dem Telefon über der Navigation */
+/* Knöpfe zum Anfassen (docs/foundable/ux-cockpit.md, Abschnitt 20, Merkmal 6): Der Hauptknopf steht auf einer Kante in Tinte und sinkt
+   beim Drücken ein. Nur im Programm; die Website behält ihre Knöpfe. --ap-kante: dunkler als die Aktionsfarbe, hell wie dunkel. */
+.ap-rahmen { --ap-kante: var(--primary-ink); }
+:root[data-theme="dark"] .ap-rahmen { --ap-kante: color-mix(in srgb, var(--pr) 45%, var(--bg)); }
+.ap-rahmen .btn:not(.sec, .gh, .tx, .weich, .glas, .as, .dg, .dgo, .inv, .dis, :disabled) {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--onpr) 26%, transparent), 0 3px 0 var(--ap-kante), 3px 12px 22px -12px color-mix(in srgb, var(--pr) 70%, transparent);
+}
+.ap-rahmen .btn:not(.sec, .gh, .tx, .weich, .glas, .as, .dg, .dgo, .inv, .dis, :disabled):active {
+  transform: translateY(2px); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--onpr) 26%, transparent), 0 1px 0 var(--ap-kante);
+}
+@media (prefers-reduced-motion: reduce) { .ap-rahmen .btn:not(.sec, .gh, .tx, .weich, .glas, .as, .dg, .dgo, .inv, .dis, :disabled):active { transform: none; } }
+
 .ap-meldungen { position: fixed; left: 16px; right: 16px; bottom: 24px; z-index: 80; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
 .ap-meldungen .toast { pointer-events: auto; }
 .ap-meldungen.breit { left: calc(248px + 16px); right: calc(400px + 16px); }
@@ -221,7 +233,6 @@ a.ap-stueck:hover { background: var(--prs); text-decoration: none; }
 /* ---------------------------------------------------------------- Chat */
 .ap-chat { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--sf); }
 .ap-chat-kopf { display: flex; align-items: center; gap: 12px; padding: 16px 20px 6px; }
-.ap-chat-kopf .k-maskottchen { width: 44px; }
 .ap-chat-ki { padding: 4px 20px 12px; border-bottom: 1px solid var(--ln); }
 .ap-chat-ki .chip { white-space: normal; }
 .ap-chat-verlauf { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 20px;
@@ -394,6 +405,7 @@ a.ap-app.grau:hover { background: var(--sf2); text-decoration: none; }
 .ap-anhang-liste { display: flex; flex-wrap: wrap; gap: 6px; }
 .bub > .ap-anhang-liste { margin-top: 8px; }
 .ap-anhang { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 32px; padding: 2px 4px 2px 10px; border-radius: var(--radius-pill); background: var(--sf2); font-size: 13px; }
+.ap-anhang-bild { display: block; width: 96px; height: 96px; object-fit: cover; border-radius: 12px; background: var(--sf2); }
 .ap-anhang.klein { min-height: 24px; padding: 2px 10px; background: color-mix(in srgb, currentColor 14%, transparent); }
 .ap-anhang > .ell { min-width: 0; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ap-anhang > .act { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; color: var(--mu); }
@@ -643,6 +655,241 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 }
 @media (prefers-reduced-motion: reduce) { .ap-weg-pfeil { transition: none; } }
 
+/* Checkliste (bildschirme/checkliste.tsx, 13.11.2026): je Etappe eine Karte, je Schritt eine Zeile zum Aufklappen; offen ist immer nur einer.
+   Eine Etappe, in der alles erledigt ist, ist zugeklappt. Nur Tokens; Touch-Ziele mindestens 44 px; am Handy höchstens zwei Bildschirmlängen. */
+.ap-check-zahl { padding: 0 var(--space-1); }
+.ap-check-etappe { padding: var(--space-4) var(--space-5); }
+.ap-check-etappe h2 { margin: 0; }
+.ap-check-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; min-width: 0; }
+.ap-check-schritt { border-top: 1px solid var(--ln); min-width: 0; }
+.ap-check-schritt:first-child { border-top-color: transparent; }
+.ap-check-kopf { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; padding: var(--space-1) 0; cursor: pointer; list-style: none; min-width: 0; border-radius: var(--radius-inner); }
+.ap-check-kopf::-webkit-details-marker { display: none; }
+.ap-check-kopf:focus-visible { outline: var(--focus-width) solid var(--pr); outline-offset: var(--focus-inset); }
+.ap-check-kopf > .chip { flex: none; }
+.ap-check-kopf > .ap-weg-pfeil { flex: none; width: 16px; height: 16px; color: var(--mu); }
+.ap-check-schritt > details[open] > .ap-check-kopf > .ap-weg-pfeil, .ap-check-fertig[open] > .ap-check-kopf > .ap-weg-pfeil { transform: rotate(90deg); }
+.ap-check-schritt[data-stand="spaeter"] .ap-check-kopf b { color: var(--mu); }
+.ap-check-inhalt { padding: 0 0 var(--space-4) calc(26px + var(--space-3)); }
+.ap-check-inhalt > p { margin: 0; }
+/* Die Schritte der Person mit Nummern (die Bausteine nehmen Listen sonst die Zeichen) */
+.ap-check-person { list-style: decimal; margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: var(--space-1); }
+.ap-check-person > li { display: list-item; padding-left: var(--space-1); }
+/* Was die Prüfung der Beiträge gefunden hat: je Datei Titel und Gründe, mit Linie in der Farbe «braucht etwas» */
+.ap-check-probleme > ul { list-style: none; margin: 0; padding: 0; }
+.ap-check-probleme > ul > li { border-left: 3px solid var(--wa); padding-left: var(--space-3); min-width: 0; }
+/* Das eigene Erlebnis wörtlich, wie es im Beitrag steht (Zeilenumbrüche bleiben) */
+.ap-check-erlebnis > blockquote { margin: 0; padding: var(--space-2) var(--space-3); background: var(--sf2); border-radius: var(--radius-inner); white-space: pre-wrap; }
+/* Korrekturrunde M (15.11.2026): Wörter im Erlebnis, die nicht aus den Worten der Person stammen, unterstrichen in der Farbe «braucht etwas» (nicht nur
+   Farbe: die Linie trägt es auch ohne Farbsehen); ihre eigenen Worte darüber als leises Zitat */
+.ap-check-erlebnis mark.ap-fremd { background: transparent; color: inherit; text-decoration: underline wavy var(--wa); text-underline-offset: 3px; }
+.ap-check-erlebnis .ap-check-quelle { margin: 0; padding-left: var(--space-3); border-left: 3px solid var(--ln); color: var(--mu); overflow-wrap: anywhere; }
+/* Ziel einer Gruppe: der Auftrag der Leitung wörtlich, als Zitat abgesetzt (Orchestrator, 13.11.2026) */
+.ap-check-leitung > blockquote { margin: 0; padding: var(--space-2) var(--space-3); background: var(--sf2); border-left: 3px solid var(--ln); border-radius: var(--radius-inner); white-space: pre-wrap; overflow-wrap: anywhere; }
+.ap-check-draussen { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; align-self: flex-start; font-weight: 600; }
+.card.ap-check-link { flex-direction: row; align-items: center; text-align: left; margin: 0; padding: var(--space-3) var(--space-4); border-top: 0; }
+.card.ap-check-link > .col { align-items: flex-start; }
+@media (max-width: 767px) {
+  .ap-check-etappe { padding: var(--space-3) var(--space-4); }
+  .ap-check-inhalt { padding-left: 0; }
+}
+/* Gründe der Prüfung je Beitrag: einer je Zeile (Korrekturrunde E, 14.11.2026) */
+.ap-check-gruende { list-style: disc; margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 0; line-height: 1.35; }
+.ap-check-braucht { display: inline-flex; align-items: center; gap: 4px; color: var(--wai); font-weight: 600; }
+/* Partner in einer Gruppe (Korrekturrunde H): die Wahl der Leitung abgesetzt, die anderen Wahlen zugeklappt darunter */
+.ap-check-schalter > .ap-check-leitung { padding: var(--space-3) var(--space-4); border-radius: var(--radius-control); background: var(--sf2); border: 1px solid var(--ln); }
+.ap-partner-anders > summary { cursor: pointer; width: fit-content; }
+.ap-partner-anders[open] > summary { margin-bottom: var(--space-2); }
+.ap-stand-wort { display: inline-flex; flex: none; }
+
+/* Feiern, «hoppla» und dein Ja auf einem Abschnitt (feier.tsx, bildschirme/ja.tsx; docs/foundable/ux-cockpit.md, Abschnitt 20: je seltener, desto
+   grösser). Nur Tokens und Bausteine. Bert und Konfetti bleiben in ihrer Karte, nie über dem Inhalt darunter (Gestalterin, 12.11.2026). */
+
+/* Lage wie die Meldungen: unten in der Mitte des Inhalts, am Handy über der Leiste. Zeigt sich eine Feier, rücken die Meldungen darüber. */
+.ap-feier-lage { position: fixed; left: 16px; right: 16px; bottom: 24px; z-index: 81; display: flex; justify-content: center; pointer-events: none; }
+.ap-feier-lage.breit { left: calc(248px + 16px); right: calc(400px + 16px); }
+.ap-feier-lage.mittel { left: calc(232px + 16px); }
+.ap-feier-lage:has(> .ap-feier) ~ .ap-meldungen { bottom: 248px; }
+@media (max-width: 767px) {
+  .ap-feier-lage { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  .ap-feier-lage:has(> .ap-feier) ~ .ap-meldungen { bottom: calc(300px + env(safe-area-inset-bottom, 0px)); }
+}
+/* Einmal Bert je Ansicht: Solange eine Feier zu sehen ist, treten die anderen Figuren im Inhalt zurück (Platz bleibt, nichts springt) */
+:root:has(.ap-feier) .ap-inhalt :is(.k-maskottchen, .maskottchen-clip) { visibility: hidden; }
+/* Nie über Inhalt: Solange die Feier steht, bekommt der Inhalt unten ihre Höhe dazu (feier.tsx misst sie) */
+:root { --ap-feier-hoehe: 0px; }
+:root:has(.ap-feier) .ap-inhalt::after { content: ""; display: block; height: var(--ap-feier-hoehe); }
+
+/* Die Karte: links das Hauptteil mit Bert auf seiner Himmelsscheibe, rechts hinter der Abrisslinie der Abschnitt mit dem Stempel.
+   --abschnitt: Breite des Abschnitts (0, wenn die Karte «Dein Ja» den Stempel schon trägt). */
+.ap-feier {
+  --abschnitt: 132px; --kerbe: 13px; --scheibe: 112px;
+  position: relative; pointer-events: auto; width: min(100%, 620px);
+  display: grid; grid-template-columns: minmax(0, 1fr) var(--abschnitt); border-radius: var(--radius-card); color: var(--ink);
+  transform-origin: 50% 100%;
+  /* Kippen zum Zeiger (feier.tsx setzt --kx und --ky); die Animationen halten danach nichts fest (backwards), damit das Kippen greift */
+  --kx: 0deg; --ky: 0deg; transform: perspective(900px) rotateX(var(--kx)) rotateY(var(--ky)); transition: transform 160ms ease-out;
+  animation: ap-feier-rein 440ms cubic-bezier(.2, .9, .25, 1.12) backwards, ap-feier-wumm 260ms ease-out 900ms;
+}
+/* Der erste Flug kommt einmal vor und ist darum grösser */
+.ap-feier[data-feier="online"] { --abschnitt: 156px; --scheibe: 140px; width: min(100%, 720px); }
+@media (min-width: 768px) {
+  .ap-feier[data-aus-karte] { --abschnitt: 0px; }
+  .ap-feier[data-aus-karte] .ap-feier-abschnitt { display: none; }
+}
+/* Form und Schatten: Der Schatten (drop-shadow) folgt der gestanzten Form, die Kerben oben und unten an der Abrisslinie sind durchsichtig */
+.ap-feier-grund { position: absolute; inset: 0; z-index: 0; border-radius: inherit;
+  filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--primary-ink) 12%, transparent)) drop-shadow(6px 18px 26px color-mix(in srgb, var(--primary-ink) 30%, transparent)); }
+.ap-feier-grund::before, .ap-ja-grund::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  -webkit-mask: radial-gradient(circle var(--kerbe) at calc(100% - var(--abschnitt)) 0, transparent 98%, black) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--kerbe) at calc(100% - var(--abschnitt)) 100%, transparent 98%, black) bottom / 100% 51% no-repeat;
+  mask: radial-gradient(circle var(--kerbe) at calc(100% - var(--abschnitt)) 0, transparent 98%, black) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--kerbe) at calc(100% - var(--abschnitt)) 100%, transparent 98%, black) bottom / 100% 51% no-repeat;
+}
+.ap-feier-grund::before { background: linear-gradient(to left, var(--prs) var(--abschnitt), var(--sf) 0); }
+:root[data-theme="dark"] :is(.ap-feier-grund, .ap-ja-grund) { filter: drop-shadow(0 14px 28px color-mix(in srgb, var(--bg) 80%, transparent)); }
+
+.ap-feier-haupt { position: relative; z-index: 1; display: grid; grid-template-columns: var(--scheibe) minmax(0, 1fr); gap: 18px; align-items: center;
+  padding: 18px 12px 18px 18px; min-width: 0; }
+@media (min-width: 768px) { .ap-feier[data-aus-karte] .ap-feier-haupt { padding-right: 52px; } } /* Platz für das Kreuz, wenn kein Abschnitt da ist */
+/* Berts Bühne (Schmuck): eine Scheibe Morgenhimmel mit Sonnenrand oben rechts, einer Wolke unten links und Bodenschatten; Bert steht davor,
+   etwas grösser als die Scheibe, und ragt mit den Flügeln über ihren Rand, bleibt aber in der Karte (Gestalterin, 12.11.2026: «wirkt wie ein
+   Profilbild»). Beim ersten Flug fliegt er von links herein, Konfetti fällt in der Scheibe. */
+.ap-feier-bert { position: relative; width: var(--scheibe); height: var(--scheibe); pointer-events: none; }
+.ap-feier-scheibe { position: absolute; inset: 0; isolation: isolate; border-radius: 50%; overflow: hidden; background: var(--stage-sky);
+  box-shadow: inset 0 -14px 20px -16px color-mix(in srgb, var(--primary-ink) 40%, transparent); }
+.ap-feier-scheibe::before { content: ""; position: absolute; z-index: -1; top: -24%; right: -24%; width: 64%; height: 64%; border-radius: 50%;
+  background: var(--stage-toy-sonne-fill); box-shadow: var(--stage-toy-sonne-shadow); opacity: .6; }
+.ap-feier-scheibe::after { content: ""; position: absolute; z-index: -1; left: 24%; right: 18%; bottom: 7%; height: 16%; background: var(--stage-contact); }
+.ap-feier-wolke { --w: 62%; --h: 26%; left: -10%; bottom: 16%; opacity: .95; }
+:root[data-theme="dark"] .ap-feier-scheibe { background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--pr) 38%, var(--sf)) 0%, var(--sf2) 72%); }
+:root[data-theme="dark"] .ap-feier-scheibe::before, :root[data-theme="dark"] .ap-feier-wolke { display: none; } /* nachts ohne Sonne und Wolke */
+.ap-feier[data-feier="online"] .ap-feier-scheibe::after { display: none; }
+.ap-feier-bert > .maskottchen-clip { position: absolute; left: -12.5%; top: -12%; width: 125%; height: 125%;
+  animation: ap-feier-hupf 520ms cubic-bezier(.3, 1.3, .4, 1) 160ms both; }
+.ap-feier[data-feier="online"] .ap-feier-bert > .maskottchen-clip { animation: ap-feier-anflug 1500ms cubic-bezier(.25, .7, .3, 1) 120ms both; }
+.ap-feier-scheibe > .k-konfetti > i { animation: ap-konfetti 1400ms cubic-bezier(.2, .7, .4, 1) both; }
+.ap-feier-scheibe > .k-konfetti > i:nth-child(3n) { animation-delay: 120ms; }
+.ap-feier-scheibe > .k-konfetti > i:nth-child(3n + 1) { animation-delay: 260ms; }
+
+.ap-feier-text { min-width: 0; }
+.ap-feier-text > h2 { margin: 0; text-wrap: balance; }
+.ap-feier-text > p { margin: 6px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ap-feier[data-feier="online"] .ap-feier-text > h2 { font-size: var(--text-title3); }
+/* Beim ersten Flug: die Adresse gross mit dem gelben Pinselstrich, daneben «Link kopieren» */
+.ap-feier-adresse { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin-top: -8px; min-width: 0; }
+.ap-feier-adresse > .lnk { display: inline-flex; align-items: center; min-height: 44px; min-width: 0; max-width: 100%; font-family: var(--font-display);
+  font-size: 19px; font-weight: 700; text-decoration: none; } /* Treffläche 44 px wie jeder Link am Handy */
+.ap-feier-adresse > .lnk > span { min-width: 0; overflow-wrap: anywhere; } /* eine lange Adresse bricht um statt in den Abschnitt zu laufen */
+
+/* Der Abschnitt: Abrisslinie zwischen den Kerben, oben das Etikett, darunter das Stempelfeld */
+.ap-feier-abschnitt { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 40px 10px 16px; }
+.ap-feier-abschnitt::before, .ap-ja-abschnitt::before { content: ""; position: absolute; left: -1px; top: calc(var(--kerbe) + 6px); bottom: calc(var(--kerbe) + 6px);
+  border-left: 2px dashed var(--line-strong); }
+.ap-feier-etikett { font-size: var(--text-label); font-weight: 700; color: var(--primary-ink); text-align: center; }
+/* Der Stempel: Tinte in Ozeanblau, Doppelring, schräg; er landet aus der Tiefe (3D) und hinterlässt einen Hauch */
+.ap-feier-stempel {
+  position: relative; display: grid; place-content: center; justify-items: center; gap: 2px; width: 96px; height: 96px; border-radius: 50%;
+  color: var(--primary-ink); box-shadow: inset 0 0 0 3px var(--primary-ink), inset 0 0 0 6px var(--prs), inset 0 0 0 7.5px var(--primary-ink);
+  transform: rotate(-12deg); animation: ap-stempeln 540ms cubic-bezier(.3, .9, .35, 1) 380ms both;
+}
+.ap-feier[data-feier="online"] .ap-feier-stempel { width: 116px; height: 116px; }
+.ap-feier-stempel > b { font-family: var(--font-display); font-size: 30px; line-height: 1; font-weight: 800; }
+.ap-feier[data-feier="online"] .ap-feier-stempel > b { font-size: 20px; font-family: var(--font-sans); letter-spacing: .01em; }
+.ap-feier-stempel > i { font-style: normal; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ap-feier-stempel::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; box-shadow: 0 0 0 2px var(--primary-ink); opacity: 0;
+  animation: ap-stempel-hauch 800ms ease-out 700ms both; }
+
+.ap-feier-zu { position: absolute; top: 4px; right: 4px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0;
+  border-radius: 50%; background: transparent; color: var(--primary-ink); cursor: pointer; }
+.ap-feier-zu:hover { background: color-mix(in srgb, var(--primary-ink) 10%, transparent); }
+
+@keyframes ap-feier-rein { from { opacity: 0; transform: perspective(900px) translateY(40px) rotateX(-58deg); } to { opacity: 1; transform: perspective(900px); } }
+@keyframes ap-feier-wumm { 0%, 100% { transform: perspective(900px); } 40% { transform: perspective(900px) translateY(3px) scale(.994); } }
+@keyframes ap-feier-hupf { from { opacity: 0; transform: translateY(46px) scale(.55); } 65% { opacity: 1; transform: translateY(-6px) scale(1.04); } to { opacity: 1; transform: none; } }
+@keyframes ap-feier-anflug { from { opacity: 0; transform: translate(-28px, 18px) rotate(-8deg) scale(.8); } 35% { opacity: 1; } to { opacity: 1; transform: none; } }
+@keyframes ap-stempeln {
+  from { opacity: 0; transform: perspective(500px) translateZ(240px) rotateX(30deg) rotate(-34deg); }
+  58% { opacity: 1; transform: perspective(500px) translateZ(0) rotateX(0) rotate(-10deg) scale(.93); }
+  78% { transform: perspective(500px) rotate(-13deg) scale(1.04); }
+  to { opacity: 1; transform: perspective(500px) rotate(-12deg); }
+}
+@keyframes ap-stempel-hauch { from { opacity: .55; transform: scale(.85); } to { opacity: 0; transform: scale(1.45); } }
+@keyframes ap-konfetti { from { translate: 0 -60px; opacity: 0; } 25% { opacity: 1; } to { translate: 0 0; opacity: 1; } }
+
+@media (max-width: 767px) {
+  .ap-feier { --abschnitt: 100px; --scheibe: 76px; }
+  .ap-feier[data-feier="online"] { --abschnitt: 108px; --scheibe: 88px; }
+  .ap-feier-haupt { gap: 12px; padding: 14px 8px 14px 12px; }
+  .ap-feier-text > p { font-size: 14px; }
+  .ap-feier-adresse { grid-column: 1 / -1; margin-top: 0; }
+  .ap-feier-adresse > .lnk { font-size: 17px; }
+  .ap-feier-abschnitt { padding: 40px 6px 14px; }
+  .ap-feier-stempel, .ap-feier[data-feier="online"] .ap-feier-stempel { width: 76px; height: 76px; }
+  .ap-feier-stempel > b { font-size: 24px; }
+  .ap-feier[data-feier="online"] .ap-feier-stempel > b { font-size: 14px; }
+}
+
+/* Dein Ja auf einem Abschnitt (Merkmal 4): rechts hinter der Abrisslinie das Etikett und das leere Stempelfeld mit einem blassen «Ja»; die
+   Kerben sind ausgestanzt (Form und Schatten auf eigener Ebene wie bei der Feier). Zeigst du auf «Ja», hebt sich das Feld schon an, bereit zum
+   Stempeln; nach dem Klick landet dort der Stempel. Ab 768 px; am Handy bleibt die Karte, wie sie ist. */
+.ap-ja-abschnitt, .ap-ja-grund { display: none; }
+@media (min-width: 768px) {
+  .ap-ja.ap-abschnitt { --abschnitt: 120px; --kerbe: 13px; position: relative; padding-right: calc(var(--abschnitt) + var(--space-5)); background: none; box-shadow: none; }
+  .ap-ja.ap-abschnitt > :not(.ap-ja-grund, .ap-ja-abschnitt) { position: relative; z-index: 1; }
+  .ap-ja-grund { display: block; position: absolute; inset: 0; z-index: 0; border-radius: inherit;
+    filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--primary-ink) 10%, transparent)) drop-shadow(6px 20px 22px color-mix(in srgb, var(--primary-ink) 24%, transparent)); }
+  .ap-ja-grund::before { background: linear-gradient(to left, var(--prs) var(--abschnitt), transparent 0), linear-gradient(160deg, var(--sf) 0%, var(--surface-warm) 100%); }
+  .ap-ja-abschnitt { position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: var(--abschnitt); display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 10px; pointer-events: none; }
+  .ap-ja-abschnitt > .ap-feier-stempel { width: 84px; height: 84px; animation-delay: 40ms; }
+  .ap-ja-abschnitt > .ap-feier-stempel::after { animation-delay: 360ms; }
+  .ap-ja-abschnitt > .ap-feier-stempel > b { font-size: 26px; }
+  .ap-ja-stempelfeld { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; transform: rotate(-12deg);
+    border: 2px dashed color-mix(in srgb, var(--primary-ink) 40%, transparent); background: color-mix(in srgb, var(--sf) 50%, transparent);
+    transition: transform 200ms cubic-bezier(.3, .9, .35, 1.25), box-shadow 200ms ease-out; }
+  /* Das blasse «Ja» ist reiner Schmuck (aria-hidden, WCAG 1.4.3 ausgenommen) und darum ein Pseudo-Element */
+  .ap-ja-stempelfeld::before { content: attr(data-wort); font-family: var(--font-display); font-size: 26px; font-weight: 800; line-height: 1;
+    color: color-mix(in srgb, var(--primary-ink) 30%, transparent); }
+  .ap-ja:has([data-ja]:is(:hover, :focus-visible):not(:disabled)) .ap-ja-stempelfeld {
+    transform: translateY(-7px) rotate(-12deg) scale(1.04); box-shadow: 0 14px 16px -12px color-mix(in srgb, var(--primary-ink) 50%, transparent); }
+}
+
+/* Nach dem Stempel: eine Zeile statt der Knöpfe (Fokus darauf, darum mit sichtbarem Fokus wie jedes Ziel) */
+.ap-ja-gestempelt { display: flex; align-items: center; gap: 8px; min-height: 44px; margin: 0; font-weight: 700; color: var(--primary-ink); }
+.ap-ja-gestempelt > svg.i { flex: none; width: 20px; height: 20px; }
+
+/* «hoppla»: ein warmer Block wie die Karte «Bert fragt dich»: Bert fällt hin und steht wieder auf, der Satz, der Fehler, seine Handlung */
+.ap-hoppla { display: flex; align-items: center; gap: 14px; padding: 12px 16px 12px 8px; border-radius: var(--radius-inner); background: var(--ass); color: var(--ink); min-width: 0; }
+.ap-hoppla-bert { flex: none; margin: -6px -4px -6px 0; }
+.ap-hoppla-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ap-hoppla-satz { margin: 0; font-weight: 700; text-wrap: pretty; }
+.ap-hoppla-text > .sm { margin: 0; color: var(--ink-soft); text-wrap: pretty; }
+.ap-hoppla-text > .ap-handlung { margin-top: 4px; }
+@media (max-width: 767px) { .ap-hoppla-bert.maskottchen-clip { width: 72px; height: 72px; } .ap-hoppla { gap: 8px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ap-feier { transform: none; transition: none; }
+  .ap-feier, .ap-feier-bert > .maskottchen-clip, .ap-feier[data-feier="online"] .ap-feier-bert > .maskottchen-clip, .ap-feier-stempel,
+  .ap-feier-stempel::after, .ap-feier-scheibe > .k-konfetti > i { animation: none; }
+  .ap-ja-stempelfeld { transition: none; }
+}
+
+/* Gruppen (bildschirme/gruppe.tsx, 13.11.2026): Karte in den Einstellungen und die Zeile auf der Checkliste. Nur Tokens. */
+.ap-gruppe { min-width: 0; }
+.ap-gruppe + .ap-gruppe { padding-top: var(--space-3); border-top: 1px solid var(--ln); }
+/* Der eine Satz, was die Leitung sieht: abgesetzt, damit niemand ihn übersieht */
+.ap-gruppe-sieht { margin: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-control); background: var(--sf2); border: 1px solid var(--ln); }
+.ap-gruppe-code { text-transform: uppercase; letter-spacing: .08em; max-width: 16ch; }
+/* «Gehörst du zu einer Gruppe?» (Korrekturrunde H): ein Aufklapper, kein Link auf eine andere Seite; der Pfeil zeigt nach unten und dreht sich */
+.ap-gruppe-frage > summary { cursor: pointer; }
+.ap-gruppe-frage-pfeil { flex: none; width: 18px; height: 18px; color: var(--mu); transition: transform .2s; }
+.ap-gruppe-frage[open] > summary > .ap-gruppe-frage-pfeil { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .ap-gruppe-frage-pfeil { transition: none; } }
+/* «Dein Weg» in einer Gruppe: die Karten der Etappen ohne «Jetzt dran» (der Schritt der Gruppe steht oben) */
+.ap-weg-leise { box-shadow: none; }
+
 /* «Heute», «Dein Ja», das eine Feld an Bert und gemeinsame Teile nach dem UX-Konzept (docs/foundable/ux-cockpit.md). Nur Tokens und
    Klassen aus albatros.css; eigene Klassen heissen ap-*. */
 
@@ -665,6 +912,34 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-himmel-wolke.zwei { --w: 96px; --h: 40px; top: var(--space-7); right: var(--space-4); opacity: .75; }
 .ap-himmel .ap-weg-leiste { background: var(--glass); box-shadow: inset 0 0 0 1px var(--ln), var(--shadow-raised); }
 .ap-himmel .ap-weg-leiste > .steps.bahn { --bahn-grund: var(--glass); }
+/* Bert auf der Flugbahn (docs/foundable/ux-cockpit.md, Abschnitt 20): Er steht über der Leiste, je weiter du bist, desto weiter rechts, in der
+   Haltung seiner Etappe (heute.tsx, BERT_JE_ETAPPE): Planen Anlauf auf der Leiste, Bauen hebt ab, Gefunden werden gleitet, Online gelandet,
+   alles fertig mit seinem ersten Fan. Er steht hinter der Leiste (z-index -1 im Himmel: die Füsse verschwinden hinter ihrer Kante), vor Sonne
+   und Wolken, nie über Text; nachts (dunkel) nicht. Wer fliegt, zieht einen gestrichelten Kondensstreifen und wiegt sich einmal sanft (höchstens 5 s).
+   --x: Lage von links in der Leiste; --hoch: wie weit seine Füsse über der Kante sind (die Posen haben unten etwa 7 % Rand). */
+.ap-weg-leiste { position: relative; }
+.ap-weg-bert { --x: 20%; --hoch: 0px; --gr: 76px; position: absolute; z-index: -1; left: var(--x); bottom: calc(100% - 0.07 * var(--gr) + var(--hoch)); width: var(--gr);
+  height: var(--gr); pointer-events: none; }
+.ap-weg-bert > .k-maskottchen { position: relative; width: var(--gr); height: var(--gr); filter: drop-shadow(3px 8px 6px color-mix(in srgb, var(--primary-ink) 16%, transparent)); }
+.ap-weg-bert[data-bert-etappe="bauen"] { --x: 38%; --hoch: 10px; animation: ap-gleiten 2400ms ease-in-out 2 both; }
+.ap-weg-bert[data-bert-etappe="sichtbar"] { --x: 56%; --hoch: 2px; animation: ap-gleiten 2400ms ease-in-out 2 both; }
+.ap-weg-bert[data-bert-etappe="online"] { --x: 74%; }
+.ap-weg-bert[data-bert-etappe="fertig"] { --x: 72%; }
+/* Der Streifen endet an Berts Schwanz und steigt zu ihm an: beim Gleiten flach (Schwanz etwa 35 % von links, 62 % von oben im Bild der Pose),
+   beim Abheben steil von der Leiste her (Schwanz etwa 26 % und 78 %) */
+.ap-himmel-spur { position: absolute; right: 65%; top: 62%; width: 150px; height: 0; border-top: 2px dashed color-mix(in srgb, var(--primary-ink) 32%, transparent);
+  transform: rotate(-7deg); transform-origin: 100% 0;
+  -webkit-mask-image: linear-gradient(to left, black 30%, transparent); mask-image: linear-gradient(to left, black 30%, transparent); }
+.ap-weg-bert[data-bert-etappe="bauen"] .ap-himmel-spur { right: 74%; top: 80%; width: 90px; transform: rotate(-20deg); }
+:root[data-theme="dark"] .ap-weg-bert { display: none; }
+@keyframes ap-gleiten { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-2deg); } }
+@media (prefers-reduced-motion: reduce) { .ap-weg-bert { animation: none; } }
+@media (max-width: 767px) {
+  .ap-weg-bert { --gr: 60px; }
+  .ap-weg-bert[data-bert-etappe="idee"] { --x: 26%; }
+  .ap-himmel-spur { width: 90px; }
+  .ap-weg-bert[data-bert-etappe="bauen"] .ap-himmel-spur { width: 56px; }
+}
 @media (max-width: 767px) {
   .ap-himmel { margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) 0; padding: var(--space-5) var(--space-4) var(--space-4); border-radius: 0 0 var(--radius-card) var(--radius-card); }
   .ap-himmel-sonne { width: 96px; height: 96px; right: var(--space-5); }
@@ -725,12 +1000,23 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-chat-eingabe.schlicht .compose { padding: 10px; }
 .ap-chat-eingabe.schlicht textarea { font-size: 17px; }
 .ap-rahmen[data-leer="ja"] .ap-inhalt { max-width: 760px; }
-@media (min-width: 768px) { .ap-rahmen[data-leer="ja"] .ap-heute { padding-top: 6vh; } }
+@media (min-width: 768px) {
+  .ap-rahmen[data-leer="ja"] .ap-heute { padding-top: 6vh; }
+  /* Beim ersten Start steht der Himmel als runde Fläche über der Karte, mit ganzer Sonne (vorher ein hartes Rechteck mit abgeschnittener Sonne;
+     Gestalterin, 12.11.2026) */
+  .ap-rahmen[data-leer="ja"] .ap-himmel { margin: 0 calc(-1 * var(--space-4)); padding: var(--space-6) var(--space-5) var(--space-5); border-radius: var(--radius-panel); }
+  .ap-rahmen[data-leer="ja"] .ap-himmel-sonne { top: var(--space-3); right: var(--space-5); width: 84px; height: 84px; }
+}
 @media (max-width: 767px) {
   .ap-idee { padding: 22px 16px; gap: 14px; }
   .ap-idee > .k-maskottchen { width: 88px; }
+  .ap-idee > .maskottchen-clip { width: 104px; height: 104px; }
   .ap-idee-wege > .btn.sec { width: 100%; }
 }
+/* Bert gleitet neben «Bert arbeitet»: der Clip ist quadratisch, Bert liegt quer in der Mitte, darum die Ränder ins Leere (so ist sein Gesicht
+   gross genug, Gestalterin 12.11.2026); am Handy etwas kleiner */
+.ap-arbeitet-bert { margin: -24px -14px -26px -16px; }
+@media (max-width: 767px) { .ap-arbeitet-bert.maskottchen-clip { width: 100px; height: 100px; margin: -12px -12px -14px -12px; } } /* nie über den Kartenrand */
 
 /* Das eine Feld an Bert: Vorschläge zum Antippen und der Bezug der Nachricht darüber */
 .ap-chips { display: flex; flex-direction: column; gap: 6px; }
@@ -765,6 +1051,8 @@ div.ap-weg-zeile > .col > b { color: var(--mu); }
 .ap-zurueck > svg.i { width: 18px; height: 18px; }
 
 /* Kopf von Bert: neues Gespräch und frühere Gespräche mit Wort */
+/* Korrekturrunde L (14.11.2026, Fund 6): «Zurück zur Checkliste» über dem Kopf des Gesprächs, am Rand wie der Kopf */
+.ap-chat > .ap-chat-zurueck { padding: 12px 16px 0; }
 .ap-chat-gespraeche { display: flex; flex-wrap: wrap; gap: 0 8px; padding: 0 12px 4px; border-bottom: 1px solid var(--ln); }
 .ap-chat-kopf { border-bottom: 0; padding-bottom: 4px; }
 .ap-chat-gespraeche:has(+ .ap-bert-stand) { border-bottom: 0; }
@@ -973,6 +1261,8 @@ span.ap-termin-knopf { min-height: 36px; }
 .ap-netz-kopf > h2:focus-visible { outline: var(--focus-width) solid var(--pr2); outline-offset: 4px; border-radius: var(--radius-thumb); }
 .ap-netz-satz { margin: 0; font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); overflow-wrap: break-word; }
 .ap-netz-saetze { list-style: none; margin: 0; padding: 0; min-width: 0; }
+/* Korrekturrunde K (Fund 7): was vor dem Ins-Netz-Stellen noch fehlt, als Liste */
+.ap-netz-fehlt { margin: 0; padding-left: 1.2em; list-style: disc; display: flex; flex-direction: column; gap: 2px; }
 /* Die drei Sätze vor dem ersten Knopf (Korrekturrunde C): gut lesbar, nicht als leiser Hinweis */
 .ap-netz-saetze > .k-leise { font-size: 15px; line-height: 1.45; color: var(--ink); align-items: center; }
 .ap-netz-saetze > .k-leise > :last-child { min-width: 0; overflow-wrap: break-word; }
