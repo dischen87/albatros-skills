@@ -2,7 +2,7 @@
 name: blog
 description: 'Richtet mit einer Person ohne Vorwissen einen Blog auf ihrer Astro-Seite ein und schreibt mit ihr Beiträge: jeder Beitrag eine Markdown-Datei im Logbuch (web/src/content/blog/<slug>.md mit title, date, description, bild), die Person erzählt die Idee, Bert schreibt die Datei, sie liest in der Vorschau und klickt in Albatros auf «Veröffentlichen». Mit Vorlage für Familien-Empfehlungen (Für wen, Was, Wann und Wetter, Anreise, Kosten, Mein Tipp, Link) und Regeln für eigene Fotos. Nutze den Skill bei «Blog», «Blogbeitrag», «neuer Beitrag», «Artikel schreiben», «Empfehlung veröffentlichen», «Ausflugstipp aufschreiben», «News auf meiner Seite».'
 metadata:
-  stand: 0.3.6
+  stand: 0.3.7
 ---
 
 # Blog: der Ordner mit den Ausflugsblättern
@@ -74,6 +74,8 @@ Der Blog ist ein Teil der Seite wie jeder andere. Ist die Seite noch in Planung,
 4. Aussehen nur mit den Werten aus `design/tokens.css` und den Komponenten der Seite.
 
 ## 2. Einen Beitrag schreiben
+
+**Nur Beiträge zu Erlebnissen, die die Person erzählt hat; ohne Erlebnis kein Beitrag.** Du schreibst keinen Beitrag auf Vorrat, keine Liste «Fünf Ausflüge für …» und keinen Text mit «wir», «unser» oder «ich», den sie nicht so erzählt hat. Jeder Satz in der ersten Person steht nur so im Beitrag, wie die Person ihn mit «Stimmt so» bestätigt; ein Platzhalter in eckigen Klammern («[Platzhalter: …]») ist kein Text. Albatros stellt eine Seite mit einem unbestätigten Erlebnis oder einem Platzhalter nicht ins Netz.
 
 1. **Die Person erzählt die Idee:** Wo wart ihr, mit wem, was habt ihr erlebt? Hat sie ihr Erlebnis schon erzählt (im Chat oder im Text des Auftrags), fragst du nicht nochmals. Hat sie Fotos, legt sie sie in den Chat oder in den Projektordner.
 2. **Bert holt die Fakten.** Bei einem Ausflug mit dem Skill `swissactivities`: Alter, Wetter, Preis mit Datum, Anreise, Link. Nichts aus dem Gedächtnis.

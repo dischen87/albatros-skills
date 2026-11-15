@@ -3,7 +3,7 @@
     "albatros": {
       "url": "https://mcp.albatros.build",
       "headers": {
-        "X-Albatros-Skills-Stand": "0.3.6"
+        "X-Albatros-Skills-Stand": "0.3.7"
       }
     }
   }

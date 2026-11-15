@@ -2,8 +2,8 @@
 name: blog
 description: "Imposta con una persona senza conoscenze preliminari un blog sul suo sito Astro e scrive articoli con lei: ogni articolo è un file Markdown nel diario di bordo (web/src/content/blog/<slug>.md con title, date, description, bild), la persona racconta l’idea, Bert scrive il file, lei lo legge nell’anteprima e clicca su pubblica in Albatros. Con un modello per i consigli alle famiglie (per chi, cosa, quando e meteo, viaggio, costi, il mio consiglio, link) e regole per le proprie foto. Usa lo skill per «blog», «articolo del blog», «nuovo articolo», «scrivere un articolo», «pubblicare un consiglio», «scrivere un’idea per una gita», «novità sul mio sito»."
 metadata:
-  stand: 0.3.6
-  quelle: 'e22602facd46'
+  stand: 0.3.7
+  quelle: 'dc06b7a2ad8e'
 ---
 
 # Blog: il raccoglitore delle schede delle gite
@@ -75,6 +75,8 @@ Il blog è una parte del sito come le altre. Se il sito è ancora in progettazio
 4. L’aspetto solo con i valori di `design/tokens.css` e i componenti del sito.
 
 ## 2. Scrivere un articolo
+
+**Solo articoli su esperienze che la persona ti ha raccontato; senza esperienza, niente articolo.** Non scrivi articoli in anticipo, nessuna lista «Cinque gite per …» e nessun testo con «noi», «nostro» o «io» che lei non ha raccontato così. Ogni frase in prima persona sta nell’articolo solo come la persona l’ha confermata con «È giusto così»; un segnaposto tra parentesi quadre («[da completare: …]») non è un testo. Albatros non mette online un sito con un’esperienza non confermata o un segnaposto.
 
 1. **La persona racconta l’idea:** dove siete stati, con chi, cosa avete vissuto? Se ha già raccontato la sua esperienza (nella chat o nel testo dell’incarico), non chiedi di nuovo. Se ha foto, le mette nella chat o nella cartella del progetto.
 2. **Bert prende i fatti.** Per una gita con lo skill `swissactivities`: età, meteo, prezzo con data, viaggio, link. Niente a memoria.

@@ -2,7 +2,7 @@
 name: entwurf
 description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite und jede Funktion der Bauliste in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, geschliffen mit den Rückmeldungen der Person. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
 metadata:
-  stand: 0.3.6
+  stand: 0.3.7
 ---
 
 # Entwurf: das begehbare Modell
@@ -196,7 +196,7 @@ Sag ihr in drei, vier Sätzen, was im Entwurf steht (die Seiten, die Funktionen 
 
 - **Nur ein klares Ja zum Bauen gilt:** «Ja», «Ja, so bauen», «Ja, bau es», «Einverstanden, bauen». Lob allein ist keine Freigabe: Auf «sieht gut aus» oder «schön» fragst du einmal nach: «Freut mich. Heisst das: Ja, so bauen?»
 - **«Ja, aber …»** ist keine Freigabe: zuerst ändern, neu zeigen, neu fragen.
-- Mit dem Programm Albatros fragst du das Ja mit `ja_moment` (`entwurf`) an; die Zeile schreibt dann das Programm, wenn die Person in Albatros «Ja, bestätigen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»).
+- Mit dem Programm Albatros fragst du das Ja mit `ja_moment` (`entwurf`) an; die Zeile schreibt dann das Programm, wenn die Person in Albatros «Ja, das will ich bauen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»).
 - Nach dem Ja schreibst du in `docs/entwurf.md` die Zeile `Freigegeben zum Bauen: <TT.MM.JJJJ>, ‹<ihre Worte>›`, zum Beispiel `Freigegeben zum Bauen: 31.10.2026, ‹Ja, so bauen›`, und meldest `entwurf-freigegeben`. Das Datum steht vorne, als Zahl: Ohne Datum, mit `[Annahme: …]` oder mit «noch nicht» gilt die Zeile nicht als Ja, weder für `lage` noch für `pruefen.mjs --vor-bau`.
 - **Ändert sich der Entwurf nach der Freigabe,** gilt sie nicht mehr: Mach aus der Zeile `Früher freigegeben zum Bauen: …`, ändere, zeig neu und frag nochmals. So heisst die Zeile `Freigegeben zum Bauen:` immer: genau dieser Entwurf ist freigegeben.
 

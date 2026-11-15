@@ -2,8 +2,8 @@
 name: blog
 description: "Sets up a blog on an Astro site with a person who has no prior knowledge and writes posts with her: each post a Markdown file in the logbook (web/src/content/blog/<slug>.md with title, date, description, bild), the person tells the idea, Bert writes the file, she reads it in the preview and clicks publish in Albatros. With a template for family recommendations (for whom, what, when and weather, getting there, cost, my tip, link) and rules for her own photos. Use this skill for “blog”, “blog post”, “new post”, “write an article”, “publish a recommendation”, “write up a day-trip tip”, “news on my site”."
 metadata:
-  stand: 0.3.6
-  quelle: 'e22602facd46'
+  stand: 0.3.7
+  quelle: 'dc06b7a2ad8e'
 ---
 
 # Blog: the binder of day-trip sheets
@@ -75,6 +75,8 @@ The blog is a part of the site like any other. If the site is still being planne
 4. Look only with the values from `design/tokens.css` and the components of the site.
 
 ## 2. Write a post
+
+**Only posts about experiences the person has told you; no experience, no post.** You do not write posts in advance, no list «Five outings for …» and no text with «we», «our» or «I» that she did not tell like that. Every sentence in the first person is in the post only as the person confirmed it with «That’s right»; a placeholder in square brackets («[placeholder: …]») is not text. Albatros does not put a site with an unconfirmed experience or a placeholder online.
 
 1. **The person tells the idea:** where were you, with whom, what did you experience? If she has already told her experience (in the chat or in the text of the task), you do not ask again. If she has photos, she puts them in the chat or in the project folder.
 2. **Bert gets the facts.** For an outing with the skill `swissactivities`: age, weather, price with date, getting there, link. Nothing from memory.

@@ -2,8 +2,8 @@
 name: entwurf
 description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git, avec une brique aussi Bun), puis chaque page et chaque fonction de la liste de construction dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, poli avec les retours de la personne. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
 metadata:
-  stand: 0.3.6
-  quelle: 'd8e7767def50'
+  stand: 0.3.7
+  quelle: 'fa19ecfa8548'
 ---
 
 # Ébauche : le modèle qu'on peut visiter
@@ -198,7 +198,7 @@ Dis-lui en trois ou quatre phrases ce que contient l'ébauche (les pages, les fo
 
 - **Seul un oui clair à la construction compte :** « Oui », « Oui, construis-le comme ça », « Oui, vas-y », « D'accord, on construit ». Un compliment seul n'est pas une autorisation : à « ça a l'air bien » ou « c'est beau », tu redemandes une fois : « Ça me fait plaisir. Ça veut dire : oui, on le construit comme ça ? »
 - **« Oui, mais … »** n'est pas une autorisation : d'abord changer, remontrer, redemander.
-- Avec le programme Albatros, tu demandes le oui avec `ja_moment` (`entwurf`) ; la ligne, c'est alors le programme qui l'écrit quand la personne clique sur « Oui, confirmer » dans Albatros (skill `lotse`, section « Le programme Albatros » (Berts Arbeitsplatz)).
+- Avec le programme Albatros, tu demandes le oui avec `ja_moment` (`entwurf`) ; la ligne, c'est alors le programme qui l'écrit quand la personne clique sur « Oui, c’est ce que je veux construire » dans Albatros (skill `lotse`, section « Le programme Albatros » (Berts Arbeitsplatz)).
 - Après le oui, tu écris dans `docs/entwurf.md` la ligne `Freigegeben zum Bauen: <JJ.MM.AAAA>, ‹<ses mots>›`, par exemple `Freigegeben zum Bauen: 31.10.2026, ‹Oui, construis-le comme ça›`, et tu annonces `entwurf-freigegeben`. Les mots `Freigegeben zum Bauen:` restent en allemand, c'est eux que la construction cherche. La date vient devant, en chiffres : sans date, avec `[Annahme: …]` ou avec « pas encore », la ligne ne compte pas comme un oui, ni pour `lage` ni pour `pruefen.mjs --vor-bau`.
 - **Si l'ébauche change après l'autorisation,** celle-ci ne vaut plus : transforme la ligne en `Früher freigegeben zum Bauen: …` (autorisé auparavant), change, remontre et redemande. Ainsi, la ligne `Freigegeben zum Bauen:` veut toujours dire : exactement cette ébauche est autorisée.
 

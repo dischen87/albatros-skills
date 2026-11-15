@@ -2,8 +2,8 @@
 name: entwurf
 description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina e ogni funzione della lista di costruzione nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, rifinito con i riscontri della persona. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
 metadata:
-  stand: 0.3.6
-  quelle: 'd8e7767def50'
+  stand: 0.3.7
+  quelle: 'fa19ecfa8548'
 ---
 
 # Bozza: il modello in cui si può entrare
@@ -198,7 +198,7 @@ Dille in tre o quattro frasi che cosa c'è nella bozza (le pagine, le funzioni c
 
 - **Vale solo un sì chiaro alla costruzione:** «Sì», «Sì, costruiscilo così», «Sì, vai», «D'accordo, costruiamo». Un complimento da solo non è un via libera: a «sembra bello» o «carino» chiedi una volta: «Mi fa piacere. Vuol dire: sì, lo costruiamo così?»
 - **«Sì, ma …»** non è un via libera: prima cambiare, mostrare di nuovo, chiedere di nuovo.
-- Con il programma Albatros chiedi il sì con `ja_moment` (`entwurf`); la riga la scrive allora il programma, quando la persona clicca in Albatros su «Sì, confermo» (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)).
+- Con il programma Albatros chiedi il sì con `ja_moment` (`entwurf`); la riga la scrive allora il programma, quando la persona clicca in Albatros su «Sì, voglio costruirlo così» (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)).
 - Dopo il sì scrivi in `docs/entwurf.md` la riga `Freigegeben zum Bauen: <GG.MM.AAAA>, ‹<le sue parole>›`, per esempio `Freigegeben zum Bauen: 31.10.2026, ‹Sì, costruiscilo così›`, e annunci `entwurf-freigegeben`. Le parole `Freigegeben zum Bauen:` restano in tedesco, perché la costruzione le cerca. La data viene davanti, in cifre: senza data, con `[Annahme: …]` o con «non ancora» la riga non conta come sì, né per `lage` né per `pruefen.mjs --vor-bau`.
 - **Se la bozza cambia dopo il via libera,** questo non vale più: trasforma la riga in `Früher freigegeben zum Bauen: …` (via libera precedente), cambia, mostra di nuovo e chiedi di nuovo. Così la riga `Freigegeben zum Bauen:` vuol sempre dire: proprio questa bozza ha il via libera.
 
