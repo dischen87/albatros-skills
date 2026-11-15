@@ -2,8 +2,8 @@
 name: entwurf
 description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page and every feature of the build list in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, refined with the person's feedback. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
-  stand: 0.3.5
-  quelle: '5e70b158548d'
+  stand: 0.3.6
+  quelle: 'd8e7767def50'
 ---
 
 # Draft: the walk-through model
@@ -105,7 +105,7 @@ You carry the chosen direction (`design/richtungen/<chosen>.html`, `design/muste
 - **Pictures:** the person's own photos from the photo list in `docs/inhalte.md` into `design/entwurf/bilder/`, otherwise a grey area with `alt="[placeholder: photo …]"`. Every `<img>` has `width`, `height` and a description.
 - **Its own, not from a kit:** the criteria from the skill `gestaltung`, section “Your own, not from a kit” (Eigen statt Baukasten), apply: no centred heading with two buttons as the header, no emoji as icons, no lorem texts, no cards of the same size. Motion and 3D only as in the section “Motion and 3D” (Bewegung und 3D) there: every movement with its sentence in `docs/designsystem.md` and with respect for “Reduce motion”, 3D only with a still image (`data-3d-standbild`) and only loaded when needed.
 - **Built for the phone:** `<meta name="viewport" content="width=device-width, initial-scale=1">` in every page, no sideways scrolling at 390 px, buttons at least 44 px high.
-- **Links** always with the path from the page and with `.html` (`contact.html`, `../index.html`), never with “/” at the start and never to a folder: the draft is opened as a file, without a server.
+- **Links** always with the path from the page and with `.html` (`contact.html`, `../index.html`), never with “/” at the start, never to a folder and never without a target (`href="#"`, red): the draft is opened as a file, without a server.
 
 ### 4. Check with entwurf-pruefen.mjs
 
@@ -116,6 +116,8 @@ mkdir -p scripts && cp <folder of this skill>/entwurf-pruefen.mjs scripts/
 # folder unknown: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs
 node scripts/entwurf-pruefen.mjs
 ```
+
+With the Albatros app you call the tool `pruefung` instead (`art: entwurf`): Albatros runs `entwurf-pruefen.mjs` and `design-pruefen.mjs` itself, also checks for a partner's logos and gives you the result; you don't copy anything into the project.
 
 It gives a traffic light per area and ends with 1 if anything is red. Its messages are in German; you explain them to the person in English:
 

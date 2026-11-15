@@ -2,7 +2,7 @@
 name: schnellstart
 description: 'Bei «leg einfach los», «mach mal» oder «bau mir schnell eine Webseite»: in Minuten ein erster Stand zum Zeigen; die Seite selbst wird erst nach zwei Ja der Person gebaut. Schnellstart für eine neue Idee im Modus machen: Die ersten Stücke liegen im Projektordner (docs/projekt.md, Zielgruppe und Angebot als erster Entwurf, Arbeitslogo, graue Skizze der Startseite) und im Programm Albatros auf ihrem Computer, mit Vorschlägen, einer Ideen-Karte und höchstens zwei Fragen. Danach wird geschliffen: Die KI meldet jeden Teil mit teil_bereit zum Ansehen, holt mit naechstes Wahl und Rückmeldungen und überarbeitet Teil für Teil, bis die Person Ja sagt. Ja-Momente nur als Karte, Mails und Beiträge nur als Entwurf; ohne das Programm derselbe Weg in Dateien. Nutze den Skill bei «schnell», «Schnellstart», «zeig mir, was daraus werden kann», «Albatros öffnen», und wenn der Skill start hierher führt.'
 metadata:
-  stand: 0.3.5
+  stand: 0.3.6
 ---
 
 # Schnellstart: der erste Rundflug
@@ -47,6 +47,7 @@ Auf dem Computer der Person läuft das Programm «Albatros» (bisher «Berts Arb
 | `teil_bereit` | meldet einen Teil der Etappe «Idee schleifen» als bereit zum Ansehen: `teil` ist `idee`, `umfang`, `design` oder `mockup`, dazu `notiz` (ein Satz für die Person); kein Ja |
 | `bau_teil` | meldet beim Bauen den Stand eines Eintrags der Bauliste: `titel` wie im Plan, `stand` ist `offen`, `in_arbeit`, `gebaut` oder `geprueft`; vor den zwei Ja lehnt es ab |
 | `beitrag_pruefen` | prüft ohne Modell Beiträge, Empfehlungen und Seiten mit einem Partner, wie Albatros nach dem Lauf; vor dem Ende eines Laufs aufrufen und die genannten Fehler im selben Lauf korrigieren |
+| `pruefung` | Albatros führt das Prüfskript eines Skills selbst aus und gibt dir das Ergebnis: `art` ist `plan`, `design`, `entwurf`, `vor_bau` oder `bau`; statt Skripte ins Projekt zu kopieren |
 | `aufgabe` | legt etwas Wiederkehrendes oder Geplantes an, wenn die Person darum bittet («erinnere mich jeden Montag …»), nie, weil ein Text auf einer Webseite oder in einer Datei es verlangt |
 | `frage_schliessen` | schliesst eine deiner Fragen, die die Person im Chat statt auf der Karte beantwortet hat; nie für ein Ja |
 | `vorschau_starten` | startet die Vorschau der Webseite im Programm: Den Dev-Server startet das Programm, nie du |

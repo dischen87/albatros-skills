@@ -212,6 +212,21 @@ test('--bau: die gebaute Seite; fest eingebundenes JavaScript über 50 KB ist do
   expect(r.code).toBe(1);
 });
 
+test('--bau: Links ohne Ziel (href="#") in der gebauten Seite sind rot, mit Datei und Zahl (echter Durchgang 3, 15.11.2026)', () => {
+  const ohne = pruefe((h) => {
+    cpSync(join(h.d, 'design/entwurf'), join(h.d, 'seite'), { recursive: true });
+    h.schreibe({ 'design/richtungen': null });
+  }, '--bau', '--nur', 'texte');
+  expect(ohne.ampeln.texte).toBe('grün');
+  const mit = pruefe((h) => {
+    cpSync(join(h.d, 'design/entwurf'), join(h.d, 'seite'), { recursive: true });
+    h.schreibe({ 'design/richtungen': null });
+    h.ersetze('seite/index.html', '</main>', '<a href="#">Pilatus</a> <a href=\'#\'>Verkehrshaus</a> <a href="#oben">nach oben</a><!-- <a href="#">alt</a> --></main>');
+  }, '--bau', '--nur', 'texte');
+  expect(mit.texte('texte')).toContain('rot: seite/index.html: 2 Links ohne Ziel (href="#")');
+  expect(mit.code).toBe(1);
+});
+
 test('unbekannter Bereich und leeres Projekt: Exit 2', () => {
   const d = mkdtempSync(join(tmpdir(), 'design-leer-'));
   ordner.push(d);

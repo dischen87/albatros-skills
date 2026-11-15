@@ -2,8 +2,8 @@
 name: webseite-bauen
 description: "Da caricare prima di scrivere codice per un sito («costruiscimi un sito»): si costruisce solo dopo due sì della persona (piano confermato, bozza con via libera); se ne manca uno, anche con «intanto costruisci la pagina iniziale», lo skill riporta alla pianificazione. Poi costruisce il sito web sul suo computer, esattamente secondo la bozza con via libera (P9 e P10): pruefen.mjs --vor-bau controlla i due sì, poi diario di bordo, modo di costruzione, PRD ricavato dalla bozza con accesso e porte, costruzione con Astro voce per voce della lista di costruzione, quattro controlli con pruefen.mjs, sopralluogo sul telefonino e sul computer, confronto con la bozza e approvazione. Niente va online, se ne occupa lancieren. Segnala prd, lokal, pruefung, freigabe. Usa lo skill dopo entwurf (via libera per costruire) e con «costruiscimi il sito», «stack tecnologico», «PRD», «guardarlo in locale», «controllare prima di pubblicare», «approvazione», «come si va avanti dopo la bozza?»."
 metadata:
-  stand: 0.3.5
-  quelle: 6a629232a284
+  stand: 0.3.6
+  quelle: f6ea4e119ef4
 ---
 
 # Costruire il sito web: il rustico nella tua officina
@@ -67,6 +67,8 @@ mkdir -p scripts && cp <cartella di questo skill>/pruefen.mjs scripts/
 # cartella sconosciuta: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
 node scripts/pruefen.mjs --vor-bau
 ```
+
+Con il programma Albatros chiami invece lo strumento `pruefung` (`art: vor_bau`): Albatros esegue da sé `pruefen.mjs --vor-bau` e ti dà il risultato; non copi niente nel progetto.
 
 - **Finisce con 0:** ci sono i due sì della persona, `Bestätigt: <GG.MM.AAAA>, …` in `docs/plan.md` e `Freigegeben zum Bauen: <GG.MM.AAAA>, …` in `docs/entwurf.md`, in più la bozza in `design/entwurf/` e i token in `design/tokens.css`. Si va avanti con il passo 1.
 - **Finisce con 2:** l'output (in tedesco) dice che cosa manca. Dillo alla persona in una frase e torna lì: senza piano confermato allo skill `webseite-planen` (parte «Plan prüfen», verificare il piano), senza via libera per costruire allo skill `entwurf` (parte «Freigabe», il via libera), senza bozza allo skill `entwurf`, senza token allo skill `gestaltung`. Le righe `Bestätigt:` e `Freigegeben zum Bauen:` non le scrivi mai tu, nemmeno «al volo», e non costruisci nemmeno «intanto qualcosa in anticipo» se la persona insiste: ci sono solo dopo il suo sì al piano e alla bozza.
@@ -264,7 +266,9 @@ node scripts/plan-pruefen.mjs --bau                             # funzionalità 
 node scripts/design-pruefen.mjs --bau                           # unico e non fatto con lo stampino, movimento, 3D, peso, sul sito costruito
 ```
 
-`plan-pruefen.mjs` e `design-pruefen.mjs` stanno in `scripts/` dal piano e dalla bozza (altrimenti li copi dagli skill `webseite-planen` e `gestaltung`, come descritto lì); non hanno bisogno di scaricare niente.
+Con il programma Albatros chiami invece lo strumento `pruefung` (`art: bau`) per `plan-pruefen.mjs --bau` e `design-pruefen.mjs --bau`: Albatros li esegue da sé e controlla anche i link senza destinazione (`href="#"`) e i loghi di un partner. Un link senza destinazione è rosso: porta a una pagina o a un'offerta, oppure non è un link. Fino ad allora Albatros non accetta il sì al sito.
+
+Senza il programma, `plan-pruefen.mjs` e `design-pruefen.mjs` stanno in `scripts/` dal piano e dalla bozza (altrimenti li copi dagli skill `webseite-planen` e `gestaltung`, come descritto lì); non hanno bisogno di scaricare niente.
 
 La prima volta lo script scarica gli strumenti (Playwright, axe-core, Lighthouse, circa 200 MB) e ci mette qualche minuto. Dillo prima alla persona. Scrive `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` e foto di ogni pagina a 390 e 1440 px in `docs/pruefung/fotos/`. I suoi messaggi sono in tedesco: li passi in italiano.
 

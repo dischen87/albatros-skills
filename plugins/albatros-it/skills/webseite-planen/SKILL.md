@@ -2,8 +2,8 @@
 name: webseite-planen
 description: "Da caricare per primo con «costruiscimi un sito per …» e «voglio un sito web»: prima pianificare e mostrare, non si costruisce ancora niente. Pianifica con una persona senza conoscenze tecniche il suo sito web in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md, schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, docs/recherche.md), pianta (pagine, funzioni come lista di costruzione, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill anche con «pianificare un sito web», «da dove comincio», «quali pagine mi servono», «sitemap», «funzionalità», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione."
 metadata:
-  stand: 0.3.5
-  quelle: '9af538fb3d68'
+  stand: 0.3.6
+  quelle: '067c5bc25b34'
 ---
 
 # Pianificare il sito web: la pianta
@@ -162,7 +162,7 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
 4. **Obblighi** (`Pflichten:`): impressum, protezione dei dati, diritti sulle immagini, cookie. In Svizzera quasi ogni sito ha bisogno di impressum e dichiarazione sulla protezione dei dati; i dettagli nello skill `recht-ch`. Nessuna consulenza legale.
 5. **Contenuti esistenti** (`Inhalte vorhanden:`): «Quali testi, quali foto e quale logo hai già?» Se la persona dice «ce l'abbiamo», chiedilo subito (testo, lista o una foto), soprattutto tutto quello che serve a una funzione, per esempio corsi con orari e posti. Quello che manca va sulla lista per lo skill `inhalte`. I contenuti mancanti sono il motivo più frequente per cui i siti non vengono mai finiti.
 6. **Parole di ricerca** (`Suchbegriffe:`): da tre a cinque parole con cui qualcuno cercherebbe la persona, come `[Annahme: …]`. Da qui nascono più tardi titoli e testi che si trovano.
-7. **Scrivere `docs/recherche.md`** e spiegarlo alla persona in cinque righe: che cosa hanno in comune i modelli, che cosa riprendete, che cosa fate diversamente, quali obblighi valgono e quali contenuti mancano ancora. Le ipotesi le conferma in un solo messaggio.
+7. **Scrivere `docs/recherche.md`** e spiegarlo alla persona in cinque righe: che cosa hanno in comune i modelli, che cosa riprendete, che cosa fate diversamente, quali obblighi valgono e quali contenuti mancano ancora. Le ipotesi le conferma in un solo messaggio; con il programma Albatros con il sì al piano, non con «Va bene così?» nella chat.
 
    ```markdown
    # Ricerca: <nome del progetto>
@@ -243,6 +243,8 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
    - `Muss/Kann`: `Muss` (deve esserci) fa parte del primo volo, `Kann` (può esserci) può arrivare più tardi. «Tutto `Muss`» è vero di rado: nel dubbio chiedi.
    - `Abnahme` (collaudo): una frase che si può verificare, per una funzione con conferma e caso di errore. Quello che proponi sta come `[Annahme: …]`, quello che nessuno sa come `[offen: …]`. Prima del sì al piano non c'è più niente di aperto.
 
+   **In un gruppo:** se `naechstes` nomina i passi dell'obiettivo di un gruppo, ogni passo con un modulo va come `Muss` nella lista di costruzione: il blog con articoli propri se l'obiettivo ha il passo blog; le offerte di un partner (con il suo nome, per esempio SwissActivities) se ha il passo del partner. Consigli e raccomandazioni sono quelli della persona («I consigli sono miei»): non scrivere mai che arrivano automaticamente dal partner. Se nel piano manca un tale modulo, Albatros non accetta il sì al piano, e `naechstes` nomina cosa manca.
+
    Il titolo `## Bauliste`, le intestazioni delle colonne e le parole `Seite`, `Funktion`, `Muss` e `Kann` restano in tedesco, in ogni lingua, come i nomi delle righe. Le righe `Seiten:` e `Funktionen:` più sopra restano il riassunto per il piano di volo; `Funktionen:` nomina in più gli identificativi.
 5. **Verificare con `plan-pruefen.mjs`.** Lo script di questo skill verifica le dieci righe e la lista di costruzione (colonne, identificativi, `Muss` o `Kann`, collaudo, le stesse pagine che in `Seiten:`); non scarica niente e non cambia niente. Se Node c'è già (`command -v node`, su Windows in PowerShell `where.exe node`):
 
@@ -252,8 +254,10 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
    node scripts/plan-pruefen.mjs
    ```
 
+   Con il programma Albatros chiami invece lo strumento `pruefung` (`art: plan`): Albatros esegue da sé lo script e ti dà il risultato; non copi niente nel progetto.
+
    Rosso vuol dire: correggere e verificare di nuovo. Senza Node verifichi lo stesso a mano, riga per riga. `node scripts/plan-pruefen.mjs --json` dà la lista di costruzione come dati.
-6. **Mostrare e rifinire.** Leggi il piano alla persona con parole brevi, la lista di costruzione riga per riga, e chiedi in modo mirato, al massimo due domande alla volta, per esempio: «Manca qualcosa che i visitatori devono poter fare?» e «Che cosa di tutto questo può arrivare più tardi?» Ogni riscontro cambia proprio la sua voce (sezione «Il ciclo»). Le ipotesi le conferma in un solo messaggio.
+6. **Mostrare e rifinire.** Leggi il piano alla persona con parole brevi, la lista di costruzione riga per riga, e chiedi in modo mirato, al massimo due domande alla volta, per esempio: «Manca qualcosa che i visitatori devono poter fare?» e «Che cosa di tutto questo può arrivare più tardi?» Ogni riscontro cambia proprio la sua voce (sezione «Il ciclo»). Le ipotesi le conferma in un solo messaggio; con il programma Albatros con il sì al piano, non con «Va bene così?» nella chat.
 
 **Percorso attività:** il progetto della pagina iniziale dall'alto in basso e il collaudo li scrive il metodo `landingpage` (strumento `methode`) in `docs/plan.md`. Dopo completi con le domande qui sopra le righe che lì sono ancora `[offen]`.
 
@@ -313,7 +317,7 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
 
 ## Cosa risparmi alla persona
 
-- **Troppo tutto in una volta:** blog, negozio online e area per i membri sono cose per dopo. Prima un sito che fa bene la cosa principale. Più lingue non sono un problema, se i testi ci sono.
+- **Troppo tutto in una volta:** blog, negozio online e area per i membri sono cose per dopo, a meno che l'obiettivo del suo gruppo nomini il blog. Prima un sito che fa bene la cosa principale. Più lingue non sono un problema, se i testi ci sono.
 - **Correre fino in fondo:** un piano scritto in una volta è una prima versione. Senza i giri con la persona, più tardi costruite quello che nessuno voleva così.
 - **Decisioni tecniche troppo presto:** per il piano basta lo standard qui sopra. Un blocco o un sistema per i contenuti arriva solo quando una funzione ne ha davvero bisogno.
 - **Logo e colori per primi:** carattere e aspetto vengono dopo il piano confermato. Una bella pagina vuota non aiuta nessuno.

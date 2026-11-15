@@ -12,6 +12,7 @@
 // farbe       Eigene Farbwelt: keine Farbe aus dem Baukasten (Standardwerte von Tailwind und Bootstrap), kein Standard-Verlauf in Lila
 //             und Blau, andere Verläufe und Glaseffekte nur mit Grund in docs/designsystem.md.
 // texte       Keine Lorem-Texte, keine Emoji als Icons, keine Bilder von Platzhalter-Diensten, ein Icon-Satz; Floskeln gelb.
+//             Mit --bau dazu: kein Link ohne Ziel (href="#") in der gebauten Seite (seit 15.11.2026, echter Durchgang 3).
 // kopf        Der Kopf der Startseite ist kein austauschbarer: zentrierte Zeile mit einem oder zwei Knöpfen, ohne Bild und ohne Inhalt.
 // richtungen  Mindestens zwei Richtungen in design/richtungen/, klar verschieden (Schrift, Farben, Formen), nicht nur andere Farben.
 // vorlage     Kein Vorlagen-Rahmen (nach dem Leitfaden frontend-design von Anthropic, 11.11.2026): Etiketten in Grossbuchstaben über den
@@ -184,6 +185,13 @@ if (B.texte) {
   const alles = [...html.values()].join('\n') + css + js;
   const saetze = Object.entries(ICONSAETZE).filter(([, m]) => m.test(alles)).map(([n]) => n);
   if (saetze.length > 1) melde('texte', 'gelb', `Mehrere Icon-Sätze gemischt (${saetze.join(', ')}): genau einer`);
+  // Echter Durchgang 3 (15.11.2026): Kacheln mit href="#" gingen in die gebaute Seite. Ein Link ohne Ziel führt Besucher nirgends hin
+  if (BAU) {
+    for (const [f, h] of html) {
+      const n = [...ohneKommentare(h).matchAll(/<a\b[^>]*\bhref\s*=\s*(?:"#"|'#'|#(?=[\s>]))/gi)].length;
+      if (n) { sauber = false; melde('texte', 'rot', `${rel(f)}: ${n} ${n === 1 ? 'Link' : 'Links'} ohne Ziel (href="#"): auf eine Seite oder ein Angebot zeigen lassen, sonst kein Link`); }
+    }
+  }
   if (sauber && html.size) melde('texte', 'grün', `Keine Lorem-Texte, keine Emoji als Icons, keine Platzhalter-Bilder, auf ${html.size} ${html.size === 1 ? 'Seite' : 'Seiten'}`);
   if (!html.size) melde('texte', 'hinweis', 'Noch keine Seiten zum Prüfen');
 }

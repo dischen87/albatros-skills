@@ -2,8 +2,8 @@
 name: webseite-bauen
 description: "Load before any code for a website is written (“build me a website”): building only starts after the person's two yeses (plan confirmed, draft approved to build); if one is missing, even for “just build the home page already”, the skill leads back to planning. Then builds the website on their own computer, exactly following the approved draft (P9 and P10): pruefen.mjs --vor-bau checks the two yeses, then logbook, way of building, PRD derived from the draft with access and doors, building with Astro entry by entry of the build list, four checks with pruefen.mjs, a walk-through on a phone and a computer, comparison with the draft and release. Nothing goes online here, that's lancieren's job. Reports prd, lokal, pruefung, freigabe. Use this skill after entwurf (approval to build) and for “build me the site”, “tech stack”, “PRD”, “let me see it locally”, “check before publishing”, “release”, “what happens after the draft?”."
 metadata:
-  stand: 0.3.5
-  quelle: 6a629232a284
+  stand: 0.3.6
+  quelle: f6ea4e119ef4
 ---
 
 # Building the website: the shell in your own workshop
@@ -67,6 +67,8 @@ mkdir -p scripts && cp <folder of this skill>/pruefen.mjs scripts/
 # folder unknown: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
 node scripts/pruefen.mjs --vor-bau
 ```
+
+With the Albatros app you call the tool `pruefung` instead (`art: vor_bau`): Albatros runs `pruefen.mjs --vor-bau` itself and gives you the result; you don't copy anything into the project.
 
 - **Ends with 0:** there are the person's two yeses, `Bestätigt: <DD.MM.YYYY>, …` in `docs/plan.md` and `Freigegeben zum Bauen: <DD.MM.YYYY>, …` in `docs/entwurf.md`, plus the draft in `design/entwurf/` and the tokens in `design/tokens.css`. Carry on with step 1.
 - **Ends with 2:** the output (in German) says what's missing. Tell the person in one sentence and go back there: without a confirmed plan, to the skill `webseite-planen` (part “Plan prüfen”, checking the plan); without the approval to build, to the skill `entwurf` (part “Freigabe”, the approval); without a draft, to the skill `entwurf`; without tokens, to the skill `gestaltung`. You never write the lines `Bestätigt:` and `Freigegeben zum Bauen:` yourself, not even “just quickly”, and you don't “build ahead” either when the person pushes: they only exist after their yes to the plan and to the draft.
@@ -264,7 +266,9 @@ node scripts/plan-pruefen.mjs --bau                             # full scope of 
 node scripts/design-pruefen.mjs --bau                           # your own, not from a kit, motion, 3D, weight, on the built site
 ```
 
-`plan-pruefen.mjs` and `design-pruefen.mjs` have been in `scripts/` since the plan and the draft (otherwise copy them from the skills `webseite-planen` and `gestaltung`, as described there); they don't need to download anything.
+With the Albatros app you call the tool `pruefung` instead (`art: bau`) for `plan-pruefen.mjs --bau` and `design-pruefen.mjs --bau`: Albatros runs them itself and also checks for links without a target (`href="#"`) and a partner's logos. A link without a target is red: it points to a page or an offer, or it isn't a link. Until then Albatros doesn't accept the yes to the site.
+
+Without the app, `plan-pruefen.mjs` and `design-pruefen.mjs` have been in `scripts/` since the plan and the draft (otherwise copy them from the skills `webseite-planen` and `gestaltung`, as described there); they don't need to download anything.
 
 The first time, the script downloads the tools (Playwright, axe-core, Lighthouse, about 200 MB) and takes a few minutes. Tell the person beforehand. It writes `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` and screenshots of every page at 390 and 1440 px into `docs/pruefung/fotos/`. Its messages are in German: you pass them on in English.
 

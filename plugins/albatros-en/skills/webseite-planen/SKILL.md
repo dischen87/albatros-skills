@@ -2,8 +2,8 @@
 name: webseite-planen
 description: "Load first for “build me a website for …” and “I want a website”: plan and show first, nothing is built yet. Plans a website with a person who has no prior knowledge, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md, a grey sketch of the home page), research (up to three comparable sites, obligations, docs/recherche.md), floor plan (pages, features as a build list, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Also use this skill for “plan my website”, “where do I start”, “which pages do I need”, “sitemap”, “scope of features”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built."
 metadata:
-  stand: 0.3.5
-  quelle: '9af538fb3d68'
+  stand: 0.3.6
+  quelle: '067c5bc25b34'
 ---
 
 # Plan your website: the floor plan
@@ -162,7 +162,7 @@ You start without asking first. The one question to the person is which texts, p
 4. **Obligations** (`Pflichten:`): legal notice, privacy, image rights, cookies. In Switzerland almost every site needs a legal notice and a privacy policy; details in the skill `recht-ch`. No legal advice.
 5. **Existing content** (`Inhalte vorhanden:`): “Which texts, photos and which logo do you already have?” If the person says “we've got that”, ask for it right away (text, a list or a photo of it), above all everything a feature needs, for example courses with times and places. Whatever is missing goes on the list for the skill `inhalte`. Missing content is the most common reason why websites never get finished.
 6. **Search words** (`Suchbegriffe:`): three to five words someone would use to search for the person, as `[Annahme: …]`. That's where titles and texts people can find come from later.
-7. **Write `docs/recherche.md`** and explain it to the person in five lines: what the examples have in common, what you'll adopt, what you'll do differently, which obligations apply and which content is still missing. They confirm the assumptions in one message.
+7. **Write `docs/recherche.md`** and explain it to the person in five lines: what the examples have in common, what you'll adopt, what you'll do differently, which obligations apply and which content is still missing. They confirm the assumptions in one message; with the Albatros app with the yes to the plan, not with “Is that right?” in the chat.
 
    ```markdown
    # Research: <project name>
@@ -243,6 +243,8 @@ You start without asking first. The one question to the person is which texts, p
    - `Muss/Kann`: `Muss` (must) belongs to the first flight, `Kann` (can) may come later. “Everything is a must” is rarely true: if in doubt, you ask.
    - `Abnahme`: one sentence you can check, for a feature with its confirmation and its error case. What you suggest is written as `[Annahme: …]`, what nobody knows as `[offen: …]`. Before the yes to the plan, nothing is open any more.
 
+   **In a group:** if `naechstes` names the steps of a group's goal, every step with a building block goes into the build list as `Muss`: the blog with their own posts if the goal has the step blog; a partner's offers (with its name, for example SwissActivities) if it has the partner's step. Tips and recommendations are the person's own (“The tips are my own”): never write that they come automatically from the partner. If such a building block is missing in the plan, Albatros doesn't accept the yes to the plan, and `naechstes` names what is missing.
+
    The heading, the column headers and the words `Seite`, `Funktion`, `Muss` and `Kann` stay in German, in every language, like the line names. The lines `Seiten:` and `Funktionen:` above remain the short version for the flight plan; `Funktionen:` gives the IDs as well.
 5. **Check with `plan-pruefen.mjs`.** The script in this skill checks the ten lines and the build list (columns, IDs, `Muss` or `Kann`, acceptance check, the same pages as in `Seiten:`); it doesn't download anything and doesn't change anything. If Node is already there (`command -v node`, on Windows in PowerShell `where.exe node`):
 
@@ -252,8 +254,10 @@ You start without asking first. The one question to the person is which texts, p
    node scripts/plan-pruefen.mjs
    ```
 
+   With the Albatros app you call the tool `pruefung` instead (`art: plan`): Albatros runs the script itself and gives you the result; you don't copy anything into the project.
+
    Red means: fix it and check again. Without Node you check the same things by hand, line by line. `node scripts/plan-pruefen.mjs --json` prints the build list as data.
-6. **Show and refine.** Read the plan to the person in a few words, the build list row by row, and ask targeted questions, at most two at a time, for example: “Is anything missing that visitors should be able to do?” and “Which of these may come later?” Every piece of feedback changes exactly its entry (section “The loop” (Die Schleife)). They confirm the assumptions in one message.
+6. **Show and refine.** Read the plan to the person in a few words, the build list row by row, and ask targeted questions, at most two at a time, for example: “Is anything missing that visitors should be able to do?” and “Which of these may come later?” Every piece of feedback changes exactly its entry (section “The loop” (Die Schleife)). They confirm the assumptions in one message; with the Albatros app with the yes to the plan, not with “Is that right?” in the chat.
 
 **Business path:** the build plan of the home page from top to bottom and the acceptance checks are written into `docs/plan.md` by the method `landingpage` (tool `methode`). After that, you use the questions above to fill in the lines that still say `[offen]` there.
 
@@ -313,7 +317,7 @@ You start without asking first. The one question to the person is which texts, p
 
 ## What you spare the person
 
-- **Too much at once:** a blog, a shop and a members' area are for later. First a site that does the main thing well. Several languages are no problem if the texts are there.
+- **Too much at once:** a blog, a shop and a members' area are for later, unless the goal of their group names the blog. First a site that does the main thing well. Several languages are no problem if the texts are there.
 - **Rushing through:** a plan in one go is a first version. Without the rounds with the person, you later build what nobody wanted that way.
 - **Technical decisions too early:** for the plan, the defaults above are enough. A building block or a content system only comes when a feature really needs it.
 - **Logo and colours first:** character and design come after the plan is confirmed. A beautiful empty page doesn't help anyone.

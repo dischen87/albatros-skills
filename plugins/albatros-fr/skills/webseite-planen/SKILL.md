@@ -2,8 +2,8 @@
 name: webseite-planen
 description: "À charger en premier pour « construis-moi un site pour … » et « je veux un site web » : d'abord planifier et montrer, on ne construit encore rien. Planifie avec une personne sans connaissances préalables son site web en quatre sections du plan de vol : idée (nom du projet, l'idée en une phrase, pour qui, chose principale, docs/projekt.md, AGENTS.md, esquisse grise de la page d'accueil), recherche (jusqu'à trois sites comparables, obligations, docs/recherche.md), plan de la maison (pages, fonctions en liste de construction, accès, langues, entretien, docs/plan.md) et vérifier le plan (deuxième avis, oui de la personne). Sur le parcours entreprise avec les méthodes ideen-check, zielgruppe, angebot-und-preis et landingpage. Utilise-le aussi pour « planifier mon site », « par où je commence ? », « quelles pages il me faut ? », « sitemap », « étendue des fonctions », « nom du projet », « vérifier le plan », quand lage nomme webseite-planen, et toujours avant le design ou la construction."
 metadata:
-  stand: 0.3.5
-  quelle: '9af538fb3d68'
+  stand: 0.3.6
+  quelle: '067c5bc25b34'
 ---
 
 # Planifier le site web : le plan de la maison
@@ -162,7 +162,7 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
 4. **Obligations** (`Pflichten:`) : mentions légales, protection des données, droits sur les images, cookies. En Suisse, presque chaque site a besoin de mentions légales et d'une déclaration de protection des données ; les détails sont dans le skill `recht-ch`. Pas de conseil juridique.
 5. **Contenus existants** (`Inhalte vorhanden:`) : « Quels textes, quelles photos et quel logo as-tu déjà ? » Si la personne dit « on l'a », demande-le tout de suite (texte, liste ou une photo), surtout tout ce dont une fonction a besoin, par exemple des cours avec horaires et places. Ce qui manque va sur la liste pour le skill `inhalte`. Les contenus manquants sont la raison la plus fréquente pour laquelle un site n'est jamais terminé.
 6. **Mots de recherche** (`Suchbegriffe:`) : trois à cinq mots avec lesquels quelqu'un chercherait la personne, comme `[Annahme: …]`. C'est de là que naîtront plus tard des titres et des textes qu'on trouve.
-7. **Écrire `docs/recherche.md`** et l'expliquer à la personne en cinq lignes : ce que les modèles ont en commun, ce que vous reprenez, ce que vous faites autrement, quelles obligations s'appliquent et quels contenus manquent encore. Elle confirme les hypothèses dans un seul message.
+7. **Écrire `docs/recherche.md`** et l'expliquer à la personne en cinq lignes : ce que les modèles ont en commun, ce que vous reprenez, ce que vous faites autrement, quelles obligations s'appliquent et quels contenus manquent encore. Elle confirme les hypothèses dans un seul message ; avec le programme Albatros avec le oui au plan, pas avec « C'est juste ? » dans le chat.
 
    ```markdown
    # Recherche : <nom du projet>
@@ -243,6 +243,8 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
    - `Muss/Kann` (doit ou peut) : `Muss` fait partie du premier vol, `Kann` peut venir plus tard. « Tout est Muss » est rarement vrai : dans le doute, tu demandes.
    - `Abnahme` (réception) : une phrase qu'on peut vérifier, pour une fonction avec confirmation et cas d'erreur. Ce que tu proposes est noté `[Annahme: …]`, ce que personne ne sait `[offen: …]`. Avant le oui au plan, plus rien n'est ouvert.
 
+   **Dans un groupe :** si `naechstes` nomme les étapes de l'objectif d'un groupe, chaque étape avec un module va comme `Muss` dans la liste de construction : le blog avec ses propres articles si l'objectif a l'étape blog ; les offres d'un partenaire (avec son nom, par exemple SwissActivities) s'il a l'étape du partenaire. Les conseils et recommandations sont ceux de la personne (« Les conseils sont les miens ») : n'écris jamais qu'ils viennent automatiquement du partenaire. S'il manque un tel module dans le plan, Albatros n'accepte pas le oui au plan, et `naechstes` nomme ce qui manque.
+
    Le titre `## Bauliste`, les en-têtes des colonnes et les mots `Seite`, `Funktion`, `Muss` et `Kann` restent en allemand, dans toutes les langues, comme les noms des lignes. Les lignes `Seiten:` et `Funktionen:` plus haut restent la version courte pour le plan de vol ; `Funktionen:` y donne en plus les identifiants.
 5. **Vérifier avec `plan-pruefen.mjs`.** Le script de ce skill vérifie les dix lignes et la liste de construction (colonnes, identifiants, `Muss` ou `Kann`, réception, les mêmes pages que dans `Seiten:`) ; il ne télécharge rien et ne change rien. Si Node est déjà là (`command -v node`, Windows dans PowerShell `where.exe node`) :
 
@@ -252,8 +254,10 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
    node scripts/plan-pruefen.mjs
    ```
 
+   Avec le programme Albatros, tu appelles plutôt l'outil `pruefung` (`art: plan`) : Albatros exécute lui-même le script et te donne le résultat ; tu ne copies rien dans le projet.
+
    Rouge veut dire : corriger et revérifier. Sans Node, tu vérifies la même chose à la main, ligne par ligne. `node scripts/plan-pruefen.mjs --json` sort la liste de construction sous forme de données.
-6. **Montrer et polir.** Lis le plan à la personne en quelques mots, la liste de construction ligne par ligne, et demande de façon ciblée, deux questions au maximum à la fois, par exemple : « Manque-t-il quelque chose que les visiteurs doivent pouvoir faire ? » et « Qu'est-ce qui peut venir plus tard ? » Chaque retour change exactement son entrée (section « La boucle » (Die Schleife)). Elle confirme les hypothèses dans un seul message.
+6. **Montrer et polir.** Lis le plan à la personne en quelques mots, la liste de construction ligne par ligne, et demande de façon ciblée, deux questions au maximum à la fois, par exemple : « Manque-t-il quelque chose que les visiteurs doivent pouvoir faire ? » et « Qu'est-ce qui peut venir plus tard ? » Chaque retour change exactement son entrée (section « La boucle » (Die Schleife)). Elle confirme les hypothèses dans un seul message ; avec le programme Albatros avec le oui au plan, pas avec « C'est juste ? » dans le chat.
 
 **Parcours entreprise :** le plan de construction de la page d'accueil de haut en bas et la réception, c'est la méthode `landingpage` (outil `methode`) qui les écrit dans `docs/plan.md`. Ensuite, avec les questions plus haut, tu complètes les lignes qui y sont encore `[offen]`.
 
@@ -313,7 +317,7 @@ Tu commences sans poser de question. La seule question à la personne, c'est que
 
 ## Ce que tu épargnes à la personne
 
-- **Trop à la fois :** blog, boutique et espace membres, c'est pour plus tard. D'abord un site qui fait bien la chose principale. Plusieurs langues ne posent pas de problème si les textes sont là.
+- **Trop à la fois :** blog, boutique et espace membres, c'est pour plus tard, sauf si l'objectif de son groupe nomme le blog. D'abord un site qui fait bien la chose principale. Plusieurs langues ne posent pas de problème si les textes sont là.
 - **Traverser en courant :** un plan écrit d'un coup est un premier état. Sans les tours avec la personne, vous construirez plus tard ce que personne ne voulait ainsi.
 - **Des choix techniques trop tôt :** pour le plan, le standard plus haut suffit. Une brique ou un système pour les contenus ne vient que lorsqu'une fonction en a vraiment besoin.
 - **Logo et couleurs en premier :** le caractère et la mise en forme viennent après le plan confirmé. Une belle page vide n'aide personne.
