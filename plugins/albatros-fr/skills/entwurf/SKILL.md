@@ -2,8 +2,8 @@
 name: entwurf
 description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git, avec une brique aussi Bun), puis chaque page et chaque fonction de la liste de construction dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, poli avec les retours de la personne. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
 metadata:
-  stand: 0.3.5
-  quelle: '5e70b158548d'
+  stand: 0.3.6
+  quelle: 'd8e7767def50'
 ---
 
 # Ébauche : le modèle qu'on peut visiter
@@ -105,7 +105,7 @@ Tu prolonges la direction choisie (`design/richtungen/<choisie>.html`, `design/m
 - **Images :** les propres photos de la liste de photos dans `docs/inhalte.md` dans `design/entwurf/bilder/`, sinon une surface grise avec `alt="[à compléter : photo …]"`. Chaque `<img>` a `width`, `height` et une description.
 - **Unique, pas sorti d'un kit :** les critères du skill `gestaltung`, section « Unique plutôt qu'en kit » (Eigen statt Baukasten), s'appliquent : pas de titre centré avec deux boutons comme en-tête, pas d'emoji comme icônes, pas de textes Lorem, pas de cartes de même taille. Mouvement et 3D seulement comme dans sa section « Mouvement et 3D » (Bewegung und 3D) : chaque mouvement avec sa phrase dans `docs/designsystem.md` et en respectant « Réduire les animations », la 3D seulement avec une image fixe (`data-3d-standbild`) et chargée seulement au besoin.
 - **Construit pour le natel :** `<meta name="viewport" content="width=device-width, initial-scale=1">` dans chaque page, pas de défilement de côté à 390 px, des boutons d'au moins 44 px de haut.
-- **Liens** toujours avec le chemin depuis la page et avec `.html` (`contact.html`, `../index.html`), jamais avec « / » au début et jamais vers un dossier : l'ébauche s'ouvre comme fichier, sans serveur.
+- **Liens** toujours avec le chemin depuis la page et avec `.html` (`contact.html`, `../index.html`), jamais avec « / » au début, jamais vers un dossier et jamais sans cible (`href="#"`, rouge) : l'ébauche s'ouvre comme fichier, sans serveur.
 
 ### 4. Vérifier avec entwurf-pruefen.mjs
 
@@ -116,6 +116,8 @@ mkdir -p scripts && cp <dossier de ce skill>/entwurf-pruefen.mjs scripts/
 # dossier inconnu : curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs
 node scripts/entwurf-pruefen.mjs
 ```
+
+Avec le programme Albatros, tu appelles plutôt l'outil `pruefung` (`art: entwurf`) : Albatros exécute lui-même `entwurf-pruefen.mjs` et `design-pruefen.mjs`, vérifie aussi les logos d'un partenaire et te donne le résultat ; tu ne copies rien dans le projet.
 
 Il indique un feu par domaine et se termine avec 1 en cas de rouge. Ses messages sont en allemand ; tu les expliques à la personne en français :
 

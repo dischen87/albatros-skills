@@ -2,8 +2,8 @@
 name: konzept
 description: "Chiarisce con una persona senza conoscenze tecniche, dopo il piano confermato, il carattere del suo sito prima di scegliere i colori (piano di volo P5): nome verso l'esterno, nucleo in tre frasi, tono (tu o Lei), tre parole per l'effetto, ciò che deve restare, linguaggio visivo e sempre la domanda se ne fa parte un personaggio (mascotte): sì, no o più tardi. Sul percorso attività prima con il metodo marke. Immagini del personaggio solo dopo aver indicato il prezzo e ricevuto un sì. Il risultato è docs/konzept.md. Usa questo skill dopo webseite-planen (piano confermato) e con «concetto», «marchio», «carattere», «tono», «mascotte», «personaggio», «che effetto deve fare il mio sito»."
 metadata:
-  stand: 0.3.5
-  quelle: '9c952165d011'
+  stand: 0.3.6
+  quelle: '3265211aadc0'
 ---
 
 # Concetto: il carattere prima dei colori
@@ -64,6 +64,8 @@ Se il progetto deve chiamarsi in un altro modo, proponi da tre a cinque nomi e l
 
 - «Quali tre parole descrivono l'effetto che deve fare?» Perché: le direzioni nascono dal carattere, non dai colori preferiti. Aiuta con coppie di opposti adatte al progetto: tradizionale o sportivo, villaggio di montagna o città, calmo o vivace, raffinato o semplice, giocoso o sobrio. E con la domanda: che cosa devono pensare i visitatori dopo dieci secondi?
 - «Ci sono un logo, un colore aziendale o un carattere che devono restare?» Perché: ciò che deve restare è la cornice per tutte le direzioni. Se non c'è niente, si scrive «niente».
+
+**Partner:** logo, colori e nome di un partner (per esempio SwissActivities, anche se lei ci lavora) non sono mai il marchio del suo sito. Non li consigli, non li scrivi sotto `Muss bleiben:` e non li offri su nessuna scheda; Albatros rifiuta una tale scheda. Il suo sito ha colori propri.
 
 I colori preferiti vanno sotto `Muss bleiben:` solo se devono davvero restare. Altrimenti li annoti sotto la riga come desiderio; in P6 si vedrà se si adattano al carattere.
 

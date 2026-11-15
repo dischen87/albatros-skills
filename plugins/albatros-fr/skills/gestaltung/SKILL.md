@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Met en forme avec une personne sans connaissances préalables l'utilisation et l'apparence de son site, unique plutôt que sorti d'un kit. Dans le plan de vol (P6) : maquette grise, trois directions bien différentes tirées du concept, vérifiées avec design-pruefen.mjs, tokens pour les couleurs, la police et les espacements (design/tokens.css), docs/designsystem.md et une planche d'échantillons ; mouvement et 3D seulement avec une intention. Pour un site existant : vérifier sous trois angles, réparer l'utilisation, directions, tokens, transformation avec photos. Avec la question des éléments graphiques (outils d'images seulement après le prix et un oui). Utilise ce skill après konzept et quand on dit « design », « système de design », « planche d'échantillons », « ça a l'air ennuyeux », « ça fait bricolé », « ça fait IA », « vibe coded », « rendre plus beau », « couleurs », « police », « redesign », « trois variantes », « mise en page », « icônes », « mascotte », « animation », « 3D »."
 metadata:
-  stand: 0.3.5
-  quelle: '83dda8d92b13'
+  stand: 0.3.6
+  quelle: '6a6dfa4ebea4'
 ---
 
 # Mise en forme : d'abord les fondations, ensuite la façade
@@ -53,6 +53,8 @@ node scripts/design-pruefen.mjs            # les directions dans design/richtung
 node scripts/design-pruefen.mjs --bau      # le site construit dans seite/ (skill webseite-bauen)
 ```
 
+Avec le programme Albatros, tu appelles plutôt l'outil `pruefung` (`art: design`, après la construction `art: bau`) : Albatros exécute lui-même le script, vérifie aussi les logos d'un partenaire et te donne le résultat ; tu ne copies rien dans le projet.
+
 Il annonce un feu par domaine et se termine avec 1 en cas de rouge. Rouge veut dire : corriger et revérifier. Jaune ne reste qu'avec une raison dans `docs/designsystem.md`. Si quelque chose doit rester (`Muss bleiben:` dans `docs/konzept.md`, par exemple la police maison Arial), cela passe avant : ce n'est alors pas une erreur. Sans Node, tu vérifies les mêmes points à la main et tu ajoutes `vérification à la main` avec la date.
 
 ## La boucle (Die Schleife)
@@ -72,6 +74,7 @@ Le système de design est la troisième partie que l'on polit (skill `lotse`, se
 - Tutoiement, court. Au plus deux questions par message. Chaque critique a besoin d'une preuve : quelle page, quel endroit, idéalement une photo. « Ça fait agité » tout seul ne compte pas.
 - Les goûts, c'est la personne qui décide. Tu proposes des directions et tu dis honnêtement ce que chacune sait faire et quel est son risque.
 - Les exigences propres de la personne (logo, couleur maison, forme d'adresse, textes obligatoires) passent avant tout conseil de mise en forme. Dans le plan de vol, elles figurent dans `docs/konzept.md` sous `Muss bleiben:`.
+- Le logo, les couleurs et le nom d'un partenaire (par exemple SwissActivities) ne sont jamais la marque de son site : aucune direction avec ses couleurs ou son logo, aucune carte qui le propose. Albatros signale dans la vérification les logos et images venant de l'adresse d'un partenaire.
 - Ce que la personne doit voir (maquette, directions, planche d'échantillons, photos), tu l'ouvres toi-même dans le navigateur : `open <fichier>` (Linux `xdg-open`, Windows `start`). Donner seulement le nom du fichier ne suffit pas.
 - Rien n'est publié avant que la personne ait vu les photos et dit oui.
 

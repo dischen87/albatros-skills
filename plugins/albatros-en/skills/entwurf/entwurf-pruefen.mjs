@@ -4,7 +4,8 @@
 //   --nur seiten,links,farbfaecher,menue           nur diese Bereiche; farbfaecher geht schon in P6 (tokens.css und Musterblatt)
 // Seiten      Jede Seite aus der Zeile «Seiten:» in docs/plan.md hat ihre Datei in design/entwurf/, ausser Impressum und Datenschutz:
 //             die Startseite index.html, sonst der Name klein, ä → ae, ö → oe, ü → ue, alles andere «-» («Über uns» → ueber-uns.html).
-// Links       Jeder Link, jedes Bild, jedes Formular und jedes url(…) zeigt auf eine Datei, die es gibt, genau so geschrieben.
+// Links       Jeder Link, jedes Bild, jedes Formular und jedes url(…) zeigt auf eine Datei, die es gibt, genau so geschrieben; ein Link ohne
+//             Ziel (href="#") ist rot (seit 15.11.2026).
 // Farbfächer  Farben, Schriften und Grössen (Schriftgrösse, Abstände, Rundungen, Schatten) nur als var(--…) aus design/tokens.css,
 //             in den Entwurfsseiten, ihren Stylesheets und im Musterblatt; jeder Kontrast-Kommentar in tokens.css nachgerechnet.
 // Menü        Dasselbe Menü auf jeder Seite, Ansicht fürs Handy (viewport), [Platzhalter] gezählt, Zeilen in docs/entwurf.md.
@@ -204,7 +205,8 @@ if (B.links) {
   for (const v of verweise.filter((x) => !(x.datei === MUSTERBLATT && x.link))) {
     const ziel = v.ziel.trim();
     if (!ziel || ziel === '#') {
-      fund(v.link ? 'gelb' : 'rot', `leer|${ziel}|${v.link}`, `${v.link ? 'Link ohne Ziel' : 'Verweis ohne Datei'} («${v.ziel}»): auf eine Seite, einen Zustand oder nach aussen zeigen lassen`, v.datei);
+      // Echter Durchgang 3 (15.11.2026): Kacheln mit href="#" kamen so in die gebaute Seite. Im Entwurf zum Durchklicken führt jeder Link irgendwohin
+      fund('rot', `leer|${ziel}|${v.link}`, `${v.link ? 'Link ohne Ziel' : 'Verweis ohne Datei'} («${v.ziel}»): auf eine Seite, einen Zustand oder nach aussen zeigen lassen`, v.datei);
       continue;
     }
     if (aussen(ziel)) { nachAussen++; continue; }

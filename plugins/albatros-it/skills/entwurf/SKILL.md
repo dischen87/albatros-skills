@@ -2,8 +2,8 @@
 name: entwurf
 description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina e ogni funzione della lista di costruzione nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, rifinito con i riscontri della persona. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
 metadata:
-  stand: 0.3.5
-  quelle: '5e70b158548d'
+  stand: 0.3.6
+  quelle: 'd8e7767def50'
 ---
 
 # Bozza: il modello in cui si può entrare
@@ -105,7 +105,7 @@ Porti la direzione scelta (`design/richtungen/<scelta>.html`, `design/musterblat
 - **Immagini:** foto proprie dalla lista delle foto in `docs/inhalte.md` in `design/entwurf/bilder/`, altrimenti una superficie grigia con `alt="[da completare: foto …]"`. Ogni `<img>` ha `width`, `height` e una descrizione.
 - **Unico, non fatto con lo stampino:** valgono i criteri dello skill `gestaltung`, sezione «Unico, non fatto con lo stampino» (Eigen statt Baukasten): niente titolo centrato con due pulsanti come testata, niente emoji come icone, niente testi Lorem, niente schede tutte della stessa grandezza. Movimento e 3D solo come nella sezione «Movimento e 3D» (Bewegung und 3D) di quello skill: ogni movimento con la sua frase in `docs/designsystem.md` e con riguardo per «Riduci movimento», il 3D solo con un'immagine ferma (`data-3d-standbild`) e caricato solo quando serve.
 - **Costruito per il telefonino:** `<meta name="viewport" content="width=device-width, initial-scale=1">` in ogni pagina, nessuno scorrimento laterale a 390 px, pulsanti alti almeno 44 px.
-- **Link** sempre con il percorso dalla pagina e con `.html` (`contatto.html`, `../index.html`), mai con «/» all'inizio e mai verso una cartella: la bozza si apre come file, senza server.
+- **Link** sempre con il percorso dalla pagina e con `.html` (`contatto.html`, `../index.html`), mai con «/» all'inizio, mai verso una cartella e mai senza destinazione (`href="#"`, rosso): la bozza si apre come file, senza server.
 
 ### 4. Verificare con entwurf-pruefen.mjs
 
@@ -116,6 +116,8 @@ mkdir -p scripts && cp <cartella di questo skill>/entwurf-pruefen.mjs scripts/
 # cartella sconosciuta: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs
 node scripts/entwurf-pruefen.mjs
 ```
+
+Con il programma Albatros chiami invece lo strumento `pruefung` (`art: entwurf`): Albatros esegue da sé `entwurf-pruefen.mjs` e `design-pruefen.mjs`, controlla anche i loghi di un partner e ti dà il risultato; non copi niente nel progetto.
 
 Dà un semaforo per ogni ambito e finisce con 1 se c'è del rosso. I suoi messaggi sono in tedesco; tu li spieghi alla persona in italiano:
 

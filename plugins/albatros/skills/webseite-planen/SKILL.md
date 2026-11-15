@@ -2,7 +2,7 @@
 name: webseite-planen
 description: 'Zuerst laden bei «bau mir eine Webseite für …» und «ich will eine Webseite»: erst planen und zeigen, gebaut wird noch nichts. Plant mit einer Person ohne Vorwissen ihre Webseite in vier Abschnitten des Fahrplans: Idee (Projektname, Idee in einem Satz, für wen, Hauptsache, docs/projekt.md, AGENTS.md, graue Skizze der Startseite), Research (bis zu drei vergleichbare Seiten, Pflichten, docs/recherche.md), Grundriss (Seiten, Funktionen als Bauliste, Zugang, Sprachen, Pflege, docs/plan.md) und Plan prüfen (zweite Meinung, Ja der Person). Auf dem Weg Geschäft mit den Methoden ideen-check, zielgruppe, angebot-und-preis und landingpage. Nutze den Skill auch bei «Webseite planen», «wo fange ich an», «welche Seiten», «Sitemap», «Funktionsumfang», «Projektname», «Vorbilder», «Plan prüfen», wenn lage webseite-planen nennt, und immer bevor gestaltet oder gebaut wird.'
 metadata:
-  stand: 0.3.5
+  stand: 0.3.6
 ---
 
 # Webseite planen: der Grundriss
@@ -160,7 +160,7 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
 4. **Pflichten:** Impressum, Datenschutz, Bildrechte, Cookies. In der Schweiz braucht fast jede Seite Impressum und Datenschutzerklärung; Einzelheiten im Skill `recht-ch`. Keine Rechtsberatung.
 5. **Inhalte vorhanden:** «Welche Texte, Fotos und welches Logo hast du schon?» Sagt die Person «haben wir», bitte gleich darum (Text, Liste oder ein Foto davon), vor allem um alles, was eine Funktion braucht, zum Beispiel Kurse mit Zeiten und Plätzen. Was fehlt, kommt auf die Liste für den Skill `inhalte`. Fehlende Inhalte sind der häufigste Grund, warum Seiten nie fertig werden.
 6. **Suchbegriffe:** drei bis fünf Worte, mit denen jemand die Person suchen würde, als `[Annahme: …]`. Daraus entstehen später Titel und Texte, die man findet.
-7. **`docs/recherche.md`** schreiben und der Person in fünf Zeilen erklären: was die Vorbilder gemeinsam haben, was ihr übernehmt, was ihr anders macht, welche Pflichten gelten und welche Inhalte noch fehlen. Die Annahmen bestätigt sie in einer Nachricht.
+7. **`docs/recherche.md`** schreiben und der Person in fünf Zeilen erklären: was die Vorbilder gemeinsam haben, was ihr übernehmt, was ihr anders macht, welche Pflichten gelten und welche Inhalte noch fehlen. Die Annahmen bestätigt sie in einer Nachricht; mit dem Programm Albatros mit dem Ja zum Plan, nicht mit «Stimmt das so?» im Chat.
 
    ```markdown
    # Research: <Projektname>
@@ -241,6 +241,8 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
    - `Muss/Kann`: `Muss` gehört zum ersten Flug, `Kann` darf später kommen. «Alles Muss» stimmt selten: Im Zweifel fragst du.
    - `Abnahme`: ein Satz, den man prüfen kann, bei einer Funktion mit Bestätigung und Fehlerfall. Was du vorschlägst, steht als `[Annahme: …]`, was niemand weiss, als `[offen: …]`. Vor dem Ja zum Plan ist nichts mehr offen.
 
+   **In einer Gruppe:** Nennt `naechstes` die Schritte des Ziels einer Gruppe, gehört jeder Schritt mit einem Baustein als `Muss` in die Bauliste: der Blog mit eigenen Beiträgen, wenn das Ziel den Schritt Blog hat; die Angebote eines Partners (mit seinem Namen, zum Beispiel SwissActivities), wenn es den Schritt des Partners hat. Tipps und Empfehlungen sind die eigenen der Person («Die Tipps sind meine eigenen»): Schreib nie, sie kämen automatisch vom Partner. Fehlt ein solcher Baustein im Plan, nimmt Albatros das Ja zum Plan nicht an, und `naechstes` nennt, was fehlt.
+
    Überschrift, Spaltenköpfe und die Wörter `Seite`, `Funktion`, `Muss` und `Kann` bleiben deutsch, in jeder Sprache, wie die Zeilennamen. Die Zeilen `Seiten:` und `Funktionen:` oben bleiben die Kurzfassung für den Fahrplan; `Funktionen:` nennt die Kennungen dazu.
 5. **Prüfen mit `plan-pruefen.mjs`.** Das Skript in diesem Skill prüft die zehn Zeilen und die Bauliste (Spalten, Kennungen, Muss oder Kann, Abnahme, dieselben Seiten wie in `Seiten:`); es lädt nichts nach und ändert nichts. Ist Node schon da (`command -v node`, Windows in PowerShell `where.exe node`):
 
@@ -250,8 +252,10 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
    node scripts/plan-pruefen.mjs
    ```
 
+   Mit dem Programm Albatros rufst du statt dessen das Werkzeug `pruefung` auf (`art: plan`): Albatros führt das Skript selbst aus und gibt dir das Ergebnis; du kopierst nichts ins Projekt.
+
    Rot heisst: beheben und nochmals prüfen. Ohne Node prüfst du dasselbe von Hand, Zeile für Zeile. `node scripts/plan-pruefen.mjs --json` gibt die Bauliste als Daten aus.
-6. **Zeigen und schleifen.** Lies der Person den Plan in kurzen Worten vor, die Bauliste Zeile für Zeile, und frag gezielt, höchstens zwei Fragen aufs Mal, zum Beispiel: «Fehlt etwas, das Besucher tun können sollen?» und «Was davon darf später kommen?» Jede Rückmeldung ändert genau ihren Eintrag (Abschnitt «Die Schleife»). Die Annahmen bestätigt sie in einer Nachricht.
+6. **Zeigen und schleifen.** Lies der Person den Plan in kurzen Worten vor, die Bauliste Zeile für Zeile, und frag gezielt, höchstens zwei Fragen aufs Mal, zum Beispiel: «Fehlt etwas, das Besucher tun können sollen?» und «Was davon darf später kommen?» Jede Rückmeldung ändert genau ihren Eintrag (Abschnitt «Die Schleife»). Die Annahmen bestätigt sie in einer Nachricht; mit dem Programm Albatros mit dem Ja zum Plan, nicht mit «Stimmt das so?» im Chat.
 
 **Weg Geschäft:** Den Bauplan der Startseite von oben nach unten und die Abnahme schreibt die Methode `landingpage` (Werkzeug `methode`) in `docs/plan.md`. Danach ergänzt du mit den Fragen oben die Zeilen, die dort noch `[offen]` sind.
 
@@ -311,7 +315,7 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
 
 ## Was du der Person ersparst
 
-- **Zu viel auf einmal:** Blog, Shop und Mitgliederbereich sind etwas für später. Zuerst eine Seite, die die Hauptsache gut kann. Mehrere Sprachen sind kein Problem, wenn die Texte da sind.
+- **Zu viel auf einmal:** Blog, Shop und Mitgliederbereich sind etwas für später, ausser das Ziel ihrer Gruppe nennt den Blog. Zuerst eine Seite, die die Hauptsache gut kann. Mehrere Sprachen sind kein Problem, wenn die Texte da sind.
 - **Durchrennen:** Ein Plan in einem Zug ist ein erster Stand. Ohne die Runden mit der Person baut ihr später, was niemand so wollte.
 - **Technik-Entscheide zu früh:** Für den Plan reicht der Standard oben. Ein Baustein oder ein System für Inhalte kommt erst, wenn eine Funktion es wirklich braucht.
 - **Logo und Farben als Erstes:** Charakter und Gestaltung kommen nach dem bestätigten Plan. Eine schöne leere Seite hilft niemandem.

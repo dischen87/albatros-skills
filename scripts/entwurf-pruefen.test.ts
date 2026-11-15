@@ -74,8 +74,9 @@ test('schlecht: jede gebrochene Regel genau einmal gemeldet, Exit 1', () => {
     'Ergebnis: rot.',
   ];
   for (const s of erwartet) expect(r.aus).toContain(s);
-  // Nicht mehr als das: 1 Seite, 7 Links, 9 im Farbfächer rot; 2 Links, 1 Kontrast, 3 Menü und Notizen gelb
-  expect([r.rot, r.gelb]).toEqual([17, 6]);
+  // Nicht mehr als das: 1 Seite, 8 Links, 9 im Farbfächer rot; 1 Link, 1 Kontrast, 3 Menü und Notizen gelb. Seit 15.11.2026 (echter Durchgang 3:
+  // Kacheln mit href="#" kamen in die gebaute Seite) ist der Link ohne Ziel rot statt gelb: 18 statt 17 rot, 5 statt 6 gelb
+  expect([r.rot, r.gelb]).toEqual([18, 5]);
 });
 
 test('Seiten: Hypothèse ausgepackt, Akzente und Rechtsseiten auf Französisch', () => {

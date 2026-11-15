@@ -2,7 +2,7 @@
 name: webseite-bauen
 description: 'Laden, bevor Code für eine Webseite entsteht («bau mir eine Webseite»): Gebaut wird erst nach zwei Ja der Person (Plan bestätigt, Entwurf freigegeben); fehlt eines, auch bei «bau schon mal die Startseite», führt der Skill zurück zum Planen. Baut dann die Webseite auf ihrem Computer, genau nach dem freigegebenen Entwurf (P9 und P10): pruefen.mjs --vor-bau prüft die zwei Ja, dann Logbuch, Bauweise, PRD aus dem Entwurf mit Zugang und Türen, Bau mit Astro Eintrag für Eintrag der Bauliste, vier Prüfungen mit pruefen.mjs, Begehung auf Handy und Computer, Vergleich mit dem Entwurf und Freigabe. Ins Netz geht nichts, das macht lancieren. Meldet prd, lokal, pruefung, freigabe. Nutze den Skill nach entwurf (Freigabe zum Bauen) und bei «bau mir die Seite», «Tech-Stack», «PRD», «lokal anschauen», «vor dem Veröffentlichen prüfen», «Freigabe», «wie geht es nach dem Entwurf weiter».'
 metadata:
-  stand: 0.3.5
+  stand: 0.3.6
 ---
 
 # Webseite bauen: der Rohbau in der eigenen Werkstatt
@@ -64,6 +64,8 @@ mkdir -p scripts && cp <Ordner dieses Skills>/pruefen.mjs scripts/
 # Ordner unbekannt: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/webseite-bauen/pruefen.mjs -o scripts/pruefen.mjs
 node scripts/pruefen.mjs --vor-bau
 ```
+
+Mit dem Programm Albatros rufst du statt dessen das Werkzeug `pruefung` auf (`art: vor_bau`): Albatros führt `pruefen.mjs --vor-bau` selbst aus und gibt dir das Ergebnis; du kopierst nichts ins Projekt.
 
 - **Ende mit 0:** Es gibt die zwei Ja der Person, `Bestätigt: <TT.MM.JJJJ>, …` in `docs/plan.md` und `Freigegeben zum Bauen: <TT.MM.JJJJ>, …` in `docs/entwurf.md`, dazu den Entwurf in `design/entwurf/` und die Tokens in `design/tokens.css`. Weiter mit Schritt 1.
 - **Ende mit 2:** Die Ausgabe nennt, was fehlt. Sag es der Person in einem Satz und geh dorthin zurück: ohne bestätigten Plan zum Skill `webseite-planen` (Abschnitt «Plan prüfen»), ohne Freigabe zum Bauen zum Skill `entwurf` (Abschnitt «Freigabe»), ohne Entwurf zum Skill `entwurf`, ohne Tokens zum Skill `gestaltung`. Die Zeilen `Bestätigt:` und `Freigegeben zum Bauen:` schreibst du nie selbst, auch nicht «schnell mal», und du baust auch nicht «schon mal vor», wenn die Person drängt: Sie stehen nur nach ihrem Ja zum Plan und zum Entwurf.
@@ -261,7 +263,9 @@ node scripts/plan-pruefen.mjs --bau                             # voller Funktio
 node scripts/design-pruefen.mjs --bau                           # eigen statt Baukasten, Bewegung, 3D, Gewicht, an der gebauten Seite
 ```
 
-`plan-pruefen.mjs` und `design-pruefen.mjs` liegen seit dem Plan und dem Entwurf in `scripts/` (sonst aus den Skills `webseite-planen` und `gestaltung` kopieren, wie dort beschrieben); sie brauchen nichts nachzuladen.
+Mit dem Programm Albatros rufst du statt dessen das Werkzeug `pruefung` auf (`art: bau`) für `plan-pruefen.mjs --bau` und `design-pruefen.mjs --bau`: Albatros führt sie selbst aus und prüft dazu Links ohne Ziel (`href="#"`) und Logos eines Partners. Ein Link ohne Ziel ist rot: Er zeigt auf eine Seite oder ein Angebot, oder er ist kein Link. Vorher nimmt Albatros das Ja zur Seite nicht an.
+
+Ohne das Programm liegen `plan-pruefen.mjs` und `design-pruefen.mjs` seit dem Plan und dem Entwurf in `scripts/` (sonst aus den Skills `webseite-planen` und `gestaltung` kopieren, wie dort beschrieben); sie brauchen nichts nachzuladen.
 
 Beim ersten Mal lädt das Skript die Werkzeuge (Playwright, axe-core, Lighthouse, etwa 200 MB) und braucht einige Minuten. Sag das der Person vorher. Es schreibt `docs/pruefung/messwerte.json`, `docs/pruefung/tueren.json` und Fotos jeder Seite in 390 und 1440 px nach `docs/pruefung/fotos/`.
 

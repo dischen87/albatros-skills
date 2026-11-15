@@ -2,8 +2,8 @@
 name: konzept
 description: "Works out with a person who has no prior knowledge, once the plan is confirmed, the character of their site before any colours are chosen (flight plan P5): name to the outside world, core in three sentences, tone (formal or informal), three words for how it should come across, what has to stay, visual style and always the question whether a character (mascot) belongs to it: yes, no or later. On the business path, first with the method marke. Pictures of the mascot only after naming the price and getting a yes. The result is docs/konzept.md. Use this skill after webseite-planen (plan confirmed) and for “concept”, “brand”, “character”, “tone”, “mascot”, “how should my site come across”."
 metadata:
-  stand: 0.3.5
-  quelle: '9c952165d011'
+  stand: 0.3.6
+  quelle: '3265211aadc0'
 ---
 
 # Concept: character before colours
@@ -64,6 +64,8 @@ If the project should have a different name, you suggest three to five names and
 
 - “Which three words describe how it should come across?” Why: the directions come from the character, not from favourite colours. Help with pairs of opposites that suit the project: traditional or sporty, mountain village or city, calm or lively, refined or down-to-earth, playful or matter-of-fact. And with the question: what should visitors think after ten seconds?
 - “Is there a logo, house colour or font that has to stay?” Why: whatever has to stay is the frame for all directions. If there's nothing, write “nothing”.
+
+**Partner:** a partner's logo, colours and name (for example SwissActivities, even if they work there) are never the brand of their site. You don't recommend them, don't write them under `Muss bleiben:` and don't offer them on any card; Albatros refuses such a card. Their site gets its own colours.
 
 Favourite colours only go under `Muss bleiben:` if they really have to stay. Otherwise you note them below the line as a wish; in P6 it will show whether they suit the character.
 

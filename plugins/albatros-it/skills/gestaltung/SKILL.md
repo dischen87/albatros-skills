@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito, unico e non fatto con lo stampino. Nel piano di volo (P6): mockup grigio, tre direzioni chiaramente diverse dal concetto, verificate con design-pruefen.mjs, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni; movimento e 3D solo con un'intenzione. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Con la domanda sugli elementi grafici (strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «layout», «icone», «mascotte», «animazione», «3D»."
 metadata:
-  stand: 0.3.5
-  quelle: '83dda8d92b13'
+  stand: 0.3.6
+  quelle: '6a6dfa4ebea4'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -53,6 +53,8 @@ node scripts/design-pruefen.mjs            # le direzioni in design/richtungen/ 
 node scripts/design-pruefen.mjs --bau      # il sito costruito in seite/ (skill webseite-bauen)
 ```
 
+Con il programma Albatros chiami invece lo strumento `pruefung` (`art: design`, dopo la costruzione `art: bau`): Albatros esegue da sé lo script, controlla anche i loghi di un partner e ti dà il risultato; non copi niente nel progetto.
+
 Dà un semaforo per ogni ambito e finisce con 1 se c'è del rosso. Rosso vuol dire: correggere e verificare di nuovo. Il giallo resta solo con un motivo in `docs/designsystem.md`. Se qualcosa deve restare (`Muss bleiben:` in `docs/konzept.md`, per esempio il carattere aziendale Arial), questo ha la precedenza: allora non è un errore. Senza Node controlli gli stessi punti a mano e aggiungi `verifica a mano` con la data.
 
 ## Il ciclo (Die Schleife)
@@ -72,6 +74,7 @@ Il sistema di design è la terza parte che viene rifinita (skill `lotse`, sezion
 - Dai del tu, in breve. Al massimo due domande per messaggio. Ogni critica ha bisogno di una prova: quale pagina, quale punto, meglio ancora una foto. «Sembra agitato» da solo non conta.
 - Il gusto lo decide la persona. Tu proponi direzioni e dici onestamente cosa sa fare ognuna e qual è il suo rischio.
 - Le indicazioni proprie della persona (logo, colore aziendale, modo di rivolgersi, testi obbligatori) vengono prima di ogni consiglio di design. Nel piano di volo stanno in `docs/konzept.md` sotto `Muss bleiben:`.
+- Logo, colori e nome di un partner (per esempio SwissActivities) non sono mai il marchio del suo sito: nessuna direzione con i suoi colori o il suo logo, nessuna scheda che lo offra. Albatros segnala nella verifica loghi e immagini dall'indirizzo di un partner.
 - Quello che la persona deve vedere (mockup, direzioni, tavola dei campioni, foto) lo apri tu nel browser: `open <file>` (Linux `xdg-open`, Windows `start`). Dire solo il nome del file non basta.
 - Niente viene pubblicato prima che la persona abbia visto le foto e detto di sì.
 

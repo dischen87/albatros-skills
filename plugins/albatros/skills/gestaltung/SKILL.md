@@ -2,7 +2,7 @@
 name: gestaltung
 description: 'Gestaltet mit einer Person ohne Vorwissen Bedienung und Aussehen ihrer Seite, eigen statt aus dem Baukasten. Im Fahrplan (P6): graues Mockup, drei klar verschiedene Richtungen aus dem Konzept, geprüft mit design-pruefen.mjs, Tokens für Farben, Schrift und Abstände (design/tokens.css), docs/designsystem.md und ein Musterblatt; Bewegung und 3D nur mit Absicht. Bei einer bestehenden Seite: prüfen aus drei Blickwinkeln, Bedienung reparieren, Richtungen, Tokens, Umbau mit Fotos. Mit der Frage nach Gestaltungselementen (Bild-Werkzeuge nur nach Preis und Ja). Nutze den Skill nach konzept und bei «Design», «Designsystem», «Musterblatt», «sieht langweilig aus», «sieht selbstgebastelt aus», «sieht nach KI aus», «vibe coded», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «Layout», «Icons», «Maskottchen», «Animation», «3D».'
 metadata:
-  stand: 0.3.5
+  stand: 0.3.6
 ---
 
 # Gestaltung: erst das Fundament, dann die Fassade
@@ -52,6 +52,8 @@ node scripts/design-pruefen.mjs            # die Richtungen in design/richtungen
 node scripts/design-pruefen.mjs --bau      # die gebaute Seite in seite/ (Skill webseite-bauen)
 ```
 
+Mit dem Programm Albatros rufst du statt dessen das Werkzeug `pruefung` auf (`art: design`, nach dem Bau `art: bau`): Albatros führt das Skript selbst aus, prüft dazu Logos eines Partners und gibt dir das Ergebnis; du kopierst nichts ins Projekt.
+
 Es meldet je Bereich eine Ampel und endet bei Rot mit 1. Rot heisst: beheben und nochmals prüfen. Gelb bleibt nur mit Grund in `docs/designsystem.md`. Muss etwas bleiben (`Muss bleiben:` in `docs/konzept.md`, zum Beispiel die Hausschrift Arial), geht das vor: Dann ist es kein Fehler. Ohne Node prüfst du dieselben Punkte von Hand und schreibst `Prüfung von Hand` mit Datum dazu.
 
 ## Die Schleife
@@ -70,6 +72,7 @@ Das Designsystem ist der dritte Teil, der geschliffen wird (Skill `lotse`, Absch
 - Du-Form, kurz. Höchstens zwei Fragen in einer Nachricht. Jede Kritik braucht einen Beleg: welche Seite, welche Stelle, am besten ein Foto. «Wirkt unruhig» allein zählt nicht.
 - Geschmack entscheidet die Person. Du legst Richtungen vor und sagst ehrlich, was jede kann und was ihr Risiko ist.
 - Eigene Vorgaben der Person (Logo, Hausfarbe, Anrede, Pflichttexte) gehen jedem Gestaltungstipp vor. Im Fahrplan stehen sie in `docs/konzept.md` unter `Muss bleiben:`.
+- Logo, Farben und Name eines Partners (zum Beispiel SwissActivities) sind nie die Marke ihrer Seite: keine Richtung mit seinen Farben oder seinem Logo, keine Karte, die das anbietet. Albatros meldet Logos und Bilder von der Adresse eines Partners in der Prüfung.
 - Was die Person sehen soll (Mockup, Richtungen, Musterblatt, Fotos), öffnest du selbst im Browser: `open <datei>` (Linux `xdg-open`, Windows `start`). Nur den Namen der Datei zu nennen reicht nicht.
 - Nichts wird veröffentlicht, bevor die Person die Fotos gesehen und Ja gesagt hat.
 

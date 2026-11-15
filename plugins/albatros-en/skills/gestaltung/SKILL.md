@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge: its own, not from a kit. In the flight plan (P6): a grey mockup, three clearly different directions from the concept, checked with design-pruefen.mjs, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet; motion and 3D only with a purpose. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. With the question about design elements (image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “layout”, “icons”, “mascot”, “animation”, “3D”."
 metadata:
-  stand: 0.3.5
-  quelle: '83dda8d92b13'
+  stand: 0.3.6
+  quelle: '6a6dfa4ebea4'
 ---
 
 # Design: first the foundations, then the facade
@@ -53,6 +53,8 @@ node scripts/design-pruefen.mjs            # the directions in design/richtungen
 node scripts/design-pruefen.mjs --bau      # the built site in seite/ (skill webseite-bauen)
 ```
 
+With the Albatros app you call the tool `pruefung` instead (`art: design`, after the build `art: bau`): Albatros runs the script itself, also checks for a partner's logos and gives you the result; you don't copy anything into the project.
+
 It reports a traffic light for each area and ends with 1 on red. Red means: fix it and check again. Yellow only stays with a reason in `docs/designsystem.md`. If something has to stay (`Muss bleiben:` in `docs/konzept.md`, for example the house font Arial), that comes first: then it isn't a fault. Without Node you check the same points by hand and add `checked by hand` with the date.
 
 ## The loop (Die Schleife)
@@ -72,6 +74,7 @@ The design system is the third part that gets refined (skill `lotse`, section �
 - Casual “you”, short. Two questions per message at most. Every criticism needs evidence: which page, which spot, ideally a screenshot. “Looks busy” on its own doesn't count.
 - Taste is the person's call. You put forward directions and say honestly what each one does well and what its risk is.
 - The person's own requirements (logo, house colour, how they address people, mandatory texts) come before any design tip. In the flight plan they're in `docs/konzept.md` under `Muss bleiben:` (must stay).
+- A partner's logo, colours and name (for example SwissActivities) are never the brand of their site: no direction with its colours or its logo, no card offering that. Albatros reports logos and images from a partner's address in the check.
 - Whatever the person should see (mockup, directions, sample sheet, screenshots), you open in the browser yourself: `open <file>` (Linux `xdg-open`, Windows `start`). Just naming the file isn't enough.
 - Nothing gets published before the person has seen the screenshots and said yes.
 

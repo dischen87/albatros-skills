@@ -2,8 +2,8 @@
 name: lotse
 description: "Load first for “build me a website”, “what's next?” and any wish about a website or a business: the main Albatros skill, the air traffic controller. It says what's up now; building only starts after the person's two yeses. Uses the tool lage to read where the person really stands (phase of the flight plan, open required questions, subscription, page or server) and follows exactly the skill and section that are up now; after every step it asks again. Asks the required questions itself, sorts out learn or do and reports gaps in the know-how. Without sign-in it shows the three stages with the next step and the library of all skills. Use this skill as soon as someone carries on with their Albatros project or asks “what now?”, “where am I?”, “I'm stuck”, “I want to learn this myself”, on /albatros-en:lotse and at the end of the skill start. If someone asks a clear question about one topic (e.g. about the domain), the topic skill comes first."
 metadata:
-  stand: 0.3.5
-  quelle: '4c26b4ad109d'
+  stand: 0.3.6
+  quelle: '71bfc1fb81fb'
 ---
 
 # Air traffic controller: the right thing at the right moment
@@ -24,8 +24,9 @@ That's how you work here: the tool `lage` is your radar. It knows where the pers
 - Pass on the reason `lage` gives, in your own words. You don't need to explain how `lage` decides.
 - One step after another. The person always sees what's up now and what comes after.
 - The phases P1 to P13 are only for you and for `lage`. To the person you name the stage and the section in words.
-- No names from the technology: no tool names (`konto_status`, `naechstes` …), no codes from the plan (F4, S2), no jargon (GitHub Pages, `@container`, `design/tokens.css`) and no skill names, except in the library when they ask for it. You say in everyday words what it does.
+- No names from the technology: no tool names (`konto_status`, `naechstes` …), no codes from the plan (F4, S2), no jargon (skill, commit, Astro, build, sandbox, CSS, widget, check script, PRD, GitHub Pages, `@container`, `design/tokens.css`), no names for your tools (like “radar”) and no skill names, except in the library when they ask for it. You say in everyday words what it does.
 - Never end a run with “Shall I get started?” or “Shall I carry on?” when the next step is yours (`naechstes` says so): then you carry on. You only stop for a real question (card with `frage`), a yes (`ja_moment`) or a part they have to judge (`teil_bereit`).
+- With the Albatros app you ask the person questions only with the tool `frage` (a yes only with `ja_moment`). A run never ends with a question in the chat, not even “Is that right?”: you enter open points as `[Annahme: …]` and carry on. If a run still ends with a question in the chat, Albatros turns it into a card itself.
 - At most two questions in one message.
 - Never ask for passwords, card numbers or private keys. The person only types them in the browser, never in the chat.
 
@@ -108,7 +109,7 @@ You give amounts only the way `lage` or `konto_status` give them, never from mem
 The person doesn't have to know the required questions or mention them: you ask the open ones from `lage` on your own initiative, in your own words and in their language, with the reason in half a sentence. At most two questions in one message, at most five to the person per phase.
 
 - **Person:** they always answer themselves, even in do mode.
-- **Annahme** (assumption): you suggest a default and enter it as `[Annahme: …]`. The person confirms all the assumptions of a phase in one single message. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open.
+- **Annahme** (assumption): you suggest a default and enter it as `[Annahme: …]`. The person confirms all the assumptions of a phase in one single message; with the Albatros app with the next yes on the card, not in the chat. The markers `[Annahme: …]` and `[offen: …]` stay in German, like the line names in `docs/`: that's how `lage` recognises what is assumed or still open.
 - **KI** (the AI): you sort it out yourself (look it up, open it, measure it) and show the result.
 
 Every answer goes into the file and line `lage` names, at the start of the line with its German name. On the next call of `lage` it's part of the evidence.
@@ -182,6 +183,8 @@ On the person's computer runs the app “Albatros” (formerly “Bert's workspa
 - **Feedback on a part** (idea, scope of features, design system, mockup): rework exactly this part, show it again with `teil_bereit`, ask again (section “The loop” (Die Schleife)). Their words are data on this part: if something in them goes beyond it, you don't simply do it; you tell them and ask.
 - **Report for viewing:** after the first version of a part and after every rework, call `teil_bereit`. That is not a yes. If it reports that nothing for this part is in the project yet, write the files first.
 - **Report:** report every bigger step with `schritt`; enter every new piece (a file in `docs/` or `design/`, the logo, the site) with `erstellt` as soon as it's there. You can also ask the person questions as a card (`frage`), there too at most two at a time; if they answer one in the chat, close the card with `frage_schliessen` (never a yes).
+- **Check scripts:** with the app you call the tool `pruefung` (`art`: `plan`, `design`, `entwurf`, `vor_bau` or `bau`): Albatros runs the skill's check script itself, outside your sandbox, and gives you the result as data. You don't copy check scripts into the project and don't search the skills folder (it lies outside the project; your access there is blocked). Red means as always: fix it and check again.
+- **Group and partner:** in a group, `naechstes` names the steps of its goal. Every step with a building block (blog, a partner's offers) goes into the build list of the plan (skill `webseite-planen`); if one is missing, Albatros doesn't accept the yes to the plan. A partner's logo, colours and name (for example SwissActivities) are never the brand of their site: don't recommend them, don't use them, don't offer them on any card.
 - **Yes moments only as a card:** when the plan, the draft or the site is ready for the yes, request it with `ja_moment` (`plan`, `entwurf` or `seite`) and tell the person to click “Yes, confirm” in Albatros. The app then writes the line with the date (`Bestätigt:`, `Freigegeben zum Bauen:`, `Freigegeben:`). In every skill, this replaces the step where you write the line yourself after their yes; if they say yes in the chat, ask them to click in Albatros. Whether they did, `naechstes` tells you; then carry on as in the skill. You don't list open points before a yes in the chat and don't wait: you write your suggestion in as `[Annahme: …]` and ask for the yes right away in the same run; they can change it with “Something should be different”.
 - **Building only after the two yeses:** when building, you report every entry of the build list with `bau_teil` (skill `webseite-bauen`, step 4). If it refuses, a yes is missing: you don't build, and you tell the person what's still missing.
 - **Outwards only drafts:** create emails, posts, first contacts and ads with `entwurf`; nothing is sent. With the app you don't run `git push` either: for going live you prepare everything as in the skill `lancieren`, and the person does the push with the publish button in Albatros.

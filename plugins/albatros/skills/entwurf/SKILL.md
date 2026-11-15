@@ -2,7 +2,7 @@
 name: entwurf
 description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite und jede Funktion der Bauliste in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, geschliffen mit den Rückmeldungen der Person. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
 metadata:
-  stand: 0.3.5
+  stand: 0.3.6
 ---
 
 # Entwurf: das begehbare Modell
@@ -103,7 +103,7 @@ Du führst die gewählte Richtung (`design/richtungen/<gewählt>.html`, `design/
 - **Bilder:** eigene Fotos aus der Fotoliste in `docs/inhalte.md` nach `design/entwurf/bilder/`, sonst eine graue Fläche mit `alt="[Platzhalter: Foto …]"`. Jedes `<img>` hat `width`, `height` und eine Beschreibung.
 - **Eigen, nicht aus dem Baukasten:** Es gelten die Kriterien aus dem Skill `gestaltung`, Abschnitt «Eigen statt Baukasten»: kein zentrierter Titel mit zwei Knöpfen als Kopf, keine Emoji als Icons, keine Lorem-Texte, keine gleich grossen Karten. Bewegung und 3D nur wie im Abschnitt «Bewegung und 3D» dort: jede Bewegung mit ihrem Satz in `docs/designsystem.md` und mit Rücksicht auf «weniger Bewegung», 3D nur mit Standbild (`data-3d-standbild`) und erst bei Bedarf geladen.
 - **Für das Handy gebaut:** `<meta name="viewport" content="width=device-width, initial-scale=1">` in jeder Seite, kein seitliches Schieben bei 390 px, Knöpfe mindestens 44 px hoch.
-- **Links** immer mit dem Weg ab der Seite und mit `.html` (`kontakt.html`, `../index.html`), nie mit «/» am Anfang und nie auf einen Ordner: Der Entwurf wird als Datei geöffnet, ohne Server.
+- **Links** immer mit dem Weg ab der Seite und mit `.html` (`kontakt.html`, `../index.html`), nie mit «/» am Anfang, nie auf einen Ordner und nie ohne Ziel (`href="#"`, rot): Der Entwurf wird als Datei geöffnet, ohne Server.
 
 ### 4. Prüfen mit entwurf-pruefen.mjs
 
@@ -114,6 +114,8 @@ mkdir -p scripts && cp <Ordner dieses Skills>/entwurf-pruefen.mjs scripts/
 # Ordner unbekannt: curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs
 node scripts/entwurf-pruefen.mjs
 ```
+
+Mit dem Programm Albatros rufst du statt dessen das Werkzeug `pruefung` auf (`art: entwurf`): Albatros führt `entwurf-pruefen.mjs` und `design-pruefen.mjs` selbst aus, prüft dazu Logos eines Partners und gibt dir das Ergebnis; du kopierst nichts ins Projekt.
 
 Es meldet je Bereich eine Ampel und endet bei Rot mit 1:
 

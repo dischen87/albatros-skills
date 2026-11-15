@@ -2,7 +2,7 @@
 name: konzept
 description: 'Klärt mit einer Person ohne Vorwissen nach dem bestätigten Plan den Charakter ihrer Seite, bevor Farben gewählt werden (Fahrplan P5): Name nach aussen, Kern in drei Sätzen, Ton (du oder Sie), drei Wörter für die Wirkung, was bleiben muss, Bildsprache und immer die Frage, ob eine Figur (Maskottchen) dazugehört: ja, nein oder später. Auf dem Weg Geschäft zuerst mit der Methode marke. Bilder der Figur nur nach Nennung des Preises und einem Ja. Ergebnis ist docs/konzept.md. Nutze den Skill nach webseite-planen (Plan bestätigt) und bei «Konzept», «Marke», «Charakter», «Ton», «Maskottchen», «Figur», «wie soll meine Seite wirken».'
 metadata:
-  stand: 0.3.5
+  stand: 0.3.6
 ---
 
 # Konzept: Charakter vor Farben
@@ -62,6 +62,8 @@ Soll das Projekt anders heissen, schlägst du drei bis fünf Namen vor, die Pers
 
 - «Welche drei Wörter beschreiben, wie es wirken soll?» Warum: Aus dem Charakter entstehen die Richtungen für die Gestaltung, nicht aus Lieblingsfarben. Hilf mit Gegensatzpaaren, passend zum Projekt: traditionell oder sportlich, Bergdorf oder Stadt, ruhig oder lebendig, edel oder bodenständig, verspielt oder sachlich. Und mit der Frage: Was sollen Besucher nach zehn Sekunden denken?
 - «Gibt es Logo, Hausfarbe oder Schrift, die bleiben müssen?» Warum: Was bleiben muss, ist der Rahmen für alle Richtungen. Gibt es nichts, steht «nichts».
+
+**Partner:** Logo, Farben und Name eines Partners (zum Beispiel SwissActivities, auch wenn sie dort arbeitet) sind nie die Marke ihrer Seite. Du empfiehlst sie nicht, schreibst sie nicht unter `Muss bleiben:` und bietest sie auf keiner Karte an; Albatros lehnt eine solche Karte ab. Ihre Seite bekommt ihre eigenen Farben.
 
 Lieblingsfarben kommen nur unter `Muss bleiben:`, wenn sie wirklich bleiben müssen. Sonst notierst du sie unter der Zeile als Wunsch; in P6 zeigt sich, ob sie zum Charakter passen.
 

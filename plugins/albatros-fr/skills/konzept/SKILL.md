@@ -2,8 +2,8 @@
 name: konzept
 description: "Clarifie avec une personne sans connaissances préalables, après le plan confirmé, le caractère de son site avant de choisir les couleurs (plan de vol P5) : nom vers l'extérieur, cœur en trois phrases, ton (tu ou vous), trois mots pour l'effet voulu, ce qui doit rester, langage visuel et toujours la question de savoir si un personnage (mascotte) en fait partie : oui, non ou plus tard. Sur le parcours entreprise, d'abord avec la méthode marke. Des images du personnage seulement après avoir indiqué le prix et reçu un oui. Le résultat est docs/konzept.md. Utilise ce skill après webseite-planen (plan confirmé) et pour « concept », « marque », « caractère », « ton », « mascotte », « personnage », « quel effet doit faire mon site »."
 metadata:
-  stand: 0.3.5
-  quelle: '9c952165d011'
+  stand: 0.3.6
+  quelle: '3265211aadc0'
 ---
 
 # Concept : le caractère avant les couleurs
@@ -64,6 +64,8 @@ Si le projet doit s'appeler autrement, tu proposes trois à cinq noms et la pers
 
 - « Quels trois mots décrivent l'effet qu'il doit produire ? » Pourquoi : les directions de la mise en forme naissent du caractère, pas des couleurs préférées. Aide avec des paires d'opposés adaptées au projet : traditionnel ou sportif, village de montagne ou ville, calme ou vivant, raffiné ou simple, ludique ou sobre. Et avec la question : que doivent penser les visiteurs après dix secondes ?
 - « Y a-t-il un logo, une couleur maison ou une police qui doivent rester ? » Pourquoi : ce qui doit rester est le cadre de toutes les directions. S'il n'y a rien, on écrit « rien ».
+
+**Partenaire :** le logo, les couleurs et le nom d'un partenaire (par exemple SwissActivities, même si elle y travaille) ne sont jamais la marque de son site. Tu ne les recommandes pas, tu ne les inscris pas sous `Muss bleiben:` et tu ne les proposes sur aucune carte ; Albatros refuse une telle carte. Son site a ses propres couleurs.
 
 Les couleurs préférées ne vont sous `Muss bleiben:` que si elles doivent vraiment rester. Sinon, tu les notes sous la ligne comme un souhait ; en P6, on verra si elles vont avec le caractère.
 
