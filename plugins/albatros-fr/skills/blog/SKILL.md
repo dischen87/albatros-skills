@@ -2,8 +2,8 @@
 name: blog
 description: "Met en place avec une personne sans connaissances préalables un blog sur son site Astro et écrit des articles avec elle : chaque article est un fichier Markdown dans le journal de bord (web/src/content/blog/<slug>.md avec title, date, description, bild), la personne raconte l’idée, Bert écrit le fichier, elle le lit dans l’aperçu et clique sur publier dans Albatros. Avec un modèle pour les recommandations aux familles (pour qui, quoi, quand et météo, trajet, coût, mon conseil, lien) et des règles pour ses propres photos. Utilise ce skill pour « blog », « article de blog », « nouvel article », « écrire un article », « publier une recommandation », « noter une idée de sortie », « actualités sur mon site »."
 metadata:
-  stand: 0.3.6
-  quelle: 'e22602facd46'
+  stand: 0.3.7
+  quelle: 'dc06b7a2ad8e'
 ---
 
 # Blog : le classeur des fiches de sortie
@@ -75,6 +75,8 @@ Le blog est une partie du site comme une autre. Si le site est encore en planifi
 4. L’aspect seulement avec les valeurs de `design/tokens.css` et les composants du site.
 
 ## 2. Écrire un article
+
+**Seulement des articles sur des expériences que la personne t’a racontées ; sans expérience, pas d’article.** Tu n’écris pas d’article d’avance, pas de liste « Cinq sorties pour … » et pas de texte avec « nous », « notre » ou « je » qu’elle n’a pas raconté ainsi. Chaque phrase à la première personne figure dans l’article seulement telle que la personne l’a confirmée avec « C’est juste » ; un espace réservé entre crochets (« [à compléter : …] ») n’est pas un texte. Albatros ne met pas en ligne un site avec une expérience non confirmée ou un espace réservé.
 
 1. **La personne raconte l’idée :** où étiez-vous, avec qui, qu’avez-vous vécu ? Si elle a déjà raconté son vécu (dans le chat ou dans le texte de la tâche), tu ne redemandes pas. Si elle a des photos, elle les met dans le chat ou dans le dossier du projet.
 2. **Bert va chercher les faits.** Pour une sortie avec le skill `swissactivities` : âge, météo, prix avec date, trajet, lien. Rien de mémoire.

@@ -2,8 +2,8 @@
 name: webseite-planen
 description: "Da caricare per primo con «costruiscimi un sito per …» e «voglio un sito web»: prima pianificare e mostrare, non si costruisce ancora niente. Pianifica con una persona senza conoscenze tecniche il suo sito web in quattro sezioni del piano di volo: idea (nome del progetto, l'idea in una frase, per chi, cosa principale, docs/projekt.md, AGENTS.md, schizzo grigio della pagina iniziale), ricerca (fino a tre siti simili, obblighi, docs/recherche.md), pianta (pagine, funzioni come lista di costruzione, accesso, lingue, cura, docs/plan.md) e verifica del piano (secondo parere, sì della persona). Sul percorso attività con i metodi ideen-check, zielgruppe, angebot-und-preis e landingpage. Usa lo skill anche con «pianificare un sito web», «da dove comincio», «quali pagine mi servono», «sitemap», «funzionalità», «nome del progetto», «verificare il piano», quando lage nomina webseite-planen, e sempre prima del design o della costruzione."
 metadata:
-  stand: 0.3.6
-  quelle: '067c5bc25b34'
+  stand: 0.3.7
+  quelle: '385b596e3081'
 ---
 
 # Pianificare il sito web: la pianta
@@ -305,7 +305,7 @@ Cominci senza domande. L'unica domanda alla persona è quali testi, quali foto e
    ```
 
 3. **Decide la persona.** Mostrale solo i punti con rischio o aperti, ognuno in una frase con la tua proposta. Poi la domanda: «Ho segnato i punti con rischio o aperti. Il piano è definitivo così, o cambiamo qualcosa?» È il primo dei tre momenti del sì di tutto il percorso: il design comincia solo con un piano confermato. «Sembra a posto» non è un sì; allora richiedi. **Con il programma Albatros** non elenchi i punti nella chat e non aspetti: la tua proposta per ogni punto aperto la scrivi come `[Annahme: …]` nel piano e chiedi il sì nella stessa sessione con `ja_moment` (`plan`); può cambiarlo in Albatros con «Qualcosa deve cambiare». Nello stesso momento fai le domande sul concetto come schede con `frage` (skill `konzept`).
-4. **Solo dopo il suo sì** in `docs/plan.md` entra la riga `Bestätigt: <GG.MM.AAAA>, «<le sue parole>»` (confermato), e sotto `Stand:` c'è «verificato e confermato». Mai prima. Se vuole cambiare qualcosa, cambi proprio quella parte del piano (nella lista di costruzione quell'unica voce), fai girare di nuovo `plan-pruefen.mjs`, verifichi ancora una volta i punti cambiati in un contesto nuovo e chiedi di nuovo: tante volte finché dice sì. Con il programma Albatros annunci prima il piano con `teil_bereit` (`teil: umfang`) e chiedi il sì con `ja_moment` (`plan`); la riga `Bestätigt:` la scrive allora il programma, quando la persona clicca in Albatros su «Sì, confermo» (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)). Nella lista di costruzione confermata non c'è più nessun `[offen: …]`.
+4. **Solo dopo il suo sì** in `docs/plan.md` entra la riga `Bestätigt: <GG.MM.AAAA>, «<le sue parole>»` (confermato), e sotto `Stand:` c'è «verificato e confermato». Mai prima. Se vuole cambiare qualcosa, cambi proprio quella parte del piano (nella lista di costruzione quell'unica voce), fai girare di nuovo `plan-pruefen.mjs`, verifichi ancora una volta i punti cambiati in un contesto nuovo e chiedi di nuovo: tante volte finché dice sì. Con il programma Albatros annunci prima il piano con `teil_bereit` (`teil: umfang`) e chiedi il sì con `ja_moment` (`plan`); la riga `Bestätigt:` la scrive allora il programma, quando la persona clicca in Albatros su «Sì, va bene» (skill `lotse`, sezione «Il programma Albatros» (Berts Arbeitsplatz)). Nella lista di costruzione confermata non c'è più nessun `[offen: …]`.
 
 **Modernizzare:** il secondo parere verifica in più che nessuna funzione del vecchio sito vada persa senza una decisione (`docs/bestand.md`, colonna Decisione). Aggiungilo come undicesimo punto all'incarico.
 
