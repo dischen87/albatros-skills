@@ -2,8 +2,8 @@
 name: konzept
 description: "Chiarisce con una persona senza conoscenze tecniche, dopo il piano confermato, il carattere del suo sito prima di scegliere i colori (piano di volo P5): nome verso l'esterno, nucleo in tre frasi, tono (tu o Lei), tre parole per l'effetto, ciò che deve restare, linguaggio visivo e sempre la domanda se ne fa parte un personaggio (mascotte): sì, no o più tardi. Sul percorso attività prima con il metodo marke. Immagini del personaggio solo dopo aver indicato il prezzo e ricevuto un sì. Il risultato è docs/konzept.md. Usa questo skill dopo webseite-planen (piano confermato) e con «concetto», «marchio», «carattere», «tono», «mascotte», «personaggio», «che effetto deve fare il mio sito»."
 metadata:
-  stand: 0.3.3
-  quelle: '1762faed32c0'
+  stand: 0.3.4
+  quelle: '9c952165d011'
 ---
 
 # Concetto: il carattere prima dei colori
@@ -20,6 +20,7 @@ Fase P5 «Concetto di design e di marketing». Tocca a questa fase dopo il piano
 
 - **Risultato:** `docs/konzept.md` con le righe `Name:`, `Kern:`, `Ton:`, `Charakter:`, `Maskottchen:`, `Muss bleiben:` e `Bildsprache:` (modello al passo 6). I nomi delle righe restano in tedesco, perché `lage` li legge; il contenuto è in italiano.
 - **Fatto quando** ci sono tutte e sette le righe e `Maskottchen:` comincia con `ja`, `nein` o `später`. Allora annunci il passo `konzept` sull'isola.
+- **Con il programma Albatros** fai le domande sul concetto già nella sessione in cui porti il piano al sì, nello stesso momento del sì al piano (skill `webseite-planen`, sezione «Verificare il piano»): come schede con `frage` la figura (sì, no o più tardi), il tono (tu o Lei) e cosa deve restare. Queste tre schede arrivano insieme al sì, così non serve una sessione apposta. Il nome e le tre parole per il carattere li proponi dalle sue indicazioni come `[Annahme: …]`. Dopo il suo sì (`naechstes` lo porta con le sue risposte) scrivi `docs/konzept.md` con le sue risposte e nella stessa sessione continui subito con lo skill `gestaltung`: mockup grigio, tre direzioni.
 - **Percorso attività:** Prima viene il metodo `marke`. Prendilo con lo strumento `methode` (nome `marke`) e seguilo: verifica con la persona il nome (Swissreg, registro di commercio, dominio, prova a voce) e riempie `docs/konzept.md` con le stesse sette righe; il ragionamento va in `docs/marke.md`. Dopo riprendi il suo risultato: leggi `docs/konzept.md`, chiedi solo ciò che manca (spesso la risposta sul personaggio) e continua con le sezioni «Il personaggio» e «L'isola». Se è il percorso attività lo dice `lage` (nomina il metodo `marke`); nel progetto lo riconosci da `docs/zielgruppe.md` o `docs/angebot.md` di P2. Se `methode` non fornisce niente, fai qui tutti i passi e dici onestamente che la verifica approfondita del nome fa parte del metodo.
 
 ## Come parli

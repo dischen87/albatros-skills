@@ -2,8 +2,8 @@
 name: swissactivities
 description: "Intègre des éléments de SwissActivities dans un site personnel de recommandations pour les familles, pour des collaboratrices et collaborateurs de SwissActivities sans connaissances préalables. Connecte l’IA au serveur public de SwissActivities (sans connexion), prépare une recommandation uniquement avec des faits réels (âge, météo, prix avec date, trajet en transports publics), demande le vécu de la personne au lieu d’en inventer un, met le lien de réservation et intègre le widget de l’espace partenaire comme composant Astro, avec la mention « Je travaille chez SwissActivities » et une ligne pour la déclaration de confidentialité. Utilise ce skill pour « SwissActivities », « intégrer un widget », « espace partenaire », « ID du widget », « écrire une recommandation », « que faire avec les enfants », « sortie en famille », « lien de réservation », « montrer des activités sur mon site »."
 metadata:
-  stand: 0.3.3
-  quelle: '8f395bf66d54'
+  stand: 0.3.4
+  quelle: '8de0d92b64f6'
 ---
 
 # SwissActivities : le panneau indicateur du sentier
@@ -29,7 +29,11 @@ Un panneau jaune indique la destination et le temps de marche, et il est juste p
 
 ## 1. Connecter les outils
 
-Le serveur de SwissActivities est public et ne demande pas de connexion : `https://gateway.swissactivities.com/mcp`. Dans le programme Albatros, Bert l’apporte dès que la personne active l’interrupteur dans l’étape « Excursions de SwissActivities » de la liste de contrôle (lecture seule, construit le 13.11.2026). Regarde donc d’abord si tu as déjà des outils comme `search_activities`. Sinon, connecte-le avec le oui de la personne :
+Le serveur de SwissActivities est public et ne demande pas de connexion : `https://gateway.swissactivities.com/mcp`. Dans le programme Albatros, Bert l’apporte dès que la personne active l’interrupteur dans l’étape « Excursions de SwissActivities » de la liste de contrôle (lecture seule, construit le 13.11.2026). Regarde donc d’abord si tu as déjà des outils comme `search_activities`.
+
+**Dans le programme Albatros**, tu ne montres jamais à la personne une commande pour le terminal. Si les outils manquent, tu dis seulement : « Confirme d’abord l’étape partenaire dans la liste de contrôle. » Tant qu’elle n’est pas confirmée, tu ne construis pour le partenaire ni liens, ni prix, ni widgets, pas non plus pendant la construction du site. Un lien de réservation, tu ne le construis jamais d’après un modèle.
+
+**Seulement sans le programme**, quand la personne travaille seule dans le terminal, tu le connectes avec son oui :
 
 | IA | Comment |
 |---|---|
@@ -57,7 +61,7 @@ Les outils (14, lus le 13.11.2026) :
 
 ## 2. Préparer une recommandation
 
-1. **Demande le vécu.** Où étiez-vous ? Quel âge avaient les enfants ? Qu’est-ce qui était génial, qu’est-ce qui était pénible ? Y a-t-il un conseil que personne d’autre ne connaît ?
+1. **Demande le vécu.** Où étiez-vous ? Quel âge avaient les enfants ? Qu’est-ce qui était génial, qu’est-ce qui était pénible ? Y a-t-il un conseil que personne d’autre ne connaît ? Si elle l’a déjà raconté, tu prends exactement ses mots et tu ne redemandes pas (skill `blog`).
 2. **Trouve l’offre** avec `search_activities` (pour les familles avec `for_families`), `search_places` ou `search_hikes`. Les détails, tu les obtiens avec `get_activity_details`.
 3. **Âge :** d’après `min_age` et `max_age`. S’ils manquent, tu écris « Âge : non indiqué ».
 4. **Météo :** dedans ou dehors et si ça marche sous la pluie, c’est dans le résultat (`rain_ok`). Pour un jour précis, tu demandes `get_weather`.
@@ -117,7 +121,7 @@ const { widgetId, locale = 'de-CH', link } = Astro.props;
 3. **Lien de secours :** `link` est le `booking_url` de l’offre. Ainsi, on arrive à l’offre même sans JavaScript.
 4. **Aspect :** autour du widget, seulement des valeurs de `design/tokens.css`. Le widget apporte son propre aspect.
 5. **Dans le blog :** un article indique l’ID dans son en-tête (`widget:`), et la page de l’article montre alors le composant (skill `blog`).
-6. **Vérifier et publier :** regarder l’aperçu (`vorschau_starten`), `node scripts/pruefen.mjs`, une entrée dans le journal de bord. Ensuite, la personne clique sur le bouton de publication dans Albatros. Sans le programme, c’est le skill `webseite-aendern` qui s’applique.
+6. **Vérifier et publier :** regarder l’aperçu (`vorschau_starten`). Avec le programme, tu appelles avant la fin du passage `beitrag_pruefen` (serveur « albatros-arbeitsplatz »), tu corriges chaque erreur signalée dans le même passage et tu l’appelles une nouvelle fois ; sans le programme, `node scripts/pruefen.mjs`. Ensuite une entrée dans le journal de bord. Ensuite, la personne clique sur le bouton de publication dans Albatros. Sans le programme, c’est le skill `webseite-aendern` qui s’applique.
 
 ## 5. Mention et protection des données
 

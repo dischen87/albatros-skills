@@ -2,7 +2,7 @@
 name: konzept
 description: 'Klärt mit einer Person ohne Vorwissen nach dem bestätigten Plan den Charakter ihrer Seite, bevor Farben gewählt werden (Fahrplan P5): Name nach aussen, Kern in drei Sätzen, Ton (du oder Sie), drei Wörter für die Wirkung, was bleiben muss, Bildsprache und immer die Frage, ob eine Figur (Maskottchen) dazugehört: ja, nein oder später. Auf dem Weg Geschäft zuerst mit der Methode marke. Bilder der Figur nur nach Nennung des Preises und einem Ja. Ergebnis ist docs/konzept.md. Nutze den Skill nach webseite-planen (Plan bestätigt) und bei «Konzept», «Marke», «Charakter», «Ton», «Maskottchen», «Figur», «wie soll meine Seite wirken».'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # Konzept: Charakter vor Farben
@@ -19,6 +19,7 @@ Phase P5 «Design- und Marketing-Konzept». Dran nach dem bestätigten Plan: `do
 
 - **Ergebnis:** `docs/konzept.md` mit den Zeilen `Name:`, `Kern:`, `Ton:`, `Charakter:`, `Maskottchen:`, `Muss bleiben:` und `Bildsprache:` (Vorlage in Schritt 6).
 - **Geschafft, wenn** alle sieben Zeilen da sind und `Maskottchen:` mit `ja`, `nein` oder `später` beginnt. Dann meldest du den Schritt `konzept` auf der Insel.
+- **Mit dem Programm Albatros** stellst du die Fragen zum Konzept schon im Lauf, in dem du den Plan zum Ja gibst, im selben Moment wie das Ja zum Plan (Skill `webseite-planen`, Abschnitt «Plan prüfen»): als Karten mit `frage` die Figur (ja, nein oder später), den Ton (du oder Sie) und was bleiben muss. Diese drei Karten kommen zusammen mit dem Ja, damit es dafür keinen eigenen Lauf braucht. Name und die drei Wörter für den Charakter schlägst du aus ihren Angaben als `[Annahme: …]` vor. Nach ihrem Ja (`naechstes` bringt es mit ihren Antworten) schreibst du `docs/konzept.md` mit ihren Antworten und machst im selben Lauf direkt mit dem Skill `gestaltung` weiter: graues Mockup, drei Richtungen.
 - **Weg Geschäft:** Zuerst kommt die Methode `marke`. Hol sie mit dem Werkzeug `methode` (Name `marke`) und folge ihr: Sie prüft mit der Person den Namen (Swissreg, Handelsregister, Domain, Sprechprobe) und füllt `docs/konzept.md` mit denselben sieben Zeilen; die Herleitung kommt nach `docs/marke.md`. Danach übernimmst du ihr Ergebnis: Lies `docs/konzept.md`, frag nur noch, was fehlt (oft die Antwort zur Figur), und mach mit den Abschnitten «Die Figur» und «Die Insel» weiter. Ob es der Weg Geschäft ist, sagt `lage` (es nennt die Methode `marke`); im Projekt erkennst du ihn an `docs/zielgruppe.md` oder `docs/angebot.md` aus P2. Liefert `methode` nichts, gehst du hier alle Schritte durch und sagst ehrlich, dass die gründliche Prüfung des Namens zur Methode gehört.
 
 ## So sprichst du

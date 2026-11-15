@@ -2,8 +2,8 @@
 name: swissactivities
 description: "Integra elementi di SwissActivities in un sito personale di consigli per famiglie, per collaboratrici e collaboratori di SwissActivities senza conoscenze preliminari. Collega l’IA al server pubblico di SwissActivities (senza accesso), prepara un consiglio solo con dati reali (età, meteo, prezzo con data, viaggio con i mezzi pubblici), chiede l’esperienza della persona invece di inventarne una, mette il link di prenotazione e integra il widget dell’area partner come componente Astro, con la nota «Lavoro da SwissActivities» e una riga per l’informativa sulla privacy. Usa lo skill per «SwissActivities», «integrare un widget», «area partner», «ID del widget», «scrivere un consiglio», «cosa fare con i bambini», «gita in famiglia», «link di prenotazione», «mostrare attività sul mio sito»."
 metadata:
-  stand: 0.3.3
-  quelle: '8f395bf66d54'
+  stand: 0.3.4
+  quelle: '8de0d92b64f6'
 ---
 
 # SwissActivities: il cartello del sentiero
@@ -29,7 +29,11 @@ Un cartello giallo indica la meta e il tempo di cammino, ed è giusto perché qu
 
 ## 1. Collegare gli strumenti
 
-Il server di SwissActivities è pubblico e non richiede accesso: `https://gateway.swissactivities.com/mcp`. Nel programma Albatros, Bert lo porta con sé non appena la persona attiva l’interruttore nel passo «Gite di SwissActivities» della lista di controllo (solo lettura, costruito il 13.11.2026). Guarda quindi prima se hai già strumenti come `search_activities`. Se no, collegalo con il sì della persona:
+Il server di SwissActivities è pubblico e non richiede accesso: `https://gateway.swissactivities.com/mcp`. Nel programma Albatros, Bert lo porta con sé non appena la persona attiva l’interruttore nel passo «Gite di SwissActivities» della lista di controllo (solo lettura, costruito il 13.11.2026). Guarda quindi prima se hai già strumenti come `search_activities`.
+
+**Nel programma Albatros** non mostri mai alla persona un comando per il terminale. Se mancano gli strumenti, dici solo: «Conferma prima il passo del partner nella lista di controllo.» Finché non è confermato, non costruisci per il partner né link né prezzi né widget, neanche durante la costruzione del sito. Un link di prenotazione non lo costruisci mai secondo uno schema.
+
+**Solo senza il programma**, quando la persona lavora da sola nel terminale, lo colleghi con il suo sì:
 
 | IA | Come |
 |---|---|
@@ -57,7 +61,7 @@ Gli strumenti (14, letti il 13.11.2026):
 
 ## 2. Preparare un consiglio
 
-1. **Chiedi dell’esperienza.** Dove siete stati? Quanti anni avevano i bambini? Cosa è stato bello, cosa faticoso? C’è un consiglio che conosci solo tu?
+1. **Chiedi dell’esperienza.** Dove siete stati? Quanti anni avevano i bambini? Cosa è stato bello, cosa faticoso? C’è un consiglio che conosci solo tu? Se l’ha già raccontata, prendi esattamente le sue parole e non chiedi di nuovo (skill `blog`).
 2. **Trova l’offerta** con `search_activities` (per famiglie con `for_families`), `search_places` o `search_hikes`. I dettagli li prendi con `get_activity_details`.
 3. **Età:** da `min_age` e `max_age`. Se mancano, scrivi «Età: non indicata».
 4. **Meteo:** dentro o fuori e se va bene con la pioggia lo dice il risultato (`rain_ok`). Per un giorno preciso chiedi `get_weather`.
@@ -117,7 +121,7 @@ const { widgetId, locale = 'de-CH', link } = Astro.props;
 3. **Link di riserva:** `link` è il `booking_url` dell’offerta. Così si arriva all’offerta anche senza JavaScript.
 4. **Aspetto:** intorno al widget solo valori da `design/tokens.css`. Il widget porta il suo aspetto.
 5. **Nel blog:** un articolo indica l’ID nella sua intestazione (`widget:`), e la pagina dell’articolo mostra allora il componente (skill `blog`).
-6. **Verificare e pubblicare:** guardare l’anteprima (`vorschau_starten`), `node scripts/pruefen.mjs`, una voce nel diario di bordo. Poi la persona clicca sul pulsante di pubblicazione in Albatros. Senza il programma vale lo skill `webseite-aendern`.
+6. **Verificare e pubblicare:** guardare l’anteprima (`vorschau_starten`). Con il programma chiami `beitrag_pruefen` prima della fine della sessione (server «albatros-arbeitsplatz»), correggi ogni errore segnalato nella stessa sessione e lo chiami di nuovo; senza il programma `node scripts/pruefen.mjs`. Poi una voce nel diario di bordo. Poi la persona clicca sul pulsante di pubblicazione in Albatros. Senza il programma vale lo skill `webseite-aendern`.
 
 ## 5. Nota e protezione dei dati
 

@@ -2,8 +2,8 @@
 name: swissactivities
 description: "Embeds SwissActivities building blocks in a person’s own website with family recommendations, for SwissActivities employees with no prior knowledge. Connects the AI to the public SwissActivities server (no sign-in), researches a recommendation with real facts only (age, weather, price with date, getting there by public transport), asks about the person’s own experience instead of inventing one, links with the booking link and embeds the widget from the partner area as an Astro component, with the note “I work at SwissActivities” and a line for the privacy policy. Use this skill for “SwissActivities”, “embed a widget”, “partner area”, “widget ID”, “write a recommendation”, “what to do with the kids”, “day trip with children”, “booking link”, “show activities on my site”."
 metadata:
-  stand: 0.3.3
-  quelle: '8f395bf66d54'
+  stand: 0.3.4
+  quelle: '8de0d92b64f6'
 ---
 
 # SwissActivities: the signpost on the hiking trail
@@ -29,7 +29,11 @@ A yellow signpost shows the destination and the time, and it is right because so
 
 ## 1. Connect the tools
 
-The SwissActivities server is public and needs no sign-in: `https://gateway.swissactivities.com/mcp`. In the Albatros app, Bert brings it along as soon as the person turns on the switch in the checklist step «Days out from SwissActivities» (read only, built on 13.11.2026). So first check whether you already have tools such as `search_activities`. If not, connect it with the person’s yes:
+The SwissActivities server is public and needs no sign-in: `https://gateway.swissactivities.com/mcp`. In the Albatros app, Bert brings it along as soon as the person turns on the switch in the checklist step «Days out from SwissActivities» (read only, built on 13.11.2026). So first check whether you already have tools such as `search_activities`.
+
+**In the Albatros app** you never show the person a terminal command. If the tools are missing, you only say: “First confirm the partner step in the checklist.” Until it is confirmed, you build no links, no prices and no widgets for the partner, not even while building the site. You never build a booking link from a pattern.
+
+**Only without the app**, when the person works alone in a terminal, you connect it with her yes:
 
 | AI | How |
 |---|---|
@@ -57,7 +61,7 @@ The tools (14, read on 13.11.2026):
 
 ## 2. Research a recommendation
 
-1. **Ask about the experience.** Where were you? How old were the children? What was great, what was a hassle? Is there a tip only you know?
+1. **Ask about the experience.** Where were you? How old were the children? What was great, what was a hassle? Is there a tip only you know? If she has already told it, you take exactly her words and do not ask again (skill `blog`).
 2. **Find the offer** with `search_activities` (for families with `for_families`), `search_places` or `search_hikes`. Get the details with `get_activity_details`.
 3. **Age:** from `min_age` and `max_age`. If they are missing, write “Age: not stated”.
 4. **Weather:** indoors or outdoors and whether it works in the rain is in the result (`rain_ok`). For a specific day, ask `get_weather`.
@@ -117,7 +121,7 @@ const { widgetId, locale = 'de-CH', link } = Astro.props;
 3. **Link as fallback:** `link` is the `booking_url` of the offer. That way people reach the offer even without JavaScript.
 4. **Look:** around the widget only values from `design/tokens.css`. The widget itself brings its own look.
 5. **In the blog:** a post names the ID in its header (`widget:`), and the post page then shows the component (skill `blog`).
-6. **Check and publish:** look at the preview (`vorschau_starten`), `node scripts/pruefen.mjs`, an entry in the logbook. Then the person clicks the publish button in Albatros. Without the app, the skill `webseite-aendern` applies.
+6. **Check and publish:** look at the preview (`vorschau_starten`). With the app you call `beitrag_pruefen` (server “albatros-arbeitsplatz”) before the end of the run, fix every reported error in the same run and call it again; without the app `node scripts/pruefen.mjs`. Then an entry in the logbook. Then the person clicks the publish button in Albatros. Without the app, the skill `webseite-aendern` applies.
 
 ## 5. Note and privacy
 

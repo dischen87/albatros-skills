@@ -2,8 +2,8 @@
 name: kanaele
 description: "Aide une personne sans connaissances préalables à créer elle-même des comptes de réseaux sociaux pour son site (Instagram en compte professionnel, page Facebook, page LinkedIn, Pinterest, TikTok en option), avec le même nom que le site et une bio avec lien ; les mots de passe et les codes restent chez elle. Ensuite « partager les nouveaux articles » : pour chaque nouvel article de blog, Bert écrit une courte publication par canal en brouillon (outil entwurf), la personne valide et publie elle-même ; comme aide récurrente avec l’outil aufgabe. Utilise ce skill pour « réseaux sociaux », « Instagram », « page Facebook », « LinkedIn », « Pinterest », « TikTok », « créer un compte », « partager un article », « écrire une publication », « comment faire connaître mon site »."
 metadata:
-  stand: 0.3.3
-  quelle: 'e939e5cb6500'
+  stand: 0.3.4
+  quelle: 'ff09c307ec00'
 ---
 
 # Canaux : les colonnes d'affichage en ville
@@ -49,6 +49,8 @@ Les noms des lignes et `## Geteilt` restent en allemand pour que l’aide récur
 
 ## 2. Créer les comptes (la personne le fait)
 
+Si, dans Albatros, l’étape « Comptes sur Instagram et autres » dit qu’elle vient plus tard, tu ne proposes pas de comptes. C’est alors la section 3, « Pas encore de canal connecté », qui s’applique.
+
 **Instagram (compte professionnel)**
 1. Ouvrir l’appli Instagram, « Créer un compte », avec ton adresse e-mail.
 2. Saisir le nom, la photo de profil et la bio de `docs/kanaele.md`.
@@ -93,6 +95,8 @@ Quand un article de blog est en ligne (skill `blog`), tu fais ceci :
 4. **La personne décide :** elle voit les brouillons dans Albatros, les modifie, valide et publie elle-même.
 5. **Noter :** sous `## Geteilt` dans `docs/kanaele.md` vient `<slug> <JJ.MM.AAAA>`. Ainsi, aucun brouillon n’est fait deux fois.
 
+**Pas encore de canal connecté :** Albatros ne peut pas encore connecter de canaux. Si `docs/kanaele.md` manque ou si aucun compte n’y est prêt, tu crées pour chaque nouvel article exactement un brouillon « à copier » : `entwurf` avec `art: beitrag`, dans `an` va « À copier », dans le texte le lien vers l’article et la mention de la règle 3. La personne copie le texte et le publie elle-même.
+
 Sans le programme Albatros, tu ranges les brouillons dans `docs/beitraege/<JJ.MM.AAAA>-<slug>.md` ; la personne les copie dans l’appli.
 
 ## 4. En faire une aide récurrente
@@ -101,7 +105,7 @@ Propose-le. Seulement après son oui, tu le crées avec `aufgabe`, avec `ausloes
 
 - **Titre :** « Partager les nouveaux articles »
 - **Quand :** chaque lundi à 9 h (la personne choisit le jour et l’heure)
-- **Instruction :** « Regarde dans web/src/content/blog/ s’il y a des articles en ligne qui manquent sous ## Geteilt dans docs/kanaele.md. Pour chacun : un brouillon par canal prêt avec entwurf, art beitrag, avec la mention de SwissActivities s’il y renvoie. Puis inscrire l’article sous ## Geteilt. Ne rien publier. »
+- **Instruction :** « Regarde dans web/src/content/blog/ s’il y a des articles en ligne qui manquent sous ## Geteilt dans docs/kanaele.md. Pour chacun : un brouillon par canal prêt avec entwurf, art beitrag, avec la mention de SwissActivities s’il y renvoie. Sans canal prêt, exactement un brouillon avec an « À copier ». Puis inscrire l’article sous ## Geteilt. Ne rien publier. »
 
 Si `aufgabe` propose un déclencheur pour un site fraîchement publié, prends plutôt celui-là (`ausloeser: ereignis`). Les brouillons arrivent alors juste après la publication au lieu du lundi.
 

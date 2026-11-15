@@ -2,8 +2,8 @@
 name: webseite-planen
 description: "Load first for “build me a website for …” and “I want a website”: plan and show first, nothing is built yet. Plans a website with a person who has no prior knowledge, in four sections of the flight plan: idea (project name, the idea in one sentence, who it's for, the main thing, docs/projekt.md, AGENTS.md, a grey sketch of the home page), research (up to three comparable sites, obligations, docs/recherche.md), floor plan (pages, features as a build list, access, languages, upkeep, docs/plan.md) and checking the plan (second opinion, the person's yes). On the business path with the methods ideen-check, zielgruppe, angebot-und-preis and landingpage. Also use this skill for “plan my website”, “where do I start”, “which pages do I need”, “sitemap”, “scope of features”, “project name”, “check the plan”, when lage names webseite-planen, and always before anything gets designed or built."
 metadata:
-  stand: 0.3.3
-  quelle: '26e9feb9d007'
+  stand: 0.3.4
+  quelle: '9af538fb3d68'
 ---
 
 # Plan your website: the floor plan
@@ -300,7 +300,7 @@ You start without asking first. The one question to the person is which texts, p
    |---|---|---|---|
    ```
 
-3. **The person decides.** Show them only the points marked risk or open, each in one sentence with your suggestion. Then the question: “I've marked the points as risk or open. Is the plan final like this, or do we change something?” That's the first of three yes moments on the whole way: design only starts once the plan is confirmed. “Looks good” is not a yes; then you ask again.
+3. **The person decides.** Show them only the points marked risk or open, each in one sentence with your suggestion. Then the question: “I've marked the points as risk or open. Is the plan final like this, or do we change something?” That's the first of three yes moments on the whole way: design only starts once the plan is confirmed. “Looks good” is not a yes; then you ask again. **With the Albatros app** you don't list the points in the chat and don't wait: you write your suggestion for each open point into the plan as `[Annahme: …]` and ask for the yes in the same run with `ja_moment` (`plan`); she can change things in Albatros with “Something should be different”. At the same moment you ask the questions about the concept as cards with `frage` (skill `konzept`).
 4. **Only after their yes** does the line `Bestätigt: <DD.MM.YYYY>, “<their words>”` (confirmed) go into `docs/plan.md`, and `Stand:` says “checked and confirmed”. Never before. If they want to change something, you change exactly this part of the plan (in the build list, the one entry), run `plan-pruefen.mjs` again, check the changed points again in a fresh context and ask again: as often as it takes until they say yes. With the Albatros app you first report the plan with `teil_bereit` (`teil: umfang`) and request the yes with `ja_moment` (`plan`); the app then writes the line `Bestätigt:` when the person clicks “Yes, confirm” in Albatros (skill `lotse`, section “The Albatros app” (Berts Arbeitsplatz)). In the confirmed build list there's no `[offen: …]` left.
 
 **Modernising:** the second opinion also checks that no feature of the old site gets lost without a decision (`docs/bestand.md`, column Decision). Add that to the task as an eleventh point.

@@ -2,8 +2,8 @@
 name: konzept
 description: "Works out with a person who has no prior knowledge, once the plan is confirmed, the character of their site before any colours are chosen (flight plan P5): name to the outside world, core in three sentences, tone (formal or informal), three words for how it should come across, what has to stay, visual style and always the question whether a character (mascot) belongs to it: yes, no or later. On the business path, first with the method marke. Pictures of the mascot only after naming the price and getting a yes. The result is docs/konzept.md. Use this skill after webseite-planen (plan confirmed) and for “concept”, “brand”, “character”, “tone”, “mascot”, “how should my site come across”."
 metadata:
-  stand: 0.3.3
-  quelle: '1762faed32c0'
+  stand: 0.3.4
+  quelle: '9c952165d011'
 ---
 
 # Concept: character before colours
@@ -20,6 +20,7 @@ Phase P5 “Design and marketing concept”. It's due after the confirmed plan: 
 
 - **Result:** `docs/konzept.md` with the lines `Name:`, `Kern:` (core), `Ton:` (tone), `Charakter:`, `Maskottchen:` (mascot), `Muss bleiben:` (must stay) and `Bildsprache:` (visual style) (template in step 6). The line names stay German, because `lage` reads them; the content is in English.
 - **Done when** all seven lines are there and `Maskottchen:` starts with `ja`, `nein` or `später`. Then you report the step `konzept` on the island.
+- **With the Albatros app** you already ask the questions about the concept in the run in which you put the plan up for the yes, at the same moment as the yes to the plan (skill `webseite-planen`, section “Checking the plan” (Plan prüfen)): as cards with `frage`, the mascot (yes, no or later), the tone (formal or informal) and what has to stay. These three cards come together with the yes, so that no separate run is needed for them. You suggest the name and the three words for the character from what she has said, as `[Annahme: …]`. After her yes (`naechstes` brings it with her answers) you write `docs/konzept.md` with her answers and carry straight on in the same run with the skill `gestaltung`: grey mockup, three directions.
 - **Business path:** The method `marke` comes first. Fetch it with the tool `methode` (name `marke`) and follow it: it checks the name with the person (Swissreg, commercial register, domain, a say-it-out-loud test) and fills `docs/konzept.md` with the same seven lines; the reasoning goes into `docs/marke.md`. After that you take over its result: read `docs/konzept.md`, ask only for what's missing (often the answer about the mascot) and carry on with the sections “The mascot” and “The island”. Whether it's the business path, `lage` tells you (it names the method `marke`); in the project you recognise it by `docs/zielgruppe.md` or `docs/angebot.md` from P2. If `methode` delivers nothing, you go through all the steps here and say honestly that the thorough check of the name is part of the method.
 
 ## How you talk
