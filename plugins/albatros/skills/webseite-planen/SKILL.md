@@ -2,7 +2,7 @@
 name: webseite-planen
 description: 'Zuerst laden bei «bau mir eine Webseite für …» und «ich will eine Webseite»: erst planen und zeigen, gebaut wird noch nichts. Plant mit einer Person ohne Vorwissen ihre Webseite in vier Abschnitten des Fahrplans: Idee (Projektname, Idee in einem Satz, für wen, Hauptsache, docs/projekt.md, AGENTS.md, graue Skizze der Startseite), Research (bis zu drei vergleichbare Seiten, Pflichten, docs/recherche.md), Grundriss (Seiten, Funktionen als Bauliste, Zugang, Sprachen, Pflege, docs/plan.md) und Plan prüfen (zweite Meinung, Ja der Person). Auf dem Weg Geschäft mit den Methoden ideen-check, zielgruppe, angebot-und-preis und landingpage. Nutze den Skill auch bei «Webseite planen», «wo fange ich an», «welche Seiten», «Sitemap», «Funktionsumfang», «Projektname», «Vorbilder», «Plan prüfen», wenn lage webseite-planen nennt, und immer bevor gestaltet oder gebaut wird.'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # Webseite planen: der Grundriss
@@ -298,7 +298,7 @@ Du fängst ohne Rückfrage an. Die eine Frage an die Person ist, welche Texte, F
    |---|---|---|---|
    ```
 
-3. **Die Person entscheidet.** Zeig ihr nur die Punkte mit Risiko oder offen, je in einem Satz mit deinem Vorschlag. Dann die Frage: «Ich habe die Punkte mit Risiko oder offen markiert. Ist der Plan so final, oder ändern wir etwas?» Das ist der erste von drei Ja-Momenten auf dem ganzen Weg: Erst ein bestätigter Plan wird gestaltet. «Sieht gut aus» ist kein Ja; dann fragst du nach.
+3. **Die Person entscheidet.** Zeig ihr nur die Punkte mit Risiko oder offen, je in einem Satz mit deinem Vorschlag. Dann die Frage: «Ich habe die Punkte mit Risiko oder offen markiert. Ist der Plan so final, oder ändern wir etwas?» Das ist der erste von drei Ja-Momenten auf dem ganzen Weg: Erst ein bestätigter Plan wird gestaltet. «Sieht gut aus» ist kein Ja; dann fragst du nach. **Mit dem Programm Albatros** listest du die Punkte nicht im Chat und wartest nicht: Deinen Vorschlag zu jedem offenen Punkt schreibst du als `[Annahme: …]` in den Plan und fragst das Ja im selben Lauf mit `ja_moment` (`plan`) an; ändern kann sie es in Albatros mit «Etwas soll anders werden». Im selben Moment stellst du die Fragen zum Konzept als Karten mit `frage` (Skill `konzept`).
 4. **Erst nach ihrem Ja** kommt in `docs/plan.md` die Zeile `Bestätigt: <TT.MM.JJJJ>, «<ihr Wortlaut>»`, und bei `Stand:` steht «geprüft und bestätigt». Vorher nie. Will sie etwas ändern, änderst du genau diesen Teil des Plans (bei der Bauliste den einen Eintrag), lässt `plan-pruefen.mjs` nochmals laufen, prüfst die geänderten Punkte nochmals in frischem Kontext und fragst wieder: so oft, bis sie Ja sagt. Mit dem Programm Albatros meldest du den Plan zuerst mit `teil_bereit` (`teil: umfang`) und fragst das Ja mit `ja_moment` (`plan`) an; die Zeile `Bestätigt:` schreibt dann das Programm, wenn die Person in Albatros «Ja, bestätigen» klickt (Skill `lotse`, Abschnitt «Berts Arbeitsplatz»). In der bestätigten Bauliste steht kein `[offen: …]` mehr.
 
 **Modernisieren:** Die zweite Meinung prüft zusätzlich, dass keine Funktion der alten Seite ohne Entscheid verloren geht (`docs/bestand.md`, Spalte Entscheid). Häng das als elften Punkt an den Auftrag.

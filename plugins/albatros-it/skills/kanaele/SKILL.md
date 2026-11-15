@@ -2,8 +2,8 @@
 name: kanaele
 description: "Aiuta una persona senza conoscenze preliminari a creare da sé account sui social per il suo sito (Instagram come account professionale, pagina Facebook, pagina LinkedIn, Pinterest, TikTok facoltativo), con lo stesso nome del sito e una bio con link; password e codici restano a lei. Poi «condividere i nuovi articoli»: per ogni nuovo articolo del blog Bert scrive un breve post per canale come messaggio in bozza (strumento entwurf), la persona approva e pubblica da sé; come aiuto ricorrente con lo strumento aufgabe. Usa lo skill per «social media», «Instagram», «pagina Facebook», «LinkedIn», «Pinterest», «TikTok», «creare un account», «condividere un articolo», «scrivere un post», «come faccio conoscere il mio sito»."
 metadata:
-  stand: 0.3.3
-  quelle: 'e939e5cb6500'
+  stand: 0.3.4
+  quelle: 'ff09c307ec00'
 ---
 
 # Canali: le colonne delle affissioni in città
@@ -49,6 +49,8 @@ I nomi delle righe e `## Geteilt` restano in tedesco perché l’aiuto ricorrent
 
 ## 2. Creare gli account (lo fa la persona)
 
+Se in Albatros al passo «Account su Instagram e simili» c’è scritto che arriva più tardi, non proponi nessun account. Allora vale la sezione 3, «Ancora nessun canale collegato».
+
 **Instagram (account professionale)**
 1. Aprire l’app Instagram, «Crea nuovo account», con il tuo indirizzo e-mail.
 2. Inserire nome, immagine del profilo e bio da `docs/kanaele.md`.
@@ -93,6 +95,8 @@ Quando un articolo del blog è online (skill `blog`), fai così:
 4. **La persona decide:** vede i messaggi in bozza in Albatros, li modifica, approva e pubblica da sé.
 5. **Annotare:** sotto `## Geteilt` in `docs/kanaele.md` va `<slug> <GG.MM.AAAA>`. Così nessun messaggio in bozza viene fatto due volte.
 
+**Ancora nessun canale collegato:** Albatros non può ancora collegare i canali. Se manca `docs/kanaele.md` o lì nessun account è pronto, per ogni nuovo articolo crei esattamente un messaggio in bozza «da copiare»: `entwurf` con `art: beitrag`, in `an` va «Da copiare», nel testo il link all’articolo e la nota della regola 3. La persona copia il testo e lo pubblica lei stessa.
+
 Senza il programma Albatros metti i messaggi in bozza in `docs/beitraege/<GG.MM.AAAA>-<slug>.md`; la persona li copia nell’app.
 
 ## 4. Farne un aiuto ricorrente
@@ -101,7 +105,7 @@ Proponilo. Solo dopo il suo sì lo crei con `aufgabe`, con `ausloeser: zeit` e `
 
 - **Titolo:** «Condividere i nuovi articoli»
 - **Quando:** ogni lunedì alle 9 (giorno e ora li sceglie la persona)
-- **Istruzione:** «Guarda in web/src/content/blog/ se ci sono articoli online che mancano sotto ## Geteilt in docs/kanaele.md. Per ciascuno: un messaggio in bozza per canale pronto con entwurf, art beitrag, con la nota su SwissActivities se rimanda lì. Poi inserire l’articolo sotto ## Geteilt. Non pubblicare niente.»
+- **Istruzione:** «Guarda in web/src/content/blog/ se ci sono articoli online che mancano sotto ## Geteilt in docs/kanaele.md. Per ciascuno: un messaggio in bozza per canale pronto con entwurf, art beitrag, con la nota su SwissActivities se rimanda lì. Senza canale pronto esattamente un messaggio in bozza con an «Da copiare». Poi inserire l’articolo sotto ## Geteilt. Non pubblicare niente.»
 
 Se `aufgabe` offre un attivatore per un sito appena pubblicato, prendi piuttosto quello (`ausloeser: ereignis`). Allora i messaggi in bozza arrivano subito dopo la pubblicazione invece che il lunedì.
 

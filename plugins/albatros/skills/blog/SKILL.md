@@ -2,7 +2,7 @@
 name: blog
 description: 'Richtet mit einer Person ohne Vorwissen einen Blog auf ihrer Astro-Seite ein und schreibt mit ihr Beiträge: jeder Beitrag eine Markdown-Datei im Logbuch (web/src/content/blog/<slug>.md mit title, date, description, bild), die Person erzählt die Idee, Bert schreibt die Datei, sie liest in der Vorschau und klickt in Albatros auf «Veröffentlichen». Mit Vorlage für Familien-Empfehlungen (Für wen, Was, Wann und Wetter, Anreise, Kosten, Mein Tipp, Link) und Regeln für eigene Fotos. Nutze den Skill bei «Blog», «Blogbeitrag», «neuer Beitrag», «Artikel schreiben», «Empfehlung veröffentlichen», «Ausflugstipp aufschreiben», «News auf meiner Seite».'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # Blog: der Ordner mit den Ausflugsblättern
@@ -21,6 +21,8 @@ Im Regal steht ein Ordner. Jeder Ausflug ist ein Blatt darin, oben immer gleich 
 ## Wo die Beiträge liegen
 
 Jeder Beitrag ist eine Datei im Logbuch: `web/src/content/blog/<slug>.md`. Der `<slug>` ist der Titel in kleinen Buchstaben mit Bindestrichen, zum Beispiel `seilpark-mit-kindern`; er wird die Adresse `/blog/seilpark-mit-kindern/`. Das ist die einfachste Stufe aus dem Skill `cms` (Texte im Projekt): kein CMS, keine Datenbank, Bert schreibt die Dateien. Wollen später andere ohne Bert schreiben, zeigt der Skill `cms` den nächsten Schritt.
+
+**Eine Empfehlung ist ein Beitrag.** Ein Familientipp oder Ausflugstipp ist ein Blogbeitrag und liegt in `web/src/content/blog/`. Hat die Seite schon eine eigene Sammlung für Empfehlungen (zum Beispiel `web/src/content/tipps/` aus dem Bau), zählt Albatros ihre Einträge als Beiträge, mit denselben Regeln (Kopf, Links, Hinweis, Preise, «Mein Tipp»). Dann schreibst du den Beitrag oder das Erlebnis dort hinein und legst nie einen zweiten, leeren Blog an.
 
 **Vor den zwei Ja** (Plan bestätigt, Entwurf freigegeben; `naechstes` sagt `bauen_erlaubt: false`) baust du nichts an der Seite. Einen Beitrag schreibst du dann als Entwurf nach `docs/beitraege/<slug>.md`, mit demselben Kopf (title, date, description). Nach den zwei Ja ziehst du ihn nach `web/src/content/blog/`. Albatros prüft beide Orte gleich.
 
@@ -73,13 +75,14 @@ Der Blog ist ein Teil der Seite wie jeder andere. Ist die Seite noch in Planung,
 
 ## 2. Einen Beitrag schreiben
 
-1. **Die Person erzählt die Idee:** Wo wart ihr, mit wem, was habt ihr erlebt? Hat sie Fotos, legt sie sie in den Chat oder in den Projektordner.
+1. **Die Person erzählt die Idee:** Wo wart ihr, mit wem, was habt ihr erlebt? Hat sie ihr Erlebnis schon erzählt (im Chat oder im Text des Auftrags), fragst du nicht nochmals. Hat sie Fotos, legt sie sie in den Chat oder in den Projektordner.
 2. **Bert holt die Fakten.** Bei einem Ausflug mit dem Skill `swissactivities`: Alter, Wetter, Preis mit Datum, Anreise, Link. Nichts aus dem Gedächtnis.
-3. **Bert schreibt die Datei** nach der Vorlage unten. Was die Person erlebt hat, schreibt er in ihren Worten. Fehlt etwas, fragt er nach, statt es zu erfinden.
+3. **Bert schreibt die Datei** nach der Vorlage unten. Was die Person erlebt hat, übernimmt er genau mit ihren Worten. Er fügt nichts dazu, was sie nicht gesagt hat: kein Wetter, keine Tageszeit, keine Gefühle, keine Zitate. Schreibt sie «an einem Regentag», steht nicht da «An dem Tag hat es den ganzen Morgen geregnet». Fehlt etwas, fragt er nach, statt es zu erfinden.
 4. **Die Person liest in der Vorschau.** Bert startet sie mit `vorschau_starten` (ohne das Programm: `cd web && npm run dev`). Sie sagt, was anders sein soll; Bert ändert es.
-5. **Bert prüft** mit `node scripts/pruefen.mjs` und macht einen Eintrag ins Logbuch: `git add web && git commit -m "Blog: <Titel>"`.
-6. **Die Person klickt in Albatros auf «Veröffentlichen».** Bert macht kein `git push`. Ohne das Programm gilt der Skill `webseite-aendern` (Freigabe, dann Push).
-7. **Danach teilen:** Beiträge für Instagram und Co. schreibt Bert als Entwürfe (Skill `kanaele`).
+5. **Die Person bestätigt.** Ein Beitrag zählt erst, wenn sie ihn in Albatros mit «Stimmt so» bestätigt hat: den Abschnitt «Mein Tipp», bei einem Beitrag ohne diesen Abschnitt den ganzen Text. Sag ihr in einem Satz, wo: in der Checkliste, beim Schritt «Blog». Ohne das Programm sagt sie es im Chat.
+6. **Bert prüft.** Hast du in diesem Lauf Beiträge geschrieben oder geändert, oder Seiten, die einen Partner zeigen (zum Beispiel SwissActivities), rufst du mit dem Programm vor dem Ende des Laufs das Werkzeug `beitrag_pruefen` auf (Server «albatros-arbeitsplatz»). Jeden Fehler, den es meldet, behebst du im selben Lauf und rufst es dann nochmals auf. Ohne das Programm prüfst du mit `node scripts/pruefen.mjs`. Dann ein Eintrag ins Logbuch: `git add web && git commit -m "Blog: <Titel>"`.
+7. **Die Person klickt in Albatros auf «Veröffentlichen».** Bert macht kein `git push`. Ohne das Programm gilt der Skill `webseite-aendern` (Freigabe, dann Push).
+8. **Danach teilen:** Beiträge für Instagram und Co. schreibt Bert als Entwürfe (Skill `kanaele`).
 
 ## Vorlage: Familien-Empfehlung
 
@@ -109,6 +112,8 @@ widget: ""
 ```
 
 Leere Felder bleiben weg: `widget` nur mit einer Widget-ID, `bild` nur mit einem Foto.
+
+In «Mein Tipp» steht nie ein Platzhalter (etwa «[Platzhalter: kommt später]»). Hat die Person ihr Erlebnis noch nicht erzählt, bleibt die Empfehlung ein Entwurf in `docs/beitraege/`, bis sie es erzählt.
 
 ## 3. Fotos
 

@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Designs how a person's site works and looks, with a person who has no prior knowledge: its own, not from a kit. In the flight plan (P6): a grey mockup, three clearly different directions from the concept, checked with design-pruefen.mjs, tokens for colours, type and spacing (design/tokens.css), docs/designsystem.md and a sample sheet; motion and 3D only with a purpose. For an existing site: a check from three angles, fixing how it works, directions, tokens, rebuilding with screenshots. With the question about design elements (image tools only after the price and a yes). Use this skill after konzept and for “design”, “design system”, “sample sheet”, “it looks boring”, “it looks home-made”, “it looks like AI”, “vibe coded”, “make it look nicer”, “colours”, “fonts”, “redesign”, “three versions”, “layout”, “icons”, “mascot”, “animation”, “3D”."
 metadata:
-  stand: 0.3.3
-  quelle: '0f0c77561818'
+  stand: 0.3.4
+  quelle: '83dda8d92b13'
 ---
 
 # Design: first the foundations, then the facade
@@ -80,9 +80,9 @@ The design system is the third part that gets refined (skill `lotse`, section �
 Phase P6 “Design system with an example”. It's due once `docs/konzept.md` has all seven lines (P5, skill `konzept`); if it's missing, go there first. After that comes P7, the whole site as a draft to click through (skill `entwurf`).
 
 - **Result:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and `docs/designsystem.md` with the lines `Reihenfolge:` (order), `Richtung:` (direction), `Musterblatt:` (sample sheet), `Farben:` (colours), `Schriften:` (fonts), `Abstände:` (spacing), `Komponenten:` (components) and `Maskottchen:` (mascot). File and line names stay German, because `lage` and the check scripts read them; the content is in English.
-- **Done when** `tokens.css` and `musterblatt.html` exist, the sample sheet uses colours, fonts and sizes only as `var(--…)` from `tokens.css`, and the person has seen it (`Musterblatt: gesehen am …`).
+- **Done when** `tokens.css` and `musterblatt.html` exist, the sample sheet uses colours, fonts and sizes only as `var(--…)` from `tokens.css`, and the person has seen it (`Musterblatt: gesehen am …`; with the Albatros app only Albatros writes this line, step 5).
 - **Questions for the person:** “Is the order in the grey mockup right?”, “Which of the three directions, or which mix?”, “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” and the question about design elements. Each of the three answers has its own line (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). There's no assumption for these: until the person has answered, the line says `[offen: …]`. “A dark version too?” you suggest as `[Annahme: yes, light and dark]`, because many phones switch to dark at night.
-- **Island:** `mockup` as soon as the order is right; `entwuerfe` as soon as the person has seen the sample sheet and is happy with it.
+- **Island:** `mockup` as soon as the order is right; `entwuerfe` as soon as the person has seen the sample sheet and is happy with it (with the app: after her “That works” on “Colours and fonts”).
 
 **Mode:** Read `Modus:` in `docs/projekt.md` (if the line is missing, `machen`, do, applies). The learning moment of this phase is “Why colours and fonts live in one place only”: the person changes a colour in `design/tokens.css` themselves, reloads the sample sheet and sees it change everywhere. In mode `lernen` (learn) they do it themselves (then `verstanden_melden` with `mission: flugschule-19-musterblatt` and `art: selbst`), and at the end of the phase, when you report `entwuerfe`, you ask the check questions of the lesson `flugschule-19-musterblatt`: “Why do your site's colours and fonts live in one place only?” and “Why does your AI show you a grey mockup first and only then colours?” `lage` gives the core of a good answer. Only after their answer do you report `art: kontrollfrage`. In mode `machen` (do) you offer the learning moment and explain each step in one sentence with its picture. If the tool `verstanden_melden` is missing, you carry on without it.
 
@@ -94,7 +94,7 @@ The grey sketch of the home page from P1 is in `design/skizze.html`. From it you
 - Real headings and sentences from `docs/projekt.md`, `docs/plan.md` and `docs/konzept.md` (name, core), the main button with its real text (“Ask for a place”), the menu with all pages from `Seiten:`.
 - One file with no links to the web; it opens with a double-click.
 
-Open it and ask only: “Is the order in the grey mockup right?” Why: structure before looks. Change it until it's right. Then you create `docs/designsystem.md` (template in step 4) with `Reihenfolge: bestätigt am <DD.MM.YYYY>`, `Richtung: [offen: choice of direction]`, `Musterblatt: [offen: comes after showing it]` and the other lines with `[offen: …]`, and report `mockup` (section “The island”).
+Open it and ask only: “Is the order in the grey mockup right?” Why: structure before looks. Change it until it's right. With the Albatros app you don't wait for the answer in the chat: you report the mockup with `teil_bereit`, ask the question as a card (`frage`) and carry on with the three directions in the same run. Then you create `docs/designsystem.md` (template in step 4) with `Reihenfolge: bestätigt am <DD.MM.YYYY>`, `Richtung: [offen: choice of direction]`, `Musterblatt: [offen: comes after showing it]` and the other lines with `[offen: …]`, and report `mockup` (section “The island”).
 
 ### 2. Three directions on the mockup
 
@@ -168,7 +168,7 @@ Icons: … · illustrations: … · photos: photo list in docs/inhalte.md · mas
 - <DD.MM.YYYY>, ‹their words› → what has changed
 ```
 
-The starts of these lines are fixed and stay German, because `lage` and the skill `entwurf` read them: after `Reihenfolge:` comes `bestätigt am` (confirmed on) with the date. After `Musterblatt:` comes `[offen: comes after showing it]` until the person has said yes, then `gesehen am <DD.MM.YYYY>, passt` (seen on …, fits; step 5). After `Maskottchen:` comes first `ja`, `nein` or `später` (yes, no, later), as in `docs/konzept.md`.
+The starts of these lines are fixed and stay German, because `lage` and the skill `entwurf` read them: after `Reihenfolge:` comes `bestätigt am` (confirmed on) with the date. After `Musterblatt:` comes `[offen: comes after showing it]` until the person has said yes, then `gesehen am <DD.MM.YYYY>, passt` (seen on …, fits; step 5). With the Albatros app only Albatros writes this line (step 5). After `Maskottchen:` comes first `ja`, `nein` or `später` (yes, no, later), as in `docs/konzept.md`.
 
 ### 5. The sample sheet
 
@@ -185,7 +185,7 @@ The starts of these lines are fixed and stay German, because `lage` and the skil
 
 If the sample sheet shows a movement (a button that gives when pressed), it's there with the sentence saying what it explains. In the sample sheet, colours, fonts and sizes appear only as `var(--…)`. Check this with your own eyes in the code; if Node is already there, run `node scripts/design-pruefen.mjs` again (now with the colour fan: heading font, type scale, colours from a kit), and `node <folder of the skill entwurf>/entwurf-pruefen.mjs --nur farbfaecher` measures the contrasts and recalculates every contrast comment along the way (folder unknown: `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Open the sample sheet and show the person how to see it as on a phone: drag the browser window very narrow, or use the browser's phone view (Firefox and Chrome: `Ctrl+Shift+M`, on a Mac in Firefox `Cmd+Opt+M`, in Chrome `F12` first). Then ask: “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” Why: what's right on the sample sheet is right on every page. You make changes in `tokens.css` or `komponenten.css`, never in the sample sheet itself. After their yes you write the line `Musterblatt: gesehen am <DD.MM.YYYY>, passt` into `docs/designsystem.md` (instead of `[offen: …]`), for example `Musterblatt: gesehen am 31.10.2026, passt`, fill in the other lines and report `entwuerfe`. In mode `lernen` you ask the two check questions of the lesson `flugschule-19-musterblatt` along with it (above, under mode).
+Open the sample sheet and show the person how to see it as on a phone: drag the browser window very narrow, or use the browser's phone view (Firefox and Chrome: `Ctrl+Shift+M`, on a Mac in Firefox `Cmd+Opt+M`, in Chrome `F12` first). Then ask: “Does the sample sheet work: colours, fonts, buttons, fields, cards and header on a phone?” Why: what's right on the sample sheet is right on every page. You make changes in `tokens.css` or `komponenten.css`, never in the sample sheet itself. **With the Albatros app** you never write the line `Musterblatt: gesehen am …` yourself: Albatros writes it when the person gives her yes to the draft in Albatros. A line not written by Albatros does not count. After her “That works” on “Colours and fonts” you fill in the other lines, report `entwuerfe` and carry on with the next part that `naechstes` names. **Without the app** (terminal only), after their yes you write the line `Musterblatt: gesehen am <DD.MM.YYYY>, passt` into `docs/designsystem.md` (instead of `[offen: …]`), for example `Musterblatt: gesehen am 31.10.2026, passt`, fill in the other lines and report `entwuerfe`. In mode `lernen` you ask the two check questions of the lesson `flugschule-19-musterblatt` along with it (above, under mode).
 
 ### The island
 

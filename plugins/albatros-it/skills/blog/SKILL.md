@@ -2,8 +2,8 @@
 name: blog
 description: "Imposta con una persona senza conoscenze preliminari un blog sul suo sito Astro e scrive articoli con lei: ogni articolo è un file Markdown nel diario di bordo (web/src/content/blog/<slug>.md con title, date, description, bild), la persona racconta l’idea, Bert scrive il file, lei lo legge nell’anteprima e clicca su pubblica in Albatros. Con un modello per i consigli alle famiglie (per chi, cosa, quando e meteo, viaggio, costi, il mio consiglio, link) e regole per le proprie foto. Usa lo skill per «blog», «articolo del blog», «nuovo articolo», «scrivere un articolo», «pubblicare un consiglio», «scrivere un’idea per una gita», «novità sul mio sito»."
 metadata:
-  stand: 0.3.3
-  quelle: '040425d83711'
+  stand: 0.3.4
+  quelle: 'e22602facd46'
 ---
 
 # Blog: il raccoglitore delle schede delle gite
@@ -22,6 +22,8 @@ Sullo scaffale c’è un raccoglitore. Ogni gita è una scheda, sempre etichetta
 ## Dove stanno gli articoli
 
 Ogni articolo è un file nel diario di bordo: `web/src/content/blog/<slug>.md`. Lo `<slug>` è il titolo in minuscolo con trattini, per esempio `parco-avventura-bambini`; diventa l’indirizzo `/blog/parco-avventura-bambini/`. È il livello più semplice dello skill `cms` (testi nel progetto): niente CMS, niente banca dati, Bert scrive i file. Se più tardi altri devono scrivere senza Bert, lo skill `cms` mostra il passo successivo.
+
+**Un consiglio è un articolo.** Un consiglio per famiglie o un’idea per una gita è un articolo del blog e sta in `web/src/content/blog/`. Se il sito ha già una sua raccolta per i consigli (per esempio `web/src/content/tipps/` dalla costruzione), Albatros conta le sue voci come articoli, con le stesse regole (intestazione, link, avviso, prezzi, «Il mio consiglio»). Allora scrivi lì l’articolo o l’esperienza e non crei mai un secondo blog vuoto.
 
 **Prima dei due sì** (piano confermato, bozza con via libera; `naechstes` dice `bauen_erlaubt: false`) non costruisci niente sul sito. Scrivi allora l’articolo come bozza in `docs/beitraege/<slug>.md`, con la stessa intestazione (title, date, description). Dopo i due sì lo sposti in `web/src/content/blog/`. Albatros controlla i due posti allo stesso modo.
 
@@ -74,13 +76,14 @@ Il blog è una parte del sito come le altre. Se il sito è ancora in progettazio
 
 ## 2. Scrivere un articolo
 
-1. **La persona racconta l’idea:** dove siete stati, con chi, cosa avete vissuto? Se ha foto, le mette nella chat o nella cartella del progetto.
+1. **La persona racconta l’idea:** dove siete stati, con chi, cosa avete vissuto? Se ha già raccontato la sua esperienza (nella chat o nel testo dell’incarico), non chiedi di nuovo. Se ha foto, le mette nella chat o nella cartella del progetto.
 2. **Bert prende i fatti.** Per una gita con lo skill `swissactivities`: età, meteo, prezzo con data, viaggio, link. Niente a memoria.
-3. **Bert scrive il file** secondo il modello qui sotto. Ciò che la persona ha vissuto lo scrive con le sue parole. Se manca qualcosa, chiede invece di inventare.
+3. **Bert scrive il file** secondo il modello qui sotto. Ciò che la persona ha vissuto lo riprende esattamente con le sue parole. Non aggiunge niente che lei non abbia detto: niente meteo, niente ora del giorno, niente sentimenti, niente citazioni. Se lei scrive «in una giornata di pioggia», non ci sta scritto «Quel giorno ha piovuto tutta la mattina». Se manca qualcosa, chiede invece di inventare.
 4. **La persona legge nell’anteprima.** Bert la avvia con `vorschau_starten` (senza il programma: `cd web && npm run dev`). Lei dice cosa deve cambiare; Bert lo modifica.
-5. **Bert verifica** con `node scripts/pruefen.mjs` e fa una voce nel diario di bordo: `git add web && git commit -m "Blog: <titolo>"`.
-6. **La persona clicca sul pulsante di pubblicazione in Albatros.** Bert non fa `git push`. Senza il programma vale lo skill `webseite-aendern` (approvazione, poi push).
-7. **Poi condividere:** i post per Instagram e gli altri Bert li scrive come messaggi in bozza (skill `kanaele`).
+5. **La persona conferma.** Un articolo conta solo quando lei lo ha confermato in Albatros con «Va bene così»: la sezione «Il mio consiglio», per un articolo senza questa sezione tutto il testo. Dille in una frase dove: nella lista di controllo, al passo «Blog». Senza il programma lo dice nella chat.
+6. **Bert verifica.** Se in questa sessione hai scritto o modificato articoli, o pagine che mostrano un partner (per esempio SwissActivities), con il programma chiami lo strumento `beitrag_pruefen` prima della fine della sessione (server «albatros-arbeitsplatz»). Ogni errore che segnala lo correggi nella stessa sessione e poi lo chiami di nuovo. Senza il programma verifichi con `node scripts/pruefen.mjs`. Poi una voce nel diario di bordo: `git add web && git commit -m "Blog: <titolo>"`.
+7. **La persona clicca sul pulsante di pubblicazione in Albatros.** Bert non fa `git push`. Senza il programma vale lo skill `webseite-aendern` (approvazione, poi push).
+8. **Poi condividere:** i post per Instagram e gli altri Bert li scrive come messaggi in bozza (skill `kanaele`).
 
 ## Modello: consiglio per famiglie
 
@@ -110,6 +113,8 @@ widget: ""
 ```
 
 I nomi dei campi nell’intestazione (`title`, `date`, `bild` …) restano come sono; il testo è nella lingua del sito. I campi vuoti si tolgono: `widget` solo con un ID di widget, `bild` solo con una foto.
+
+In «Il mio consiglio» non c’è mai un segnaposto (per esempio «[segnaposto: arriva più tardi]»). Se la persona non ha ancora raccontato la sua esperienza, il consiglio resta una bozza in `docs/beitraege/` finché lei non la racconta.
 
 ## 3. Foto
 

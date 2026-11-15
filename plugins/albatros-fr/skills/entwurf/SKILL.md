@@ -2,8 +2,8 @@
 name: entwurf
 description: "Conçoit avec une personne sans connaissances préalables tout son site web à parcourir en cliquant, avant la construction (plan de vol P7 et P8) : d'abord vérifier l'atelier (Node, npm, Git, avec une brique aussi Bun), puis chaque page et chaque fonction de la liste de construction dans la direction choisie, avec de vrais textes, un menu commun, confirmation, erreur et états vides, les pages des briques en factice et seulement des valeurs de design/tokens.css ; vérifié avec entwurf-pruefen.mjs, poli avec les retours de la personne. Ensuite l'autorisation de construire, seulement avec un oui clair de la personne. Le résultat est design/entwurf/ avec docs/entwurf.md. Utilise ce skill après gestaltung (planche d'échantillons vue) et pour « ébauche », « montrer tout le site », « à parcourir en cliquant », « prototype », « maquette cliquable », « autorisation de construire », « installer Node »."
 metadata:
-  stand: 0.3.3
-  quelle: 'ebc8e728aae4'
+  stand: 0.3.4
+  quelle: '5e70b158548d'
 ---
 
 # Ébauche : le modèle qu'on peut visiter
@@ -18,7 +18,7 @@ Comme tout atelier, la construction du modèle a besoin d'outils : avant de comm
 
 ## Dans le plan de vol
 
-- **P7 « Concevoir tout le site »** est au tour quand la personne a vu la planche d'échantillons (P6, skill `gestaltung` : `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` et, dans `docs/designsystem.md`, la ligne `Musterblatt: gesehen am <date>`). Vérifie-le avant de commencer (Windows : `dir design` et `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`) :
+- **P7 « Concevoir tout le site »** est au tour quand la personne a vu la planche d'échantillons (P6, skill `gestaltung` : `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` et, dans `docs/designsystem.md`, la ligne `Musterblatt: gesehen am <date>`). Avec le programme Albatros, c'est `naechstes` qui te dit quand P7 est au tour ; la ligne `Musterblatt: gesehen am …`, Albatros ne l'écrit qu'avec le oui à l'ébauche, et la vérification ici tombe. Sans le programme, tu le vérifies avant de commencer (Windows : `dir design` et `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`) :
   ```bash
   ls design/tokens.css design/komponenten.css design/musterblatt.html
   grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md

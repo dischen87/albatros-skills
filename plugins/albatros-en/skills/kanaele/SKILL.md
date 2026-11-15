@@ -2,8 +2,8 @@
 name: kanaele
 description: "Helps a person with no prior knowledge set up social media accounts for her website herself (Instagram as a professional account, Facebook page, LinkedIn page, Pinterest, TikTok optional), with the same name as the site and a bio with a link; passwords and codes stay with her. Then “share new posts”: for each new blog post Bert writes one short post per channel as a draft (tool entwurf), the person approves and posts herself; as a recurring helper with the tool aufgabe. Use this skill for “social media”, “Instagram”, “Facebook page”, “LinkedIn”, “Pinterest”, “TikTok”, “create an account”, “share a post”, “write a post”, “how do I make my site known”."
 metadata:
-  stand: 0.3.3
-  quelle: 'e939e5cb6500'
+  stand: 0.3.4
+  quelle: 'ff09c307ec00'
 ---
 
 # Channels: the poster pillars in town
@@ -49,6 +49,8 @@ The line names and `## Geteilt` stay German so that the recurring helper finds t
 
 ## 2. Create the accounts (the person does this)
 
+If Albatros says at the step “Accounts on Instagram and co.” that it comes later, you do not suggest any accounts. Then section 3, “No channel connected yet”, applies.
+
 **Instagram (professional account)**
 1. Open the Instagram app, “Create new account”, with your email address.
 2. Enter name, profile picture and bio from `docs/kanaele.md`.
@@ -93,6 +95,8 @@ When a blog post is online (skill `blog`), you do this:
 4. **The person decides:** she sees the drafts in Albatros, changes them, approves and posts herself.
 5. **Remember:** under `## Geteilt` in `docs/kanaele.md` goes `<slug> <DD.MM.YYYY>`. That way no draft is made twice.
 
+**No channel connected yet:** Albatros cannot connect channels yet. If `docs/kanaele.md` is missing or no account in it is ready, you create exactly one draft “to copy” for each new post: `entwurf` with `art: beitrag`, in `an` goes “To copy”, in the text the link to the post and the note from rule 3. The person copies the text and posts it herself.
+
 Without the Albatros app you put the drafts in `docs/beitraege/<DD.MM.YYYY>-<slug>.md`; the person copies them into the app.
 
 ## 4. Set it up as a recurring helper
@@ -101,7 +105,7 @@ Offer it. Only after her yes do you create it with `aufgabe`, with `ausloeser: z
 
 - **Title:** “Share new posts”
 - **When:** every Monday at 9 a.m. (the person chooses day and time)
-- **Instruction:** “Look in web/src/content/blog/ for posts that are online and missing under ## Geteilt in docs/kanaele.md. For each: one draft per ready channel with entwurf, art beitrag, with the note about SwissActivities if it links there. Then enter the post under ## Geteilt. Post nothing.”
+- **Instruction:** “Look in web/src/content/blog/ for posts that are online and missing under ## Geteilt in docs/kanaele.md. For each: one draft per ready channel with entwurf, art beitrag, with the note about SwissActivities if it links there. Without a ready channel exactly one draft with an “To copy”. Then enter the post under ## Geteilt. Post nothing.”
 
 If `aufgabe` offers a trigger for a freshly published site, prefer that one (`ausloeser: ereignis`). Then the drafts come right after publishing instead of on Monday.
 

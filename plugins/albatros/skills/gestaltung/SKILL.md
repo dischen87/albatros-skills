@@ -2,7 +2,7 @@
 name: gestaltung
 description: 'Gestaltet mit einer Person ohne Vorwissen Bedienung und Aussehen ihrer Seite, eigen statt aus dem Baukasten. Im Fahrplan (P6): graues Mockup, drei klar verschiedene Richtungen aus dem Konzept, geprüft mit design-pruefen.mjs, Tokens für Farben, Schrift und Abstände (design/tokens.css), docs/designsystem.md und ein Musterblatt; Bewegung und 3D nur mit Absicht. Bei einer bestehenden Seite: prüfen aus drei Blickwinkeln, Bedienung reparieren, Richtungen, Tokens, Umbau mit Fotos. Mit der Frage nach Gestaltungselementen (Bild-Werkzeuge nur nach Preis und Ja). Nutze den Skill nach konzept und bei «Design», «Designsystem», «Musterblatt», «sieht langweilig aus», «sieht selbstgebastelt aus», «sieht nach KI aus», «vibe coded», «schöner machen», «Farben», «Schrift», «Redesign», «drei Varianten», «Layout», «Icons», «Maskottchen», «Animation», «3D».'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # Gestaltung: erst das Fundament, dann die Fassade
@@ -78,9 +78,9 @@ Das Designsystem ist der dritte Teil, der geschliffen wird (Skill `lotse`, Absch
 Phase P6 «Designsystem mit Beispiel». Dran, wenn `docs/konzept.md` alle sieben Zeilen hat (P5, Skill `konzept`); fehlt sie, gehst du zuerst dorthin. Danach kommt P7, die ganze Seite als Entwurf zum Durchklicken (Skill `entwurf`).
 
 - **Ergebnis:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` und `docs/designsystem.md` mit den Zeilen `Reihenfolge:`, `Richtung:`, `Musterblatt:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` und `Maskottchen:`.
-- **Geschafft, wenn** `tokens.css` und `musterblatt.html` da sind, das Musterblatt Farben, Schriften und Grössen nur als `var(--…)` aus `tokens.css` nutzt und die Person es gesehen hat (`Musterblatt: gesehen am …`).
+- **Geschafft, wenn** `tokens.css` und `musterblatt.html` da sind, das Musterblatt Farben, Schriften und Grössen nur als `var(--…)` aus `tokens.css` nutzt und die Person es gesehen hat (`Musterblatt: gesehen am …`; mit dem Programm Albatros schreibt diese Zeile nur Albatros, Schritt 5).
 - **Fragen an die Person:** «Stimmt die Reihenfolge im grauen Mockup?», «Welche der drei Richtungen, oder welche Mischung?», «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» und die Frage nach Gestaltungselementen. Jede der drei Antworten hat ihre eigene Zeile (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Eine Annahme gibt es dafür nicht: Bis die Person geantwortet hat, steht dort `[offen: …]`. «Auch eine dunkle Fassung?» schlägst du als `[Annahme: ja, hell und dunkel]` vor, denn viele Handys zeigen nachts dunkel.
-- **Insel:** `mockup`, sobald die Reihenfolge stimmt; `entwuerfe`, sobald die Person das Musterblatt gesehen hat und es passt.
+- **Insel:** `mockup`, sobald die Reihenfolge stimmt; `entwuerfe`, sobald die Person das Musterblatt gesehen hat und es passt (mit dem Programm: nach ihrem «Passt so» zu «Farben und Schriften»).
 
 **Modus:** Lies `Modus:` in `docs/projekt.md` (fehlt die Zeile, gilt `machen`). Der Lernmoment dieser Phase ist «Warum Farben und Schriften nur an einem Ort stehen»: Die Person ändert selbst eine Farbe in `design/tokens.css`, lädt das Musterblatt neu und sieht, wie sie sich überall ändert. Im Modus `lernen` macht sie das selbst (danach `verstanden_melden` mit `mission: flugschule-19-musterblatt` und `art: selbst`), und am Ende der Phase, wenn du `entwuerfe` meldest, stellst du die Kontrollfragen der Lektion `flugschule-19-musterblatt`: «Warum stehen Farben und Schriften deiner Seite nur an einem Ort?» und «Warum zeigt dir deine KI zuerst ein graues Mockup und erst dann Farben?» Den Kern einer guten Antwort nennt `lage`. Erst nach ihrer Antwort meldest du `art: kontrollfrage`. Im Modus `machen` bietest du den Lernmoment an und erklärst jeden Schritt in einem Satz mit seinem Bild. Fehlt das Werkzeug `verstanden_melden`, geht es ohne weiter.
 
@@ -92,7 +92,7 @@ Die graue Skizze der Startseite aus P1 liegt in `design/skizze.html`. Daraus mac
 - Echte Überschriften und Sätze aus `docs/projekt.md`, `docs/plan.md` und `docs/konzept.md` (Name, Kern), der Hauptknopf mit seinem echten Text («Platz anfragen»), das Menü mit allen Seiten aus `Seiten:`.
 - Eine Datei ohne Verweise ins Netz; sie öffnet sich mit einem Doppelklick.
 
-Öffne sie und frag nur: «Stimmt die Reihenfolge im grauen Mockup?» Warum: Aufbau vor Aussehen. Ändere, bis sie stimmt. Dann legst du `docs/designsystem.md` an (Vorlage in Schritt 4) mit `Reihenfolge: bestätigt am <TT.MM.JJJJ>`, `Richtung: [offen: Wahl der Richtung]`, `Musterblatt: [offen: kommt nach dem Zeigen]` und den übrigen Zeilen mit `[offen: …]`, und meldest `mockup` (Abschnitt «Die Insel»).
+Öffne sie und frag nur: «Stimmt die Reihenfolge im grauen Mockup?» Warum: Aufbau vor Aussehen. Ändere, bis sie stimmt. Mit dem Programm Albatros wartest du nicht im Chat auf die Antwort: Du meldest das Mockup mit `teil_bereit`, stellst die Frage als Karte (`frage`) und machst im selben Lauf mit den drei Richtungen weiter. Dann legst du `docs/designsystem.md` an (Vorlage in Schritt 4) mit `Reihenfolge: bestätigt am <TT.MM.JJJJ>`, `Richtung: [offen: Wahl der Richtung]`, `Musterblatt: [offen: kommt nach dem Zeigen]` und den übrigen Zeilen mit `[offen: …]`, und meldest `mockup` (Abschnitt «Die Insel»).
 
 ### 2. Drei Richtungen auf dem Mockup
 
@@ -166,7 +166,7 @@ Icons: … · Illustrationen: … · Fotos: Fotoliste in docs/inhalte.md · Figu
 - <TT.MM.JJJJ>, ‹ihre Worte› → was geändert ist
 ```
 
-Die Anfänge der Zeilen sind fest, denn `lage` und der Skill `entwurf` lesen sie: Hinter `Reihenfolge:` steht `bestätigt am` mit dem Datum. Hinter `Musterblatt:` steht `[offen: kommt nach dem Zeigen]`, bis die Person Ja gesagt hat, danach `gesehen am <TT.MM.JJJJ>, passt` (Schritt 5). Hinter `Maskottchen:` steht zuerst `ja`, `nein` oder `später`, wie in `docs/konzept.md`.
+Die Anfänge der Zeilen sind fest, denn `lage` und der Skill `entwurf` lesen sie: Hinter `Reihenfolge:` steht `bestätigt am` mit dem Datum. Hinter `Musterblatt:` steht `[offen: kommt nach dem Zeigen]`, bis die Person Ja gesagt hat, danach `gesehen am <TT.MM.JJJJ>, passt` (Schritt 5). Mit dem Programm Albatros schreibt diese Zeile nur Albatros (Schritt 5). Hinter `Maskottchen:` steht zuerst `ja`, `nein` oder `später`, wie in `docs/konzept.md`.
 
 ### 5. Das Musterblatt
 
@@ -183,7 +183,7 @@ Die Anfänge der Zeilen sind fest, denn `lage` und der Skill `entwurf` lesen sie
 
 Zeigt das Musterblatt eine Bewegung (ein Knopf, der nachgibt), steht sie dort mit dem Satz, was sie erklärt. Farben, Schriften und Grössen stehen im Musterblatt nur als `var(--…)`. Prüf das mit den Augen im Code; ist Node schon da, läuft nochmals `node scripts/design-pruefen.mjs` (jetzt mit dem Farbfächer: Titelschrift, Typo-Skala, Farben aus dem Baukasten), und die Kontraste misst `node <Ordner des Skills entwurf>/entwurf-pruefen.mjs --nur farbfaecher` und rechnet dabei auch jeden Kontrast-Kommentar nach (Ordner unbekannt: `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Öffne das Musterblatt und zeig der Person, wie sie es am Handy sieht: das Browserfenster ganz schmal ziehen oder die Handy-Ansicht des Browsers (Firefox und Chrome: `Ctrl+Shift+M`, am Mac in Firefox `Cmd+Opt+M`, in Chrome zuerst `F12`). Dann frag: «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» Warum: Was im Musterblatt stimmt, stimmt auf jeder Seite. Änderungen machst du in `tokens.css` oder `komponenten.css`, nie im Musterblatt selbst. Nach ihrem Ja schreibst du in `docs/designsystem.md` die Zeile `Musterblatt: gesehen am <TT.MM.JJJJ>, passt` (statt `[offen: …]`), zum Beispiel `Musterblatt: gesehen am 31.10.2026, passt`, füllst die übrigen Zeilen und meldest `entwuerfe`. Im Modus `lernen` stellst du dazu die zwei Kontrollfragen der Lektion `flugschule-19-musterblatt` (oben beim Modus).
+Öffne das Musterblatt und zeig der Person, wie sie es am Handy sieht: das Browserfenster ganz schmal ziehen oder die Handy-Ansicht des Browsers (Firefox und Chrome: `Ctrl+Shift+M`, am Mac in Firefox `Cmd+Opt+M`, in Chrome zuerst `F12`). Dann frag: «Passt das Musterblatt: Farben, Schriften, Knöpfe, Felder, Karten und Kopf auf dem Handy?» Warum: Was im Musterblatt stimmt, stimmt auf jeder Seite. Änderungen machst du in `tokens.css` oder `komponenten.css`, nie im Musterblatt selbst. **Mit dem Programm Albatros** schreibst du die Zeile `Musterblatt: gesehen am …` nie selbst: Albatros schreibt sie, wenn die Person in Albatros ihr Ja zum Entwurf gibt. Eine Zeile, die nicht Albatros geschrieben hat, zählt nicht. Nach ihrem «Passt so» zu «Farben und Schriften» füllst du die übrigen Zeilen, meldest `entwuerfe` und machst mit dem nächsten Teil weiter, den `naechstes` nennt. **Ohne das Programm** (nur im Terminal) schreibst du nach ihrem Ja in `docs/designsystem.md` die Zeile `Musterblatt: gesehen am <TT.MM.JJJJ>, passt` (statt `[offen: …]`), zum Beispiel `Musterblatt: gesehen am 31.10.2026, passt`, füllst die übrigen Zeilen und meldest `entwuerfe`. Im Modus `lernen` stellst du dazu die zwei Kontrollfragen der Lektion `flugschule-19-musterblatt` (oben beim Modus).
 
 ### Die Insel
 

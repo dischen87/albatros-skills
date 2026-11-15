@@ -2,8 +2,8 @@
 name: entwurf
 description: "Progetta con una persona senza conoscenze tecniche tutto il suo sito web da sfogliare cliccando, prima di costruirlo (piano di volo P7 e P8): prima controllare l'officina (Node, npm, Git, con un blocco anche Bun), poi ogni pagina e ogni funzione della lista di costruzione nella direzione scelta, con testi veri, un menu comune, conferma, errore e stati vuoti, le pagine dei blocchi come simulazione e solo valori da design/tokens.css; verificato con entwurf-pruefen.mjs, rifinito con i riscontri della persona. Poi il via libera per costruire, solo con un sì chiaro della persona. Il risultato è design/entwurf/ con docs/entwurf.md. Usa questo skill dopo gestaltung (tavola dei campioni vista) e con «bozza», «mostrare tutto il sito», «da sfogliare cliccando», «prototipo», «via libera per costruire», «installare Node»."
 metadata:
-  stand: 0.3.3
-  quelle: 'ebc8e728aae4'
+  stand: 0.3.4
+  quelle: '5e70b158548d'
 ---
 
 # Bozza: il modello in cui si può entrare
@@ -18,7 +18,7 @@ Come ogni officina, anche la costruzione del modello ha bisogno di attrezzi: pri
 
 ## Nel piano di volo
 
-- **P7 «Progettare tutto il sito»** tocca quando la persona ha visto la tavola dei campioni (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` e, in `docs/designsystem.md`, la riga `Musterblatt: gesehen am <data>`). Controllalo prima di cominciare (Windows: `dir design` e `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
+- **P7 «Progettare tutto il sito»** tocca quando la persona ha visto la tavola dei campioni (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` e, in `docs/designsystem.md`, la riga `Musterblatt: gesehen am <data>`). Con il programma Albatros ti dice `naechstes` quando tocca a P7; la riga `Musterblatt: gesehen am …` la scrive Albatros solo con il sì alla bozza, e il controllo qui non serve. Senza il programma lo controlli prima di cominciare (Windows: `dir design` e `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
   ```bash
   ls design/tokens.css design/komponenten.css design/musterblatt.html
   grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md

@@ -2,8 +2,8 @@
 name: entwurf
 description: "Drafts the whole website with a person who has no prior knowledge, to click through before anything gets built (flight plan P7 and P8): first a check of the workshop (Node, npm, Git, with a building block also Bun), then every page and every feature of the build list in the chosen direction, with real texts, a shared menu, confirmation, error and empty states, the pages of building blocks as dummies and only values from design/tokens.css; checked with entwurf-pruefen.mjs, refined with the person's feedback. Then the approval to build, only with a clear yes from the person. The result is design/entwurf/ with docs/entwurf.md. Use this skill after gestaltung (sample sheet seen) and for “draft”, “show me the whole site”, “click-through”, “prototype”, “clickable mockup”, “approval to build”, “install Node”."
 metadata:
-  stand: 0.3.3
-  quelle: 'ebc8e728aae4'
+  stand: 0.3.4
+  quelle: '5e70b158548d'
 ---
 
 # Draft: the walk-through model
@@ -18,7 +18,7 @@ Like every workshop, model-making needs tools: before you start, you check they'
 
 ## In the flight plan
 
-- **P7 “Draft the whole website”** is due once the person has seen the sample sheet (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and, in `docs/designsystem.md`, the line `Musterblatt: gesehen am <date>`). Check this before you start (Windows: `dir design` and `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
+- **P7 “Draft the whole website”** is due once the person has seen the sample sheet (P6, skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` and, in `docs/designsystem.md`, the line `Musterblatt: gesehen am <date>`). With the Albatros app, `naechstes` tells you when P7 is due; Albatros only writes the line `Musterblatt: gesehen am …` with the yes to the draft, so this check does not apply. Without the app you check it before you start (Windows: `dir design` and `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
   ```bash
   ls design/tokens.css design/komponenten.css design/musterblatt.html
   grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md

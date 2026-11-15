@@ -2,8 +2,8 @@
 name: konzept
 description: "Clarifie avec une personne sans connaissances préalables, après le plan confirmé, le caractère de son site avant de choisir les couleurs (plan de vol P5) : nom vers l'extérieur, cœur en trois phrases, ton (tu ou vous), trois mots pour l'effet voulu, ce qui doit rester, langage visuel et toujours la question de savoir si un personnage (mascotte) en fait partie : oui, non ou plus tard. Sur le parcours entreprise, d'abord avec la méthode marke. Des images du personnage seulement après avoir indiqué le prix et reçu un oui. Le résultat est docs/konzept.md. Utilise ce skill après webseite-planen (plan confirmé) et pour « concept », « marque », « caractère », « ton », « mascotte », « personnage », « quel effet doit faire mon site »."
 metadata:
-  stand: 0.3.3
-  quelle: '1762faed32c0'
+  stand: 0.3.4
+  quelle: '9c952165d011'
 ---
 
 # Concept : le caractère avant les couleurs
@@ -20,6 +20,7 @@ Phase P5 « Concept de design et de marketing ». C'est le tour de cette phase a
 
 - **Résultat :** `docs/konzept.md` avec les lignes `Name:`, `Kern:`, `Ton:`, `Charakter:`, `Maskottchen:`, `Muss bleiben:` et `Bildsprache:` (modèle à l'étape 6). Les noms des lignes restent en allemand, parce que `lage` les lit ; le contenu est en français.
 - **Réussi quand** les sept lignes sont là et que `Maskottchen:` commence par `ja`, `nein` ou `später`. Tu annonces alors l'étape `konzept` sur l'île.
+- **Avec le programme Albatros**, tu poses les questions sur le concept déjà dans le passage où tu donnes le plan pour le oui, au même moment que le oui au plan (skill `webseite-planen`, section « Vérifier le plan ») : comme cartes avec `frage`, le personnage (oui, non ou plus tard), le ton (tu ou vous) et ce qui doit rester. Ces trois cartes viennent avec le oui, pour qu'il ne faille pas un passage à part pour elles. Le nom et les trois mots pour le caractère, tu les proposes à partir de ses indications comme `[Annahme: …]`. Après son oui (`naechstes` l'apporte avec ses réponses), tu écris `docs/konzept.md` avec ses réponses et tu continues directement dans le même passage avec le skill `gestaltung` : maquette grise, trois directions.
 - **Parcours entreprise :** D'abord vient la méthode `marke`. Va la chercher avec l'outil `methode` (nom `marke`) et suis-la : elle vérifie le nom avec la personne (Swissreg, registre du commerce, domaine, test à voix haute) et remplit `docs/konzept.md` avec les mêmes sept lignes ; la démarche va dans `docs/marke.md`. Ensuite tu reprends son résultat : lis `docs/konzept.md`, demande seulement ce qui manque (souvent la réponse au sujet du personnage) et continue avec les sections « Le personnage » et « L'île ». C'est `lage` qui dit si c'est le parcours entreprise (il nomme la méthode `marke`) ; dans le projet, tu le reconnais à `docs/zielgruppe.md` ou `docs/angebot.md` de P2. Si `methode` ne livre rien, tu fais ici toutes les étapes et tu dis honnêtement que la vérification approfondie du nom fait partie de la méthode.
 
 ## Comment tu parles

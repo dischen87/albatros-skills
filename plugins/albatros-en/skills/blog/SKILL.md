@@ -2,8 +2,8 @@
 name: blog
 description: "Sets up a blog on an Astro site with a person who has no prior knowledge and writes posts with her: each post a Markdown file in the logbook (web/src/content/blog/<slug>.md with title, date, description, bild), the person tells the idea, Bert writes the file, she reads it in the preview and clicks publish in Albatros. With a template for family recommendations (for whom, what, when and weather, getting there, cost, my tip, link) and rules for her own photos. Use this skill for “blog”, “blog post”, “new post”, “write an article”, “publish a recommendation”, “write up a day-trip tip”, “news on my site”."
 metadata:
-  stand: 0.3.3
-  quelle: '040425d83711'
+  stand: 0.3.4
+  quelle: 'e22602facd46'
 ---
 
 # Blog: the binder of day-trip sheets
@@ -22,6 +22,8 @@ A binder stands on the shelf. Each outing is a sheet in it, always labelled the 
 ## Where the posts live
 
 Each post is a file in the logbook: `web/src/content/blog/<slug>.md`. The `<slug>` is the title in lower case with hyphens, for example `seilpark-mit-kindern`; it becomes the address `/blog/seilpark-mit-kindern/`. This is the simplest level from the skill `cms` (texts in the project): no CMS, no database, Bert writes the files. If others are to write without Bert later, the skill `cms` shows the next step.
+
+**A recommendation is a post.** A family tip or day-trip tip is a blog post and lives in `web/src/content/blog/`. If the site already has its own collection for recommendations (for example `web/src/content/tipps/` from the build), Albatros counts its entries as posts, with the same rules (header, links, notice, prices, “My tip”). Then you write the post or the experience there and never create a second, empty blog.
 
 **Before the two yeses** (plan confirmed, draft approved; `naechstes` says `bauen_erlaubt: false`) you build nothing on the site. Write a post as a draft to `docs/beitraege/<slug>.md` instead, with the same header (title, date, description). After the two yeses you move it to `web/src/content/blog/`. Albatros checks both places the same way.
 
@@ -74,13 +76,14 @@ The blog is a part of the site like any other. If the site is still being planne
 
 ## 2. Write a post
 
-1. **The person tells the idea:** where were you, with whom, what did you experience? If she has photos, she puts them in the chat or in the project folder.
+1. **The person tells the idea:** where were you, with whom, what did you experience? If she has already told her experience (in the chat or in the text of the task), you do not ask again. If she has photos, she puts them in the chat or in the project folder.
 2. **Bert gets the facts.** For an outing with the skill `swissactivities`: age, weather, price with date, getting there, link. Nothing from memory.
-3. **Bert writes the file** following the template below. What the person experienced he writes in her words. If something is missing, he asks instead of inventing it.
+3. **Bert writes the file** following the template below. What the person experienced he takes over exactly in her words. He adds nothing she did not say: no weather, no time of day, no feelings, no quotes. If she writes “on a rainy day”, it does not say “It rained all morning that day”. If something is missing, he asks instead of inventing it.
 4. **The person reads it in the preview.** Bert starts it with `vorschau_starten` (without the app: `cd web && npm run dev`). She says what should be different; Bert changes it.
-5. **Bert checks** with `node scripts/pruefen.mjs` and makes an entry in the logbook: `git add web && git commit -m "Blog: <title>"`.
-6. **The person clicks the publish button in Albatros.** Bert does not run `git push`. Without the app, the skill `webseite-aendern` applies (release, then push).
-7. **Then share:** Bert writes posts for Instagram and the rest as drafts (skill `kanaele`).
+5. **The person confirms.** A post only counts once she has confirmed it in Albatros with “That’s right”: the section “My tip”, or for a post without this section the whole text. Tell her in one sentence where: in the checklist, at the step “Blog”. Without the app she says it in the chat.
+6. **Bert checks.** If you wrote or changed posts in this run, or pages that show a partner (for example SwissActivities), with the app you call the tool `beitrag_pruefen` (server “albatros-arbeitsplatz”) before the end of the run. You fix every error it reports in the same run and then call it again. Without the app you check with `node scripts/pruefen.mjs`. Then an entry in the logbook: `git add web && git commit -m "Blog: <title>"`.
+7. **The person clicks the publish button in Albatros.** Bert does not run `git push`. Without the app, the skill `webseite-aendern` applies (release, then push).
+8. **Then share:** Bert writes posts for Instagram and the rest as drafts (skill `kanaele`).
 
 ## Template: family recommendation
 
@@ -110,6 +113,8 @@ widget: ""
 ```
 
 The field names in the header (`title`, `date`, `bild` …) stay as they are; the text is in the language of the site. Empty fields are left out: `widget` only with a widget ID, `bild` only with a photo.
+
+“My tip” never holds a placeholder (such as “[Placeholder: coming later]”). If the person has not told her experience yet, the recommendation stays a draft in `docs/beitraege/` until she tells it.
 
 ## 3. Photos
 

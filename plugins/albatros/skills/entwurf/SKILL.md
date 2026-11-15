@@ -2,7 +2,7 @@
 name: entwurf
 description: 'Entwirft mit einer Person ohne Vorwissen ihre ganze Webseite zum Durchklicken, bevor gebaut wird (Fahrplan P7 und P8): zuerst die Werkstatt prüfen (Node, npm, Git, mit Baustein auch Bun), dann jede Seite und jede Funktion der Bauliste in der gewählten Richtung, mit echten Texten, gemeinsamem Menü, Bestätigung, Fehler und leeren Zuständen, Seiten der Bausteine als Attrappe und nur mit Werten aus design/tokens.css; geprüft mit entwurf-pruefen.mjs, geschliffen mit den Rückmeldungen der Person. Danach die Freigabe zum Bauen, nur mit einem klaren Ja der Person. Ergebnis ist design/entwurf/ mit docs/entwurf.md. Nutze den Skill nach gestaltung (Musterblatt gesehen) und bei «Entwurf», «ganze Seite zeigen», «zum Durchklicken», «Prototyp», «Klickdummy», «Freigabe zum Bauen», «Node installieren».'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # Entwurf: das begehbare Modell
@@ -17,7 +17,7 @@ Wie jede Werkstatt braucht der Modellbau Werkzeug: Bevor es losgeht, schaust du,
 
 ## Im Fahrplan
 
-- **P7 «Ganze Webseite entwerfen»** ist dran, wenn die Person das Musterblatt gesehen hat (P6, Skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` und in `docs/designsystem.md` die Zeile `Musterblatt: gesehen am <Datum>`). Prüf das vor dem Start (Windows: `dir design` und `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
+- **P7 «Ganze Webseite entwerfen»** ist dran, wenn die Person das Musterblatt gesehen hat (P6, Skill `gestaltung`: `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` und in `docs/designsystem.md` die Zeile `Musterblatt: gesehen am <Datum>`). Mit dem Programm Albatros sagt dir `naechstes`, wann P7 dran ist; die Zeile `Musterblatt: gesehen am …` schreibt Albatros erst mit dem Ja zum Entwurf, die Prüfung hier entfällt. Ohne das Programm prüfst du es vor dem Start (Windows: `dir design` und `findstr /r /b /c:"Musterblatt: gesehen am [0-9]" docs\designsystem.md`):
   ```bash
   ls design/tokens.css design/komponenten.css design/musterblatt.html
   grep -E '^Musterblatt: gesehen am [0-9]' docs/designsystem.md

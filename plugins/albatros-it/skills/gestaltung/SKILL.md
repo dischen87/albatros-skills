@@ -2,8 +2,8 @@
 name: gestaltung
 description: "Dà forma con una persona senza conoscenze tecniche all'uso e all'aspetto del suo sito, unico e non fatto con lo stampino. Nel piano di volo (P6): mockup grigio, tre direzioni chiaramente diverse dal concetto, verificate con design-pruefen.mjs, token per colori, carattere e spaziature (design/tokens.css), docs/designsystem.md e una tavola dei campioni; movimento e 3D solo con un'intenzione. Per un sito esistente: controllare da tre punti di vista, riparare l'uso, direzioni, token, rifacimento con foto. Con la domanda sugli elementi grafici (strumenti per immagini solo dopo prezzo e sì). Usa questo skill dopo konzept e con «design», «sistema di design», «tavola dei campioni», «sembra noioso», «sembra fatto in casa», «sembra fatto dall'IA», «vibe coded», «renderlo più bello», «colori», «carattere», «redesign», «tre varianti», «layout», «icone», «mascotte», «animazione», «3D»."
 metadata:
-  stand: 0.3.3
-  quelle: '0f0c77561818'
+  stand: 0.3.4
+  quelle: '83dda8d92b13'
 ---
 
 # Aspetto: prima le fondamenta, poi la facciata
@@ -80,9 +80,9 @@ Il sistema di design è la terza parte che viene rifinita (skill `lotse`, sezion
 Fase P6 «Sistema di design con esempio». Tocca a questa fase quando `docs/konzept.md` ha tutte e sette le righe (P5, skill `konzept`); se manca, vai prima lì. Dopo viene P7, tutto il sito come bozza da sfogliare cliccando (skill `entwurf`).
 
 - **Risultato:** `design/mockup.html`, `design/richtungen/*.html`, `design/tokens.css`, `design/komponenten.css`, `design/musterblatt.html` e `docs/designsystem.md` con le righe `Reihenfolge:`, `Richtung:`, `Musterblatt:`, `Farben:`, `Schriften:`, `Abstände:`, `Komponenten:` e `Maskottchen:`. I nomi dei file e delle righe restano in tedesco, perché `lage` e gli script di verifica li leggono; il contenuto è in italiano.
-- **Fatto quando** ci sono `tokens.css` e `musterblatt.html`, la tavola dei campioni usa colori, caratteri e dimensioni solo come `var(--…)` da `tokens.css` e la persona l'ha vista (`Musterblatt: gesehen am …`).
+- **Fatto quando** ci sono `tokens.css` e `musterblatt.html`, la tavola dei campioni usa colori, caratteri e dimensioni solo come `var(--…)` da `tokens.css` e la persona l'ha vista (`Musterblatt: gesehen am …`; con il programma Albatros questa riga la scrive solo Albatros, passo 5).
 - **Domande alla persona:** «L'ordine nel mockup grigio è giusto?», «Quale delle tre direzioni, o quale combinazione?», «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» e la domanda sugli elementi grafici. Ognuna delle tre risposte ha la sua riga (`Reihenfolge:`, `Richtung:`, `Musterblatt:`). Qui non ci sono ipotesi: finché la persona non ha risposto, c'è `[offen: …]`. «Anche una versione scura?» la proponi come `[Annahme: sì, chiara e scura]`, perché molti telefonini di notte mostrano tutto scuro.
-- **Isola:** `mockup` appena l'ordine è giusto; `entwuerfe` appena la persona ha visto la tavola dei campioni e le va bene.
+- **Isola:** `mockup` appena l'ordine è giusto; `entwuerfe` appena la persona ha visto la tavola dei campioni e le va bene (con il programma: dopo il suo «Va bene così» a «Colori e caratteri»).
 
 **Modo:** Leggi `Modus:` in `docs/projekt.md` (se la riga manca, vale `machen`, fare). Il momento di apprendimento di questa fase è «Perché colori e caratteri stanno in un solo posto»: la persona cambia lei stessa un colore in `design/tokens.css`, ricarica la tavola dei campioni e vede che cambia dappertutto. Nel modo `lernen` (imparare) lo fa da sola (poi `verstanden_melden` con `mission: flugschule-19-musterblatt` e `art: selbst`), e alla fine della fase, quando annunci `entwuerfe`, fai le domande di controllo della lezione `flugschule-19-musterblatt`: «Perché colori e caratteri del tuo sito stanno in un solo posto?» e «Perché la tua IA ti mostra prima un mockup grigio e solo dopo i colori?» Il nocciolo di una buona risposta lo dà `lage`. Solo dopo la sua risposta annunci `art: kontrollfrage`. Nel modo `machen` (fare) offri il momento di apprendimento e spieghi ogni passo in una frase con la sua immagine. Se lo strumento `verstanden_melden` manca, si continua senza.
 
@@ -94,7 +94,7 @@ Lo schizzo grigio della pagina iniziale di P1 si trova in `design/skizze.html`. 
 - Titoli e frasi veri da `docs/projekt.md`, `docs/plan.md` e `docs/konzept.md` (nome, nucleo), il pulsante principale con il suo testo vero («Chiedi un posto»), il menu con tutte le pagine di `Seiten:`.
 - Un solo file senza link alla rete; si apre con un doppio clic.
 
-Aprilo e chiedi solo: «L'ordine nel mockup grigio è giusto?» Perché: prima la struttura, poi l'aspetto. Cambia finché è giusto. Poi crei `docs/designsystem.md` (modello al passo 4) con `Reihenfolge: bestätigt am <GG.MM.AAAA>`, `Richtung: [offen: scelta della direzione]`, `Musterblatt: [offen: viene dopo averla mostrata]` e le altre righe con `[offen: …]`, e annunci `mockup` (sezione «L'isola»).
+Aprilo e chiedi solo: «L'ordine nel mockup grigio è giusto?» Perché: prima la struttura, poi l'aspetto. Cambia finché è giusto. Con il programma Albatros non aspetti la risposta nella chat: annunci il mockup con `teil_bereit`, fai la domanda come scheda (`frage`) e nella stessa sessione continui con le tre direzioni. Poi crei `docs/designsystem.md` (modello al passo 4) con `Reihenfolge: bestätigt am <GG.MM.AAAA>`, `Richtung: [offen: scelta della direzione]`, `Musterblatt: [offen: viene dopo averla mostrata]` e le altre righe con `[offen: …]`, e annunci `mockup` (sezione «L'isola»).
 
 ### 2. Tre direzioni sul mockup
 
@@ -168,7 +168,7 @@ Icone: … · illustrazioni: … · foto: lista delle foto in docs/inhalte.md ·
 - <GG.MM.AAAA>, ‹le sue parole› → cosa è cambiato
 ```
 
-Gli inizi di queste righe sono fissi e restano in tedesco, perché `lage` e lo skill `entwurf` li leggono: dopo `Reihenfolge:` viene `bestätigt am` con la data. Dopo `Musterblatt:` viene `[offen: viene dopo averla mostrata]` finché la persona non ha detto sì, poi `gesehen am <GG.MM.AAAA>, passt` (passo 5). Dopo `Maskottchen:` viene prima `ja`, `nein` o `später`, come in `docs/konzept.md`.
+Gli inizi di queste righe sono fissi e restano in tedesco, perché `lage` e lo skill `entwurf` li leggono: dopo `Reihenfolge:` viene `bestätigt am` con la data. Dopo `Musterblatt:` viene `[offen: viene dopo averla mostrata]` finché la persona non ha detto sì, poi `gesehen am <GG.MM.AAAA>, passt` (passo 5). Con il programma Albatros questa riga la scrive solo Albatros (passo 5). Dopo `Maskottchen:` viene prima `ja`, `nein` o `später`, come in `docs/konzept.md`.
 
 ### 5. La tavola dei campioni
 
@@ -185,7 +185,7 @@ Gli inizi di queste righe sono fissi e restano in tedesco, perché `lage` e lo s
 
 Se la tavola dei campioni mostra un movimento (un pulsante che cede), sta lì con la frase che dice che cosa spiega. Nella tavola dei campioni colori, caratteri e dimensioni compaiono solo come `var(--…)`. Controllalo con gli occhi nel codice; se Node c'è già, gira di nuovo `node scripts/design-pruefen.mjs` (adesso con la mazzetta dei colori: carattere dei titoli, scala tipografica, colori da kit già pronto), e i contrasti li misura `node <cartella dello skill entwurf>/entwurf-pruefen.mjs --nur farbfaecher`, che ricalcola anche ogni commento di contrasto (cartella sconosciuta: `curl -fsSL https://raw.githubusercontent.com/dischen87/albatros-skills/main/plugins/albatros/skills/entwurf/entwurf-pruefen.mjs -o scripts/entwurf-pruefen.mjs`).
 
-Apri la tavola dei campioni e mostra alla persona come vederla sul telefonino: rendere la finestra del browser strettissima o usare la vista telefonino del browser (Firefox e Chrome: `Ctrl+Shift+M`, sul Mac in Firefox `Cmd+Opt+M`, in Chrome prima `F12`). Poi chiedi: «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» Perché: ciò che è giusto nella tavola dei campioni è giusto su ogni pagina. Le modifiche le fai in `tokens.css` o `komponenten.css`, mai nella tavola stessa. Dopo il suo sì scrivi in `docs/designsystem.md` la riga `Musterblatt: gesehen am <GG.MM.AAAA>, passt` (al posto di `[offen: …]`), per esempio `Musterblatt: gesehen am 31.10.2026, passt`, riempi le altre righe e annunci `entwuerfe`. Nel modo `lernen` fai insieme le due domande di controllo della lezione `flugschule-19-musterblatt` (più sopra, al modo).
+Apri la tavola dei campioni e mostra alla persona come vederla sul telefonino: rendere la finestra del browser strettissima o usare la vista telefonino del browser (Firefox e Chrome: `Ctrl+Shift+M`, sul Mac in Firefox `Cmd+Opt+M`, in Chrome prima `F12`). Poi chiedi: «La tavola dei campioni va bene: colori, caratteri, pulsanti, campi, schede e intestazione sul telefonino?» Perché: ciò che è giusto nella tavola dei campioni è giusto su ogni pagina. Le modifiche le fai in `tokens.css` o `komponenten.css`, mai nella tavola stessa. **Con il programma Albatros** non scrivi mai tu la riga `Musterblatt: gesehen am …`: la scrive Albatros quando la persona dà in Albatros il suo sì alla bozza. Una riga che non ha scritto Albatros non conta. Dopo il suo «Va bene così» a «Colori e caratteri» riempi le altre righe, annunci `entwuerfe` e continui con la parte successiva che indica `naechstes`. **Senza il programma** (solo nel terminale) dopo il suo sì scrivi in `docs/designsystem.md` la riga `Musterblatt: gesehen am <GG.MM.AAAA>, passt` (al posto di `[offen: …]`), per esempio `Musterblatt: gesehen am 31.10.2026, passt`, riempi le altre righe e annunci `entwuerfe`. Nel modo `lernen` fai insieme le due domande di controllo della lezione `flugschule-19-musterblatt` (più sopra, al modo).
 
 ### L'isola
 

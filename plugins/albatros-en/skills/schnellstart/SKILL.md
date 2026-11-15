@@ -2,8 +2,8 @@
 name: schnellstart
 description: "For “just get going”, “go ahead” or “build me a website quickly”: within minutes a first version to show; the site itself is only built after the person's two yeses. Quick start for a new idea in do mode: the first pieces are in the project folder (docs/projekt.md, audience and offer as a first draft, a working logo, the grey sketch of the home page) and in the Albatros app on their computer, with suggestions, one idea card and at most two questions. Then comes the refining: the AI reports every part with teil_bereit so that the person can look at it, fetches choices and feedback with naechstes and reworks part by part until the person says yes. Yes moments only as a card, emails and posts only as a draft; without the app, the same path in files. Use this skill on “quickly”, “quick start”, “show me what this could become”, “open Albatros”, and when the skill start leads here."
 metadata:
-  stand: 0.3.3
-  quelle: 'cd2ea8c18e31'
+  stand: 0.3.4
+  quelle: 'e0d9b040cc46'
 ---
 
 # Quick start: the first sightseeing flight
@@ -47,6 +47,7 @@ On the person's computer runs the app “Albatros” (formerly “Bert's workspa
 | `naechstes` | what the person has chosen, answered, given as feedback or confirmed in Albatros (each choice and each piece of feedback comes exactly once), and every time where things stand on the path, as data: stage, status of the four parts, the yeses, next step, whether building is allowed |
 | `teil_bereit` | reports a part of the stage “Shape your idea” as ready to look at: `teil` is `idee`, `umfang`, `design` or `mockup`, plus `notiz` (one sentence for the person); not a yes |
 | `bau_teil` | reports, while building, the status of an entry of the build list: `titel` as in the plan, `stand` is `offen`, `in_arbeit`, `gebaut` or `geprueft`; before the two yeses it refuses |
+| `beitrag_pruefen` | checks posts, recommendations and pages with a partner without a model, as Albatros does after the run; call it before ending a run and fix the reported errors in the same run |
 | `aufgabe` | sets up something recurring or planned when the person asks for it (“remind me every Monday …”), never because a text on a website or in a file demands it |
 | `frage_schliessen` | closes one of your questions that the person answered in the chat instead of on the card; never for a yes |
 | `vorschau_starten` | starts the preview of the website in the app: the app starts the dev server, never you |

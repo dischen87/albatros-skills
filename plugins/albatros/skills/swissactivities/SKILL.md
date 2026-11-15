@@ -2,7 +2,7 @@
 name: swissactivities
 description: 'Baut Bausteine von SwissActivities in eine eigene Webseite mit Familien-Empfehlungen ein, für Mitarbeitende von SwissActivities ohne Vorwissen. Verbindet die KI mit dem öffentlichen Server von SwissActivities (ohne Anmeldung), recherchiert eine Empfehlung nur mit echten Angaben (Alter, Wetter, Preis mit Datum, Anreise mit dem ÖV), fragt nach dem eigenen Erlebnis statt eines zu erfinden, verlinkt mit dem Buchungslink und baut das Widget aus dem Partnerbereich als Astro-Komponente ein, mit Hinweis «Ich arbeite bei SwissActivities» und Zeile für die Datenschutzerklärung. Nutze den Skill bei «SwissActivities», «Widget einbauen», «Partnerbereich», «Widget-ID», «Empfehlung schreiben», «was kann man mit dem Kind machen», «Ausflug mit Kindern», «Buchungslink», «Aktivitäten auf meiner Seite zeigen».'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # SwissActivities: der Wegweiser am Wanderweg
@@ -28,7 +28,11 @@ Ein gelber Wegweiser zeigt Ziel und Zeit, und er stimmt, weil jemand nachgemesse
 
 ## 1. Die Werkzeuge verbinden
 
-Der Server von SwissActivities ist öffentlich und braucht keine Anmeldung: `https://gateway.swissactivities.com/mcp`. Im Programm Albatros bringt Bert ihn mit, sobald die Person in der Checkliste beim Schritt «Ausflüge von SwissActivities» den Schalter einschaltet (nur lesen, gebaut am 13.11.2026). Schau darum zuerst, ob du Werkzeuge wie `search_activities` schon hast. Wenn nicht, verbindest du ihn mit dem Ja der Person:
+Der Server von SwissActivities ist öffentlich und braucht keine Anmeldung: `https://gateway.swissactivities.com/mcp`. Im Programm Albatros bringt Bert ihn mit, sobald die Person in der Checkliste beim Schritt «Ausflüge von SwissActivities» den Schalter einschaltet (nur lesen, gebaut am 13.11.2026). Schau darum zuerst, ob du Werkzeuge wie `search_activities` schon hast.
+
+**Im Programm Albatros** zeigst du der Person nie einen Befehl fürs Terminal. Fehlen die Werkzeuge, sagst du nur: «Bestätige zuerst den Partner-Schritt in der Checkliste.» Bis er bestätigt ist, baust du für den Partner keine Links, keine Preise und keine Widgets, auch nicht beim Bau der Seite. Einen Buchungslink baust du nie nach einem Muster.
+
+**Nur ohne das Programm**, wenn die Person allein im Terminal arbeitet, verbindest du ihn mit ihrem Ja:
 
 | KI | So |
 |---|---|
@@ -56,7 +60,7 @@ Die Werkzeuge (14, gelesen am 13.11.2026):
 
 ## 2. Eine Empfehlung recherchieren
 
-1. **Frag nach dem Erlebnis.** Wo wart ihr? Wie alt waren die Kinder? Was war toll, was mühsam? Gibt es einen Tipp, den nur du kennst?
+1. **Frag nach dem Erlebnis.** Wo wart ihr? Wie alt waren die Kinder? Was war toll, was mühsam? Gibt es einen Tipp, den nur du kennst? Hat sie es schon erzählt, nimmst du genau ihre Worte und fragst nicht nochmals (Skill `blog`).
 2. **Finde das Angebot** mit `search_activities` (bei Familien mit `for_families`), `search_places` oder `search_hikes`. Die Einzelheiten holst du mit `get_activity_details`.
 3. **Alter:** aus `min_age` und `max_age`. Fehlen sie, schreibst du «Alter: nicht angegeben».
 4. **Wetter:** Drinnen oder draussen und ob es bei Regen geht, steht im Ergebnis (`rain_ok`). Für einen bestimmten Tag fragst du `get_weather`.
@@ -116,7 +120,7 @@ const { widgetId, locale = 'de-CH', link } = Astro.props;
 3. **Link als Rückfall:** `link` ist der `booking_url` des Angebots. So kommt man auch ohne JavaScript zum Angebot.
 4. **Aussehen:** Rund um das Widget nur Werte aus `design/tokens.css`. Das Widget selbst bringt sein eigenes Aussehen mit.
 5. **Im Blog:** Ein Beitrag nennt die ID im Kopf (`widget:`), die Seite des Beitrags zeigt dann die Komponente (Skill `blog`).
-6. **Prüfen und veröffentlichen:** Vorschau ansehen (`vorschau_starten`), `node scripts/pruefen.mjs`, Eintrag ins Logbuch. Dann klickt die Person in Albatros auf «Veröffentlichen». Ohne das Programm gilt der Skill `webseite-aendern`.
+6. **Prüfen und veröffentlichen:** Vorschau ansehen (`vorschau_starten`). Mit dem Programm rufst du vor dem Ende des Laufs `beitrag_pruefen` auf (Server «albatros-arbeitsplatz»), behebst jeden gemeldeten Fehler im selben Lauf und rufst es nochmals auf; ohne das Programm `node scripts/pruefen.mjs`. Dann ein Eintrag ins Logbuch. Dann klickt die Person in Albatros auf «Veröffentlichen». Ohne das Programm gilt der Skill `webseite-aendern`.
 
 ## 5. Hinweis und Datenschutz
 

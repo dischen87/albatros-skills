@@ -2,7 +2,7 @@
 name: kanaele
 description: 'Hilft einer Person ohne Vorwissen, Social-Media-Konten für ihre Webseite selbst anzulegen (Instagram als professionelles Konto, Facebook-Seite, LinkedIn-Seite, Pinterest, TikTok freiwillig), mit gleichem Namen wie die Seite und Bio mit Link; Passwörter und Codes bleiben bei ihr. Danach «Neue Beiträge teilen»: Zu jedem neuen Blogbeitrag schreibt Bert je Kanal einen kurzen Beitrag als Entwurf (Werkzeug entwurf), die Person gibt frei und postet selbst; als wiederkehrende Hilfe mit dem Werkzeug aufgabe. Nutze den Skill bei «Social Media», «Instagram», «Facebook-Seite», «LinkedIn», «Pinterest», «TikTok», «Konto anlegen», «Beitrag teilen», «Post schreiben», «wie mache ich meine Seite bekannt».'
 metadata:
-  stand: 0.3.3
+  stand: 0.3.4
 ---
 
 # Kanäle: die Plakatsäulen in der Stadt
@@ -45,6 +45,8 @@ Bio: <höchstens 150 Zeichen, mit dem Hinweis>
 3. **Bio:** zum Beispiel «Familienausflüge in der Schweiz, selbst getestet. Ich arbeite bei SwissActivities, die Tipps sind meine eigenen.» Dazu der Link zur Webseite.
 
 ## 2. Die Konten anlegen (macht die Person)
+
+Steht in Albatros beim Schritt «Konten bei Instagram und Co.», dass er später kommt, schlägst du keine Konten vor. Dann gilt Abschnitt 3, «Noch kein Kanal verbunden».
 
 **Instagram (professionelles Konto)**
 1. Instagram-App öffnen, «Neues Konto erstellen», mit deiner E-Mail-Adresse.
@@ -90,6 +92,8 @@ Ist ein Blogbeitrag im Netz (Skill `blog`), machst du das:
 4. **Die Person entscheidet:** Sie sieht die Entwürfe in Albatros, ändert, gibt frei und postet selbst.
 5. **Merken:** Unter `## Geteilt` in `docs/kanaele.md` kommt `<slug> <TT.MM.JJJJ>`. So entsteht kein Entwurf doppelt.
 
+**Noch kein Kanal verbunden:** Albatros kann Kanäle noch nicht verbinden. Fehlt `docs/kanaele.md` oder ist dort kein Konto fertig, legst du für jeden neuen Beitrag genau einen Entwurf «zum Kopieren» an: `entwurf` mit `art: beitrag`, in `an` steht «Zum Kopieren», im Text der Link zum Beitrag und der Hinweis aus Regel 3. Die Person kopiert den Text und postet ihn selbst.
+
 Ohne das Programm Albatros legst du die Entwürfe in `docs/beitraege/<TT.MM.JJJJ>-<slug>.md` ab; die Person kopiert sie in die App.
 
 ## 4. Als wiederkehrende Hilfe einrichten
@@ -98,7 +102,7 @@ Biete es an. Erst nach ihrem Ja legst du es mit `aufgabe` an, mit `ausloeser: ze
 
 - **Titel:** «Neue Beiträge teilen»
 - **Wann:** jeden Montag um 9 Uhr (Wochentag und Zeit wählt die Person)
-- **Anweisung:** «Schau in web/src/content/blog/ nach Beiträgen, die im Netz sind und unter ## Geteilt in docs/kanaele.md fehlen. Für jeden: je fertigen Kanal einen Entwurf mit entwurf, art beitrag, mit dem Hinweis auf SwissActivities, wenn er dorthin verlinkt. Dann den Beitrag unter ## Geteilt eintragen. Nichts posten.»
+- **Anweisung:** «Schau in web/src/content/blog/ nach Beiträgen, die im Netz sind und unter ## Geteilt in docs/kanaele.md fehlen. Für jeden: je fertigen Kanal einen Entwurf mit entwurf, art beitrag, mit dem Hinweis auf SwissActivities, wenn er dorthin verlinkt. Ohne fertigen Kanal genau einen Entwurf mit an «Zum Kopieren». Dann den Beitrag unter ## Geteilt eintragen. Nichts posten.»
 
 Bietet `aufgabe` einen Auslöser für eine frisch veröffentlichte Seite an, nimm lieber diesen (`ausloeser: ereignis`). Dann kommen die Entwürfe gleich nach dem Veröffentlichen statt am Montag.
 
