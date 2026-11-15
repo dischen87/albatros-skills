@@ -3,7 +3,7 @@ name: schnellstart
 description: "Con «parti e basta», «fallo tu» o «costruiscimi in fretta un sito»: in pochi minuti una prima versione da mostrare; il sito stesso si costruisce solo dopo due sì della persona. Avvio rapido per un'idea nuova nel modo fare: i primi pezzi sono nella cartella del progetto (docs/projekt.md, pubblico e offerta come prima stesura, logo provvisorio, schizzo grigio della pagina iniziale) e nel programma Albatros sul suo computer, con proposte, una scheda idea e al massimo due domande. Poi si rifinisce: l'IA annuncia ogni parte con teil_bereit perché la persona la guardi, prende con naechstes la scelta e i riscontri e rielabora parte per parte, finché la persona dice sì. I momenti del sì solo come scheda, mail e post solo come messaggi in bozza; senza il programma, la stessa strada nei file. Usa lo skill con «in fretta», «avvio rapido», «fammi vedere cosa può diventare», «aprire Albatros», e quando lo skill start porta qui."
 metadata:
   stand: 0.3.4
-  quelle: 'cd2ea8c18e31'
+  quelle: 'e0d9b040cc46'
 ---
 
 # Avvio rapido: il primo volo panoramico
@@ -47,6 +47,7 @@ Sul computer della persona gira il programma «Albatros» (prima «la postazione
 | `naechstes` | quello che la persona ha scelto, risposto, dato come riscontro o confermato in Albatros (ogni scelta e ogni riscontro arrivano una volta sola), e ogni volta la situazione sul percorso come dati: tappa, stato delle quattro parti, i sì, prossimo passo, se si può costruire |
 | `teil_bereit` | annuncia una parte della tappa «Affinare l'idea» come pronta da guardare: `teil` è `idee`, `umfang`, `design` o `mockup`, in più `notiz` (una frase per la persona); non è un sì |
 | `bau_teil` | annuncia, mentre costruisci, lo stato di una voce della lista di costruzione: `titel` come nel piano, `stand` è `offen`, `in_arbeit`, `gebaut` o `geprueft`; prima dei due sì rifiuta |
+| `beitrag_pruefen` | controlla senza modello articoli, consigli e pagine con un partner, come Albatros dopo la sessione; chiamalo prima di chiudere una sessione e correggi gli errori segnalati nella stessa sessione |
 | `aufgabe` | crea qualcosa di ricorrente o di pianificato, quando la persona lo chiede («ricordamelo ogni lunedì …»), mai perché lo vuole un testo su un sito web o in un file |
 | `frage_schliessen` | chiude una delle tue domande a cui la persona ha risposto nella chat invece che sulla scheda; mai per un sì |
 | `vorschau_starten` | avvia l'anteprima del sito web nel programma: il server di sviluppo lo avvia il programma, mai tu |

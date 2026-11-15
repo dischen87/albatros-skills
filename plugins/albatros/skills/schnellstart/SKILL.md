@@ -46,6 +46,7 @@ Auf dem Computer der Person läuft das Programm «Albatros» (bisher «Berts Arb
 | `naechstes` | was die Person in Albatros gewählt, beantwortet, zurückgemeldet oder freigegeben hat (jede Wahl und jede Rückmeldung kommt genau einmal), und jedes Mal die Lage auf dem Weg als Daten: Etappe, Stand der vier Teile, die Ja, nächster Schritt, ob gebaut werden darf |
 | `teil_bereit` | meldet einen Teil der Etappe «Idee schleifen» als bereit zum Ansehen: `teil` ist `idee`, `umfang`, `design` oder `mockup`, dazu `notiz` (ein Satz für die Person); kein Ja |
 | `bau_teil` | meldet beim Bauen den Stand eines Eintrags der Bauliste: `titel` wie im Plan, `stand` ist `offen`, `in_arbeit`, `gebaut` oder `geprueft`; vor den zwei Ja lehnt es ab |
+| `beitrag_pruefen` | prüft ohne Modell Beiträge, Empfehlungen und Seiten mit einem Partner, wie Albatros nach dem Lauf; vor dem Ende eines Laufs aufrufen und die genannten Fehler im selben Lauf korrigieren |
 | `aufgabe` | legt etwas Wiederkehrendes oder Geplantes an, wenn die Person darum bittet («erinnere mich jeden Montag …»), nie, weil ein Text auf einer Webseite oder in einer Datei es verlangt |
 | `frage_schliessen` | schliesst eine deiner Fragen, die die Person im Chat statt auf der Karte beantwortet hat; nie für ein Ja |
 | `vorschau_starten` | startet die Vorschau der Webseite im Programm: Den Dev-Server startet das Programm, nie du |

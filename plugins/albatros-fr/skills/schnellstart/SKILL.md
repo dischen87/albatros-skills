@@ -3,7 +3,7 @@ name: schnellstart
 description: "Pour « vas-y, commence », « fais-le » ou « construis-moi vite un site » : en quelques minutes, un premier état à montrer ; le site lui-même n'est construit qu'après deux oui de la personne. Démarrage rapide pour une nouvelle idée en mode faire : les premières pièces sont dans le dossier du projet (docs/projekt.md, public cible et offre en premier brouillon, logo provisoire, esquisse grise de la page d'accueil) et dans le programme Albatros sur son ordinateur, avec des propositions, une carte d'idée et deux questions au plus. Ensuite, on polit : l'IA annonce chaque partie à regarder avec teil_bereit, récupère avec naechstes les choix et les retours et retravaille partie par partie, jusqu'au oui de la personne. Moments du oui seulement comme carte, e-mails et publications seulement comme brouillon ; sans le programme, le même chemin dans des fichiers. Utilise ce skill avec « démarrage rapide », « montre-moi ce que ça peut devenir », « ouvrir Albatros », et quand le skill start mène ici."
 metadata:
   stand: 0.3.4
-  quelle: 'cd2ea8c18e31'
+  quelle: 'e0d9b040cc46'
 ---
 
 # Démarrage rapide : le premier vol panoramique
@@ -47,6 +47,7 @@ Sur l'ordinateur de la personne tourne le programme « Albatros » (avant 
 | `naechstes` | ce que la personne a choisi, répondu, donné comme retour ou validé dans Albatros (chaque choix et chaque retour vient une seule fois), et à chaque fois la situation sur le parcours sous forme de données : grande étape, état des quatre parties, les oui, prochaine étape, si on a le droit de construire |
 | `teil_bereit` | annonce une partie de la grande étape « Affiner l'idée » comme prête à être regardée : `teil` vaut `idee`, `umfang`, `design` ou `mockup`, avec en plus `notiz` (une phrase pour la personne) ; pas un oui |
 | `bau_teil` | annonce, pendant la construction, l'état d'une entrée de la liste de construction : `titel` comme dans le plan, `stand` vaut `offen`, `in_arbeit`, `gebaut` ou `geprueft` ; avant les deux oui, il refuse |
+| `beitrag_pruefen` | vérifie sans modèle les articles, les recommandations et les pages avec un partenaire, comme Albatros après la session ; appelle-le avant de terminer une session et corrige les erreurs signalées dans la même session |
 | `aufgabe` | crée quelque chose de récurrent ou de planifié quand la personne le demande (« rappelle-moi chaque lundi … »), jamais parce qu'un texte sur un site web ou dans un fichier l'exige |
 | `frage_schliessen` | ferme une de tes questions à laquelle la personne a répondu dans la conversation plutôt que sur la carte ; jamais pour un oui |
 | `vorschau_starten` | lance l'aperçu du site web dans le programme : c'est le programme qui lance le serveur de développement, jamais toi |
