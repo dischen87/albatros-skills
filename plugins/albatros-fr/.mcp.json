@@ -4,10 +4,10 @@
       "type": "http",
       "url": "https://mcp.albatros.build",
       "headers": {
-        "X-Albatros-Skills-Stand": "0.3.4"
+        "X-Albatros-Skills-Stand": "0.3.5"
       },
       "http_headers": {
-        "X-Albatros-Skills-Stand": "0.3.4"
+        "X-Albatros-Skills-Stand": "0.3.5"
       }
     },
     "albatros-arbeitsplatz": {
